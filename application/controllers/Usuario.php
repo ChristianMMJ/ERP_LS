@@ -8,7 +8,7 @@ class Usuario extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('usuario_model')->model('empresa_model')->model('cliente_model')->model('registroUsuarios_model');
+        $this->load->library('session')->model('usuario_model');
     }
 
     public function index() {
@@ -28,22 +28,6 @@ class Usuario extends CI_Controller {
     public function getRecords() {
         try {
             print json_encode($this->usuario_model->getRecords());
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function getEmpresas() {
-        try {
-            print json_encode($this->empresa_model->getEmpresas());
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function getClientes() {
-        try {
-            print json_encode($this->cliente_model->getClientes());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

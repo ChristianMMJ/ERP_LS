@@ -4,26 +4,12 @@
     background-color: #ecf0f1;
     opacity: 1;
 }
-/*Progress Bar*/
-.progress-indicator>li.completed .bubble, .progress-indicator>li.completed .bubble:after, .progress-indicator>li.completed .bubble:before {
-    background-color: #5db969;
-    border-color: #247830;
-}
 
-.progress-indicator>li.completed, .progress-indicator>li.completed .bubble {
-    color: #386f3f;
-}
 /*Legend*/
 legend {
     font-size: 1.3rem;
 }
-/*NavTabs*/
-.nav-tabs {
-    border-bottom: 1px solid #99aeb2;
-}
-.nav-tabs a {
-    color: #161c1d;
-}
+
 
 /*Fondo aplicacion*/
 html{
