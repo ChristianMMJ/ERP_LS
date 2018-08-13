@@ -194,24 +194,32 @@
         </ul>
     </div>
 </div>
-<div class="container-fluid bg-primary" style="background-color: rgb(166,175,179);">
-    <div class="row">
-        <div class="col-2 ">
-            <button class="btn btn-primary btn-sm mt-1 mb-1" onclick="openNav()">
-                <i class="fa fa-bars"></i> Menú
-            </button>
-        </div>
-        <div class="col-10 float-right" align="right">
-            <a  class="btn btn-primary btn-sm mt-1 mb-1" href="<?php print base_url('Sesion/onSalir'); ?>">
-                <i class="fa fa-sign-out-alt"></i> Salir</a>
 
-<!--            <span class="text-light">
-            <?php echo $this->session->userdata('Nombre') . ' ' . $this->session->userdata('Apellidos'); ?>
-<img src="<?php print base_url(); ?>img/logo.png" width="50px" class="mt-1 mb-1">
-</span>-->
-        </div>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+
+    <button class="btn btn-primary btn-sm navbar-brand" onclick="openNav()">
+        <i class="fa fa-bars"></i> Menú
+    </button>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+
+            <a  class="btn btn-secondary" href="<?php print base_url('Sesion/onSalir'); ?>">
+                <i class="fa fa-sign-out-alt"></i> Salir</a>
+        </form>
+
+
     </div>
-</div>
+</nav>
+
 <script>
     var TipoAcceso = "<?php echo $this->session->userdata('TipoAcceso'); ?>";
     if (TipoAcceso === 'RESIDENTE') {
