@@ -27,7 +27,7 @@
         height: 100%;
         width: 0;
         position: fixed;
-        z-index: 999;
+        z-index: 1040;
         top: 0;
         left: 0;
         background-color: rgba(13, 25, 41, 0.88);
@@ -65,7 +65,7 @@
         </div>
         <div class="modal-body" id="pnlContra">
             <form id="frmEditarContrasena">
-                <input type="text" name="ID" class="form-control d-none" >
+                <input type="text" name="ID" class="form-control " >
                 <div class=" col-6 col-md-12">
                     <label for="">Usuario</label>
                     <input type="text"  name="Usuario"  class="form-control" readonly="" placeholder="" >
@@ -104,7 +104,7 @@
 
             <div class="dropdown-divider"></div>
             <br>
-            <li class="nav-item dropdown d-none" id="liPanelCliente">
+            <li class="nav-item dropdown " id="liPanelCliente">
                 <a class="nav-link dropdown-toggle " role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-street-view mr-1"></i> Panel de Clientes
                 </a>
@@ -119,11 +119,11 @@
                     <i class="fas fa-chalkboard-teacher mr-1"></i>Mesa de Trabajo
                 </a>
                 <ul class="dropdown-menu">
-                    <li class="d-none" id="liServicios"><a class="dropdown-item" href="<?php print base_url('Trabajos.py') ?>">Servicios</a></li>
+                    <li class="" id="liServicios"><a class="dropdown-item" href="<?php print base_url('Trabajos.py') ?>">Servicios</a></li>
                 </ul>
             </li>
 
-            <li class="nav-item dropdown d-none" id="liControl">
+            <li class="nav-item dropdown " id="liControl">
                 <a class="nav-link dropdown-toggle " role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-clipboard-check mr-1"></i> Control
                 </a>
@@ -133,7 +133,7 @@
                 </ul>
             </li>
 
-            <li class="nav-item dropdown d-none" id="liExploradores">
+            <li class="nav-item dropdown " id="liExploradores">
                 <a class="nav-link dropdown-toggle " role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-binoculars mr-1"></i>Exploradores
                 </a>
@@ -143,7 +143,7 @@
                 </ul>
             </li>
 
-            <li class="nav-item dropdown d-none" id="liCatalogos">
+            <li class="nav-item dropdown " id="liCatalogos">
                 <a class="nav-link dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-folder-open mr-1"></i>Catálogos
                 </a>
@@ -170,7 +170,7 @@
 
                 </ul>
             </li>
-            <li class="nav-item dropdown d-none" id="liUsuarios">
+            <li class="nav-item dropdown " id="liUsuarios">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-users mr-1"></i>Usuarios
                 </a>
@@ -183,7 +183,7 @@
             </li>
 
 
-            <li class="nav-item dropdown d-none" id="liHerramiendas">
+            <li class="nav-item dropdown " id="liHerramiendas">
                 <a class="nav-link dropdown-toggle " role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-wrench mr-1"></i>Herramientas
                 </a>
@@ -196,10 +196,10 @@
 </div>
 
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
 
     <button class="btn btn-primary btn-sm navbar-brand" onclick="openNav()">
-        <i class="fa fa-bars"></i> Menú
+        <i class="fa fa-home"></i> Menú
     </button>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
@@ -208,56 +208,16 @@
 
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
-
         </ul>
         <form class="form-inline my-2 my-lg-0">
-
             <a  class="btn btn-secondary" href="<?php print base_url('Sesion/onSalir'); ?>">
                 <i class="fa fa-sign-out-alt"></i> Salir</a>
         </form>
-
-
     </div>
 </nav>
 
 <script>
-    var TipoAcceso = "<?php echo $this->session->userdata('TipoAcceso'); ?>";
-    if (TipoAcceso === 'RESIDENTE') {
-        $('#liServicios').removeClass('d-none');
-    }
-    if (TipoAcceso === 'COORDINADOR DE PROCESOS') {
-        $('#liControl').removeClass('d-none');
-        $('#liCatalogos').removeClass('d-none');
-        $('#liEmpresas').addClass('d-none');
-        $('#liPrefacturas').addClass('d-none');
-        $('#liServicios').removeClass('d-none');
-        $('#liClientes').addClass('d-none');
-        $('#liExploradores').removeClass('d-none');
-
-    }
-    if (TipoAcceso === 'ADMINISTRADOR') {
-        $('#liControl').removeClass('d-none');
-        $('#liReportes').removeClass('d-none');
-        $('#liExploradores').removeClass('d-none');
-        $('#liCatalogos').removeClass('d-none');
-        $('#liServicios').removeClass('d-none');
-    }
-    if (TipoAcceso === 'CLIENTE') {
-        $('#liPanelCliente').removeClass('d-none');
-    }
-    if (TipoAcceso === 'SUPER ADMINISTRADOR') {
-        $('#liPanelCliente').removeClass('d-none');
-        $('#liControl').removeClass('d-none');
-        $('#liExploradores').removeClass('d-none');
-        $('#liCatalogos').removeClass('d-none');
-        $('#liUsuarios').removeClass('d-none');
-        $('#liServicios').removeClass('d-none');
-        $('#liHerramiendas').removeClass('d-none');
-    }
     var master_url = base_url + 'Sesion/';
-
-
-
     function openNav() {
         $('#myNav').width(260);
     }
@@ -293,7 +253,7 @@
                     processData: false,
                     data: frm
                 }).done(function (data, x, jq) {
-                    $('#mdlCambiarContrasena').modal('d-none');
+                    $('#mdlCambiarContrasena').modal('');
                     onNotify('<span class="fa fa-check fa-lg"></span>', 'CONTRASEÑA MODIFICADA EXITOSAMENTE', 'success');
                 }).fail(function (x, y, z) {
                     console.log(x, y, z);
