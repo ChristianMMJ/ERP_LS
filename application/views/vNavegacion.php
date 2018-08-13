@@ -1,276 +1,230 @@
 <style>
-    .dropdown-item:hover, .dropdown-item:focus {
-        color: #fff;
+
+    /* ---------------------------------------------------
+        SIDEBAR STYLE
+    ----------------------------------------------------- */
+    a,
+    a:hover,
+    a:focus {
+        color: inherit;
         text-decoration: none;
-        background-color: transparent;
-    }
-    .mr-auto, .mx-auto {
-        margin-left: 15px !important;
+        transition: all 0.3s;
     }
 
-    .overlay .dropdown {
-        cursor:pointer;
-        font-size: 16px !important;
-        color: #FAFAFA;
-    }
-    .overlay .dropdown-item {
-        padding: 0.5rem .5rem .5rem 1.4rem !important;
-        font-size: 15.5px !important;
-        color: #A6A6A6;
-    }
-    .overlay .dropdown-menu {
-        background-color: transparent !important;
-        border: 0px !important;
-        border-radius: 0px !important;
-    }
-    .overlay {
-        height: 100%;
-        width: 0;
+    #sidebar {
+        width: 250px;
         position: fixed;
-        z-index: 1040;
         top: 0;
+        left: -250px;
+        height: 100vh;
+        z-index: 1031;
+        color: #fff;
+        transition: all 0.3s;
+        overflow-y: scroll;
+        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2);
+
+    }
+
+    #sidebar.active {
         left: 0;
-        background-color: rgba(13, 25, 41, 0.88);
-        overflow-x: hidden;
-        transition: 0.1s;
-    }
-    .overlay-content {
-        position: relative;
-        top: 5%;
-        width: 100%;
-        margin-top: 5px;
-    }
-    .overlay a:hover,
-    .overlay a:focus {
-        color: #F39C12 !important;
     }
 
-    .overlay .closebtn {
-        cursor:pointer;
+    #dismiss {
+        width: 35px;
+        height: 35px;
+        line-height: 35px;
+        text-align: center;
         position: absolute;
-        top: 0px;
-        right: 20px;
-        color: #fff !important;
-        font-size: 30px !important;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        color: #000;
+        -webkit-transition: all 0.3s;
+        -o-transition: all 0.3s;
+        transition: all 0.3s;
     }
 
+    #dismiss:hover {
+        color: #95a5a6;
+    }
+
+    .overlay {
+        display: none;
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 1030;
+        opacity: 0;
+        transition: all 0.5s ease-in-out;
+    }
+    .overlay.active {
+        display: block;
+        opacity: 1;
+    }
+
+    #sidebar .sidebar-header {
+        padding: 20px;
+        color: #000;
+        background: #FFF;
+    }
+
+    #sidebar ul.components {
+        padding: 10px 0;
+        border-bottom: 1px solid #FFF;
+    }
+
+    #sidebar ul p {
+        color: #fff;
+        padding: 10px;
+    }
+
+    #sidebar ul li a {
+        padding: 10px;
+        font-size: 1.1em;
+        display: block;
+    }
+
+    #sidebar ul li a:hover {
+        color: #2C3E50;
+        background: #fff;
+    }
+
+    #sidebar ul li.active>a,
+    #sidebar a[aria-expanded="true"] {
+        color: #fff;
+        background: #F39C12;
+    }
+
+    #sidebar a[data-toggle="collapse"] {
+        position: relative;
+    }
+
+    #sidebar .dropdown-toggle::after {
+        display: block;
+        position: absolute;
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
+    }
+
+    #sidebar ul ul a {
+        font-size: 0.9em !important;
+        padding-left: 30px !important;
+
+    }
 
 </style>
-<div id="mdlCambiarContrasena" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog  modal-content ">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Cambiar Contraseña</h4>
-        </div>
-        <div class="modal-body" id="pnlContra">
-            <form id="frmEditarContrasena">
-                <input type="text" name="ID" class="form-control " >
-                <div class=" col-6 col-md-12">
-                    <label for="">Usuario</label>
-                    <input type="text"  name="Usuario"  class="form-control" readonly="" placeholder="" >
-                </div>
-                <div class=" col-6 col-md-12">
-                    <label for="">Nueva Contraseña*</label>
-                    <input type="password" name="Contrasena" id="Pass"  class="form-control"  placeholder="Introduce la nueva contraseña" required="">
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-raised btn-primary" id="btnModificar">ACEPTAR</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal" >CANCELAR</button>
-        </div>
+
+<!-- Sidebar  -->
+<nav id="sidebar" class="bg-primary">
+    <div id="dismiss">
+        <i class="fas fa-arrow-left fa-lg"></i>
     </div>
-</div>
-<div id="myNav" class="overlay">
-    <a class="closebtn " onclick="closeNav()">&times;</a>
-    <div class="overlay-content navbar ">
-        <ul class=" navbar-nav mr-auto">
-            <img src="<?php print base_url(); ?>img/logo_mediano.png" width="160">
-            <br>
-            <br>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle active" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-user-circle mr-1"></i>
-                    <?php echo $this->session->userdata('Nombre') . ' ' . $this->session->userdata('Apellidos'); ?>
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#" onclick="onCambiarContrasena();">Cambiar Contraseña</a>
-                    <a class="dropdown-item" href="#">Reportar un problema</a>
-                    <div class="divider"></div>
-                    <a class="dropdown-item" href="<?php print base_url('Sesion/onSalir'); ?>" >Salir</a>
-                </div>
-            </li>
 
-            <div class="dropdown-divider"></div>
-            <br>
-            <li class="nav-item dropdown " id="liPanelCliente">
-                <a class="nav-link dropdown-toggle " role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-street-view mr-1"></i> Panel de Clientes
-                </a>
-                <ul class="dropdown-menu">
-                    <li  class="" id="liPedidoCliente"><a class="dropdown-item" href="<?php print base_url('PedidoCliente.py') ?>">Pedidos Cliente</a></li>
-                    <div class="dropdown-divider" ></div>
-                    <li  class="" id="liVisorCliente"><a class="dropdown-item" href="<?php print base_url('CuboCliente.py') ?>">Cubo</a></li>
-                </ul>
-            </li>
-            <li class="nav-item dropdown " >
-                <a class="nav-link dropdown-toggle " role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-chalkboard-teacher mr-1"></i>Mesa de Trabajo
-                </a>
-                <ul class="dropdown-menu">
-                    <li class="" id="liServicios"><a class="dropdown-item" href="<?php print base_url('Trabajos.py') ?>">Servicios</a></li>
-                </ul>
-            </li>
-
-            <li class="nav-item dropdown " id="liControl">
-                <a class="nav-link dropdown-toggle " role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-clipboard-check mr-1"></i> Control
-                </a>
-                <ul class="dropdown-menu">
-                    <li id="liEntregas"><a class="dropdown-item" href="<?php print base_url('Entregas.py') ?>">Entregas</a></li>
-                    <li id="liPrefacturas"><a class="dropdown-item" href="<?php print base_url('Prefacturas.py') ?>">Prefacturas</a></li>
-                </ul>
-            </li>
-
-            <li class="nav-item dropdown " id="liExploradores">
-                <a class="nav-link dropdown-toggle " role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-binoculars mr-1"></i>Exploradores
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="<?php print base_url('ExploradorServicios.py') ?>">Servicios</a></li>
-                    <li><a class="dropdown-item" href="<?php print base_url('CuboInformacionGeneral.py') ?>">Cubo</a></li>
-                </ul>
-            </li>
-
-            <li class="nav-item dropdown " id="liCatalogos">
-                <a class="nav-link dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-folder-open mr-1"></i>Catálogos
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <li class="nav-item dropdown dropdown-submenu" id="liPreciarios">
-                        <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-user-tie mr-1"></i>Clientes
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li id="liClientes"><a class="dropdown-item" href="<?php print base_url('Clientes.py') ?>">Clientes</a></li>
-                            <li id="liSucursales"><a class="dropdown-item" href="<?php print base_url('Sucursal.py') ?>">Sucursales</a></li>
-                            <li id="liEspecialidades"><a class="dropdown-item" href="<?php print base_url('Especialidades.py') ?>">Especialidades</a></li>
-                            <li id="liCentrosCostos"><a class="dropdown-item" href="<?php print base_url('CentroCostos.py') ?>">Centros de Costo</a></li>
-                            <li id="liAreas"><a class="dropdown-item" href="<?php print base_url('Areas.py') ?>">Areas</a></li>
-                        </ul>
-                    </li>
-                    <div class="dropdown-divider" href="#"></div>
-                    <li id="liEmpresas"><a class="dropdown-item" href="<?php print base_url('Empresas.py') ?>">Empresas</a></li>
-                    <li id="liPreciarios"><a class="dropdown-item" href="<?php print base_url('Preciarios.py') ?>">Preciarios</a></li>
-                    <li id="liPlantillas"><a class="dropdown-item" href="<?php print base_url('Plantillas.py') ?>">Plantillas</a></li>
-                    <li id="liEmpresasSupervisoras"><a class="dropdown-item" href="<?php print base_url('EmpresasSupervisoras.py') ?>">Empresas Supervisoras</a></li>
-                    <li id="liCuadrillas"><a class="dropdown-item" href="<?php print base_url('Cuadrillas.py') ?>">Cuadrillas</a></li>
-                    <li id="liCodigosPPTA"><a class="dropdown-item" href="<?php print base_url('CodigosPPTA.py') ?>">Códigos PPTA</a></li>
-
-                </ul>
-            </li>
-            <li class="nav-item dropdown " id="liUsuarios">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-users mr-1"></i>Usuarios
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="<?php print base_url('Usuario.py') ?>">Usuarios</a></li>
-                    <div class="dropdown-divider" ></div>
-                    <li><a class="dropdown-item" href="<?php print base_url('RegistroUsuarios.py') ?>">Log de Usuarios</a></li>
-
-                </ul>
-            </li>
-
-
-            <li class="nav-item dropdown " id="liHerramiendas">
-                <a class="nav-link dropdown-toggle " role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-wrench mr-1"></i>Herramientas
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="<?php print base_url('HerramientasPreciario.py') ?>">Servicios</a></li>
-                </ul>
-            </li>
-        </ul>
+    <div class="sidebar-header">
+        <img src="<?php print base_url(); ?>img/logo_mediano.png" width="160">
     </div>
-</div>
+    <ul class="list-unstyled pl-3 pr-3 pt-4">
+        <li>
+            <input type="text" class="form-control form-control-sm" autofocus="" placeholder="BUSCAR" id="txtBusqueda">
+        </li>
+    </ul>
+    <ul class="list-unstyled components">
 
+        <li class="">
+            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <i class="fa fa-folder-open"></i> Catálogos</a>
+            <ul class="collapse list-unstyled" id="homeSubmenu">
+                <li>
+                    <a href="#">Home 1</a>
+                </li>
+                <li>
+                    <a href="#">Home 2</a>
+                </li>
+                <li>
+                    <a href="#">Home 3</a>
+                </li>
+            </ul>
+        </li>
 
+        <li class="">
+            <a href="#usuarios" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <i class="fa fa-users"></i> Usuarios</a>
+            <ul class="collapse list-unstyled" id="usuarios">
+                <li>
+                    <a href="#">Home 1</a>
+                </li>
+                <li>
+                    <a href="#">Home 2</a>
+                </li>
+                <li>
+                    <a href="#">Home 3</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <ul class="list-unstyled pl-3 pr-3">
+        <li>
+            <span class="badge badge-warning btn-block px-3 py-2">V 1.0.0</span>
+        </li>
+    </ul>
+</nav>
+<!-- Contenido  -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
 
-    <button class="btn btn-primary btn-sm navbar-brand" onclick="openNav()">
+    <button class="btn btn-primary btn-sm navbar-brand" id="sidebarCollapse">
         <i class="fa fa-home"></i> Menú
     </button>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarColor01">
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <a  class="btn btn-secondary" href="<?php print base_url('Sesion/onSalir'); ?>">
-                <i class="fa fa-sign-out-alt"></i> Salir</a>
-        </form>
+        <ul class="navbar-nav navbar-right">
+            <li class="nav-item dropdown">
+                <a class="btn btn-primary dropdown-toggle pr-4" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <?php echo $this->session->userdata('Nombre') . ' ' . $this->session->userdata('Apellidos'); ?>
+                    <i class="fa fa-user-circle fa-lg"></i>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#"><i class="fa fa-question-circle"></i> Reportar un problema</a>
+                    <a class="dropdown-item" href="#"><i class="fa fa-key"></i> Cambiar Contraseña</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?php print base_url('Sesion/onSalir'); ?>"><i class="fa fa-sign-out-alt"></i> Salir</a>
+                </div>
+            </li>
+        </ul>
+
     </div>
+
 </nav>
 
-<script>
-    var master_url = base_url + 'Sesion/';
-    function openNav() {
-        $('#myNav').width(260);
-    }
+<div class="overlay"></div>
 
-    function closeNav() {
-        $('#myNav').width(0);
-    }
 
+<script type="text/javascript">
     $(document).ready(function () {
-        handleEnter();
-        $('#myNav > li:not(ul)').click(function (event) {
-            event.stopPropagation();
+        $("#sidebar").mCustomScrollbar({
+            theme: "minimal"
         });
 
-        $('.dropdown-submenu a.multinivel').on("click", function (e) {
-            $(this).next('ul').toggle();
-            e.stopPropagation();
-            e.preventDefault();
+        $('#dismiss, .overlay').on('click', function () {
+            $('#sidebar').removeClass('active');
+            $('.overlay').removeClass('active');
         });
-        $('#mdlCambiarContrasena').on('shown.bs.modal', function () {
-            $('#Pass').focus();
-        });
-        $('#btnModificar').on("click", function () {
-            var frm = new FormData($('#mdlCambiarContrasena').find("#frmEditarContrasena")[0]);
-            isValid('pnlContra');
-            if (valido) {
-                HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
-                $.ajax({
-                    url: master_url + 'onCambiarContrasena',
-                    type: "POST",
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    data: frm
-                }).done(function (data, x, jq) {
-                    $('#mdlCambiarContrasena').modal('');
-                    onNotify('<span class="fa fa-check fa-lg"></span>', 'CONTRASEÑA MODIFICADA EXITOSAMENTE', 'success');
-                }).fail(function (x, y, z) {
-                    console.log(x, y, z);
-                }).always(function () {
-                    HoldOn.close();
-                });
-            }
+
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').addClass('active');
+            $('.overlay').addClass('active');
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            $('#txtBusqueda').focus();
         });
     });
-    function onCambiarContrasena() {
-        onRegistrarAccion('INTENTÓ CAMBIAR CONTRASEÑA');
-        $('#mdlCambiarContrasena').modal('show');
-        $("[name='Contrasena']").val("");
-        $("[name='Usuario']").val("<?php echo $this->session->userdata('USERNAME'); ?>");
-        $("[name='ID']").val("<?php echo $this->session->userdata('ID'); ?>");
-    }
-
 </script>
-
-
