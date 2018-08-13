@@ -49,6 +49,7 @@
     }
 
     .overlay {
+        top:0;
         display: none;
         position: fixed;
         width: 100vw;
@@ -121,7 +122,6 @@
     <div id="dismiss">
         <i class="fas fa-arrow-left fa-lg"></i>
     </div>
-
     <div class="sidebar-header">
         <img src="<?php print base_url(); ?>img/logo_mediano.png" width="160">
     </div>
@@ -131,40 +131,58 @@
         </li>
     </ul>
     <ul class="list-unstyled components">
-
-        <li class="">
-            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+        <li class="drop">
+            <a href="#catalogos" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                 <i class="fa fa-folder-open"></i> Catálogos</a>
-            <ul class="collapse list-unstyled" id="homeSubmenu">
-                <li>
-                    <a href="#">Home 1</a>
+            <ul class="collapse list-unstyled" id="catalogos">
+                <li class="item">
+                    <a href="#">Proveedores</a>
                 </li>
-                <li>
-                    <a href="#">Home 2</a>
+                <li class="item">
+                    <a href="#">Ventas</a>
                 </li>
-                <li>
-                    <a href="#">Home 3</a>
+                <li class="item">
+                    <a href="Compras">Compras</a>
+                </li>
+                <li class="item">
+                    <a href="#pedidos" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fa fa-folder-open"></i> Pedidos</a>
+                    <ul class="collapse list-unstyled" id="pedidos">
+                        <li class="item">
+                            <a href="Nuevo">Nuevo</a>
+                        </li> 
+                        <li class="item">
+                            <a href="Editar">Editar</a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </li>
-
-        <li class="">
+        <li class="drop">
             <a href="#usuarios" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                 <i class="fa fa-users"></i> Usuarios</a>
             <ul class="collapse list-unstyled" id="usuarios">
-                <li>
-                    <a href="#">Home 1</a>
+                <li class="item">
+                    <a href="#">Almacen</a>
                 </li>
-                <li>
-                    <a href="#">Home 2</a>
+                <li class="item">
+                    <a href="#">Productos</a>
                 </li>
-                <li>
-                    <a href="#">Home 3</a>
+                <li class="item">
+                    <a href="#">Unidades</a>
+                </li>
+                <li class="item">
+                    <a href="Estilos">Estilos</a>
+                </li>
+                <li class="item">
+                    <a href="Lineas">Lineas</a>
+                </li>
+                <li class="item">
+                    <a href="Usuarios">Usuarios</a>
                 </li>
             </ul>
         </li>
     </ul>
-
     <ul class="list-unstyled pl-3 pr-3">
         <li>
             <span class="badge badge-warning btn-block px-3 py-2">V 1.0.0</span>
@@ -172,24 +190,20 @@
     </ul>
 </nav>
 <!-- Contenido  -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
     <button class="btn btn-primary btn-sm navbar-brand" id="sidebarCollapse">
         <i class="fa fa-home"></i> Menú
     </button>
-
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-
-
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
         </ul>
         <ul class="navbar-nav navbar-right">
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle pr-4" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <?php echo $this->session->userdata('Nombre') . ' ' . $this->session->userdata('Apellidos'); ?>
+                    <?php echo $this->session->userdata('Nombre') . ' ' . $this->session->userdata('Apellidos'); ?> ABCDED
                     <i class="fa fa-user-circle fa-lg"></i>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -200,17 +214,26 @@
                 </div>
             </li>
         </ul>
-
     </div>
-
 </nav>
-
 <div class="overlay"></div>
+<script>
+    var sidebar = $("#sidebar");
+    var components = sidebar.find("ul.list-unstyled.components");
+    var options = components.find("li.item");
 
-
-<script type="text/javascript">
     $(document).ready(function () {
-        $("#sidebar").mCustomScrollbar({
+
+        /*KEYUP, KEYDOWN, KEYPRESS; SON REQUERIDOS PARA LOS NON-PRINTABLE CHARACTERS*/
+        sidebar.find("#txtBusqueda").on('keyup', function (e) {
+            onBuscarSideBar(this);
+        }).on('keydown', function (e) {
+            onBuscarSideBar(this);
+        }).on('keypress', function (e) {
+            onBuscarSideBar(this);
+        });
+
+        sidebar.mCustomScrollbar({
             theme: "minimal"
         });
 
@@ -227,4 +250,40 @@
             $('#txtBusqueda').focus();
         });
     });
+
+    function onBuscarSideBar(e) {
+        var busqueda = $(e).val();
+        onResetSearch();
+        if (busqueda.length > 0) {
+            /*AGREGANDO CLASES PARA EXPANDIR COMPONENTES*/
+            components.find("a.dropdown-toggle.collapsed").removeClass("collapsed");
+            components.find("a.dropdown-toggle").attr('aria-expanded', true);
+            components.find("a.dropdown-toggle").next().addClass('show');
+            /*LEER CADA UNA DE LAS OPCIONES DISPONIBLES*/
+            $.each(options, function (k, v) {
+                var ul = $(v).parents('li.drop');
+                /*ENCUENTRA LA COINCIDENCIA*/
+                if ($(v).text().toUpperCase().includes(busqueda.toUpperCase())) {
+                    $(v).removeClass("d-none");
+                } else {
+                    $(v).addClass("d-none");
+                    /*VERIFICAR SI LA LISTA TIENE COMPONENTES PARA MOSTRAR DE LO CONTRARIO OCULTARLA*/
+                    if (ul.find("li.item").length === ul.find("li.item.d-none").length) {
+                        ul.addClass('d-none');
+                    }
+                }
+            });
+        } else {
+            onResetSearch();
+        }
+    }
+    function onResetSearch() {
+        components.find("a.dropdown-toggle").addClass("collapsed");
+        components.find("a.dropdown-toggle").attr('aria-expanded', false);
+        components.find("a.dropdown-toggle").next().removeClass('show');
+        $.each(options, function (k, v) {
+            $(v).parents('li.drop').removeClass("d-none");
+            $(v).removeClass("d-none");
+        });
+    }
 </script>

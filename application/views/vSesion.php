@@ -18,7 +18,13 @@
         padding: 15px;
         margin: auto;
     }
-
+    .card {
+        background-color: #fff;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)!important;
+    }
+    .btn{
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)!important;
+    }
 </style>
 <div id="mdlOlvideContrasena" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog  modal-content ">
@@ -42,14 +48,12 @@
         </div>
     </div>
 </div>
-<form id="frmIngresar" class="div-login text-center">
+<form id="frmIngresar" class="card div-login text-center">
     <h4 class="mb-3">Control de Acceso</h4>
     <input type="email" id="Usuario" name="Usuario" class="form-control" placeholder="Usuario" required autofocus>
-    <input type="password" id="Contrasena" name="Contrasena" class="form-control" placeholder="Contraseña" required>
-    <br>
-    <button class="btn btn-primary btn-block" id="btnIngresar" type="button">Ingresar</button>
-    <hr>
-    <button class="btn btn-warning btn-block" id="btnOlvidasteContrasena" type="button">Olvidaste tu contraseña?</button>
+    <input type="password" id="Contrasena" name="Contrasena" class="form-control mt-3" placeholder="Contraseña" required>
+    <button class="btn btn-primary btn-block mt-3" id="btnIngresar" type="button">Ingresar</button>
+    <button class="btn btn-warning btn-block mt-2" id="btnOlvidasteContrasena" type="button">Olvidaste tu contraseña?</button>
     <p class="mt-3 mb-3 text-muted">&copy; <?php echo date("Y") . ' All Rights Reserved for <br> CALZADO LOBO SA de CV'; ?></p>
 </form>
 <script>
