@@ -1,5 +1,6 @@
 <style>
 
+
     /* ---------------------------------------------------
         SIDEBAR STYLE
     ----------------------------------------------------- */
@@ -70,6 +71,11 @@
         background: #FFF;
     }
 
+    #sidebar ul.collapse.show {
+        background: #11181f;
+    }
+
+
     #sidebar ul.components {
         padding: 10px 0;
         border-bottom: 1px solid #FFF;
@@ -86,6 +92,8 @@
         display: block;
     }
 
+
+
     #sidebar ul li a:hover {
         color: #2C3E50;
         background: #fff;
@@ -94,12 +102,14 @@
     #sidebar ul li.active>a,
     #sidebar a[aria-expanded="true"] {
         color: #fff;
-        background: #F39C12;
+        background: #11181f;
     }
 
     #sidebar a[data-toggle="collapse"] {
         position: relative;
     }
+
+
 
     #sidebar .dropdown-toggle::after {
         display: block;
@@ -115,6 +125,11 @@
 
     }
 
+    #sidebar ul ul ul a {
+        font-size: 0.9em !important;
+        padding-left: 60px !important;
+    }
+
 </style>
 
 <!-- Sidebar  -->
@@ -125,7 +140,7 @@
     <div class="sidebar-header">
         <img src="<?php print base_url(); ?>img/logo_mediano.png" width="160">
     </div>
-    <ul class="list-unstyled pl-3 pr-3 pt-4">
+    <ul class="list-unstyled pl-3 pr-3 pt-3">
         <li>
             <input type="text" class="form-control form-control-sm" autofocus="" placeholder="BUSCAR" id="txtBusqueda">
         </li>
@@ -136,49 +151,34 @@
                 <i class="fa fa-folder-open"></i> Catálogos</a>
             <ul class="collapse list-unstyled" id="catalogos">
                 <li class="item">
-                    <a href="#">Proveedores</a>
+                    <a href="#"><i class="fa fa-user-secret"></i> Proveedores</a>
                 </li>
-                <li class="item">
-                    <a href="#">Ventas</a>
-                </li>
-                <li class="item">
-                    <a href="Compras">Compras</a>
-                </li>
-                <li class="item">
-                    <a href="#pedidos" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <i class="fa fa-folder-open"></i> Pedidos</a>
-                    <ul class="collapse list-unstyled" id="pedidos">
-                        <li class="item">
-                            <a href="Nuevo">Nuevo</a>
-                        </li> 
-                        <li class="item">
-                            <a href="Editar">Editar</a>
-                        </li>
-                    </ul>
-                </li>
+                <li class="item"><a href="Unidades"><i class="fa fa-ruler-combined"></i> Unidades</a></li>
             </ul>
         </li>
         <li class="drop">
-            <a href="#usuarios" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                <i class="fa fa-users"></i> Usuarios</a>
-            <ul class="collapse list-unstyled" id="usuarios">
+            <a href="#config" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <i class="fa fa-cogs"></i> Configuración</a>
+            <ul class="collapse list-unstyled" id="config">
+
                 <li class="item">
-                    <a href="#">Almacen</a>
+                    <a href="#usuarios" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fa fa-users"></i> Usuarios</a>
+                    <ul class="collapse list-unstyled" id="usuarios">
+                        <li class="item"><a href="Usuarios"><i class="fa fa-users-cog"></i> Usuarios</a></li>
+                        <li class="item"><a href="Permisos"><i class="fa fa-list-ul"></i> Permisos</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li class="item"><a href="Token"><i class="fa fa-key"></i> Token</a></li>
+                    </ul>
                 </li>
+
                 <li class="item">
-                    <a href="#">Productos</a>
-                </li>
-                <li class="item">
-                    <a href="#">Unidades</a>
-                </li>
-                <li class="item">
-                    <a href="Estilos">Estilos</a>
-                </li>
-                <li class="item">
-                    <a href="Lineas">Lineas</a>
-                </li>
-                <li class="item">
-                    <a href="Usuarios">Usuarios</a>
+                    <a href="#general" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fa fa-cog"></i> General</a>
+                    <ul class="collapse list-unstyled" id="general">
+                        <li class="item"><a href="Semanas"><i class="fa fa-calendar-alt"></i> Semanas</a></li>
+                        <li class="item"><a href="Departamentos"><i class="fab fa-buromobelexperte"></i> Departamentos</a></li>
+                    </ul>
                 </li>
             </ul>
         </li>
@@ -203,7 +203,7 @@
         <ul class="navbar-nav navbar-right">
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle pr-4" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <?php echo $this->session->userdata('Nombre') . ' ' . $this->session->userdata('Apellidos'); ?> ABCDED
+                    <?php echo $this->session->userdata('Nombre') . ' ' . $this->session->userdata('Apellidos'); ?>
                     <i class="fa fa-user-circle fa-lg"></i>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -223,6 +223,7 @@
     var options = components.find("li.item");
 
     $(document).ready(function () {
+
 
         /*KEYUP, KEYDOWN, KEYPRESS; SON REQUERIDOS PARA LOS NON-PRINTABLE CHARACTERS*/
         sidebar.find("#txtBusqueda").on('keyup', function (e) {

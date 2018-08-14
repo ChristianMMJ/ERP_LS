@@ -86,7 +86,7 @@
 </div>
 <!--SCRIPT-->
 <script>
-    var master_url = base_url + 'index.php/Usuario/';
+    var master_url = base_url + 'index.php/Usuarios/';
     var btnNuevo = $("#btnNuevo");
     var pnlDatos = $("#pnlDatos");
     var pnlTablero = $("#pnlTablero");
