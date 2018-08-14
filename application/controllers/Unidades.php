@@ -1,4 +1,5 @@
 <?php
+
 header('Access-Control-Allow-Origin: *');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -7,7 +8,7 @@ class Unidades extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('usuario_model');
+        $this->load->library('session')->model('unidad_model');
     }
 
     public function index() {
@@ -24,15 +25,23 @@ class Unidades extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->usuario_model->getRecords());
+            print json_encode($this->unidad_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getUsuarioByID() {
+    public function getID() {
         try {
-            print json_encode($this->usuario_model->getUsuarioByID($this->input->post('ID')));
+            print json_encode($this->unidad_model->getID());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getUnidadByID() {
+        try {
+            print json_encode($this->unidad_model->getUnidadByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -40,7 +49,7 @@ class Unidades extends CI_Controller {
 
     public function onAgregar() {
         try {
-            $this->usuario_model->onAgregar($this->input->post());
+            $this->unidad_model->onAgregar($this->input->post());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -48,16 +57,12 @@ class Unidades extends CI_Controller {
 
     public function onModificar() {
         try {
-            extract($this->input->post());
-            $DATA = array(
-                'Usuario' => ($Usuario !== NULL) ? $Usuario : NULL,
-                'Contrasena' => ($Contrasena !== NULL) ? $Contrasena : NULL,
-                'Nombre' => ($Nombre !== NULL) ? $Nombre : NULL,
-                'Apellidos' => ($Apellidos !== NULL) ? $Apellidos : NULL,
-                'TipoAcceso' => ($TipoAcceso !== NULL) ? $TipoAcceso : NULL,
-                'Estatus' => ($Estatus !== NULL) ? $Estatus : NULL
-            );
-            $this->usuario_model->onModificar($ID, $DATA);
+            $x = $this->input;
+            $this->unidad_model->onModificar($x->post('ID'), array(
+                'Clave' => ($x->post('Clave') !== NULL) ? $x->post('Clave') : NULL,
+                'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL,
+                'Estatus' => ($x->post('Estatus') !== NULL) ? strtoupper($x->post('Estatus')) : NULL
+            ));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -65,9 +70,10 @@ class Unidades extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->usuario_model->onEliminar($this->input->post('ID'));
+            $this->unidad_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
+
 }
