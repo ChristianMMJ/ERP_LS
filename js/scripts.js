@@ -310,6 +310,10 @@ function getExt(filename) {
 
 function handleEnter() {
     
+    $('input:not(.notEnter)').keyup(function () {
+        $(this).val($(this).val().toUpperCase());
+    });
+    
     $('body').on('keydown', 'input, select, textarea:not(.notEnter)', function (e) {
         var self = $(this)
                 , form = self.parents('body')

@@ -2,18 +2,18 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Usuarios extends CI_Controller {
+class Grupos extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('usuario_model');
+        $this->load->library('session')->model('grupos_model');
     }
 
     public function index() {
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             if (in_array($this->session->userdata["TipoAcceso"], array("SUPER ADMINISTRADOR"))) {
-                $this->load->view('vEncabezado')->view('vNavegacion')->view('vUsuarios')->view('vFooter');
+                $this->load->view('vEncabezado')->view('vNavegacion')->view('vGrupos')->view('vFooter');
             } else {
                 $this->load->view('vEncabezado');
                 $this->load->view('vNavegacion');
@@ -24,17 +24,25 @@ class Usuarios extends CI_Controller {
         }
     }
 
-    public function getRecords() {
+    public function getUltimoRegistro() {
         try {
-            print json_encode($this->usuario_model->getRecords());
+            print json_encode($this->grupos_model->getUltimoRegistro());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getUsuarioByID() {
+    public function getRecords() {
         try {
-            print json_encode($this->usuario_model->getUsuarioByID($this->input->post('ID')));
+            print json_encode($this->grupos_model->getRecords());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getGrupoByID() {
+        try {
+            print json_encode($this->grupos_model->getGrupoByID($this->input->post('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -42,7 +50,15 @@ class Usuarios extends CI_Controller {
 
     public function onAgregar() {
         try {
-            $this->usuario_model->onAgregar($this->input->post());
+
+            extract($this->input->post());
+            $DATA = array(
+                'Clave' => ($Clave !== NULL) ? $Clave : NULL,
+                'Nombre' => ($Nombre !== NULL) ? $Nombre : NULL,
+                'Tipo' => ($Tipo !== NULL) ? $Tipo : NULL,
+                'Estatus' => 'ACTIVO'
+            );
+            $this->grupos_model->onAgregar($DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -52,14 +68,10 @@ class Usuarios extends CI_Controller {
         try {
             extract($this->input->post());
             $DATA = array(
-                'Usuario' => ($Usuario !== NULL) ? $Usuario : NULL,
-                'Contrasena' => ($Contrasena !== NULL) ? $Contrasena : NULL,
                 'Nombre' => ($Nombre !== NULL) ? $Nombre : NULL,
-                'Apellidos' => ($Apellidos !== NULL) ? $Apellidos : NULL,
-                'TipoAcceso' => ($TipoAcceso !== NULL) ? $TipoAcceso : NULL,
-                'Estatus' => ($Estatus !== NULL) ? $Estatus : NULL
+                'Tipo' => ($Tipo !== NULL) ? $Tipo : NULL
             );
-            $this->usuario_model->onModificar($ID, $DATA);
+            $this->grupos_model->onModificar($ID, $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -68,7 +80,7 @@ class Usuarios extends CI_Controller {
     public function onEliminar() {
         try {
             extract($this->input->post());
-            $this->usuario_model->onEliminar($ID);
+            $this->grupos_model->onEliminar($ID);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
