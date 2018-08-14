@@ -14,10 +14,10 @@ legend {
 /*Fondo aplicacion*/
 html{
     font-family: sans-serif;
-  -webkit-text-size-adjust: 100%;
-  -ms-text-size-adjust: 100%;
-  -ms-overflow-style: scrollbar;
-  -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -ms-overflow-style: scrollbar;
+    -webkit-tap-highlight-color: transparent;
     background-color: #f5f5f5;
 }
 
@@ -111,4 +111,11 @@ textarea  {
 }
 ::placeholder { /* Recent browsers */
     text-transform: none;
+}
+.card {
+    background-color: #fff;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)!important;
+}
+.btn:not(){
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)!important;
 }
