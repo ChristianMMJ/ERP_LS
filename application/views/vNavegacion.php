@@ -152,6 +152,7 @@
             <ul class="collapse list-unstyled" id="catalogos">
                 <li class="item">
                     <a href="#"><i class="fa fa-user-secret"></i> Proveedores</a>
+                    <a href="Articulos"><i class="fa fa-cube"></i> Articulos</a>
                 </li>
                 <li class="item"><a href="Grupos"><i class="fa fa-object-group"></i> Grupos</a></li>
                 <li class="item"><a href="Unidades"><i class="fa fa-ruler-combined"></i> Unidades</a></li>
