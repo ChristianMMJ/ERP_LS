@@ -195,6 +195,7 @@
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
+            pnlDatos.find("[name='Clave']").addClass('disabledForms');
             pnlDatos.find("[name='NombreI']").focus();
             pnlDatos.find("[name='Clave']").prop('disabled', false);
             pnlDatos.find("[name='NombreI']").prop('disabled', false);

@@ -15,7 +15,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Clave</th>
-                            <th>Descripción</th> 
+                            <th>Descripción</th>
                             <th>Estatus</th>
                         </tr>
                     </thead>
@@ -179,6 +179,8 @@
             pnlDatos.removeClass("d-none");
             btnEliminar.addClass("d-none");
             getID();
+            pnlDatos.find("[name='Clave']").addClass('disabledForms');
+            pnlDatos.find("[name='Descripcion']").focus();
         });
 
         btnCancelar.click(function () {
@@ -198,7 +200,7 @@
                 var ID = $.isNumeric(data[0].CLAVE) ? parseInt(data[0].CLAVE) + 1 : 1;
                 pnlDatos.find("#Clave").val(ID).select().focus();
             } else {
-                pnlDatos.find("#Clave").val('1').select().focus();
+                pnlDatos.find("#Clave").val('1');
             }
         }).fail(function (x, y, z) {
             console.log(x, y, z);
@@ -274,7 +276,7 @@
                 pnlDatos.removeClass('d-none');
                 btnEliminar.removeClass("d-none");
 
-                pnlDatos.find("#Clave").focus().select();
+                pnlDatos.find("#Descripcion").focus().select();
             }).fail(function (x, y, z) {
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
                 console.log(x.responseText);
