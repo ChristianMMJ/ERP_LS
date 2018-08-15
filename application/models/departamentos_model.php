@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class temporadas_model extends CI_Model {
+class departamentos_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
@@ -12,23 +12,23 @@ class temporadas_model extends CI_Model {
 
     public function getRecords() {
         try {
-            return $this->db->select("T.ID, T.Clave, T.Descripcion")->from("Temporadas AS T")->where("T.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("D.ID, D.Clave, D.Descripcion, D.Rango, D.Avance, D.Nomina")->from("Departamentos AS D")->where("D.Estatus", "ACTIVO")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getTemporadas() {
+    public function getDepartamentos() {
         try {
-            return $this->db->select("T.Clave,CONCAT(T.Clave,'-',T.Descripcion) AS Temporada")->from("Temporadas AS T")->where("T.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("D.Clave,CONCAT(D.Clave,'-',D.Descripcion) AS Departamento")->from("Departamentos AS D")->where("D.Estatus", "ACTIVO")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getTemporadaByID($IDX) {
+    public function getDepartamentoByID($IDX) {
         try {
-            return $this->db->select("T.ID, T.Clave, T.Descripcion, T.Estatus")->from("Temporadas AS T")->where("T.Estatus", "ACTIVO")->where("T.ID", $IDX)->get()->result();
+            return $this->db->select("D.*")->from("Departamentos AS D")->where("D.Estatus", "ACTIVO")->where("D.ID", $IDX)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -36,7 +36,7 @@ class temporadas_model extends CI_Model {
 
     public function getID() {
         try {
-            return $this->db->select("T.Clave AS CLAVE")->from("Temporadas AS T")->where("T.Estatus", "Activo")->order_by("T.Clave", "DESC")->limit(1)->get()->result();
+            return $this->db->select("D.Clave AS CLAVE")->from("Departamentos AS D")->where("D.Estatus", "Activo")->order_by("D.Clave", "DESC")->limit(1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -44,7 +44,7 @@ class temporadas_model extends CI_Model {
 
     public function onAgregar($array) {
         try {
-            $this->db->insert("Temporadas", $array);
+            $this->db->insert("Departamentos", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             $LastIdInserted = $row['LAST_INSERT_ID()'];
@@ -56,7 +56,7 @@ class temporadas_model extends CI_Model {
 
     public function onModificar($ID, $DATA) {
         try {
-            $this->db->where('ID', $ID)->update("Temporadas", $DATA);
+            $this->db->where('ID', $ID)->update("Departamentos", $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -64,7 +64,7 @@ class temporadas_model extends CI_Model {
 
     public function onEliminar($ID) {
         try {
-            $this->db->set('Estatus', 'INACTIVO')->where('ID', $ID)->update("Temporadas");
+            $this->db->set('Estatus', 'INACTIVO')->where('ID', $ID)->update("Departamentos");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

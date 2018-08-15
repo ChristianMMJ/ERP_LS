@@ -151,13 +151,18 @@
                 <i class="fa fa-folder-open"></i> Catálogos</a>
             <ul class="collapse list-unstyled" id="catalogos">
                 <li class="item"><a href="Proveedores"><i class="fa fa-user-secret"></i> Proveedores</a></li>
+                <li class="item"><a href="Maquilas"><i class="fa fa-industry"></i> Maquilas</a></li>
                 <li class="item"><a href="Articulos"><i class="fa fa-cube"></i> Articulos</a></li>
-                <li class="item"><a href="Series"><i class="fa fa-user-secret"></i> Series</a></li>
-                <li class="item"><a href="Grupos"><i class="fa fa-object-group"></i> Grupos</a></li>
-                <li class="item"><a href="Unidades"><i class="fa fa-ruler-combined"></i> Unidades</a></li>
+                <li class="dropdown-divider"></li>
                 <li class="item"><a href="Lineas"><i class="fa fa-coins"></i> Lineas</a></li>
                 <li class="item"><a href="Hormas"><i class="fa fa-shoe-prints"></i> Hormas</a></li>
                 <li class="item"><a href="Temporadas"><i class="fa fa-cloud"></i> Temporadas</a></li>
+                <li class="dropdown-divider"></li>
+                <li class="item"><a href="Series"><i class="fa fa-user-secret"></i> Series</a></li>
+                <li class="item"><a href="Grupos"><i class="fa fa-object-group"></i> Grupos</a></li>
+                <li class="item"><a href="Unidades"><i class="fa fa-ruler-combined"></i> Unidades</a></li>
+
+
             </ul>
         </li>
         <li class="drop">

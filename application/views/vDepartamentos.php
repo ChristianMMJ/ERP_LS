@@ -2,22 +2,23 @@
     <div class="card-body ">
         <div class="row">
             <div class="col-sm-6 float-left">
-                <legend class="float-left">Lineas</legend>
+                <legend class="float-left">Departamentos</legend>
             </div>
             <div class="col-sm-6 float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
             </div>
         </div>
         <div class="card-block mt-4">
-            <div id="Lineas" class="table-responsive">
-                <table id="tblLineas" class="table table-sm display " style="width:100%">
+            <div id="Departamentos" class="table-responsive">
+                <table id="tblDepartamentos" class="table table-sm display " style="width:100%">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Clave</th>
                             <th>Descripción</th>
-                            <th>Año</th>
-                            <th>Tipo</th>
+                            <th>Rango</th>
+                            <th>Avance</th>
+                            <th>Nónima</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -32,7 +33,7 @@
             <fieldset>
                 <div class="row">
                     <div class="col-12 col-sm-6 col-md-4 float-left">
-                        <legend >Linea</legend>
+                        <legend >Departamento</legend>
                     </div>
                     <div class="col-12 col-sm-6 col-md-8" align="right">
                         <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
@@ -48,36 +49,37 @@
                     <div class="d-none">
                         <input type="text"  name="ID" class="form-control form-control-sm" >
                     </div>
-                    <div class="col-6 col-md-2 col-sm-2">
+                    <div class="col-6 col-md-2 col-sm-4">
                         <label for="Clave" >Clave*</label>
                         <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required >
                     </div>
-                    <div class="col-12 col-md-4 col-sm-8">
+                    <div class="col-12 col-md-4 col-sm-6">
                         <label for="Descripcion" >Descripción*</label>
                         <input type="text" id="Descripcion" name="Descripcion" class="form-control form-control-sm" required>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6 col-md-2 col-sm-2">
-                        <label for="Ano" >Año*</label>
-                        <input type="text" id="Ano" name="Ano" maxlength="4" class="form-control form-control-sm numbersOnly" placeholder="" >
-                    </div>
-                    <div class="col-12 col-md-4 col-sm-4">
-                        <label for="" >Temporada*</label>
-                        <select id="Temporada" name="Temporada" class="form-control form-control-sm" >
-                            <option value=""></option>
-                        </select>
-                    </div>
 
-                    <div class="col-12 col-md-4 col-sm-4">
-                        <label for="" >Tipo*</label>
-                        <select id="Tipo" name="Tipo" class="form-control form-control-sm" >
+
+                    <div class="col-12 col-md-2 col-sm-4">
+                        <label for="" >Rango*</label>
+                        <select id="Rango" name="Rango" class="form-control form-control-sm" >
                             <option value=""></option>
-                            <option value="PRODUCCION">0-PRODUCCION</option>
-                            <option value="PROTOTIPO">1-PROTOTIPO</option>
-                            <option value="MUESTRA">2-MUESTRA</option>
-                            <option value="EXTENCION">3-EXTENSIÓN</option>
+                            <option value="1">1-ADMINISTRACIÓN</option>
+                            <option value="2">2-PRODUCCIÓN</option>
                         </select>
+                    </div>
+                    <div class="col-12 col-md-2 col-sm-3">
+                        <label for="" >Avance*</label>
+                        <select id="Avance" name="Avance" class="form-control form-control-sm" >
+                            <option value=""></option>
+                            <option value="1">1-SI</option>
+                            <option value="0">0-NO</option>
+                        </select>
+                    </div>
+                    <div class="col-6 col-md-2 col-sm-3">
+                        <label for="Nomina" >Nómina*</label>
+                        <input type="text" id="Nomina" name="Nomina" class="form-control form-control-sm numbersOnly" placeholder="" >
                     </div>
                 </div>
                 <div class="row pt-2">
@@ -95,9 +97,9 @@
     </div>
 </div>
 <script>
-    var master_url = base_url + 'index.php/Lineas/';
-    var tblLineas = $('#tblLineas');
-    var Lineas;
+    var master_url = base_url + 'index.php/Departamentos/';
+    var tblDepartamentos = $('#tblDepartamentos');
+    var Departamentos;
     var btnNuevo = $("#btnNuevo"), btnCancelar = $("#btnCancelar"), btnEliminar = $("#btnEliminar"), btnGuardar = $("#btnGuardar");
     var pnlTablero = $("#pnlTablero"), pnlDatos = $("#pnlDatos");
     var nuevo = false;
@@ -176,7 +178,7 @@
                     case "eliminar":
                         $.post(master_url + 'onEliminar', {ID: temp}).done(function () {
                             swal('ATENCIÓN', 'SE HA ELIMINADO EL REGISTRO', 'success');
-                            Lineas.ajax.reload();
+                            Departamentos.ajax.reload();
                         }).fail(function (x, y, z) {
                             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
                             console.log(x.responseText);
@@ -192,15 +194,13 @@
         btnNuevo.click(function () {
             nuevo = true;
             pnlDatos.find("input").val("");
-            pnlTablero.addClass("d-none");
-            pnlDatos.removeClass("d-none");
-            btnEliminar.addClass("d-none");
-            getID();
-            pnlDatos.find("[name='Clave']").addClass('disabledForms');
-            pnlDatos.find("[name='Descripcion']").focus();
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
+            pnlTablero.addClass("d-none");
+            pnlDatos.removeClass("d-none");
+            btnEliminar.addClass("d-none");
+            pnlDatos.find("[name='Clave']").focus();
         });
 
         btnCancelar.click(function () {
@@ -211,22 +211,6 @@
 
     function init() {
         getRecords();
-        getTemporadas();
-    }
-
-    function getID() {
-        $.getJSON(master_url + 'getID').done(function (data, x, jq) {
-            if (data.length > 0) {
-                var ID = $.isNumeric(data[0].CLAVE) ? parseInt(data[0].CLAVE) + 1 : 1;
-                pnlDatos.find("#Clave").val(ID);
-            } else {
-                pnlDatos.find("#Clave").val('1');
-            }
-        }).fail(function (x, y, z) {
-            console.log(x, y, z);
-        }).always(function () {
-            HoldOn.close();
-        });
     }
 
     function getRecords() {
@@ -236,10 +220,10 @@
             message: 'CARGANDO...'
         });
         $.fn.dataTable.ext.errMode = 'throw';
-        if ($.fn.DataTable.isDataTable('#tblLineas')) {
-            tblLineas.DataTable().destroy();
+        if ($.fn.DataTable.isDataTable('#tblDepartamentos')) {
+            tblDepartamentos.DataTable().destroy();
         }
-        Lineas = tblLineas.DataTable({
+        Departamentos = tblDepartamentos.DataTable({
             "dom": 'Bfrtip',
             buttons: buttons,
             "ajax": {
@@ -247,7 +231,12 @@
                 "dataSrc": ""
             },
             "columns": [
-                {"data": "ID"}, {"data": "Clave"}, {"data": "Descripcion"}, {"data": "Ano"}, {"data": "Tipo"}
+                {"data": "ID"},
+                {"data": "Clave"},
+                {"data": "Descripcion"},
+                {"data": "Rango"},
+                {"data": "Avance"},
+                {"data": "Nomina"}
             ],
             "columnDefs": [
                 {
@@ -270,23 +259,24 @@
             ]
         });
 
-        $('#tblLineas_filter input[type=search]').focus();
+        $('#tblDepartamentos_filter input[type=search]').focus();
 
-        tblLineas.find('tbody').on('click', 'tr', function () {
+        tblDepartamentos.find('tbody').on('click', 'tr', function () {
             HoldOn.open({
                 theme: 'sk-cube',
                 message: 'CARGANDO...'
             });
-            tblLineas.find("tbody tr").removeClass("success");
+            tblDepartamentos.find("tbody tr").removeClass("success");
             $(this).addClass("success");
-            var dtm = Lineas.row(this).data();
+            var dtm = Departamentos.row(this).data();
             temp = parseInt(dtm.ID);
-            $.getJSON(master_url + 'getLineaByID', {ID: temp}).done(function (data) {
+            $.getJSON(master_url + 'getDepartamentoByID', {ID: temp}).done(function (data) {
                 pnlDatos.find("input").val("");
                 $.each(pnlDatos.find("select"), function (k, v) {
                     pnlDatos.find("select")[k].selectize.clear(true);
                 });
                 $.each(data[0], function (k, v) {
+                    console.log(k, v);
                     pnlDatos.find("[name='" + k + "']").val(v);
                     if (pnlDatos.find("[name='" + k + "']").is('select')) {
                         pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
@@ -296,6 +286,7 @@
                 pnlDatos.removeClass('d-none');
                 btnEliminar.removeClass("d-none");
 
+                pnlDatos.find("#Clave").addClass('disabledForms');
                 pnlDatos.find("#Descripcion").focus().select();
             }).fail(function (x, y, z) {
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
@@ -306,17 +297,5 @@
         });
         HoldOn.close();
     }
-    function getTemporadas() {
-        $.ajax({
-            url: master_url + 'getTemporadas',
-            type: "POST",
-            dataType: "JSON"
-        }).done(function (data, x, jq) {
-            $.each(data, function (k, v) {
-                pnlDatos.find("[name='Temporada']")[0].selectize.addOption({text: v.Temporada, value: v.Clave});
-            });
-        }).fail(function (x, y, z) {
-            console.log(x, y, z);
-        });
-    }
+
 </script>
