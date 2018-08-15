@@ -54,7 +54,7 @@
                     </div>
                     <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                         <label for="Clave" >Clave*</label>
-                        <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required placeholder="20180814">
+                        <input type="text" class="form-control form-control-sm numbersOnly" id="Clave" name="Clave" required placeholder="20180814">
                     </div>
                     <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                         <label for="" >Depto.Articulo*</label>
@@ -347,7 +347,7 @@
             pnlDatos.removeClass("d-none");
             pnlDatosDetalle.removeClass("d-none");
             btnEliminar.addClass("d-none");
-            pnlDatos.find("#Clave").focus().select();
+            pnlDatos.find("#Departamento")[0].selectize.focus();
             PrecioVentaParaMaquilas.clear().draw();
             getID();
             $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
@@ -404,9 +404,9 @@
             console.log(data);
             if (data.length > 0) {
                 var ID = $.isNumeric(data[0].CLAVE) ? parseInt(data[0].CLAVE) + 1 : 1;
-                pnlDatos.find("#Clave").val(ID).select().focus();
+                pnlDatos.find("#Clave").val(ID);
             } else {
-                pnlDatos.find("#Clave").val('1').select().focus();
+                pnlDatos.find("#Clave").val('1');
             }
         }).fail(function (x, y, z) {
             console.log(x, y, z);
@@ -483,7 +483,7 @@
                 pnlDatos.removeClass('d-none');
                 pnlDatosDetalle.removeClass('d-none');
                 btnEliminar.removeClass("d-none");
-                pnlDatos.find("#Clave").focus().select();
+                pnlDatos.find("#Departamento")[0].selectize.focus();
                 /*DETALLE*/
                 $.getJSON(master_url + 'getDetalleByID', {ID: temp}).done(function (data) {
                     console.log('getDetalleByID', data);
@@ -552,9 +552,9 @@
             console.log(data);
             if (data.length > 0) {
                 var ID = $.isNumeric(data[0].CLAVE) ? parseInt(data[0].CLAVE) + 1 : 1;
-                pnlDatos.find("#Clave").val(ID).select().focus();
+                pnlDatos.find("#Clave").val(ID);
             } else {
-                pnlDatos.find("#Clave").val('1').select().focus();
+                pnlDatos.find("#Clave").val('1');
             }
         }).fail(function (x, y, z) {
             console.log(x, y, z);

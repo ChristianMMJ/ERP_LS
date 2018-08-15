@@ -14,8 +14,8 @@ class articulos_model extends CI_Model {
         try {
             return $this->db->select("A.ID AS ID, A.Clave AS Clave, "
                                     . "A.Departamento AS Departamento, A.Descripcion AS Descripcion, "
-                                    . "A.UnidadMedida AS UM, A.Estatus AS Estatus", false)
-                            ->from("Articulos AS A")->where('A.Estatus', 'ACTIVO')->get()->result();
+                                    . "U.Descripcion AS UM, A.Estatus AS Estatus", false)
+                            ->from("Articulos AS A")->join('Unidades AS U','A.UnidadMedida = U.ID')->where('A.Estatus', 'ACTIVO')->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
