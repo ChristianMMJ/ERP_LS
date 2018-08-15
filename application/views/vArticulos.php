@@ -15,7 +15,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Clave</th>
-                            <th>Departamento</th>
+                            <th>Depto.Articulo</th>
                             <th>Descripción</th>
                             <th>U.M</th>
                             <th>Estatus</th>
@@ -41,6 +41,9 @@
                         </button>
                         <button type="button" class="btn btn-danger btn-sm d-none" id="btnEliminar">
                             <span class="fa fa-trash fa-1x"></span> ELIMINAR
+                        </button> 
+                        <button type="button" class="btn btn-raised btn-info btn-sm" id="btnGuardar">
+                            <span class="fa fa-save "></span> GUARDAR
                         </button>
                     </div>
                 </div>
@@ -49,12 +52,12 @@
                     <div class="d-none">
                         <input type="text"  name="ID" class="form-control form-control-sm" >
                     </div>
-                    <div class="col-12 col-md-6 col-sm-6 col-xl-6">
+                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                         <label for="Clave" >Clave*</label>
-                        <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required placeholder="20180814">
+                        <input type="text" class="form-control form-control-sm numbersOnly" id="Clave" name="Clave" required placeholder="20180814">
                     </div>
-                    <div class="col-12 col-md-6 col-sm-6 col-xl-6">
-                        <label for="" >Departamento*</label>
+                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                        <label for="" >Depto.Articulo*</label>
                         <select id="Departamento" name="Departamento" class="form-control form-control-sm" >
                             <option value=""></option>
                             <option value="10">PIEL/FORRO</option>
@@ -62,7 +65,7 @@
                             <option value="90">PELETERIA</option>
                         </select>
                     </div>
-                    <div class="col-12 col-md-12 col-sm-12 col-xl-12">
+                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                         <label for="" >Descripción*</label>
                         <textarea id="Descripcion" name="Descripcion" class="form-control" rows="2" cols="4"></textarea>
                     </div>
@@ -95,47 +98,47 @@
                     </div>
                     <div class="col-12 col-md-6 col-sm-6 col-xl-6">
                         <label for="Max" >Max*</label>
-                        <input type="text" class="form-control form-control-sm" id="Max" name="Max" required >
+                        <input type="text" class="form-control form-control-sm" id="Max" name="Max" >
                     </div>
 
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 m-4" align="center">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 my-3" align="center">
                         <legend>Proveedores</legend>
                     </div>
-                    <div class="col-12 col-md-4 col-sm-4 col-xl-4"> 
-                        <select id="ProveedorUno" name="ProveedorUno" class="form-control form-control-sm mb-2" >
+                    <div class="col-12 col-sm-12 col-md-12 col-xl-4">
+                        <select id="ProveedorUno" name="ProveedorUno" class="form-control form-control-sm mb-2" required >
                             <option value=""></option>
                         </select>
                         <input type="text" class="form-control form-control-sm numbersOnly mb-2" id="PrecioUno" name="PrecioUno" required  placeholder="Precio pactado">
                     </div>
-                    <div class="col-12 col-md-4 col-sm-4 col-xl-4">
+                    <div class="col-12 col-sm-12 col-md-12 col-xl-4">
                         <select id="ProveedorDos" name="ProveedorDos" class="form-control form-control-sm mb-2" >
                             <option value=""></option>
                         </select>
-                        <input type="text" class="form-control form-control-sm numbersOnly mb-2" id="PrecioUno" name="PrecioUno" required  placeholder="Precio pactado">
+                        <input type="text" class="form-control form-control-sm numbersOnly mb-2" id="PrecioDos" name="PrecioDos"   placeholder="Precio pactado">
                     </div>
-                    <div class="col-12 col-md-4 col-sm-4 col-xl-4"> 
+                    <div class="col-12 col-sm-12 col-md-12 col-xl-4">
                         <select id="ProveedorTres" name="ProveedorTres" class="form-control form-control-sm mb-2" >
                             <option value=""></option>
                         </select>
-                        <input type="text" class="form-control form-control-sm numbersOnly mb-2" id="PrecioUno" name="PrecioUno" required  placeholder="Precio pactado">
+                        <input type="text" class="form-control form-control-sm numbersOnly mb-2" id="PrecioTres" name="PrecioTres"   placeholder="Precio pactado">
                     </div>
 
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 m-4" align="center">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 my-3" align="center">
                         <legend>Ubicaciones</legend>
                     </div>
                     <div class="col-12 col-md-3 col-sm-6 col-xl-3 mb-2"> 
-                        <input type="text" class="form-control form-control-sm" id="UbicacionUno" name="UbicaiconUno" required placeholder="Pasillo 1">
+                        <input type="text" class="form-control form-control-sm" id="UbicacionUno" name="UbicacionUno" required placeholder="Pasillo 1">
                     </div>
                     <div class="col-12 col-md-3 col-sm-6 col-xl-3 mb-2">
-                        <input type="text" class="form-control form-control-sm" id="UbicacionDos" name="UbicacionDos" required placeholder="Aparador 1">
+                        <input type="text" class="form-control form-control-sm" id="UbicacionDos" name="UbicacionDos"  placeholder="Aparador 1">
                     </div>
                     <div class="col-12 col-md-3 col-sm-6 col-xl-3 mb-2"> 
-                        <input type="text" class="form-control form-control-sm" id="UbicacionTres" name="UbicacionTres" required placeholder="Pasillo 2">
+                        <input type="text" class="form-control form-control-sm" id="UbicacionTres" name="UbicacionTres"  placeholder="Pasillo 2">
                     </div>
                     <div class="col-12 col-md-3 col-sm-6 col-xl-3 mb-2"> 
-                        <input type="text" class="form-control form-control-sm" id="UbicacionCuatro" name="UbicacionCuatro" required placeholder="Aparador 2">
+                        <input type="text" class="form-control form-control-sm" id="UbicacionCuatro" name="UbicacionCuatro"  placeholder="Aparador 2">
                     </div>             
-                    <div class="col-12 col-md-12 col-sm-12 col-xl-12">
+                    <div class="col-12 col-md-6 col-sm-12 col-xl-6">
                         <label for="" >Tipo*</label>
                         <select id="TipoArticulo" name="TipoArticulo" class="form-control form-control-sm" >
                             <option value=""></option>
@@ -143,7 +146,7 @@
                             <option value="222">PROTOTIPO</option>
                         </select>
                     </div>
-                    <div class="col-12 col-md-12 col-sm-12 col-xl-12">
+                    <div class="col-12 col-md-6 col-sm-12 col-xl-6">
                         <label for="" >Estatus*</label>
                         <select id="Estatus" name="Estatus" class="form-control form-control-sm" >
                             <option value=""></option>
@@ -155,12 +158,7 @@
                 <div class="row pt-2">
                     <div class="col-6 col-md-6 ">
                         <h6 class="text-danger">Los campos con * son obligatorios</h6>
-                    </div>
-                    <div class="col-6 col-sm-6 col-md-6" align="right">
-                        <button type="button" class="btn btn-raised btn-info btn-sm" id="btnGuardar">
-                            <span class="fa fa-save "></span> GUARDAR
-                        </button>
-                    </div>
+                    </div> 
                 </div>
             </fieldset>
         </form>
@@ -175,19 +173,20 @@
             </div>
             <div class="col-12 col-sm-5 col-md-5 col-lg-5 col-xl-5">
                 <label for="Precio" >Precio*</label>
-                <input type="text" class="form-control form-control-sm" id="Precio" name="Precio" required placeholder="0.0">                    
+                <input type="text" class="form-control form-control-sm numbersOnly" id="Precio" name="Precio" required placeholder="0.0">                    
             </div>
             <div class="col-12 col-sm-12 col-md-1 col-lg-1 col-xl-1 my-2 d-sm-block ">
                 <button type="button" id="btnAgregarPrecio" class="btn btn-primary btn-sm d-sm-block "><span class="fa fa-plus"></span></button>
             </div>
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 my-2">
-                <table id="tblPrecioVentaParaMaquilas" class="table table-sm display">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 my-2 table-responsive">
+                <table id="tblPrecioVentaParaMaquilas" class="table table-sm display" style="width:100%">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
                             <th scope="col">Descripcion</th>
                             <th scope="col">Precio</th>
                             <th scope="col">Estatus</th>
+                            <th scope="col">-</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -197,7 +196,6 @@
         </div>
     </div>
 </div>
-
 <script>
     var master_url = base_url + 'index.php/Articulos/';
     var tblArticulos = $('#tblArticulos');
@@ -216,36 +214,33 @@
         pnlDatosDetalle.find("#btnAgregarPrecio").click(function () {
             var Maquila = pnlDatosDetalle.find("#Maquila"), Precio = pnlDatosDetalle.find("#Precio");
             if (Maquila.val() !== '' && Precio.val()) {
-                var r = [PrecioVentaParaMaquilas.rows().data().count() + 1, Maquila.val(), '$' + $.number(Precio.val(), 2, '.', ','), 'ACTIVO'];
-                PrecioVentaParaMaquilas.row.add(r).draw(false);
+                var btn = '<button type="button" class="btn btn-danger" onclick="onEliminarDetalleSN(this)"><span class="fa fa-trash"></span></button>';
+                PrecioVentaParaMaquilas.row.add([0, Maquila.val(), '$' + $.number(Precio.val(), 2, '.', ','), 'NUEVO', btn]).draw(false);
                 Maquila.val('');
                 Precio.val('');
+                Maquila.focus();
             } else {
                 swal('ATENCIÓN', 'DEBE DE ESTABLECER UNA MAQUILA Y UN PRECIO', 'warning').then((action) => {
                     (Maquila.val() === '') ? Maquila.focus() : Precio.focus();
                 });
             }
         });
-        PrecioVentaParaMaquilas = tblPrecioVentaParaMaquilas.DataTable({
-            "dom": 'trHF',
-            "autoWidth": false,
-            "colReorder": true,
-            "displayLength": 500,
-            "bLengthChange": false,
-            "deferRender": true,
-            "scrollY": 285,
-            "scrollX": true,
-            "scrollCollapse": false,
-            keys: true,
-            select: true,
-            "bSort": false,
-            language: lang
-        });
         btnGuardar.click(function () {
             isValid('pnlDatos');
             if (valido) {
                 var frm = new FormData(pnlDatos.find("#frmNuevo")[0]);
                 if (!nuevo) {
+                    var precios = [];
+                    $.each(tblPrecioVentaParaMaquilas.find("tbody tr"), function (k, v) {
+                        var r = PrecioVentaParaMaquilas.row($(this)).data();
+                        if (r[3] === 'NUEVO') {
+                            precios.push({
+                                Maquila: r[1],
+                                Precio: r[2]
+                            });
+                        }
+                    });
+                    frm.append('Precios', JSON.stringify(precios));
                     $.ajax({
                         url: master_url + 'onModificar',
                         type: "POST",
@@ -254,9 +249,12 @@
                         processData: false,
                         data: frm
                     }).done(function (data, x, jq) {
-                        swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO', 'info');
-                        getRecords();
+                        swal('ATENCIÓN', 'SE HAN GUARDADO LOS CAMBIOS', 'info');
+                        nuevo = false;
+                        Articulos.ajax.reload();
+                        PrecioVentaParaMaquilas.clear().draw();
                         pnlDatos.addClass("d-none");
+                        pnlDatosDetalle.addClass('d-none');
                         pnlTablero.removeClass("d-none");
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
@@ -264,6 +262,17 @@
                         HoldOn.close();
                     });
                 } else {
+                    var precios = [];
+                    console.log("\n * r * ");
+                    $.each(tblPrecioVentaParaMaquilas.find("tbody tr"), function (k, v) {
+                        console.log(v);
+                        var r = PrecioVentaParaMaquilas.row($(this)).data();
+                        precios.push({
+                            Maquila: r[1],
+                            Precio: r[2]
+                        });
+                    });
+                    frm.append('Precios', JSON.stringify(precios));
                     $.ajax({
                         url: master_url + 'onAgregar',
                         type: "POST",
@@ -272,12 +281,14 @@
                         processData: false,
                         data: frm
                     }).done(function (data, x, jq) {
+                        console.log(data);
                         pnlDatos.find("[name='ID']").val(data);
                         nuevo = false;
-                        getRecords();
+                        Articulos.ajax.reload();
                         pnlDatos.addClass("d-none");
+                        pnlDatosDetalle.addClass('d-none');
                         pnlTablero.removeClass("d-none");
-                        swal('ATENCIÓN', 'SE HA AGREGADO UN NUEVO REGISTRO  ', 'info');
+                        swal('ATENCIÓN', 'SE HA AGREGADO UN NUEVO REGISTRO', 'success');
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
@@ -292,7 +303,7 @@
         btnEliminar.click(function () {
             swal({
                 title: "¿Estas seguro?",
-                text: "Nota: No se eliminara ninguna unidad que tenga alguna relacion con otro dato dentro del sistema",
+                text: "Nota: No se eliminara ninguna Articulo que tenga alguna relacion con otro dato dentro del sistema",
                 icon: "warning",
                 buttons: {
                     cancelar: {
@@ -309,6 +320,11 @@
                     case "eliminar":
                         $.post(master_url + 'onEliminar', {ID: temp}).done(function () {
                             swal('ATENCIÓN', 'SE HA ELIMINADO EL REGISTRO', 'success');
+                            PrecioVentaParaMaquilas.clear().draw();
+                            pnlDatos.addClass("d-none");
+                            pnlDatosDetalle.addClass('d-none');
+                            pnlTablero.removeClass("d-none");
+                            Articulos.ajax.reload();
                         }).fail(function (x, y, z) {
                             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
                             console.log(x.responseText);
@@ -323,19 +339,26 @@
 
         btnNuevo.click(function () {
             nuevo = true;
-            pnlDatos.find("input").val("");
+            $.each(pnlDatos.find("select"), function (k, v) {
+                pnlDatos.find("select")[k].selectize.clear(true);
+            });
+            pnlDatos.find("input,textarea").val("");
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass("d-none");
             pnlDatosDetalle.removeClass("d-none");
             btnEliminar.addClass("d-none");
-            pnlDatos.find("#Clave").focus().select();
+            pnlDatos.find("#Departamento")[0].selectize.focus();
+            PrecioVentaParaMaquilas.clear().draw();
             getID();
+            $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
         });
 
         btnCancelar.click(function () {
+            PrecioVentaParaMaquilas.clear().draw();
             pnlTablero.removeClass("d-none");
             pnlDatos.addClass("d-none");
             pnlDatosDetalle.addClass("d-none");
+            temp = 0;
         });
     });
 
@@ -344,6 +367,36 @@
         getGrupos();
         getUnidades();
         getProveedores();
+        /*INICIALIZAR DETALLE*/
+        PrecioVentaParaMaquilas = tblPrecioVentaParaMaquilas.DataTable({
+
+            "dom": 'frtip',
+            buttons: buttons,
+            language: lang,
+            select: true,
+            "autoWidth": true,
+            "colReorder": true,
+            "displayLength": 20,
+            "bLengthChange": false,
+            "deferRender": true,
+            "scrollCollapse": false,
+            "bSort": true,
+            "aaSorting": [
+                [0, 'desc']/*ID*/
+            ],
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    "targets": [3],
+                    "visible": false,
+                    "searchable": false
+                }
+            ]
+        });
     }
 
     function getID() {
@@ -351,9 +404,9 @@
             console.log(data);
             if (data.length > 0) {
                 var ID = $.isNumeric(data[0].CLAVE) ? parseInt(data[0].CLAVE) + 1 : 1;
-                pnlDatos.find("#Clave").val(ID).select().focus();
+                pnlDatos.find("#Clave").val(ID);
             } else {
-                pnlDatos.find("#Clave").val('1').select().focus();
+                pnlDatos.find("#Clave").val('1');
             }
         }).fail(function (x, y, z) {
             console.log(x, y, z);
@@ -410,11 +463,12 @@
                 theme: 'sk-cube',
                 message: 'CARGANDO...'
             });
+            nuevo = false;
             tblArticulos.find("tbody tr").removeClass("success");
             $(this).addClass("success");
             var dtm = Articulos.row(this).data();
             temp = parseInt(dtm.ID);
-            $.getJSON(master_url + 'getUnidadByID', {ID: temp}).done(function (data) {
+            $.getJSON(master_url + 'getArticuloByID', {ID: temp}).done(function (data) {
                 pnlDatos.find("input").val("");
                 $.each(pnlDatos.find("select"), function (k, v) {
                     pnlDatos.find("select")[k].selectize.clear(true);
@@ -427,9 +481,23 @@
                 });
                 pnlTablero.addClass("d-none");
                 pnlDatos.removeClass('d-none');
+                pnlDatosDetalle.removeClass('d-none');
                 btnEliminar.removeClass("d-none");
-
-                pnlDatos.find("#Clave").focus().select();
+                pnlDatos.find("#Departamento")[0].selectize.focus();
+                /*DETALLE*/
+                $.getJSON(master_url + 'getDetalleByID', {ID: temp}).done(function (data) {
+                    console.log('getDetalleByID', data);
+                    if (data.length > 0) {
+                        $.each(data, function (k, v) {
+                            PrecioVentaParaMaquilas.row.add([v.ID, v.Maquila, v.Precio, 'ACTIVO', '<button type="button" class="btn btn-danger" onclick="onEliminarDetalle(' + v.ID + ',this)"><span class="fa fa-trash"></span></button>']).draw(false);
+                        });
+                    }
+                }).fail(function (x, y, z) {
+                    swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+                    console.log(x.responseText);
+                }).always(function () {
+                    $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
+                });
             }).fail(function (x, y, z) {
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
                 console.log(x.responseText);
@@ -456,7 +524,7 @@
             $.each(data, function (k, v) {
                 pnlDatos.find("#UnidadMedida")[0].selectize.addOption({text: v.Unidad, value: v.ID});
             });
-        }).fail(function () {
+        }).fail(function (x, y, z) {
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
             console.log(x.responseText);
         }).always(function () {
@@ -478,21 +546,57 @@
 
         });
     }
-    
+
     function getID() {
         $.getJSON(master_url + 'getID').done(function (data, x, jq) {
             console.log(data);
             if (data.length > 0) {
                 var ID = $.isNumeric(data[0].CLAVE) ? parseInt(data[0].CLAVE) + 1 : 1;
-                pnlDatos.find("#Clave").val(ID).select().focus();
+                pnlDatos.find("#Clave").val(ID);
             } else {
-                pnlDatos.find("#Clave").val('1').select().focus();
+                pnlDatos.find("#Clave").val('1');
             }
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
             HoldOn.close();
         });
+    }
+
+    function onEliminarDetalle(e, c) {
+        swal({
+            title: "¿Estas seguro?",
+            text: "Nota: Esta acción no se puede deshacer",
+            icon: "warning",
+            buttons: {
+                cancelar: {
+                    text: "Cancelar",
+                    value: "cancelar"
+                },
+                eliminar: {
+                    text: "Finalizar",
+                    value: "eliminar"
+                }
+            }
+        }).then((value) => {
+            switch (value) {
+                case "eliminar":
+                    $.post(master_url + 'onEliminarDetalle', {ID: e}).done(function () {
+                        swal('ATENCIÓN', 'SE HA ELIMINADO EL REGISTRO', 'success');
+                        PrecioVentaParaMaquilas.row($(c).parents('tr')).remove().draw();
+                    }).fail(function (x, y, z) {
+                        swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+                        console.log(x.responseText);
+                    });
+                    break;
+                case "cancelar":
+                    swal.close();
+                    break;
+            }
+        });
+    }
+    function onEliminarDetalleSN(e) {
+        PrecioVentaParaMaquilas.row($(e).parents('tr')).remove().draw();
     }
 </script>
 <style>
