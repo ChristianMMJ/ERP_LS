@@ -10,7 +10,11 @@ legend {
     font-size: 1.3rem;
 }
 
-
+/*No edición en controles*/
+.disabledForms{
+    opacity: 0.8 ;
+    pointer-events: none;
+}
 /*Fondo aplicacion*/
 html{
     font-family: sans-serif;

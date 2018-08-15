@@ -1,4 +1,4 @@
-<div class="card border-0" id="pnlTablero">
+<div class="card m-3 border-0" id="pnlTablero">
     <div class="card-body">
         <div class="row">
             <div class="col-6 col-sm-6 float-left">
@@ -11,7 +11,7 @@
         <div  id="tblRegistros" class="row"></div>
     </div>
 </div>
-<div class="card border-0  d-none" id="pnlDatos">
+<div class="card m-3 border-0  d-none" id="pnlDatos">
     <div class="card-body text-dark">
         <form id="frmNuevo">
             <fieldset>
@@ -250,6 +250,7 @@
                         });
                         pnlTablero.addClass("d-none");
                         pnlDatos.removeClass('d-none');
+
 
                         pnlDatos.find("[name='Usuario']").focus().select();
                     }).fail(function (x, y, z) {

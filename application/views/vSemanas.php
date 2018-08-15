@@ -1,4 +1,4 @@
-<div class="card border-0" id="pnlTablero">
+<div class="card border-0 m-3" id="pnlTablero">
     <div class="card-body">
         <div class="row">
             <div class="col-sm-6 float-left">
@@ -14,7 +14,7 @@
     </div>
 </div>
 <!--GUARDAR-->
-<div class="card border-0  d-none" id="pnlDatos">
+<div class="card border-0 m-3  d-none" id="pnlDatos">
     <div class="card-body text-dark">
         <form id="frmNuevo">
             <div class="row">

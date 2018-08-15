@@ -2,7 +2,7 @@
     <div class="card-body">
         <div class="row">
             <div class="col-6 col-sm-6 float-left">
-                <legend class="float-left">Grupos</legend>
+                <legend class="float-left">Proveedores</legend>
             </div>
             <div class="col-6 col-sm-6  float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="bottom" title="Nuevo"><span class="fa fa-plus"></span><br></button>
@@ -17,7 +17,7 @@
             <fieldset>
                 <div class="row">
                     <div class="col-12 col-sm-6 col-md-4 float-left">
-                        <legend >Grupo</legend>
+                        <legend >Proveedor</legend>
                     </div>
                     <div class="col-12 col-sm-6 col-md-8" align="right">
                         <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
@@ -33,22 +33,130 @@
                     <div class="d-none">
                         <input type="text"  name="ID" class="form-control form-control-sm" >
                     </div>
-                    <div class="col-12 col-md-6 col-sm-6">
+                    <div class="col-12 col-md-4 col-sm-4">
                         <label for="Clave" >Clave*</label>
-                        <input type="text" class="form-control form-control-sm"  name="Clave" required >
+                        <input type="text" class="form-control form-control-sm disabledForms"  name="Clave" required >
                     </div>
-                    <div class="col-12 col-md-6 col-sm-6">
-                        <label for="Nombre" >Nombre*</label>
-                        <input type="text" class="form-control form-control-sm"  name="Nombre" required>
+                    <div class="col-12 col-md-4 col-sm-4">
+                        <label for="NombreI" >Nombre I*</label>
+                        <input type="text" class="form-control form-control-sm"  name="NombreI" required>
                     </div>
-                    <div class="col-12 col-md-12 col-sm-12">
-                        <label for="" >Tipo Concepto*</label>
-                        <select id="Tipo" name="Tipo" class="form-control form-control-sm" >
+                    <div class="col-12 col-md-4 col-sm-4">
+                        <label for="NombreF" >Nombre F*</label>
+                        <input type="text" class="form-control form-control-sm"  name="NombreF" >
+                    </div>
+                    <div class="col-12 col-md-4 col-sm-4">
+                        <label for="Direccion" >Dirección*</label>
+                        <input type="text" class="form-control form-control-sm"  name="Direccion" >
+                    </div>
+                    <div class="col-6 col-md-2 col-sm-2">
+                        <label for="NoExt" >No. Ext.*</label>
+                        <input type="text" class="form-control form-control-sm"  name="NoExt" >
+                    </div>
+                    <div class="col-6 col-md-2 col-sm-2">
+                        <label for="NoInt" >No. Int.*</label>
+                        <input type="text" class="form-control form-control-sm"  name="NoInt" >
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-4 col-sm-4">
+                        <label for="Colonia" >Colonia*</label>
+                        <input type="text" class="form-control form-control-sm"  name="Colonia" >
+                    </div>
+
+                    <div class="col-12 col-md-4 col-sm-4">
+                        <label for="Ciudad" >Ciudad*</label>
+                        <input type="text" class="form-control form-control-sm"  name="Ciudad" >
+                    </div>
+
+                    <div class="col-12 col-md-4 col-sm-4">
+                        <label for="" >Estado*</label>
+                        <select id="Tipo" name="Estado" class="form-control form-control-sm" >
                             <option value=""></option>
-                            <option value="DIRECTOS">DIRECTOS</option>
-                            <option value="INDIRECTOS">INDIRECTOS</option>
-                            <option value="GASTOS">GASTOS</option>
+                            <option value=""></option>
+                            <option value="Aguascalientes">Aguascalientes</option>
+                            <option value="Baja California">Baja California</option>
+                            <option value="Baja California Sur">Baja California Sur</option>
+                            <option value="Campeche">Campeche</option>
+                            <option value="Coahuila de Zaragoza">Coahuila de Zaragoza</option>
+                            <option value="Colima">Colima</option>
+                            <option value="Chiapas">Chiapas</option>
+                            <option value="Chihuahua">Chihuahua</option>
+                            <option value="Distrito Federal">Distrito Federal</option>
+                            <option value="Durango">Durango</option>
+                            <option value="Guanajuato">Guanajuato</option>
+                            <option value="Guerrero">Guerrero</option>
+                            <option value="Hidalgo">Hidalgo</option>
+                            <option value="Jalisco">Jalisco</option>
+                            <option value="México">México</option>
+                            <option value="Michoacán">Michoacán</option>
+                            <option value="Morelos">Morelos</option>
+                            <option value="Nayarit">Nayarit</option>
+                            <option value="Nuevo León">Nuevo León</option>
+                            <option value="Oaxaca">Oaxaca</option>
+                            <option value="Puebla">Puebla</option>
+                            <option value="Querétaro">Querétaro</option>
+                            <option value="Quintana Roo">Quintana Roo</option>
+                            <option value="San Luis Potosí">San Luis Potosí</option>
+                            <option value="Sinaloa">Sinaloa</option>
+                            <option value="Sonora">Sonora</option>
+                            <option value="Tabasco">Tabasco</option>
+                            <option value="Tamaulipas">Tamaulipas</option>
+                            <option value="Tlaxcala">Tlaxcala</option>
+                            <option value="Veracruz">Veracruz</option>
+                            <option value="Yucatán">Yucatán</option>
+                            <option value="Zacatecas">Zacatecas</option>
                         </select>
+                    </div>
+                    <div class="col-12 col-md-2 col-sm-4">
+                        <label for="CP">Código Postal</label>
+                        <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="8"   name="CP"  >
+                    </div>
+                    <div class="col-12 col-md-2 col-sm-4">
+                        <label for="Telefono">Teléfono</label>
+                        <input type="tel" class="form-control form-control-sm"  maxlength="15"  name="Telefono"  >
+                    </div>
+                    <div class="col-12 col-md-4 col-sm-4">
+                        <label for="RFC">RFC*</label>
+                        <input type="text" class="form-control form-control-sm"  maxlength="15" id="RFC" name="RFC" required >
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-2 col-sm-2">
+                        <label for="Plazo">Plazo</label>
+                        <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="6"  name="Plazo"  >
+                    </div>
+                    <div class="col-12 col-md-2 col-sm-2">
+                        <label for="">Cta. Cheques</label>
+                        <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="18"  name="CtaCheques"  >
+                    </div>
+                    <div class="col-12 col-md-4 col-sm-4">
+                        <label for="">Banco</label>
+                        <input type="text" class="form-control form-control-sm"   name="Banco"  >
+                    </div>
+                    <div class="col-12 col-md-2 col-sm-2">
+                        <label for="">% Desc. X PP</label>
+                        <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="5"  name="DctoProntoPago"  >
+                    </div>
+                    <div class="col-12 col-md-2 col-sm-2">
+                        <label for="">Dias. p/ PP</label>
+                        <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="5"  name="DiasProntoPago"  >
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-4 col-sm-4">
+                        <label for="">Correo</label>
+                        <input type="tel" class="form-control form-control-sm"   name="Correo"  >
+                    </div>
+                    <div class="col-12 col-md-4 col-xl-2">
+                        <label for="">% P' Compras x Pedido F</label>
+                        <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="8"   name="PorcentajeComprasPorPedidoF"  >
+                    </div>
+                    <div class="col-12 col-md-4 col-xl-2">
+                        <label for="">% P' Compras x Pedido R</label>
+                        <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="8"   name="PorcentajeComprasPorPedidoR"  >
                     </div>
                 </div>
                 <div class="row pt-2">
@@ -67,7 +175,7 @@
 </div>
 <!--SCRIPT-->
 <script>
-    var master_url = base_url + 'index.php/Grupos/';
+    var master_url = base_url + 'index.php/Proveedores/';
     var btnNuevo = $("#btnNuevo");
     var pnlDatos = $("#pnlDatos");
     var pnlTablero = $("#pnlTablero");
@@ -87,7 +195,11 @@
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
-            pnlDatos.find("[name='Nombre']").focus();
+            pnlDatos.find("[name='NombreI']").focus();
+            pnlDatos.find("[name='Clave']").prop('disabled', false);
+            pnlDatos.find("[name='NombreI']").prop('disabled', false);
+            pnlDatos.find("[name='NombreF']").prop('disabled', false);
+            pnlDatos.find("[name='RFC']").prop('disabled', false);
             nuevo = true;
             getUltimoRegistro();
         });
@@ -172,6 +284,15 @@
                 onNotify('<span class="fa fa-times fa-lg"></span>', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
             }
         });
+        //Valida RFC
+        pnlDatos.find("[name='RFC']").blur(function () {
+            var rfc = $(this).val().trim(); // -Elimina los espacios que pueda tener antes o después
+            var rfcCorrecto = rfcValido(rfc);   //Comprobar RFC
+            if (rfcCorrecto) {
+            } else {
+                pnlDatos.find("[name='RFC']").val("");
+            }
+        });
         /*CALLS*/
         getRecords();
         handleEnter();
@@ -189,25 +310,25 @@
         }).done(function (data, x, jq) {
 
             if (data.length > 0) {
-                $("#tblRegistros").html(getTable('tblGrupos', data));
-                $('#tblGrupos tfoot th').each(function () {
+                $("#tblRegistros").html(getTable('tblProveedores', data));
+                $('#tblProveedores tfoot th').each(function () {
                     $(this).html('');
                 });
-                var thead = $('#tblGrupos thead th');
-                var tfoot = $('#tblGrupos tfoot th');
+                var thead = $('#tblProveedores thead th');
+                var tfoot = $('#tblProveedores tfoot th');
                 thead.eq(0).addClass("d-none");
                 tfoot.eq(0).addClass("d-none");
-                $.each($.find('#tblGrupos tbody tr'), function (k, v) {
+                $.each($.find('#tblProveedores tbody tr'), function (k, v) {
                     var td = $(v).find("td");
                     td.eq(0).addClass("d-none");
                 });
 
-                var tblSelected = $('#tblGrupos').DataTable(tableOptions);
-                $('#tblGrupos_filter input[type=search]').focus();
-                $('#tblGrupos tbody').on('click', 'tr', function () {
+                var tblSelected = $('#tblProveedores').DataTable(tableOptions);
+                $('#tblProveedores_filter input[type=search]').focus();
+                $('#tblProveedores tbody').on('click', 'tr', function () {
                     nuevo = false;
-                    $("#tblGrupos").find("tr").removeClass("success");
-                    $("#tblGrupos").find("tr").removeClass("warning");
+                    $("#tblProveedores").find("tr").removeClass("success");
+                    $("#tblProveedores").find("tr").removeClass("warning");
                     var id = this.id;
                     var index = $.inArray(id, selected);
                     if (index === -1) {
@@ -224,7 +345,7 @@
                             message: "CARGANDO DATOS..."
                         });
                         $.ajax({
-                            url: master_url + 'getGrupoByID',
+                            url: master_url + 'getProveedorByID',
                             type: "POST",
                             dataType: "JSON",
                             data: {
@@ -244,7 +365,11 @@
                             pnlTablero.addClass("d-none");
                             pnlDatos.removeClass('d-none');
 
-                            pnlDatos.find("[name='Nombre']").focus().select();
+                            pnlDatos.find("[name='Direccion']").focus().select();
+                            pnlDatos.find("[name='Clave']").prop('disabled', true);
+                            pnlDatos.find("[name='NombreI']").prop('disabled', true);
+                            pnlDatos.find("[name='NombreF']").prop('disabled', true);
+                            pnlDatos.find("[name='RFC']").prop('disabled', true);
                         }).fail(function (x, y, z) {
                             console.log(x, y, z);
                         }).always(function () {
@@ -254,10 +379,7 @@
                         onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
                     }
                 });
-
             }
-
-
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
@@ -266,7 +388,6 @@
     }
     function getUltimoRegistro() {
         $.getJSON(master_url + 'getUltimoRegistro').done(function (data, x, jq) {
-            console.log(data[0].Clave);
             if (data.length > 0) {
                 var ultimo = parseInt(data[0].Clave) + 1;
                 pnlDatos.find("[name='Clave']").val(ultimo);
