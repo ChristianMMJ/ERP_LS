@@ -31,7 +31,7 @@ body{
     color: #495057;
     text-align: left;
     background-color: transparent;
-    line-height: 1.4;
+
     font-size: 0.8875rem;
 }
 .card-body {
@@ -43,11 +43,10 @@ body{
 
 /*Formularios*/
 label {
+    margin-top: 0.596rem;
     margin-bottom: 0rem;
 }
-label, .control-label, .help-block, .checkbox, .radio, .form-control-feedback {
-    font-size: 0.72rem;
-}
+
 
 .form-control {
     color: #000 !important;

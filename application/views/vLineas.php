@@ -2,21 +2,22 @@
     <div class="card-body ">
         <div class="row">
             <div class="col-sm-6 float-left">
-                <legend class="float-left">Unidades</legend>
+                <legend class="float-left">Lineas</legend>
             </div>
             <div class="col-sm-6 float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
             </div>
         </div>
         <div class="card-block mt-4">
-            <div id="Unidades" class="table-responsive">
-                <table id="tblUnidades" class="table table-sm display " style="width:100%">
+            <div id="Lineas" class="table-responsive">
+                <table id="tblLineas" class="table table-sm display " style="width:100%">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Clave</th>
                             <th>Descripción</th>
-                            <th>Estatus</th>
+                            <th>Año</th>
+                            <th>Tipo</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -31,7 +32,7 @@
             <fieldset>
                 <div class="row">
                     <div class="col-12 col-sm-6 col-md-4 float-left">
-                        <legend >Unidad</legend>
+                        <legend >Linea</legend>
                     </div>
                     <div class="col-12 col-sm-6 col-md-8" align="right">
                         <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
@@ -47,20 +48,35 @@
                     <div class="d-none">
                         <input type="text"  name="ID" class="form-control form-control-sm" >
                     </div>
-                    <div class="col-12 col-md-6 col-sm-6">
+                    <div class="col-6 col-md-2 col-sm-2">
                         <label for="Clave" >Clave*</label>
-                        <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required autofocus="">
+                        <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required >
                     </div>
-                    <div class="col-12 col-md-6 col-sm-6">
+                    <div class="col-12 col-md-4 col-sm-8">
                         <label for="Descripcion" >Descripción*</label>
-                        <input type="text" id="Descripcion" name="Descripcion" class="form-control form-control-sm" placeholder="" required>
+                        <input type="text" id="Descripcion" name="Descripcion" class="form-control form-control-sm" required>
                     </div>
-                    <div class="col-12 col-md-12 col-sm-12">
-                        <label for="" >Estatus*</label>
-                        <select id="Estatus" name="Estatus" class="form-control form-control-sm" >
+                </div>
+                <div class="row">
+                    <div class="col-6 col-md-2 col-sm-2">
+                        <label for="Ano" >Año*</label>
+                        <input type="text" id="Ano" name="Ano" maxlength="4" class="form-control form-control-sm numbersOnly" placeholder="" >
+                    </div>
+                    <div class="col-12 col-md-4 col-sm-4">
+                        <label for="" >Temporada*</label>
+                        <select id="Temporada" name="Temporada" class="form-control form-control-sm" >
                             <option value=""></option>
-                            <option value="ACTIVO">ACTIVO</option>
-                            <option value="INACTIVO">INACTIVO</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-md-4 col-sm-4">
+                        <label for="" >Tipo*</label>
+                        <select id="Tipo" name="Tipo" class="form-control form-control-sm" >
+                            <option value=""></option>
+                            <option value="PRODUCCION">0-PRODUCCION</option>
+                            <option value="PROTOTIPO">1-PROTOTIPO</option>
+                            <option value="MUESTRA">2-MUESTRA</option>
+                            <option value="EXTENCION">3-EXTENSIÓN</option>
                         </select>
                     </div>
                 </div>
@@ -79,9 +95,9 @@
     </div>
 </div>
 <script>
-    var master_url = base_url + 'index.php/Unidades/';
-    var tblUnidades = $('#tblUnidades');
-    var Unidades;
+    var master_url = base_url + 'index.php/Lineas/';
+    var tblLineas = $('#tblLineas');
+    var Lineas;
     var btnNuevo = $("#btnNuevo"), btnCancelar = $("#btnCancelar"), btnEliminar = $("#btnEliminar"), btnGuardar = $("#btnGuardar");
     var pnlTablero = $("#pnlTablero"), pnlDatos = $("#pnlDatos");
     var nuevo = false;
@@ -160,7 +176,7 @@
                     case "eliminar":
                         $.post(master_url + 'onEliminar', {ID: temp}).done(function () {
                             swal('ATENCIÓN', 'SE HA ELIMINADO EL REGISTRO', 'success');
-                            Unidades.ajax.reload();
+                            Lineas.ajax.reload();
                         }).fail(function (x, y, z) {
                             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
                             console.log(x.responseText);
@@ -192,11 +208,11 @@
 
     function init() {
         getRecords();
+        getTemporadas();
     }
 
     function getID() {
         $.getJSON(master_url + 'getID').done(function (data, x, jq) {
-            console.log(data);
             if (data.length > 0) {
                 var ID = $.isNumeric(data[0].CLAVE) ? parseInt(data[0].CLAVE) + 1 : 1;
                 pnlDatos.find("#Clave").val(ID);
@@ -217,10 +233,10 @@
             message: 'CARGANDO...'
         });
         $.fn.dataTable.ext.errMode = 'throw';
-        if ($.fn.DataTable.isDataTable('#tblUnidades')) {
-            tblUnidades.DataTable().destroy();
+        if ($.fn.DataTable.isDataTable('#tblLineas')) {
+            tblLineas.DataTable().destroy();
         }
-        Unidades = tblUnidades.DataTable({
+        Lineas = tblLineas.DataTable({
             "dom": 'Bfrtip',
             buttons: buttons,
             "ajax": {
@@ -228,7 +244,7 @@
                 "dataSrc": ""
             },
             "columns": [
-                {"data": "ID"}, {"data": "Clave"}, {"data": "Descripcion"}, {"data": "Estatus"}
+                {"data": "ID"}, {"data": "Clave"}, {"data": "Descripcion"}, {"data": "Ano"}, {"data": "Tipo"}
             ],
             "columnDefs": [
                 {
@@ -251,18 +267,18 @@
             ]
         });
 
-        $('#tblUnidades_filter input[type=search]').focus();
+        $('#tblLineas_filter input[type=search]').focus();
 
-        tblUnidades.find('tbody').on('click', 'tr', function () {
+        tblLineas.find('tbody').on('click', 'tr', function () {
             HoldOn.open({
                 theme: 'sk-cube',
                 message: 'CARGANDO...'
             });
-            tblUnidades.find("tbody tr").removeClass("success");
+            tblLineas.find("tbody tr").removeClass("success");
             $(this).addClass("success");
-            var dtm = Unidades.row(this).data();
+            var dtm = Lineas.row(this).data();
             temp = parseInt(dtm.ID);
-            $.getJSON(master_url + 'getUnidadByID', {ID: temp}).done(function (data) {
+            $.getJSON(master_url + 'getLineaByID', {ID: temp}).done(function (data) {
                 pnlDatos.find("input").val("");
                 $.each(pnlDatos.find("select"), function (k, v) {
                     pnlDatos.find("select")[k].selectize.clear(true);
@@ -280,11 +296,24 @@
                 pnlDatos.find("#Descripcion").focus().select();
             }).fail(function (x, y, z) {
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-                console.log(x.responseText);
+
             }).always(function () {
                 HoldOn.close();
             });
         });
         HoldOn.close();
+    }
+    function getTemporadas() {
+        $.ajax({
+            url: master_url + 'getTemporadas',
+            type: "POST",
+            dataType: "JSON"
+        }).done(function (data, x, jq) {
+            $.each(data, function (k, v) {
+                pnlDatos.find("[name='Temporada']")[0].selectize.addOption({text: v.Temporada, value: v.ID});
+            });
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        });
     }
 </script>

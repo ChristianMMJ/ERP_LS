@@ -2,21 +2,20 @@
     <div class="card-body ">
         <div class="row">
             <div class="col-sm-6 float-left">
-                <legend class="float-left">Unidades</legend>
+                <legend class="float-left">Temporadas</legend>
             </div>
             <div class="col-sm-6 float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
             </div>
         </div>
         <div class="card-block mt-4">
-            <div id="Unidades" class="table-responsive">
-                <table id="tblUnidades" class="table table-sm display " style="width:100%">
+            <div id="Temporadas" class="table-responsive">
+                <table id="tblTemporadas" class="table table-sm display " style="width:100%">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Clave</th>
                             <th>Descripción</th>
-                            <th>Estatus</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -31,7 +30,7 @@
             <fieldset>
                 <div class="row">
                     <div class="col-12 col-sm-6 col-md-4 float-left">
-                        <legend >Unidad</legend>
+                        <legend >Temporada</legend>
                     </div>
                     <div class="col-12 col-sm-6 col-md-8" align="right">
                         <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
@@ -55,14 +54,6 @@
                         <label for="Descripcion" >Descripción*</label>
                         <input type="text" id="Descripcion" name="Descripcion" class="form-control form-control-sm" placeholder="" required>
                     </div>
-                    <div class="col-12 col-md-12 col-sm-12">
-                        <label for="" >Estatus*</label>
-                        <select id="Estatus" name="Estatus" class="form-control form-control-sm" >
-                            <option value=""></option>
-                            <option value="ACTIVO">ACTIVO</option>
-                            <option value="INACTIVO">INACTIVO</option>
-                        </select>
-                    </div>
                 </div>
                 <div class="row pt-2">
                     <div class="col-6 col-md-6 ">
@@ -79,9 +70,9 @@
     </div>
 </div>
 <script>
-    var master_url = base_url + 'index.php/Unidades/';
-    var tblUnidades = $('#tblUnidades');
-    var Unidades;
+    var master_url = base_url + 'index.php/Temporadas/';
+    var tblTemporadas = $('#tblTemporadas');
+    var Temporadas;
     var btnNuevo = $("#btnNuevo"), btnCancelar = $("#btnCancelar"), btnEliminar = $("#btnEliminar"), btnGuardar = $("#btnGuardar");
     var pnlTablero = $("#pnlTablero"), pnlDatos = $("#pnlDatos");
     var nuevo = false;
@@ -160,7 +151,7 @@
                     case "eliminar":
                         $.post(master_url + 'onEliminar', {ID: temp}).done(function () {
                             swal('ATENCIÓN', 'SE HA ELIMINADO EL REGISTRO', 'success');
-                            Unidades.ajax.reload();
+                            Temporadas.ajax.reload();
                         }).fail(function (x, y, z) {
                             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
                             console.log(x.responseText);
@@ -217,10 +208,10 @@
             message: 'CARGANDO...'
         });
         $.fn.dataTable.ext.errMode = 'throw';
-        if ($.fn.DataTable.isDataTable('#tblUnidades')) {
-            tblUnidades.DataTable().destroy();
+        if ($.fn.DataTable.isDataTable('#tblTemporadas')) {
+            tblTemporadas.DataTable().destroy();
         }
-        Unidades = tblUnidades.DataTable({
+        Temporadas = tblTemporadas.DataTable({
             "dom": 'Bfrtip',
             buttons: buttons,
             "ajax": {
@@ -228,7 +219,7 @@
                 "dataSrc": ""
             },
             "columns": [
-                {"data": "ID"}, {"data": "Clave"}, {"data": "Descripcion"}, {"data": "Estatus"}
+                {"data": "ID"}, {"data": "Clave"}, {"data": "Descripcion"}
             ],
             "columnDefs": [
                 {
@@ -251,18 +242,18 @@
             ]
         });
 
-        $('#tblUnidades_filter input[type=search]').focus();
+        $('#tblTemporadas_filter input[type=search]').focus();
 
-        tblUnidades.find('tbody').on('click', 'tr', function () {
+        tblTemporadas.find('tbody').on('click', 'tr', function () {
             HoldOn.open({
                 theme: 'sk-cube',
                 message: 'CARGANDO...'
             });
-            tblUnidades.find("tbody tr").removeClass("success");
+            tblTemporadas.find("tbody tr").removeClass("success");
             $(this).addClass("success");
-            var dtm = Unidades.row(this).data();
+            var dtm = Temporadas.row(this).data();
             temp = parseInt(dtm.ID);
-            $.getJSON(master_url + 'getUnidadByID', {ID: temp}).done(function (data) {
+            $.getJSON(master_url + 'getTemporadaByID', {ID: temp}).done(function (data) {
                 pnlDatos.find("input").val("");
                 $.each(pnlDatos.find("select"), function (k, v) {
                     pnlDatos.find("select")[k].selectize.clear(true);
