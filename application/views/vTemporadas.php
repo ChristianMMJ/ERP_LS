@@ -152,6 +152,8 @@
                         $.post(master_url + 'onEliminar', {ID: temp}).done(function () {
                             swal('ATENCIÓN', 'SE HA ELIMINADO EL REGISTRO', 'success');
                             Temporadas.ajax.reload();
+                            pnlDatos.addClass("d-none");
+                            pnlTablero.removeClass("d-none");
                         }).fail(function (x, y, z) {
                             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
                             console.log(x.responseText);
@@ -249,6 +251,7 @@
                 theme: 'sk-cube',
                 message: 'CARGANDO...'
             });
+            nuevo = false;
             tblTemporadas.find("tbody tr").removeClass("success");
             $(this).addClass("success");
             var dtm = Temporadas.row(this).data();

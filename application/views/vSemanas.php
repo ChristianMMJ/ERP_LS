@@ -424,7 +424,7 @@
                 $('#tblSemanas_filter input[type=search]').focus();
 
                 $('#tblSemanas tbody').on('click', 'tr', function () {
-                    $("#tblCatalogos tbody tr").removeClass("success");
+                    $("#tblSemanas tbody tr").removeClass("success");
                     $(this).addClass("success");
                     var id = this.id;
                     var index = $.inArray(id, selected);
