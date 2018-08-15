@@ -32,6 +32,21 @@ class Articulos extends CI_Controller {
         }
     }
 
+    public function getArticuloByID() {
+        try {
+            print json_encode($this->articulos_model->getArticuloByID($this->input->get('ID')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    public function getDetalleByID() {
+        try {
+            print json_encode($this->articulos_model->getDetalleByID($this->input->get('ID')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getProveedores() {
         try {
             print json_encode($this->articulos_model->getProveedores());
@@ -74,17 +89,72 @@ class Articulos extends CI_Controller {
 
     public function onAgregar() {
         try {
-            $this->articulos_model->onAgregar($this->input->post());
+            $x = $this->input;
+            $datos = array(
+                'Clave' => $x->post('Clave'),
+                'Departamento' => $x->post('Departamento'),
+                'Descripcion' => $x->post('Descripcion'),
+                'Grupo' => $x->post('Grupo'),
+                'UnidadMedida' => $x->post('UnidadMedida'),
+                'Tmnda' => $x->post('Tmnda'),
+                'Min' => $x->post('Min'),
+                'Max' => $x->post('Max'),
+                'ProveedorUno' => $x->post('ProveedorUno'),
+                'ProveedorDos' => $x->post('ProveedorDos'),
+                'ProveedorTres' => $x->post('ProveedorTres'),
+                'Observaciones' => $x->post('Observaciones'),
+                'UbicacionUno' => $x->post('UbicacionUno'),
+                'UbicacionDos' => $x->post('UbicacionDos'),
+                'UbicacionTres' => $x->post('UbicacionTres'),
+                'UbicacionCuatro' => $x->post('UbicacionCuatro'),
+                'TipoArticulo' => $x->post('TipoArticulo'),
+                'Estatus' => 'ACTIVO',
+                'Registro' => $x->post('Registro'),
+                'PrecioUno' => $x->post('PrecioUno'),
+                'PrecioDos' => $x->post('PrecioDos'),
+                'PrecioTres' => $x->post('PrecioTres'),
+                'PrecioCuatro' => $x->post('PrecioCuatro')
+            );
+            $ID = $this->articulos_model->onAgregar($datos);
+
+            $precios = json_decode($this->input->post('Precios'));
+            foreach ($precios as $k => $v) {
+                $precio = array('Articulo' => $ID, 'Maquila' => $v->Maquila, 'Precio' => $v->Precio, 'Estatus' => 'ACTIVO');
+                $this->db->insert('preciosmaquilas',$precio);
+            }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
-    
+
     public function onAgregarDetalle() {
         try {
-            $this->db->insert('',array(
-                
-            ));
+            $x = $this->input;
+            $datos = array(
+                'Clave' => $x->post('Clave'),
+                'Departamento' => $x->post('Departamento'),
+                'Descripcion' => $x->post('Descripcion'),
+                'Grupo' => $x->post('Grupo'),
+                'UnidadMedida' => $x->post('UnidadMedida'),
+                'Tmnda' => $x->post('Tmnda'),
+                'Min' => $x->post('Min'),
+                'Max' => $x->post('Max'),
+                'ProveedorUno' => $x->post('ProveedorUno'),
+                'ProveedorDos' => $x->post('ProveedorDos'),
+                'ProveedorTres' => $x->post('ProveedorTres'),
+                'Observaciones' => $x->post('Observaciones'),
+                'UbicacionUno' => $x->post('UbicacionUno'),
+                'UbicacionDos' => $x->post('UbicacionDos'),
+                'UbicacionTres' => $x->post('UbicacionTres'),
+                'UbicacionCuatro' => $x->post('UbicacionCuatro'),
+                'TipoArticulo' => $x->post('TipoArticulo'),
+                'Estatus' => 'ACTIVO',
+                'Registro' => $x->post('Registro'),
+                'PrecioUno' => $x->post('PrecioUno'),
+                'PrecioDos' => $x->post('PrecioDos'),
+                'PrecioTres' => $x->post('PrecioTres'),
+                'PrecioCuatro' => $x->post('PrecioCuatro')
+            );
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -93,11 +163,36 @@ class Articulos extends CI_Controller {
     public function onModificar() {
         try {
             $x = $this->input;
-            $this->articulos_model->onModificar($x->post('ID'), array(
-                'Clave' => ($x->post('Clave') !== NULL) ? $x->post('Clave') : NULL,
-                'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL,
-                'Estatus' => ($x->post('Estatus') !== NULL) ? strtoupper($x->post('Estatus')) : NULL
-            ));
+            $datos = array(
+                'Departamento' => $x->post('Departamento'),
+                'Descripcion' => $x->post('Descripcion'),
+                'Grupo' => $x->post('Grupo'),
+                'UnidadMedida' => $x->post('UnidadMedida'),
+                'Tmnda' => $x->post('Tmnda'),
+                'Min' => $x->post('Min'),
+                'Max' => $x->post('Max'),
+                'ProveedorUno' => $x->post('ProveedorUno'),
+                'ProveedorDos' => $x->post('ProveedorDos'),
+                'ProveedorTres' => $x->post('ProveedorTres'),
+                'Observaciones' => $x->post('Observaciones'),
+                'UbicacionUno' => $x->post('UbicacionUno'),
+                'UbicacionDos' => $x->post('UbicacionDos'),
+                'UbicacionTres' => $x->post('UbicacionTres'),
+                'UbicacionCuatro' => $x->post('UbicacionCuatro'),
+                'TipoArticulo' => $x->post('TipoArticulo'),
+                'Registro' => $x->post('Registro'),
+                'PrecioUno' => $x->post('PrecioUno'),
+                'PrecioDos' => $x->post('PrecioDos'),
+                'PrecioTres' => $x->post('PrecioTres'),
+                'PrecioCuatro' => $x->post('PrecioCuatro')
+            );
+            $this->articulos_model->onModificar($x->post('ID'), $datos);
+            
+            $precios = json_decode($this->input->post('Precios'));
+            foreach ($precios as $k => $v) {
+                $precio = array('Articulo' => $x->post('ID'), 'Maquila' => $v->Maquila, 'Precio' => $v->Precio, 'Estatus' => 'ACTIVO');
+                $this->db->insert('preciosmaquilas',$precio);
+            }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -106,6 +201,14 @@ class Articulos extends CI_Controller {
     public function onEliminar() {
         try {
             $this->articulos_model->onEliminar($this->input->post('ID'));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onEliminarDetalle() {
+        try {
+            $this->db->set('Estatus', 'INACTIVO')->where('ID', $this->input->post('ID'))->update("preciosmaquilas");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
