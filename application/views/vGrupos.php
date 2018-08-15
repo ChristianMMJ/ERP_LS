@@ -266,7 +266,6 @@
     }
     function getUltimoRegistro() {
         $.getJSON(master_url + 'getUltimoRegistro').done(function (data, x, jq) {
-            console.log(data[0].Clave);
             if (data.length > 0) {
                 var ultimo = parseInt(data[0].Clave) + 1;
                 pnlDatos.find("[name='Clave']").val(ultimo);

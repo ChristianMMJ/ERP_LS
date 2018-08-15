@@ -1,5 +1,6 @@
 <?php
 
+/* NO TOCAR */
 header('Access-Control-Allow-Origin: *');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -31,6 +32,30 @@ class Articulos extends CI_Controller {
         }
     }
 
+    public function getProveedores() {
+        try {
+            print json_encode($this->articulos_model->getProveedores());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getGrupos() {
+        try {
+            print json_encode($this->articulos_model->getGrupos());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getUnidades() {
+        try {
+            print json_encode($this->articulos_model->getUnidades());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getID() {
         try {
             print json_encode($this->articulos_model->getID());
@@ -50,6 +75,16 @@ class Articulos extends CI_Controller {
     public function onAgregar() {
         try {
             $this->articulos_model->onAgregar($this->input->post());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    
+    public function onAgregarDetalle() {
+        try {
+            $this->db->insert('',array(
+                
+            ));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

@@ -1,4 +1,4 @@
-<div class="card m-2 animated fadeIn" id="pnlTablero">
+<div class="card m-3 animated fadeIn" id="pnlTablero">
     <div class="card-body ">
         <div class="row">
             <div class="col-sm-6 float-left">
@@ -27,7 +27,7 @@
         </div>
     </div>
 </div>
-<div class="card m-2 d-none animated fadeIn" id="pnlDatos">
+<div class="card m-3 d-none animated fadeIn" id="pnlDatos">
     <div class="card-body text-dark">
         <form id="frmNuevo">
             <fieldset>
@@ -51,7 +51,7 @@
                     </div>
                     <div class="col-12 col-md-6 col-sm-6 col-xl-6">
                         <label for="Clave" >Clave*</label>
-                        <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required autofocus="">
+                        <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required placeholder="20180814">
                     </div>
                     <div class="col-12 col-md-6 col-sm-6 col-xl-6">
                         <label for="" >Departamento*</label>
@@ -74,6 +74,12 @@
                     </div>
                     <div class="col-12 col-md-4 col-sm-4 col-xl-4">
                         <label for="" >Unidad*</label>
+                        <select id="UnidadMedida" name="UnidadMedida" class="form-control form-control-sm" >
+                            <option value=""></option> 
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-4 col-sm-4 col-xl-4">
+                        <label for="" >Moneda*</label>
                         <select id="Tmnda" name="Tmnda" class="form-control form-control-sm" >
                             <option value=""></option>
                             <option value="1">Nacional</option>
@@ -83,56 +89,60 @@
                             <option value="5">Euro</option>
                         </select>
                     </div>
-                    <div class="col-12 col-md-4 col-sm-4 col-xl-4">
-                        <label for="" >Moneda*</label>
-                        <select id="Grupo" name="Grupo" class="form-control form-control-sm" >
-                            <option value=""></option>
-                        </select>
-                    </div>
                     <div class="col-12 col-md-6 col-sm-6 col-xl-6">
                         <label for="Min" >Min*</label>
-                        <input type="text" class="form-control form-control-sm" id="Min" name="Min" required autofocus="">
+                        <input type="text" class="form-control form-control-sm" id="Min" name="Min" required >
                     </div>
                     <div class="col-12 col-md-6 col-sm-6 col-xl-6">
                         <label for="Max" >Max*</label>
-                        <input type="text" class="form-control form-control-sm" id="Max" name="Max" required autofocus="">
+                        <input type="text" class="form-control form-control-sm" id="Max" name="Max" required >
                     </div>
-                    
+
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 m-4" align="center">
                         <legend>Proveedores</legend>
                     </div>
                     <div class="col-12 col-md-4 col-sm-4 col-xl-4"> 
-                        <select id="ProveedorUno" name="ProveedorUno" class="form-control form-control-sm" >
+                        <select id="ProveedorUno" name="ProveedorUno" class="form-control form-control-sm mb-2" >
                             <option value=""></option>
                         </select>
+                        <input type="text" class="form-control form-control-sm numbersOnly mb-2" id="PrecioUno" name="PrecioUno" required  placeholder="Precio pactado">
                     </div>
                     <div class="col-12 col-md-4 col-sm-4 col-xl-4">
-                        <select id="ProveedorDos" name="ProveedorDos" class="form-control form-control-sm" >
+                        <select id="ProveedorDos" name="ProveedorDos" class="form-control form-control-sm mb-2" >
                             <option value=""></option>
                         </select>
+                        <input type="text" class="form-control form-control-sm numbersOnly mb-2" id="PrecioUno" name="PrecioUno" required  placeholder="Precio pactado">
                     </div>
                     <div class="col-12 col-md-4 col-sm-4 col-xl-4"> 
-                        <select id="ProveedorTres" name="ProveedorTres" class="form-control form-control-sm" >
+                        <select id="ProveedorTres" name="ProveedorTres" class="form-control form-control-sm mb-2" >
                             <option value=""></option>
                         </select>
+                        <input type="text" class="form-control form-control-sm numbersOnly mb-2" id="PrecioUno" name="PrecioUno" required  placeholder="Precio pactado">
                     </div>
-                    
+
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 m-4" align="center">
                         <legend>Ubicaciones</legend>
                     </div>
-                    <div class="col-12 col-md-3 col-sm-6 col-xl-3"> 
-                        <input type="text" class="form-control form-control-sm" id="UbicaiconUno" name="UbicaiconUno" required autofocus="">
+                    <div class="col-12 col-md-3 col-sm-6 col-xl-3 mb-2"> 
+                        <input type="text" class="form-control form-control-sm" id="UbicacionUno" name="UbicaiconUno" required placeholder="Pasillo 1">
                     </div>
-                    <div class="col-12 col-md-3 col-sm-6 col-xl-3">
-                        <input type="text" class="form-control form-control-sm" id="UbicacionDos" name="UbicacionDos" required autofocus="">
+                    <div class="col-12 col-md-3 col-sm-6 col-xl-3 mb-2">
+                        <input type="text" class="form-control form-control-sm" id="UbicacionDos" name="UbicacionDos" required placeholder="Aparador 1">
                     </div>
-                    <div class="col-12 col-md-3 col-sm-6 col-xl-3"> 
-                        <input type="text" class="form-control form-control-sm" id="UbicacionTres" name="UbicacionTres" required autofocus="">
+                    <div class="col-12 col-md-3 col-sm-6 col-xl-3 mb-2"> 
+                        <input type="text" class="form-control form-control-sm" id="UbicacionTres" name="UbicacionTres" required placeholder="Pasillo 2">
                     </div>
-                    <div class="col-12 col-md-3 col-sm-6 col-xl-3"> 
-                        <input type="text" class="form-control form-control-sm" id="UbicacionCuatro" name="UbicacionCuatro" required autofocus="">
+                    <div class="col-12 col-md-3 col-sm-6 col-xl-3 mb-2"> 
+                        <input type="text" class="form-control form-control-sm" id="UbicacionCuatro" name="UbicacionCuatro" required placeholder="Aparador 2">
+                    </div>             
+                    <div class="col-12 col-md-12 col-sm-12 col-xl-12">
+                        <label for="" >Tipo*</label>
+                        <select id="TipoArticulo" name="TipoArticulo" class="form-control form-control-sm" >
+                            <option value=""></option>
+                            <option value="0">PRODUCCIÓN</option>
+                            <option value="222">PROTOTIPO</option>
+                        </select>
                     </div>
-                    
                     <div class="col-12 col-md-12 col-sm-12 col-xl-12">
                         <label for="" >Estatus*</label>
                         <select id="Estatus" name="Estatus" class="form-control form-control-sm" >
@@ -156,20 +166,81 @@
         </form>
     </div>
 </div>
+<div class="card m-3 d-none animated fadeIn" id="pnlDatosDetalle">
+    <div class="card-body text-dark">
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <label for="Maquila" >Maquila*</label>
+                <input type="text" class="form-control form-control-sm" id="Maquila" name="Maquila" required placeholder="Maquila 1">                    
+            </div>
+            <div class="col-12 col-sm-5 col-md-5 col-lg-5 col-xl-5">
+                <label for="Precio" >Precio*</label>
+                <input type="text" class="form-control form-control-sm" id="Precio" name="Precio" required placeholder="0.0">                    
+            </div>
+            <div class="col-12 col-sm-12 col-md-1 col-lg-1 col-xl-1 my-2 d-sm-block ">
+                <button type="button" id="btnAgregarPrecio" class="btn btn-primary btn-sm d-sm-block "><span class="fa fa-plus"></span></button>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 my-2">
+                <table id="tblPrecioVentaParaMaquilas" class="table table-sm display">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Descripcion</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Estatus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     var master_url = base_url + 'index.php/Articulos/';
     var tblArticulos = $('#tblArticulos');
     var Articulos;
     var btnNuevo = $("#btnNuevo"), btnCancelar = $("#btnCancelar"), btnEliminar = $("#btnEliminar"), btnGuardar = $("#btnGuardar");
-    var pnlTablero = $("#pnlTablero"), pnlDatos = $("#pnlDatos");
+    var pnlTablero = $("#pnlTablero"), pnlDatos = $("#pnlDatos"), pnlDatosDetalle = $("#pnlDatosDetalle");
+    var PrecioVentaParaMaquilas, tblPrecioVentaParaMaquilas = $("#tblPrecioVentaParaMaquilas");
     var nuevo = false;
 
     $(document).ready(function () {
         /*FUNCIONES INICIALES*/
         init();
         handleEnter();
-
+        pnlDatos.find("input,select").addClass("animated slideInDown");
         /*FUNCIONES X BOTON*/
+        pnlDatosDetalle.find("#btnAgregarPrecio").click(function () {
+            var Maquila = pnlDatosDetalle.find("#Maquila"), Precio = pnlDatosDetalle.find("#Precio");
+            if (Maquila.val() !== '' && Precio.val()) {
+                var r = [PrecioVentaParaMaquilas.rows().data().count() + 1, Maquila.val(), '$' + $.number(Precio.val(), 2, '.', ','), 'ACTIVO'];
+                PrecioVentaParaMaquilas.row.add(r).draw(false);
+                Maquila.val('');
+                Precio.val('');
+            } else {
+                swal('ATENCIÓN', 'DEBE DE ESTABLECER UNA MAQUILA Y UN PRECIO', 'warning').then((action) => {
+                    (Maquila.val() === '') ? Maquila.focus() : Precio.focus();
+                });
+            }
+        });
+        PrecioVentaParaMaquilas = tblPrecioVentaParaMaquilas.DataTable({
+            "dom": 'trHF',
+            "autoWidth": false,
+            "colReorder": true,
+            "displayLength": 500,
+            "bLengthChange": false,
+            "deferRender": true,
+            "scrollY": 285,
+            "scrollX": true,
+            "scrollCollapse": false,
+            keys: true,
+            select: true,
+            "bSort": false,
+            language: lang
+        });
         btnGuardar.click(function () {
             isValid('pnlDatos');
             if (valido) {
@@ -255,18 +326,24 @@
             pnlDatos.find("input").val("");
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass("d-none");
+            pnlDatosDetalle.removeClass("d-none");
             btnEliminar.addClass("d-none");
+            pnlDatos.find("#Clave").focus().select();
             getID();
         });
 
         btnCancelar.click(function () {
             pnlTablero.removeClass("d-none");
             pnlDatos.addClass("d-none");
+            pnlDatosDetalle.addClass("d-none");
         });
     });
 
     function init() {
         getRecords();
+        getGrupos();
+        getUnidades();
+        getProveedores();
     }
 
     function getID() {
@@ -362,4 +439,67 @@
         });
         HoldOn.close();
     }
+    function getGrupos() {
+        $.getJSON(master_url + 'getGrupos').done(function (data) {
+            $.each(data, function (k, v) {
+                pnlDatos.find("#Grupo")[0].selectize.addOption({text: v.Grupo, value: v.ID});
+            });
+        }).fail(function () {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        }).always(function () {
+
+        });
+    }
+    function getUnidades() {
+        $.getJSON(master_url + 'getUnidades').done(function (data) {
+            $.each(data, function (k, v) {
+                pnlDatos.find("#UnidadMedida")[0].selectize.addOption({text: v.Unidad, value: v.ID});
+            });
+        }).fail(function () {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        }).always(function () {
+
+        });
+    }
+
+    function getProveedores() {
+        $.getJSON(master_url + 'getProveedores').done(function (data) {
+            $.each(data, function (k, v) {
+                pnlDatos.find("#ProveedorUno")[0].selectize.addOption({text: v.Proveedor, value: v.ID});
+                pnlDatos.find("#ProveedorDos")[0].selectize.addOption({text: v.Proveedor, value: v.ID});
+                pnlDatos.find("#ProveedorTres")[0].selectize.addOption({text: v.Proveedor, value: v.ID});
+            });
+        }).fail(function () {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        }).always(function () {
+
+        });
+    }
+    
+    function getID() {
+        $.getJSON(master_url + 'getID').done(function (data, x, jq) {
+            console.log(data);
+            if (data.length > 0) {
+                var ID = $.isNumeric(data[0].CLAVE) ? parseInt(data[0].CLAVE) + 1 : 1;
+                pnlDatos.find("#Clave").val(ID).select().focus();
+            } else {
+                pnlDatos.find("#Clave").val('1').select().focus();
+            }
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
+        });
+    }
 </script>
+<style>
+    .selectize-input {
+        border: 1px solid #9E9E9E;
+    }
+    .form-control {
+        border: 1px solid #9E9E9E;
+    }
+</style>
