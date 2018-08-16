@@ -258,6 +258,7 @@
                 theme: 'sk-cube',
                 message: 'CARGANDO...'
             });
+            nuevo = false;
             tblUnidades.find("tbody tr").removeClass("success");
             $(this).addClass("success");
             var dtm = Unidades.row(this).data();

@@ -39,9 +39,18 @@ class Articulos extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
+
     public function getDetalleByID() {
         try {
             print json_encode($this->articulos_model->getDetalleByID($this->input->get('ID')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getMaquilas() {
+        try {
+            print json_encode($this->articulos_model->getMaquilas($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -120,41 +129,8 @@ class Articulos extends CI_Controller {
             $precios = json_decode($this->input->post('Precios'));
             foreach ($precios as $k => $v) {
                 $precio = array('Articulo' => $ID, 'Maquila' => $v->Maquila, 'Precio' => $v->Precio, 'Estatus' => 'ACTIVO');
-                $this->db->insert('preciosmaquilas',$precio);
+                $this->db->insert('preciosmaquilas', $precio);
             }
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function onAgregarDetalle() {
-        try {
-            $x = $this->input;
-            $datos = array(
-                'Clave' => $x->post('Clave'),
-                'Departamento' => $x->post('Departamento'),
-                'Descripcion' => $x->post('Descripcion'),
-                'Grupo' => $x->post('Grupo'),
-                'UnidadMedida' => $x->post('UnidadMedida'),
-                'Tmnda' => $x->post('Tmnda'),
-                'Min' => $x->post('Min'),
-                'Max' => $x->post('Max'),
-                'ProveedorUno' => $x->post('ProveedorUno'),
-                'ProveedorDos' => $x->post('ProveedorDos'),
-                'ProveedorTres' => $x->post('ProveedorTres'),
-                'Observaciones' => $x->post('Observaciones'),
-                'UbicacionUno' => $x->post('UbicacionUno'),
-                'UbicacionDos' => $x->post('UbicacionDos'),
-                'UbicacionTres' => $x->post('UbicacionTres'),
-                'UbicacionCuatro' => $x->post('UbicacionCuatro'),
-                'TipoArticulo' => $x->post('TipoArticulo'),
-                'Estatus' => 'ACTIVO',
-                'Registro' => $x->post('Registro'),
-                'PrecioUno' => $x->post('PrecioUno'),
-                'PrecioDos' => $x->post('PrecioDos'),
-                'PrecioTres' => $x->post('PrecioTres'),
-                'PrecioCuatro' => $x->post('PrecioCuatro')
-            );
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -165,9 +141,9 @@ class Articulos extends CI_Controller {
             $x = $this->input;
             $datos = array(
                 'Departamento' => $x->post('Departamento'),
-                'Descripcion' => $x->post('Descripcion'),
+                'Descripcion' => $x->post('Descripcion'), /* REQUIERE PERMISO */
                 'Grupo' => $x->post('Grupo'),
-                'UnidadMedida' => $x->post('UnidadMedida'),
+                'UnidadMedida' => $x->post('UnidadMedida'), /* REQUIERE PERMISO */
                 'Tmnda' => $x->post('Tmnda'),
                 'Min' => $x->post('Min'),
                 'Max' => $x->post('Max'),
@@ -181,17 +157,17 @@ class Articulos extends CI_Controller {
                 'UbicacionCuatro' => $x->post('UbicacionCuatro'),
                 'TipoArticulo' => $x->post('TipoArticulo'),
                 'Registro' => $x->post('Registro'),
-                'PrecioUno' => $x->post('PrecioUno'),
-                'PrecioDos' => $x->post('PrecioDos'),
-                'PrecioTres' => $x->post('PrecioTres'),
-                'PrecioCuatro' => $x->post('PrecioCuatro')
+                'PrecioUno' => $x->post('PrecioUno'), /* REQUIERE PERMISO */
+                'PrecioDos' => $x->post('PrecioDos'), /* REQUIERE PERMISO */
+                'PrecioTres' => $x->post('PrecioTres'), /* REQUIERE PERMISO */
+                'PrecioCuatro' => $x->post('PrecioCuatro')/* REQUIERE PERMISO */
             );
             $this->articulos_model->onModificar($x->post('ID'), $datos);
-            
+
             $precios = json_decode($this->input->post('Precios'));
             foreach ($precios as $k => $v) {
                 $precio = array('Articulo' => $x->post('ID'), 'Maquila' => $v->Maquila, 'Precio' => $v->Precio, 'Estatus' => 'ACTIVO');
-                $this->db->insert('preciosmaquilas',$precio);
+                $this->db->insert('preciosmaquilas', $precio);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -209,6 +185,30 @@ class Articulos extends CI_Controller {
     public function onEliminarDetalle() {
         try {
             $this->db->set('Estatus', 'INACTIVO')->where('ID', $this->input->post('ID'))->update("preciosmaquilas");
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    function onIgualarPrecios() {
+        try {
+            $ID = $this->input->post('ID');
+            $precio = $this->articulos_model->getPrimerMaquilaPrecio($this->input->post('ID'))[0]->PRECIO;
+            $maquilas = $this->articulos_model->getMaquilas($ID);
+            print_r($precio);
+            foreach ($maquilas as $k => $v) {
+                $p = array('Articulo' => $ID, 'Maquila' => $v->ID, 'MaquilaT' => $v->Maquila, 'Precio' => $precio, 'Estatus' => 'ACTIVO');
+                $this->db->insert('preciosmaquilas', $p);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    function onEditarPrecioPorMaquila() {
+        try {
+            $x = $this->input;
+            $this->db->set('Precio', $x->post('VALOR'))->where('ID', $x->post('ID'))->update("preciosmaquilas");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

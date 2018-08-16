@@ -26,7 +26,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> 
 <div class="card m-3 d-none animated fadeIn" id="pnlDatos">
     <div class="card-body text-dark">
         <form id="frmNuevo">
@@ -42,6 +42,9 @@
                         <button type="button" class="btn btn-danger btn-sm d-none" id="btnEliminar">
                             <span class="fa fa-trash fa-1x"></span> ELIMINAR
                         </button> 
+                        <button type="button" class="btn btn-raised btn-success btn-sm d-none" id="btnIgualaPrecios">
+                            <span class="fa fa-money-bill"></span> PRECIO MAQUILAS  = MAQ-1
+                        </button>
                         <button type="button" class="btn btn-raised btn-info btn-sm" id="btnGuardar">
                             <span class="fa fa-save "></span> GUARDAR
                         </button>
@@ -50,14 +53,14 @@
                 <hr>
                 <div class="row">
                     <div class="d-none">
-                        <input type="text"  name="ID" class="form-control form-control-sm" >
+                        <input type="text" id="ID" name="ID" class="form-control form-control-sm" >
                     </div>
-                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                    <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
                         <label for="Clave" >Clave*</label>
                         <input type="text" class="form-control form-control-sm numbersOnly" id="Clave" name="Clave" required placeholder="20180814">
                     </div>
-                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                        <label for="" >Depto.Articulo*</label>
+                    <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                        <label for="" >Tipo de articulo*</label>
                         <select id="Departamento" name="Departamento" class="form-control form-control-sm" >
                             <option value=""></option>
                             <option value="10">PIEL/FORRO</option>
@@ -65,23 +68,23 @@
                             <option value="90">PELETERIA</option>
                         </select>
                     </div>
-                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                    <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
                         <label for="" >Descripción*</label>
                         <textarea id="Descripcion" name="Descripcion" class="form-control" rows="2" cols="4"></textarea>
                     </div>
-                    <div class="col-12 col-md-4 col-sm-4 col-xl-4">
+                    <div class="col-12 col-sm-6 col-md-3 col-xl-3">
                         <label for="" >Grupo*</label>
                         <select id="Grupo" name="Grupo" class="form-control form-control-sm" >
                             <option value=""></option>
                         </select>
                     </div>
-                    <div class="col-12 col-md-4 col-sm-4 col-xl-4">
+                    <div class="col-12 col-sm-6 col-md-3 col-xl-3">
                         <label for="" >Unidad*</label>
                         <select id="UnidadMedida" name="UnidadMedida" class="form-control form-control-sm" >
                             <option value=""></option> 
                         </select>
                     </div>
-                    <div class="col-12 col-md-4 col-sm-4 col-xl-4">
+                    <div class="col-12 col-sm-6 col-md-3 col-xl-3">
                         <label for="" >Moneda*</label>
                         <select id="Tmnda" name="Tmnda" class="form-control form-control-sm" >
                             <option value=""></option>
@@ -92,11 +95,11 @@
                             <option value="5">Euro</option>
                         </select>
                     </div>
-                    <div class="col-12 col-md-6 col-sm-6 col-xl-6">
+                    <div class="col-12 col-sm-6 col-md-3 col-xl-3">
                         <label for="Min" >Min*</label>
                         <input type="text" class="form-control form-control-sm" id="Min" name="Min" required >
                     </div>
-                    <div class="col-12 col-md-6 col-sm-6 col-xl-6">
+                    <div class="col-12 col-sm-6 col-md-3 col-xl-3">
                         <label for="Max" >Max*</label>
                         <input type="text" class="form-control form-control-sm" id="Max" name="Max" >
                     </div>
@@ -126,19 +129,19 @@
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 my-3" align="center">
                         <legend>Ubicaciones</legend>
                     </div>
-                    <div class="col-12 col-md-3 col-sm-6 col-xl-3 mb-2"> 
+                    <div class="col-12 col-sm-3 col-md-3 col-xl-3 mb-3"> 
                         <input type="text" class="form-control form-control-sm" id="UbicacionUno" name="UbicacionUno" required placeholder="Pasillo 1">
                     </div>
-                    <div class="col-12 col-md-3 col-sm-6 col-xl-3 mb-2">
+                    <div class="col-12 col-sm-3 col-md-3 col-xl-3 mb-3"> 
                         <input type="text" class="form-control form-control-sm" id="UbicacionDos" name="UbicacionDos"  placeholder="Aparador 1">
                     </div>
-                    <div class="col-12 col-md-3 col-sm-6 col-xl-3 mb-2"> 
+                    <div class="col-12 col-sm-3 col-md-3 col-xl-3 mb-3">  
                         <input type="text" class="form-control form-control-sm" id="UbicacionTres" name="UbicacionTres"  placeholder="Pasillo 2">
                     </div>
-                    <div class="col-12 col-md-3 col-sm-6 col-xl-3 mb-2"> 
+                    <div class="col-12 col-sm-3 col-md-3 col-xl-3 mb-3">  
                         <input type="text" class="form-control form-control-sm" id="UbicacionCuatro" name="UbicacionCuatro"  placeholder="Aparador 2">
                     </div>             
-                    <div class="col-12 col-md-6 col-sm-12 col-xl-6">
+                    <div class="col-12 col-sm-6 col-md-6 col-xl-6">
                         <label for="" >Tipo*</label>
                         <select id="TipoArticulo" name="TipoArticulo" class="form-control form-control-sm" >
                             <option value=""></option>
@@ -146,7 +149,7 @@
                             <option value="222">PROTOTIPO</option>
                         </select>
                     </div>
-                    <div class="col-12 col-md-6 col-sm-12 col-xl-6">
+                    <div class="col-12 col-sm-6 col-md-6 col-xl-6">
                         <label for="" >Estatus*</label>
                         <select id="Estatus" name="Estatus" class="form-control form-control-sm" >
                             <option value=""></option>
@@ -163,16 +166,19 @@
             </fieldset>
         </form>
     </div>
-</div>
+</div> 
 <div class="card m-3 d-none animated fadeIn" id="pnlDatosDetalle">
     <div class="card-body text-dark">
         <div class="row">
             <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                 <label for="Maquila" >Maquila*</label>
-                <input type="text" class="form-control form-control-sm" id="Maquila" name="Maquila" required placeholder="Maquila 1">                    
+                <!--<input type="text" class="form-control form-control-sm" id="Maquila" name="Maquila" required placeholder="Maquila 1">-->    
+                <select id="Maquila" name="Maquila" class="form-control form-control-sm" >
+                    <option value=""></option>
+                </select>
             </div>
             <div class="col-12 col-sm-5 col-md-5 col-lg-5 col-xl-5">
-                <label for="Precio" >Precio*</label>
+                <label for="Precio" >Precio Maquila uno*</label>
                 <input type="text" class="form-control form-control-sm numbersOnly" id="Precio" name="Precio" required placeholder="0.0">                    
             </div>
             <div class="col-12 col-sm-12 col-md-1 col-lg-1 col-xl-1 my-2 d-sm-block ">
@@ -183,7 +189,7 @@
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
-                            <th scope="col">Descripcion</th>
+                            <th scope="col">Maquila</th>
                             <th scope="col">Precio</th>
                             <th scope="col">Estatus</th>
                             <th scope="col">-</th>
@@ -195,15 +201,15 @@
             </div>
         </div>
     </div>
-</div>
+</div> 
 <script>
     var master_url = base_url + 'index.php/Articulos/';
     var tblArticulos = $('#tblArticulos');
     var Articulos;
-    var btnNuevo = $("#btnNuevo"), btnCancelar = $("#btnCancelar"), btnEliminar = $("#btnEliminar"), btnGuardar = $("#btnGuardar");
+    var btnNuevo = $("#btnNuevo"), btnCancelar = $("#btnCancelar"), btnEliminar = $("#btnEliminar"), btnGuardar = $("#btnGuardar"), btnIgualaPrecios = $("#btnIgualaPrecios");
     var pnlTablero = $("#pnlTablero"), pnlDatos = $("#pnlDatos"), pnlDatosDetalle = $("#pnlDatosDetalle");
     var PrecioVentaParaMaquilas, tblPrecioVentaParaMaquilas = $("#tblPrecioVentaParaMaquilas");
-    var nuevo = false;
+    var nuevo = false, precio_actual = 0;
 
     $(document).ready(function () {
         /*FUNCIONES INICIALES*/
@@ -211,6 +217,40 @@
         handleEnter();
         pnlDatos.find("input,select").addClass("animated slideInDown");
         /*FUNCIONES X BOTON*/
+        btnIgualaPrecios.click(function () {
+            swal({
+                title: "¿Estas seguro?",
+                text: "Nota: Esta acción no se puede deshacer",
+                icon: "warning",
+                buttons: {
+                    cancelar: {
+                        text: "Cancelar",
+                        value: "cancelar"
+                    },
+                    cambiar: {
+                        text: "Aceptar",
+                        value: "cambiar"
+                    }
+                }
+            }).then((value) => {
+                switch (value) {
+                    case "cambiar":
+                        $.post(master_url + 'onIgualarPrecios', {ID: pnlDatos.find("#ID").val()}).done(function (data) {
+                            console.log("\n", data);
+                            swal('ATENCIÓN', 'SE HAN CAMBIADO LOS PRECIOS Y AGREGADO NUEVAS MAQUILAS', 'success');
+                        }).fail(function (x, y, z) {
+                            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+                            console.log(x.responseText);
+                        });
+                        console.log('CAMBIANDO PRECIO...');
+                        break;
+                    case "cancelar":
+                        swal.close();
+                        break;
+                }
+            });
+        });
+
         pnlDatosDetalle.find("#btnAgregarPrecio").click(function () {
             var Maquila = pnlDatosDetalle.find("#Maquila"), Precio = pnlDatosDetalle.find("#Precio");
             if (Maquila.val() !== '' && Precio.val()) {
@@ -225,6 +265,7 @@
                 });
             }
         });
+
         btnGuardar.click(function () {
             isValid('pnlDatos');
             if (valido) {
@@ -289,6 +330,7 @@
                         pnlDatosDetalle.addClass('d-none');
                         pnlTablero.removeClass("d-none");
                         swal('ATENCIÓN', 'SE HA AGREGADO UN NUEVO REGISTRO', 'success');
+                        btnIgualaPrecios.addClass("d-none");
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
@@ -351,6 +393,7 @@
             PrecioVentaParaMaquilas.clear().draw();
             getID();
             $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
+            btnIgualaPrecios.addClass("d-none");
         });
 
         btnCancelar.click(function () {
@@ -395,8 +438,97 @@
                     "visible": false,
                     "searchable": false
                 }
-            ]
+            ],
+            createdRow: function (row, data, dataIndex, cells) {
+                console.log($(row).find("td"));
+                var event;
+                if (isMobile) {
+                    $(this).find("td:eq(1)").touch();
+                    event = 'tap';
+                } else {
+                    event = 'dblclick';
+                }
+                if (!nuevo) {
+                    $(row).find("td").eq(1).on(event, function () {
+                        var r = PrecioVentaParaMaquilas.row(row).data();
+                        var input = '<input type="text" class="form-control form-control-sm numbersOnly" maxlength="10" name="Precio" autofocus>';
+                        var exist = $(this).find("#Precio").val();
+                        var celda = $(this);
+                        if (exist === undefined && celda.text() !== '') {
+                            console.log('CELDA TEXT ', celda.text());
+                            var vActual = celda.text();
+                            celda.html(input);
+                            var input_precio = celda.find("[name='Precio']");
+                            input_precio.val(getNumberFloat(vActual));
+                            precio_actual = vActual;
+                            var padre = celda.parent();
+                            input_precio.focus().select();
+                            input_precio.focusout(function () {
+                                onModificarPrecioMaquila(r, padre, celda, this);
+                            });
+                            input_precio.change(function () {
+                                onModificarPrecioMaquila(r, padre, celda, this);
+                            });
+                            input_precio.keyup(function (e) {
+                                if (e.keyCode === 13) {
+                                    onModificarPrecioMaquila(r, padre, celda, this);
+                                }
+                            });
+                        }
+                    });
+                }
+            }
         });
+    }
+
+    function onModificarPrecioMaquila(r, padre, celda, field) {
+        var input = $(field);
+        var v = (input.val());
+        if (v !== '' && $.isNumeric(v)) {
+            swal({
+                title: "¿Estas seguro?",
+                text: "Nota: Al cambiar un precio puede afectar las fichas tecnicas que contengan este articulo",
+                icon: "warning",
+                buttons: {
+                    cancelar: {
+                        text: "Cancelar",
+                        value: "cancelar"
+                    },
+                    aceptar: {
+                        text: "Aceptar",
+                        value: "aceptar"
+                    }
+                }
+            }).then((value) => {
+                switch (value) {
+                    case "aceptar":
+                        var precio_format = '$' + $.number(v, 2, '.', ',');
+                        celda.html(precio_format);
+                        PrecioVentaParaMaquilas.cell(padre, 2).data(precio_format).draw();
+                        onEditarPrecioPorMaquila({PARENT: temp, ID: r[0], CELDA: 'PRECIO', VALOR: precio_format});
+                        break;
+                    case "cancelar":
+                        var precio_format = '$' + $.number(precio_actual, 2, '.', ',');
+                        celda.html(precio_format);
+                        PrecioVentaParaMaquilas.cell(padre, 2).data(precio_format).draw();
+                        swal.close();
+                        break;
+                }
+            });
+        } else {
+            input.val('');
+            swal({
+                title: 'ATENCIÓN',
+                text: "NO ES UN PRECIO VÁLIDO",
+                icon: "warning",
+                closeOnEsc: false,
+                closeOnClickOutside: false
+            }).then((action) => {
+                var precio_format = '$' + $.number(precio_actual, 2, '.', ',');
+                celda.html(precio_format);
+                PrecioVentaParaMaquilas.cell(padre, 2).data(precio_format).draw();
+            });
+        }
     }
 
     function getID() {
@@ -468,6 +600,7 @@
             $(this).addClass("success");
             var dtm = Articulos.row(this).data();
             temp = parseInt(dtm.ID);
+            getMaquilas();
             $.getJSON(master_url + 'getArticuloByID', {ID: temp}).done(function (data) {
                 pnlDatos.find("input").val("");
                 $.each(pnlDatos.find("select"), function (k, v) {
@@ -479,6 +612,7 @@
                         pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
                     }
                 });
+                btnIgualaPrecios.removeClass("d-none");
                 pnlTablero.addClass("d-none");
                 pnlDatos.removeClass('d-none');
                 pnlDatosDetalle.removeClass('d-none');
@@ -491,6 +625,9 @@
                         $.each(data, function (k, v) {
                             PrecioVentaParaMaquilas.row.add([v.ID, v.Maquila, v.Precio, 'ACTIVO', '<button type="button" class="btn btn-danger" onclick="onEliminarDetalle(' + v.ID + ',this)"><span class="fa fa-trash"></span></button>']).draw(false);
                         });
+                        if (PrecioVentaParaMaquilas.rows().data().count() === 1) {
+
+                        }
                     }
                 }).fail(function (x, y, z) {
                     swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
@@ -538,6 +675,19 @@
                 pnlDatos.find("#ProveedorUno")[0].selectize.addOption({text: v.Proveedor, value: v.ID});
                 pnlDatos.find("#ProveedorDos")[0].selectize.addOption({text: v.Proveedor, value: v.ID});
                 pnlDatos.find("#ProveedorTres")[0].selectize.addOption({text: v.Proveedor, value: v.ID});
+            });
+        }).fail(function () {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        }).always(function () {
+
+        });
+    }
+
+    function getMaquilas() {
+        $.getJSON(master_url + 'getMaquilas', {ID: temp}).done(function (data) {
+            $.each(data, function (k, v) {
+                pnlDatosDetalle.find("#Maquila")[0].selectize.addOption({text: v.Maquila, value: v.ID});
             });
         }).fail(function () {
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
@@ -597,6 +747,14 @@
     }
     function onEliminarDetalleSN(e) {
         PrecioVentaParaMaquilas.row($(e).parents('tr')).remove().draw();
+    }
+
+    function onEditarPrecioPorMaquila(x) {
+        $.post(master_url + 'onEditarPrecioPorMaquila', x).done(function (data) {
+            console.log(data);
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        });
     }
 </script>
 <style>
