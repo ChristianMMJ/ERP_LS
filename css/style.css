@@ -1,4 +1,7 @@
-
+.btn-group > .btn:not(:first-child), .btn-group > .btn-group:not(:first-child) > .btn {
+ 
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)!important;
+}
 /*Hacer disbaled de selectize igual a bootstrap*/
 .selectize-control .selectize-input.disabled {
     background-color: #ecf0f1;
@@ -53,8 +56,6 @@ label {
 }
 
 /*Tablas */
-
-
 table tbody tr{
     cursor: pointer;
     font-size: 0.8rem !important;

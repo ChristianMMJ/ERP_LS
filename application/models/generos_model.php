@@ -20,7 +20,7 @@ class generos_model extends CI_Model {
 
     public function getGeneros() {
         try {
-            return $this->db->select("G.Clave,CONCAT(G.Clave,'-',G.Descripcion) AS Genero")->from("Generos AS G")->where("G.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("G.Clave,CONCAT(G.Clave,'-',G.Nombre) AS Genero")->from("Generos AS G")->where("G.Estatus", "ACTIVO")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

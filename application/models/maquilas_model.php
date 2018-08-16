@@ -18,6 +18,14 @@ class maquilas_model extends CI_Model {
         }
     }
 
+    public function getMaquilas() {
+        try {
+            return $this->db->select("M.Clave,CONCAT(M.Clave,'-',M.Nombre) AS Maquila")->from("Maquilas AS M")->where("M.Estatus", "ACTIVO")->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getMaquilaByID($IDX) {
         try {
             return $this->db->select("M.*")->from("Maquilas AS M")->where("M.Estatus", "ACTIVO")->where("M.ID", $IDX)->get()->result();

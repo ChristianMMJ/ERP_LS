@@ -46,6 +46,24 @@ class series_model extends CI_Model {
         }
     }
 
+    public function getSerieXClave($Clave) {
+        try {
+            $this->db->select("S.*", false);
+            $this->db->from('Series AS S');
+            $this->db->where('S.Clave', $Clave);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+//            print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onAgregar($array) {
         try {
             $this->db->insert("Series", $array);
