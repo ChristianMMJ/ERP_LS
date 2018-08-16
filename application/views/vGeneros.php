@@ -2,22 +2,20 @@
     <div class="card-body ">
         <div class="row">
             <div class="col-sm-6 float-left">
-                <legend class="float-left">Lineas</legend>
+                <legend class="float-left">Generos</legend>
             </div>
             <div class="col-sm-6 float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
             </div>
         </div>
         <div class="card-block mt-4">
-            <div id="Lineas" class="table-responsive">
-                <table id="tblLineas" class="table table-sm display " style="width:100%">
+            <div id="Generos" class="table-responsive">
+                <table id="tblGeneros" class="table table-sm display " style="width:100%">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Clave</th>
-                            <th>Descripción</th>
-                            <th>Año</th>
-                            <th>Tipo</th>
+                            <th>Nombre</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -32,7 +30,7 @@
             <fieldset>
                 <div class="row">
                     <div class="col-12 col-sm-6 col-md-4 float-left">
-                        <legend >Linea</legend>
+                        <legend >Genero</legend>
                     </div>
                     <div class="col-12 col-sm-6 col-md-8" align="right">
                         <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
@@ -48,36 +46,35 @@
                     <div class="d-none">
                         <input type="text"  name="ID" class="form-control form-control-sm" >
                     </div>
-                    <div class="col-6 col-md-2 col-sm-2">
+                    <div class="col-12 col-md-4 col-sm-4">
                         <label for="Clave" >Clave*</label>
-                        <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required >
-                    </div>
-                    <div class="col-12 col-md-4 col-sm-8">
-                        <label for="Descripcion" >Descripción*</label>
-                        <input type="text" id="Descripcion" name="Descripcion" class="form-control form-control-sm" required>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 col-md-2 col-sm-2">
-                        <label for="Ano" >Año*</label>
-                        <input type="text" id="Ano" name="Ano" maxlength="4" class="form-control form-control-sm numbersOnly" placeholder="" >
+                        <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required autofocus="">
                     </div>
                     <div class="col-12 col-md-4 col-sm-4">
-                        <label for="" >Temporada*</label>
-                        <select id="Temporada" name="Temporada" class="form-control form-control-sm" >
+                        <label for="Nombre" >Nombre*</label>
+                        <input type="text" id="Nombre" name="Nombre" class="form-control form-control-sm" placeholder="" required>
+                    </div>
+                    <div class="col-12 col-md-4 col-sm-4">
+                        <label for="" >Serie*</label>
+                        <select id="Serie" name="Serie" class="form-control form-control-sm" >
                             <option value=""></option>
                         </select>
                     </div>
-
+                    <div class="col-12 col-md-12 col-sm-12">
+                        <label for="Descripcion" >Descripción 1*</label>
+                        <input type="text" id="Descripcion1" name="Descripcion1" class="form-control form-control-sm" placeholder="" >
+                    </div>
+                    <div class="col-12 col-md-12 col-sm-12">
+                        <label for="Descripcion" >Descripción 2*</label>
+                        <input type="text" id="Descripcion2" name="Descripcion2" class="form-control form-control-sm" placeholder="" >
+                    </div>
+                    <div class="col-12 col-md-12 col-sm-12">
+                        <label for="Descripcion" >Descripción 3*</label>
+                        <input type="text" id="Descripcion3" name="Descripcion3" class="form-control form-control-sm" placeholder="" >
+                    </div>
                     <div class="col-12 col-md-4 col-sm-4">
-                        <label for="" >Tipo*</label>
-                        <select id="Tipo" name="Tipo" class="form-control form-control-sm" >
-                            <option value=""></option>
-                            <option value="PRODUCCION">0-PRODUCCION</option>
-                            <option value="PROTOTIPO">1-PROTOTIPO</option>
-                            <option value="MUESTRA">2-MUESTRA</option>
-                            <option value="EXTENCION">3-EXTENSIÓN</option>
-                        </select>
+                        <label for="ClaveProductoSAT" >Clave Prod. SAT*</label>
+                        <input type="text" id="ClaveProductoSAT" name="ClaveProductoSAT" class="form-control form-control-sm" placeholder="" >
                     </div>
                 </div>
                 <div class="row pt-2">
@@ -95,9 +92,9 @@
     </div>
 </div>
 <script>
-    var master_url = base_url + 'index.php/Lineas/';
-    var tblLineas = $('#tblLineas');
-    var Lineas;
+    var master_url = base_url + 'index.php/Generos/';
+    var tblGeneros = $('#tblGeneros');
+    var Generos;
     var btnNuevo = $("#btnNuevo"), btnCancelar = $("#btnCancelar"), btnEliminar = $("#btnEliminar"), btnGuardar = $("#btnGuardar");
     var pnlTablero = $("#pnlTablero"), pnlDatos = $("#pnlDatos");
     var nuevo = false;
@@ -122,7 +119,7 @@
                         data: frm
                     }).done(function (data, x, jq) {
                         swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO', 'info');
-                        Lineas.ajax.reload();
+                        Generos.ajax.reload();
                         pnlDatos.addClass("d-none");
                         pnlTablero.removeClass("d-none");
                     }).fail(function (x, y, z) {
@@ -141,7 +138,7 @@
                     }).done(function (data, x, jq) {
                         pnlDatos.find("[name='ID']").val(data);
                         nuevo = false;
-                        Lineas.ajax.reload();
+                        Generos.ajax.reload();
                         pnlDatos.addClass("d-none");
                         pnlTablero.removeClass("d-none");
                         swal('ATENCIÓN', 'SE HA AGREGADO UN NUEVO REGISTRO  ', 'info');
@@ -176,7 +173,7 @@
                     case "eliminar":
                         $.post(master_url + 'onEliminar', {ID: temp}).done(function () {
                             swal('ATENCIÓN', 'SE HA ELIMINADO EL REGISTRO', 'success');
-                            Lineas.ajax.reload();
+                            Generos.ajax.reload();
                             pnlDatos.addClass("d-none");
                             pnlTablero.removeClass("d-none");
                         }).fail(function (x, y, z) {
@@ -199,7 +196,7 @@
             btnEliminar.addClass("d-none");
             getID();
             pnlDatos.find("[name='Clave']").addClass('disabledForms');
-            pnlDatos.find("[name='Descripcion']").focus();
+            pnlDatos.find("[name='Nombre']").focus();
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
@@ -213,11 +210,12 @@
 
     function init() {
         getRecords();
-        getTemporadas();
+        getSeries();
     }
 
     function getID() {
         $.getJSON(master_url + 'getID').done(function (data, x, jq) {
+            console.log(data);
             if (data.length > 0) {
                 var ID = $.isNumeric(data[0].CLAVE) ? parseInt(data[0].CLAVE) + 1 : 1;
                 pnlDatos.find("#Clave").val(ID);
@@ -238,10 +236,10 @@
             message: 'CARGANDO...'
         });
         $.fn.dataTable.ext.errMode = 'throw';
-        if ($.fn.DataTable.isDataTable('#tblLineas')) {
-            tblLineas.DataTable().destroy();
+        if ($.fn.DataTable.isDataTable('#tblGeneros')) {
+            tblGeneros.DataTable().destroy();
         }
-        Lineas = tblLineas.DataTable({
+        Generos = tblGeneros.DataTable({
             "dom": 'Bfrtip',
             buttons: buttons,
             "ajax": {
@@ -249,7 +247,7 @@
                 "dataSrc": ""
             },
             "columns": [
-                {"data": "ID"}, {"data": "Clave"}, {"data": "Descripcion"}, {"data": "Ano"}, {"data": "Tipo"}
+                {"data": "ID"}, {"data": "Clave"}, {"data": "Nombre"}
             ],
             "columnDefs": [
                 {
@@ -273,19 +271,19 @@
             ]
         });
 
-        $('#tblLineas_filter input[type=search]').focus();
+        $('#tblGeneros_filter input[type=search]').focus();
 
-        tblLineas.find('tbody').on('click', 'tr', function () {
+        tblGeneros.find('tbody').on('click', 'tr', function () {
             HoldOn.open({
                 theme: 'sk-cube',
                 message: 'CARGANDO...'
             });
             nuevo = false;
-            tblLineas.find("tbody tr").removeClass("success");
+            tblGeneros.find("tbody tr").removeClass("success");
             $(this).addClass("success");
-            var dtm = Lineas.row(this).data();
+            var dtm = Generos.row(this).data();
             temp = parseInt(dtm.ID);
-            $.getJSON(master_url + 'getLineaByID', {ID: temp}).done(function (data) {
+            $.getJSON(master_url + 'getGeneroByID', {ID: temp}).done(function (data) {
                 pnlDatos.find("input").val("");
                 $.each(pnlDatos.find("select"), function (k, v) {
                     pnlDatos.find("select")[k].selectize.clear(true);
@@ -300,27 +298,28 @@
                 pnlDatos.removeClass('d-none');
                 btnEliminar.removeClass("d-none");
 
-                pnlDatos.find("#Descripcion").focus().select();
+                pnlDatos.find("#Nombre").focus().select();
             }).fail(function (x, y, z) {
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-
+                console.log(x.responseText);
             }).always(function () {
                 HoldOn.close();
             });
         });
         HoldOn.close();
     }
-    function getTemporadas() {
+    function getSeries() {
         $.ajax({
-            url: master_url + 'getTemporadas',
+            url: master_url + 'getSeries',
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
             $.each(data, function (k, v) {
-                pnlDatos.find("[name='Temporada']")[0].selectize.addOption({text: v.Temporada, value: v.Clave});
+                pnlDatos.find("[name='Serie']")[0].selectize.addOption({text: v.Serie, value: v.Clave});
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         });
     }
 </script>
+

@@ -157,6 +157,7 @@
                 <li class="item"><a href="Lineas"><i class="fa fa-coins"></i> Lineas</a></li>
                 <li class="item"><a href="Hormas"><i class="fa fa-shoe-prints"></i> Hormas</a></li>
                 <li class="item"><a href="Temporadas"><i class="fa fa-cloud"></i> Temporadas</a></li>
+                <li class="item"><a href="Generos"><i class="fa fa-transgender"></i> Generos</a></li>
                 <li class="dropdown-divider"></li>
                 <li class="item"><a href="Series"><i class="fa fa-user-secret"></i> Series</a></li>
                 <li class="item"><a href="Grupos"><i class="fa fa-object-group"></i> Grupos</a></li>
