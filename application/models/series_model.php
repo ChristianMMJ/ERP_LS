@@ -31,7 +31,7 @@ class series_model extends CI_Model {
 
     public function getSeries() {
         try {
-            $this->db->select("U.ID, CONCAT('(',U.Clave,') DEL ',U.PuntoInicial,' AL',U.PuntoFinal) AS 'Clave' ", false);
+            $this->db->select("U.Clave, CONCAT(U.Clave,' - DEL ',U.PuntoInicial,' AL ',U.PuntoFinal) AS 'Serie' ", false);
             $this->db->from('Series AS U');
             $this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();

@@ -124,7 +124,7 @@
                         data: frm
                     }).done(function (data, x, jq) {
                         swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO', 'info');
-                        getRecords();
+                        Departamentos.ajax.reload();
                         pnlDatos.addClass("d-none");
                         pnlTablero.removeClass("d-none");
                     }).fail(function (x, y, z) {
@@ -143,7 +143,7 @@
                     }).done(function (data, x, jq) {
                         pnlDatos.find("[name='ID']").val(data);
                         nuevo = false;
-                        getRecords();
+                        Departamentos.ajax.reload();
                         pnlDatos.addClass("d-none");
                         pnlTablero.removeClass("d-none");
                         swal('ATENCIÓN', 'SE HA AGREGADO UN NUEVO REGISTRO  ', 'info');
@@ -252,6 +252,7 @@
             "autoWidth": true,
             "colReorder": true,
             "displayLength": 20,
+            "scrollX": true,
             "bLengthChange": false,
             "deferRender": true,
             "scrollCollapse": false,
