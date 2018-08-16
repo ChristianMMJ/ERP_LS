@@ -147,6 +147,14 @@
     </ul>
     <ul class="list-unstyled components">
         <li class="drop">
+            <a href="#fichastec" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <i class="fas fa-file-invoice"></i> Fichas Técnicas</a>
+            <ul class="collapse list-unstyled" id="fichastec">
+                <li class="item"><a href="Estilos"><i class="fa fa-capsules"></i> Estilos</a></li>
+                <li class="item"><a href="Colores"><i class="fa fa-palette"></i> Colores</a></li>
+            </ul>
+        </li>
+        <li class="drop">
             <a href="#catalogos" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                 <i class="fa fa-folder-open"></i> Catálogos</a>
             <ul class="collapse list-unstyled" id="catalogos">
@@ -162,7 +170,7 @@
                 <li class="item"><a href="Series"><i class="fa fa-user-secret"></i> Series</a></li>
                 <li class="item"><a href="Grupos"><i class="fa fa-object-group"></i> Grupos</a></li>
                 <li class="item"><a href="Unidades"><i class="fa fa-ruler-combined"></i> Unidades</a></li>
-
+                <li class="item"><a href="MaqPlantillas"><i class="fa fa-gavel"></i> Maquilas Plantillas</a></li>
 
             </ul>
         </li>
