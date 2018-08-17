@@ -25,9 +25,7 @@ class Hormas extends CI_Controller {
 
     public function getSeries() {
         try {
-            extract($this->input->post());
-            $data = $this->series_model->getSeries();
-            print json_encode($data);
+            print json_encode($this->series_model->getSeries());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -35,9 +33,7 @@ class Hormas extends CI_Controller {
 
     public function getMaquilas() {
         try {
-            extract($this->input->post());
-            $data = $this->maquilas_model->getMaquilas();
-            print json_encode($data);
+            print json_encode($this->maquilas_model->getMaquilas());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -115,33 +111,19 @@ class Hormas extends CI_Controller {
     public function onModificar() {
         try {
             $x = $this->input;
-            $this->hormas_model->onModificar($x->post('ID'), array(
+            var_dump($x->post());
+            $horma = array(
                 'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL,
                 'Serie' => ($x->post('Serie') !== NULL) ? $x->post('Serie') : NULL,
-                'Maquila' => ($x->post('Maquila') !== NULL) ? $x->post('Maquila') : NULL,
-                'Ex1' => ($x->post('Ex1') !== NULL) ? $x->post('Ex1') : NULL,
-                'Ex2' => ($x->post('Ex2') !== NULL) ? $x->post('Ex2') : NULL,
-                'Ex3' => ($x->post('Ex3') !== NULL) ? $x->post('Ex3') : NULL,
-                'Ex4' => ($x->post('Ex4') !== NULL) ? $x->post('Ex4') : NULL,
-                'Ex5' => ($x->post('Ex5') !== NULL) ? $x->post('Ex5') : NULL,
-                'Ex6' => ($x->post('Ex6') !== NULL) ? $x->post('Ex6') : NULL,
-                'Ex7' => ($x->post('Ex7') !== NULL) ? $x->post('Ex7') : NULL,
-                'Ex8' => ($x->post('Ex8') !== NULL) ? $x->post('Ex8') : NULL,
-                'Ex9' => ($x->post('Ex9') !== NULL) ? $x->post('Ex9') : NULL,
-                'Ex10' => ($x->post('Ex10') !== NULL) ? $x->post('Ex10') : NULL,
-                'Ex11' => ($x->post('Ex11') !== NULL) ? $x->post('Ex11') : NULL,
-                'Ex12' => ($x->post('Ex12') !== NULL) ? $x->post('Ex12') : NULL,
-                'Ex13' => ($x->post('Ex13') !== NULL) ? $x->post('Ex13') : NULL,
-                'Ex14' => ($x->post('Ex14') !== NULL) ? $x->post('Ex14') : NULL,
-                'Ex15' => ($x->post('Ex15') !== NULL) ? $x->post('Ex15') : NULL,
-                'Ex16' => ($x->post('Ex16') !== NULL) ? $x->post('Ex16') : NULL,
-                'Ex17' => ($x->post('Ex17') !== NULL) ? $x->post('Ex17') : NULL,
-                'Ex18' => ($x->post('Ex18') !== NULL) ? $x->post('Ex18') : NULL,
-                'Ex19' => ($x->post('Ex19') !== NULL) ? $x->post('Ex19') : NULL,
-                'Ex20' => ($x->post('Ex20') !== NULL) ? $x->post('Ex20') : NULL,
-                'Ex21' => ($x->post('Ex21') !== NULL) ? $x->post('Ex21') : NULL,
-                'Ex22' => ($x->post('Ex22') !== NULL) ? $x->post('Ex22') : NULL
-            ));
+                'Maquila' => ($x->post('Maquila') !== NULL) ? $x->post('Maquila') : NULL
+            );
+            $this->hormas_model->onModificar($x->post('ID'), $horma);
+            for ($i = 1; $i <= 22; $i++) {
+                if ($x->post("C$i") > 0) {
+                    $ne = $x->post("Ex$i") + $x->post("C$i");
+                    $this->hormas_model->onModificar($x->post('ID'), array("Ex$i" => $ne));
+                }
+            }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
