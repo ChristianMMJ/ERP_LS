@@ -40,7 +40,7 @@ class articulos_model extends CI_Model {
 
     public function getMaquilas($ID) {
         try {
-            return $this->db->select("M.ID AS ID, M.Nombre AS Maquila", false)->from("maquilas AS M")
+            return $this->db->select("M.Clave AS ID, M.Nombre AS Maquila", false)->from("maquilas AS M")
                             ->where("M.ID NOT IN(SELECT PM.Maquila FROM preciosmaquilas AS PM WHERE PM.Articulo = $ID)", null, false)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -67,7 +67,7 @@ class articulos_model extends CI_Model {
 
     public function getGrupos() {
         try {
-            return $this->db->select("G.ID AS ID, G.Clave AS Clave, G.Nombre AS Grupo", false)
+            return $this->db->select("G.Clave AS ID, G.Clave AS Clave, G.Nombre AS Grupo", false)
                             ->from("grupos AS G")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -76,7 +76,7 @@ class articulos_model extends CI_Model {
 
     public function getUnidades() {
         try {
-            return $this->db->select("U.ID AS ID, U.Clave AS Clave, U.Descripcion AS Unidad", false)
+            return $this->db->select("U.Clave AS ID, U.Clave AS Clave, U.Descripcion AS Unidad", false)
                             ->from("unidades AS U")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -85,7 +85,7 @@ class articulos_model extends CI_Model {
 
     public function getProveedores() {
         try {
-            return $this->db->select("P.ID AS ID, CONCAT(P.Clave,' ',P.NombreI) AS Proveedor", false)
+            return $this->db->select("P.Clave AS ID, CONCAT(P.Clave,' ',P.NombreI) AS Proveedor", false)
                             ->from("proveedores AS P")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
