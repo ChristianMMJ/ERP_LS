@@ -41,7 +41,7 @@ class Colores extends CI_Controller {
 
     public function getColorByID() {
         try {
-            print json_encode($this->colores_model->getEstiloByID($this->input->get('ID')));
+            print json_encode($this->colores_model->getColorByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

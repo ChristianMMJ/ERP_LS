@@ -85,7 +85,7 @@
                     </div>
                     <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                         <label>Tamaño y color</label>
-                        <select id="TamanioColor" name="TamanioColor" class="form-control form-control-sm" >
+                        <select id="TamanioColor" name="TamanioColor" class="form-control form-control-sm" required>
                             <option value=""></option>
                             <option value="1">1 = Sin etiqueta</option>
                             <option value="2">2 = 3x3.5 fondo blanco</option>

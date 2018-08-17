@@ -129,7 +129,10 @@
         font-size: 0.9em !important;
         padding-left: 60px !important;
     }
-
+    .navbar{ 
+        box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+        -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+    }
 </style>
 
 <!-- Sidebar  -->
