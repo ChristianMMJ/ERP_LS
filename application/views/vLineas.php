@@ -1,4 +1,4 @@
-<div class="card m-2 animated fadeIn" id="pnlTablero">
+<div class="card m-3 animated fadeIn" id="pnlTablero">
     <div class="card-body ">
         <div class="row">
             <div class="col-sm-6 float-left">
@@ -26,7 +26,7 @@
         </div>
     </div>
 </div>
-<div class="card m-2 d-none animated fadeIn" id="pnlDatos">
+<div class="card m-3 d-none animated fadeIn" id="pnlDatos">
     <div class="card-body text-dark">
         <form id="frmNuevo">
             <fieldset>
