@@ -20,7 +20,7 @@ class maqplantillas_model extends CI_Model {
 
     public function getMaqPlantillas() {
         try {
-            return $this->db->select("MP.Clave,CONCAT(MP.Clave,'-',MP.Nombre) AS MaquilasPlantillas")->from("Maquilasplantillas AS MP")->where("MP.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("MP.Clave,CONCAT(MP.Clave,'-',MP.Descripcion) AS MaquilasPlantillas")->from("Maquilasplantillas AS MP")->where("MP.Estatus", "ACTIVO")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

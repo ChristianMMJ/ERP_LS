@@ -136,6 +136,11 @@
             $('.modal').on('shown.bs.modal', function (e) {
                 $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
             });
+
+            $(".date").inputmask({alias: "date"});
+
+            $('.money').maskMoney({prefix: '$', allowNegative: false, thousands: ',', decimal: '.', affixesStay: false});
+
             $('[data-provide="datepicker"]').inputmask({alias: "date"});
             $('[data-provide="datepicker"]').addClass("notEnter");
             $('[data-provide="datepicker"]').val();

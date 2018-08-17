@@ -18,6 +18,14 @@ class lineas_model extends CI_Model {
         }
     }
 
+    public function getLineas() {
+        try {
+            return $this->db->select("L.Clave,CONCAT(L.Clave,'-',L.Descripcion) AS Linea")->from("Lineas AS L")->where("L.Estatus", "ACTIVO")->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getLineaByID($IDX) {
         try {
             return $this->db->select("L.*")->from("Lineas AS L")->where("L.Estatus", "ACTIVO")->where("L.ID", $IDX)->get()->result();
