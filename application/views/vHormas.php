@@ -1,4 +1,4 @@
-<div class="card m-2 animated fadeIn" id="pnlTablero">
+<div class="card m-3 animated fadeIn" id="pnlTablero">
     <div class="card-body ">
         <div class="row">
             <div class="col-sm-6 float-left">
@@ -24,7 +24,7 @@
         </div>
     </div>
 </div>
-<div class="card m-2 d-none animated fadeIn" id="pnlDatos">
+<div class="card m-3 d-none animated fadeIn" id="pnlDatos">
     <div class="card-body text-dark">
         <form id="frmNuevo">
             <fieldset>
@@ -223,21 +223,22 @@
         btnGuardar.click(function () {
             isValid('pnlDatos');
             if (valido) {
-                var frm = new FormData();
-                frm.append('ID', pnlDatos.find("#ID").val());
-                frm.append('Clave', pnlDatos.find("#Clave").val());
-                frm.append('Descripcion', pnlDatos.find("#Descripcion").val());
-                frm.append('Serie', pnlDatos.find("#Serie").val());
-                frm.append('Maquila', pnlDatos.find("#Maquila").val());
-                for (var i = 1, max = 22; i <= max; i++) {
-                    var e = pnlDatos.find("#rExistencias").find("input[name='Ex" + i + "']").val();
-                    var c = pnlDatos.find("#rCantidades").find("input[name='C" + i + "']").val(); 
-                    if (e !== '' && c !== '') {
-                        frm.append('Ex' + i, e);
-                        frm.append('C' + i, c);
-                    }
-                }
+
                 if (!nuevo) {
+                    var frm = new FormData();
+                    frm.append('ID', pnlDatos.find("#ID").val());
+                    frm.append('Clave', pnlDatos.find("#Clave").val());
+                    frm.append('Descripcion', pnlDatos.find("#Descripcion").val());
+                    frm.append('Serie', pnlDatos.find("#Serie").val());
+                    frm.append('Maquila', pnlDatos.find("#Maquila").val());
+                    for (var i = 1, max = 22; i <= max; i++) {
+                        var e = pnlDatos.find("#rExistencias").find("input[name='Ex" + i + "']").val();
+                        var c = pnlDatos.find("#rCantidades").find("input[name='C" + i + "']").val();
+                        if (e !== '' && c !== '') {
+                            frm.append('Ex' + i, e);
+                            frm.append('C' + i, c);
+                        }
+                    }
                     $.ajax({
                         url: master_url + 'onModificar',
                         type: "POST",
@@ -256,6 +257,7 @@
                         HoldOn.close();
                     });
                 } else {
+                    var frm = new FormData(pnlDatos.find("#frmNuevo")[0]);
                     $.ajax({
                         url: master_url + 'onAgregar',
                         type: "POST",
