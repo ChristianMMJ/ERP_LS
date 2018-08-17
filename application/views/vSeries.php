@@ -8,8 +8,19 @@
                 <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
             </div>
         </div>
-        <div class="card-block">
-            <div class="table-responsive" id="tblRegistros"></div>
+        <div class="card-block mt-4">
+            <div id="Series" class="table-responsive">
+                <table id="tblSeries" class="table table-sm display " style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Clave</th>
+                            <th>Numeración</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -172,8 +183,6 @@
                     }).always(function () {
                         HoldOn.close();
                     });
-
-
                 } else {
                     $.ajax({
                         url: master_url + 'onAgregar',
@@ -195,9 +204,6 @@
             } else {
                 onNotify('<span class="fa fa-times fa-lg"></span>', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
             }
-
-
-
         });
         btnNuevo.click(function () {
             pnlTablero.addClass("d-none");
@@ -221,102 +227,89 @@
         handleEnter();
     });
 
+
+    var tblSeries = $('#tblSeries');
+    var Series;
     function getRecords() {
         temp = 0;
         HoldOn.open({
-            theme: "sk-bounce",
-            message: "CARGANDO DATOS..."
+            theme: 'sk-cube',
+            message: 'CARGANDO...'
         });
-        $.ajax({
-            url: master_url + 'getRecords',
-            type: "POST",
-            dataType: "JSON"
-        }).done(function (data, x, jq) {
-            if (data.length > 0) {
-                $("#tblRegistros").html(getTable('tblSeries', data));
-                $('#tblSeries tfoot th').each(function () {
-                    $(this).html('');
-                });
-                var thead = $('#tblSeries thead th');
-                var tfoot = $('#tblSeries tfoot th');
-                thead.eq(0).addClass("d-none");
-                tfoot.eq(0).addClass("d-none");
-                $.each($.find('#tblSeries tbody tr'), function (k, v) {
-                    var td = $(v).find("td");
-                    td.eq(0).addClass("d-none");
-                });
-                var tblSelected = $('#tblSeries').DataTable(tableOptions);
-                $('#tblSeries_filter input[type=search]').focus();
-                $('#tblSeries tbody').on('click', 'tr', function () {
-                    $("#tblSeries tbody tr").removeClass("success");
-                    $(this).addClass("success");
-                    var id = this.id;
-                    var index = $.inArray(id, selected);
-                    if (index === -1) {
-                        selected.push(id);
-                    } else {
-                        selected.splice(index, 1);
-                    }
-                    var dtm = tblSelected.row(this).data();
-                    temp = parseInt(dtm[0]);
-                    if (temp !== 0 && temp !== undefined && temp > 0) {
-                        nuevo = false;
-                        HoldOn.open({
-                            theme: "sk-bounce",
-                            message: "CARGANDO DATOS..."
-                        });
-                        $.ajax({
-                            url: master_url + 'getSerieByID',
-                            type: "POST",
-                            dataType: "JSON",
-                            data: {
-                                ID: temp
-                            }
-                        }).done(function (data, x, jq) {
-                            pnlDatos.find("input").val("");
-                            $.each(pnlDatos.find("select"), function (k, v) {
-                                pnlDatos.find("select")[k].selectize.clear(true);
-                            });
-                            $.each(data[0], function (k, v) {
-                                pnlDatos.find("[name='" + k + "']").val(v);
-                                if (pnlDatos.find("[name='" + k + "']").is('select')) {
-                                    pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
-                                }
-                            });
-                            pnlTablero.addClass("d-none");
-                            pnlDatos.removeClass('d-none');
-                            pnlDatos.find('input').addClass('disabledForms');
-                            $(':input:text:enabled:visible:first').focus();
-                        }).fail(function (x, y, z) {
-                            console.log(x, y, z);
-                        }).always(function () {
-                            HoldOn.close();
-                        });
-                    } else {
-                        onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
-                    }
-                });
-                // Apply the search
-                tblSelected.columns().every(function () {
-                    var that = this;
-                    $('input', this.footer()).on('keyup change', function () {
-                        if (that.search() !== this.value) {
-                            that.search(this.value).draw();
-                        }
-                    });
-                });
+        $.fn.dataTable.ext.errMode = 'throw';
+        if ($.fn.DataTable.isDataTable('#tblSeries')) {
+            tblSeries.DataTable().destroy();
+        }
+        Series = tblSeries.DataTable({
+            "dom": 'Bfrtip',
+            buttons: buttons,
+            "ajax": {
+                "url": master_url + 'getRecords',
+                "dataSrc": ""
+            },
+            "columns": [
+                {"data": "ID"}, {"data": "Clave"}, {"data": "Numeración"}
+            ],
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ],
+            language: lang,
+            select: true,
+            "autoWidth": true,
+            "colReorder": true,
+            "displayLength": 20,
+            "scrollX": true,
+            "bLengthChange": false,
+            "deferRender": true,
+            "scrollCollapse": false,
+            "bSort": true,
+            "aaSorting": [
+                [0, 'desc']/*ID*/
+            ]
+        });
 
-            }
-        }).fail(function (x, y, z) {
-            console.log(x, y, z);
-        }).always(function () {
-            HoldOn.close();
+        $('#tblSeries_filter input[type=search]').focus();
+
+        tblSeries.find('tbody').on('click', 'tr', function () {
+            HoldOn.open({
+                theme: 'sk-cube',
+                message: 'CARGANDO...'
+            });
+            nuevo = false;
+            tblSeries.find("tbody tr").removeClass("success");
+            $(this).addClass("success");
+            var dtm = Series.row(this).data();
+            temp = parseInt(dtm.ID);
+            $.getJSON(master_url + 'getSerieByID', {ID: temp}).done(function (data) {
+                pnlDatos.find("input").val("");
+                $.each(pnlDatos.find("select"), function (k, v) {
+                    pnlDatos.find("select")[k].selectize.clear(true);
+                });
+                $.each(data[0], function (k, v) {
+                    pnlDatos.find("[name='" + k + "']").val(v);
+                    if (pnlDatos.find("[name='" + k + "']").is('select')) {
+                        pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
+                    }
+                });
+                pnlTablero.addClass("d-none");
+                pnlDatos.removeClass('d-none');
+                pnlDatos.find("#Descripcion").focus().select();
+            }).fail(function (x, y, z) {
+                swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+                console.log(x.responseText);
+            }).always(function () {
+                HoldOn.close();
+            });
         });
+        HoldOn.close();
     }
-
+    
     function getUltimoRegistro() {
         $.getJSON(master_url + 'getUltimoRegistro').done(function (data, x, jq) {
-            console.log(data[0].Clave);
             if (data.length > 0) {
                 var ultimo = parseInt(data[0].Clave) + 1;
                 pnlDatos.find("[name='Clave']").val(ultimo);
@@ -329,5 +322,4 @@
             HoldOn.close();
         });
     }
-
 </script>

@@ -69,5 +69,4 @@ class Hormas_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-
 }

@@ -44,7 +44,7 @@
                 <hr>
                 <div class="row">
                     <div class="d-none">
-                        <input type="text"  name="ID" class="form-control form-control-sm" >
+                        <input type="text" id="ID" name="ID" class="form-control form-control-sm" >
                     </div>
                     <div class="col-12 col-md-2 col-sm-6">
                         <label for="Clave" >Clave*</label>
@@ -188,7 +188,6 @@
 
             if (data.length > 0) {
                 $.each(data[0], function (k, v) {
-
                     var Can = k.replace("T", "C");
                     if (parseInt(v) <= 0) {
                         console.log("[name='" + Can + "']");
@@ -224,7 +223,20 @@
         btnGuardar.click(function () {
             isValid('pnlDatos');
             if (valido) {
-                var frm = new FormData(pnlDatos.find("#frmNuevo")[0]);
+                var frm = new FormData();
+                frm.append('ID', pnlDatos.find("#ID").val());
+                frm.append('Clave', pnlDatos.find("#Clave").val());
+                frm.append('Descripcion', pnlDatos.find("#Descripcion").val());
+                frm.append('Serie', pnlDatos.find("#Serie").val());
+                frm.append('Maquila', pnlDatos.find("#Maquila").val());
+                for (var i = 1, max = 22; i <= max; i++) {
+                    var e = pnlDatos.find("#rExistencias").find("input[name='Ex" + i + "']").val();
+                    var c = pnlDatos.find("#rCantidades").find("input[name='C" + i + "']").val(); 
+                    if (e !== '' && c !== '') {
+                        frm.append('Ex' + i, e);
+                        frm.append('C' + i, c);
+                    }
+                }
                 if (!nuevo) {
                     $.ajax({
                         url: master_url + 'onModificar',

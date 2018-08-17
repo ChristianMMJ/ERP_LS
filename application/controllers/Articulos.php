@@ -195,7 +195,6 @@ class Articulos extends CI_Controller {
             $ID = $this->input->post('ID');
             $precio = $this->articulos_model->getPrimerMaquilaPrecio($this->input->post('ID'))[0]->PRECIO;
             $maquilas = $this->articulos_model->getMaquilas($ID);
-            print_r($precio);
             foreach ($maquilas as $k => $v) {
                 $p = array('Articulo' => $ID, 'Maquila' => $v->ID, 'MaquilaT' => $v->Maquila, 'Precio' => $precio, 'Estatus' => 'ACTIVO');
                 $this->db->insert('preciosmaquilas', $p);
