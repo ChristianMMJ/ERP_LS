@@ -69,14 +69,14 @@
                             <option value=""></option>
                         </select>
                     </div>
-                    <div class="col-12 col-sm-6 col-md-12 col-lg-12 col-xl-12">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                         <label for="" >Obs.para la orden de producción*</label>
                         <textarea id="ObservacionesOrdenProduccion" name="ObservacionesOrdenProduccion" class="form-control" rows="2" cols="4"></textarea>
                     </div>
-                    <div class="col-12 col-sm-6 col-md-12 col-lg-12 col-xl-12">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                         <h6 class="text-danger">*Nota.Colores ya dados de alta sera imposible modificarlos.</h6>
                     </div>
-                    <div class="col-12 col-sm-6 col-md-12 col-lg-12 col-xl-12">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                         <h6 class="text-danger">*Nota.Para actualizar costo de mano de obra y materiales si desea un solo estilo tecle el numero .</h6>
                     </div>
                     <div class="col-12 col-sm-6 col-md-12 col-lg-12 col-xl-12">
@@ -104,7 +104,7 @@
                     </div>
                 </div>
                 <div class="row pt-2">
-                    <div class="col-6 col-md-6 ">
+                    <div class="col-6 col-sm-6 col-md-6 col-lg-6">
                         <h6 class="text-danger">Los campos con * son obligatorios</h6>
                     </div>
                     <div class="col-6 col-sm-6 col-md-6" align="right">
@@ -320,7 +320,7 @@
     function getEstilos() {
         $.getJSON(master_url + 'getEstilos').done(function (data) {
             $.each(data, function (k, v) {
-                pnlDatosDetalle.find("#Estilo")[0].selectize.addOption({text: v.Estilo, value: v.Clave});
+                pnlDatos.find("#Estilo")[0].selectize.addOption({text: v.Estilo, value: v.ID});
             });
         }).fail(function (x, y, z) {
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
