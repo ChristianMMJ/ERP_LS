@@ -14,11 +14,20 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Clave</th>
+                            <th>Estilo</th>
                             <th>Nombre</th>
+                            <th>Linea</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            <th><input type="text" placeholder="Buscar por Estilo" class="form-control form-control-sm" style="width: 100%;"></th>
+                            <th><input type="text" placeholder="Buscar por Nombre" class="form-control form-control-sm" style="width: 100%;"></th>
+                            <th><input type="text" placeholder="Buscar por Linea" class="form-control form-control-sm" style="width: 100%;"></th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -161,7 +170,7 @@
                             </div>
                             <div class="col-12" align='center'>
                                 <input type="file" id="Foto" name="Foto" class="d-none">
-                                <button type="button" class="btn btn-default" id="btnArchivo" name="btnArchivo">
+                                <button type="button" class="btn btn-info btn-sm" id="btnArchivo" name="btnArchivo">
                                     <span class="fa fa-upload fa-1x"></span> SELECCIONA EL ARCHIVO
                                 </button>
                                 <br><hr>
@@ -294,11 +303,45 @@
     var btnNuevo = $("#btnNuevo"), btnCancelar = $("#btnCancelar"), btnEliminar = $("#btnEliminar"), btnGuardar = $("#btnGuardar");
     var pnlTablero = $("#pnlTablero"), pnlDatos = $("#pnlDatos");
     var nuevo = false;
+    var Archivo = $("#Foto");
+    var btnArchivo = $("#btnArchivo");
+    var VistaPrevia = $("#VistaPrevia");
 
     $(document).ready(function () {
         /*FUNCIONES INICIALES*/
         init();
         handleEnter();
+
+        btnArchivo.on("click", function () {
+            $('#Foto').attr("type", "file");
+            $('#Foto').val('');
+            Archivo.change(function () {
+                HoldOn.open({theme: "sk-bounce", message: "POR FAVOR ESPERE..."});
+                var imageType = /image.*/;
+                if (Archivo[0].files[0] !== undefined && Archivo[0].files[0].type.match(imageType)) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var preview = '<button type="button" class="btn btn-danger btn-sm" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br><img src="' + reader.result + '" class="img-responsive" width="300px"><div class="caption"><p>' + Archivo[0].files[0].name + '</p></div>';
+                        VistaPrevia.html(preview);
+                    };
+                    reader.readAsDataURL(Archivo[0].files[0]);
+                } else {
+                    if (Archivo[0].files[0] !== undefined && Archivo[0].files[0].type.match('application/pdf')) {
+
+                        var readerpdf = new FileReader();
+                        readerpdf.onload = function (e) {
+                            VistaPrevia.html('<div><button type="button" class="btn btn-danger btn-sm" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br> <embed src="' + readerpdf.result + '" type="application/pdf" width="90%" height="800px"' +
+                                    ' pluginspage="http://www.adobe.com/products/acrobat/readstep2.html"></div>');
+                        };
+                        readerpdf.readAsDataURL(Archivo[0].files[0]);
+                    } else {
+                        VistaPrevia.html('EL ARCHIVO SE SUBIRÁ, PERO NO ES POSIBLE RECONOCER SI ES UN PDF O UNA IMAGEN');
+                    }
+                }
+                HoldOn.close();
+            });
+            Archivo.trigger('click');
+        });
 
         /*FUNCIONES X BOTON*/
         btnGuardar.click(function () {
@@ -432,7 +475,7 @@
                 "dataSrc": ""
             },
             "columns": [
-                {"data": "ID"}, {"data": "Clave"}, {"data": "Descripcion"}
+                {"data": "ID"}, {"data": "Clave"}, {"data": "Descripcion"}, {"data": "Linea"}
             ],
             "columnDefs": [
                 {
@@ -453,7 +496,10 @@
             "bSort": true,
             "aaSorting": [
                 [0, 'desc']/*ID*/
-            ]
+            ],
+            initComplete: function (x, y) {
+                HoldOn.close();
+            }
         });
 
         $('#tblEstilos_filter input[type=search]').focus();
@@ -469,16 +515,34 @@
             var dtm = Estilos.row(this).data();
             temp = parseInt(dtm.ID);
             $.getJSON(master_url + 'getEstiloByID', {ID: temp}).done(function (data) {
+                var dtm = data[0];
                 pnlDatos.find("input").val("");
                 $.each(pnlDatos.find("select"), function (k, v) {
                     pnlDatos.find("select")[k].selectize.clear(true);
                 });
                 $.each(data[0], function (k, v) {
-                    pnlDatos.find("[name='" + k + "']").val(v);
-                    if (pnlDatos.find("[name='" + k + "']").is('select')) {
-                        pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
+                    if (k !== 'Foto') {
+                        pnlDatos.find("[name='" + k + "']").val(v);
+                        if (pnlDatos.find("[name='" + k + "']").is('select')) {
+                            pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
+                        }
                     }
                 });
+                console.log(dtm.Foto);
+                if (dtm.Foto !== null && dtm.Foto !== undefined && dtm.Foto !== '') {
+                    var ext = getExt(dtm.Foto);
+                    if (ext === "gif" || ext === "jpg" || ext === "png" || ext === "jpeg") {
+                        pnlDatos.find("#VistaPrevia").html('<button type="button" class="btn btn-danger btn-sm" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br><img id="trtImagen" src="' + base_url + dtm.Foto + '" class ="img-responsive" width="300px"  onclick="printImg(\' ' + base_url + dtm.Foto + ' \')"  />');
+                    }
+                    if (ext === "PDF" || ext === "Pdf" || ext === "pdf") {
+                        pnlDatos.find("#VistaPrevia").html('<div class="col-md-8"></div> <button type="button" class="btn btn-danger btn-sm" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br><embed src="' + base_url + dtm.Foto + '" type="application/pdf" width="90%" height="800px" pluginspage="http://www.adobe.com/products/acrobat/readstep2.html">');
+                    }
+                    if (ext !== "gif" && ext !== "jpg" && ext !== "jpeg" && ext !== "png" && ext !== "PDF" && ext !== "Pdf" && ext !== "pdf") {
+                        pnlDatos.find("#VistaPrevia").html('<h1>NO EXISTE ARCHIVO ADJUNTO</h1>');
+                    }
+                } else {
+                    pnlDatos.find("#VistaPrevia").html('<h3>NO EXISTE ARCHIVO ADJUNTO</h3>');
+                }
                 pnlTablero.addClass("d-none");
                 pnlDatos.removeClass('d-none');
                 btnEliminar.removeClass("d-none");
@@ -491,7 +555,18 @@
                 HoldOn.close();
             });
         });
-        HoldOn.close();
+
+        Estilos.columns().every(function () {
+            var that = this;
+            $('input', this.footer()).on('keyup change', function () {
+                if (that.search() !== this.value) {
+                    that.search(this.value).draw();
+                }
+            });
+        });
+
+
+
     }
     function getTemporadas() {
         $.ajax({
@@ -586,5 +661,18 @@
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         });
+    }
+
+
+    function onRemovePreview(e) {
+        $(e).parent("#VistaPrevia").html("");
+        Archivo.attr("type", "text");
+        Archivo.val('N');
+    }
+
+    function printImg(url) {
+        var win = window.open('');
+        win.document.write('<img src="' + url + '" onload="window.print();window.close()" />');
+        win.focus();
     }
 </script>

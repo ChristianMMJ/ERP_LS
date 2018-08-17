@@ -12,7 +12,15 @@ class estilos_model extends CI_Model {
 
     public function getRecords() {
         try {
-            return $this->db->select("E.ID, E.Clave, E.Descripcion")->from("Estilos AS E")->where("E.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("E.ID, E.Clave, E.Descripcion, "
+                                    . "CASE "
+                                    . "WHEN E.Linea IS NULL "
+                                    . "THEN '<span class=\"badge badge-danger\">SIN LINEA</span>' "
+                                    . "ELSE CONCAT(L.CLAVE,'-',L.Descripcion) END AS Linea ")
+                            ->from("Estilos AS E")
+                            ->join('Lineas AS L', 'E.Linea = L.Clave', 'left')
+                            ->where("E.Estatus", "ACTIVO")
+                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

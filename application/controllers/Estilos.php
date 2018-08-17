@@ -120,7 +120,7 @@ class Estilos extends CI_Controller {
     public function onAgregar() {
         try {
             $x = $this->input;
-            $this->estilos_model->onAgregar(array(
+            $ID = $this->estilos_model->onAgregar(array(
                 'Clave' => ($x->post('Clave') !== NULL) ? $x->post('Clave') : NULL,
                 'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL,
                 'Linea' => ($x->post('Linea') !== NULL) ? $x->post('Linea') : NULL,
@@ -154,6 +154,38 @@ class Estilos extends CI_Controller {
                 'TipoConstruccion' => ($x->post('TipoConstruccion') !== NULL) ? $x->post('TipoConstruccion') : NULL,
                 'Estatus' => 'ACTIVO'
             ));
+            $AdjuntoP = $this->input->post('Foto');
+            if (empty($AdjuntoP)) {
+                if ($_FILES["Foto"]["tmp_name"] !== "") {
+                    $URL_DOC = 'uploads/Estilos';
+                    $master_url = $URL_DOC . '/';
+                    if (isset($_FILES["Foto"]["name"])) {
+                        if (!file_exists($URL_DOC)) {
+                            mkdir($URL_DOC, 0777, true);
+                        }
+                        if (!file_exists(utf8_decode($URL_DOC . '/' . $ID))) {
+                            mkdir(utf8_decode($URL_DOC . '/' . $ID), 0777, true);
+                        }
+                        if (move_uploaded_file($_FILES["Foto"]["tmp_name"], $URL_DOC . '/' . $ID . '/' . utf8_decode($_FILES["Foto"]["name"]))) {
+                            $img = $master_url . $ID . '/' . $_FILES["Foto"]["name"];
+                            $DATA = array(
+                                'Foto' => ($img),
+                            );
+                            $this->estilos_model->onModificar($ID, $DATA);
+                        } else {
+                            $DATA = array(
+                                'Foto' => (null),
+                            );
+                            $this->estilos_model->onModificar($ID, $DATA);
+                        }
+                    }
+                }
+            } else {
+                $DATA = array(
+                    'Foto' => (null),
+                );
+                $this->trabajo_model->onModificar($ID, $DATA);
+            }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -193,6 +225,41 @@ class Estilos extends CI_Controller {
                 'MaqPlant4' => ($x->post('MaqPlant4') !== NULL) ? $x->post('MaqPlant4') : NULL,
                 'TipoConstruccion' => ($x->post('TipoConstruccion') !== NULL) ? $x->post('TipoConstruccion') : NULL,
             ));
+
+            $ID = $x->post('ID');
+            $AdjuntoP = $this->input->post('Foto');
+            var_dump($AdjuntoP);
+            if (empty($AdjuntoP)) {
+                if ($_FILES["Foto"]["tmp_name"] !== "") {
+                    $URL_DOC = 'uploads/Estilos';
+                    $master_url = $URL_DOC . '/';
+                    if (isset($_FILES["Foto"]["name"])) {
+                        if (!file_exists($URL_DOC)) {
+                            mkdir($URL_DOC, 0777, true);
+                        }
+                        if (!file_exists(utf8_decode($URL_DOC . '/' . $ID))) {
+                            mkdir(utf8_decode($URL_DOC . '/' . $ID), 0777, true);
+                        }
+                        if (move_uploaded_file($_FILES["Foto"]["tmp_name"], $URL_DOC . '/' . $ID . '/' . utf8_decode($_FILES["Foto"]["name"]))) {
+                            $img = $master_url . $ID . '/' . $_FILES["Foto"]["name"];
+                            $DATA = array(
+                                'Foto' => ($img),
+                            );
+                            $this->estilos_model->onModificar($ID, $DATA);
+                        } else {
+                            $DATA = array(
+                                'Foto' => (null),
+                            );
+                            $this->estilos_model->onModificar($ID, $DATA);
+                        }
+                    }
+                }
+            } else {
+                $DATA = array(
+                    'Foto' => (null),
+                );
+                $this->estilos_model->onModificar($ID, $DATA);
+            }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
