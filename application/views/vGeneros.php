@@ -25,6 +25,7 @@
     </div>
 </div>
 <div class="card m-3 d-none animated fadeIn" id="pnlDatos">
+
     <div class="card-body text-dark">
         <form id="frmNuevo">
             <fieldset>
@@ -81,16 +82,23 @@
                     <div class="col-6 col-md-6 ">
                         <h6 class="text-danger">Los campos con * son obligatorios</h6>
                     </div>
-                    <div class="col-6 col-sm-6 col-md-6" align="right">
-                        <button type="button" class="btn btn-raised btn-info btn-sm" id="btnGuardar">
-                            <span class="fa fa-save "></span> GUARDAR
-                        </button>
-                    </div>
+
+
+                    <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
+                        <i class="fa fa-save"></i>
+                    </button>
+
+                    <!--                    <div class="col-6 col-sm-6 col-md-6" align="right">
+                                            <button type="button" class="btn btn-raised btn-info btn-sm" id="btnGuardar">
+                                                <span class="fa fa-save "></span> GUARDAR
+                                            </button>
+                                        </div>-->
                 </div>
             </fieldset>
         </form>
     </div>
 </div>
+
 <script>
     var master_url = base_url + 'index.php/Generos/';
     var tblGeneros = $('#tblGeneros');
@@ -100,6 +108,7 @@
     var nuevo = false;
 
     $(document).ready(function () {
+
         /*FUNCIONES INICIALES*/
         init();
         handleEnter();
@@ -149,7 +158,7 @@
                     });
                 }
             } else {
-                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
+                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'error');
             }
         });
 
