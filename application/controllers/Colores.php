@@ -31,6 +31,14 @@ class Colores extends CI_Controller {
         }
     }
 
+    public function getPieles() {
+        try {
+            print json_encode($this->colores_model->getPieles());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getRecords() {
         try {
             print json_encode($this->colores_model->getRecords());
@@ -47,6 +55,21 @@ class Colores extends CI_Controller {
         }
     }
 
+    public function getUltimaClave() {
+        try {
+            $Datos = $this->colores_model->getUltimaClave($this->input->post('Estilo'));
+            $Clave = $Datos[0]->Clave;
+            if (empty($Clave)) {
+                $Clave = 1;
+            } else {
+                $Clave = $Clave + 1;
+            }
+
+            print $Clave;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
     public function onAgregar() {
         try {
             $x = $this->input;

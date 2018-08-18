@@ -50,14 +50,14 @@
                         </div>
                     </div>
                     <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
-                        <label for="Clave" >Clave*</label>
-                        <input type="text" class="form-control form-control-sm numbersOnly" id="Clave" name="Clave" required placeholder="20180814">
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
                         <label>Estilo</label>
                         <select id="Estilo" name="Estilo" class="form-control form-control-sm" >
                             <option value=""></option>
                         </select>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                        <label for="Clave" >Clave*</label>
+                        <input type="text" class="form-control form-control-sm numbersOnly" id="Clave" name="Clave" required placeholder="Clave del color">
                     </div>
                     <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
                         <label for="" >Descripción*</label>
@@ -65,13 +65,14 @@
                     </div>
                     <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
                         <label>Pieles</label>
+                        <!--Articulos Grupo 1-->
                         <select id="Pieles" name="Pieles" class="form-control form-control-sm" >
                             <option value=""></option>
                         </select>
                     </div>
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                         <label for="" >Obs.para la orden de producción*</label>
-                        <textarea id="ObservacionesOrdenProduccion" name="ObservacionesOrdenProduccion" class="form-control" rows="2" cols="4"></textarea>
+                        <textarea id="ObservacionesOrdenProduccion" name="ObservacionesOrdenProduccion" maxlength="100" class="form-control" rows="2" cols="4"></textarea>
                     </div>
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                         <h6 class="text-danger">*Nota.Colores ya dados de alta sera imposible modificarlos.</h6>
@@ -96,11 +97,11 @@
                     </div>
                     <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                         <label for="Piel" >Piel*</label>
-                        <input type="text" class="form-control form-control-sm" id="Piel" name="Piel" required placeholder="Piel 1">
+                        <input type="text" class="form-control form-control-sm numbersOnly" id="Piel" name="Piel" required placeholder="Piel 1">
                         <label for="Forro" >Forro*</label>
-                        <input type="text" class="form-control form-control-sm" id="Forro" name="Forro" required placeholder="Forro 1">
+                        <input type="text" class="form-control form-control-sm numbersOnly" id="Forro" name="Forro" required placeholder="Forro 1">
                         <label for="Suela" >Suela*</label>
-                        <input type="text" class="form-control form-control-sm" id="Suela" name="Suela" required placeholder="Suela 1">
+                        <input type="text" class="form-control form-control-sm numbersOnly" id="Suela" name="Suela" required placeholder="Suela 1">
                     </div>
                 </div>
                 <div class="row pt-2">
@@ -108,8 +109,8 @@
                         <h6 class="text-danger">Los campos con * son obligatorios</h6>
                     </div>
                     <div class="col-6 col-sm-6 col-md-6" align="right">
-                        <button type="button" class="btn btn-raised btn-info btn-sm" id="btnGuardar">
-                            <span class="fa fa-save "></span> GUARDAR
+                        <button type="button" class="btn btn-raised btn-success btn-sm" id="btnGuardar">
+                            <span class="fa fa-check "></span>
                         </button>
                     </div>
                 </div>
@@ -175,7 +176,7 @@
                     });
                 }
             } else {
-                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
+                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'error');
             }
         });
 
@@ -216,11 +217,11 @@
 
         btnNuevo.click(function () {
             nuevo = true;
-            pnlDatos.find("input").val("");
+            pnlDatos.find("input,textarea").val("");
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass("d-none");
             btnEliminar.addClass("d-none");
-            pnlDatos.find("[name='Clave']").focus();
+            pnlDatos.find("[name='Estilo']")[0].selectize.focus();
             pnlDatos.find('#FechaAlta').val(getToday());
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
@@ -236,6 +237,32 @@
     function init() {
         getRecords();
         getEstilos();
+        getPieles();
+        pnlDatos.find("[name='Estilo']").change(function () {
+            if (nuevo) {
+                getUltimaClave($(this).val());
+            }
+        });
+    }
+
+    function getUltimaClave(Estilo) {
+        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+        $.ajax({
+            url: master_url + 'getUltimaClave',
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                Estilo: Estilo
+            }
+        }).done(function (data, x, jq) {
+            console.log(data);
+            pnlDatos.find("[name='Clave']").val(data);
+            pnlDatos.find("[name='Descripcion']").focus();
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
+        });
     }
 
     function getRecords() {
@@ -327,4 +354,24 @@
             console.log(x.responseText);
         });
     }
+
+    function getPieles() {
+        $.getJSON(master_url + 'getPieles').done(function (data) {
+            $.each(data, function (k, v) {
+                pnlDatos.find("#Pieles")[0].selectize.addOption({text: v.Articulo, value: v.ID});
+            });
+        }).fail(function (x, y, z) {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        });
+    }
 </script>
+<style>
+    .btn-success{
+        padding: 5px 15px 5px 15px;
+        font-size: 30px; 
+        text-align: center;
+        text-decoration: none; 
+        border-radius: 50%;
+    }
+</style>

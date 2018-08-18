@@ -26,6 +26,16 @@ class colores_model extends CI_Model {
         }
     }
 
+    public function getPieles() {
+        try {
+//            GRUPO = 1 
+            return $this->db->select("A.Clave AS ID,CONCAT(A.Clave,'-',IFNULL(A.Descripcion,'')) AS Articulo")->from("articulos AS A")
+                            ->where("A.Estatus", "ACTIVO")->where("A.Grupo", 1)->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getColorByID($IDX) {
         try {
             return $this->db->select("E.*")->from("colores AS E")->where("E.Estatus", "ACTIVO")->where("E.ID", $IDX)->get()->result();
@@ -69,4 +79,21 @@ class colores_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
+
+    public function getUltimaClave($Estilo) {
+        try {
+            $this->db->select('MAX(C.Clave) As Clave ', false)->from('colores AS C')->where('C.Estilo', $Estilo);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
 }
