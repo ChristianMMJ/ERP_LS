@@ -1,5 +1,18 @@
+.btn-float{
+    width: 61.1px;
+    height: 61.1px;
+    font-size: 1.625rem;
+    position: fixed;
+    bottom: 55px;
+    right: 38px;
+    margin-bottom: 0;
+    z-index: 999 ;
+    border-radius: 50%;
+    min-width: 56px;
+}
+
 .btn-group > .btn:not(:first-child), .btn-group > .btn-group:not(:first-child) > .btn {
- 
+
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)!important;
 }
 /*Hacer disbaled de selectize igual a bootstrap*/
