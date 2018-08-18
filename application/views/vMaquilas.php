@@ -191,7 +191,7 @@
                 </div>
                 <div class="row">
                     <div class="col-12 col-sm-6 col-md-6 ">
-                        <label for="" >Recibe Material*</label>
+                        <label for="" >Recibe Material</label>
                         <input type="text" id="RecibeMaterial" name="RecibeMaterial" class="form-control form-control-sm" >
                     </div>
                     <div class="col-12 col-md-6 col-sm-6">

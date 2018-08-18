@@ -36,7 +36,7 @@ class generos_model extends CI_Model {
 
     public function getID() {
         try {
-            return $this->db->select("G.Clave AS CLAVE")->from("Generos AS G")->where("G.Estatus", "Activo")->order_by("G.Clave", "DESC")->limit(1)->get()->result();
+            return $this->db->select("CONVERT(G.Clave, UNSIGNED INTEGER) AS CLAVE")->from("Generos AS G")->where("G.Estatus", "ACTIVO")->order_by("CLAVE", "DESC")->limit(1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

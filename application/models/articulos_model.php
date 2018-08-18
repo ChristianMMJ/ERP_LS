@@ -59,7 +59,7 @@ class articulos_model extends CI_Model {
 
     public function getID() {
         try {
-            return $this->db->select("A.Clave AS CLAVE")->from("Articulos AS A")->where("A.Estatus", "Activo")->order_by("A.Clave", "DESC")->limit(1)->get()->result();
+            return $this->db->select("CONVERT(A.Clave, UNSIGNED INTEGER) AS CLAVE")->from("Articulos AS A")->where("A.Estatus", "ACTIVO")->order_by("CLAVE", "DESC")->limit(1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

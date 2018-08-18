@@ -10,15 +10,43 @@ class Series extends CI_Controller {
     }
 
     public function index() {
-
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
-            if (in_array($this->session->userdata["TipoAcceso"], array("SUPER ADMINISTRADOR"))) {
-                $this->load->view('vEncabezado')->view('vNavegacion')->view('vSeries')->view('vFooter');
-            } else {
-                $this->load->view('vEncabezado')->view('vNavegacion')->view('vFooter');
+            $this->load->view('vEncabezado');
+
+            switch ($this->session->userdata["TipoAcceso"]) {
+                case 'SUPER ADMINISTRADOR':
+                    $this->load->view('vNavegacion');
+                    break;
+                case 'ADMINISTRACION':
+                    $this->load->view('vMenuAdministracion');
+                    break;
+                case 'CONTABILIDAD':
+                    $this->load->view('vMenuContabilidad');
+                    break;
+                case 'RECURSOS HUMANOS':
+                    $this->load->view('vMenuRecursosHumanos');
+                    break;
+                case 'INGENIERIA':
+                    $this->load->view('vMenuIngenieria');
+                    break;
+                case 'DISEÑO Y DESARROLLO':
+                    $this->load->view('vMenuDisDes');
+                    break;
+                case 'ALMACEN':
+                    $this->load->view('vMenuAlmacen');
+                    break;
+                case 'PRODUCCION':
+                    $this->load->view('vMenuProduccion');
+                    break;
             }
+
+            $this->load->view('vFondo');
+            $this->load->view('vSeries');
+            $this->load->view('vFooter');
         } else {
-            $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
+            $this->load->view('vEncabezado');
+            $this->load->view('vSesion');
+            $this->load->view('vFooter');
         }
     }
 
@@ -107,4 +135,5 @@ class Series extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
+
 }

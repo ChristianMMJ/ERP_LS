@@ -28,7 +28,7 @@ class unidad_model extends CI_Model {
 
     public function getID() {
         try {
-            return $this->db->select("U.Clave AS CLAVE")->from("Unidades AS U")->where("U.Estatus", "Activo")->order_by("U.Clave", "DESC")->limit(1)->get()->result();
+            return $this->db->select("CONVERT(U.Clave, UNSIGNED INTEGER) AS CLAVE")->from("Unidades AS U")->where("U.Estatus", "Activo")->order_by("CLAVE", "DESC")->limit(1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -48,7 +48,7 @@ class unidad_model extends CI_Model {
 
     public function onModificar($ID, $DATA) {
         try {
-            $this->db->where('ID', $ID)->update("Unidades", $DATA); 
+            $this->db->where('ID', $ID)->update("Unidades", $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

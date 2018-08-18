@@ -56,25 +56,25 @@
                         <input type="text" id="Nombre" name="Nombre" class="form-control form-control-sm" placeholder="" required>
                     </div>
                     <div class="col-12 col-md-4 col-sm-4">
-                        <label for="" >Serie*</label>
+                        <label for="" >Serie</label>
                         <select id="Serie" name="Serie" class="form-control form-control-sm" >
                             <option value=""></option>
                         </select>
                     </div>
                     <div class="col-12 col-md-12 col-sm-12">
-                        <label for="Descripcion" >Descripción 1*</label>
+                        <label for="Descripcion" >Descripción 1</label>
                         <input type="text" id="Descripcion1" name="Descripcion1" class="form-control form-control-sm" placeholder="" >
                     </div>
                     <div class="col-12 col-md-12 col-sm-12">
-                        <label for="Descripcion" >Descripción 2*</label>
+                        <label for="Descripcion" >Descripción 2</label>
                         <input type="text" id="Descripcion2" name="Descripcion2" class="form-control form-control-sm" placeholder="" >
                     </div>
                     <div class="col-12 col-md-12 col-sm-12">
-                        <label for="Descripcion" >Descripción 3*</label>
+                        <label for="Descripcion" >Descripción 3</label>
                         <input type="text" id="Descripcion3" name="Descripcion3" class="form-control form-control-sm" placeholder="" >
                     </div>
                     <div class="col-12 col-md-4 col-sm-4">
-                        <label for="ClaveProductoSAT" >Clave Prod. SAT*</label>
+                        <label for="ClaveProductoSAT" >Clave Prod. SAT</label>
                         <input type="text" id="ClaveProductoSAT" name="ClaveProductoSAT" class="form-control form-control-sm" placeholder="" >
                     </div>
                 </div>
@@ -203,9 +203,7 @@
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass("d-none");
             btnEliminar.addClass("d-none");
-            getID();
-            pnlDatos.find("[name='Clave']").addClass('disabledForms');
-            pnlDatos.find("[name='Nombre']").focus();
+            pnlDatos.find("[name='Clave']").focus();
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
@@ -220,22 +218,6 @@
     function init() {
         getRecords();
         getSeries();
-    }
-
-    function getID() {
-        $.getJSON(master_url + 'getID').done(function (data, x, jq) {
-            console.log(data);
-            if (data.length > 0) {
-                var ID = $.isNumeric(data[0].CLAVE) ? parseInt(data[0].CLAVE) + 1 : 1;
-                pnlDatos.find("#Clave").val(ID);
-            } else {
-                pnlDatos.find("#Clave").val('1');
-            }
-        }).fail(function (x, y, z) {
-            console.log(x, y, z);
-        }).always(function () {
-            HoldOn.close();
-        });
     }
 
     function getRecords() {

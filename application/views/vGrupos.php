@@ -48,6 +48,7 @@
                             <option value="DIRECTOS">DIRECTOS</option>
                             <option value="INDIRECTOS">INDIRECTOS</option>
                             <option value="GASTOS">GASTOS</option>
+                            <option value="NO IDENTIF">NO IDENTIF</option>
                         </select>
                     </div>
                 </div>

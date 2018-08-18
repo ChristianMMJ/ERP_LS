@@ -36,7 +36,7 @@ class temporadas_model extends CI_Model {
 
     public function getID() {
         try {
-            return $this->db->select("T.Clave AS CLAVE")->from("Temporadas AS T")->where("T.Estatus", "Activo")->order_by("T.Clave", "DESC")->limit(1)->get()->result();
+            return $this->db->select("CONVERT(T.Clave, UNSIGNED INTEGER) AS CLAVE")->from("Temporadas AS T")->where("T.Estatus", "ACTIVO")->order_by("CLAVE", "DESC")->limit(1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

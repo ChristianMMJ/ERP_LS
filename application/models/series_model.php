@@ -117,7 +117,7 @@ class series_model extends CI_Model {
 
     public function getUltimoRegistro() {
         try {
-            return $this->db->select(" M.Clave", false)->from('Series AS M')->order_by('M.ID', 'DESC')->limit(1)->get()->result();
+            return $this->db->select("CONVERT(M.Clave, UNSIGNED INTEGER) AS Clave")->from("Series AS M")->order_by("Clave", "DESC")->limit(1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

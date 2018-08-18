@@ -174,7 +174,9 @@
                                     <span class="fa fa-upload fa-1x"></span> SELECCIONA EL ARCHIVO
                                 </button>
                                 <br><hr>
-                                <div id="VistaPrevia" class="col-md-12" align="center"></div>
+                                <div id="VistaPrevia" align="center">
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -324,7 +326,7 @@
                 if (Archivo[0].files[0] !== undefined && Archivo[0].files[0].type.match(imageType)) {
                     var reader = new FileReader();
                     reader.onload = function (e) {
-                        var preview = '<button type="button" class="btn btn-danger btn-sm" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br><img src="' + reader.result + '" class="img-responsive" width="300px"><div class="caption"><p>' + Archivo[0].files[0].name + '</p></div>';
+                        var preview = '<button type="button" class="btn btn-danger btn-sm" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br><img src="' + reader.result + '" class="img-thumbnail img-fluid rounded mx-auto"><div class="caption"><p>' + Archivo[0].files[0].name + '</p></div>';
                         VistaPrevia.html(preview);
                     };
                     reader.readAsDataURL(Archivo[0].files[0]);
@@ -433,6 +435,7 @@
         btnNuevo.click(function () {
             nuevo = true;
             pnlDatos.find("input").val("");
+            VistaPrevia.html(' <img src="img/camera.png" class="img-thumbnail img-fluid rounded mx-auto " >')
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass("d-none");
             btnEliminar.addClass("d-none");
@@ -535,7 +538,7 @@
                 if (dtm.Foto !== null && dtm.Foto !== undefined && dtm.Foto !== '') {
                     var ext = getExt(dtm.Foto);
                     if (ext === "gif" || ext === "jpg" || ext === "png" || ext === "jpeg") {
-                        pnlDatos.find("#VistaPrevia").html('<button type="button" class="btn btn-danger btn-sm" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br><img id="trtImagen" src="' + base_url + dtm.Foto + '" class ="img-responsive" width="300px"  onclick="printImg(\' ' + base_url + dtm.Foto + ' \')"  />');
+                        pnlDatos.find("#VistaPrevia").html('<button type="button" class="btn btn-danger btn-sm" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br><img id="trtImagen" src="' + base_url + dtm.Foto + '" class ="img-thumbnail img-fluid rounded mx-auto"  onclick="printImg(\' ' + base_url + dtm.Foto + ' \')"  />');
                     }
                     if (ext === "PDF" || ext === "Pdf" || ext === "pdf") {
                         pnlDatos.find("#VistaPrevia").html('<div class="col-md-8"></div> <button type="button" class="btn btn-danger btn-sm" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br><embed src="' + base_url + dtm.Foto + '" type="application/pdf" width="90%" height="800px" pluginspage="http://www.adobe.com/products/acrobat/readstep2.html">');

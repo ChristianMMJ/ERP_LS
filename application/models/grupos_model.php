@@ -12,7 +12,7 @@ class grupos_model extends CI_Model {
 
     public function getRecords() {
         try {
-            $this->db->select("ID, Clave, Nombre, Tipo
+            $this->db->select("ID, Clave, Nombre, IFNULL(Tipo,'') AS Tipo
                     FROM Grupos AS U
                     WHERE ESTATUS = 'ACTIVO'; ", false);
             $query = $this->db->get();
@@ -81,7 +81,7 @@ class grupos_model extends CI_Model {
 
     public function getUltimoRegistro() {
         try {
-            return $this->db->select(" M.Clave", false)->from('Grupos AS M')->order_by('M.ID', 'DESC')->limit(1)->get()->result();
+            return $this->db->select("CONVERT(G.Clave, UNSIGNED INTEGER) AS Clave")->from("Grupos AS G")->where("G.Estatus", "ACTIVO")->order_by("Clave", "DESC")->limit(1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

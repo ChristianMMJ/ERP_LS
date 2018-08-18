@@ -21,13 +21,42 @@ class Estilos extends CI_Controller {
 
     public function index() {
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
-            if (in_array($this->session->userdata["TipoAcceso"], array("SUPER ADMINISTRADOR"))) {
-                $this->load->view('vEncabezado')->view('vNavegacion')->view('vEstilos')->view('vFooter');
-            } else {
-                $this->load->view('vEncabezado')->view('vNavegacion')->view('vFooter');
+            $this->load->view('vEncabezado');
+
+            switch ($this->session->userdata["TipoAcceso"]) {
+                case 'SUPER ADMINISTRADOR':
+                    $this->load->view('vNavegacion');
+                    break;
+                case 'ADMINISTRACION':
+                    $this->load->view('vMenuAdministracion');
+                    break;
+                case 'CONTABILIDAD':
+                    $this->load->view('vMenuContabilidad');
+                    break;
+                case 'RECURSOS HUMANOS':
+                    $this->load->view('vMenuRecursosHumanos');
+                    break;
+                case 'INGENIERIA':
+                    $this->load->view('vMenuIngenieria');
+                    break;
+                case 'DISEÑO Y DESARROLLO':
+                    $this->load->view('vMenuDisDes');
+                    break;
+                case 'ALMACEN':
+                    $this->load->view('vMenuAlmacen');
+                    break;
+                case 'PRODUCCION':
+                    $this->load->view('vMenuProduccion');
+                    break;
             }
+
+            $this->load->view('vFondo');
+            $this->load->view('vEstilos');
+            $this->load->view('vFooter');
         } else {
-            $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
+            $this->load->view('vEncabezado');
+            $this->load->view('vSesion');
+            $this->load->view('vFooter');
         }
     }
 
@@ -163,11 +192,18 @@ class Estilos extends CI_Controller {
                         if (!file_exists($URL_DOC)) {
                             mkdir($URL_DOC, 0777, true);
                         }
-                        if (!file_exists(utf8_decode($URL_DOC . '/' . $ID))) {
-                            mkdir(utf8_decode($URL_DOC . '/' . $ID), 0777, true);
+                        if (!file_exists(utf8_decode($URL_DOC))) {
+                            mkdir(utf8_decode($URL_DOC), 0777, true);
                         }
-                        if (move_uploaded_file($_FILES["Foto"]["tmp_name"], $URL_DOC . '/' . $ID . '/' . utf8_decode($_FILES["Foto"]["name"]))) {
-                            $img = $master_url . $ID . '/' . $_FILES["Foto"]["name"];
+                        if (move_uploaded_file($_FILES["Foto"]["tmp_name"], $URL_DOC . utf8_decode($_FILES["Foto"]["name"]))) {
+                            $img = $master_url . $_FILES["Foto"]["name"];
+                            $this->load->library('image_lib');
+                            $config['image_library'] = 'gd2';
+                            $config['source_image'] = $img;
+                            $config['maintain_ratio'] = true;
+                            $config['width'] = 800;
+                            $this->image_lib->initialize($config);
+                            $this->image_lib->resize();
                             $DATA = array(
                                 'Foto' => ($img),
                             );
@@ -237,11 +273,18 @@ class Estilos extends CI_Controller {
                         if (!file_exists($URL_DOC)) {
                             mkdir($URL_DOC, 0777, true);
                         }
-                        if (!file_exists(utf8_decode($URL_DOC . '/' . $ID))) {
-                            mkdir(utf8_decode($URL_DOC . '/' . $ID), 0777, true);
+                        if (!file_exists(utf8_decode($URL_DOC))) {
+                            mkdir(utf8_decode($URL_DOC), 0777, true);
                         }
-                        if (move_uploaded_file($_FILES["Foto"]["tmp_name"], $URL_DOC . '/' . $ID . '/' . utf8_decode($_FILES["Foto"]["name"]))) {
-                            $img = $master_url . $ID . '/' . $_FILES["Foto"]["name"];
+                        if (move_uploaded_file($_FILES["Foto"]["tmp_name"], $URL_DOC . '/' . utf8_decode($_FILES["Foto"]["name"]))) {
+                            $img = $master_url . $_FILES["Foto"]["name"];
+                            $this->load->library('image_lib');
+                            $config['image_library'] = 'gd2';
+                            $config['source_image'] = $img;
+                            $config['maintain_ratio'] = true;
+                            $config['width'] = 800;
+                            $this->image_lib->initialize($config);
+                            $this->image_lib->resize();
                             $DATA = array(
                                 'Foto' => ($img),
                             );

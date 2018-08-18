@@ -89,6 +89,10 @@ table tfoot tr{
     vertical-align: bottom;
     border-bottom: 0.5px solid #dee2e6;
 }
+table tbody tr:hover {
+    background-color: #2C3E50;
+    color: #fff !important;
+}
 
 .table>tbody>tr>td.success,
 .table>tfoot>tr>td.success,

@@ -73,10 +73,10 @@
                         <label for="" >Tipo*</label>
                         <select id="Tipo" name="Tipo" class="form-control form-control-sm" >
                             <option value=""></option>
-                            <option value="PRODUCCION">0-PRODUCCION</option>
-                            <option value="PROTOTIPO">1-PROTOTIPO</option>
-                            <option value="MUESTRA">2-MUESTRA</option>
-                            <option value="EXTENCION">3-EXTENSIÓN</option>
+                            <option value="0">0-PRODUCCION</option>
+                            <option value="1">1-PROTOTIPO</option>
+                            <option value="2">2-MUESTRA</option>
+                            <option value="3">3-EXTENSIÓN</option>
                         </select>
                     </div>
                 </div>

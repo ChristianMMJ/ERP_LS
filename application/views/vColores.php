@@ -1,4 +1,4 @@
-<div class="card m-2 animated fadeIn" id="pnlTablero">
+<div class="card m-3 animated fadeIn" id="pnlTablero">
     <div class="card-body ">
         <div class="row">
             <div class="col-sm-6 float-left">
@@ -25,7 +25,7 @@
         </div>
     </div>
 </div>
-<div class="card m-2 d-none animated fadeIn" id="pnlDatos">
+<div class="card m-3 d-none animated fadeIn" id="pnlDatos">
     <div class="card-body text-dark">
         <form id="frmNuevo">
             <fieldset>
@@ -44,7 +44,7 @@
                 </div>
                 <hr>
                 <div class="row">
-                    <div class="col-12 col-md-12 col-lg-12 col-xl-12"> 
+                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                         <div class="d-none">
                             <input type="text"  name="ID" class="form-control form-control-sm" >
                         </div>
@@ -90,9 +90,9 @@
                             <option value=""></option>
                             <option value="1">1 = Sin etiqueta</option>
                             <option value="2">2 = 3x3.5 fondo blanco</option>
-                            <option value="3">3 = 1.5x3 fondo blanco</option> 
+                            <option value="3">3 = 1.5x3 fondo blanco</option>
                             <option value="4">4 = 3x3.5 fondo negro</option>
-                            <option value="5">5 = 1.5x3 fondo negro</option> 
+                            <option value="5">5 = 1.5x3 fondo negro</option>
                         </select>
                     </div>
                     <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
@@ -369,9 +369,9 @@
 <style>
     .btn-success{
         padding: 5px 15px 5px 15px;
-        font-size: 30px; 
+        font-size: 30px;
         text-align: center;
-        text-decoration: none; 
+        text-decoration: none;
         border-radius: 50%;
     }
 </style>
