@@ -100,12 +100,15 @@
                     </select>
                 </div>
             </div>
-            <div class="row mt-3" >
-                <div class="col-sm"align="right">
-                    <button type="button" class="btn btn-primary btn-sm" id="btnGuardar"><span class="fa fa-save "></span> GUARDAR</button>
-                </div>
+            <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
+                <i class="fa fa-save"></i>
+            </button>
+            <!--            <div class="row mt-3" >
+                            <div class="col-sm"align="right">
+                                <button type="button" class="btn btn-primary btn-sm" id="btnGuardar"><span class="fa fa-save "></span> GUARDAR</button>
+                            </div>
 
-            </div>
+                        </div>-->
         </form>
     </div>
 </div>
@@ -307,7 +310,7 @@
         });
         HoldOn.close();
     }
-    
+
     function getUltimoRegistro() {
         $.getJSON(master_url + 'getUltimoRegistro').done(function (data, x, jq) {
             if (data.length > 0) {

@@ -26,7 +26,7 @@
             </div>
         </div>
     </div>
-</div> 
+</div>
 <div class="card m-3 d-none animated fadeIn" id="pnlDatos">
     <div class="card-body text-dark">
         <form id="frmNuevo">
@@ -41,13 +41,14 @@
                         </button>
                         <button type="button" class="btn btn-danger btn-sm d-none" id="btnEliminar">
                             <span class="fa fa-trash fa-1x"></span> ELIMINAR
-                        </button> 
+                        </button>
                         <button type="button" class="btn btn-raised btn-success btn-sm d-none" id="btnIgualaPrecios">
                             <span class="fa fa-money-bill"></span> PRECIO MAQUILAS  = MAQ-1
                         </button>
-                        <button type="button" class="btn btn-raised btn-info btn-sm" id="btnGuardar">
-                            <span class="fa fa-save "></span> GUARDAR
-                        </button>
+                        <!--                        <button type="button" class="btn btn-raised btn-info btn-sm" id="btnGuardar">
+                                                    <span class="fa fa-save "></span> GUARDAR
+                                                </button>-->
+
                     </div>
                 </div>
                 <hr>
@@ -81,7 +82,7 @@
                     <div class="col-12 col-sm-6 col-md-3 col-xl-3">
                         <label for="" >Unidad*</label>
                         <select id="UnidadMedida" name="UnidadMedida" class="form-control form-control-sm" >
-                            <option value=""></option> 
+                            <option value=""></option>
                         </select>
                     </div>
                     <div class="col-12 col-sm-6 col-md-3 col-xl-3">
@@ -129,18 +130,18 @@
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 my-3" align="center">
                         <legend>Ubicaciones</legend>
                     </div>
-                    <div class="col-12 col-sm-3 col-md-3 col-xl-3 mb-3"> 
+                    <div class="col-12 col-sm-3 col-md-3 col-xl-3 mb-3">
                         <input type="text" class="form-control form-control-sm" id="UbicacionUno" name="UbicacionUno" required placeholder="Pasillo 1">
                     </div>
-                    <div class="col-12 col-sm-3 col-md-3 col-xl-3 mb-3"> 
+                    <div class="col-12 col-sm-3 col-md-3 col-xl-3 mb-3">
                         <input type="text" class="form-control form-control-sm" id="UbicacionDos" name="UbicacionDos"  placeholder="Aparador 1">
                     </div>
-                    <div class="col-12 col-sm-3 col-md-3 col-xl-3 mb-3">  
+                    <div class="col-12 col-sm-3 col-md-3 col-xl-3 mb-3">
                         <input type="text" class="form-control form-control-sm" id="UbicacionTres" name="UbicacionTres"  placeholder="Pasillo 2">
                     </div>
-                    <div class="col-12 col-sm-3 col-md-3 col-xl-3 mb-3">  
+                    <div class="col-12 col-sm-3 col-md-3 col-xl-3 mb-3">
                         <input type="text" class="form-control form-control-sm" id="UbicacionCuatro" name="UbicacionCuatro"  placeholder="Aparador 2">
-                    </div>             
+                    </div>
                     <div class="col-12 col-sm-6 col-md-6 col-xl-6">
                         <label for="" >Tipo*</label>
                         <select id="TipoArticulo" name="TipoArticulo" class="form-control form-control-sm" >
@@ -161,25 +162,30 @@
                 <div class="row pt-2">
                     <div class="col-6 col-md-6 ">
                         <h6 class="text-danger">Los campos con * son obligatorios</h6>
-                    </div> 
+                    </div>
+
                 </div>
             </fieldset>
         </form>
     </div>
-</div> 
+</div>
 <div class="card m-3 d-none animated fadeIn" id="pnlDatosDetalle">
+
     <div class="card-body text-dark">
+        <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
+            <i class="fa fa-save"></i>
+        </button>
         <div class="row">
             <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                 <label for="Maquila" >Maquila*</label>
-                <!--<input type="text" class="form-control form-control-sm" id="Maquila" name="Maquila" required placeholder="Maquila 1">-->    
+                <!--<input type="text" class="form-control form-control-sm" id="Maquila" name="Maquila" required placeholder="Maquila 1">-->
                 <select id="Maquila" name="Maquila" class="form-control form-control-sm" >
                     <option value=""></option>
                 </select>
             </div>
             <div class="col-12 col-sm-5 col-md-5 col-lg-5 col-xl-5">
                 <label for="Precio" >Precio Maquila uno*</label>
-                <input type="text" class="form-control form-control-sm numbersOnly" id="Precio" name="Precio" required placeholder="0.0">                    
+                <input type="text" class="form-control form-control-sm numbersOnly" id="Precio" name="Precio" required placeholder="0.0">
             </div>
             <div class="col-12 col-sm-12 col-md-1 col-lg-1 col-xl-1 my-2 d-sm-block ">
                 <button type="button" id="btnAgregarPrecio" class="btn btn-primary btn-sm d-sm-block "><span class="fa fa-plus"></span></button>
@@ -201,7 +207,7 @@
             </div>
         </div>
     </div>
-</div> 
+</div>
 <script>
     var master_url = base_url + 'index.php/Articulos/';
     var tblArticulos = $('#tblArticulos');

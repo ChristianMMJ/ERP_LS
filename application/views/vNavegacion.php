@@ -129,7 +129,7 @@
         font-size: 0.9em !important;
         padding-left: 60px !important;
     }
-    .navbar{ 
+    .navbar{
         box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
         -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
     }
@@ -219,15 +219,14 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-        </ul>
-        <ul class="navbar-nav navbar-right">
-            <li class="nav-item dropdown">
-                <a class="btn btn-primary dropdown-toggle pr-4" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <ul class="navbar-nav w-100">
+
+            <li class="nav-item dropdown ml-auto">
+                <a class="btn btn-primary dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <?php echo $this->session->userdata('Nombre') . ' ' . $this->session->userdata('Apellidos'); ?>
                     <i class="fa fa-user-circle fa-lg"></i>
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="#"><i class="fa fa-question-circle"></i> Reportar un problema</a>
                     <a class="dropdown-item" href="#"><i class="fa fa-key"></i> Cambiar Contraseña</a>
                     <div class="dropdown-divider"></div>

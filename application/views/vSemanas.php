@@ -26,7 +26,7 @@
                 </div>
                 <div class="col-md-3 float-right" align="right">
                     <button type="button" class="btn btn-secondary btn-sm" id="btnCancelar"><span class="fa fa-arrow-left"></span> REGRESAR </button>
-                    <button type="button" class="btn btn-primary btn-sm" id="btnGuardar"><span class="fa fa-save "></span> GUARDAR</button>
+<!--                    <button type="button" class="btn btn-primary btn-sm" id="btnGuardar"><span class="fa fa-save "></span> GUARDAR</button>-->
                 </div>
             </div>
             <div class="row" id="ControlesEncabezado">
@@ -43,18 +43,21 @@
                     <input type="text" class="form-control form-control-sm notEnter" id="FechaIni" name="FechaIni" required >
                 </div>
                 <div class="col-sm-4">
-                    <br>
-                    <button type="button"  class="btn btn-primary btn-sm" id="btnGenerarSemanas" data-toggle="tooltip" data-placement="top" title="Generar Semanas" >
+                    <button type="button"  class="btn btn-primary btn-sm mt-4" id="btnGenerarSemanas" data-toggle="tooltip" data-placement="top" title="Generar Semanas" >
                         <i class="fa fa-plus"></i>
                     </button>
                 </div>
+                <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
+                    <i class="fa fa-save"></i>
+                </button>
+
             </div>
         </form>
     </div>
 </div>
 
 <!--AGREGAR EXTRA-->
-<div class="card border-0 d-none" id="ControlesAgregarExtras">
+<div class="card border-0 m-3 d-none" id="ControlesAgregarExtras">
     <div class="card-body text-dark">
         <div class="row" >
             <div class="col-sm-3">
@@ -80,44 +83,46 @@
 </div>
 
 <!--DETALLE-->
-<div class=" d-none card-body" id="pnlDatosDetalle">
-    <!--DETALLE NUEVO-->
-    <div class="table-responsive col-12" id="RegistrosDetalle">
+<div class="card d-none m-3" id="pnlDatosDetalle">
+    <div class="card-body" >
+        <!--DETALLE NUEVO-->
+        <div class="row" >
+            <div class="table-responsive" id="RegistrosDetalle">
+                <table id="tblDetalle" class="table table-sm" width="100%">
+                    <thead>
+                        <tr>
+                            <th scope="col">Año</th>
+                            <th scope="col">Semana</th>
+                            <th scope="col">Fecha Inicio</th>
+                            <th scope="col">Fecha Fin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+        <!--FIN DETALLE NUEVO-->
+        <!--DETALLE EDITAR-->
         <div class="row">
-            <table id="tblDetalle" class="table table-sm" width="100%">
-                <thead>
-                    <tr>
-                        <th scope="col">Año</th>
-                        <th scope="col">Semana</th>
-                        <th scope="col">Fecha Inicio</th>
-                        <th scope="col">Fecha Fin</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-
+            <div class="table-responsive d-none" id="RegistrosDetalleE">
+                <table id="tblRegistrosDetalle" class="table table-sm" width="100%">
+                    <thead>
+                        <tr>
+                            <th>No. Sem</th>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha Fin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </div>
-
+        <!--FIN DETALLE EDITAR-->
     </div>
-    <!--FIN DETALLE NUEVO-->
-    <!--DETALLE EDITAR-->
-    <div class="row">
-        <div class="table-responsive d-none" id="RegistrosDetalleE">
-            <table id="tblRegistrosDetalle" class="table table-sm" width="100%">
-                <thead>
-                    <tr>
-                        <th>No. Sem</th>
-                        <th>Fecha Inicio</th>
-                        <th>Fecha Fin</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <!--FIN DETALLE EDITAR-->
 </div>
 <!--SCRIPT-->
 <script>
@@ -226,6 +231,7 @@
                         }
                         cont++;
                     }
+                    btnGuardar.focus();
                 }
             } else {
                 swal({
