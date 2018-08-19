@@ -54,14 +54,7 @@
                     <div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
                         <label for="" >Serie*</label>
                         <select id="Serie" name="Serie" class="form-control form-control-sm" required="">
-                            <option value=""></option> 
-                        </select>
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
-                        <label for="" >Estatus*</label>
-                        <select id="Estatus" name="Estatus" class="form-control form-control-sm" required="">
-                            <option value="ACTIVO">ACTIVO</option>
-                            <option value="INACTIVO">INACTIVO</option>
+                            <option value=""></option>
                         </select>
                     </div>
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-2" id="SerieF">
@@ -69,7 +62,7 @@
                         for ($i = 1; $i <= 22; $i++) {
                             print '<input type="text" style="width: 45px;" maxlength="4" class="numbersOnly m-1" disabled="" readonly=""  name="T' . $i . '" placeholder="">';
                         }
-                        ?> 
+                        ?>
                     </div>
                     <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
                         <label for="Rango" >Rango*</label>
@@ -79,178 +72,178 @@
                     <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
                         <label for="Rango">De la talla A la talla*</label>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInUno" name="PtoInUno" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinUno" name="PtoFinUno" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInUno" name="PtoInUno" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinUno" name="PtoFinUno" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInDos" name="PtoInDos" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinDos" name="PtoFinDos" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInDos" name="PtoInDos" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinDos" name="PtoFinDos" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInTres" name="PtoInTres" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinTres" name="PtoFinTres" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInTres" name="PtoInTres" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinTres" name="PtoFinTres" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInCuatro" name="PtoInCuatro" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinCuatro" name="PtoFinCuatro" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInCuatro" name="PtoInCuatro" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinCuatro" name="PtoFinCuatro" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInCinco" name="PtoInCinco" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinCinco" name="PtoFinCinco" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInCinco" name="PtoInCinco" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinCinco" name="PtoFinCinco" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInSeis" name="PtoInSeis" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinSeis" name="PtoFinSeis" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInSeis" name="PtoInSeis" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinSeis" name="PtoFinSeis" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInSiete" name="PtoInSiete" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinSiete" name="PtoFinSiete" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInSiete" name="PtoInSiete" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinSiete" name="PtoFinSiete" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInOcho" name="PtoInOcho" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinOcho" name="PtoFinOcho" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInOcho" name="PtoInOcho" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinOcho" name="PtoFinOcho" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInNueve" name="PtoInNueve" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinNueve" name="PtoFinNueve" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInNueve" name="PtoInNueve" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinNueve" name="PtoFinNueve" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInDiez" name="PtoInDiez" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinDiez" name="PtoFinDiez" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInDiez" name="PtoInDiez" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinDiez" name="PtoFinDiez" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInOnce" name="PtoInOnce" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinOnce" name="PtoFinOnce" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInOnce" name="PtoInOnce" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinOnce" name="PtoFinOnce" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInDoce" name="PtoInDoce" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinDoce" name="PtoFinDoce" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInDoce" name="PtoInDoce" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinDoce" name="PtoFinDoce" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInTrece" name="PtoInTrece" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinTrece" name="PtoFinTrece" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInTrece" name="PtoInTrece" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinTrece" name="PtoFinTrece" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInCatorce" name="PtoInCatorce" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinCatorce" name="PtoFinCatorce" class="form-control form-control-sm"></div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                        <label for="Rango">De la talla A la talla*</label>
-                        <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInQuince" name="PtoInQuince" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinQuince" name="PtoFinQuince" class="form-control form-control-sm"></div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInDieciseis" name="PtoInDieciseis" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinDieciseis" name="PtoFinDieciseis" class="form-control form-control-sm"></div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInDiecisiete" name="PtoInDiecisiete" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinDiecisiete" name="PtoFinDiecisiete" class="form-control form-control-sm"></div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInDieciocho" name="PtoInDieciocho" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinDieciocho" name="PtoFinDieciocho" class="form-control form-control-sm"></div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInDiecinueve" name="PtoInDiecinueve" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinDiecinueve" name="PtoFinDiecinueve" class="form-control form-control-sm"></div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInVeinte" name="PtoInVeinte" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinVeinte" name="PtoFinVeinte" class="form-control form-control-sm"></div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInVeintiuno" name="PtoInVeintiuno" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinVeintiuno" name="PtoFinVeintiuno" class="form-control form-control-sm"></div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInVeintidos" name="PtoInVeintidos" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinVeintidos" name="PtoFinVeintidos" class="form-control form-control-sm"></div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInVeintitres" name="PtoInVeintitres" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinVeintitres" name="PtoFinVeintitres" class="form-control form-control-sm"></div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInVeinticuatro" name="PtoInVeinticuatro" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinVeinticuatro" name="PtoFinVeinticuatro" class="form-control form-control-sm"></div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInVeinticinco" name="PtoInVeinticinco" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinVeinticinco" name="PtoFinVeinticinco" class="form-control form-control-sm"></div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInVeintiseis" name="PtoInVeintiseis" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinVeintiseis" name="PtoFinVeintiseis" class="form-control form-control-sm"></div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInVeintisiete" name="PtoInVeintisiete" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinVeintisiete" name="PtoFinVeintisiete" class="form-control form-control-sm"></div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInVeintiocho" name="PtoInVeintiocho" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinVeintiocho" name="PtoFinVeintiocho" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInCatorce" name="PtoInCatorce" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinCatorce" name="PtoFinCatorce" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                     </div>
                     <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
                         <label for="Rango">De la talla A la talla*</label>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInVeintinueve" name="PtoInVeintinueve" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinVeintinueve" name="PtoFinVeintinueve" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInQuince" name="PtoInQuince" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinQuince" name="PtoFinQuince" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInTreinta" name="PtoInTreinta" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinTreinta" name="PtoFinTreinta" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInDieciseis" name="PtoInDieciseis" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinDieciseis" name="PtoFinDieciseis" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInTreintayuno" name="PtoInTreintayuno" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinTreintayuno" name="PtoFinTreintayuno" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInDiecisiete" name="PtoInDiecisiete" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinDiecisiete" name="PtoFinDiecisiete" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInTreintaydos" name="PtoInTreintaydos" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinTreintaydos" name="PtoFinTreintaydos" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInDieciocho" name="PtoInDieciocho" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinDieciocho" name="PtoFinDieciocho" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInTreintaytres" name="PtoInTreintaytres" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinTreintaytres" name="PtoFinTreintaytres" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInDiecinueve" name="PtoInDiecinueve" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinDiecinueve" name="PtoFinDiecinueve" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInTreintaycuatro" name="PtoInTreintaycuatro" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinTreintaycuatro" name="PtoFinTreintaycuatro" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInVeinte" name="PtoInVeinte" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinVeinte" name="PtoFinVeinte" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInTreintaycinco" name="PtoInTreintaycinco" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinTreintaycinco" name="PtoFinTreintaycinco" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInVeintiuno" name="PtoInVeintiuno" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinVeintiuno" name="PtoFinVeintiuno" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInTreintayseis" name="PtoInTreintayseis" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinTreintayseis" name="PtoFinTreintayseis" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInVeintidos" name="PtoInVeintidos" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinVeintidos" name="PtoFinVeintidos" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInTreintaysiete" name="PtoInTreintaysiete" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinTreintaysiete" name="PtoFinTreintaysiete" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInVeintitres" name="PtoInVeintitres" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinVeintitres" name="PtoFinVeintitres" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInTreintayocho" name="PtoInTreintayocho" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinTreintayocho" name="PtoFinTreintayocho" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInVeinticuatro" name="PtoInVeinticuatro" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinVeinticuatro" name="PtoFinVeinticuatro" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInTreintaynueve" name="PtoInTreintaynueve" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinTreintaynueve" name="PtoFinTreintaynueve" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInVeinticinco" name="PtoInVeinticinco" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinVeinticinco" name="PtoFinVeinticinco" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInCuarenta" name="PtoInCuarenta" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinCuarenta" name="PtoFinCuarenta" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInVeintiseis" name="PtoInVeintiseis" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinVeintiseis" name="PtoFinVeintiseis" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInCuarentayuno" name="PtoInCuarentayuno" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinCuarentayuno" name="PtoFinCuarentayuno" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInVeintisiete" name="PtoInVeintisiete" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinVeintisiete" name="PtoFinVeintisiete" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                         <div class="row my-2">
-                            <div class="col-6"><input type="text" id="PtoInCuarentaydos" name="PtoInCuarentaydos" class="form-control form-control-sm"></div>
-                            <div class="col-6"><input type="text" id="PtoFinCuarentaydos" name="PtoFinCuarentaydos" class="form-control form-control-sm"></div>
+                            <div class="col-6"><input type="text" id="PtoInVeintiocho" name="PtoInVeintiocho" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinVeintiocho" name="PtoFinVeintiocho" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                        <label for="Rango">De la talla A la talla*</label>
+                        <div class="row my-2">
+                            <div class="col-6"><input type="text" id="PtoInVeintinueve" name="PtoInVeintinueve" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinVeintinueve" name="PtoFinVeintinueve" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-6"><input type="text" id="PtoInTreinta" name="PtoInTreinta" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinTreinta" name="PtoFinTreinta" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-6"><input type="text" id="PtoInTreintayuno" name="PtoInTreintayuno" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinTreintayuno" name="PtoFinTreintayuno" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-6"><input type="text" id="PtoInTreintaydos" name="PtoInTreintaydos" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinTreintaydos" name="PtoFinTreintaydos" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-6"><input type="text" id="PtoInTreintaytres" name="PtoInTreintaytres" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinTreintaytres" name="PtoFinTreintaytres" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-6"><input type="text" id="PtoInTreintaycuatro" name="PtoInTreintaycuatro" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinTreintaycuatro" name="PtoFinTreintaycuatro" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-6"><input type="text" id="PtoInTreintaycinco" name="PtoInTreintaycinco" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinTreintaycinco" name="PtoFinTreintaycinco" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-6"><input type="text" id="PtoInTreintayseis" name="PtoInTreintayseis" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinTreintayseis" name="PtoFinTreintayseis" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-6"><input type="text" id="PtoInTreintaysiete" name="PtoInTreintaysiete" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinTreintaysiete" name="PtoFinTreintaysiete" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-6"><input type="text" id="PtoInTreintayocho" name="PtoInTreintayocho" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinTreintayocho" name="PtoFinTreintayocho" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-6"><input type="text" id="PtoInTreintaynueve" name="PtoInTreintaynueve" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinTreintaynueve" name="PtoFinTreintaynueve" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-6"><input type="text" id="PtoInCuarenta" name="PtoInCuarenta" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinCuarenta" name="PtoFinCuarenta" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-6"><input type="text" id="PtoInCuarentayuno" name="PtoInCuarentayuno" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinCuarentayuno" name="PtoFinCuarentayuno" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-6"><input type="text" id="PtoInCuarentaydos" name="PtoInCuarentaydos" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
+                            <div class="col-6"><input type="text" id="PtoFinCuarentaydos" name="PtoFinCuarentaydos" class="form-control form-control-sm numbersOnly" maxlength="4"></div>
                         </div>
                     </div>
                 </div>
@@ -312,6 +305,7 @@
                         HoldOn.close();
                     });
                 } else {
+                    frm.append('Estatus', 'ACTIVO');
                     $.ajax({
                         url: master_url + 'onAgregar',
                         type: "POST",
@@ -520,7 +514,7 @@
                 $.each(data[0], function (k, v) {
                     pnlDatos.find('#SerieF').find("[name='" + k + "']").val(v);
                 });
-                 pnlDatos.find('#Rango').focus();
+                pnlDatos.find('#Rango').focus();
             } else {
                 swal('ATENCIÓN', 'NO SE HAN PODIDO OBTENER LAS SERIES, INTENTE DE NUEVO', 'error');
             }
@@ -530,7 +524,7 @@
             HoldOn.close();
         });
     }
-    
+
     function getID() {
         $.getJSON(master_url + 'getID').done(function (data, x, jq) {
             console.log(data);

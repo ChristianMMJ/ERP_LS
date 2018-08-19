@@ -58,38 +58,30 @@
                     <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
                         <label for="" >Departamento*</label>
                         <select id="Departamento" name="Departamento" class="form-control form-control-sm" >
-                            <option value=""></option> 
+                            <option value=""></option>
                         </select>
                     </div>
-                    <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3"> 
+                    <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
                         <label for="" >Clasificación*</label>
                         <select id="Clasificacion" name="Clasificacion" class="form-control form-control-sm" required="">
-                            <option value=""></option> 
-                            <option value="1">1ra</option> 
-                            <option value="2">2da</option> 
-                            <option value="3">3ra</option> 
+                            <option value=""></option>
+                            <option value="1">1ra</option>
+                            <option value="2">2da</option>
+                            <option value="3">3ra</option>
                         </select>
                     </div>
                     <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
                         <label for="" >Rango*</label>
                         <select id="Rango" name="Rango" class="form-control form-control-sm" required="">
-                            <option value=""></option> 
+                            <option value=""></option>
                         </select>
                     </div>
                     <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
                         <label for="" class="text-info font-weight-bold" >Para verificación de piezas  cuando realiza una copia de ficha tecnica a ficha tecnica*</label>
                         <select id="Obliga" name="Obliga" class="form-control form-control-sm" >
-                            <option value=""></option> 
-                            <option value="0">0 = No verifica</option> 
-                            <option value="1">1 = Si verifica</option> 
-                        </select>
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
-                        <label for="" >Estatus*</label>
-                        <select id="Estatus" name="Estatus" class="form-control form-control-sm" >
                             <option value=""></option>
-                            <option value="ACTIVO">ACTIVO</option>
-                            <option value="INACTIVO">INACTIVO</option>
+                            <option value="0">0 = No verifica</option>
+                            <option value="1">1 = Si verifica</option>
                         </select>
                     </div>
                     <div class="col-12">
@@ -145,6 +137,7 @@
                         HoldOn.close();
                     });
                 } else {
+                    frm.append('Estatus', 'ACTIVO');
                     $.ajax({
                         url: master_url + 'onAgregar',
                         type: "POST",
