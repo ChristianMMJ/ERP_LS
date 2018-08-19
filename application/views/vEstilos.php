@@ -435,7 +435,7 @@
         btnNuevo.click(function () {
             nuevo = true;
             pnlDatos.find("input").val("");
-            VistaPrevia.html(' <img src="img/camera.png" class="img-thumbnail img-fluid rounded mx-auto " >')
+            VistaPrevia.html(' <img src="img/camera.png" class="img-thumbnail img-fluid rounded mx-auto " >');
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass("d-none");
             btnEliminar.addClass("d-none");
@@ -544,10 +544,12 @@
                         pnlDatos.find("#VistaPrevia").html('<div class="col-md-8"></div> <button type="button" class="btn btn-danger btn-sm" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br><embed src="' + base_url + dtm.Foto + '" type="application/pdf" width="90%" height="800px" pluginspage="http://www.adobe.com/products/acrobat/readstep2.html">');
                     }
                     if (ext !== "gif" && ext !== "jpg" && ext !== "jpeg" && ext !== "png" && ext !== "PDF" && ext !== "Pdf" && ext !== "pdf") {
-                        pnlDatos.find("#VistaPrevia").html('<h1>NO EXISTE ARCHIVO ADJUNTO</h1>');
+                        //pnlDatos.find("#VistaPrevia").html('<h1>NO EXISTE ARCHIVO ADJUNTO</h1>');
+                        VistaPrevia.html(' <img src="img/camera.png" class="img-thumbnail img-fluid rounded mx-auto " >');
                     }
                 } else {
-                    pnlDatos.find("#VistaPrevia").html('<h3>NO EXISTE ARCHIVO ADJUNTO</h3>');
+                    //pnlDatos.find("#VistaPrevia").html('<h3>NO EXISTE ARCHIVO ADJUNTO</h3>');
+                    VistaPrevia.html(' <img src="img/camera.png" class="img-thumbnail img-fluid rounded mx-auto " >');
                 }
                 pnlTablero.addClass("d-none");
                 pnlDatos.removeClass('d-none');

@@ -14,9 +14,10 @@
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Estilo</th>
                             <th>Clave</th>
                             <th>Color</th>
-                            <th>Estilo</th>
+
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -57,7 +58,7 @@
                     </div>
                     <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
                         <label for="Clave" >Clave*</label>
-                        <input type="text" class="form-control form-control-sm numbersOnly" id="Clave" name="Clave" required placeholder="Clave del color">
+                        <input type="text" class="form-control form-control-sm numbersOnly disabledForms" id="Clave" name="Clave" required placeholder="Clave del color">
                     </div>
                     <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
                         <label for="" >Descripción*</label>
@@ -86,7 +87,7 @@
                     </div>
                     <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                         <label>Tamaño y color</label>
-                        <select id="TamanioColor" name="TamanioColor" class="form-control form-control-sm" required>
+                        <select id="trEtiqueta" name="trEtiqueta" class="form-control form-control-sm" required>
                             <option value=""></option>
                             <option value="1">1 = Sin etiqueta</option>
                             <option value="2">2 = 3x3.5 fondo blanco</option>
@@ -96,12 +97,12 @@
                         </select>
                     </div>
                     <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                        <label for="Piel" >Piel*</label>
-                        <input type="text" class="form-control form-control-sm numbersOnly" id="Piel" name="Piel" required placeholder="Piel 1">
-                        <label for="Forro" >Forro*</label>
-                        <input type="text" class="form-control form-control-sm numbersOnly" id="Forro" name="Forro" required placeholder="Forro 1">
-                        <label for="Suela" >Suela*</label>
-                        <input type="text" class="form-control form-control-sm numbersOnly" id="Suela" name="Suela" required placeholder="Suela 1">
+                        <label for="trPiel" >Piel*</label>
+                        <input type="text" class="form-control form-control-sm numbersOnly" id="trPiel" name="trPiel" required placeholder="">
+                        <label for="trForro" >Forro*</label>
+                        <input type="text" class="form-control form-control-sm numbersOnly" id="trForro" name="trForro" required placeholder="">
+                        <label for="trSuela" >Suela*</label>
+                        <input type="text" class="form-control form-control-sm numbersOnly" id="trSuela" name="trSuela" required placeholder="">
                     </div>
                 </div>
                 <div class="row pt-2">
@@ -283,7 +284,7 @@
                 "dataSrc": ""
             },
             "columns": [
-                {"data": "ID"}, {"data": "Clave"}, {"data": "Color"}, {"data": "Estilo"}
+                {"data": "ID"}, {"data": "Estilo"}, {"data": "Clave"}, {"data": "Color"}
             ],
             "columnDefs": [
                 {
@@ -303,8 +304,12 @@
             "scrollCollapse": false,
             "bSort": true,
             "aaSorting": [
-                [0, 'desc']/*ID*/
-            ]
+                [1, 'ASC']/*ID*/,
+                [2, 'ASC']/*ID*/
+            ],
+            initComplete: function (x, y) {
+                HoldOn.close();
+            }
         });
 
         $('#tblColores_filter input[type=search]').focus();
@@ -341,7 +346,7 @@
                 HoldOn.close();
             });
         });
-        HoldOn.close();
+
     }
 
     function getEstilos() {

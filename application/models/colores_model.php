@@ -12,7 +12,7 @@ class colores_model extends CI_Model {
 
     public function getRecords() {
         try {
-            return $this->db->select("C.ID, C.Clave, C.Descripcion AS Color, C.Estilo")->from("colores AS C")->join('Estilos AS E', 'C.Estilo = E.Clave')->where("C.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("C.ID, C.Estilo, C.Clave, C.Descripcion AS Color")->from("colores AS C")->join('Estilos AS E', 'C.Estilo = E.Clave', 'left')->where("C.Estatus", "ACTIVO")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -28,7 +28,7 @@ class colores_model extends CI_Model {
 
     public function getPieles() {
         try {
-//            GRUPO = 1 
+//            GRUPO = 1
             return $this->db->select("A.Clave AS ID,CONCAT(A.Clave,'-',IFNULL(A.Descripcion,'')) AS Articulo")->from("articulos AS A")
                             ->where("A.Estatus", "ACTIVO")->where("A.Grupo", 1)->get()->result();
         } catch (Exception $exc) {
