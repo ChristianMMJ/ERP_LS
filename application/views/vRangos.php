@@ -15,7 +15,6 @@
                         <tr>
                             <th>ID</th>
                             <th>Clave</th>
-                            <th>Rango</th>
                             <th>Serie</th>
                         </tr>
                     </thead>
@@ -49,7 +48,7 @@
                     </div>
                     <div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
                         <label for="Clave" >Clave*</label>
-                        <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required >
+                        <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" maxlength="5" required >
                     </div>
                     <div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
                         <label for="" >Serie*</label>
@@ -57,16 +56,12 @@
                             <option value=""></option>
                         </select>
                     </div>
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-2" id="SerieF">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-2" style=" overflow-x:auto; white-space: nowrap;" id="SerieF">
                         <?php
                         for ($i = 1; $i <= 22; $i++) {
-                            print '<input type="text" style="width: 45px;" maxlength="4" class="numbersOnly m-1" disabled="" readonly=""  name="T' . $i . '" placeholder="">';
+                            print '<input type="text" style="width: 45px;" maxlength="4" class="numbersOnly" disabled="" readonly=""  name="T' . $i . '" placeholder="">';
                         }
                         ?>
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                        <label for="Rango" >Rango*</label>
-                        <input type="text" class="form-control form-control-sm" id="Rango" name="Rango" required autofocus="">
                     </div>
 
                     <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
@@ -370,13 +365,10 @@
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass("d-none");
             btnEliminar.addClass("d-none");
-            getID();
-            pnlDatos.find("[name='Clave']").addClass('disabledForms');
-            pnlDatos.find("[name='Descripcion']").focus();
+            pnlDatos.find("[name='Clave']").focus();
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
-            pnlDatos.find("#Serie")[0].selectize.focus();
         });
 
         btnCancelar.click(function () {
@@ -390,21 +382,7 @@
         getSeries();
     }
 
-    function getID() {
-        $.getJSON(master_url + 'getID').done(function (data, x, jq) {
-            console.log(data);
-            if (data.length > 0) {
-                var ID = $.isNumeric(data[0].CLAVE) ? parseInt(data[0].CLAVE) + 1 : 1;
-                pnlDatos.find("#Clave").val(ID);
-            } else {
-                pnlDatos.find("#Clave").val('1');
-            }
-        }).fail(function (x, y, z) {
-            console.log(x, y, z);
-        }).always(function () {
-            HoldOn.close();
-        });
-    }
+
 
     function getRecords() {
         temp = 0;
@@ -424,7 +402,7 @@
                 "dataSrc": ""
             },
             "columns": [
-                {"data": "ID"}, {"data": "Clave"}, {"data": "Rango"}, {"data": "Serie"}
+                {"data": "ID"}, {"data": "Clave"}, {"data": "Serie"}
             ],
             "columnDefs": [
                 {
@@ -525,19 +503,5 @@
         });
     }
 
-    function getID() {
-        $.getJSON(master_url + 'getID').done(function (data, x, jq) {
-            console.log(data);
-            if (data.length > 0) {
-                var ID = $.isNumeric(data[0].CLAVE) ? parseInt(data[0].CLAVE) + 1 : 1;
-                pnlDatos.find("#Clave").val(ID);
-            } else {
-                pnlDatos.find("#Clave").val('1');
-            }
-        }).fail(function (x, y, z) {
-            console.log(x, y, z);
-        }).always(function () {
-            HoldOn.close();
-        });
-    }
+
 </script>

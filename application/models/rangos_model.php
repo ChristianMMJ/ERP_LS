@@ -12,8 +12,8 @@ class rangos_model extends CI_Model {
 
     public function getRecords() {
         try {
-            return $this->db->select("R.ID,R.Clave, R.Rango AS Rango, CONCAT(S.Clave,' - DEL ',S.PuntoInicial,' AL ',S.PuntoFinal) Serie")
-                    ->from("Rangos AS R")->join('Series AS S','R.Serie = S.Clave')->where("R.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("R.ID,R.Clave, CONCAT(S.Clave,' - DEL ',S.PuntoInicial,' AL ',S.PuntoFinal) Serie")
+                            ->from("Rangos AS R")->join('Series AS S', 'R.Serie = S.Clave')->where("R.Estatus", "ACTIVO")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

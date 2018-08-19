@@ -28,12 +28,12 @@ class piezas_model extends CI_Model {
 
     public function getRangos() {
         try {
-            return $this->db->select("R.Clave AS ID,CONCAT(R.Rango,'-',R.Serie) AS Rango")->from("rangos AS R")->where("R.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("R.Clave AS ID,CONCAT(R.Clave) AS Rango")->from("rangos AS R")->where("R.Estatus", "ACTIVO")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
-    
+
     public function getPiezaByID($IDX) {
         try {
             return $this->db->select("P.*")->from("Piezas AS P")->where("P.Estatus", "ACTIVO")->where("P.ID", $IDX)->get()->result();
