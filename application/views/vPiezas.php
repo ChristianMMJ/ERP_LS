@@ -76,8 +76,11 @@
                             <option value=""></option>
                         </select>
                     </div>
+
+                </div>
+                <div class="row">
                     <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
-                        <label for="" class="text-info font-weight-bold" >Para verificación de piezas  cuando realiza una copia de ficha tecnica a ficha tecnica*</label>
+                        <label for="" class="text-info font-weight-bold badge" >Para verificación de piezas  cuando realiza una copia de ficha tecnica a ficha tecnica*</label>
                         <select id="Obliga" name="Obliga" class="form-control form-control-sm" >
                             <option value=""></option>
                             <option value="0">0 = No verifica</option>
