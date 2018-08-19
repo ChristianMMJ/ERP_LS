@@ -155,6 +155,8 @@
             <ul class="collapse list-unstyled" id="fichastec">
                 <li class="item"><a href="Estilos"><i class="fa fa-capsules"></i> Estilos</a></li>
                 <li class="item"><a href="Colores"><i class="fa fa-palette"></i> Colores</a></li>
+                <li class="item"><a href="Rangos"><i class="fa fa-random"></i> Rangos</a></li>
+                <li class="item"><a href="Piezas"><i class="fa fa-puzzle-piece"></i> Piezas</a></li>
             </ul>
         </li>
         <li class="drop">
