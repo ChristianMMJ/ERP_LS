@@ -174,7 +174,6 @@
                 <li class="dropdown-divider"></li>
                 <li class="item"><a href="Series"><i class="fa fa-user-secret"></i> Series</a></li>
                 <li class="item"><a href="Grupos"><i class="fa fa-object-group"></i> Grupos</a></li>
-                <li class="item"><a href="Unidades"><i class="fa fa-ruler-combined"></i> Unidades</a></li>
                 <li class="item"><a href="MaqPlantillas"><i class="fa fa-gavel"></i> Maquilas Plantillas</a></li>
 
             </ul>
@@ -199,6 +198,11 @@
                     <a href="#general" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <i class="fa fa-cog"></i> General</a>
                     <ul class="collapse list-unstyled" id="general">
+                        <li class="item"><a href="Estados"><i class="fa fa-map-marked-alt"></i> Estados</a></li>
+                        <li class="item"><a href="Unidades"><i class="fa fa-ruler-combined"></i> Unidades</a></li>
+                        <li class="item"><a href="Zonas"><i class="fa fa-globe-americas"></i> Zonas</a></li>
+                        <li class="item"><a href="FormasPago"><i class="fa fa-hand-holding-usd"></i> Formas de Pago</a></li>
+                        <li class="item"><a href="Transportes"><i class="fa fa-truck-moving"></i> Transportes</a></li>
                         <li class="item"><a href="Semanas"><i class="fa fa-calendar-alt"></i> Semanas</a></li>
                         <li class="item"><a href="Departamentos"><i class="fab fa-buromobelexperte"></i> Departamentos</a></li>
                     </ul>

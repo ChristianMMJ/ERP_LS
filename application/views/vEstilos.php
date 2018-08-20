@@ -53,7 +53,9 @@
                 <hr>
 
                 <div class="row">
+                    <!--DATOS DEL ESTILO-->
                     <div class="col-12 col-md-8 col-lg-8">
+                        <!--PRIMER RENGLON-->
                         <div class="row">
                             <div class="d-none">
                                 <input type="text"  name="ID" class="form-control form-control-sm" >
@@ -69,15 +71,16 @@
                                 <label for="Descripcion" >Descripción*</label>
                                 <input type="text" id="Descripcion" name="Descripcion" class="form-control form-control-sm" required>
                             </div>
-                            <div class="col-6  col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                            <div class="col-6  col-sm-2 col-md-2 col-lg-2 col-xl-3">
                                 <label for="" >F. Alta</label>
                                 <input type="text" id="FechaAlta" name="FechaAlta" class="form-control form-control-sm date notEnter" >
                             </div>
-                            <div class="col-6  col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                            <div class="col-6  col-sm-2 col-md-2 col-lg-2 col-xl-3">
                                 <label for="" >F. Baja</label>
                                 <input type="text" id="FechaBaja" name="FechaBaja" class="form-control form-control-sm date notEnter" >
                             </div>
                         </div>
+                        <!--SEGUNDO RENGLON-->
                         <div class="row">
                             <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
                                 <label for="" >Linea*</label>
@@ -98,6 +101,7 @@
                                 </select>
                             </div>
                         </div>
+                        <!--TERCER RENGLON-->
                         <div class="row">
                             <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
                                 <label for="" >Dificultad</label>
@@ -127,6 +131,7 @@
                                 </select>
                             </div>
                         </div>
+                        <!--CUARTO RENGLON-->
                         <div class="row">
                             <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
                                 <label for="ConsumoPiel">C. Piel</label>
@@ -137,6 +142,7 @@
                                 <input type="text" maxlength="3" class="form-control form-control-sm numbersOnly" placeholder=""  name="ConsumoForro">
                             </div>
                         </div>
+                        <!--QUINTO RENGLON-->
                         <div class="row">
                             <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
                                 <label for="Maquila">Maquila*</label>
@@ -162,7 +168,129 @@
                                 </select>
                             </div>
                         </div>
+                        <!--SEXTO RENGLON-->
+                        <div class="row">
+                            <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
+                                <label for="Herramental">Herramental</label>
+                                <select class="form-control form-control-sm"   name="Herramental">
+                                    <option value=""></option>
+                                    <option value="1">1 PATRÓN BASE</option>
+                                    <option value="2">2 CARTÓN Y TESEO</option>
+                                    <option value="3">3 TESEO</option>
+                                    <option value="4">4 SUAJE</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                                <label for="Observaciones" > <span class="badge badge-warning">(Observaciones que irán en la orden de producción)</span></label>
+                                <input type="text" id="Observaciones" name="Observaciones" class="form-control form-control-sm">
+                            </div>
+                            <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                                <label for="Ano" >Año*</label>
+                                <input type="text" id="Ano" name="Ano" maxlength="4" class="form-control form-control-sm numbersOnly" placeholder="" >
+                            </div>
+                        </div>
+                        <!--SEPTIMO RENGLON-->
+                        <div class="row">
+                            <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
+                                <label for="" >Temporada*</label>
+                                <select id="Temporada" name="Temporada" class="form-control form-control-sm" >
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
+                                <label for="PuntoCentra">Punto Central</label>
+                                <input type="text" class="form-control form-control-sm numbersOnly" maxlength="4" id="PuntoCentral" name="PuntoCentral">
+                            </div>
+                            <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
+                                <label for="EstatusEstilo">Estatus del Estilo*</label>
+                                <select class="form-control form-control-sm required"   name="EstatusEstilo" required="">
+                                    <option value=""></option>
+                                    <option value="0">0 PRODUCCIÓN</option>
+                                    <option value="1">1 PROTOTIPO</option>
+                                    <option value="2">2 MUESTRA</option>
+                                    <option value="3">3 EXTENCIÓN</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
+                                <label for="TipoConstruccion">Tipo Construcción</label>
+                                <select class="form-control form-control-sm"   name="TipoConstruccion">
+                                    <option value=""></option>
+                                    <option value="1">1 OPANCA</option>
+                                    <option value="2">2 PEGADO</option>
+                                    <option value="3">3 OPANCA Y PEGADO</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!--OCTAVO RENGLON-->
+                        <div class="row">
+                            <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
+                                <label for="Observaciones" ><span class="badge badge-warning">Maquila o Plantilla</span> 1 </label>
+                                <select class="form-control form-control-sm"   name="MaqPlant1">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
+                                <label for="">2</label>
+                                <select class="form-control form-control-sm"   name="MaqPlant2">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
+                                <label for="">3</label>
+                                <select class="form-control form-control-sm"   name="MaqPlant3">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
+                                <label for="">4</label>
+                                <select class="form-control form-control-sm"   name="MaqPlant4">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <!--NOVENO RENGLON-->
+                        <div class="row">
+                            <div class="col-12 mt-2">
+                                <legend class="badge badge-danger"> INFORMACIÓN PARA COSTOS DE MANO DE OBRA</legend>
+                            </div>
+
+                            <div class="col-6 col-md-2 col-sm-2">
+                                <label for="">Pzas Corte</label>
+                                <input type="text" maxlength="4" class="form-control form-control-sm numbersOnly" placeholder="PIEZAS CORTE"  name="PiezasCorte">
+                            </div>
+                            <div class="col-6 col-md-2 col-sm-2">
+                                <label for="">Glp Corte P.</label>
+                                <input type="text" maxlength="4" class="form-control form-control-sm numbersOnly" placeholder="GOLPES CORTE PIEL"  name="GolpesCortePiel">
+                            </div>
+                            <div class="col-6 col-md-2 col-sm-2">
+                                <label for="">Glp Corte F.</label>
+                                <input type="text" maxlength="4" class="form-control form-control-sm numbersOnly" placeholder="GOLPES CORTE FORRO"  name="GolpesCorteForro">
+                            </div>
+                            <div class="col-6 col-md-2 col-sm-2">
+                                <label for="">Cm. Pesp.</label>
+                                <input type="text" maxlength="4" class="form-control form-control-sm numbersOnly" placeholder="CM PESPUNTE"  name="CmPespunte">
+                            </div>
+                            <div class="col-6 col-md-2 col-sm-2">
+                                <label for="">Cm. Reb.</label>
+                                <input type="text" maxlength="4" class="form-control form-control-sm numbersOnly" placeholder="CM REBAJADO"  name="CmRebajado">
+                            </div>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col-6 col-md-6 ">
+                                <h6 class="text-danger">Los campos con * son obligatorios</h6>
+                            </div>
+                            <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
+                                <i class="fa fa-save"></i>
+                            </button>
+                            <!--                    <div class="col-6 col-sm-6 col-md-6" align="right">
+                                                    <button type="button" class="btn btn-raised btn-info btn-sm" id="btnGuardar">
+                                                        <span class="fa fa-save "></span> GUARDAR
+                                                    </button>
+                                                </div>-->
+                        </div>
                     </div>
+
+                    <!--FOTO-->
                     <div class="col-12 col-md-4 col-lg-4">
                         <div class="row">
                             <div class="col-12 my-2">
@@ -181,122 +309,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-2">
-                        <label for="Herramental">Herramental</label>
-                        <select class="form-control form-control-sm"   name="Herramental">
-                            <option value=""></option>
-                            <option value="1">1 PATRÓN BASE</option>
-                            <option value="2">2 CARTÓN Y TESEO</option>
-                            <option value="3">3 TESEO</option>
-                            <option value="4">4 SUAJE</option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-6 col-lg-5">
-                        <label for="Observaciones" >Obs.* <span class="badge badge-warning">(Estas observaciones irán en la orden de producción)</span></label>
-                        <input type="text" id="Observaciones" name="Observaciones" class="form-control form-control-sm">
-                    </div>
-                    <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-1">
-                        <label for="Ano" >Año*</label>
-                        <input type="text" id="Ano" name="Ano" maxlength="4" class="form-control form-control-sm numbersOnly" placeholder="" >
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-2">
-                        <label for="" >Temporada*</label>
-                        <select id="Temporada" name="Temporada" class="form-control form-control-sm" >
-                            <option value=""></option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-sm-3 col-md-2 col-lg-3 col-xl-2">
-                        <label for="PuntoCentra">Punto Central</label>
-                        <input type="text" class="form-control form-control-sm numbersOnly" maxlength="4" id="PuntoCentral" name="PuntoCentral">
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-2">
-                        <label for="EstatusEstilo">Estatus del Estilo*</label>
-                        <select class="form-control form-control-sm required"   name="EstatusEstilo" required="">
-                            <option value=""></option>
-                            <option value="0">0 PRODUCCIÓN</option>
-                            <option value="1">1 PROTOTIPO</option>
-                            <option value="2">2 MUESTRA</option>
-                            <option value="3">3 EXTENCIÓN</option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-2">
-                        <label for="TipoConstruccion">Tipo Construcción</label>
-                        <select class="form-control form-control-sm"   name="TipoConstruccion">
-                            <option value=""></option>
-                            <option value="1">1 OPANCA</option>
-                            <option value="2">2 PEGADO</option>
-                            <option value="3">3 OPANCA Y PEGADO</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-2">
-                        <label for="Observaciones" ><span class="badge badge-warning">Maquila o Plantilla</span> 1 </label>
-                        <select class="form-control form-control-sm"   name="MaqPlant1">
-                            <option value=""></option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-2">
-                        <label for="">2</label>
-                        <select class="form-control form-control-sm"   name="MaqPlant2">
-                            <option value=""></option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-2">
-                        <label for="">3</label>
-                        <select class="form-control form-control-sm"   name="MaqPlant3">
-                            <option value=""></option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-2">
-                        <label for="">4</label>
-                        <select class="form-control form-control-sm"   name="MaqPlant4">
-                            <option value=""></option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 mt-2">
-                        <legend class="badge badge-danger"> INFORMACIÓN PARA COSTOS DE MANO DE OBRA</legend>
-                    </div>
 
-                    <div class="col-6 col-md-2 col-sm-2">
-                        <label for="">Pzas Corte</label>
-                        <input type="text" maxlength="4" class="form-control form-control-sm numbersOnly" placeholder="PIEZAS CORTE"  name="PiezasCorte">
-                    </div>
-                    <div class="col-6 col-md-2 col-sm-2">
-                        <label for="">Glp Corte P.</label>
-                        <input type="text" maxlength="4" class="form-control form-control-sm numbersOnly" placeholder="GOLPES CORTE PIEL"  name="GolpesCortePiel">
-                    </div>
-                    <div class="col-6 col-md-2 col-sm-2">
-                        <label for="">Glp Corte F.</label>
-                        <input type="text" maxlength="4" class="form-control form-control-sm numbersOnly" placeholder="GOLPES CORTE FORRO"  name="GolpesCorteForro">
-                    </div>
-                    <div class="col-6 col-md-2 col-sm-2">
-                        <label for="">Cm. Pesp.</label>
-                        <input type="text" maxlength="4" class="form-control form-control-sm numbersOnly" placeholder="CM PESPUNTE"  name="CmPespunte">
-                    </div>
-                    <div class="col-6 col-md-2 col-sm-2">
-                        <label for="">Cm. Reb.</label>
-                        <input type="text" maxlength="4" class="form-control form-control-sm numbersOnly" placeholder="CM REBAJADO"  name="CmRebajado">
-                    </div>
-                </div>
-                <div class="row pt-2">
-                    <div class="col-6 col-md-6 ">
-                        <h6 class="text-danger">Los campos con * son obligatorios</h6>
-                    </div>
-                    <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
-                        <i class="fa fa-save"></i>
-                    </button>
-                    <!--                    <div class="col-6 col-sm-6 col-md-6" align="right">
-                                            <button type="button" class="btn btn-raised btn-info btn-sm" id="btnGuardar">
-                                                <span class="fa fa-save "></span> GUARDAR
-                                            </button>
-                                        </div>-->
-                </div>
             </fieldset>
         </form>
     </div>
@@ -554,7 +567,7 @@
                 pnlTablero.addClass("d-none");
                 pnlDatos.removeClass('d-none');
                 btnEliminar.removeClass("d-none");
-
+                pnlDatos.find("#Clave").addClass('disabledForms');
                 pnlDatos.find("#Descripcion").focus().select();
             }).fail(function (x, y, z) {
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');

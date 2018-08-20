@@ -20,6 +20,10 @@
     background-color: #ecf0f1;
     opacity: 1;
 }
+/*Para textos que sobrepasen el largo*/
+.selectize-input {
+    padding-right: 18px;
+}
 
 /*Legend*/
 legend {

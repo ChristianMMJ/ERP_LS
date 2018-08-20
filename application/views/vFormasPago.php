@@ -2,15 +2,15 @@
     <div class="card-body ">
         <div class="row">
             <div class="col-sm-6 float-left">
-                <legend class="float-left">Unidades</legend>
+                <legend class="float-left">Formas de Pago</legend>
             </div>
             <div class="col-sm-6 float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
             </div>
         </div>
         <div class="card-block mt-4">
-            <div id="Unidades" class="table-responsive">
-                <table id="tblUnidades" class="table table-sm display " style="width:100%">
+            <div id="FormasPago" class="table-responsive">
+                <table id="tblFormasPago" class="table table-sm display " style="width:100%">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -31,7 +31,7 @@
             <fieldset>
                 <div class="row">
                     <div class="col-12 col-sm-6 col-md-4 float-left">
-                        <legend >Unidad</legend>
+                        <legend >Transporte</legend>
                     </div>
                     <div class="col-12 col-sm-6 col-md-8" align="right">
                         <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
@@ -54,6 +54,10 @@
                     <div class="col-12 col-md-6 col-sm-6">
                         <label for="Descripcion" >Descripción*</label>
                         <input type="text" id="Descripcion" name="Descripcion" class="form-control form-control-sm" placeholder="" required>
+                    </div>
+                    <div class="col-12 col-md-6 col-sm-6">
+                        <label for="Clave" >Clave SAT</label>
+                        <input type="text" class="form-control form-control-sm" id="ClaveSat" name="ClaveSat" required autofocus="">
                     </div>
                     <div class="col-12 col-md-12 col-sm-12">
                         <label for="" >Estatus*</label>
@@ -82,9 +86,9 @@
     </div>
 </div>
 <script>
-    var master_url = base_url + 'index.php/Unidades/';
-    var tblUnidades = $('#tblUnidades');
-    var Unidades;
+    var master_url = base_url + 'index.php/FormasPago/';
+    var tblFormasPago = $('#tblFormasPago');
+    var FormasPago;
     var btnNuevo = $("#btnNuevo"), btnCancelar = $("#btnCancelar"), btnEliminar = $("#btnEliminar"), btnGuardar = $("#btnGuardar");
     var pnlTablero = $("#pnlTablero"), pnlDatos = $("#pnlDatos");
     var nuevo = false;
@@ -108,8 +112,9 @@
                         processData: false,
                         data: frm
                     }).done(function (data, x, jq) {
+                        console.log(data);
                         swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO', 'info');
-                        Unidades.ajax.reload();
+                        FormasPago.ajax.reload();
                         pnlDatos.addClass("d-none");
                         pnlTablero.removeClass("d-none");
                     }).fail(function (x, y, z) {
@@ -128,7 +133,7 @@
                     }).done(function (data, x, jq) {
                         pnlDatos.find("[name='ID']").val(data);
                         nuevo = false;
-                        Unidades.ajax.reload();
+                        FormasPago.ajax.reload();
                         pnlDatos.addClass("d-none");
                         pnlTablero.removeClass("d-none");
                         swal('ATENCIÓN', 'SE HA AGREGADO UN NUEVO REGISTRO  ', 'info');
@@ -163,7 +168,7 @@
                     case "eliminar":
                         $.post(master_url + 'onEliminar', {ID: temp}).done(function () {
                             swal('ATENCIÓN', 'SE HA ELIMINADO EL REGISTRO', 'success');
-                            Unidades.ajax.reload();
+                            FormasPago.ajax.reload();
                         }).fail(function (x, y, z) {
                             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
                             console.log(x.responseText);
@@ -223,10 +228,10 @@
             message: 'CARGANDO...'
         });
         $.fn.dataTable.ext.errMode = 'throw';
-        if ($.fn.DataTable.isDataTable('#tblUnidades')) {
-            tblUnidades.DataTable().destroy();
+        if ($.fn.DataTable.isDataTable('#tblFormasPago')) {
+            tblFormasPago.DataTable().destroy();
         }
-        Unidades = tblUnidades.DataTable({
+        FormasPago = tblFormasPago.DataTable({
             "dom": 'Bfrtip',
             buttons: buttons,
             "ajax": {
@@ -258,19 +263,19 @@
             ]
         });
 
-        $('#tblUnidades_filter input[type=search]').focus();
+        $('#tblFormasPago_filter input[type=search]').focus();
 
-        tblUnidades.find('tbody').on('click', 'tr', function () {
+        tblFormasPago.find('tbody').on('click', 'tr', function () {
             HoldOn.open({
                 theme: 'sk-cube',
                 message: 'CARGANDO...'
             });
             nuevo = false;
-            tblUnidades.find("tbody tr").removeClass("success");
+            tblFormasPago.find("tbody tr").removeClass("success");
             $(this).addClass("success");
-            var dtm = Unidades.row(this).data();
+            var dtm = FormasPago.row(this).data();
             temp = parseInt(dtm.ID);
-            $.getJSON(master_url + 'getUnidadByID', {ID: temp}).done(function (data) {
+            $.getJSON(master_url + 'getFormaPagoByID', {ID: temp}).done(function (data) {
                 pnlDatos.find("input").val("");
                 $.each(pnlDatos.find("select"), function (k, v) {
                     pnlDatos.find("select")[k].selectize.clear(true);
@@ -297,3 +302,4 @@
         HoldOn.close();
     }
 </script>
+

@@ -1,16 +1,18 @@
+
+
 <div class="card m-3 animated fadeIn" id="pnlTablero">
     <div class="card-body ">
         <div class="row">
             <div class="col-sm-6 float-left">
-                <legend class="float-left">Unidades</legend>
+                <legend class="float-left">Zonas</legend>
             </div>
             <div class="col-sm-6 float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
             </div>
         </div>
         <div class="card-block mt-4">
-            <div id="Unidades" class="table-responsive">
-                <table id="tblUnidades" class="table table-sm display " style="width:100%">
+            <div id="Zonas" class="table-responsive">
+                <table id="tblZonas" class="table table-sm display " style="width:100%">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -31,7 +33,7 @@
             <fieldset>
                 <div class="row">
                     <div class="col-12 col-sm-6 col-md-4 float-left">
-                        <legend >Unidad</legend>
+                        <legend >Zona</legend>
                     </div>
                     <div class="col-12 col-sm-6 col-md-8" align="right">
                         <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
@@ -82,9 +84,9 @@
     </div>
 </div>
 <script>
-    var master_url = base_url + 'index.php/Unidades/';
-    var tblUnidades = $('#tblUnidades');
-    var Unidades;
+    var master_url = base_url + 'index.php/Zonas/';
+    var tblZonas = $('#tblZonas');
+    var Zonas;
     var btnNuevo = $("#btnNuevo"), btnCancelar = $("#btnCancelar"), btnEliminar = $("#btnEliminar"), btnGuardar = $("#btnGuardar");
     var pnlTablero = $("#pnlTablero"), pnlDatos = $("#pnlDatos");
     var nuevo = false;
@@ -109,7 +111,7 @@
                         data: frm
                     }).done(function (data, x, jq) {
                         swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO', 'info');
-                        Unidades.ajax.reload();
+                        Zonas.ajax.reload();
                         pnlDatos.addClass("d-none");
                         pnlTablero.removeClass("d-none");
                     }).fail(function (x, y, z) {
@@ -128,7 +130,7 @@
                     }).done(function (data, x, jq) {
                         pnlDatos.find("[name='ID']").val(data);
                         nuevo = false;
-                        Unidades.ajax.reload();
+                        Zonas.ajax.reload();
                         pnlDatos.addClass("d-none");
                         pnlTablero.removeClass("d-none");
                         swal('ATENCIÓN', 'SE HA AGREGADO UN NUEVO REGISTRO  ', 'info');
@@ -163,7 +165,7 @@
                     case "eliminar":
                         $.post(master_url + 'onEliminar', {ID: temp}).done(function () {
                             swal('ATENCIÓN', 'SE HA ELIMINADO EL REGISTRO', 'success');
-                            Unidades.ajax.reload();
+                            Zonas.ajax.reload();
                         }).fail(function (x, y, z) {
                             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
                             console.log(x.responseText);
@@ -223,10 +225,10 @@
             message: 'CARGANDO...'
         });
         $.fn.dataTable.ext.errMode = 'throw';
-        if ($.fn.DataTable.isDataTable('#tblUnidades')) {
-            tblUnidades.DataTable().destroy();
+        if ($.fn.DataTable.isDataTable('#tblZonas')) {
+            tblZonas.DataTable().destroy();
         }
-        Unidades = tblUnidades.DataTable({
+        Zonas = tblZonas.DataTable({
             "dom": 'Bfrtip',
             buttons: buttons,
             "ajax": {
@@ -258,19 +260,19 @@
             ]
         });
 
-        $('#tblUnidades_filter input[type=search]').focus();
+        $('#tblZonas_filter input[type=search]').focus();
 
-        tblUnidades.find('tbody').on('click', 'tr', function () {
+        tblZonas.find('tbody').on('click', 'tr', function () {
             HoldOn.open({
                 theme: 'sk-cube',
                 message: 'CARGANDO...'
             });
             nuevo = false;
-            tblUnidades.find("tbody tr").removeClass("success");
+            tblZonas.find("tbody tr").removeClass("success");
             $(this).addClass("success");
-            var dtm = Unidades.row(this).data();
+            var dtm = Zonas.row(this).data();
             temp = parseInt(dtm.ID);
-            $.getJSON(master_url + 'getUnidadByID', {ID: temp}).done(function (data) {
+            $.getJSON(master_url + 'getZonaByID', {ID: temp}).done(function (data) {
                 pnlDatos.find("input").val("");
                 $.each(pnlDatos.find("select"), function (k, v) {
                     pnlDatos.find("select")[k].selectize.clear(true);
@@ -297,3 +299,4 @@
         HoldOn.close();
     }
 </script>
+
