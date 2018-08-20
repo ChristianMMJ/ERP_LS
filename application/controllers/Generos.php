@@ -86,6 +86,14 @@ class Generos extends CI_Controller {
         }
     }
 
+    public function onComprobarClave() {
+        try {
+            print json_encode($this->generos_model->onComprobarClave($this->input->get('Clave')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onAgregar() {
         try {
             $x = $this->input;

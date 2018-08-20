@@ -70,6 +70,14 @@ class Estilos extends CI_Controller {
         }
     }
 
+    public function onComprobarClave() {
+        try {
+            print json_encode($this->estilos_model->onComprobarClave($this->input->get('Clave')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getHormas() {
         try {
             extract($this->input->post());

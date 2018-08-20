@@ -113,6 +113,12 @@
         handleEnter();
 
         /*FUNCIONES X BOTON*/
+        pnlDatos.find("#Clave").focusout(function () {
+            if (nuevo) {
+                onComprobarClave(this);
+            }
+        });
+        
         btnGuardar.click(function () {
             isValid('pnlDatos');
             if (valido) {
@@ -305,4 +311,46 @@
         HoldOn.close();
     }
 
+
+    function onComprobarClave(e) {
+        if (nuevo) {
+            HoldOn.open({
+                theme: 'sk-cube',
+                message: 'ESPERE...'
+            });
+            $.getJSON(master_url + 'onComprobarClave', {Clave: $(e).val()}).done(function (data) {
+                HoldOn.close();
+                if (data.length > 0) {
+                    swal({
+                        title: "ATENCIÓN",
+                        text: "LA CLAVE " + pnlDatos.find("#Clave").val() + " YA EXISTE",
+                        icon: "warning",
+                        buttons: {
+                            cancelar: {
+                                text: "Cancelar",
+                                value: "cancelar"
+                            },
+                            eliminar: {
+                                text: "Aceptar",
+                                value: "aceptar"
+                            }
+                        }
+                    }).then((value) => {
+                        switch (value) {
+                            case "aceptar":
+                                pnlDatos.find("#Clave").val('').focus();
+                                break;
+                            case "cancelar":
+                                swal.close();
+                                pnlDatos.find("#Clave").val('').focus();
+                                break;
+                        }
+                    });
+                }
+            }).fail(function (x, y, z) {
+                swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+                console.log(x.responseText);
+            });
+        }
+    }
 </script>

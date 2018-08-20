@@ -28,6 +28,14 @@ class rangos_model extends CI_Model {
         }
     }
 
+    public function onComprobarClave($C) {
+        try {
+            return $this->db->select("R.Clave")->from("Rangos AS R")->where("R.Clave", $C)->where("R.Estatus", "ACTIVO")->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    
     public function getSerieXClave($Clave) {
         try {
             return $this->db->select("S.*", false)->from('Series AS S')->where('S.Clave', $Clave)->get()->result();

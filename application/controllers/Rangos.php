@@ -56,6 +56,13 @@ class Rangos extends CI_Controller {
         }
     }
 
+    public function onComprobarClave() {
+        try {
+            print json_encode($this->rangos_model->onComprobarClave($this->input->get('Clave')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
     public function getSeries() {
         try {
             print json_encode($this->rangos_model->getSeries());

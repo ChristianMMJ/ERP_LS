@@ -34,6 +34,14 @@ class estilos_model extends CI_Model {
         }
     }
 
+    public function onComprobarClave($C) {
+        try {
+            return $this->db->select("E.Clave")->from("Estilos AS E")->where("E.Clave", $C)->where("E.Estatus", "ACTIVO")->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getEstiloByID($IDX) {
         try {
             return $this->db->select("E.*")->from("Estilos AS E")->where("E.Estatus", "ACTIVO")->where("E.ID", $IDX)->get()->result();

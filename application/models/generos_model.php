@@ -26,6 +26,14 @@ class generos_model extends CI_Model {
         }
     }
 
+    public function onComprobarClave($C) {
+        try {
+            return $this->db->select("G.Clave")->from("Generos AS G")->where("G.Clave", $C)->where("G.Estatus", "ACTIVO")->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getGeneroByID($IDX) {
         try {
             return $this->db->select("G.*")->from("Generos AS G")->where("G.Estatus", "ACTIVO")->where("G.ID", $IDX)->get()->result();

@@ -258,8 +258,8 @@
     var master_url = base_url + 'index.php/Rangos/';
     var tblRangos = $('#tblRangos');
     var Rangos;
-    var btnNuevo = $("#btnNuevo"), btnCancelar = $("#btnCancelar"), btnEliminar = $("#btnEliminar"), btnGuardar = $("#btnGuardar");
     var pnlTablero = $("#pnlTablero"), pnlDatos = $("#pnlDatos");
+    var btnNuevo = $("#btnNuevo"), btnCancelar = $("#btnCancelar"), btnEliminar = $("#btnEliminar"), btnGuardar = pnlDatos.find("#btnGuardar");
     var nuevo = false;
 
     $(document).ready(function () {
@@ -268,6 +268,11 @@
         handleEnter();
 
         /*FUNCIONES X BOTON*/
+        pnlDatos.find("#Clave").focusout(function () {
+            if (nuevo) {
+                onComprobarClave(this);
+            }
+        });
 
         pnlDatos.find("#Serie").change(function () {
             if ($(this).val() !== '') {
@@ -300,6 +305,7 @@
                         HoldOn.close();
                     });
                 } else {
+                    btnGuardar.addClass("d-none");
                     frm.append('Estatus', 'ACTIVO');
                     $.ajax({
                         url: master_url + 'onAgregar',
@@ -319,6 +325,7 @@
                         console.log(x, y, z);
                     }).always(function () {
                         HoldOn.close();
+                        btnGuardar.removeClass("d-none");//SE AGREGO POR QUE SI LE DEJAN APRETADO AL ENTER, ESTE BOTON SE EJECUTA 2 VECES NO ALCANZA A CERRARSE EL FORMULARIO Y EL FOCUS CONTINUA DESPUES DE GUARDARSE EN EL BOTON Y LO VUELVE A EJECUTAR
                     });
                 }
             } else {
@@ -504,4 +511,45 @@
     }
 
 
+    function onComprobarClave(e) {
+        if (nuevo) {
+            HoldOn.open({
+                theme: 'sk-cube',
+                message: 'ESPERE...'
+            });
+            $.getJSON(master_url + 'onComprobarClave', {Clave: $(e).val()}).done(function (data) {
+                HoldOn.close();
+                if (data.length > 0) {
+                    swal({
+                        title: "ATENCIÓN",
+                        text: "LA CLAVE " + pnlDatos.find("#Clave").val() + " YA EXISTE",
+                        icon: "warning",
+                        buttons: {
+                            cancelar: {
+                                text: "Cancelar",
+                                value: "cancelar"
+                            },
+                            eliminar: {
+                                text: "Aceptar",
+                                value: "aceptar"
+                            }
+                        }
+                    }).then((value) => {
+                        switch (value) {
+                            case "aceptar":
+                                pnlDatos.find("#Clave").val('').focus();
+                                break;
+                            case "cancelar":
+                                swal.close();
+                                pnlDatos.find("#Clave").val('').focus();
+                                break;
+                        }
+                    });
+                }
+            }).fail(function (x, y, z) {
+                swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+                console.log(x.responseText);
+            });
+        }
+    }
 </script>
