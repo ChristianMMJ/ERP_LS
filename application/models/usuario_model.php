@@ -12,7 +12,7 @@ class usuario_model extends CI_Model {
 
     public function getRecords() {
         try {
-            $this->db->select("ID, CONCAT(U.Nombre, ' ', U.Apellidos) AS Nombre,
+            $this->db->select("ID, CONCAT(U.Nombre, ' ', IFNULL(U.Apellidos,'')) AS Nombre,
                 CONCAT('<span class=\'label label-info\'>',ifnull(U.UltimoAcceso,'--'),'</span>') AS 'Último Acceso',
                   (CASE WHEN  U.Estatus ='Activo' THEN CONCAT('<span class=\'label label-success\'>','ACTIVO','</span>')
                     ELSE CONCAT('<span class=\'label label-danger\'>','INACTIVO','</span>') END) AS Estatus ,

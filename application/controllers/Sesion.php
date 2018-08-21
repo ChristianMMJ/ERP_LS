@@ -18,8 +18,9 @@ class Sesion extends CI_Controller {
             $this->load->view('vEncabezado');
 
             switch ($this->session->userdata["TipoAcceso"]) {
-                case 'SUPER ADMINISTRADOR':
-                    $this->load->view('vNavegacion');
+                case 'SUPER ADMINISTRADOR': $this->load->view('vNavGeneral');
+                    $this->load->view('vMenuPrincipal');
+                    $this->load->view('vNavGeneral');
                     break;
                 case 'ADMINISTRACION':
                     $this->load->view('vMenuAdministracion');

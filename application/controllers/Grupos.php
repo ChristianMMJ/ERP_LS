@@ -16,7 +16,20 @@ class Grupos extends CI_Controller {
 
             switch ($this->session->userdata["TipoAcceso"]) {
                 case 'SUPER ADMINISTRADOR':
-                    $this->load->view('vNavegacion');
+                    $this->load->view('vNavGeneral');
+                    //Validamos que no venga vacia y asignamos un valor por defecto
+                    $Origen = isset($_GET['origen']) ? $_GET['origen'] : "";
+
+                    if ($Origen === 'MATERIALES') {
+                        $this->load->view('vMenuMateriales');
+                    } else if ($Origen === 'FICHASTECNICAS') {
+                        $this->load->view('vMenuFichasTecnicas');
+                    }
+                    //Cuando no viene de ningun modulo y lo teclean
+                    else {
+                        $this->load->view('vMenuPrincipal');
+                    }
+
                     break;
                 case 'ADMINISTRACION':
                     $this->load->view('vMenuAdministracion');

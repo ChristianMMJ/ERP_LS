@@ -121,13 +121,13 @@
 
     #sidebar ul ul a {
         font-size: 0.9em !important;
-        padding-left: 30px !important;
+        padding-left: 55px !important;
 
     }
 
     #sidebar ul ul ul a {
         font-size: 0.9em !important;
-        padding-left: 60px !important;
+        padding-left: 85px !important;
     }
     .navbar{
         box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
@@ -149,62 +149,133 @@
         </li>
     </ul>
     <ul class="list-unstyled components">
-        <li class="drop">
-            <a href="#fichastec" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                <i class="fas fa-file-invoice"></i> Fichas Técnicas</a>
-            <ul class="collapse list-unstyled" id="fichastec">
-                <li class="item"><a href="Estilos"><i class="fa fa-capsules"></i> Estilos</a></li>
-                <li class="item"><a href="Colores"><i class="fa fa-palette"></i> Colores</a></li>
-                <li class="item"><a href="Rangos"><i class="fa fa-random"></i> Rangos</a></li>
-                <li class="item"><a href="Piezas"><i class="fa fa-puzzle-piece"></i> Piezas</a></li>
-            </ul>
+        <li class="item">
+            <a href="<?php print base_url('MenuMateriales') ?>">
+                <div class="row pl-2">
+                    <div class="col-2">
+                        <i class="fa fa-cube"></i>
+                    </div>
+                    <div class="col-10">
+                        Materiales
+                    </div>
+                </div>
+            </a>
         </li>
-        <li class="drop">
-            <a href="#catalogos" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                <i class="fa fa-folder-open"></i> Catálogos</a>
-            <ul class="collapse list-unstyled" id="catalogos">
-                <li class="item"><a href="Proveedores"><i class="fa fa-user-secret"></i> Proveedores</a></li>
-                <li class="item"><a href="Maquilas"><i class="fa fa-industry"></i> Maquilas</a></li>
-                <li class="item"><a href="Articulos"><i class="fa fa-cube"></i> Articulos</a></li>
-                <li class="dropdown-divider"></li>
-                <li class="item"><a href="Lineas"><i class="fa fa-coins"></i> Lineas</a></li>
-                <li class="item"><a href="Hormas"><i class="fa fa-shoe-prints"></i> Hormas</a></li>
-                <li class="item"><a href="Temporadas"><i class="fa fa-cloud"></i> Temporadas</a></li>
-                <li class="item"><a href="Generos"><i class="fa fa-transgender"></i> Generos</a></li>
-                <li class="dropdown-divider"></li>
-                <li class="item"><a href="Series"><i class="fa fa-user-secret"></i> Series</a></li>
-                <li class="item"><a href="Grupos"><i class="fa fa-object-group"></i> Grupos</a></li>
-                <li class="item"><a href="MaqPlantillas"><i class="fa fa-gavel"></i> Maquilas Plantillas</a></li>
-
-            </ul>
+        <li class="item">
+            <a href="#">
+                <div class="row pl-2">
+                    <div class="col-2">
+                        <i class="fa fa-users"></i>
+                    </div>
+                    <div class="col-10">
+                        Clientes
+                    </div>
+                </div>
+            </a>
+        </li>
+        <li class="item">
+            <a  href="<?php print base_url('MenuProveedores') ?>">
+                <div class="row pl-2">
+                    <div class="col-2">
+                        <i class="fa fa-user-secret"></i>
+                    </div>
+                    <div class="col-10">
+                        Proveedores
+                    </div>
+                </div>
+            </a>
+        </li>
+        <li class="item">
+            <a href="<?php print base_url('MenuFichasTecnicas') ?>">
+                <div class="row pl-2">
+                    <div class="col-2">
+                        <i class="fa fa-file-invoice"></i>
+                    </div>
+                    <div class="col-10">
+                        Fichas Técnicas
+                    </div>
+                </div>
+            </a>
+        </li>
+        <li class="item">
+            <a href="#">
+                <div class="row pl-2">
+                    <div class="col-2">
+                        <i class="fa fa-industry"></i>
+                    </div>
+                    <div class="col-10">
+                        Produccion
+                    </div>
+                </div>
+            </a>
+        </li>
+        <li class="item">
+            <a href="#">
+                <div class="row pl-2">
+                    <div class="col-2">
+                        <i class="fa fa-calculator"></i>
+                    </div>
+                    <div class="col-10">
+                        Contabilidad
+                    </div>
+                </div>
+            </a>
+        </li>
+        <li class="item">
+            <a href="#">
+                <div class="row pl-2">
+                    <div class="col-2">
+                        <i class="fa fa-dollar-sign"></i>
+                    </div>
+                    <div class="col-10">
+                        Finanzas
+                    </div>
+                </div>
+            </a>
+        </li>
+        <li class="item">
+            <a href="#">
+                <div class="row pl-2">
+                    <div class="col-2">
+                        <i class="fas fa-hand-holding-usd"></i>
+                    </div>
+                    <div class="col-10">
+                        Nóminas
+                    </div>
+                </div>
+            </a>
         </li>
         <li class="drop">
             <a href="#config" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                <i class="fa fa-cogs"></i> Configuración</a>
+                <div class="row pl-2">
+                    <div class="col-2">
+                        <i class="fa fa-cogs"></i>
+                    </div>
+                    <div class="col-10">
+                        Configuración
+                    </div>
+                </div>
+            </a>
             <ul class="collapse list-unstyled" id="config">
-
-                <li class="item">
+                <li class="item ">
                     <a href="#usuarios" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <i class="fa fa-users"></i> Usuarios</a>
                     <ul class="collapse list-unstyled" id="usuarios">
-                        <li class="item"><a href="Usuarios"><i class="fa fa-users-cog"></i> Usuarios</a></li>
-                        <li class="item"><a href="Permisos"><i class="fa fa-list-ul"></i> Permisos</a></li>
+                        <li class="item"><a href="<?php print base_url('Usuarios') ?>"><i class="fa fa-users-cog"></i> Usuarios</a></li>
+                        <li class="item"><a href="<?php print base_url('Permisos') ?>"><i class="fa fa-list-ul"></i> Permisos</a></li>
                         <li class="dropdown-divider"></li>
-                        <li class="item"><a href="Token"><i class="fa fa-key"></i> Token</a></li>
+                        <li class="item"><a href="<?php print base_url('Token') ?>"><i class="fa fa-key"></i> Token</a></li>
                     </ul>
                 </li>
-
                 <li class="item">
                     <a href="#general" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <i class="fa fa-cog"></i> General</a>
                     <ul class="collapse list-unstyled" id="general">
-                        <li class="item"><a href="Estados"><i class="fa fa-map-marked-alt"></i> Estados</a></li>
-                        <li class="item"><a href="Unidades"><i class="fa fa-ruler-combined"></i> Unidades</a></li>
-                        <li class="item"><a href="Zonas"><i class="fa fa-globe-americas"></i> Zonas</a></li>
-                        <li class="item"><a href="FormasPago"><i class="fa fa-hand-holding-usd"></i> Formas de Pago</a></li>
-                        <li class="item"><a href="Transportes"><i class="fa fa-truck-moving"></i> Transportes</a></li>
-                        <li class="item"><a href="Semanas"><i class="fa fa-calendar-alt"></i> Semanas</a></li>
-                        <li class="item"><a href="Departamentos"><i class="fab fa-buromobelexperte"></i> Departamentos</a></li>
+                        <li class="item"><a href="<?php print base_url('Estados') ?>" ><i class="fa fa-map-marked-alt"></i> Estados</a></li>
+                        <li class="item"><a href="<?php print base_url('Zonas') ?>" ><i class="fa fa-globe-americas"></i> Zonas</a></li>
+                        <li class="item"><a href="<?php print base_url('FormasPago') ?>" ><i class="fa fa-hand-holding-usd"></i> Formas de Pago</a></li>
+                        <li class="item"><a href="<?php print base_url('Transportes') ?>" ><i class="fa fa-truck-moving"></i> Transportes</a></li>
+                        <li class="item"><a href="<?php print base_url('Semanas') ?>" ><i class="fa fa-calendar-alt"></i> Semanas</a></li>
                     </ul>
                 </li>
             </ul>
@@ -215,32 +286,6 @@
             <span class="badge badge-warning btn-block px-3 py-2">V 1.0.0</span>
         </li>
     </ul>
-</nav>
-<!-- Contenido  -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
-    <button class="btn btn-primary btn-sm navbar-brand" id="sidebarCollapse">
-        <i class="fa fa-home"></i> Menú
-    </button>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav w-100">
-
-            <li class="nav-item dropdown ml-auto">
-                <a class="btn btn-primary dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <?php echo $this->session->userdata('Nombre') . ' ' . $this->session->userdata('Apellidos'); ?>
-                    <i class="fa fa-user-circle fa-lg"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#"><i class="fa fa-question-circle"></i> Reportar un problema</a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-key"></i> Cambiar Contraseña</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php print base_url('Sesion/onSalir'); ?>"><i class="fa fa-sign-out-alt"></i> Salir</a>
-                </div>
-            </li>
-        </ul>
-    </div>
 </nav>
 <div class="overlay"></div>
 <script>

@@ -62,6 +62,15 @@
                             <option value="DISEÑO Y DESARROLLO">DISEÑO Y DESARROLLO</option>
                             <option value="ALMACEN">ALMACÉN</option>
                             <option value="PRODUCCION">PRODUCCIÓN</option>
+                            <option value="CLIENTES">CLIENTES</option>
+                            <option value="CALIDAD">CALIDAD</option>
+                            <option value="RECEPCION">RECEPCIÓN</option>
+                            <option value="PROVEEDORES">PROVEEDORES</option>
+                            <option value="COBRANZA">COBRANZA</option>
+                            <option value="COBRANZA">COBRANZA</option>
+                            <option value="MAQUILAS">MAQUILAS</option>
+                            <option value="AGENTES">MAQUILAS</option>
+                            <option value="DESTAJOS">DESTAJOS</option>
                         </select>
                     </div>
                     <div class="col-12 col-md-12 col-sm-12">

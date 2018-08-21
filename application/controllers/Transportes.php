@@ -17,7 +17,8 @@ class Transportes extends CI_Controller {
 
             switch ($this->session->userdata["TipoAcceso"]) {
                 case 'SUPER ADMINISTRADOR':
-                    $this->load->view('vNavegacion');
+                    $this->load->view('vNavGeneral');
+                    $this->load->view('vMenuPrincipal');
                     break;
                 case 'ADMINISTRACION':
                     $this->load->view('vMenuAdministracion');
