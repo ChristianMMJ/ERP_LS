@@ -17,7 +17,7 @@ class Semanas extends CI_Controller {
             switch ($this->session->userdata["TipoAcceso"]) {
                 case 'SUPER ADMINISTRADOR':
                     $this->load->view('vNavGeneral');
-                    $this->load->view('vMenuPrincipal');
+                    $this->load->view('vMenuProduccion');
                     break;
                 case 'ADMINISTRACION':
                     $this->load->view('vMenuAdministracion');

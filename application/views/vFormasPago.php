@@ -59,14 +59,6 @@
                         <label for="Clave" >Clave SAT</label>
                         <input type="text" class="form-control form-control-sm" id="ClaveSat" name="ClaveSat" required autofocus="">
                     </div>
-                    <div class="col-12 col-md-12 col-sm-12">
-                        <label for="" >Estatus*</label>
-                        <select id="Estatus" name="Estatus" class="form-control form-control-sm" >
-                            <option value=""></option>
-                            <option value="ACTIVO">ACTIVO</option>
-                            <option value="INACTIVO">INACTIVO</option>
-                        </select>
-                    </div>
                 </div>
                 <div class="row pt-2">
                     <div class="col-6 col-md-6 ">

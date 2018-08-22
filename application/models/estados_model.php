@@ -18,7 +18,7 @@ class estados_model extends CI_Model {
         }
     }
 
-    public function getUnidadByID($IDX) {
+    public function getEstadoByID($IDX) {
         try {
             return $this->db->select("T.ID, T.Clave, T.Descripcion, T.Estatus")->from("Estados AS T")->where("T.Estatus", "ACTIVO")->where("T.ID", $IDX)->get()->result();
         } catch (Exception $exc) {

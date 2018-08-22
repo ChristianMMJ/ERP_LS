@@ -18,7 +18,7 @@ class Zonas extends CI_Controller {
             switch ($this->session->userdata["TipoAcceso"]) {
                 case 'SUPER ADMINISTRADOR':
                     $this->load->view('vNavGeneral');
-                    $this->load->view('vMenuPrincipal');
+                    $this->load->view('vMenuClientes');
                     break;
                 case 'ADMINISTRACION':
                     $this->load->view('vMenuAdministracion');
@@ -69,9 +69,9 @@ class Zonas extends CI_Controller {
         }
     }
 
-    public function getTransporteByID() {
+    public function getZonaByID() {
         try {
-            print json_encode($this->zonas_model->getTransporteByID($this->input->get('ID')));
+            print json_encode($this->zonas_model->getZonaByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -83,7 +83,7 @@ class Zonas extends CI_Controller {
             $this->zonas_model->onAgregar(array(
                 'Clave' => ($x->post('Clave') !== NULL) ? $x->post('Clave') : NULL,
                 'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL,
-                'Estatus' => ($x->post('Estatus') !== NULL) ? strtoupper($x->post('Estatus')) : NULL
+                'Estatus' => 'ACTIVO'
             ));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

@@ -18,7 +18,7 @@ class FormasPago extends CI_Controller {
             switch ($this->session->userdata["TipoAcceso"]) {
                 case 'SUPER ADMINISTRADOR':
                     $this->load->view('vNavGeneral');
-                    $this->load->view('vMenuPrincipal');
+                    $this->load->view('vMenuClientes');
                     break;
                 case 'ADMINISTRACION':
                     $this->load->view('vMenuAdministracion');
@@ -84,7 +84,7 @@ class FormasPago extends CI_Controller {
             $this->formasPago_model->onAgregar(array(
                 'Clave' => ($x->post('Clave') !== NULL) ? $x->post('Clave') : NULL,
                 'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL,
-                'Estatus' => ($x->post('Estatus') !== NULL) ? strtoupper($x->post('Estatus')) : NULL,
+                'Estatus' => 'ACTIVO',
                 'ClaveSat' => ($x->post('ClaveSat') !== NULL) ? strtoupper($x->post('ClaveSat')) : NULL
             ));
         } catch (Exception $exc) {

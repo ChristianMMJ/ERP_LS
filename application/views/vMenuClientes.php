@@ -1,7 +1,7 @@
 <!-- Contenido  -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
     <button class="btn btn-primary text-success btn-sm navbar-brand" id="sidebarCollapse">
-        <i class="fa fa-home"></i> Proveedores
+        <i class="fa fa-home"></i> Clientes
     </button>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -14,8 +14,23 @@
                     Catálogos
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCatalogos">
-                    <a class="dropdown-item" href="<?php print base_url('Proveedores/?origen=PROVEEDORES'); ?>"> Proveedores</a>
-                    <a class="dropdown-item" href="<?php print base_url('Bancos'); ?>"> Bancos</a>
+                    <a class="dropdown-item" href="#"> Agentes</a>
+                    <a class="dropdown-item" href="#"> Paises</a>
+                    <a class="dropdown-item" href="<?php print base_url('Estados'); ?>"> Estados</a>
+                    <a class="dropdown-item" href="#"> Grupos de Clientes</a>
+                    <a class="dropdown-item" href="<?php print base_url('Zonas'); ?>"> Zonas</a>
+                    <a class="dropdown-item" href="<?php print base_url('Transportes'); ?>"> Transportes</a>
+                    <a class="dropdown-item" href="#"> Clientes</a>
+                    <a class="dropdown-item" href="#"> Metodos de Pago</a>
+                    <a class="dropdown-item" href="<?php print base_url('FormasPago'); ?>"> Formas de Pagos</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="btn btn-primary dropdown-toggle" href="#" id="navCapturas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Capturas
+                </a>
+                <div class="dropdown-menu dropdown-menu" aria-labelledby="navCapturas">
+                    <a class="dropdown-item" href="#"> Prueba.</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -27,22 +42,30 @@
                 </div>
             </li>
 
-            <li class="nav-item dropdown">
-                <a class="btn btn-primary dropdown-toggle" href="#" id="navMaquiladoras" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Maquiladoras
-                </a>
-                <div class="dropdown-menu dropdown-menu" aria-labelledby="navMaquiladoras">
-                    <a class="dropdown-item" href="<?php print base_url('Maquilas/?origen=PROVEEDORES'); ?>"> Maquilas</a>
-                </div>
-
-
-            </li>
 
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navReportes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Reportes
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navReportes">
+                    <a class="dropdown-item" href="#"> Prueba</a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="btn btn-primary dropdown-toggle" href="#" id="navEstadisticas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Estadísticas
+                </a>
+                <div class="dropdown-menu dropdown-menu" aria-labelledby="navEstadisticas">
+                    <a class="dropdown-item" href="#"> Prueba</a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="btn btn-primary dropdown-toggle" href="#" id="navUtilerias" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Utilerías
+                </a>
+                <div class="dropdown-menu dropdown-menu" aria-labelledby="navUtilerias">
                     <a class="dropdown-item" href="#"> Prueba</a>
                 </div>
             </li>

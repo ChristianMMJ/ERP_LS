@@ -162,7 +162,7 @@
             </a>
         </li>
         <li class="item">
-            <a href="#">
+            <a href="<?php print base_url('MenuClientes') ?>">
                 <div class="row pl-2">
                     <div class="col-2">
                         <i class="fa fa-users"></i>
@@ -198,7 +198,7 @@
             </a>
         </li>
         <li class="item">
-            <a href="#">
+            <a href="<?php print base_url('MenuProduccion') ?>">
                 <div class="row pl-2">
                     <div class="col-2">
                         <i class="fa fa-industry"></i>
@@ -225,18 +225,6 @@
             <a href="#">
                 <div class="row pl-2">
                     <div class="col-2">
-                        <i class="fa fa-dollar-sign"></i>
-                    </div>
-                    <div class="col-10">
-                        Finanzas
-                    </div>
-                </div>
-            </a>
-        </li>
-        <li class="item">
-            <a href="#">
-                <div class="row pl-2">
-                    <div class="col-2">
                         <i class="fas fa-hand-holding-usd"></i>
                     </div>
                     <div class="col-10">
@@ -252,31 +240,25 @@
                         <i class="fa fa-cogs"></i>
                     </div>
                     <div class="col-10">
-                        Configuración
+                        Parámetros
                     </div>
                 </div>
             </a>
             <ul class="collapse list-unstyled" id="config">
                 <li class="item ">
-                    <a href="#usuarios" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <i class="fa fa-users"></i> Usuarios</a>
-                    <ul class="collapse list-unstyled" id="usuarios">
-                        <li class="item"><a href="<?php print base_url('Usuarios') ?>"><i class="fa fa-users-cog"></i> Usuarios</a></li>
-                        <li class="item"><a href="<?php print base_url('Permisos') ?>"><i class="fa fa-list-ul"></i> Permisos</a></li>
-                        <li class="dropdown-divider"></li>
-                        <li class="item"><a href="<?php print base_url('Token') ?>"><i class="fa fa-key"></i> Token</a></li>
-                    </ul>
+                    <a href="<?php print base_url('Usuarios') ?>">
+                        <i class="fa fa-users"></i> Usuarios
+                    </a>
                 </li>
-                <li class="item">
-                    <a href="#general" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <i class="fa fa-cog"></i> General</a>
-                    <ul class="collapse list-unstyled" id="general">
-                        <li class="item"><a href="<?php print base_url('Estados') ?>" ><i class="fa fa-map-marked-alt"></i> Estados</a></li>
-                        <li class="item"><a href="<?php print base_url('Zonas') ?>" ><i class="fa fa-globe-americas"></i> Zonas</a></li>
-                        <li class="item"><a href="<?php print base_url('FormasPago') ?>" ><i class="fa fa-hand-holding-usd"></i> Formas de Pago</a></li>
-                        <li class="item"><a href="<?php print base_url('Transportes') ?>" ><i class="fa fa-truck-moving"></i> Transportes</a></li>
-                        <li class="item"><a href="<?php print base_url('Semanas') ?>" ><i class="fa fa-calendar-alt"></i> Semanas</a></li>
-                    </ul>
+                <li class="item ">
+                    <a href="#">
+                        <i class="fa fa-key"></i> Token de Seguridad
+                    </a>
+                </li>
+                <li class="item ">
+                    <a href="#">
+                        <i class="fa fa-user-check"></i> Permisos
+                    </a>
                 </li>
             </ul>
         </li>

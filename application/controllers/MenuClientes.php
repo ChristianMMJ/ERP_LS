@@ -1,9 +1,8 @@
 <?php
 
-header('Access-Control-Allow-Origin: *');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class MenuProveedores extends CI_Controller {
+class MenuClientes extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -14,11 +13,10 @@ class MenuProveedores extends CI_Controller {
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             $this->load->view('vEncabezado');
             $this->load->view('vFondo');
-
             switch ($this->session->userdata["TipoAcceso"]) {
                 case 'SUPER ADMINISTRADOR':
                     $this->load->view('vNavGeneral');
-                    $this->load->view('vMenuProveedores');
+                    $this->load->view('vMenuClientes');
                     break;
                 case 'ADMINISTRACION':
                     $this->load->view('vMenuAdministracion');

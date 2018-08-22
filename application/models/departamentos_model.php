@@ -28,12 +28,12 @@ class departamentos_model extends CI_Model {
 
     public function onComprobarClave($C) {
         try {
-            return $this->db->select("G.Clave")->from("Departamento AS G")->where("G.Clave", $C)->where("G.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("G.Clave")->from("Departamentos AS G")->where("G.Clave", $C)->where("G.Estatus", "ACTIVO")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
-    
+
     public function getDepartamentoByID($IDX) {
         try {
             return $this->db->select("D.*")->from("Departamentos AS D")->where("D.Estatus", "ACTIVO")->where("D.ID", $IDX)->get()->result();

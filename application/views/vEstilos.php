@@ -335,7 +335,7 @@
                 onComprobarClave(this);
             }
         });
-        
+
         btnArchivo.on("click", function () {
             $('#Foto').attr("type", "file");
             $('#Foto').val('');
@@ -702,15 +702,11 @@
         win.document.write('<img src="' + url + '" onload="window.print();window.close()" />');
         win.focus();
     }
-    
+
     function onComprobarClave(e) {
         if (nuevo) {
-            HoldOn.open({
-                theme: 'sk-cube',
-                message: 'ESPERE...'
-            });
             $.getJSON(master_url + 'onComprobarClave', {Clave: $(e).val()}).done(function (data) {
-                HoldOn.close();
+
                 if (data.length > 0) {
                     swal({
                         title: "ATENCIÓN",

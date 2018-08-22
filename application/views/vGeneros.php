@@ -322,10 +322,6 @@
 
     function onComprobarClave(e) {
         if (nuevo) {
-            HoldOn.open({
-                theme: 'sk-cube',
-                message: 'ESPERE...'
-            });
             $.getJSON(master_url + 'onComprobarClave', {Clave: $(e).val()}).done(function (data) {
                 HoldOn.close();
                 if (data.length > 0) {
