@@ -23,9 +23,9 @@
                         <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
                             <span class="fa fa-arrow-left" ></span> REGRESAR
                         </button>
-                        <button type="button" class="btn btn-danger btn-sm" id="btnEliminar">
-                            <span class="fa fa-trash fa-1x"></span> ELIMINAR
-                        </button>
+                        <!--                        <button type="button" class="btn btn-danger btn-sm" id="btnEliminar">
+                                                    <span class="fa fa-trash fa-1x"></span> ELIMINAR
+                                                </button>-->
                     </div>
                 </div>
                 <hr>

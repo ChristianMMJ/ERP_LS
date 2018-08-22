@@ -27,147 +27,159 @@
         </div>
     </div>
 </div>
-<div class="card m-3 d-none animated fadeIn" id="pnlDatos">
-    <div class="card-body text-dark">
-        <form id="frmNuevo">
-            <fieldset>
-                <div class="row">
-                    <div class="col-12 col-sm-6 col-md-4 float-left">
-                        <legend >Articulos</legend>
+<div class="d-none animated fadeIn text-dark" id="pnlDatos">
+
+    <form id="frmNuevo">
+        <fieldset>
+            <!--            PRIMER CONTENEDOR-->
+            <div class="card  m-3 ">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-md-4 float-left">
+                            <legend >Articulos</legend>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-8" align="right">
+                            <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
+                                <span class="fa fa-arrow-left" ></span> REGRESAR
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm d-none" id="btnEliminar">
+                                <span class="fa fa-trash fa-1x"></span> ELIMINAR
+                            </button>
+                            <button type="button" class="btn btn-raised btn-success btn-sm d-none" id="btnIgualaPrecios">
+                                <span class="fa fa-money-bill"></span> PRECIO MAQUILAS  = MAQ-1
+                            </button>
+                            <!--                        <button type="button" class="btn btn-raised btn-info btn-sm" id="btnGuardar">
+                                                        <span class="fa fa-save "></span> GUARDAR
+                                                    </button>-->
+
+                        </div>
                     </div>
-                    <div class="col-12 col-sm-6 col-md-8" align="right">
-                        <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
-                            <span class="fa fa-arrow-left" ></span> REGRESAR
-                        </button>
-                        <button type="button" class="btn btn-danger btn-sm d-none" id="btnEliminar">
-                            <span class="fa fa-trash fa-1x"></span> ELIMINAR
-                        </button>
-                        <button type="button" class="btn btn-raised btn-success btn-sm d-none" id="btnIgualaPrecios">
-                            <span class="fa fa-money-bill"></span> PRECIO MAQUILAS  = MAQ-1
-                        </button>
-                        <!--                        <button type="button" class="btn btn-raised btn-info btn-sm" id="btnGuardar">
-                                                    <span class="fa fa-save "></span> GUARDAR
-                                                </button>-->
+                    <hr>
+                    <div class="row">
+                        <div class="d-none">
+                            <input type="text" id="ID" name="ID" class="form-control form-control-sm" >
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-2">
+                            <label for="Clave" >Clave*</label>
+                            <input type="text" class="form-control form-control-sm numbersOnly disabledForms" id="Clave" name="Clave" required placeholder="20180814">
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                            <label for="" >Tipo de articulo*</label>
+                            <select id="Departamento" name="Departamento" class="form-control form-control-sm" >
+                                <option value=""></option>
+                                <option value="10">10 PIEL/FORRO</option>
+                                <option value="80">80 SUELA/PLANTA</option>
+                                <option value="90">90 PELETERIA</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                            <label for="" >Descripción*</label>
+                            <input type="text" class="form-control form-control-sm" id="Descripcion" name="Descripcion" required >
+
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3 col-xl-2">
+                            <label for="" >Grupo*</label>
+                            <select id="Grupo" name="Grupo" class="form-control form-control-sm required" >
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-6 col-xl-2">
+                            <label for="" >Tipo*</label>
+                            <select id="TipoArticulo" name="TipoArticulo" class="form-control form-control-sm required" >
+                                <option value=""></option>
+                                <option value="0">PRODUCCIÓN</option>
+                                <option value="222">PROTOTIPO</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3 col-xl-1">
+                            <label for="" >Unidad*</label>
+                            <select id="UnidadMedida" name="UnidadMedida" class="form-control form-control-sm required" >
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3 col-xl-1">
+                            <label for="" >Moneda*</label>
+                            <select id="Tmnda" name="Tmnda" class="form-control form-control-sm required" >
+                                <option value=""></option>
+                                <option value="1">Nacional</option>
+                                <option value="2">Dolar</option>
+                                <option value="3">Libra</option>
+                                <option value="4">Jen</option>
+                                <option value="5">Euro</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3 col-xl-3">
+                            <label for="Min" >Min</label>
+                            <input type="text" class="form-control form-control-sm" id="Min" name="Min" >
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3 col-xl-3">
+                            <label for="Max" >Max</label>
+                            <input type="text" class="form-control form-control-sm" id="Max" name="Max" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--            SEGUNDO CONTENEDOR-->
+            <div class="card  m-3 ">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 my-3" align="center">
+                            <legend>Proveedores del Artículo</legend>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-12 col-xl-4">
+                            <select id="ProveedorUno" name="ProveedorUno" class="form-control form-control-sm mb-2" >
+                                <option value=""></option>
+                            </select>
+                            <input type="text" class="form-control form-control-sm numbersOnly mb-2" id="PrecioUno" name="PrecioUno"  placeholder="Precio pactado">
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-12 col-xl-4">
+                            <select id="ProveedorDos" name="ProveedorDos" class="form-control form-control-sm mb-2" >
+                                <option value=""></option>
+                            </select>
+                            <input type="text" class="form-control form-control-sm numbersOnly mb-2" id="PrecioDos" name="PrecioDos"   placeholder="Precio pactado">
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-12 col-xl-4">
+                            <select id="ProveedorTres" name="ProveedorTres" class="form-control form-control-sm mb-2" >
+                                <option value=""></option>
+                            </select>
+                            <input type="text" class="form-control form-control-sm numbersOnly mb-2" id="PrecioTres" name="PrecioTres"   placeholder="Precio pactado">
+                        </div>
 
                     </div>
                 </div>
-                <hr>
-                <div class="row">
-                    <div class="d-none">
-                        <input type="text" id="ID" name="ID" class="form-control form-control-sm" >
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
-                        <label for="Clave" >Clave*</label>
-                        <input type="text" class="form-control form-control-sm numbersOnly" id="Clave" name="Clave" required placeholder="20180814">
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
-                        <label for="" >Tipo de articulo*</label>
-                        <select id="Departamento" name="Departamento" class="form-control form-control-sm" >
-                            <option value=""></option>
-                            <option value="10">PIEL/FORRO</option>
-                            <option value="80">SUELA/PLANTA</option>
-                            <option value="90">PELETERIA</option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                        <label for="" >Descripción*</label>
-                        <textarea id="Descripcion" name="Descripcion" class="form-control" rows="2" cols="4"></textarea>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-3 col-xl-3">
-                        <label for="" >Grupo*</label>
-                        <select id="Grupo" name="Grupo" class="form-control form-control-sm" >
-                            <option value=""></option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-3 col-xl-3">
-                        <label for="" >Unidad*</label>
-                        <select id="UnidadMedida" name="UnidadMedida" class="form-control form-control-sm" >
-                            <option value=""></option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-3 col-xl-3">
-                        <label for="" >Moneda*</label>
-                        <select id="Tmnda" name="Tmnda" class="form-control form-control-sm" >
-                            <option value=""></option>
-                            <option value="1">Nacional</option>
-                            <option value="2">Dolar</option>
-                            <option value="3">Libra</option>
-                            <option value="4">Jen</option>
-                            <option value="5">Euro</option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-3 col-xl-3">
-                        <label for="Min" >Min*</label>
-                        <input type="text" class="form-control form-control-sm" id="Min" name="Min" required >
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-3 col-xl-3">
-                        <label for="Max" >Max*</label>
-                        <input type="text" class="form-control form-control-sm" id="Max" name="Max" >
-                    </div>
+            </div>
+            <!--            TERCER CONTENEDOR-->
+            <div class="card  m-3 ">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 my-3" align="center">
+                            <legend>Ubicación del Almacén</legend>
+                        </div>
+                        <div class="col-12 col-sm-3 col-md-3 col-xl-3 mb-3">
+                            <input type="text" class="form-control form-control-sm" id="UbicacionUno" name="UbicacionUno" placeholder="UBICACION 1 1">
+                        </div>
+                        <div class="col-12 col-sm-3 col-md-3 col-xl-3 mb-3">
+                            <input type="text" class="form-control form-control-sm" id="UbicacionDos" name="UbicacionDos"  placeholder="UBICACION 2">
+                        </div>
+                        <div class="col-12 col-sm-3 col-md-3 col-xl-3 mb-3">
+                            <input type="text" class="form-control form-control-sm" id="UbicacionTres" name="UbicacionTres"  placeholder="UBICACION 3">
+                        </div>
+                        <div class="col-12 col-sm-3 col-md-3 col-xl-3 mb-3">
+                            <input type="text" class="form-control form-control-sm" id="UbicacionCuatro" name="UbicacionCuatro"  placeholder="UBICACION 4">
+                        </div>
 
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 my-3" align="center">
-                        <legend>Proveedores</legend>
                     </div>
-                    <div class="col-12 col-sm-12 col-md-12 col-xl-4">
-                        <select id="ProveedorUno" name="ProveedorUno" class="form-control form-control-sm mb-2" required >
-                            <option value=""></option>
-                        </select>
-                        <input type="text" class="form-control form-control-sm numbersOnly mb-2" id="PrecioUno" name="PrecioUno" required  placeholder="Precio pactado">
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-12 col-xl-4">
-                        <select id="ProveedorDos" name="ProveedorDos" class="form-control form-control-sm mb-2" >
-                            <option value=""></option>
-                        </select>
-                        <input type="text" class="form-control form-control-sm numbersOnly mb-2" id="PrecioDos" name="PrecioDos"   placeholder="Precio pactado">
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-12 col-xl-4">
-                        <select id="ProveedorTres" name="ProveedorTres" class="form-control form-control-sm mb-2" >
-                            <option value=""></option>
-                        </select>
-                        <input type="text" class="form-control form-control-sm numbersOnly mb-2" id="PrecioTres" name="PrecioTres"   placeholder="Precio pactado">
-                    </div>
+                    <div class="row pt-2">
+                        <div class="col-6 col-md-6 ">
+                            <h6 class="text-danger">Los campos con * son obligatorios</h6>
+                        </div>
 
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 my-3" align="center">
-                        <legend>Ubicaciones</legend>
-                    </div>
-                    <div class="col-12 col-sm-3 col-md-3 col-xl-3 mb-3">
-                        <input type="text" class="form-control form-control-sm" id="UbicacionUno" name="UbicacionUno" required placeholder="Pasillo 1">
-                    </div>
-                    <div class="col-12 col-sm-3 col-md-3 col-xl-3 mb-3">
-                        <input type="text" class="form-control form-control-sm" id="UbicacionDos" name="UbicacionDos"  placeholder="Aparador 1">
-                    </div>
-                    <div class="col-12 col-sm-3 col-md-3 col-xl-3 mb-3">
-                        <input type="text" class="form-control form-control-sm" id="UbicacionTres" name="UbicacionTres"  placeholder="Pasillo 2">
-                    </div>
-                    <div class="col-12 col-sm-3 col-md-3 col-xl-3 mb-3">
-                        <input type="text" class="form-control form-control-sm" id="UbicacionCuatro" name="UbicacionCuatro"  placeholder="Aparador 2">
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-6 col-xl-6">
-                        <label for="" >Tipo*</label>
-                        <select id="TipoArticulo" name="TipoArticulo" class="form-control form-control-sm" >
-                            <option value=""></option>
-                            <option value="0">PRODUCCIÓN</option>
-                            <option value="222">PROTOTIPO</option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-6 col-xl-6">
-                        <label for="" >Estatus*</label>
-                        <select id="Estatus" name="Estatus" class="form-control form-control-sm" >
-                            <option value=""></option>
-                            <option value="ACTIVO">ACTIVO</option>
-                            <option value="INACTIVO">INACTIVO</option>
-                        </select>
                     </div>
                 </div>
-                <div class="row pt-2">
-                    <div class="col-6 col-md-6 ">
-                        <h6 class="text-danger">Los campos con * son obligatorios</h6>
-                    </div>
+            </div>
 
-                </div>
-            </fieldset>
-        </form>
-    </div>
+        </fieldset>
+    </form>
 </div>
 <div class="card m-3 d-none animated fadeIn" id="pnlDatosDetalle">
 
@@ -187,7 +199,7 @@
                 <label for="Precio" >Precio Maquila uno*</label>
                 <input type="text" class="form-control form-control-sm numbersOnly" id="Precio" name="Precio" required placeholder="0.0">
             </div>
-            <div class="col-12 col-sm-12 col-md-1 col-lg-1 col-xl-1 my-2 d-sm-block ">
+            <div class="col-12 col-sm-12 col-md-1 col-lg-1 col-xl-1 my-2 d-sm-block pt-3">
                 <button type="button" id="btnAgregarPrecio" class="btn btn-primary btn-sm d-sm-block "><span class="fa fa-plus"></span></button>
             </div>
             <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 my-2 table-responsive">
@@ -221,7 +233,6 @@
         /*FUNCIONES INICIALES*/
         init();
         handleEnter();
-        pnlDatos.find("input,select").addClass("animated slideInDown");
         /*FUNCIONES X BOTON*/
         btnIgualaPrecios.click(function () {
             swal({
@@ -344,7 +355,7 @@
                     });
                 }
             } else {
-                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
+                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'error');
             }
         });
 
@@ -419,13 +430,13 @@
         /*INICIALIZAR DETALLE*/
         PrecioVentaParaMaquilas = tblPrecioVentaParaMaquilas.DataTable({
 
-            "dom": 'frtip',
+            "dom": 'rti',
             buttons: buttons,
             language: lang,
             select: true,
             "autoWidth": true,
             "colReorder": true,
-            "displayLength": 20,
+            "displayLength": 25,
             "bLengthChange": false,
             "deferRender": true,
             "scrollCollapse": false,
@@ -591,7 +602,10 @@
             "bSort": true,
             "aaSorting": [
                 [0, 'desc']/*ID*/
-            ]
+            ],
+            initComplete: function (a, b) {
+                HoldOn.close();
+            }
         });
 
         $('#tblArticulos_filter input[type=search]').focus();
@@ -648,7 +662,7 @@
                 HoldOn.close();
             });
         });
-        HoldOn.close();
+
     }
     function getGrupos() {
         $.getJSON(master_url + 'getGrupos').done(function (data) {
