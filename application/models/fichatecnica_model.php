@@ -36,8 +36,8 @@ class fichatecnica_model extends CI_Model {
                 CONCAT(\'$\',FORMAT(FT.Precio,2)) AS Precio,
                 CONCAT(\'\',FT.Consumo,\'\') AS Consumo,
                 FT.TipoPiel As TipoPiel,
-                ISNULL(FT.PzXPar,1) AS PzXPar, 
-                CONCAT(\'$\',FORMAT((FT.Precio * FT.Consumo), 2)) AS Importe, FT.Clave AS ID, 
+                ISNULL(FT.PzXPar,1) AS PzXPar,
+                CONCAT(\'$\',FORMAT((FT.Precio * FT.Consumo), 2)) AS Importe, FT.Clave AS ID,
                 CONCAT(\'<span class="fa fa-trash fa-lg" onclick="onEliminarArticuloID(\',FT.Clave,\')">\',\'</span>\') AS Eliminar,
                 CONCAT(D.Clave,\' - \',D.Descripcion) AS DeptoCat, D.Clave AS DEPTO', false)
                             ->from('FichaTecnica AS FT ')
@@ -54,20 +54,20 @@ class fichatecnica_model extends CI_Model {
 
     public function getFichaTecnicaDetalleByID($Estilo, $Color) {
         try {
-            $this->db->select('P.Clave AS Pieza_ID, CONCAT(P.Clave, \'-\', P.Descripcion) AS Pieza, 
-            FT.Articulo Articulo_ID, CONCAT(M.Descripcion, \'-\', M.Descripcion) AS Articulo, 
-            CONCAT(\'<span class="text-warning">\', C.Descripcion, \'</span>\') AS Unidad, 
-            CONCAT(\'$\', FORMAT(FT.Precio, 2)) AS Precio, 
-            CONCAT(\'\', FT.Consumo, \'\') AS Consumo, IFNULL(FT.PzXPar, 1) AS PzXPar, 
-            CONCAT(\'$\', FORMAT((FT.Precio * FT.Consumo), 2)) AS Importe, FT.ID AS ID, 
+            $this->db->select('P.Clave AS Pieza_ID, CONCAT(P.Clave, \'-\', P.Descripcion) AS Pieza,
+            FT.Articulo Articulo_ID, CONCAT(M.Descripcion, \'-\', M.Descripcion) AS Articulo,
+            CONCAT(\'<span class="text-warning">\', C.Descripcion, \'</span>\') AS Unidad,
+            CONCAT(\'$\', FORMAT(FT.Precio, 2)) AS Precio,
+            CONCAT(\'\', FT.Consumo, \'\') AS Consumo, IFNULL(FT.PzXPar, 1) AS PzXPar,
+            CONCAT(\'$\', FORMAT((FT.Precio * FT.Consumo), 2)) AS Importe, FT.ID AS ID,
             CASE WHEN P.Clasificacion = 1 THEN \'1ra\' WHEN P.Clasificacion = 2 THEN \'2da\' WHEN P.Clasificacion = 1 THEN \'1ra\'  END AS TipoPiel,
-            CONCAT(\'<span class="fa fa-trash fa-lg" onclick="onEliminarArticuloID(\', FT.ID, \')">\', \'</span>\') AS Eliminar, 
+            CONCAT(\'<span class="fa fa-trash fa-lg" onclick="onEliminarArticuloID(\', FT.ID, \')">\', \'</span>\') AS Eliminar,
             CONCAT(D.Clave, \' - \', D.Descripcion) AS DeptoCat, D.Clave AS DEPTO', false)
                     ->from('FichaTecnica AS FT')
                     ->join('`Articulos` AS `M`', '`FT`.`Articulo` = `M`.`Clave`')
                     ->join('`Piezas` AS `P`', '`FT`.`Pieza` = `P`.`Clave`')
                     ->join('Unidades AS C', '`M`.`UnidadMedida` = `C`.`Clave`')
-                    ->join('Departamentos AS D', '`P`.`Departamento` = `D`.`Clave`') 
+                    ->join('Departamentos AS D', '`P`.`Departamento` = `D`.`Clave`')
                     ->where('FT.Estilo', $Estilo)->where('FT.Color', $Color)
                     ->where('FT.Estatus', 'ACTIVO');
             $query = $this->db->get();
@@ -149,7 +149,11 @@ class fichatecnica_model extends CI_Model {
 
     public function getPiezas() {
         try {
-            return $this->db->select("P.Clave AS ID, CONCAT(P.Clave,' - ',IFNULL(P.Descripcion,'')) AS Descripcion ", false)->from('Piezas AS P')->where_in('P.Estatus', 'ACTIVO')->get()->result();
+            return $this->db->select("CAST(P.Clave AS SIGNED ) AS ID, CONCAT(P.Clave,' - ',IFNULL(P.Descripcion,'')) AS Descripcion ", false)
+                            ->from('Piezas AS P')
+                            ->where_in('P.Estatus', 'ACTIVO')
+                            ->order_by('ID', 'ASC')
+                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -157,7 +161,11 @@ class fichatecnica_model extends CI_Model {
 
     public function getEstilos() {
         try {
-            return $this->db->select("E.Clave, CONCAT(E.Clave,' - ',IFNULL(E.Descripcion,'')) AS Estilo")->from("Estilos AS E")->where("E.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("CAST(E.Clave AS SIGNED ) AS Clave, CONCAT(E.Clave,' - ',IFNULL(E.Descripcion,'')) AS Estilo")
+                            ->from("Estilos AS E")
+                            ->where("E.Estatus", "ACTIVO")
+                            ->order_by('Clave', 'ASC')
+                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -165,7 +173,11 @@ class fichatecnica_model extends CI_Model {
 
     public function getGrupos() {
         try {
-            return $this->db->select("G.Clave AS ID, G.Nombre AS Grupo")->from("grupos AS G")->where("G.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("CAST(G.Clave AS SIGNED ) AS ID, CONCAT(G.Clave,'-', G.Nombre) AS Grupo")
+                            ->from("grupos AS G")
+                            ->where("G.Estatus", "ACTIVO")
+                            ->order_by('ID', 'ASC')
+                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -182,7 +194,7 @@ class fichatecnica_model extends CI_Model {
     public function getPrecioPorArticuloByID($ID) {
         try {
             $this->db->select('PM.Precio AS PRECIO', false)->from('Articulos AS E')
-                    ->join('preciosmaquilas AS PM','E.Clave = PM.Articulo')
+                    ->join('preciosmaquilas AS PM', 'E.Clave = PM.Articulo')
                     ->where('E.Clave', $ID)->where_in('E.Estatus', 'ACTIVO');
             $query = $this->db->get();
             /*
@@ -198,8 +210,12 @@ class fichatecnica_model extends CI_Model {
 
     public function getColoresXEstilo($Estilo) {
         try {
-            return $this->db->select("C.Clave AS ID, CONCAT(C.Clave,'-', C.Descripcion) AS Descripcion ", false)
-                            ->from('Colores AS C')->where('C.Estilo', $Estilo)->where('C.Estatus', 'ACTIVO')->get()->result();
+            return $this->db->select("CAST(C.Clave AS SIGNED ) AS ID, CONCAT(C.Clave,'-', C.Descripcion) AS Descripcion ", false)
+                            ->from('Colores AS C')
+                            ->where('C.Estilo', $Estilo)
+                            ->where('C.Estatus', 'ACTIVO')
+                            ->order_by('ID', 'ASC')
+                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

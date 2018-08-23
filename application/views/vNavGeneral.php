@@ -153,6 +153,18 @@
         </ul>-->
     <ul class="list-unstyled components">
         <li class="item">
+            <a  href="<?php print base_url('MenuProveedores') ?>">
+                <div class="row pl-2">
+                    <div class="col-2">
+                        <i class="fa fa-user-secret"></i>
+                    </div>
+                    <div class="col-10">
+                        Proveedores
+                    </div>
+                </div>
+            </a>
+        </li>
+        <li class="item">
             <a href="<?php print base_url('MenuMateriales') ?>">
                 <div class="row pl-2">
                     <div class="col-2">
@@ -176,18 +188,7 @@
                 </div>
             </a>
         </li>
-        <li class="item">
-            <a  href="<?php print base_url('MenuProveedores') ?>">
-                <div class="row pl-2">
-                    <div class="col-2">
-                        <i class="fa fa-user-secret"></i>
-                    </div>
-                    <div class="col-10">
-                        Proveedores
-                    </div>
-                </div>
-            </a>
-        </li>
+
         <li class="item">
             <a href="<?php print base_url('MenuFichasTecnicas') ?>">
                 <div class="row pl-2">

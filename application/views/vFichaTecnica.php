@@ -33,7 +33,7 @@
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 float-left">
                     <legend class="float-left">Ficha Técnica</legend>
-                </div> 
+                </div>
                 <div class="col-12 col-sm-6 col-md-8" align="right">
                     <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
                         <span class="fa fa-arrow-left" ></span> REGRESAR
@@ -368,7 +368,7 @@
                     var stt = $.number(rows.data().pluck('Importe').reduce(function (a, b) {
                         return a + getNumberFloat(b);
                     }, 0), 4, '.', ',');
-                    return $('<tr>').append('<td colspan="4">' + group + '</td>').append('<td>' + stc + '</td><td colspan="2"></td><td>$' + stt + '</td><td></td></tr>');
+                    return $('<tr>').append('<td></td><td></td><td colspan="2">Totales de: ' + group + '</td>').append('<td>' + stc + '</td><td colspan="2"></td><td>$' + stt + '</td><td></td></tr>');
                 },
                 dataSrc: "DeptoCat"
             },
@@ -860,28 +860,18 @@
 </script>
 <style>
     .bold-text{
-        font-weight: bold;
+        font-weight: 400;
     }
     tr.group-start:hover td{
-        background-color: #212121 !important;
-        color: #fff !important;
+        background-color: #e0e0e0 !important;
+        color: #000 !important;
     }
-    tr.group-end:hover td{
-        background-color: #3F51B5 !important;
-        color: #fff !important;
+    tr.group-end td{
+        background-color: #FFF !important;
+        color: #000!important;
     }
     td{
-        font-weight: bold; 
         -webkit-transition: all .2s ease-in-out;
         transition: all .2s ease-in-out;
-    }
-    /*sibling-selectors*/
-    tr:not(.group) >  td + td ~ td:not(.group):not(:last-child):hover{
-        font-weight: bold;
-        background-color: #212121 !important;
-        color: #fff !important;
-        -webkit-transform: scale(1.2);
-        transform: scale(1.2);
-        z-index: 1;
     }
 </style>

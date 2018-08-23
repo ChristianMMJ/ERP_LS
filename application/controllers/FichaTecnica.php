@@ -11,9 +11,43 @@ class FichaTecnica extends CI_Controller {
 
     public function index() {
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
-            $this->load->view('vEncabezado')->view('vMenuPrincipal')->view('vNavGeneral')->view('vFichaTecnica')->view('vFooter');
+            $this->load->view('vEncabezado');
+
+            switch ($this->session->userdata["TipoAcceso"]) {
+                case 'SUPER ADMINISTRADOR':
+                    $this->load->view('vNavGeneral');
+                    $this->load->view('vMenuFichasTecnicas');
+                    break;
+                case 'ADMINISTRACION':
+                    $this->load->view('vMenuAdministracion');
+                    break;
+                case 'CONTABILIDAD':
+                    $this->load->view('vMenuContabilidad');
+                    break;
+                case 'RECURSOS HUMANOS':
+                    $this->load->view('vMenuRecursosHumanos');
+                    break;
+                case 'INGENIERIA':
+                    $this->load->view('vMenuIngenieria');
+                    break;
+                case 'DISEÑO Y DESARROLLO':
+                    $this->load->view('vMenuDisDes');
+                    break;
+                case 'ALMACEN':
+                    $this->load->view('vMenuAlmacen');
+                    break;
+                case 'PRODUCCION':
+                    $this->load->view('vMenuProduccion');
+                    break;
+            }
+
+            $this->load->view('vFondo');
+            $this->load->view('vFichaTecnica');
+            $this->load->view('vFooter');
         } else {
-            $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
+            $this->load->view('vEncabezado');
+            $this->load->view('vSesion');
+            $this->load->view('vFooter');
         }
     }
 
@@ -109,12 +143,12 @@ class FichaTecnica extends CI_Controller {
                 'Consumo' => ($x->post('Consumo') !== NULL) ? $x->post('Consumo') : 0,
                 'PzXPar' => ($x->post('PzXPar') !== NULL) ? $x->post('PzXPar') : NULL,
                 'Estatus' => 'ACTIVO'
-            ); 
+            );
             if (isset($PRECIO[0])) {
                 $data["Precio"] = $PRECIO[0]->PRECIO;
             } else {
                 $data["Precio"] = 0;
-            } 
+            }
             $ID = $this->fichatecnica_model->onAgregar($data);
             print $ID;
         } catch (Exception $exc) {
