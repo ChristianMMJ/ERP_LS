@@ -8,7 +8,7 @@ class FichaTecnicaFija extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('fichatecnicafija_model')->model('piezas_model')->model('articulos_model');
+        $this->load->library('session')->model('fichatecnicafija_model');
     }
 
     public function index() {
@@ -53,17 +53,25 @@ class FichaTecnicaFija extends CI_Controller {
         }
     }
 
-    public function getSeries() {
+    public function getGrupos() {
         try {
-            print json_encode($this->series_model->getSeries());
+            print json_encode($this->fichatecnicafija_model->getGrupos());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getMaquilas() {
+    public function getArticulos() {
         try {
-            print json_encode($this->maquilas_model->getMaquilas());
+            print json_encode($this->fichatecnicafija_model->getArticulos($this->input->post('Grupo')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getPiezas() {
+        try {
+            print json_encode($this->fichatecnicafija_model->getPiezas());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -80,7 +88,7 @@ class FichaTecnicaFija extends CI_Controller {
     public function onAgregar() {
         try {
             $x = $this->input;
-            $this->hormas_model->onAgregar(array(
+            $this->fichatecnicafija_model->onAgregar(array(
                 'Pieza' => ($x->post('Pieza') !== NULL) ? $x->post('Pieza') : NULL,
                 'Articulo' => ($x->post('Articulo') !== NULL) ? $x->post('Articulo') : NULL,
                 'Consumo' => ($x->post('Consumo') !== NULL) ? $x->post('Consumo') : NULL
@@ -92,7 +100,7 @@ class FichaTecnicaFija extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->fichatecnicafija_model->onEliminar($this->input->post('ID'));
+            $this->fichatecnicafija_model->onEliminar($this->input->post('IDP'), $this->input->post('IDM'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

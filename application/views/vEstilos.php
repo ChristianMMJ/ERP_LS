@@ -673,7 +673,6 @@
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
-            pnlDatos.find("[name='Maquila']")[0].selectize.addOption({text: '--', value: ''});
             $.each(data, function (k, v) {
                 pnlDatos.find("[name='Maquila']")[0].selectize.addOption({text: v.Maquila, value: v.Clave});
             });

@@ -20,7 +20,7 @@ class maquilas_model extends CI_Model {
 
     public function getMaquilas() {
         try {
-            return $this->db->select("M.Clave,CONCAT(M.Clave,'-',M.Nombre) AS Maquila")->from("Maquilas AS M")->where("M.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("CONVERT(M.Clave, UNSIGNED INTEGER) AS Clave, CONCAT(M.Clave,' - ',M.Nombre) AS Maquila")->from("Maquilas AS M")->where("M.Estatus", "ACTIVO")->order_by('Clave', 'ASC')->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

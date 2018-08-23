@@ -12,7 +12,7 @@ class unidad_model extends CI_Model {
 
     public function getRecords() {
         try {
-            return $this->db->select("U.ID, U.Clave, U.Descripcion, U.Estatus")->from("Unidades AS U")->where("U.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("U.ID, U.Clave, U.Descripcion")->from("Unidades AS U")->where("U.Estatus", "ACTIVO")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

@@ -12,7 +12,7 @@ class piezas_model extends CI_Model {
 
     public function getRecords() {
         try {
-            return $this->db->select("P.ID, P.Clave, P.Descripcion, P.Estatus")->from("Piezas AS P")->where("P.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("P.ID, P.Clave, P.Descripcion")->from("Piezas AS P")->where("P.Estatus", "ACTIVO")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
