@@ -1,20 +1,20 @@
-<div class="col-12 row mt-3">
-    <div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 my-3">
-        <figure class="figure">
-            <img src=".../400x300" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
-            <figcaption class="figure-caption text-right">Articulos.</figcaption>
-        </figure>
+<div class="col-12 row mt-3" align="center">
+    <div class="card col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 my-3 animated fadeInUp"> 
+        <img class="card-img-top  p-2" src="<?php print base_url('img/lsoff.png'); ?>" alt="Card image cap">
+        <div class="card-body">
+            <h1 class="card-text">Proveedores</h1>
+        </div>
     </div> 
-    <div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 my-3">
-        <figure class="figure">
-            <img src=".../400x300" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
-            <figcaption class="figure-caption text-right">Articulos.</figcaption>
-        </figure>
-    </div> 
-    <div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 my-3">
-        <figure class="figure">
-            <img src=".../400x300" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
-            <figcaption class="figure-caption text-right">Articulos.</figcaption>
-        </figure>
-    </div> 
+    <div class="card col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 my-3 animated fadeInDown"> 
+        <img class="card-img-top p-2" src="<?php print base_url('img/lsoff.png'); ?>" alt="Card image cap">
+        <div class="card-body">
+            <h1 class="card-text">Materiales</h1>
+        </div> 
+    </div>
+    <div class="card col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 my-3 animated fadeInUp"> 
+        <img class="card-img-top p-2" src="<?php print base_url('img/lsoff.png'); ?>" alt="Card image cap">
+        <div class="card-body">
+            <h1 class="card-text">Clientes</h1>
+        </div> 
+    </div>
 </div> 

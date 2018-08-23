@@ -48,10 +48,6 @@
                             <button type="button" class="btn btn-raised btn-success btn-sm d-none" id="btnIgualaPrecios">
                                 <span class="fa fa-money-bill"></span> PRECIO MAQUILAS  = MAQ-1
                             </button>
-                            <!--                        <button type="button" class="btn btn-raised btn-info btn-sm" id="btnGuardar">
-                                                        <span class="fa fa-save "></span> GUARDAR
-                                                    </button>-->
-
                         </div>
                     </div>
                     <hr>
@@ -288,17 +284,19 @@
             if (valido) {
                 var frm = new FormData(pnlDatos.find("#frmNuevo")[0]);
                 if (!nuevo) {
-                    var precios = [];
-                    $.each(tblPrecioVentaParaMaquilas.find("tbody tr"), function (k, v) {
-                        var r = PrecioVentaParaMaquilas.row($(this)).data();
-                        if (r[3] === 'NUEVO') {
-                            precios.push({
-                                Maquila: r[1],
-                                Precio: r[2]
-                            });
-                        }
-                    });
-                    frm.append('Precios', JSON.stringify(precios));
+                    if (PrecioVentaParaMaquilas.data().count()) {
+                        var precios = [];
+                        $.each(tblPrecioVentaParaMaquilas.find("tbody tr"), function (k, v) {
+                            var r = PrecioVentaParaMaquilas.row($(this)).data();
+                            if (r[3] === 'NUEVO') {
+                                precios.push({
+                                    Maquila: r[1],
+                                    Precio: r[2]
+                                });
+                            }
+                        });
+                        frm.append('Precios', JSON.stringify(precios));
+                    }
                     $.ajax({
                         url: master_url + 'onModificar',
                         type: "POST",
@@ -410,6 +408,9 @@
             getID();
             $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
             btnIgualaPrecios.addClass("d-none");
+            pnlDatos.find("#PrecioUno").prop("readonly", false);
+            pnlDatos.find("#PrecioDos").prop("readonly", false);
+            pnlDatos.find("#PrecioTres").prop("readonly", false);
         });
 
         btnCancelar.click(function () {
@@ -635,8 +636,14 @@
                 pnlTablero.addClass("d-none");
                 pnlDatos.removeClass('d-none');
                 pnlDatosDetalle.removeClass('d-none');
-                btnEliminar.removeClass("d-none");
                 pnlDatos.find("#Departamento")[0].selectize.focus();
+
+                /*DESHABILITAR CAMPOS CLAVE DEL ARTICULO*/
+                pnlDatos.find("#UnidadMedida")[0].selectize.disable();
+                pnlDatos.find("#PrecioUno").prop("readonly", true);
+                pnlDatos.find("#PrecioDos").prop("readonly", true);
+                pnlDatos.find("#PrecioTres").prop("readonly", true);
+
                 /*DETALLE*/
                 $.getJSON(master_url + 'getDetalleByID', {ID: temp}).done(function (data) {
                     console.log('getDetalleByID', data);
@@ -708,7 +715,6 @@
 
     function getMaquilas() {
         $.getJSON(master_url + 'getMaquilas', {ID: temp}).done(function (data) {
-            pnlDatos.find("#Maquila")[0].selectize.addOption({text: '--', value: ''});
             $.each(data, function (k, v) {
                 pnlDatosDetalle.find("#Maquila")[0].selectize.addOption({text: v.Maquila, value: v.ID});
             });

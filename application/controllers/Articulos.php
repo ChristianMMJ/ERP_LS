@@ -162,8 +162,7 @@ class Articulos extends CI_Controller {
                 'Registro' => $x->post('Registro'),
                 'PrecioUno' => $x->post('PrecioUno'),
                 'PrecioDos' => $x->post('PrecioDos'),
-                'PrecioTres' => $x->post('PrecioTres'),
-                'PrecioCuatro' => $x->post('PrecioCuatro')
+                'PrecioTres' => $x->post('PrecioTres')
             );
             $ID = $this->articulos_model->onAgregar($datos);
 
@@ -184,7 +183,6 @@ class Articulos extends CI_Controller {
                 'Departamento' => $x->post('Departamento'),
                 'Descripcion' => $x->post('Descripcion'), /* REQUIERE PERMISO */
                 'Grupo' => $x->post('Grupo'),
-                'UnidadMedida' => $x->post('UnidadMedida'), /* REQUIERE PERMISO */
                 'Tmnda' => $x->post('Tmnda'),
                 'Min' => $x->post('Min'),
                 'Max' => $x->post('Max'),
@@ -196,12 +194,7 @@ class Articulos extends CI_Controller {
                 'UbicacionDos' => $x->post('UbicacionDos'),
                 'UbicacionTres' => $x->post('UbicacionTres'),
                 'UbicacionCuatro' => $x->post('UbicacionCuatro'),
-                'TipoArticulo' => $x->post('TipoArticulo'),
-                'Registro' => $x->post('Registro'),
-                'PrecioUno' => $x->post('PrecioUno'), /* REQUIERE PERMISO */
-                'PrecioDos' => $x->post('PrecioDos'), /* REQUIERE PERMISO */
-                'PrecioTres' => $x->post('PrecioTres'), /* REQUIERE PERMISO */
-                'PrecioCuatro' => $x->post('PrecioCuatro')/* REQUIERE PERMISO */
+                'TipoArticulo' => $x->post('TipoArticulo')
             );
             $this->articulos_model->onModificar($x->post('ID'), $datos);
 

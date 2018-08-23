@@ -15,8 +15,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Clave</th>
-                            <th>Descripción</th>
-                            <th>Estatus</th>
+                            <th>Descripción</th> 
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -63,11 +62,6 @@
                     <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
                         <i class="fa fa-save"></i>
                     </button>
-                    <!--                    <div class="col-6 col-sm-6 col-md-6" align="right">
-                                            <button type="button" class="btn btn-raised btn-info btn-sm" id="btnGuardar">
-                                                <span class="fa fa-save "></span> GUARDAR
-                                            </button>
-                                        </div>-->
                 </div>
             </fieldset>
         </form>
@@ -173,7 +167,6 @@
             pnlDatos.find("input").val("");
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass("d-none");
-            btnEliminar.addClass("d-none");
             getID();
             pnlDatos.find("[name='Clave']").addClass('disabledForms');
             pnlDatos.find("[name='Descripcion']").focus();
@@ -226,7 +219,7 @@
                 "dataSrc": ""
             },
             "columns": [
-                {"data": "ID"}, {"data": "Clave"}, {"data": "Descripcion"}, {"data": "Estatus"}
+                {"data": "ID"}, {"data": "Clave"}, {"data": "Descripcion"}
             ],
             "columnDefs": [
                 {
@@ -274,9 +267,7 @@
                     }
                 });
                 pnlTablero.addClass("d-none");
-                pnlDatos.removeClass('d-none');
-                btnEliminar.removeClass("d-none");
-
+                pnlDatos.removeClass('d-none'); 
                 pnlDatos.find("[name='Clave']").addClass('disabledForms');
                 pnlDatos.find("#Descripcion").focus().select();
             }).fail(function (x, y, z) {

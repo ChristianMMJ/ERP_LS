@@ -83,7 +83,17 @@
                     <input type="text"  id="Consumo" name="Consumo" class="form-control form-control-sm numbersOnly" maxlength="7">
                 </div>
                 <div class="col-12 col-sm-12 col-md-4 col-lg-2">
-                    <button type="button" id="btnAgregar" class="btn btn-primary mt-4"><span class="fa fa-check"></span></button>
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="AfectaPV" name="AfectaPV" checked="">
+                                <label class="custom-control-label" for="AfectaPV">A.PV</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <button type="button" id="btnAgregar" class="btn btn-primary mt-4"><span class="fa fa-check"></span></button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -174,12 +184,6 @@
 
         btnAgregar.click(function () {
             onAgregar();
-        });
-
-        pnlControlesDetalle.find("#Consumo").keydown(function (e) {
-            if (e.keyCode === 13) {
-                onAgregar();
-            }
         });
 
         pnlDatos.find("[name='Estilo']").change(function () {
@@ -349,6 +353,8 @@
                 }, 0));
             },
             "dom": 'frt',
+            "processing": true,
+            "serverSide": true,
             "autoWidth": true,
             language: lang,
             "displayLength": 500,
@@ -538,10 +544,6 @@
     var FichaTecnica;
     function getRecords() {
         temp = 0;
-        HoldOn.open({
-            theme: 'sk-cube',
-            message: 'CARGANDO...'
-        });
         $.fn.dataTable.ext.errMode = 'throw';
         if ($.fn.DataTable.isDataTable('#tblFichaTecnica')) {
             tblFichaTecnica.DataTable().destroy();
@@ -609,6 +611,8 @@
                     });
                     pnlDatos.find("[name='Color']")[0].selectize.setValue(dtm.ColorId);
                 }).fail(function (x, y, z) {
+                    console.log(x.responseText);
+                    console.log("\n");
                     console.log(x, y, z);
                 }).always(function () {
                 });
@@ -733,13 +737,9 @@
     }
 
     function onAgregar() {
-        if (pnlControlesDetalle.find("#Consumo").val() !== '') {
-            isValid('pnlDatos');
-            if (valido) {
-                onAgregarFila();
-            }
-        } else {
-            swal('ATENCIÓN', 'Debes capturar todos los campos', 'warning');
+        isValid('pnlDatos');
+        if (valido) {
+            onAgregarFila();
         }
     }
 
@@ -774,6 +774,7 @@
                 frm.append('Articulo', Articulo.val());
                 frm.append('PzXPar', PzXPar.val());
                 frm.append('Consumo', Consumo.val());
+                frm.append('AfectaPV', pnlControlesDetalle.find("#AfectaPV")[0].checked ? 1 : 0);
                 $.ajax({
                     url: master_url + 'onAgregar',
                     type: "POST",

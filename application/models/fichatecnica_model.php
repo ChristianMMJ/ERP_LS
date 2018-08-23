@@ -13,16 +13,18 @@ class fichatecnica_model extends CI_Model {
 
     public function getRecords() {
         try {
-            return $this->db->select("FT.Estilo AS EstiloId, "
-                                    . "C.Clave ClaveColor,"
-                                    . "FT.Color AS ColorId, "
-                                    . "CONCAT(IFNULL(E.Clave,''),'-',IFNULL(E.Descripcion,'')) AS Estilo,"
-                                    . "CONCAT(IFNULL(C.Clave,''),'-',IFNULL(C.Descripcion,'')) AS Color  ", false)
-                            ->from('FichaTecnica AS FT ')
-                            ->join('Estilos AS E', 'FT.Estilo = E.Clave', 'left')
-                            ->join('Colores AS C', 'FT.Color = C.Clave', 'left')
-                            ->where('E.Clave = C.Estilo', null, false)
-                            ->where_in('FT.Estatus', array('ACTIVO'))->group_by(array('FT.Estilo', 'FT.Color'))->get()->result();
+            $this->db->select("FT.Estilo AS EstiloId, FT.Color ClaveColor, FT.Color AS ColorId, FT.Estilo AS Estilo, FT.Color Color", false)
+                    ->from('FichaTecnica AS FT')
+                    ->join('Estilos AS E', 'FT.Estilo = E.Clave')
+                    ->group_by(array('FT.Estilo', 'FT.Color'))->limit(100000);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+//            print $str;
+            $data = $query->result();
+            return $data;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

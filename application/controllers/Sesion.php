@@ -17,7 +17,7 @@ class Sesion extends CI_Controller {
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             $this->load->view('vEncabezado');
 
-            switch ($this->session->userdata["TipoAcceso"]) {
+            switch ($this->session->TipoAcceso) {
                 case 'SUPER ADMINISTRADOR': $this->load->view('vNavGeneral');
                     $this->load->view('vMenuPrincipal');
                     $this->load->view('vNavGeneral');
