@@ -11,12 +11,37 @@ class fichatecnica_model extends CI_Model {
         date_default_timezone_set('America/Mexico_City');
     }
 
+    public function onLimpiarTabla() {
+        try {
+
+            $sql = "TRUNCATE TABLE fichatecnicatemp;";
+            $this->db->query($sql);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onGenerarRecords() {
+        try {
+
+            $sql = "INSERT INTO fichatecnicatemp (estilo, color) SELECT estilo, color FROM Fichatecnica AS FT GROUP BY Estilo, Color;";
+            $this->db->query($sql);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getRecords() {
         try {
-            $this->db->select("FT.Estilo AS EstiloId, FT.Color ClaveColor, FT.Color AS ColorId, FT.Estilo AS Estilo, FT.Color Color", false)
-                    ->from('FichaTecnica AS FT')
-                    ->join('Estilos AS E', 'FT.Estilo = E.Clave')
-                    ->group_by(array('FT.Estilo', 'FT.Color'))->limit(100000);
+            $this->db->select("FTT.Estilo AS EstiloId, "
+                            . "FTT.Color AS ColorId, "
+                            . "CONCAT(FTT.Estilo,' - ',E.Descripcion) AS Estilo, "
+                            . "CONCAT(FTT.Color,' - ',C.Descripcion) AS Color "
+                            . " ", false)
+                    ->from('fichatecnicatemp AS FTT')
+                    ->join('Estilos AS E', 'FTT.Estilo = E.Clave')
+                    ->join('Colores AS C', 'FTT.Color = C.Clave AND C.Estilo = FTT.Estilo');
+
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -163,7 +188,7 @@ class fichatecnica_model extends CI_Model {
 
     public function getEstilos() {
         try {
-            return $this->db->select("CAST(E.Clave AS SIGNED ) AS Clave, CONCAT(E.Clave,' - ',IFNULL(E.Descripcion,'')) AS Estilo")
+            return $this->db->select("E.Clave AS Clave, CONCAT(E.Clave,' - ',IFNULL(E.Descripcion,'')) AS Estilo")
                             ->from("Estilos AS E")
                             ->where("E.Estatus", "ACTIVO")
                             ->order_by('Clave', 'ASC')

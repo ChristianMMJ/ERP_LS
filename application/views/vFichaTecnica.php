@@ -86,7 +86,7 @@
                     <div class="row">
                         <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="AfectaPV" name="AfectaPV" checked="">
+                                <input type="checkbox" class="custom-control-input" id="AfectaPV" name="AfectaPV" >
                                 <label class="custom-control-label" for="AfectaPV">A.PV</label>
                             </div>
                         </div>
@@ -543,6 +543,7 @@
     var tblFichaTecnica = $('#tblFichaTecnica');
     var FichaTecnica;
     function getRecords() {
+        HoldOn.open({theme: 'sk-bounce', message: 'CARGANDO DATOS...'});
         temp = 0;
         $.fn.dataTable.ext.errMode = 'throw';
         if ($.fn.DataTable.isDataTable('#tblFichaTecnica')) {
@@ -593,6 +594,7 @@
         $('#tblFichaTecnica_filter input[type=search]').focus();
 
         tblFichaTecnica.find('tbody').on('click', 'tr', function () {
+            HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
             nuevo = false;
             tblFichaTecnica.find("tbody tr").removeClass("success");
             $(this).addClass("success");
@@ -656,7 +658,6 @@
     }
 
     function getGrupos() {
-        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.getJSON(master_url + 'getGrupos').done(function (data, x, jq) {
             $.each(data, function (k, v) {
                 pnlDatos.find("[name='Grupo']")[0].selectize.addOption({text: v.Grupo, value: v.ID});
@@ -664,7 +665,6 @@
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
-            HoldOn.close();
         });
     }
 

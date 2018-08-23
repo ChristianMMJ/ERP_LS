@@ -1,7 +1,7 @@
 var valido = false;
 
 var lang = {
-    processing: "Proceso en curso...",
+    processing: "Cargando datos...",
     search: "Buscar:",
     lengthMenu: "Mostrar _MENU_ Elementos",
     info: "Mostrando  _START_ de _END_ , de _TOTAL_ Elementos.",

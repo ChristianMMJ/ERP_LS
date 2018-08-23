@@ -53,6 +53,9 @@ class FichaTecnica extends CI_Controller {
 
     public function getRecords() {
         try {
+
+            $this->fichatecnica_model->onLimpiarTabla();
+            $this->fichatecnica_model->onGenerarRecords();
             print json_encode($this->fichatecnica_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
