@@ -131,8 +131,19 @@
                 }
             });
             $("select").selectize({
-                hideSelected: true
+                hideSelected: true,
+                openOnFocus: false
             });
+//            $("select").not('.NotOpenDropDown').not('.notSelect').selectize({
+//                hideSelected: true,
+//                openOnFocus: true
+//            });
+//            $("select").filter('.NotOpenDropDown').not('.notSelect').selectize({
+//                hideSelected: true,
+//                openOnFocus: false
+//            });
+
+
             $('.modal').on('shown.bs.modal', function (e) {
                 $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
             });

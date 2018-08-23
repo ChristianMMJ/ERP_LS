@@ -48,19 +48,11 @@
                     </div>
                     <div class="col-12 col-md-6 col-sm-6">
                         <label for="Clave" >Clave*</label>
-                        <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required autofocus="">
+                        <input type="text" class="form-control form-control-sm disabledForms" id="Clave" name="Clave" required >
                     </div>
                     <div class="col-12 col-md-6 col-sm-6">
                         <label for="Descripcion" >Descripción*</label>
                         <input type="text" id="Descripcion" name="Descripcion" class="form-control form-control-sm" placeholder="" required>
-                    </div>
-                    <div class="col-12 col-md-12 col-sm-12">
-                        <label for="" >Estatus*</label>
-                        <select id="Estatus" name="Estatus" class="form-control form-control-sm" >
-                            <option value=""></option>
-                            <option value="ACTIVO">ACTIVO</option>
-                            <option value="INACTIVO">INACTIVO</option>
-                        </select>
                     </div>
                 </div>
                 <div class="row pt-2">

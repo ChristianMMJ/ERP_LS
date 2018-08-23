@@ -45,9 +45,9 @@
                         <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
                             <span class="fa fa-arrow-left" ></span> REGRESAR
                         </button>
-                        <button type="button" class="btn btn-danger btn-sm d-none" id="btnEliminar">
-                            <span class="fa fa-trash fa-1x"></span> ELIMINAR
-                        </button>
+                        <!--                        <button type="button" class="btn btn-danger btn-sm d-none" id="btnEliminar">
+                                                    <span class="fa fa-trash fa-1x"></span> ELIMINAR
+                                                </button>-->
                     </div>
                 </div>
                 <hr>
@@ -84,7 +84,7 @@
                         <div class="row">
                             <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
                                 <label for="" >Linea*</label>
-                                <select id="Linea" name="Linea" class="form-control form-control-sm" >
+                                <select id="Linea" name="Linea" class="form-control form-control-sm required" >
                                     <option value=""></option>
                                 </select>
                             </div>
@@ -454,11 +454,12 @@
         btnNuevo.click(function () {
             nuevo = true;
             pnlDatos.find("input").val("");
-            VistaPrevia.html(' <img src="img/camera.png" class="img-thumbnail img-fluid rounded mx-auto " >');
+            VistaPrevia.html(' <img src="' + base_url + 'img/camera.png" class="img-thumbnail img-fluid rounded mx-auto " >');
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass("d-none");
             btnEliminar.addClass("d-none");
             pnlDatos.find("[name='Clave']").focus();
+            pnlDatos.find("[name='Clave']").removeClass('disabledForms');
             pnlDatos.find('#FechaAlta').val(getToday());
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
@@ -601,6 +602,7 @@
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
+            pnlDatos.find("[name='Temporada']")[0].selectize.addOption({text: '--', value: ''});
             $.each(data, function (k, v) {
                 pnlDatos.find("[name='Temporada']")[0].selectize.addOption({text: v.Temporada, value: v.Clave});
             });
@@ -614,6 +616,7 @@
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
+            pnlDatos.find("[name='Serie']")[0].selectize.addOption({text: '--', value: ''});
             $.each(data, function (k, v) {
                 pnlDatos.find("[name='Serie']")[0].selectize.addOption({text: v.Serie, value: v.Clave});
             });
@@ -627,6 +630,7 @@
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
+            pnlDatos.find("[name='Horma']")[0].selectize.addOption({text: '--', value: ''});
             $.each(data, function (k, v) {
                 pnlDatos.find("[name='Horma']")[0].selectize.addOption({text: v.Horma, value: v.Clave});
             });
@@ -640,6 +644,7 @@
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
+            pnlDatos.find("[name='Genero']")[0].selectize.addOption({text: '--', value: ''});
             $.each(data, function (k, v) {
                 pnlDatos.find("[name='Genero']")[0].selectize.addOption({text: v.Genero, value: v.Clave});
             });
@@ -648,11 +653,13 @@
         });
     }
     function getLineas() {
+
         $.ajax({
             url: master_url + 'getLineas',
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
+            pnlDatos.find("[name='Linea']")[0].selectize.addOption({text: '--', value: ''});
             $.each(data, function (k, v) {
                 pnlDatos.find("[name='Linea']")[0].selectize.addOption({text: v.Linea, value: v.Clave});
             });
@@ -666,6 +673,7 @@
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
+            pnlDatos.find("[name='Maquila']")[0].selectize.addOption({text: '--', value: ''});
             $.each(data, function (k, v) {
                 pnlDatos.find("[name='Maquila']")[0].selectize.addOption({text: v.Maquila, value: v.Clave});
             });
@@ -679,6 +687,7 @@
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
+            pnlDatos.find("[name='MaqPlant1']")[0].selectize.addOption({text: '--', value: ''});
             $.each(data, function (k, v) {
                 pnlDatos.find("[name='MaqPlant1']")[0].selectize.addOption({text: v.MaquilasPlantillas, value: v.Clave});
                 pnlDatos.find("[name='MaqPlant2']")[0].selectize.addOption({text: v.MaquilasPlantillas, value: v.Clave});

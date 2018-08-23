@@ -35,7 +35,7 @@
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navFichaTecnica">
                     <a class="dropdown-item" href="<?php print base_url('Estilos/?origen=FICHASTECNICAS'); ?>"> Estilos</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php print base_url('MatFijosFichaTecnica/?origen=FICHASTECNICAS'); ?>"> Mat. Fijos Ficha Técnica</a>
+                    <a class="dropdown-item" href="<?php print base_url('FichaTecnicaFija'); ?>"> Mat. Fijos Ficha Técnica</a>
                     <a class="dropdown-item" href="<?php print base_url('FichaTecnica/?origen=FICHASTECNICAS'); ?>"> Ficha Técnica</a>
                     <a class="dropdown-item" href="<?php print base_url('FichaTecnicaProceso/?origen=FICHASTECNICAS'); ?>"> Ficha Técnica de Proceso</a>
                     <a class="dropdown-item" href="<?php print base_url('Fracciones Nómina/?origen=FICHASTECNICAS'); ?>"> Ficha Técnica de Proceso</a>

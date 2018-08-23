@@ -62,17 +62,18 @@
                         </select>
                     </div>
                     <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
-                        <label for="" >Clasificación*</label>
-                        <select id="Clasificacion" name="Clasificacion" class="form-control form-control-sm" required="">
+                        <label for="" >Clasificación</label>
+                        <select id="Clasificacion" name="Clasificacion" class="form-control form-control-sm">
                             <option value=""></option>
+                            <option value="0">--</option>
                             <option value="1">1ra</option>
                             <option value="2">2da</option>
                             <option value="3">3ra</option>
                         </select>
                     </div>
                     <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
-                        <label for="" >Rango*</label>
-                        <select id="Rango" name="Rango" class="form-control form-control-sm" required="">
+                        <label for="" >Rango</label>
+                        <select id="Rango" name="Rango" class="form-control form-control-sm">
                             <option value=""></option>
                         </select>
                     </div>
@@ -211,6 +212,7 @@
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
+
         });
 
         btnCancelar.click(function () {
@@ -337,6 +339,7 @@
 
     function getRangos() {
         $.getJSON(master_url + 'getRangos').done(function (data) {
+            pnlDatos.find("#Rango")[0].selectize.addOption({text: '--', value: ''});
             $.each(data, function (k, v) {
                 pnlDatos.find("#Rango")[0].selectize.addOption({text: v.Rango, value: v.ID});
             });

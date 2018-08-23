@@ -141,13 +141,16 @@
         <i class="fas fa-arrow-left fa-lg"></i>
     </div>
     <div class="sidebar-header">
-        <img src="<?php print base_url(); ?>img/logo_mediano.png" width="160">
+        <a href="<?php print base_url() ?>">
+            <img src="<?php print base_url(); ?>img/logo_mediano.png" width="160">
+        </a>
+
     </div>
-    <ul class="list-unstyled pl-3 pr-3 pt-3">
-        <li>
-            <input type="text" class="form-control form-control-sm" autofocus="" placeholder="BUSCAR" id="txtBusqueda">
-        </li>
-    </ul>
+    <!--    <ul class="list-unstyled pl-3 pr-3 pt-3">
+            <li>
+                <input type="text" class="form-control form-control-sm" autofocus="" placeholder="BUSCAR" id="txtBusqueda">
+            </li>
+        </ul>-->
     <ul class="list-unstyled components">
         <li class="item">
             <a href="<?php print base_url('MenuMateriales') ?>">
@@ -233,8 +236,8 @@
                 </div>
             </a>
         </li>
-        <li class="drop">
-            <a href="#config" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+        <li class="item">
+            <a href="<?php print base_url('MenuParametros') ?>">
                 <div class="row pl-2">
                     <div class="col-2">
                         <i class="fa fa-cogs"></i>
@@ -244,24 +247,8 @@
                     </div>
                 </div>
             </a>
-            <ul class="collapse list-unstyled" id="config">
-                <li class="item ">
-                    <a href="<?php print base_url('Usuarios') ?>">
-                        <i class="fa fa-users"></i> Usuarios
-                    </a>
-                </li>
-                <li class="item ">
-                    <a href="#">
-                        <i class="fa fa-key"></i> Token de Seguridad
-                    </a>
-                </li>
-                <li class="item ">
-                    <a href="#">
-                        <i class="fa fa-user-check"></i> Permisos
-                    </a>
-                </li>
-            </ul>
         </li>
+
     </ul>
     <ul class="list-unstyled pl-3 pr-3">
         <li>

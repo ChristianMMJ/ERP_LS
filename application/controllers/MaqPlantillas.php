@@ -100,7 +100,7 @@ class MaqPlantillas extends CI_Controller {
             $this->maqplantillas_model->onAgregar(array(
                 'Clave' => ($x->post('Clave') !== NULL) ? $x->post('Clave') : NULL,
                 'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL,
-                'Estatus' => ($x->post('Estatus') !== NULL) ? strtoupper($x->post('Estatus')) : NULL
+                'Estatus' => 'ACTIVO'
             ));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
