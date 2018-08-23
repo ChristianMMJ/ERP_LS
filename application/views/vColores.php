@@ -98,11 +98,11 @@
                     </div>
                     <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                         <label for="trPiel" >Piel*</label>
-                        <input type="text" class="form-control form-control-sm numbersOnly" id="trPiel" name="trPiel" required placeholder="">
+                        <input type="text" class="form-control form-control-sm" id="trPiel" name="trPiel" required placeholder="">
                         <label for="trForro" >Forro*</label>
-                        <input type="text" class="form-control form-control-sm numbersOnly" id="trForro" name="trForro" required placeholder="">
+                        <input type="text" class="form-control form-control-sm" id="trForro" name="trForro" required placeholder="">
                         <label for="trSuela" >Suela*</label>
-                        <input type="text" class="form-control form-control-sm numbersOnly" id="trSuela" name="trSuela" required placeholder="">
+                        <input type="text" class="form-control form-control-sm" id="trSuela" name="trSuela" required placeholder="">
                     </div>
                 </div>
                 <div class="row pt-2">
@@ -133,9 +133,28 @@
         handleEnter();
 
         /*FUNCIONES X BOTON*/
+        pnlDatos.find("#Descripcion").keyup(function () {
+            if ($(this).val() !== '') {
+                pnlDatos.find("#Pieles")[0].selectize.disable(); 
+            } else {
+                pnlDatos.find("#Pieles")[0].selectize.enable();
+                pnlDatos.find("#Pieles").removeClass('disabledForms');
+            }
+        });
+        pnlDatos.find("#Descripcion").change(function () {
+            if ($(this).val() !== '') {
+                pnlDatos.find("#Pieles")[0].selectize.disable();
+                pnlDatos.find("#ObservacionesOrdenProduccion").focus();
+            } else {
+                pnlDatos.find("#Pieles")[0].selectize.enable();
+                pnlDatos.find("#Pieles").removeClass('disabledForms');
+            }
+        });
+
         btnGuardar.click(function () {
             isValid('pnlDatos');
             if (valido) {
+                pnlDatos.find("#Pieles")[0].selectize.enable();
                 var frm = new FormData(pnlDatos.find("#frmNuevo")[0]);
                 if (!nuevo) {
                     $.ajax({

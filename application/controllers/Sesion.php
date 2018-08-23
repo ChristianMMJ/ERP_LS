@@ -46,6 +46,7 @@ class Sesion extends CI_Controller {
             }
 
             $this->load->view('vFondo');
+            $this->load->view('vQuickMenu');
             $this->load->view('vFooter');
         } else {
             $this->load->view('vEncabezado');

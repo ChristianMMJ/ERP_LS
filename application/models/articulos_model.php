@@ -15,7 +15,8 @@ class articulos_model extends CI_Model {
             return $this->db->select("A.ID AS ID, A.Clave AS Clave, "
                                     . "A.Departamento AS Departamento, A.Descripcion AS Descripcion, "
                                     . "U.Descripcion AS UM, A.Estatus AS Estatus", false)
-                            ->from("Articulos AS A")->join('Unidades AS U', 'A.UnidadMedida = U.ID')->where('A.Estatus', 'ACTIVO')->get()->result();
+                            ->from("Articulos AS A")->join('Unidades AS U', 'A.UnidadMedida = U.ID')
+                            ->where('A.Estatus', 'ACTIVO')->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -41,7 +42,8 @@ class articulos_model extends CI_Model {
     public function getMaquilas($ID) {
         try {
             return $this->db->select("M.Clave AS ID, M.Nombre AS Maquila", false)->from("maquilas AS M")
-                            ->where("M.ID NOT IN(SELECT PM.Maquila FROM preciosmaquilas AS PM WHERE PM.Articulo = $ID)", null, false)->get()->result();
+                            ->where("M.ID NOT IN(SELECT PM.Maquila FROM preciosmaquilas AS PM WHERE PM.Articulo = $ID)", null, false)
+                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
