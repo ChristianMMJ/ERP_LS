@@ -3,12 +3,12 @@
 header('Access-Control-Allow-Origin: *');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Departamentos extends CI_Controller {
+class Fracciones extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('departamentos_model');
+        $this->load->library('session')->model('fracciones_model');
     }
 
     public function index() {
@@ -20,10 +20,11 @@ class Departamentos extends CI_Controller {
                     $this->load->view('vNavGeneral');
                     //Validamos que no venga vacia y asignamos un valor por defecto
                     $Origen = isset($_GET['origen']) ? $_GET['origen'] : "";
+
                     if ($Origen === 'NOMINAS') {
-                        $this->load->view('vMenuFichasTecnicas');
-                    } else if ($Origen === 'FICHASTECNICAS') {
-                        $this->load->view('vMenuFichasTecnicas');
+                        $this->load->view('vMenuNominas');
+                    } else if ($Origen === 'PRODUCCION') {
+                        $this->load->view('vMenuProduccion');
                     }
                     //Cuando no viene de ningun modulo y lo teclean
                     else {
@@ -53,27 +54,23 @@ class Departamentos extends CI_Controller {
                     break;
             }
 
-            $this->load->view('vFondo');
-            $this->load->view('vDepartamentos');
-            $this->load->view('vFooter');
+            $this->load->view('vFondo')->view('vFracciones')->view('vFooter');
         } else {
-            $this->load->view('vEncabezado');
-            $this->load->view('vSesion');
-            $this->load->view('vFooter');
+            $this->load->view('vFondo')->view('vSesion')->view('vFooter');
         }
     }
 
     public function getRecords() {
         try {
-            print json_encode($this->departamentos_model->getRecords());
+            print json_encode($this->fracciones_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function onComprobarClave() {
+    public function getDepartamentos() {
         try {
-            print json_encode($this->departamentos_model->onComprobarClave($this->input->get('Clave')));
+            print json_encode($this->fracciones_model->getDepartamentos());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -81,15 +78,15 @@ class Departamentos extends CI_Controller {
 
     public function getID() {
         try {
-            print json_encode($this->departamentos_model->getID());
+            print json_encode($this->fracciones_model->getID());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getDepartamentoByID() {
+    public function getFraccionByID() {
         try {
-            print json_encode($this->departamentos_model->getDepartamentoByID($this->input->get('ID')));
+            print json_encode($this->fracciones_model->getFraccionByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -98,14 +95,14 @@ class Departamentos extends CI_Controller {
     public function onAgregar() {
         try {
             $x = $this->input;
-            $this->departamentos_model->onAgregar(array(
-                'Clave' => ($x->post('Clave') !== NULL) ? $x->post('Clave') : NULL,
-                'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL,
-                'Tipo' => ($x->post('Tipo') !== NULL) ? $x->post('Tipo') : NULL,
-                'Avance' => ($x->post('Avance') !== NULL) ? $x->post('Avance') : NULL,
-                'Fraccion' => ($x->post('Fraccion') !== NULL) ? $x->post('Fraccion') : NULL,
-                'Estatus' => 'ACTIVO'
-            ));
+            var_dump($x->post());
+            $data = array();
+            foreach ($this->input->post() as $key => $v) {
+                if ($v !== '') {
+                    $data[$key] = ($v !== '') ? strtoupper($v) : NULL;
+                }
+            }
+            $this->fracciones_model->onAgregar($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -114,13 +111,14 @@ class Departamentos extends CI_Controller {
     public function onModificar() {
         try {
             $x = $this->input;
-            $this->departamentos_model->onModificar($x->post('ID'), array(
-                'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL,
-                'Tipo' => ($x->post('Tipo') !== NULL) ? $x->post('Tipo') : NULL,
-                'Avance' => ($x->post('Avance') !== NULL) ? $x->post('Avance') : NULL,
-                'Fraccion' => ($x->post('Fraccion') !== NULL) ? $x->post('Fraccion') : NULL,
-                'Estatus' => 'ACTIVO'
-            ));
+            $data = array();
+            foreach ($this->input->post() as $key => $v) {
+                if ($v !== '') {
+                    $data[$key] = ($v !== '') ? strtoupper($v) : NULL;
+                }
+            }
+            unset($data["ID"]);
+            $this->fracciones_model->onModificar($x->post('ID'), $data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -128,7 +126,7 @@ class Departamentos extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->departamentos_model->onEliminar($this->input->post('ID'));
+            $this->fracciones_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

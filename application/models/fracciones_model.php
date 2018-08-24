@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class departamentos_model extends CI_Model {
+class fracciones_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
@@ -12,7 +12,7 @@ class departamentos_model extends CI_Model {
 
     public function getRecords() {
         try {
-            return $this->db->select("D.ID, D.Clave, D.Descripcion, D.Tipo, D.Avance, D.Fraccion")->from("Departamentos AS D")->where("D.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("F.ID, F.Clave, F.Descripcion")->from("Fracciones AS F")->where("F.Estatus", "ACTIVO")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -26,17 +26,9 @@ class departamentos_model extends CI_Model {
         }
     }
 
-    public function onComprobarClave($C) {
+    public function getFraccionByID($IDX) {
         try {
-            return $this->db->select("G.Clave")->from("Departamentos AS G")->where("G.Clave", $C)->where("G.Estatus", "ACTIVO")->get()->result();
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function getDepartamentoByID($IDX) {
-        try {
-            return $this->db->select("D.*")->from("Departamentos AS D")->where("D.Estatus", "ACTIVO")->where("D.ID", $IDX)->get()->result();
+            return $this->db->select("F.*")->from("Fracciones AS F")->where("F.Estatus", "ACTIVO")->where("F.ID", $IDX)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -44,7 +36,7 @@ class departamentos_model extends CI_Model {
 
     public function getID() {
         try {
-            return $this->db->select("CONVERT(D.Clave, UNSIGNED INTEGER) AS CLAVE")->from("Departamentos AS D")->where("D.Estatus", "ACTIVO")->order_by("CLAVE", "DESC")->limit(1)->get()->result();
+            return $this->db->select("CONVERT(F.Clave, UNSIGNED INTEGER) AS CLAVE")->from("Fracciones AS F")->where("F.Estatus", "Activo")->order_by("CLAVE", "DESC")->limit(1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -52,7 +44,7 @@ class departamentos_model extends CI_Model {
 
     public function onAgregar($array) {
         try {
-            $this->db->insert("Departamentos", $array);
+            $this->db->insert("Fracciones", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             $LastIdInserted = $row['LAST_INSERT_ID()'];
@@ -64,7 +56,7 @@ class departamentos_model extends CI_Model {
 
     public function onModificar($ID, $DATA) {
         try {
-            $this->db->where('ID', $ID)->update("Departamentos", $DATA);
+            $this->db->where('ID', $ID)->update("Fracciones", $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -72,7 +64,7 @@ class departamentos_model extends CI_Model {
 
     public function onEliminar($ID) {
         try {
-            $this->db->set('Estatus', 'INACTIVO')->where('ID', $ID)->update("Departamentos");
+            $this->db->set('Estatus', 'INACTIVO')->where('ID', $ID)->update("Fracciones");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

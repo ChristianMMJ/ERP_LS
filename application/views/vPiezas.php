@@ -16,7 +16,6 @@
                             <th>ID</th>
                             <th>Clave</th>
                             <th>Descripción</th>
-                            <th>Estatus</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -162,14 +161,14 @@
                     });
                 }
             } else {
-                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
+                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'error');
             }
         });
 
         btnEliminar.click(function () {
             swal({
                 title: "¿Estas seguro?",
-                text: "Nota: No se eliminara ninguna unidad que tenga alguna relacion con otro dato dentro del sistema",
+                text: "Nota: No se eliminara ningun registro que tenga alguna relacion con otro módulo dentro del sistema",
                 icon: "warning",
                 buttons: {
                     cancelar: {
@@ -260,7 +259,7 @@
                 "dataSrc": ""
             },
             "columns": [
-                {"data": "ID"}, {"data": "Clave"}, {"data": "Descripcion"}, {"data": "Estatus"}
+                {"data": "ID"}, {"data": "Clave"}, {"data": "Descripcion"}
             ],
             "columnDefs": [
                 {

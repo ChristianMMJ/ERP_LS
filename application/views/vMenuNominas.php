@@ -15,7 +15,9 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCatalogos">
                     <a class="dropdown-item" href="<?php print base_url('Departamentos/?origen=NOMINAS'); ?>"> Departamentos</a>
+                    <a class="dropdown-item" href="<?php print base_url('Fracciones/?origen=NOMINAS'); ?>"> Fracciones</a>
                 </div>
+
             </li>
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navConsultas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
