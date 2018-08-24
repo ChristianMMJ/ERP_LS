@@ -139,10 +139,12 @@
                             </select>
                             <input type="text" class="form-control form-control-sm numbersOnly mb-2" id="PrecioTres" name="PrecioTres"   placeholder="Precio pactado">
                         </div>
-
+                        <div id="ProveedorUltimaCompra" class="col-12 col-sm-12 col-md-12 col-xl-12">
+                            <p class="text-info">* * * * *</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </div> 
             <!--            TERCER CONTENEDOR-->
             <div class="card  m-3 ">
                 <div class="card-body">
@@ -339,7 +341,6 @@
                         pnlDatos.addClass("d-none");
                         pnlDatosDetalle.addClass('d-none');
                         pnlTablero.removeClass("d-none");
-                        swal('ATENCIÓN', 'SE HA AGREGADO UN NUEVO REGISTRO', 'success');
                         btnIgualaPrecios.addClass("d-none");
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);

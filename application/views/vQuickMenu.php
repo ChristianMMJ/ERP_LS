@@ -1,53 +1,53 @@
 <div class="col-12 row m-2" align="center">
-    <div class="card col-12 col-sm-12 col-md-6 col-lg-3 col-xl-2  animated fadeInUp"  onclick="window.location.href = '<?php print base_url('MenuProveedores') ?>';"> 
-        <img class="card-img-top  p-2" src="<?php print base_url('img/proveedor.png'); ?>" >
-        <div class="card-body">
-            <h4 class="card-text">PROVEEDORES</h4>
-        </div>
+    <div class="card col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated fadeInUp"  onclick="window.location.href = '<?php print base_url('MenuProveedores') ?>';"> 
+        <figure class="figure">
+            <span class="fa fa-user-secret fa-2x mt-5"></span>
+            <figcaption class="figure-caption text-nowrap mt-4"><h4>PROVEEDORES</h4></figcaption>
+        </figure>
     </div>
-    <div class="card col-12 col-sm-12 col-md-6 col-lg-3 col-xl-2  animated fadeInDown" onclick="window.location.href = '<?php print base_url('MenuMateriales') ?>';"> 
-        <img class="card-img-top p-2" src="<?php print base_url('img/materiales.png'); ?>" >
-        <div class="card-body">
-            <h4 class="card-text">MATERIALES</h4>
-        </div> 
+    <div class="card col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2  animated fadeInDown" onclick="window.location.href = '<?php print base_url('MenuMateriales') ?>';"> 
+        <figure class="figure">
+            <span class="fa fa-cube fa-2x  mt-5"></span>
+            <figcaption class="figure-caption text-nowrap mt-4"><h4>MATERIALES</h4></figcaption>
+        </figure>
+    </div>  
+    <div class="card col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2  animated fadeInUp" onclick="window.location.href = '<?php print base_url('MenuClientes') ?>';"> 
+        <figure class="figure">
+            <span class="fa fa-users fa-2x mt-5"></span>
+            <figcaption class="figure-caption text-nowrap mt-4"><h4>CLIENTES</h4></figcaption>
+        </figure>
     </div>
-    <div class="card col-12 col-sm-12 col-md-6 col-lg-3 col-xl-2  animated fadeInUp" onclick="window.location.href = '<?php print base_url('MenuClientes') ?>';"> 
-        <img class="card-img-top p-2" src="<?php print base_url('img/clientes.png'); ?>" >
-        <div class="card-body">
-            <h4 class="card-text">CLIENTES</h4>
-        </div>
+    <div class="card col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-1  animated fadeInDown" onclick="window.location.href = '<?php print base_url('MenuFichasTecnicas') ?>';"> 
+        <figure class="figure">
+            <span class="fa fa-file-invoice fa-2x mt-5"></span>
+            <figcaption class="figure-caption mt-4"><h4>FICHAS TÉCNICAS</h4></figcaption>
+        </figure>
+    </div> 
+    <div class="card col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2  animated fadeInUp" onclick="window.location.href = '<?php print base_url('MenuProduccion') ?>';"> 
+        <figure class="figure">
+            <span class="fa fa-industry fa-2x mt-5"></span>
+            <figcaption class="figure-caption text-nowrap mt-4"><h4>PRODUCCIÓN</h4></figcaption>
+        </figure>
     </div>
-    <div class="card col-12 col-sm-12 col-md-6 col-lg-3 col-xl-2  animated fadeInDown" onclick="window.location.href = '<?php print base_url('MenuFichasTecnicas') ?>';"> 
-        <img class="card-img-top p-2" src="<?php print base_url('img/fichas.png'); ?>" >
-        <div class="card-body">
-            <h4 class="card-text">FICHAS TÉCNICAS</h4>
-        </div> 
+    <div class="card col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2  animated fadeInDown" onclick="window.location.href = '<?php print base_url() ?>';"> 
+        <figure class="figure">
+            <span class="fa fa-calculator fa-2x mt-5"></span>
+            <figcaption class="figure-caption text-nowrap mt-4"><h4>CONTABILIDAD</h4></figcaption>
+        </figure>
+    </div> 
+    <div class="card col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2  animated fadeInUp" onclick="window.location.href = '<?php print base_url() ?>';"> 
+        <figure class="figure">
+            <span class="fa fa-hand-holding-usd fa-2x mt-5"></span>  
+            <figcaption class="figure-caption text-nowrap mt-4"><h4>NOMINAS</h4></figcaption>
+        </figure>
     </div>
-    <div class="card col-12 col-sm-12 col-md-6 col-lg-3 col-xl-2  animated fadeInUp" onclick="window.location.href = '<?php print base_url('MenuProduccion') ?>';"> 
-        <img class="card-img-top p-2" src="<?php print base_url('img/produccion.png'); ?>" >
-        <div class="card-body">
-            <h4 class="card-text">PRODUCCIÓN</h4>
-        </div> 
+    <div class="card col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2  animated fadeInDown" onclick="window.location.href = '<?php print base_url('MenuParametros') ?>';"> 
+        <figure class="figure">
+            <span class="fa fa-cogs fa-2x mt-5"></span>  
+            <figcaption class="figure-caption text-nowrap mt-4"><h4>PARÁMETROS</h4></figcaption>
+        </figure>
     </div>
-    <div class="card col-12 col-sm-12 col-md-6 col-lg-3 col-xl-2  animated fadeInDown" onclick="window.location.href = '<?php print base_url() ?>';"> 
-        <img class="card-img-top p-2" src="<?php print base_url('img/conta.png'); ?>" >
-        <div class="card-body">
-            <h4 class="card-text">CONTABILIDAD</h4>
-        </div> 
-    </div>
-    <div class="card col-12 col-sm-12 col-md-6 col-lg-3 col-xl-2  animated fadeInDown" onclick="window.location.href = '<?php print base_url() ?>';"> 
-        <img class="card-img-top p-2" src="<?php print base_url('img/nominas.png'); ?>" >
-        <div class="card-body">
-            <h4 class="card-text">NOMINAS</h4>
-        </div> 
-    </div>
-    <div class="card col-12 col-sm-12 col-md-6 col-lg-3 col-xl-2  animated fadeInDown" onclick="window.location.href = '<?php print base_url('MenuParametros') ?>';"> 
-        <img class="card-img-top p-2" src="<?php print base_url('img/parametros.png'); ?>" >
-        <div class="card-body">
-            <h4 class="card-text">PARÁMETROS</h4>
-        </div> 
-    </div>
-</div>   
+</div> 
 <style>
     .card:hover img{
         -webkit-transition: all .3s ease-in-out;
@@ -61,12 +61,13 @@
     .card:hover{
         cursor: pointer !important;
         font-weight: bold;
-        background-color: #3498DB !important;
-        color: #fff;
-        -webkit-transform: scale(1.75);
-        transform: scale(1.75);
+        background-color: #3F51B5 !important;
+        color: #fff; 
+    } 
+    .card:hover .text-nowrap, .card:hover .figure-caption{
+        color: #fff; 
     }
-    .card:hover img{
-        width: 100%; 
+    .fa-2x {
+        font-size: 7.5em;
     }
 </style>

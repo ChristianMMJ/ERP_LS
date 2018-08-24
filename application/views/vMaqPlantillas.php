@@ -122,7 +122,6 @@
                         MaquilasPlantillas.ajax.reload();
                         pnlDatos.addClass("d-none");
                         pnlTablero.removeClass("d-none");
-                        swal('ATENCIÓN', 'SE HA AGREGADO UN NUEVO REGISTRO  ', 'info');
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
