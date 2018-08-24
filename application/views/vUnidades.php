@@ -15,7 +15,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Clave</th>
-                            <th>Descripción</th> 
+                            <th>Descripción</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -48,7 +48,7 @@
                     </div>
                     <div class="col-12 col-md-6 col-sm-6">
                         <label for="Clave" >Clave*</label>
-                        <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required autofocus="">
+                        <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required>
                     </div>
                     <div class="col-12 col-md-6 col-sm-6">
                         <label for="Descripcion" >Descripción*</label>
@@ -266,7 +266,7 @@
                     }
                 });
                 pnlTablero.addClass("d-none");
-                pnlDatos.removeClass('d-none'); 
+                pnlDatos.removeClass('d-none');
                 pnlDatos.find("[name='Clave']").addClass('disabledForms');
                 pnlDatos.find("#Descripcion").focus().select();
             }).fail(function (x, y, z) {
