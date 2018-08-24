@@ -16,9 +16,9 @@
                             <th>ID</th>
                             <th>Clave</th>
                             <th>Descripción</th>
-                            <th>Rango</th>
+                            <th>Tipo</th>
                             <th>Avance</th>
-                            <th>Nónima</th>
+                            <th>Fracción</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -62,8 +62,8 @@
 
 
                     <div class="col-12 col-md-2 col-sm-4">
-                        <label for="" >Rango*</label>
-                        <select id="Rango" name="Rango" class="form-control form-control-sm" >
+                        <label for="" >Tipo*</label>
+                        <select id="Tipo" name="Tipo" class="form-control form-control-sm required" >
                             <option value=""></option>
                             <option value="1">1-ADMINISTRACIÓN</option>
                             <option value="2">2-PRODUCCIÓN</option>
@@ -71,15 +71,15 @@
                     </div>
                     <div class="col-12 col-md-2 col-sm-3">
                         <label for="" >Avance*</label>
-                        <select id="Avance" name="Avance" class="form-control form-control-sm" >
+                        <select id="Avance" name="Avance" class="form-control form-control-sm required" >
                             <option value=""></option>
                             <option value="1">1-SI</option>
                             <option value="0">0-NO</option>
                         </select>
                     </div>
-                    <div class="col-6 col-md-2 col-sm-3">
-                        <label for="Nomina" >Nómina*</label>
-                        <input type="text" id="Nomina" name="Nomina" class="form-control form-control-sm numbersOnly" placeholder="" >
+                    <div class="col-6 col-md-2 col-sm-3 d-none" id="dFraccion">
+                        <label for="Fraccion" >Fracción</label>
+                        <input type="text" id="Fraccion" name="Fraccion" class="form-control form-control-sm numbersOnly" placeholder="" >
                     </div>
                 </div>
                 <div class="row pt-2">
@@ -111,6 +111,15 @@
         /*FUNCIONES INICIALES*/
         init();
         handleEnter();
+
+        pnlDatos.find("[name='Avance']").change(function () {
+            console.log(parseInt($(this).val()));
+            if (parseInt($(this).val()) === 1) {
+                pnlDatos.find('#dFraccion').removeClass('d-none');
+            } else {
+                pnlDatos.find('#dFraccion').addClass('d-none');
+            }
+        });
 
         /*FUNCIONES X BOTON*/
         pnlDatos.find("#Clave").focusout(function () {
@@ -162,7 +171,7 @@
                     });
                 }
             } else {
-                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
+                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'error');
             }
         });
 
@@ -244,9 +253,9 @@
                 {"data": "ID"},
                 {"data": "Clave"},
                 {"data": "Descripcion"},
-                {"data": "Rango"},
+                {"data": "Tipo"},
                 {"data": "Avance"},
-                {"data": "Nomina"}
+                {"data": "Fraccion"}
             ],
             "columnDefs": [
                 {

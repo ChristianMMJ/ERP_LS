@@ -2,15 +2,15 @@
     <div class="card-body ">
         <div class="row">
             <div class="col-sm-6 float-left">
-                <legend class="float-left">Unidades</legend>
+                <legend class="float-left">Fracciones</legend>
             </div>
             <div class="col-sm-6 float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
             </div>
         </div>
         <div class="card-block mt-4">
-            <div id="Unidades" class="table-responsive">
-                <table id="tblUnidades" class="table table-sm display " style="width:100%">
+            <div id="Fracciones" class="table-responsive">
+                <table id="tblFracciones" class="table table-sm display " style="width:100%">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -30,7 +30,7 @@
             <fieldset>
                 <div class="row">
                     <div class="col-12 col-sm-6 col-md-4 float-left">
-                        <legend >Unidad</legend>
+                        <legend >Fracción</legend>
                     </div>
                     <div class="col-12 col-sm-6 col-md-8" align="right">
                         <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
@@ -46,14 +46,21 @@
                     <div class="d-none">
                         <input type="text"  name="ID" class="form-control form-control-sm" >
                     </div>
-                    <div class="col-12 col-md-6 col-sm-6">
+                    <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
                         <label for="Clave" >Clave*</label>
                         <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required>
                     </div>
-                    <div class="col-12 col-md-6 col-sm-6">
+                    <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
                         <label for="Descripcion" >Descripción*</label>
                         <input type="text" id="Descripcion" name="Descripcion" class="form-control form-control-sm" placeholder="" required>
                     </div>
+                    <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                        <label for="" >Departamento*</label>
+                        <select id="Departamento" name="Departamento" class="form-control form-control-sm required" >
+                            <option value=""></option>
+                        </select>
+                    </div>
+
                 </div>
                 <div class="row pt-2">
                     <div class="col-6 col-md-6 ">
@@ -68,9 +75,9 @@
     </div>
 </div>
 <script>
-    var master_url = base_url + 'index.php/Unidades/';
-    var tblUnidades = $('#tblUnidades');
-    var Unidades;
+    var master_url = base_url + 'index.php/Fracciones/';
+    var tblFracciones = $('#tblFracciones');
+    var Fracciones;
     var btnNuevo = $("#btnNuevo"), btnCancelar = $("#btnCancelar"), btnEliminar = $("#btnEliminar"), btnGuardar = $("#btnGuardar");
     var pnlTablero = $("#pnlTablero"), pnlDatos = $("#pnlDatos");
     var nuevo = false;
@@ -95,7 +102,7 @@
                         data: frm
                     }).done(function (data, x, jq) {
                         swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO', 'info');
-                        Unidades.ajax.reload();
+                        Fracciones.ajax.reload();
                         pnlDatos.addClass("d-none");
                         pnlTablero.removeClass("d-none");
                     }).fail(function (x, y, z) {
@@ -104,6 +111,7 @@
                         HoldOn.close();
                     });
                 } else {
+                    frm.append('Estatus', 'ACTIVO');
                     $.ajax({
                         url: master_url + 'onAgregar',
                         type: "POST",
@@ -114,7 +122,7 @@
                     }).done(function (data, x, jq) {
                         pnlDatos.find("[name='ID']").val(data);
                         nuevo = false;
-                        Unidades.ajax.reload();
+                        Fracciones.ajax.reload();
                         pnlDatos.addClass("d-none");
                         pnlTablero.removeClass("d-none");
                     }).fail(function (x, y, z) {
@@ -131,7 +139,7 @@
         btnEliminar.click(function () {
             swal({
                 title: "¿Estas seguro?",
-                text: "Nota: No se eliminara ninguna unidad que tenga alguna relacion con otro dato dentro del sistema",
+                text: "Nota: No se eliminara ningun registro que tenga alguna relacion con otro módulo dentro del sistema",
                 icon: "warning",
                 buttons: {
                     cancelar: {
@@ -148,7 +156,7 @@
                     case "eliminar":
                         $.post(master_url + 'onEliminar', {ID: temp}).done(function () {
                             swal('ATENCIÓN', 'SE HA ELIMINADO EL REGISTRO', 'success');
-                            Unidades.ajax.reload();
+                            Fracciones.ajax.reload();
                         }).fail(function (x, y, z) {
                             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
                             console.log(x.responseText);
@@ -166,12 +174,14 @@
             pnlDatos.find("input").val("");
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass("d-none");
+            btnEliminar.addClass("d-none");
             getID();
             pnlDatos.find("[name='Clave']").addClass('disabledForms');
             pnlDatos.find("[name='Descripcion']").focus();
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
+
         });
 
         btnCancelar.click(function () {
@@ -182,6 +192,7 @@
 
     function init() {
         getRecords();
+        getDepartamentos();
     }
 
     function getID() {
@@ -207,10 +218,10 @@
             message: 'CARGANDO...'
         });
         $.fn.dataTable.ext.errMode = 'throw';
-        if ($.fn.DataTable.isDataTable('#tblUnidades')) {
-            tblUnidades.DataTable().destroy();
+        if ($.fn.DataTable.isDataTable('#tblFracciones')) {
+            tblFracciones.DataTable().destroy();
         }
-        Unidades = tblUnidades.DataTable({
+        Fracciones = tblFracciones.DataTable({
             "dom": 'Bfrtip',
             buttons: buttons,
             "ajax": {
@@ -242,19 +253,19 @@
             ]
         });
 
-        $('#tblUnidades_filter input[type=search]').focus();
+        $('#tblFracciones_filter input[type=search]').focus();
 
-        tblUnidades.find('tbody').on('click', 'tr', function () {
+        tblFracciones.find('tbody').on('click', 'tr', function () {
             HoldOn.open({
                 theme: 'sk-cube',
                 message: 'CARGANDO...'
             });
             nuevo = false;
-            tblUnidades.find("tbody tr").removeClass("success");
+            tblFracciones.find("tbody tr").removeClass("success");
             $(this).addClass("success");
-            var dtm = Unidades.row(this).data();
+            var dtm = Fracciones.row(this).data();
             temp = parseInt(dtm.ID);
-            $.getJSON(master_url + 'getUnidadByID', {ID: temp}).done(function (data) {
+            $.getJSON(master_url + 'getFraccionByID', {ID: temp}).done(function (data) {
                 pnlDatos.find("input").val("");
                 $.each(pnlDatos.find("select"), function (k, v) {
                     pnlDatos.find("select")[k].selectize.clear(true);
@@ -267,6 +278,8 @@
                 });
                 pnlTablero.addClass("d-none");
                 pnlDatos.removeClass('d-none');
+                btnEliminar.removeClass("d-none");
+
                 pnlDatos.find("[name='Clave']").addClass('disabledForms');
                 pnlDatos.find("#Descripcion").focus().select();
             }).fail(function (x, y, z) {
@@ -278,4 +291,19 @@
         });
         HoldOn.close();
     }
+    function getDepartamentos() {
+        $.ajax({
+            url: master_url + 'getDepartamentos',
+            type: "POST",
+            dataType: "JSON"
+        }).done(function (data, x, jq) {
+            $.each(data, function (k, v) {
+                pnlDatos.find("#Departamento")[0].selectize.addOption({text: v.Departamento, value: v.Clave});
+            });
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        });
+    }
+
+
 </script>
