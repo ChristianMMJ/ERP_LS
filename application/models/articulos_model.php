@@ -51,9 +51,16 @@ class articulos_model extends CI_Model {
 
     public function getDetalleByID($ID) {
         try {
-            return $this->db->select("pvm.ID AS ID, M.Nombre AS Maquila, pvm.Precio AS Precio, 'ACTIVO' AS Estatus ", false)
-                            ->from("preciosmaquilas AS pvm")->join('maquilas AS M', 'pvm.Maquila = M.ID')->where('pvm.Articulo', $ID)
-                            ->where('pvm.Estatus', 'ACTIVO')->get()->result();
+            $this->db->select("pvm.ID AS ID, M.Nombre AS Maquila, pvm.Precio AS Precio, 'A' AS Estatus ", false)->from("preciosmaquilas AS pvm")
+                    ->join('maquilas AS M', 'pvm.Maquila = M.Clave')->where('pvm.Articulo', $ID)->like('pvm.Estatus', 'A');
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+//            print $str;
+            $data = $query->result();
+            return $data;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

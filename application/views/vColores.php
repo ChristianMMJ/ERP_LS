@@ -110,8 +110,8 @@
                         <h6 class="text-danger">Los campos con * son obligatorios</h6>
                     </div>
                     <div class="col-6 col-sm-6 col-md-6" align="right">
-                        <button type="button" class="btn btn-raised btn-success btn-sm" id="btnGuardar">
-                            <span class="fa fa-check "></span>
+                        <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
+                            <i class="fa fa-save"></i>
                         </button>
                     </div>
                 </div>
@@ -135,7 +135,7 @@
         /*FUNCIONES X BOTON*/
         pnlDatos.find("#Descripcion").keyup(function () {
             if ($(this).val() !== '') {
-                pnlDatos.find("#Pieles")[0].selectize.disable(); 
+                pnlDatos.find("#Pieles")[0].selectize.disable();
             } else {
                 pnlDatos.find("#Pieles")[0].selectize.enable();
                 pnlDatos.find("#Pieles").removeClass('disabledForms');
@@ -243,6 +243,7 @@
             btnEliminar.addClass("d-none");
             pnlDatos.find("[name='Estilo']")[0].selectize.focus();
             pnlDatos.find('#FechaAlta').val(getToday());
+            pnlDatos.find("#Pieles")[0].selectize.enable();
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
@@ -354,9 +355,14 @@
                         pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
                     }
                 });
+                var xdes = pnlDatos.find("#Descripcion");
+                if (xdes.val() !== '' && xdes.val().length > 0) {
+                    pnlDatos.find("#Pieles")[0].selectize.disable();
+                } else {
+                    pnlDatos.find("#Pieles")[0].selectize.enable();
+                }
                 pnlTablero.addClass("d-none");
                 pnlDatos.removeClass('d-none');
-                btnEliminar.removeClass("d-none");
                 pnlDatos.find("#Descripcion").focus().select();
             }).fail(function (x, y, z) {
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');

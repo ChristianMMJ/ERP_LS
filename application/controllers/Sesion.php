@@ -15,12 +15,10 @@ class Sesion extends CI_Controller {
 
     public function index() {
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
-            $this->load->view('vEncabezado');
-
+            $this->load->view('vEncabezado')->view('vFondo');
             switch ($this->session->TipoAcceso) {
                 case 'SUPER ADMINISTRADOR': $this->load->view('vNavGeneral');
-                    $this->load->view('vMenuPrincipal');
-                    $this->load->view('vNavGeneral');
+                    $this->load->view('vMenuPrincipal')->view('vNavGeneral')->view('vQuickMenu');
                     break;
                 case 'ADMINISTRACION':
                     $this->load->view('vMenuAdministracion');
@@ -44,14 +42,9 @@ class Sesion extends CI_Controller {
                     $this->load->view('vMenuProduccion');
                     break;
             }
-
-            $this->load->view('vFondo');
-            $this->load->view('vQuickMenu');
             $this->load->view('vFooter');
         } else {
-            $this->load->view('vEncabezado');
-            $this->load->view('vSesion');
-            $this->load->view('vFooter');
+            $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
         }
     }
 

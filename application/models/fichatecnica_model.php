@@ -13,7 +13,6 @@ class fichatecnica_model extends CI_Model {
 
     public function onLimpiarTabla() {
         try {
-
             $sql = "TRUNCATE TABLE fichatecnicatemp;";
             $this->db->query($sql);
         } catch (Exception $exc) {
@@ -23,7 +22,6 @@ class fichatecnica_model extends CI_Model {
 
     public function onGenerarRecords() {
         try {
-
             $sql = "INSERT INTO fichatecnicatemp (estilo, color) SELECT estilo, color FROM Fichatecnica AS FT GROUP BY Estilo, Color;";
             $this->db->query($sql);
         } catch (Exception $exc) {
