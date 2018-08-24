@@ -25,9 +25,8 @@
         </div>
     </div>
 </div>
-<!--MODALES-->
 <!--GUARDAR-->
-<div class="card border-0 m-3 d-none animated fadeIn" id="pnlDatos">
+<div class="card border-0 m-3 d-none animated fadeIn" style="z-index: 99 !important" id="pnlDatos">
     <div class="card-body text-dark">
         <form id="frmNuevo">
             <div class="row">
@@ -87,7 +86,7 @@
                         <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" id="AfectaPV" name="AfectaPV" >
-                                <label class="custom-control-label" for="AfectaPV">A.PV</label>
+                                <label class="custom-control-label" for="AfectaPV">Afecta PV</label>
                             </div>
                         </div>
                         <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
@@ -99,7 +98,6 @@
         </div>
     </div>
 </div>
-
 <!--DETALLE-->
 <div class="card d-none m-3 animated fadeIn" id="pnlDetalle">
     <div class="card-body" >
@@ -117,13 +115,13 @@
 
                                     <th>Articulo</th>
                                     <th>Unidad</th>
-                                    <th>Precio</th>
+
 
                                     <th>Consumo</th>
-                                    <th>Piel</th>
+
                                     <th>PzaXPar</th>
 
-                                    <th>Importe</th>
+
                                     <th>ID</th>
                                     <th>Eliminar</th>
                                     <th>DeptoCat</th>
@@ -137,11 +135,8 @@
                                     <th></th>
                                     <th></th>
                                     <th></th>
+                                    <th>Total:</th>
                                     <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th style="text-align:right">Total:</th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
@@ -308,17 +303,17 @@
                     "searchable": false
                 },
                 {
+                    "targets": [7],
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    "targets": [9],
+                    "visible": false,
+                    "searchable": false
+                },
+                {
                     "targets": [10],
-                    "visible": false,
-                    "searchable": false
-                },
-                {
-                    "targets": [12],
-                    "visible": false,
-                    "searchable": false
-                },
-                {
-                    "targets": [13],
                     "visible": false,
                     "searchable": false
                 }
@@ -329,32 +324,52 @@
                 {"data": "Articulo_ID"}, /*2*/
                 {"data": "Articulo"}, /*3*/
                 {"data": "Unidad"}, /*4*/
-                {"data": "Precio"}, /*5*/
-                {"data": "Consumo"}, /*6*/
-                {"data": "TipoPiel"}, /*7*/
-                {"data": "PzXPar"}, /*8*/
-                {"data": "Importe"}, /*9*/
-                {"data": "ID"},
-                {"data": "Eliminar"},
-                {"data": "DeptoCat"}, /*12*/
-                {"data": "DEPTO"}/*13*/
+                {"data": "Consumo"}, /*5*/
+                {"data": "PzXPar"}, /*6*/
+                {"data": "ID"}, /*7*/
+                {"data": "Eliminar"}, /*8*/
+                {"data": "DeptoCat"}, /*9*/
+                {"data": "DEPTO"}/*10*/
             ],
+            "createdRow": function (row, data, index) {
+                $.each($(row).find("td"), function (k, v) {
+                    var c = $(v);
+                    var index = parseInt(k);
+                    switch (index) {
+                        case 2:
+                            /*UNIDAD*/
+                            c.addClass('text-warning text-strong');
+                            break;
+                        case 3:
+                            /*CONSUMO*/
+                            c.addClass('');
+                            break;
+                        case 4:
+                            /*PZXPAR*/
+                            c.addClass('text-info text-strong');
+                            break;
+                        case 5:
+                            /*ELIMINAR*/
+                            c.addClass('text-danger');
+                            break;
+
+                    }
+                });
+            },
             "footerCallback": function (row, data, start, end, display) {
                 var api = this.api();//Get access to Datatable API
                 // Update footer
-                var total = api.column(9).data().reduce(function (a, b) {
+                var total = api.column(5).data().reduce(function (a, b) {
                     var ax = 0, bx = 0;
                     ax = $.isNumeric(a) ? parseFloat(a) : 0;
                     bx = $.isNumeric(getNumberFloat(b)) ? getNumberFloat(b) : 0;
                     return  (ax + bx);
                 }, 0);
-                $(api.column(9).footer()).html(api.column(9, {page: 'current'}).data().reduce(function (a, b) {
-                    return '$' + $.number(parseFloat(total), 2, '.', ',');
+                $(api.column(5).footer()).html(api.column(5, {page: 'current'}).data().reduce(function (a, b) {
+                    return  $.number(parseFloat(total), 3, '.', ',');
                 }, 0));
             },
             "dom": 'frt',
-            "processing": true,
-            "serverSide": true,
             "autoWidth": true,
             language: lang,
             "displayLength": 500,
@@ -365,168 +380,20 @@
             "scrollCollapse": true,
             "bSort": true,
             "keys": true,
-            order: [[13, 'asc']],
+            order: [[10, 'asc']],
             rowGroup: {
                 endRender: function (rows, group) {
                     var stc = $.number(rows.data().pluck('Consumo').reduce(function (a, b) {
                         return a + parseFloat(b);
                     }, 0), 4, '.', ',');
-                    var stt = $.number(rows.data().pluck('Importe').reduce(function (a, b) {
-                        return a + getNumberFloat(b);
-                    }, 0), 4, '.', ',');
-                    return $('<tr>').append('<td></td><td></td><td colspan="2">Totales de: ' + group + '</td>').append('<td>' + stc + '</td><td colspan="2"></td><td>$' + stt + '</td><td></td></tr>');
+                    return $('<tr>').
+                            append('<td></td><td colspan="2">Totales de: ' + group + '</td>').append('<td>' + stc + '</td><td colspan="2"></td><td></td></tr>');
                 },
                 dataSrc: "DeptoCat"
             },
-            "createdRow": function (row, data, index) {
-                $.each($(row).find("td"), function (k, v) {
-                    var c = $(v);
-                    var index = parseInt(k);
-                    switch (index) {
-                        case 0:
-                            /*PIEZA*/
-                            c.addClass('Pieza bold-text');
-                            break;
-                        case 1:
-                            /*MATERIAL*/
-                            c.addClass('Articulo bold-text');
-                            break;
-                        case 2:
-                            /*UNIDAD*/
-                            c.addClass('Unidad bold-text');
-                            break;
-                        case 3:
-                            /*PRECIO*/
-                            c.addClass('Precio bold-text');
-                            break;
-                        case 4:
-                            /*PARES*/
-                            c.addClass('Consumo text-danger bold-text');
-                            break;
-                        case 5:
-                            /*CONSUMO*/
-                            c.addClass('Piel');
-                            break;
-                        case 6:
-                            /*PZAXPAR*/
-                            c.addClass('PzaXPar');
-                            break;
-                        case 7:
-                            /*IMPORTE*/
-                            c.addClass('Importe bold-text text-success');
-                            break;
-                        case 9:
-                            /*ELIMINAR*/
-                            c.addClass('Eliminar bold-text text-danger');
-                            break;
-                    }
-                });
-            },
+
             "initComplete": function (x, y) {
                 HoldOn.close();
-            }
-        });
-
-        FichaTecnicaDetalle.on('key', function (e, datatable, key, cell, originalEvent) {
-            var cell_td = $(this).find("td.focus:not(.Pieza):not(.Articulo):not(.Unidad):not(.Editar)");
-            if (key === 13) {
-                if (cell_td.hasClass("Precio")) {
-                    var txt = getNumberFloat(cell.data());
-                    var g = '<input id="Editor" type="text" class="form-control form-control-sm numbersOnly" maxlength="10" value="' + txt + '" autofocus>';
-                    cell_td.html(g);
-                    cell_td.find("#Editor").focus().select();
-                } else if (cell_td.hasClass("Consumo")) {
-                    var txt = (cell.data());
-                    var g = '<input id="Editor" type="text" class="form-control form-control-sm numbersOnly" maxlength="10" value="' + txt + '" autofocus>';
-                    cell_td.html(g);
-                    cell_td.find("#Editor").focus().select();
-                } else if (cell_td.hasClass("PzaXPar")) {
-                    var txt = (cell.data());
-                    var g = '<input id="Editor" type="text" class="form-control form-control-sm numbersOnly" maxlength="10" value="' + txt + '" autofocus>';
-                    cell_td.html(g);
-                    cell_td.find("#Editor").focus().select();
-                }
-            }
-        }).on('key-blur', function (e, datatable, cell) {
-            var t = $('#tblFichaTecnicaDetalle > tbody');
-            var a = t.find("#Editor");
-            if (a.val() !== 'undefined' && a.val() !== undefined) {
-                var b = FichaTecnicaDetalle.cell(a.parent()).index();
-                var d = a.parent();
-                var row = FichaTecnicaDetalle.row(a.parent().parent()).data();// SOLO OBTENDRA EL ID
-                var params;
-                if (d.hasClass('Precio')) {
-                    var precio = getNumberFloat(a.val());
-                    var precio_format = '$' + $.number(precio, 2, '.', ',');
-                    d.html(precio_format);
-                    //DRAW NEW DATA
-                    FichaTecnicaDetalle.cell($(d).parent(), 5).data(precio_format).draw();
-                    var tr = FichaTecnicaDetalle.row($(d).parent()).data();
-                    var cantidad = parseFloat(tr.Consumo);
-                    var importe_total = cantidad * precio;
-                    //DRAW NEW DATA
-                    FichaTecnicaDetalle.cell($(d).parent(), 9).data('$' + $.number(importe_total, 3, '.', ',')).draw();
-                    //SHORT POST
-                    params = {ID: row.ID, CELDA: 'PRECIO', VALOR: precio};
-                } else if (d.hasClass('Consumo')) {
-                    d.html(a.val());
-                    FichaTecnicaDetalle.cell(d, b).data(a.val()).draw();
-
-                    //DRAW NEW DATA
-                    var tr = FichaTecnicaDetalle.row($(d).parent()).data();
-                    var precio = getNumberFloat(tr.Precio);
-                    var cantidad = parseFloat(tr.Consumo);
-                    var importe_total = cantidad * precio;
-                    //DRAW NEW DATA
-                    FichaTecnicaDetalle.cell($(d).parent(), 9).data('$' + $.number(importe_total, 3, '.', ',')).draw();
-
-                    //SHORT POST
-                    params = {
-                        ID: row.ID,
-                        CELDA: 'CONSUMO',
-                        VALOR: a.val()
-                    };
-                } else if (d.hasClass('PzaXPar')) {
-                    d.html(a.val().toUpperCase());
-                    //SHORT POST
-                    params = {
-                        ID: row.ID,
-                        CELDA: 'PZAXPAR',
-                        VALOR: a.val()
-                    };
-                    //DRAW NEW DATA
-                    FichaTecnicaDetalle.cell(d, b).data(a.val()).draw();
-                }
-                swal({
-                    title: "¿Deseas cambiar el registro? ", text: "*El registro se modificará de forma permanente*", icon: "warning", buttons: ["Cancelar", "Aceptar"]
-                }).then((willDelete) => {
-                    if (willDelete) {
-                        $.post(master_url + 'onEditarFichaTecnicaDetalle', params).done(function (data, x, jq) {
-                            $.notify({
-                                // options
-                                message: 'LOS DATOS HAN SIDO ACTUALIZADOS'
-                            }, {
-                                // settings
-                                type: 'success',
-                                delay: 500,
-                                animate: {
-                                    enter: 'animated flipInX',
-                                    exit: 'animated flipOutX'
-                                },
-                                placement: {
-                                    from: "top",
-                                    align: "right"
-                                }
-                            });
-                        }).fail(function (x, y, z) {
-                            console.log('ERROR', x, y, z);
-                        }).always(function () {
-                            console.log('DATOS ACTUALIZADOS');
-                        });
-                    } else {
-                        FichaTecnicaDetalle.ajax.reload();
-                    }
-                });
             }
         });
 
@@ -534,8 +401,6 @@
             tblFichaTecnicaDetalle.find("tbody tr").removeClass("success");
             $(this).addClass("success");
             var tr = $(this);
-            var dtm = FichaTecnicaDetalle.row(tr).data();
-            console.log(dtm);
         });
 
     }
@@ -860,8 +725,8 @@
     }
 </script>
 <style>
-    .bold-text{
-        font-weight: 400;
+    .text-strong {
+        font-weight: bolder;
     }
     tr.group-start:hover td{
         background-color: #e0e0e0 !important;

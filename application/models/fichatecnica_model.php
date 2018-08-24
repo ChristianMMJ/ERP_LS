@@ -55,41 +55,20 @@ class fichatecnica_model extends CI_Model {
         }
     }
 
-    public function getFichaTecnicaDetalleByIDx($Estilo, $Color) {
-        try {
-            return $this->db->select('P.Clave AS Pieza_ID,                P.Clave+\'-\'+ P.Descripcion AS Pieza,
-                FT.Articulo Articulo_ID,                 M.Articulo+\'-\'+M.Descripcion AS Articulo,
-                CONCAT(\'<span class="text-warning">\',C.SValue,\'</span>\') AS "Unidad",
-                CONCAT(\'$\',FORMAT(FT.Precio,2)) AS Precio,
-                CONCAT(\'\',FT.Consumo,\'\') AS Consumo,
-                FT.TipoPiel As TipoPiel,
-                ISNULL(FT.PzXPar,1) AS PzXPar,
-                CONCAT(\'$\',FORMAT((FT.Precio * FT.Consumo), 2)) AS Importe, FT.Clave AS ID,
-                CONCAT(\'<span class="fa fa-trash fa-lg" onclick="onEliminarArticuloID(\',FT.Clave,\')">\',\'</span>\') AS Eliminar,
-                CONCAT(D.Clave,\' - \',D.Descripcion) AS DeptoCat, D.Clave AS DEPTO', false)
-                            ->from('FichaTecnica AS FT ')
-                            ->join('Articulos AS M', 'FT.Articulo = M.Clave')
-                            ->join('Piezas AS P', 'FT.Pieza = P.Clave')
-                            ->join('Catalogos AS C', 'M.UnidadConsumo = C.Clave')
-                            ->join('Departamentos AS D', 'P.DepartamentoCat = D.Clave')
-                            ->where('FT.Estilo', $Estilo)->where('FT.Color', $Color)
-                            ->where('FT.Estatus', 'ACTIVO')->get()->result();
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
     public function getFichaTecnicaDetalleByID($Estilo, $Color) {
         try {
-            $this->db->select('P.Clave AS Pieza_ID, CONCAT(P.Clave, \'-\', P.Descripcion) AS Pieza,
-            FT.Articulo Articulo_ID, CONCAT(M.Descripcion, \'-\', M.Descripcion) AS Articulo,
-            CONCAT(\'<span class="text-warning">\', C.Descripcion, \'</span>\') AS Unidad,
-            CONCAT(\'$\', FORMAT(FT.Precio, 2)) AS Precio,
-            CONCAT(\'\', FT.Consumo, \'\') AS Consumo, IFNULL(FT.PzXPar, 1) AS PzXPar,
-            CONCAT(\'$\', FORMAT((FT.Precio * FT.Consumo), 2)) AS Importe, FT.ID AS ID,
-            CASE WHEN P.Clasificacion = 1 THEN \'1ra\' WHEN P.Clasificacion = 2 THEN \'2da\' WHEN P.Clasificacion = 1 THEN \'1ra\'  END AS TipoPiel,
-            CONCAT(\'<span class="fa fa-trash fa-lg" onclick="onEliminarArticuloID(\', FT.ID, \')">\', \'</span>\') AS Eliminar,
-            CONCAT(D.Clave, \' - \', D.Descripcion) AS DeptoCat, D.Clave AS DEPTO', false)
+            $this->db->select('
+            P.Clave AS Pieza_ID,
+            CONCAT(P.Clave, \'-\', P.Descripcion) AS Pieza,
+            FT.Articulo Articulo_ID,
+            CONCAT(M.Clave, \'-\', M.Descripcion) AS Articulo,
+            C.Descripcion AS Unidad,
+            CONCAT(\'\', FT.Consumo, \'\') AS Consumo,
+            IFNULL(FT.PzXPar, 1) AS PzXPar,
+            FT.ID AS ID,
+            CONCAT(\'<span class="fa fa-trash fa-lg " onclick="onEliminarArticuloID(\', FT.ID, \')">\', \'</span>\') AS Eliminar,
+            CONCAT(D.Clave, \' - \', D.Descripcion) AS DeptoCat,
+            D.Clave AS DEPTO', false)
                     ->from('FichaTecnica AS FT')
                     ->join('`Articulos` AS `M`', '`FT`.`Articulo` = `M`.`Clave`')
                     ->join('`Piezas` AS `P`', '`FT`.`Pieza` = `P`.`Clave`')
