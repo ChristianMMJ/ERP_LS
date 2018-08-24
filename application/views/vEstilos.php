@@ -75,7 +75,7 @@
                                 <label for="" >F. Alta</label>
                                 <input type="text" id="FechaAlta" name="FechaAlta" class="form-control form-control-sm date notEnter" >
                             </div>
-                            <div class="col-6  col-sm-2 col-md-2 col-lg-2 col-xl-3">
+                            <div class="col-6  col-sm-2 col-md-2 col-lg-2 col-xl-3" id="dFechaBaja">
                                 <label for="" >F. Baja</label>
                                 <input type="text" id="FechaBaja" name="FechaBaja" class="form-control form-control-sm date notEnter" >
                             </div>
@@ -186,7 +186,8 @@
                             </div>
                             <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
                                 <label for="Ano" >Año*</label>
-                                <input type="text" id="Ano" name="Ano" maxlength="4" class="form-control form-control-sm numbersOnly" placeholder="" >
+                                <input type="text" id="Ano" onchange="yearValidation(this.value, event, this)"
+                                       name="Ano" maxlength="4" class="form-control form-control-sm numbersOnly" placeholder="" >
                             </div>
                         </div>
                         <!--SEPTIMO RENGLON-->
@@ -325,6 +326,8 @@
     var btnArchivo = $("#btnArchivo");
     var VistaPrevia = $("#VistaPrevia");
 
+
+
     $(document).ready(function () {
         /*FUNCIONES INICIALES*/
         init();
@@ -459,8 +462,10 @@
             pnlDatos.removeClass("d-none");
             btnEliminar.addClass("d-none");
             pnlDatos.find("[name='Clave']").focus();
+            pnlDatos.find("[name='Fechaalta']").focus();
             pnlDatos.find("[name='Clave']").removeClass('disabledForms');
             pnlDatos.find('#FechaAlta').val(getToday());
+            pnlDatos.find('#dFechaBaja').addClass('d-none');
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
@@ -554,7 +559,6 @@
                         }
                     }
                 });
-                console.log(dtm.Foto);
                 if (dtm.Foto !== null && dtm.Foto !== undefined && dtm.Foto !== '') {
                     var ext = getExt(dtm.Foto);
                     if (ext === "gif" || ext === "jpg" || ext === "png" || ext === "jpeg") {
@@ -576,6 +580,7 @@
                 btnEliminar.removeClass("d-none");
                 pnlDatos.find("#Clave").addClass('disabledForms');
                 pnlDatos.find("#Descripcion").focus().select();
+                pnlDatos.find('#dFechaBaja').removeClass('d-none');
             }).fail(function (x, y, z) {
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
 
@@ -602,7 +607,6 @@
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
-            pnlDatos.find("[name='Temporada']")[0].selectize.addOption({text: '--', value: ''});
             $.each(data, function (k, v) {
                 pnlDatos.find("[name='Temporada']")[0].selectize.addOption({text: v.Temporada, value: v.Clave});
             });
@@ -616,7 +620,6 @@
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
-            pnlDatos.find("[name='Serie']")[0].selectize.addOption({text: '--', value: ''});
             $.each(data, function (k, v) {
                 pnlDatos.find("[name='Serie']")[0].selectize.addOption({text: v.Serie, value: v.Clave});
             });
@@ -630,7 +633,6 @@
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
-            pnlDatos.find("[name='Horma']")[0].selectize.addOption({text: '--', value: ''});
             $.each(data, function (k, v) {
                 pnlDatos.find("[name='Horma']")[0].selectize.addOption({text: v.Horma, value: v.Clave});
             });
@@ -644,7 +646,6 @@
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
-            pnlDatos.find("[name='Genero']")[0].selectize.addOption({text: '--', value: ''});
             $.each(data, function (k, v) {
                 pnlDatos.find("[name='Genero']")[0].selectize.addOption({text: v.Genero, value: v.Clave});
             });
@@ -659,7 +660,6 @@
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
-            pnlDatos.find("[name='Linea']")[0].selectize.addOption({text: '--', value: ''});
             $.each(data, function (k, v) {
                 pnlDatos.find("[name='Linea']")[0].selectize.addOption({text: v.Linea, value: v.Clave});
             });
@@ -686,7 +686,6 @@
             type: "POST",
             dataType: "JSON"
         }).done(function (data, x, jq) {
-            pnlDatos.find("[name='MaqPlant1']")[0].selectize.addOption({text: '--', value: ''});
             $.each(data, function (k, v) {
                 pnlDatos.find("[name='MaqPlant1']")[0].selectize.addOption({text: v.MaquilasPlantillas, value: v.Clave});
                 pnlDatos.find("[name='MaqPlant2']")[0].selectize.addOption({text: v.MaquilasPlantillas, value: v.Clave});

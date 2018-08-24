@@ -23,16 +23,17 @@ class Estilos extends CI_Controller {
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             $this->load->view('vEncabezado');
 
+
             switch ($this->session->userdata["TipoAcceso"]) {
                 case 'SUPER ADMINISTRADOR':
                     $this->load->view('vNavGeneral');
-                    //Validamos que no venga vacia y asignamos un valor por defecto
+//Validamos que no venga vacia y asignamos un valor por defecto
                     $Origen = isset($_GET['origen']) ? $_GET['origen'] : "";
 
                     if ($Origen === 'FICHASTECNICAS') {
                         $this->load->view('vMenuFichasTecnicas');
                     }
-                    //Cuando no viene de ningun modulo y lo teclean
+//Cuando no viene de ningun modulo y lo teclean
                     else {
                         $this->load->view('vMenuPrincipal');
                     }
@@ -173,7 +174,7 @@ class Estilos extends CI_Controller {
                 'Linea' => ($x->post('Linea') !== NULL) ? $x->post('Linea') : NULL,
                 'Horma' => ($x->post('Horma') !== NULL) ? $x->post('Horma') : NULL,
                 'FechaAlta' => ($x->post('FechaAlta') !== NULL) ? $x->post('FechaAlta') : NULL,
-                'FechaBaja' => ($x->post('FechaBaja') !== NULL) ? $x->post('FechaBaja') : NULL,
+                'FechaBaja' => NULL,
                 'Genero' => ($x->post('Genero') !== NULL) ? $x->post('Genero') : NULL,
                 'GdoDif' => ($x->post('GdoDif') !== NULL) ? $x->post('GdoDif') : NULL,
                 'Serie' => ($x->post('Serie') !== NULL) ? $x->post('Serie') : NULL,
