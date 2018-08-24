@@ -28,7 +28,6 @@
     </div>
 </div>
 <div class="d-none animated fadeIn text-dark" id="pnlDatos">
-
     <form id="frmNuevo">
         <fieldset>
             <!--            PRIMER CONTENEDOR-->
@@ -249,7 +248,6 @@
                 switch (value) {
                     case "cambiar":
                         $.post(master_url + 'onIgualarPrecios', {ID: pnlDatos.find("#ID").val()}).done(function (data) {
-                            console.log("\n", data);
                             swal('ATENCIÓN', 'SE HAN CAMBIADO LOS PRECIOS Y AGREGADO NUEVAS MAQUILAS', 'success');
                         }).fail(function (x, y, z) {
                             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
@@ -318,10 +316,8 @@
                         HoldOn.close();
                     });
                 } else {
-                    var precios = [];
-                    console.log("\n * r * ");
-                    $.each(tblPrecioVentaParaMaquilas.find("tbody tr"), function (k, v) {
-                        console.log(v);
+                    var precios = []; 
+                    $.each(tblPrecioVentaParaMaquilas.find("tbody tr"), function (k, v) { 
                         var r = PrecioVentaParaMaquilas.row($(this)).data();
                         precios.push({
                             Maquila: r[1],
@@ -336,8 +332,7 @@
                         contentType: false,
                         processData: false,
                         data: frm
-                    }).done(function (data, x, jq) {
-                        console.log(data);
+                    }).done(function (data, x, jq) { 
                         pnlDatos.find("[name='ID']").val(data);
                         nuevo = false;
                         Articulos.ajax.reload();
@@ -456,8 +451,7 @@
                     "searchable": false
                 }
             ],
-            createdRow: function (row, data, dataIndex, cells) {
-                console.log($(row).find("td"));
+            createdRow: function (row, data, dataIndex, cells) { 
                 var event;
                 if (isMobile) {
                     $(this).find("td:eq(1)").touch();
@@ -471,8 +465,7 @@
                         var input = '<input type="text" class="form-control form-control-sm numbersOnly" maxlength="10" name="Precio" autofocus>';
                         var exist = $(this).find("#Precio").val();
                         var celda = $(this);
-                        if (exist === undefined && celda.text() !== '') {
-                            console.log('CELDA TEXT ', celda.text());
+                        if (exist === undefined && celda.text() !== '') { 
                             var vActual = celda.text();
                             celda.html(input);
                             var input_precio = celda.find("[name='Precio']");
@@ -549,8 +542,7 @@
     }
 
     function getID() {
-        $.getJSON(master_url + 'getID').done(function (data, x, jq) {
-            console.log(data);
+        $.getJSON(master_url + 'getID').done(function (data, x, jq) { 
             if (data.length > 0) {
                 var ID = $.isNumeric(data[0].CLAVE) ? parseInt(data[0].CLAVE) + 1 : 1;
                 pnlDatos.find("#Clave").val(ID);
@@ -645,15 +637,11 @@
                 pnlDatos.find("#PrecioTres").prop("readonly", true);
 
                 /*DETALLE*/
-                $.getJSON(master_url + 'getDetalleByID', {ID: temp}).done(function (data) {
-                    console.log('getDetalleByID', data);
+                $.getJSON(master_url + 'getDetalleByID', {ID: dtm.Clave}).done(function (data) {
                     if (data.length > 0) {
                         $.each(data, function (k, v) {
-                            PrecioVentaParaMaquilas.row.add([v.ID, v.Maquila, v.Precio, 'ACTIVO', '<button type="button" class="btn btn-danger" onclick="onEliminarDetalle(' + v.ID + ',this)"><span class="fa fa-trash"></span></button>']).draw(false);
+                            PrecioVentaParaMaquilas.row.add([v.ID, v.Maquila, v.Precio, 'A', '<button type="button" class="btn btn-danger" onclick="onEliminarDetalle(' + v.ID + ',this)"><span class="fa fa-trash"></span></button>']).draw(false);
                         });
-                        if (PrecioVentaParaMaquilas.rows().data().count() === 1) {
-
-                        }
                     }
                 }).fail(function (x, y, z) {
                     swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
@@ -676,7 +664,7 @@
             $.each(data, function (k, v) {
                 pnlDatos.find("#Grupo")[0].selectize.addOption({text: v.Grupo, value: v.ID});
             });
-        }).fail(function () {
+        }).fail(function (x) {
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
             console.log(x.responseText);
         }).always(function () {
@@ -705,7 +693,7 @@
                 pnlDatos.find("#ProveedorDos")[0].selectize.addOption({text: v.Proveedor, value: v.ID});
                 pnlDatos.find("#ProveedorTres")[0].selectize.addOption({text: v.Proveedor, value: v.ID});
             });
-        }).fail(function () {
+        }).fail(function (x) {
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
             console.log(x.responseText);
         }).always(function () {
@@ -718,7 +706,7 @@
             $.each(data, function (k, v) {
                 pnlDatosDetalle.find("#Maquila")[0].selectize.addOption({text: v.Maquila, value: v.ID});
             });
-        }).fail(function () {
+        }).fail(function (x) {
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
             console.log(x.responseText);
         }).always(function () {
@@ -728,7 +716,6 @@
 
     function getID() {
         $.getJSON(master_url + 'getID').done(function (data, x, jq) {
-            console.log(data);
             if (data.length > 0) {
                 var ID = $.isNumeric(data[0].CLAVE) ? parseInt(data[0].CLAVE) + 1 : 1;
                 pnlDatos.find("#Clave").val(ID);
@@ -779,8 +766,7 @@
     }
 
     function onEditarPrecioPorMaquila(x) {
-        $.post(master_url + 'onEditarPrecioPorMaquila', x).done(function (data) {
-            console.log(data);
+        $.post(master_url + 'onEditarPrecioPorMaquila', x).done(function (data) { 
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         });
