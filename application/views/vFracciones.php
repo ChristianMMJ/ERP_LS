@@ -197,7 +197,6 @@
 
     function getID() {
         $.getJSON(master_url + 'getID').done(function (data, x, jq) {
-            console.log(data);
             if (data.length > 0) {
                 var ID = $.isNumeric(data[0].CLAVE) ? parseInt(data[0].CLAVE) + 1 : 1;
                 pnlDatos.find("#Clave").val(ID);

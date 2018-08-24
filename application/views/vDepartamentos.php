@@ -53,7 +53,7 @@
                         <label for="Clave" >Clave*</label>
                         <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required >
                     </div>
-                    <div class="col-12 col-md-4 col-sm-6">
+                    <div class="col-12 col-md-6 col-sm-8">
                         <label for="Descripcion" >Descripción*</label>
                         <input type="text" id="Descripcion" name="Descripcion" class="form-control form-control-sm" required>
                     </div>
@@ -77,9 +77,11 @@
                             <option value="0">0-NO</option>
                         </select>
                     </div>
-                    <div class="col-6 col-md-2 col-sm-3 d-none" id="dFraccion">
+                    <div class="col-12 col-md-4 col-sm-5 d-none" id="dFraccion">
                         <label for="Fraccion" >Fracción</label>
-                        <input type="text" id="Fraccion" name="Fraccion" class="form-control form-control-sm numbersOnly" placeholder="" >
+                        <select id="Fraccion" name="Fraccion" class="form-control form-control-sm" >
+                            <option value=""></option>
+                        </select>
                     </div>
                 </div>
                 <div class="row pt-2">
@@ -230,6 +232,18 @@
 
     function init() {
         getRecords();
+        getFracciones();
+    }
+
+    function  getFracciones() {
+        $.getJSON(master_url + 'getFracciones').done(function (data) {
+            $.each(data, function (k, v) {
+                pnlDatos.find("#Fraccion")[0].selectize.addOption({text: v.Fraccion, value: v.ID});
+            });
+        }).fail(function (x, y, z) {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        });
     }
 
     function getRecords() {
@@ -318,8 +332,6 @@
         });
         HoldOn.close();
     }
-
-
     function onComprobarClave(e) {
         if (nuevo) {
             $.getJSON(master_url + 'onComprobarClave', {Clave: $(e).val()}).done(function (data) {

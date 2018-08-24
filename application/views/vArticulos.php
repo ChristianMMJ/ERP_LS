@@ -82,8 +82,8 @@
                             <label for="" >Tipo*</label>
                             <select id="TipoArticulo" name="TipoArticulo" class="form-control form-control-sm required" >
                                 <option value=""></option>
-                                <option value="0">PRODUCCIÓN</option>
-                                <option value="222">PROTOTIPO</option>
+                                <option value="0">0-PRODUCCIÓN</option>
+                                <option value="222">222-PROTOTIPO</option>
                             </select>
                         </div>
                         <div class="col-12 col-sm-6 col-md-3 col-xl-1">
@@ -96,11 +96,11 @@
                             <label for="" >Moneda*</label>
                             <select id="Tmnda" name="Tmnda" class="form-control form-control-sm required" >
                                 <option value=""></option>
-                                <option value="1">Nacional</option>
-                                <option value="2">Dolar</option>
-                                <option value="3">Libra</option>
-                                <option value="4">Jen</option>
-                                <option value="5">Euro</option>
+                                <option value="1">1-Nacional</option>
+                                <option value="2">2-Dolar</option>
+                                <option value="3">3-Libra</option>
+                                <option value="4">4-Jen</option>
+                                <option value="5">5-Euro</option>
                             </select>
                         </div>
                         <div class="col-12 col-sm-6 col-md-3 col-xl-3">
@@ -145,7 +145,7 @@
                         </div>
                     </div>
                 </div>
-            </div> 
+            </div>
             <!--            TERCER CONTENEDOR-->
             <div class="card  m-3 ">
                 <div class="card-body">
@@ -318,8 +318,8 @@
                         HoldOn.close();
                     });
                 } else {
-                    var precios = []; 
-                    $.each(tblPrecioVentaParaMaquilas.find("tbody tr"), function (k, v) { 
+                    var precios = [];
+                    $.each(tblPrecioVentaParaMaquilas.find("tbody tr"), function (k, v) {
                         var r = PrecioVentaParaMaquilas.row($(this)).data();
                         precios.push({
                             Maquila: r[1],
@@ -334,7 +334,7 @@
                         contentType: false,
                         processData: false,
                         data: frm
-                    }).done(function (data, x, jq) { 
+                    }).done(function (data, x, jq) {
                         pnlDatos.find("[name='ID']").val(data);
                         nuevo = false;
                         Articulos.ajax.reload();
@@ -452,7 +452,7 @@
                     "searchable": false
                 }
             ],
-            createdRow: function (row, data, dataIndex, cells) { 
+            createdRow: function (row, data, dataIndex, cells) {
                 var event;
                 if (isMobile) {
                     $(this).find("td:eq(1)").touch();
@@ -466,7 +466,7 @@
                         var input = '<input type="text" class="form-control form-control-sm numbersOnly" maxlength="10" name="Precio" autofocus>';
                         var exist = $(this).find("#Precio").val();
                         var celda = $(this);
-                        if (exist === undefined && celda.text() !== '') { 
+                        if (exist === undefined && celda.text() !== '') {
                             var vActual = celda.text();
                             celda.html(input);
                             var input_precio = celda.find("[name='Precio']");
@@ -543,7 +543,7 @@
     }
 
     function getID() {
-        $.getJSON(master_url + 'getID').done(function (data, x, jq) { 
+        $.getJSON(master_url + 'getID').done(function (data, x, jq) {
             if (data.length > 0) {
                 var ID = $.isNumeric(data[0].CLAVE) ? parseInt(data[0].CLAVE) + 1 : 1;
                 pnlDatos.find("#Clave").val(ID);
@@ -767,7 +767,7 @@
     }
 
     function onEditarPrecioPorMaquila(x) {
-        $.post(master_url + 'onEditarPrecioPorMaquila', x).done(function (data) { 
+        $.post(master_url + 'onEditarPrecioPorMaquila', x).done(function (data) {
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         });

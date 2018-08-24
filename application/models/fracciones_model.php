@@ -20,7 +20,11 @@ class fracciones_model extends CI_Model {
 
     public function getDepartamentos() {
         try {
-            return $this->db->select("D.Clave,CONCAT(D.Clave,'-',D.Descripcion) AS Departamento")->from("Departamentos AS D")->where("D.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select(" CAST(D.Clave AS SIGNED ) AS Clave ,CONCAT(D.Clave,'-',D.Descripcion) AS Departamento")
+                            ->from("Departamentos AS D")
+                            ->where("D.Estatus", "ACTIVO")
+                            ->order_by('Clave', 'ASC')
+                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -36,7 +40,12 @@ class fracciones_model extends CI_Model {
 
     public function getID() {
         try {
-            return $this->db->select("CONVERT(F.Clave, UNSIGNED INTEGER) AS CLAVE")->from("Fracciones AS F")->where("F.Estatus", "Activo")->order_by("CLAVE", "DESC")->limit(1)->get()->result();
+            return $this->db->select("CONVERT(F.Clave, UNSIGNED INTEGER) AS CLAVE")
+                            ->from("Fracciones AS F")
+                            ->where("F.Estatus", "Activo")
+                            ->where('CLAVE < 9999', null, false)
+                            ->order_by("CLAVE", "DESC")
+                            ->limit(1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

@@ -71,6 +71,14 @@ class Departamentos extends CI_Controller {
         }
     }
 
+    public function getFracciones() {
+        try {
+            print json_encode($this->departamentos_model->getFracciones());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onComprobarClave() {
         try {
             print json_encode($this->departamentos_model->onComprobarClave($this->input->get('Clave')));

@@ -20,7 +20,11 @@ class piezas_model extends CI_Model {
 
     public function getDepartamentos() {
         try {
-            return $this->db->select("D.Clave,CONCAT(D.Clave,'-',D.Descripcion) AS Departamento")->from("Departamentos AS D")->where("D.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("CAST(D.Clave AS SIGNED ) AS Clave,CONCAT(D.Clave,'-',D.Descripcion) AS Departamento")
+                            ->from("Departamentos AS D")
+                            ->where("D.Estatus", "ACTIVO")
+                            ->order_by('Clave', 'ASC')
+                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -28,7 +32,11 @@ class piezas_model extends CI_Model {
 
     public function getRangos() {
         try {
-            return $this->db->select("R.Clave AS ID,CONCAT(R.Clave) AS Rango")->from("rangos AS R")->where("R.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("R.Clave AS ID,CONCAT(R.Clave) AS Rango")
+                            ->from("rangos AS R")
+                            ->where("R.Estatus", "ACTIVO")
+                            ->order_by('ID', 'ASC')
+                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

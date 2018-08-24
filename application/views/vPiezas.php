@@ -64,7 +64,6 @@
                         <label for="" >Clasificación</label>
                         <select id="Clasificacion" name="Clasificacion" class="form-control form-control-sm">
                             <option value=""></option>
-                            <option value="0">--</option>
                             <option value="1">1ra</option>
                             <option value="2">2da</option>
                             <option value="3">3ra</option>
@@ -337,7 +336,6 @@
 
     function getRangos() {
         $.getJSON(master_url + 'getRangos').done(function (data) {
-            pnlDatos.find("#Rango")[0].selectize.addOption({text: '--', value: ''});
             $.each(data, function (k, v) {
                 pnlDatos.find("#Rango")[0].selectize.addOption({text: v.Rango, value: v.ID});
             });
