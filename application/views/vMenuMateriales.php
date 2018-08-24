@@ -18,9 +18,6 @@
                     <a class="dropdown-item" href="<?php print base_url('Unidades'); ?>"> Unidades de Medida</a>
                     <a class="dropdown-item" href="<?php print base_url('Articulos/?origen=MATERIALES'); ?>"> Artículos</a>
                     <a class="dropdown-item" href="<?php print base_url('Proveedores/?origen=MATERIALES'); ?>"> Proveedores</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php print base_url('FichaTecnica/?origen=MATERIALES'); ?>"> Ficha Técnica</a>
-                    <a class="dropdown-item" href="<?php print base_url('FichaTecnicaProceso/?origen=MATERIALES'); ?>" > Ficha Técnica Proceso</a>
                 </div>
 
 

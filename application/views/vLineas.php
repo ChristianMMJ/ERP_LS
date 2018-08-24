@@ -205,6 +205,7 @@
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
+            pnlDatos.find("#Ano").val((new Date()).getFullYear());
         });
 
         btnCancelar.click(function () {

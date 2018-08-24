@@ -285,8 +285,15 @@
             onResetSearch();
             sidebar.find("#txtBusqueda").val('');
         });
-
-        $('#sidebarCollapse').on('click', function () {
+        
+        var event;
+        if (isMobile) {
+            $("#sidebarCollapse").touch();
+            event = 'tap';
+        } else {
+            event = 'click';
+        }
+        $('#sidebarCollapse').on(event, function () {
             $('#sidebar').addClass('active');
             $('.overlay').addClass('active');
             $('.collapse.in').toggleClass('in');

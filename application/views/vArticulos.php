@@ -140,6 +140,7 @@
                             <input type="text" class="form-control form-control-sm numbersOnly mb-2" id="PrecioTres" name="PrecioTres"   placeholder="Precio pactado">
                         </div>
                         <div id="ProveedorUltimaCompra" class="col-12 col-sm-12 col-md-12 col-xl-12">
+                            <p>Proveedor U.C</p>
                             <p class="text-info">* * * * *</p>
                         </div>
                     </div>
@@ -164,7 +165,6 @@
                         <div class="col-12 col-sm-3 col-md-3 col-xl-3 mb-3">
                             <input type="text" class="form-control form-control-sm" id="UbicacionCuatro" name="UbicacionCuatro"  placeholder="UBICACION 4">
                         </div>
-
                     </div>
                     <div class="row pt-2">
                         <div class="col-6 col-md-6 ">

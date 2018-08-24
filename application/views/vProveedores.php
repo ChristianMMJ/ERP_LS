@@ -137,11 +137,11 @@
                     </div>
                     <div class="col-12 col-md-2 col-sm-2">
                         <label for="">% Desc. X PP</label>
-                        <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="5"  name="DctoProntoPago"  >
+                        <input type="text" class="form-control form-control-sm numbersOnly" min="0.1" max="1"  maxlength="5"  name="DctoProntoPago"  >
                     </div>
                     <div class="col-12 col-md-2 col-sm-2">
                         <label for="">Dias. p/ PP</label>
-                        <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="5"  name="DiasProntoPago"  >
+                        <input type="text" class="form-control form-control-sm numbersOnly" min="0.1" max="1" maxlength="5"  name="DiasProntoPago"  >
                     </div>
 
                 </div>
@@ -152,11 +152,11 @@
                     </div>
                     <div class="col-12 col-md-4 col-xl-2">
                         <label for="">% P' Compras x Pedido F</label>
-                        <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="8"   name="PorcentajeComprasPorPedidoF"  >
+                        <input type="text" class="form-control form-control-sm numbersOnly" placeholder="Ej: 0.8"  maxlength="8" id="PorcentajeComprasPorPedidoF"   name="PorcentajeComprasPorPedidoF"  >
                     </div>
                     <div class="col-12 col-md-4 col-xl-2">
                         <label for="">% P' Compras x Pedido R</label>
-                        <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="8"   name="PorcentajeComprasPorPedidoR"  >
+                        <input type="text" class="form-control form-control-sm numbersOnly" placeholder="Ej: 0.2" maxlength="8"  id="PorcentajeComprasPorPedidoR" name="PorcentajeComprasPorPedidoR"  >
                     </div>
                 </div>
                 <div class="row pt-2">
@@ -188,9 +188,16 @@
     var btnEliminar = $("#btnEliminar");
     var sEsCliente = pnlDatos.find("#TipoAcceso");
     var nuevo = true;
-
     $(document).ready(function () {
 
+        pnlDatos.find("#PorcentajeComprasPorPedidoF").keyup(function () {
+            onComprobarValor(this, 'PorcentajeComprasPorPedidoR', 'keyup');
+        });
+        
+        pnlDatos.find("#PorcentajeComprasPorPedidoR").keyup(function () {
+            onComprobarValor(this, 'PorcentajeComprasPorPedidoF', 'keyup');
+        });
+        
         btnNuevo.click(function () {
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass('d-none');
@@ -291,7 +298,7 @@
         //Valida RFC
         pnlDatos.find("[name='RFC']").blur(function () {
             var rfc = $(this).val().trim(); // -Elimina los espacios que pueda tener antes o después
-            var rfcCorrecto = rfcValido(rfc);   //Comprobar RFC
+            var rfcCorrecto = rfcValido(rfc); //Comprobar RFC
             if (rfcCorrecto) {
             } else {
                 pnlDatos.find("[name='RFC']").val("");
@@ -326,7 +333,6 @@
                     var td = $(v).find("td");
                     td.eq(0).addClass("d-none");
                 });
-
                 var tblSelected = $('#tblProveedores').DataTable(tableOptions);
                 $('#tblProveedores_filter input[type=search]').focus();
                 $('#tblProveedores tbody').on('click', 'tr', function () {
@@ -368,7 +374,6 @@
                             });
                             pnlTablero.addClass("d-none");
                             pnlDatos.removeClass('d-none');
-
                             pnlDatos.find("[name='Direccion']").focus().select();
                             pnlDatos.find("[name='Clave']").prop('disabled', true);
                             pnlDatos.find("[name='NombreI']").prop('disabled', true);
@@ -403,5 +408,27 @@
         }).always(function () {
             HoldOn.close();
         });
+    }
+
+    function onComprobarValor(e, ee, evt) {
+        var v = $(e), vv = $("#" + ee);
+        var p = parseFloat($.isNumeric(v.val()) ? v.val() : 0) + parseFloat($.isNumeric(vv.val()) ? vv.val() : 0);
+        console.log(v.val(), ',', vv.val(), ',', p, ',', evt);
+        if (v.val() > 1) {
+            swal('ATENCIÓN', 'EL VALOR INGRESADO DEBE DE SER MENOR A 1', 'error').then((value) => {
+                v.focus();
+            });
+        }
+        if (p > 1) {
+            swal('ATENCIÓN', 'LA SUMATORIA DEBE DE SER MENOR A 1', 'error').then((value) => {
+                vv.focus();
+            });
+        } else {
+            if (v.val() !== '', v.val() > 0) {
+                vv.val(1 - v.val());
+            } else {
+                vv.val('');
+            }
+        }
     }
 </script>

@@ -1,4 +1,3 @@
-
 <!-- Contenido  -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
     <button class="btn btn-primary btn-sm navbar-brand" id="sidebarCollapse">

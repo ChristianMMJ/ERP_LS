@@ -55,7 +55,7 @@
                         <label for="Nombre" >Nombre*</label>
                         <input type="text" id="Nombre" name="Nombre" class="form-control form-control-sm" placeholder="" required>
                     </div>
-                    <div class="col-12 col-md-4 col-sm-4">
+                    <div class="col-12 col-md-4 col-sm-4 d-none">
                         <label for="" >Serie</label>
                         <select id="Serie" name="Serie" class="form-control form-control-sm" >
                             <option value=""></option>
@@ -292,7 +292,6 @@
                 });
                 pnlTablero.addClass("d-none");
                 pnlDatos.removeClass('d-none');
-                btnEliminar.removeClass("d-none");
 
                 pnlDatos.find("#Nombre").focus().select();
             }).fail(function (x, y, z) {
