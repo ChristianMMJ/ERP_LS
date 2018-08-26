@@ -1,13 +1,14 @@
 <?php
 
+header('Access-Control-Allow-Origin: *');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Semanas extends CI_Controller {
+class Paises extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session');
-        $this->load->model('semanasnomina_model');
+        date_default_timezone_set('America/Mexico_City');
+        $this->load->library('session')->model('paises_model');
     }
 
     public function index() {
@@ -17,7 +18,7 @@ class Semanas extends CI_Controller {
             switch ($this->session->userdata["TipoAcceso"]) {
                 case 'SUPER ADMINISTRADOR':
                     $this->load->view('vNavGeneral');
-                    $this->load->view('vMenuNominas');
+                    $this->load->view('vMenuClientes');
                     break;
                 case 'ADMINISTRACION':
                     $this->load->view('vMenuAdministracion');
@@ -43,7 +44,7 @@ class Semanas extends CI_Controller {
             }
 
             $this->load->view('vFondo');
-            $this->load->view('vSemanas');
+            $this->load->view('vPaises');
             $this->load->view('vFooter');
         } else {
             $this->load->view('vEncabezado');
@@ -54,34 +55,23 @@ class Semanas extends CI_Controller {
 
     public function getRecords() {
         try {
-            $data = $this->semanasnomina_model->getRecords();
-            print json_encode($data);
+            print json_encode($this->paises_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function onValidarExisteAno() {
+    public function onComprobarClave() {
         try {
-            print json_encode($this->semanasnomina_model->onValidarExisteAno($this->input->post('Ano')));
+            print json_encode($this->paises_model->onComprobarClave($this->input->get('Clave')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getSemanaNominaByAno() {
+    public function getPaisByID() {
         try {
-            extract($this->input->post());
-            $data = $this->semanasnomina_model->getSemanaNominaByAno($this->input->post('Ano'));
-            print json_encode($data);
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function getSemanasNominaByAno() {
-        try {
-            print json_encode($this->semanasnomina_model->getSemanasNominaByAno($this->input->post('Ano')));
+            print json_encode($this->paises_model->getPaisByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -89,32 +79,12 @@ class Semanas extends CI_Controller {
 
     public function onAgregar() {
         try {
-            $Detalle = json_decode($this->input->post("Detalle"));
-            foreach ($Detalle as $key => $v) {
-                $data = array(
-                    'Ano' => $v->Ano,
-                    'Sem' => $v->Sem,
-                    'FechaIni' => $v->FechaIni,
-                    'FechaFin' => $v->FechaFin,
-                    'Estatus' => 'ACTIVO'
-                );
-                $this->semanasnomina_model->onAgregar($data);
-            }
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function onAgregarExtra() {
-        try {
-            $data = array(
-                'Ano' => $this->input->post('Ano'),
-                'Sem' => $this->input->post('Sem'),
-                'FechaIni' => $this->input->post('FechaIni'),
-                'FechaFin' => $this->input->post('FechaFin'),
+            $x = $this->input;
+            $this->paises_model->onAgregar(array(
+                'Clave' => ($x->post('Clave') !== NULL) ? $x->post('Clave') : NULL,
+                'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL,
                 'Estatus' => 'ACTIVO'
-            );
-            $this->semanasnomina_model->onAgregar($data);
+            ));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -122,9 +92,10 @@ class Semanas extends CI_Controller {
 
     public function onModificar() {
         try {
-            extract($this->input->post());
-            unset($_POST['ID']);
-            $this->semanasnomina_model->onModificar($ID, $this->input->post());
+            $x = $this->input;
+            $this->paises_model->onModificar($x->post('ID'), array(
+                'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL
+            ));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -132,8 +103,7 @@ class Semanas extends CI_Controller {
 
     public function onEliminar() {
         try {
-            extract($this->input->post());
-            $this->semanasnomina_model->onEliminar($ID);
+            $this->paises_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

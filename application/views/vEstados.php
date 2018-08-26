@@ -16,7 +16,6 @@
                             <th>ID</th>
                             <th>Clave</th>
                             <th>Descripción</th>
-                            <th>Estatus</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -49,7 +48,7 @@
                     </div>
                     <div class="col-12 col-md-6 col-sm-6">
                         <label for="Clave" >Clave*</label>
-                        <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required autofocus="">
+                        <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required >
                     </div>
                     <div class="col-12 col-md-6 col-sm-6">
                         <label for="Descripcion" >Descripción*</label>
@@ -225,7 +224,7 @@
                 "dataSrc": ""
             },
             "columns": [
-                {"data": "ID"}, {"data": "Clave"}, {"data": "Descripcion"}, {"data": "Estatus"}
+                {"data": "ID"}, {"data": "Clave"}, {"data": "Descripcion"}
             ],
             "columnDefs": [
                 {

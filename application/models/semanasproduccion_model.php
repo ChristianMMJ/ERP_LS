@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class semanas_model extends CI_Model {
+class semanasproduccion_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
@@ -13,7 +13,7 @@ class semanas_model extends CI_Model {
     public function getRecords() {
         try {
             $this->db->select("U.Ano AS 'Año',U.Estatus  ", false);
-            $this->db->from('Semanas AS U');
+            $this->db->from('SemanasProduccion AS U');
             $this->db->where_in('U.Estatus', 'ACTIVO');
             $this->db->group_by(array('U.Ano', 'U.Estatus'));
             $query = $this->db->get();
@@ -31,7 +31,7 @@ class semanas_model extends CI_Model {
 
     public function onValidarExisteAno($Ano) {
         try {
-            $this->db->select("COUNT(*) AS EXISTE", false)->from('Semanas AS S');
+            $this->db->select("COUNT(*) AS EXISTE", false)->from('SemanasProduccion AS S');
             $this->db->where('S.Ano', $Ano);
             $this->db->where_in('S.Estatus', 'ACTIVO');
             $query = $this->db->get();
@@ -49,7 +49,7 @@ class semanas_model extends CI_Model {
 
     public function onAgregar($array) {
         try {
-            $this->db->insert("Semanas", $array);
+            $this->db->insert("SemanasProduccion", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             return $row['LAST_INSERT_ID()'];
@@ -61,7 +61,7 @@ class semanas_model extends CI_Model {
     public function onModificar($ID, $DATA) {
         try {
             $this->db->where('ID', $ID);
-            $this->db->update("Semanas", $DATA);
+            $this->db->update("SemanasProduccion", $DATA);
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -72,17 +72,17 @@ class semanas_model extends CI_Model {
         try {
             $this->db->set('Estatus', 'INACTIVO');
             $this->db->where('ID', $ID);
-            $this->db->update("Semanas");
+            $this->db->update("SemanasProduccion");
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getSemanaNominaByAno($Ano) {
+    public function getSemanaProduccionByAno($Ano) {
         try {
             $this->db->select('U.*', false);
-            $this->db->from('Semanas AS U');
+            $this->db->from('SemanasProduccion AS U');
             $this->db->where('U.Ano', $Ano);
             $query = $this->db->get();
             /*
@@ -97,14 +97,14 @@ class semanas_model extends CI_Model {
         }
     }
 
-    public function getSemanasNominaByAno($Ano) {
+    public function getSemanasProduccionByAno($Ano) {
         try {
             $this->db->select(""
                     . "CONCAT('<input type=''text'' id=''#Sem'' onkeypress= ''validate(event, this.value);'' class=''form-control form-control-sm numbersOnly'' onpaste= ''return false;''  value=''', U.Sem ,''' onchange=''onModificarSemanaXID(this.value,',U.ID ,')'' />') AS 'NoSem',  "
                     . "U.FechaIni AS 'FechaInicio', "
                     . "U.FechaFin AS 'FechaFin' "
                     . " ", false);
-            $this->db->from('Semanas AS U');
+            $this->db->from('SemanasProduccion AS U');
             $this->db->where('U.Ano', $Ano);
             $query = $this->db->get();
             /*
@@ -122,7 +122,7 @@ class semanas_model extends CI_Model {
     public function getSemanaByFecha($fecha) {
         try {
             $this->db->select('U.Sem', false);
-            $this->db->from('Semanas AS U');
+            $this->db->from('SemanasProduccion AS U');
             $this->db->where('\'' . $fecha . '\' BETWEEN CONVERT(DATE,U.FechaIni) AND CONVERT(DATE,U.FechaFin)');
             $query = $this->db->get();
             /*

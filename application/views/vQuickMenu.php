@@ -1,5 +1,5 @@
 <div class="col-12">
-    <div class="row"> 
+    <div class="row">
         <div id="MnuBlock" class="col-12 row justify-content-center mt-2" align="center">
             <div class="card col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated fadeInUp"  onclick="onMenuDisplay('MenuProveedores');">
                 <figure class="figure">
@@ -49,9 +49,9 @@
                     <figcaption class="figure-caption text-nowrap mt-4"><h4>PARÁMETROS</h4></figcaption>
                 </figure>
             </div>
-        </div> 
+        </div>
     </div>
-</div> 
+</div>
 <style>
     .card:hover img{
         -webkit-transition: all .3s ease-in-out;
@@ -65,7 +65,7 @@
     .card:hover{
         cursor: pointer !important;
         font-weight: bold;
-        background-color: #3F51B5 !important;
+        background-color: #2384c6 !important;
         color: #fff;
     }
     .card:hover .text-nowrap, .card:hover .figure-caption{

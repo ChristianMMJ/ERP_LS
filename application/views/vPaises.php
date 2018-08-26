@@ -2,23 +2,20 @@
     <div class="card-body ">
         <div class="row">
             <div class="col-sm-6 float-left">
-                <legend class="float-left">Departamentos</legend>
+                <legend class="float-left">Paises</legend>
             </div>
             <div class="col-sm-6 float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
             </div>
         </div>
         <div class="card-block mt-4">
-            <div id="Departamentos" class="table-responsive">
-                <table id="tblDepartamentos" class="table table-sm display " style="width:100%">
+            <div id="Paises" class="table-responsive">
+                <table id="tblPaises" class="table table-sm display " style="width:100%">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Clave</th>
                             <th>Descripción</th>
-                            <th>Tipo</th>
-                            <th>Avance</th>
-                            <th>Fracción</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -33,7 +30,7 @@
             <fieldset>
                 <div class="row">
                     <div class="col-12 col-sm-6 col-md-4 float-left">
-                        <legend >Departamento</legend>
+                        <legend >Pais</legend>
                     </div>
                     <div class="col-12 col-sm-6 col-md-8" align="right">
                         <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
@@ -49,39 +46,13 @@
                     <div class="d-none">
                         <input type="text"  name="ID" class="form-control form-control-sm" >
                     </div>
-                    <div class="col-6 col-md-2 col-sm-4">
+                    <div class="col-12 col-md-6 col-sm-6">
                         <label for="Clave" >Clave*</label>
-                        <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required >
+                        <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required>
                     </div>
-                    <div class="col-12 col-md-6 col-sm-8">
+                    <div class="col-12 col-md-6 col-sm-6">
                         <label for="Descripcion" >Descripción*</label>
-                        <input type="text" id="Descripcion" name="Descripcion" class="form-control form-control-sm" required>
-                    </div>
-                </div>
-                <div class="row">
-
-
-                    <div class="col-12 col-md-2 col-sm-4">
-                        <label for="" >Tipo*</label>
-                        <select id="Tipo" name="Tipo" class="form-control form-control-sm required" >
-                            <option value=""></option>
-                            <option value="1">1-ADMINISTRACIÓN</option>
-                            <option value="2">2-PRODUCCIÓN</option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-md-2 col-sm-3">
-                        <label for="" >Avance*</label>
-                        <select id="Avance" name="Avance" class="form-control form-control-sm required" >
-                            <option value=""></option>
-                            <option value="1">1-SI</option>
-                            <option value="0">0-NO</option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-md-4 col-sm-5 d-none" id="dFraccion">
-                        <label for="Fraccion" >Fracción</label>
-                        <select id="Fraccion" name="Fraccion" class="form-control form-control-sm" >
-                            <option value=""></option>
-                        </select>
+                        <input type="text" id="Descripcion" name="Descripcion" class="form-control form-control-sm" placeholder="" required>
                     </div>
                 </div>
                 <div class="row pt-2">
@@ -102,9 +73,9 @@
     </div>
 </div>
 <script>
-    var master_url = base_url + 'index.php/Departamentos/';
-    var tblDepartamentos = $('#tblDepartamentos');
-    var Departamentos;
+    var master_url = base_url + 'index.php/Paises/';
+    var tblPaises = $('#tblPaises');
+    var Paises;
     var btnNuevo = $("#btnNuevo"), btnCancelar = $("#btnCancelar"), btnEliminar = $("#btnEliminar"), btnGuardar = $("#btnGuardar");
     var pnlTablero = $("#pnlTablero"), pnlDatos = $("#pnlDatos");
     var nuevo = false;
@@ -114,22 +85,13 @@
         init();
         handleEnter();
 
-        pnlDatos.find("[name='Avance']").change(function () {
-            console.log(parseInt($(this).val()));
-            if (parseInt($(this).val()) === 1) {
-                pnlDatos.find('#dFraccion').removeClass('d-none');
-            } else {
-                pnlDatos.find('#dFraccion').addClass('d-none');
-            }
-        });
-
-        /*FUNCIONES X BOTON*/
         pnlDatos.find("#Clave").focusout(function () {
             if (nuevo) {
                 onComprobarClave(this);
             }
         });
 
+        /*FUNCIONES X BOTON*/
         btnGuardar.click(function () {
             isValid('pnlDatos');
             if (valido) {
@@ -144,7 +106,7 @@
                         data: frm
                     }).done(function (data, x, jq) {
                         swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO', 'info');
-                        Departamentos.ajax.reload();
+                        Paises.ajax.reload();
                         pnlDatos.addClass("d-none");
                         pnlTablero.removeClass("d-none");
                     }).fail(function (x, y, z) {
@@ -163,7 +125,7 @@
                     }).done(function (data, x, jq) {
                         pnlDatos.find("[name='ID']").val(data);
                         nuevo = false;
-                        Departamentos.ajax.reload();
+                        Paises.ajax.reload();
                         pnlDatos.addClass("d-none");
                         pnlTablero.removeClass("d-none");
                     }).fail(function (x, y, z) {
@@ -197,9 +159,7 @@
                     case "eliminar":
                         $.post(master_url + 'onEliminar', {ID: temp}).done(function () {
                             swal('ATENCIÓN', 'SE HA ELIMINADO EL REGISTRO', 'success');
-                            Departamentos.ajax.reload();
-                            pnlDatos.addClass("d-none");
-                            pnlTablero.removeClass("d-none");
+                            Paises.ajax.reload();
                         }).fail(function (x, y, z) {
                             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
                             console.log(x.responseText);
@@ -215,14 +175,13 @@
         btnNuevo.click(function () {
             nuevo = true;
             pnlDatos.find("input").val("");
-            $.each(pnlDatos.find("select"), function (k, v) {
-                pnlDatos.find("select")[k].selectize.clear(true);
-            });
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass("d-none");
             btnEliminar.addClass("d-none");
             pnlDatos.find("[name='Clave']").focus();
-            pnlDatos.find('#dFraccion').addClass('d-none');
+            $.each(pnlDatos.find("select"), function (k, v) {
+                pnlDatos.find("select")[k].selectize.clear(true);
+            });
         });
 
         btnCancelar.click(function () {
@@ -233,19 +192,8 @@
 
     function init() {
         getRecords();
-        getFracciones();
     }
 
-    function  getFracciones() {
-        $.getJSON(master_url + 'getFracciones').done(function (data) {
-            $.each(data, function (k, v) {
-                pnlDatos.find("#Fraccion")[0].selectize.addOption({text: v.Fraccion, value: v.ID});
-            });
-        }).fail(function (x, y, z) {
-            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-            console.log(x.responseText);
-        });
-    }
 
     function getRecords() {
         temp = 0;
@@ -254,10 +202,10 @@
             message: 'CARGANDO...'
         });
         $.fn.dataTable.ext.errMode = 'throw';
-        if ($.fn.DataTable.isDataTable('#tblDepartamentos')) {
-            tblDepartamentos.DataTable().destroy();
+        if ($.fn.DataTable.isDataTable('#tblPaises')) {
+            tblPaises.DataTable().destroy();
         }
-        Departamentos = tblDepartamentos.DataTable({
+        Paises = tblPaises.DataTable({
             "dom": 'Bfrtip',
             buttons: buttons,
             "ajax": {
@@ -265,12 +213,7 @@
                 "dataSrc": ""
             },
             "columns": [
-                {"data": "ID"},
-                {"data": "Clave"},
-                {"data": "Descripcion"},
-                {"data": "Tipo"},
-                {"data": "Avance"},
-                {"data": "Fraccion"}
+                {"data": "ID"}, {"data": "Clave"}, {"data": "Descripcion"}
             ],
             "columnDefs": [
                 {
@@ -294,25 +237,24 @@
             ]
         });
 
-        $('#tblDepartamentos_filter input[type=search]').focus();
+        $('#tblPaises_filter input[type=search]').focus();
 
-        tblDepartamentos.find('tbody').on('click', 'tr', function () {
+        tblPaises.find('tbody').on('click', 'tr', function () {
             HoldOn.open({
                 theme: 'sk-cube',
                 message: 'CARGANDO...'
             });
             nuevo = false;
-            tblDepartamentos.find("tbody tr").removeClass("success");
+            tblPaises.find("tbody tr").removeClass("success");
             $(this).addClass("success");
-            var dtm = Departamentos.row(this).data();
+            var dtm = Paises.row(this).data();
             temp = parseInt(dtm.ID);
-            $.getJSON(master_url + 'getDepartamentoByID', {ID: temp}).done(function (data) {
+            $.getJSON(master_url + 'getPaisByID', {ID: temp}).done(function (data) {
                 pnlDatos.find("input").val("");
                 $.each(pnlDatos.find("select"), function (k, v) {
                     pnlDatos.find("select")[k].selectize.clear(true);
                 });
                 $.each(data[0], function (k, v) {
-                    console.log(k, v);
                     pnlDatos.find("[name='" + k + "']").val(v);
                     if (pnlDatos.find("[name='" + k + "']").is('select')) {
                         pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
@@ -322,17 +264,18 @@
                 pnlDatos.removeClass('d-none');
                 btnEliminar.removeClass("d-none");
 
-                pnlDatos.find("#Clave").addClass('disabledForms');
+                pnlDatos.find("[name='Clave']").addClass('disabledForms');
                 pnlDatos.find("#Descripcion").focus().select();
             }).fail(function (x, y, z) {
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-
+                console.log(x.responseText);
             }).always(function () {
                 HoldOn.close();
             });
         });
         HoldOn.close();
     }
+
     function onComprobarClave(e) {
         if (nuevo) {
             $.getJSON(master_url + 'onComprobarClave', {Clave: $(e).val()}).done(function (data) {
@@ -343,10 +286,6 @@
                         text: "LA CLAVE " + pnlDatos.find("#Clave").val() + " YA EXISTE",
                         icon: "warning",
                         buttons: {
-                            cancelar: {
-                                text: "Cancelar",
-                                value: "cancelar"
-                            },
                             eliminar: {
                                 text: "Aceptar",
                                 value: "aceptar"
@@ -355,9 +294,6 @@
                     }).then((value) => {
                         switch (value) {
                             case "aceptar":
-                                pnlDatos.find("#Clave").val('').focus();
-                                break;
-                            case "cancelar":
                                 swal.close();
                                 pnlDatos.find("#Clave").val('').focus();
                                 break;
@@ -371,3 +307,5 @@
         }
     }
 </script>
+
+

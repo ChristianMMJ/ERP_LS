@@ -17,7 +17,7 @@
                     <a class="dropdown-item" href="#"> Agentes</a>
                     <a class="dropdown-item" href="<?php print base_url('Maquilas/?origen=PRODUCCION'); ?>"> Maquiladoras</a>
                     <a class="dropdown-item" href="<?php print base_url('Fracciones/?origen=PRODUCCION'); ?>"> Fracciones</a>
-                    <a class="dropdown-item" href="<?php print base_url('Semanas'); ?>"> Semanas Prod.</a>
+                    <a class="dropdown-item" href="<?php print base_url('SemanasProduccion/?origen=PRODUCCION'); ?>"> Semanas Prod.</a>
                 </div>
             </li>
             <li class="nav-item dropdown">

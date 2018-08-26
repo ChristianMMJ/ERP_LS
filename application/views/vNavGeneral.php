@@ -208,7 +208,7 @@
                         <i class="fa fa-industry"></i>
                     </div>
                     <div class="col-10">
-                        Produccion
+                        Producción
                     </div>
                 </div>
             </a>
@@ -285,7 +285,7 @@
             onResetSearch();
             sidebar.find("#txtBusqueda").val('');
         });
-        
+
         var event;
         if (isMobile) {
             $("#sidebarCollapse").touch();
