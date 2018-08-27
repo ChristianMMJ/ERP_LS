@@ -14,13 +14,13 @@
                     Catálogos
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCatalogos">
-                    <a class="dropdown-item" href="#"> Agentes</a>
+                    <a class="dropdown-item" href="<?php print base_url('Agentes'); ?>"> Agentes</a>
                     <a class="dropdown-item" href="<?php print base_url('Paises'); ?>"> Paises</a>
                     <a class="dropdown-item" href="<?php print base_url('Estados'); ?>"> Estados</a>
                     <a class="dropdown-item" href="<?php print base_url('GruposClientes'); ?>"> Grupos de Clientes</a>
                     <a class="dropdown-item" href="<?php print base_url('Zonas'); ?>"> Zonas</a>
                     <a class="dropdown-item" href="<?php print base_url('Transportes'); ?>"> Transportes</a>
-                    <a class="dropdown-item" href="#"> Clientes</a>
+                    <a class="dropdown-item" href="<?php print base_url('Clientes'); ?>"> Clientes</a>
                     <a class="dropdown-item" href="<?php print base_url('MetodosPago'); ?>"> Metodos de Pago</a>
                     <a class="dropdown-item" href="<?php print base_url('FormasPago'); ?>"> Formas de Pagos</a>
                     <a class="dropdown-item" href="<?php print base_url('SemanasProduccion/?origen=CLIENTES'); ?>"> Semanas Prod.</a>
