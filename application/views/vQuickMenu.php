@@ -19,12 +19,17 @@
                     <figcaption class="figure-caption text-nowrap mt-4"><h4>CLIENTES</h4></figcaption>
                 </figure>
             </div>
-            <div class="card col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-1  animated fadeInDown" onclick="onMenuDisplay('MenuFichasTecnicas');">
+
+            <div class="card col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2  animated fadeInDown" onclick="onMenuDisplay('MenuFichasTecnicas');">
                 <figure class="figure">
                     <span class="fa fa-file-invoice fa-2x mt-5"></span>
-                    <figcaption class="figure-caption mt-4"><h4>FICHAS TÉCNICAS</h4></figcaption>
+                    <figcaption class="figure-caption text-nowrap mt-4"><h4>FICHAS TÉCNICAS</h4></figcaption>
                 </figure>
             </div>
+
+
+
+
             <div class="card col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2  animated fadeInUp" onclick="onMenuDisplay('MenuProduccion');">
                 <figure class="figure">
                     <span class="fa fa-industry fa-2x mt-5"></span>
