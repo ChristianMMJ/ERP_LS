@@ -222,4 +222,13 @@ class metodosdepago_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
+
+    public function onComprobarClave($C) {
+        try {
+            return $this->db->select("mp.Clave")->from("metodos_de_pago AS mp")->where("mp.Clave", $C)->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
 }
