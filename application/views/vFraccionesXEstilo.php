@@ -14,6 +14,7 @@
                     <thead>
                         <tr>
                             <th>Estilo</th>
+                            <th>Nombre</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -384,7 +385,7 @@
                 "dataSrc": ""
             },
             "columns": [
-                {"data": "EstiloId"}
+                {"data": "EstiloId"}, {"data": "Descripcion"}
             ],
             "columnDefs": [
             ],

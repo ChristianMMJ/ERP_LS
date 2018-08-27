@@ -32,11 +32,13 @@ class fraccionesXEstilo_model extends CI_Model {
 
     public function getRecords() {
         try {
-            $this->db->select("FXE.Estilo AS EstiloId "
+            $this->db->select("FXE.Estilo AS EstiloId,E.Descripcion   "
                             . " ", false)
                     ->from('fraccionesxestilo AS FXE')
+                    ->join('estilos AS E', 'ON E.Clave = FXE.Estilo')
                     ->where('FXE.Estatus', 'ACTIVO')
-                    ->group_by('FXE.Estilo', 'ASC');
+                    ->group_by(array('FXE.Estilo', 'E.Descripcion'));
+
             // ->join('Estilos AS E', 'FTT.Estilo = E.Clave')
             // ->join('Colores AS C', 'FTT.Color = C.Clave AND C.Estilo = FTT.Estilo');
 
@@ -45,7 +47,7 @@ class fraccionesXEstilo_model extends CI_Model {
              * FOR DEBUG ONLY
              */
             $str = $this->db->last_query();
-//            print $str;
+            //print $str;
             $data = $query->result();
             return $data;
         } catch (Exception $exc) {
