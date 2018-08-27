@@ -118,7 +118,6 @@
                         pnlDatos.addClass("d-none");
                         pnlDatosDetalle.addClass('d-none');
                         pnlTablero.removeClass("d-none");
-                        btnIgualaPrecios.addClass("d-none");
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
