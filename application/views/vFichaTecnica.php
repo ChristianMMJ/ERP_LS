@@ -43,15 +43,19 @@
                 </div>
             </div>
             <div class=" row">
-                <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
                     <label for="Estilo">Estilo*</label>
                     <select class="form-control form-control-sm required " id="Estilo" name="Estilo" required>
                     </select>
                 </div>
-                <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
                     <label for="Color">Color*</label>
                     <select class="form-control form-control-sm required " id="Color" name="Color" required>
                     </select>
+                </div>
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                    <label for="FechaAlta">Fecha de alta*</label>
+                    <input type="text" class="form-control form-control-sm notEnter" id="FechaAlta" name="FechaAlta" required >
                 </div>
             </div>
         </form>
@@ -178,6 +182,7 @@
 
     $(document).ready(function () {
 
+        pnlDatos.find("#FechaAlta").inputmask({alias: "date"});
         btnAgregar.click(function () {
             onAgregar();
         });
@@ -649,7 +654,6 @@
                     processData: false,
                     data: frm
                 }).done(function (data, x, jq) {
-                    debugger;
                     if (nuevo) {
                         Estilo[0].selectize.disable();
                         Color[0].selectize.disable();
