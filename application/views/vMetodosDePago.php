@@ -46,7 +46,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                             <label for="Clave" >Clave*</label>
-                            <input type="text" class="form-control form-control-sm numbersOnly" maxlength="9" id="Clave" name="Clave" required placeholder="" autofocus="">
+                            <input type="text" class="form-control form-control-sm" maxlength="9" id="Clave" name="Clave" required placeholder="" autofocus="">
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                             <label for="" >Descripción*</label>
