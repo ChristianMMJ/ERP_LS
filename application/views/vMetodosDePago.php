@@ -31,7 +31,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12 col-sm-6 col-md-4 float-left">
-                            <legend >MetodosDePago</legend>
+                            <legend >Metodos De Pago</legend>
                         </div>
                         <div class="col-12 col-sm-6 col-md-8" align="right">
                             <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
@@ -46,11 +46,11 @@
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                             <label for="Clave" >Clave*</label>
-                            <input type="text" class="form-control form-control-sm numbersOnly disabledForms" id="Clave" name="Clave" required placeholder="20180814">
+                            <input type="text" class="form-control form-control-sm numbersOnly" maxlength="9" id="Clave" name="Clave" required placeholder="" autofocus="">
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                             <label for="" >Descripción*</label>
-                            <input type="text" class="form-control form-control-sm" id="Descripcion" name="Descripcion" required >
+                            <input type="text" class="form-control form-control-sm" id="Descripcion" name="Descripcion" maxlength="99" required >
                         </div>
                         <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
                             <i class="fa fa-save"></i>
@@ -73,6 +73,11 @@
         /*FUNCIONES INICIALES*/
         getRecords();
         handleEnter();
+        pnlDatos.find("#Clave").focusout(function () {
+            if (nuevo) {
+                onComprobarClave(this);
+            }
+        });
 
         btnGuardar.click(function () {
             isValid('pnlDatos');
@@ -89,7 +94,7 @@
                     }).done(function (data, x, jq) {
                         swal('ATENCIÓN', 'SE HAN GUARDADO LOS CAMBIOS', 'info');
                         nuevo = false;
-                        MetodosDePago.ajax.reload(); 
+                        MetodosDePago.ajax.reload();
                         pnlDatos.addClass("d-none");
                         pnlDatosDetalle.addClass('d-none');
                         pnlTablero.removeClass("d-none");
@@ -126,16 +131,16 @@
         });
 
         btnNuevo.click(function () {
-            nuevo = true;
+            nuevo = true;;
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
             pnlDatos.find("input,textarea").val("");
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass("d-none");
-            btnEliminar.addClass("d-none");
-            getID();
+            btnEliminar.addClass("d-none"); 
             $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
+            pnlDatos.find("#Clave").focus()
         });
 
         btnCancelar.click(function () {
@@ -226,19 +231,40 @@
 
     }
 
-    function getID() {
-        $.getJSON(master_url + 'getID').done(function (data, x, jq) {
-            if (data.length > 0) {
-                var ID = $.isNumeric(data[0].CLAVE) ? parseInt(data[0].CLAVE) + 1 : 1;
-                pnlDatos.find("#Clave").val(ID);
-            } else {
-                pnlDatos.find("#Clave").val('1');
-            }
-        }).fail(function (x, y, z) {
-            console.log(x, y, z);
-        }).always(function () {
-            pnlDatos.find("#Descripcion").focus();
-            HoldOn.close();
-        });
+    function onComprobarClave(e) {
+        if (nuevo) {
+            $.getJSON(master_url + 'onComprobarClave', {Clave: $(e).val()}).done(function (data) {
+
+                if (data.length > 0) {
+                    swal({
+                        title: "ATENCIÓN",
+                        text: "LA CLAVE " + pnlDatos.find("#Clave").val() + " YA EXISTE",
+                        icon: "warning",
+                        buttons: {
+                            cancelar: {
+                                text: "Cancelar",
+                                value: "cancelar"
+                            },
+                            eliminar: {
+                                text: "Aceptar",
+                                value: "aceptar"
+                            }
+                        }
+                    }).then((value) => {
+                        switch (value) {
+                            case "aceptar":
+                                pnlDatos.find("#Clave").val('').focus();
+                                break;
+                            case "cancelar":
+                                swal.close();
+                                pnlDatos.find("#Clave").val('').focus();
+                                break;
+                        }
+                    });
+                }
+            }).fail(function (x, y, z) { 
+                console.log(x.responseText);
+            });
+        }
     }
 </script>

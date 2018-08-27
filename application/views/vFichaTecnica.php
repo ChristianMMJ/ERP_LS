@@ -254,6 +254,7 @@
                 FichaTecnicaDetalle.clear().draw();
             }
             pnlDatos.find("#Estilo")[0].selectize.focus();
+            pnlDatos.find("#FechaAlta").prop("readonly", false);
         });
 
         btnCancelar.click(function () {
@@ -610,6 +611,7 @@
     function onAgregar() {
         isValid('pnlDatos');
         if (valido) {
+            pnlDatos.find("#FechaAlta").prop("readonly", true);
             onAgregarFila();
         }
     }
