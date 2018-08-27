@@ -21,7 +21,7 @@
                     <a class="dropdown-item" href="<?php print base_url('Zonas'); ?>"> Zonas</a>
                     <a class="dropdown-item" href="<?php print base_url('Transportes'); ?>"> Transportes</a>
                     <a class="dropdown-item" href="<?php print base_url('Clientes'); ?>"> Clientes</a>
-                    <a class="dropdown-item" href="<?php print base_url('MetodosPago'); ?>"> Metodos de Pago</a>
+                    <a class="dropdown-item" href="<?php print base_url('MetodosDePago'); ?>"> Metodos de Pago</a>
                     <a class="dropdown-item" href="<?php print base_url('FormasPago'); ?>"> Formas de Pagos</a>
                     <a class="dropdown-item" href="<?php print base_url('SemanasProduccion/?origen=CLIENTES'); ?>"> Semanas Prod.</a>
                 </div>

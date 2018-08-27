@@ -124,7 +124,7 @@ class metodosdepago_model extends CI_Model {
     public function onAgregarMagnus($array) {
         try {
             $this->db->insert("metodos_de_pago", $array);
-            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $query = $this->db->query('SELECT LAST_INSERT_ID() AS IDL');
             $row = $query->row_array();
 //            PRINT "\n ID IN MODEL: $LastIdInserted \n";
             return $row['IDL'];
@@ -136,7 +136,7 @@ class metodosdepago_model extends CI_Model {
     public function onAgregar($array) {
         try {
             $this->db->insert("metodos_de_pago", $array);
-            $query = $this->db->query('SELECT SCOPE_IDENTITY() AS IDL');
+            $query = $this->db->query('SELECT LAST_INSERT_ID() AS IDL');
             $row = $query->row_array();
 //            PRINT "\n ID IN MODEL: $LastIdInserted \n";
             return $row['IDL'];
@@ -209,10 +209,17 @@ class metodosdepago_model extends CI_Model {
 
     public function getID() {
         try {
-            return $this->db->select("A.Clave AS CLAVE")->from("metodos_de_pago AS A")->order_by("CLAVE", "DESC")->limit(1)->get()->result();
+            return $this->db->select("A.Clave AS CLAVE")->from("metodos_de_pago AS A")->order_by("A.Clave", "DESC")->limit(1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
+    public function getMetodosDePagoByID($ID) {
+        try {
+            return $this->db->select("mp.*", false)->from("metodos_de_pago AS mp")->where('mp.ID', $ID)->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 }

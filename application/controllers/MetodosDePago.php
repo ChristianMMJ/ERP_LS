@@ -74,6 +74,14 @@ class MetodosDePago extends CI_Controller {
         }
     }
 
+    public function getMetodosDePagoByID() {
+        try {
+            print json_encode($this->metodosdepago_model->getMetodosDePagoByID($this->input->get('ID')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+        
     public function onAgregar() {
         try {
             $x = $this->input;
