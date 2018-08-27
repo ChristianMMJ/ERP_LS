@@ -16,6 +16,7 @@
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCatalogos">
                     <a class="dropdown-item" href="<?php print base_url('Departamentos/?origen=NOMINAS'); ?>"> Departamentos</a>
                     <a class="dropdown-item" href="<?php print base_url('Fracciones/?origen=NOMINAS'); ?>"> Fracciones</a>
+                    <a class="dropdown-item" href="<?php print base_url('FraccionesXEstilo'); ?>"> Fracciones Por Estilo</a>
                     <a class="dropdown-item" href="<?php print base_url('Semanas'); ?>"> Semanas Nómina</a>
                 </div>
 
