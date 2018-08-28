@@ -375,10 +375,10 @@
                             pnlTablero.addClass("d-none");
                             pnlDatos.removeClass('d-none');
                             pnlDatos.find("[name='Direccion']").focus().select();
-                            pnlDatos.find("[name='Clave']").prop('disabled', true);
-                            pnlDatos.find("[name='NombreI']").prop('disabled', true);
-                            pnlDatos.find("[name='NombreF']").prop('disabled', true);
-                            pnlDatos.find("[name='RFC']").prop('disabled', true);
+                            pnlDatos.find("[name='Clave']").addClass("disabledForms");
+                            pnlDatos.find("[name='NombreI']").addClass("disabledForms");
+                            pnlDatos.find("[name='NombreF']").addClass("disabledForms");
+                            pnlDatos.find("[name='RFC']").addClass("disabledForms");
                         }).fail(function (x, y, z) {
                             console.log(x, y, z);
                         }).always(function () {

@@ -49,62 +49,34 @@ class clientes_model extends CI_Model {
         }
     }
 
-    public function getVendedores() {
+    public function getEstados() {
         try {
-            return $this->db->select("V.ID, V.Clave+'-'+VRazonSocial AS Nombre ", false)
-                            ->from('sz_Clientes AS V')
-                            ->where_in('V.Estatus', 'ACTIVO')->get()->result();
+            return $this->db->select("E.Clave, CONCAT(E.Clave, \" - \", E.Descripcion) AS Estado", false)
+                            ->from('estados AS E')
+                            ->where_in('E.Estatus', 'ACTIVO')->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getMagnusID($ID) {
+    public function getPaises() {
         try {
-            $this->db->select("C.IDMAGNUS AS MAGNUS", false)->from('sz_Clientes AS C')->where_in('C.Estatus', 'ACTIVO')->where('C.ID', $ID);
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-            $data = $query->result();
-            return $data;
+            return $this->db->select("E.Clave, CONCAT(E.Clave, \" - \", E.Descripcion) AS Pais", false)
+                            ->from('paises AS E')
+                            ->where_in('E.Estatus', 'ACTIVO')->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
-
-    public function getListaPrecioByCliente($ID) {
+    
+    public function getAgentes() {
         try {
-            $this->db->select("C.ListaDePrecios AS Lista", false)->from('sz_Clientes AS C')->where('C.ID', $ID);
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-            $data = $query->result();
-            return $data;
+            return $this->db->select("A.Clave, CONCAT(A.Clave, \" - \", A.Nombre) AS Agente", false)
+                            ->from('agentes AS A')->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
-    }
-
-    public function getRegimenesFiscales() {
-        try {
-            $this->db->select('U.ID, CONVERT(varchar(10), U.IValue)+\'-\'+U.SValue+\'-\'+U.Valor_Text AS SValue', false)
-                    ->from('sz_Catalogos AS U')->where('U.FieldId', 'REGIMENES FISCALES')->where_in('U.Estatus', 'ACTIVO')->order_by("U.IValue", "ASC");
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-//        print $str;
-            $data = $query->result();
-            return $data;
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
+    } 
 
     public function getListasDePrecios() {
         try {

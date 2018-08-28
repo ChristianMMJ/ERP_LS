@@ -115,7 +115,7 @@ class usuario_model extends CI_Model {
 
     public function getUsuarioByID($ID) {
         try {
-            $this->db->select('U.*', false);
+            $this->db->select('U.ID, U.Usuario, U.Estatus, U.Nombre, U.Apellidos, U.TipoAcceso, U.UltimoAcceso, U.Registro, U.UltimaModificacion, AES_DECRYPT(U.AES, \'System32\') AS Contrasena', false);
             $this->db->from('usuarios AS U');
             $this->db->where('U.ID', $ID);
             //$this->db->where_in('U.Estatus', 'Activo');
