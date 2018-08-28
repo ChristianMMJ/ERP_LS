@@ -63,7 +63,7 @@ class Sesion extends CI_Controller {
             if (count($data) > 0) {
                 $newdata = array(
                     'USERNAME' => $data[0]->Usuario,
-                    'PASSWORD' => $data[0]->Contrasena,
+                    'PASSWORD' => $data[0]->AES,
                     'Nombre' => $data[0]->Nombre,
                     'Apellidos' => $data[0]->Apellidos,
                     'ID' => $data[0]->ID,
