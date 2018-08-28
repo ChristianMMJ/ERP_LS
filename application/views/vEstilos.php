@@ -695,20 +695,16 @@
             console.log(x, y, z);
         });
     }
-
-
     function onRemovePreview(e) {
         $(e).parent("#VistaPrevia").html("");
         Archivo.attr("type", "text");
         Archivo.val('N');
     }
-
     function printImg(url) {
         var win = window.open('');
         win.document.write('<img src="' + url + '" onload="window.print();window.close()" />');
         win.focus();
     }
-
     function onComprobarClave(e) {
         if (nuevo) {
             $.getJSON(master_url + 'onComprobarClave', {Clave: $(e).val()}).done(function (data) {

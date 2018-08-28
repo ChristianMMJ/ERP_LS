@@ -21,6 +21,15 @@
                 </div>
             </li>
 
+            <li class="nav-item dropdown">
+                <a class="btn btn-primary dropdown-toggle" href="#" id="navEmpresas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Empresas
+                </a>
+                <div class="dropdown-menu dropdown-menu" aria-labelledby="navEmpresas">
+                    <a class="dropdown-item" href="<?php print base_url('Empresas') ?>"> Empresas</a>
+                </div>
+            </li>
+
             <li class="nav-item dropdown ml-auto">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <?php echo $this->session->userdata('Nombre') . ' ' . $this->session->userdata('Apellidos'); ?>

@@ -16,7 +16,6 @@
                             <th>ID</th>
                             <th>Clave</th>
                             <th>Descripción</th>
-                            <th>Estatus</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -225,7 +224,7 @@
                 "dataSrc": ""
             },
             "columns": [
-                {"data": "ID"}, {"data": "Clave"}, {"data": "Descripcion"}, {"data": "Estatus"}
+                {"data": "ID"}, {"data": "Clave"}, {"data": "Descripcion"}
             ],
             "columnDefs": [
                 {
