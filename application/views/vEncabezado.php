@@ -96,8 +96,14 @@
         <!--JS XLXS API-->
         <script src="<?php echo base_url(); ?>js/js-xlsx/jszip.js"></script>
         <script src="<?php echo base_url(); ?>js/js-xlsx/xlsx.js"></script>
+
+        <!--FancyBoxJS-->
+        <link rel="stylesheet" href="<?php echo base_url("js/fancybox/jquery.fancybox.min.css"); ?>" />
+        <script src="<?php echo base_url("js/fancybox/jquery.fancybox.min.js"); ?>"></script>
+
         <!--Final Modifiers for CSS-->
         <link href="<?php print base_url(); ?>css/style.css" rel="stylesheet" />
+
 <!--        <script src="<?php echo base_url(); ?>js/scripts.js"></script>-->
 
 

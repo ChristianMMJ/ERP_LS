@@ -35,8 +35,8 @@
                     <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
                         <span class="fa fa-arrow-left" ></span> REGRESAR
                     </button>
-                    <button type="button" class="btn btn-danger btn-sm d-none" id="btnEliminar">
-                        <span class="fa fa-trash fa-1x"></span> ELIMINAR
+                    <button type="button" class="btn btn-warning btn-sm d-none" id="btnImprimirFraccionesXEstilo">
+                        <span class="fa fa-file-invoice fa-1x"></span> FRACCIONES POR ESTILO
                     </button>
                 </div>
             </div>
@@ -151,14 +151,18 @@
     var pnlTablero = $("#pnlTablero");
     var pnlDetalle = $("#pnlDetalle");
     var btnNuevo = $("#btnNuevo");
+    var btnImprimirFraccionesXEstilo = $("#btnImprimirFraccionesXEstilo");
     var btnCancelar = pnlDatos.find("#btnCancelar");
-    var btnEliminar = $("#btnEliminar");
     var Estilo = pnlDatos.find("#Estilo");
     var IdMovimiento = 0;
     var nuevo = true;
     var btnAgregar = pnlControlesDetalle.find("#btnAgregar");
 
     $(document).ready(function () {
+
+        btnImprimirFraccionesXEstilo.click(function () {
+
+        });
 
         btnAgregar.click(function () {
             isValid('pnlDatos');
@@ -181,32 +185,6 @@
             getFraccionesXDepartamento($(this).val());
         });
 
-        btnEliminar.click(function () {
-            if (temp !== 0 && temp !== undefined && temp > 0) {
-                swal({
-                    buttons: ["Cancelar", "Aceptar"],
-                    title: 'Estas Seguro?',
-                    text: "Esta acción no se puede revertir",
-                    icon: "warning",
-                    closeOnEsc: false,
-                    closeOnClickOutside: false
-                }).then((action) => {
-                    if (action) {
-                        $.post(master_url + 'onEliminar', {ID: temp}).done(function (data, x, jq) {
-                            onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'REIGISTRO ELIMINADO', 'danger');
-                            getRecords();
-                        }).fail(function (x, y, z) {
-                            console.log(x, y, z);
-                        }).always(function () {
-                            HoldOn.close();
-                        });
-                    }
-                });
-            } else {
-                onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
-            }
-        });
-
         btnNuevo.click(function () {
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass('d-none');
@@ -225,6 +203,7 @@
                 FraccionesXEstiloDetalle.clear().draw();
             }
             pnlDatos.find("#Estilo")[0].selectize.focus();
+            btnImprimirFraccionesXEstilo.addClass('d-none');
         });
 
         btnCancelar.click(function () {
@@ -365,7 +344,6 @@
         });
 
     }
-
     var tblFraccionesXEstilo = $('#tblFraccionesXEstilo');
     var FraccionesXEstilo;
     function getRecords() {
@@ -413,6 +391,7 @@
             tblFraccionesXEstilo.find("tbody tr").removeClass("success");
             $(this).addClass("success");
             var dtm = FraccionesXEstilo.row(this).data();
+            temp = dtm.EstiloId;
             $.getJSON(master_url + 'getFraccionXEstiloByEstilo', {Estilo: dtm.EstiloId}).done(function (data, x, jq) {
                 pnlDatos.find("input").val("");
                 $.each(pnlDatos.find("select"), function (k, v) {
@@ -428,6 +407,7 @@
                 pnlDetalle.removeClass('d-none');
                 pnlControlesDetalle.removeClass('d-none');
                 pnlDatos.removeClass('d-none');
+                btnImprimirFraccionesXEstilo.removeClass('d-none');
                 pnlControlesDetalle.find("[name='Departamento']")[0].selectize.open();
                 pnlControlesDetalle.find("[name='Departamento']")[0].selectize.focus();
             }).fail(function (x, y, z) {
