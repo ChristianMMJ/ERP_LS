@@ -12,24 +12,6 @@ class fraccionesXEstilo_model extends CI_Model {
         date_default_timezone_set('America/Mexico_City');
     }
 
-//    public function onLimpiarTabla() {
-//        try {
-//            $sql = "TRUNCATE TABLE fichatecnicatemp;";
-//            $this->db->query($sql);
-//        } catch (Exception $exc) {
-//            echo $exc->getTraceAsString();
-//        }
-//    }
-//
-//    public function onGenerarRecords() {
-//        try {
-//            $sql = "INSERT INTO fichatecnicatemp (estilo, color) SELECT estilo, color FROM Fichatecnica AS FT GROUP BY Estilo, Color;";
-//            $this->db->query($sql);
-//        } catch (Exception $exc) {
-//            echo $exc->getTraceAsString();
-//        }
-//    }
-
     public function getRecords() {
         try {
             $this->db->select("FXE.Estilo AS EstiloId,E.Descripcion   "
@@ -38,9 +20,6 @@ class fraccionesXEstilo_model extends CI_Model {
                     ->join('estilos AS E', 'ON E.Clave = FXE.Estilo')
                     ->where('FXE.Estatus', 'ACTIVO')
                     ->group_by(array('FXE.Estilo', 'E.Descripcion'));
-
-            // ->join('Estilos AS E', 'FTT.Estilo = E.Clave')
-            // ->join('Colores AS C', 'FTT.Color = C.Clave AND C.Estilo = FTT.Estilo');
 
             $query = $this->db->get();
             /*
@@ -55,29 +34,80 @@ class fraccionesXEstilo_model extends CI_Model {
         }
     }
 
-//    public function getRecordss() {
-//        try {
-//            $this->db->select("FTT.Estilo AS EstiloId, "
-//                            . "FTT.Color AS ColorId, "
-//                            . "CONCAT(FTT.Estilo,' - ',E.Descripcion) AS Estilo, "
-//                            . "CONCAT(FTT.Color,' - ',C.Descripcion) AS Color "
-//                            . " ", false)
-//                    ->from('fichatecnicatemp AS FTT')
-//                    ->join('Estilos AS E', 'FTT.Estilo = E.Clave')
-//                    ->join('Colores AS C', 'FTT.Color = C.Clave AND C.Estilo = FTT.Estilo');
-//
-//            $query = $this->db->get();
-//            /*
-//             * FOR DEBUG ONLY
-//             */
-//            $str = $this->db->last_query();
-////            print $str;
-//            $data = $query->result();
-//            return $data;
-//        } catch (Exception $exc) {
-//            echo $exc->getTraceAsString();
-//        }
-//    }
+    public function getEncabezadoFXE($Estilo) {
+        try {
+            $this->db->select("FXE.Estilo AS ESTILO,L.CLAVE AS CLINEA, L.DESCRIPCION AS DLINEA   "
+                            . " ", false)
+                    ->from('fraccionesxestilo AS FXE')
+                    ->join('estilos AS E', 'ON E.Clave = FXE.Estilo')
+                    ->join('lineas AS L', 'ON L.Clave = E.Linea')
+                    ->where('FXE.Estilo', $Estilo)
+                    ->group_by(array('FXE.Estilo', 'E.Descripcion'));
+
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getDeptosFXE($Estilo) {
+        try {
+            $this->db->select("D.Clave AS CDEPTO, D.Descripcion AS DDEPTO  "
+                            . " ", false)
+                    ->from('fraccionesxestilo AS FXE')
+                    ->join('Fracciones AS F', 'ON FXE.Fraccion = F.Clave')
+                    ->join('Departamentos AS D', 'ON D.Clave = F.Departamento')
+                    ->where('FXE.Estilo', $Estilo)
+                    ->group_by(array('D.Clave', 'D.Descripcion'))
+                    ->order_by('D.Clave', 'ASC');
+
+
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getFraccionesFXE($Estilo) {
+        try {
+            $this->db->select("D.Clave AS CDEPTO, F.Clave AS CFRACCION,F.Descripcion AS DFRACCION, "
+                            . "CostoMO AS COSTOMO, CostoVTA  AS COSTOVTA "
+                            . " ", false)
+                    ->from('fraccionesxestilo AS FXE')
+                    ->join('Fracciones AS F', 'ON FXE.Fraccion = F.Clave')
+                    ->join('Departamentos AS D', 'ON D.Clave = F.Departamento')
+                    ->where('FXE.Estilo', $Estilo)
+                    ->where('FXE.AfectaCostoVTA', '1')
+                    ->order_by('D.Clave', 'ASC')
+                    ->order_by('F.Clave', 'ASC');
+
+
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 
     public function getFraccionesXEstiloDetalleByID($Estilo) {
         try {

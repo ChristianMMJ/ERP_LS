@@ -102,11 +102,12 @@
         <script src="<?php echo base_url("js/fancybox/jquery.fancybox.min.js"); ?>"></script>
 
         <!--Final Modifiers for CSS-->
-        <link href="<?php print base_url(); ?>css/style.css" rel="stylesheet" />
+<!--        <link href="<?php print base_url(); ?>css/style.css" rel="stylesheet" />-->
 
 <!--        <script src="<?php echo base_url(); ?>js/scripts.js"></script>-->
 
 
         <!--Cargar scripts de validacion y configuraciones-->
         <?php $this->load->view('vScripts') ?>
+        <?php $this->load->view('vStyle') ?>
     </head>

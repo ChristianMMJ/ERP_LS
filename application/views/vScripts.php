@@ -433,6 +433,15 @@
                 }
                 return false;
             }
+            if (e.keyCode === 9) {
+                focusable = form.find('input,a,select,button,textarea').filter(':visible:enabled').not('.disabledForms');
+                next = focusable.eq(focusable.index(this) + 1);
+                if (next.length) {
+                    next.focus();
+                    next.select();
+                }
+                return false;
+            }
         });
     }
 

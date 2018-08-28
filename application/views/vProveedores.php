@@ -193,11 +193,11 @@
         pnlDatos.find("#PorcentajeComprasPorPedidoF").keyup(function () {
             onComprobarValor(this, 'PorcentajeComprasPorPedidoR', 'keyup');
         });
-        
+
         pnlDatos.find("#PorcentajeComprasPorPedidoR").keyup(function () {
             onComprobarValor(this, 'PorcentajeComprasPorPedidoF', 'keyup');
         });
-        
+
         btnNuevo.click(function () {
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass('d-none');
@@ -207,10 +207,9 @@
             });
             pnlDatos.find("[name='Clave']").addClass('disabledForms');
             pnlDatos.find("[name='NombreI']").focus();
-            pnlDatos.find("[name='Clave']").prop('disabled', false);
-            pnlDatos.find("[name='NombreI']").prop('disabled', false);
-            pnlDatos.find("[name='NombreF']").prop('disabled', false);
-            pnlDatos.find("[name='RFC']").prop('disabled', false);
+            pnlDatos.find("[name='NombreI']").removeClass('disabledForms');
+            pnlDatos.find("[name='NombreF']").removeClass('disabledForms');
+            pnlDatos.find("[name='RFC']").removeClass('disabledForms');
             nuevo = true;
             getUltimoRegistro();
         });
