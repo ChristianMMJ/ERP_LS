@@ -60,6 +60,15 @@ class Usuarios extends CI_Controller {
         }
     }
 
+    public function getEmpresas() {
+        try {
+            $data = $this->usuario_model->getEmpresas();
+            print json_encode($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getUsuarioByID() {
         try {
             print json_encode($this->usuario_model->getUsuarioByID($this->input->post('ID')));
@@ -80,11 +89,11 @@ class Usuarios extends CI_Controller {
         try {
             extract($this->input->post());
             $DATA = array(
-                'Usuario' => ($Usuario !== NULL) ? $Usuario : NULL,
                 'Contrasena' => ($Contrasena !== NULL) ? $Contrasena : NULL,
                 'Nombre' => ($Nombre !== NULL) ? $Nombre : NULL,
                 'Apellidos' => ($Apellidos !== NULL) ? $Apellidos : NULL,
                 'TipoAcceso' => ($TipoAcceso !== NULL) ? $TipoAcceso : NULL,
+                'Empresa' => ($Empresa !== NULL) ? $Empresa : NULL,
                 'Estatus' => ($Estatus !== NULL) ? $Estatus : NULL
             );
             $this->usuario_model->onModificar($ID, $DATA);

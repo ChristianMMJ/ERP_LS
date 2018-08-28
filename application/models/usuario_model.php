@@ -132,4 +132,16 @@ class usuario_model extends CI_Model {
         }
     }
 
+    public function getEmpresas() {
+        try {
+            return $this->db->select("CAST(P.Clave AS SIGNED ) AS ID, CONCAT(P.Clave,' - ',IFNULL(P.RazonSocial,'')) AS Empresa ", false)
+                            ->from('Empresas AS P')
+                            ->where_in('P.Estatus', 'ACTIVO')
+                            ->order_by('ID', 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
 }

@@ -69,6 +69,7 @@ class Sesion extends CI_Controller {
                     'ID' => $data[0]->ID,
                     'LOGGED' => TRUE,
                     'TipoAcceso' => $data[0]->TipoAcceso,
+                    'Empresa' => $data[0]->Empresa
                 );
                 $this->session->mark_as_temp('LOGGED', 28800);
                 $this->session->set_userdata($newdata);

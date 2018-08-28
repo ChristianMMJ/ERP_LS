@@ -51,7 +51,7 @@
                     </div>
                     <div class="col-12 col-md-12 col-sm-12">
                         <label for="" >Tipo Acceso*</label>
-                        <select id="TipoAcceso" name="TipoAcceso" class="form-control form-control-sm" >
+                        <select id="TipoAcceso" name="TipoAcceso" class="form-control form-control-sm required" >
                             <option value=""></option>
                             <option value="SUPER ADMINISTRADOR">SUPER ADMINISTRADOR</option>
                             <option value="ADMINISTRACION">ADMINISTRACIÓN</option>
@@ -73,14 +73,21 @@
                             <option value="DESTAJOS">DESTAJOS</option>
                         </select>
                     </div>
-                    <div class="col-12 col-md-12 col-sm-12">
+                    <div class="col-12 col-md-6 col-sm-6">
+                        <label for="" >Empresa*</label>
+                        <select id="Empresa" name="Empresa" class="form-control form-control-sm required" >
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6 col-sm-6">
                         <label for="" >Estatus*</label>
-                        <select id="Estatus" name="Estatus" class="form-control form-control-sm" >
+                        <select id="Estatus" name="Estatus" class="form-control form-control-sm required" >
                             <option value=""></option>
                             <option value="ACTIVO">ACTIVO</option>
                             <option value="INACTIVO">INACTIVO</option>
                         </select>
                     </div>
+
                 </div>
                 <div class="row pt-2">
                     <div class="col-6 col-md-6 ">
@@ -120,6 +127,7 @@
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
+            pnlDatos.find("[name='Usuario']").removeClass('disabledForms');
             pnlDatos.find("[name='Usuario']").focus();
             nuevo = true;
         });
@@ -207,6 +215,7 @@
         });
         /*CALLS*/
         getRecords();
+        getEmpresas();
         handleEnter();
     });
     function getRecords() {
@@ -266,8 +275,8 @@
                         pnlTablero.addClass("d-none");
                         pnlDatos.removeClass('d-none');
 
-
-                        pnlDatos.find("[name='Usuario']").focus().select();
+                        pnlDatos.find("[name='Usuario']").addClass('disabledForms');
+                        pnlDatos.find("[name='Contrasena']").focus().select();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
@@ -282,6 +291,17 @@
             console.log(x, y, z);
         }).always(function () {
             HoldOn.close();
+        });
+    }
+
+    function getEmpresas() {
+        $.getJSON(master_url + 'getEmpresas').done(function (data) {
+            $.each(data, function (k, v) {
+                pnlDatos.find("#Empresa")[0].selectize.addOption({text: v.Empresa, value: v.ID});
+            });
+        }).fail(function (x, y, z) {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
         });
     }
 </script>
