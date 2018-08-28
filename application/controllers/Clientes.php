@@ -48,9 +48,115 @@ class Clientes extends CI_Controller {
             $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
         }
     }
+
     public function getRecords() {
         try {
             print json_encode($this->clientes_model->getRecords());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getClienteByID() {
+        try {
+            print json_encode($this->clientes_model->getClienteByID($this->input->get('ID')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getID() {
+        try {
+            print json_encode($this->clientes_model->getID());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onComprobarClave() {
+        try {
+            print json_encode($this->clientes_model->onComprobarClave($this->input->get('Clave')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getEstados() {
+        try {
+            print json_encode($this->clientes_model->getEstados());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getPaises() {
+        try {
+            print json_encode($this->clientes_model->getPaises());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getAgentes() {
+        try {
+            print json_encode($this->clientes_model->getAgentes());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getTransportes() {
+        try {
+            print json_encode($this->clientes_model->getTransportes());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getZonas() {
+        try {
+            print json_encode($this->clientes_model->getZonas());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getGrupos() {
+        try {
+            print json_encode($this->clientes_model->getGrupos());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onAgregar() {
+        try {
+            $x = $this->input;
+            $data = array();
+            foreach ($this->input->post() as $key => $v) {
+                if ($v !== '') {
+                    $data[$key] = ($v !== '') ? strtoupper($v) : NULL;
+                }
+            }
+            $data["Estatus"] = 'ACTIVO';
+            $data["Registro"] = Date('d/m/Y h:i:s');
+            $this->clientes_model->onAgregar($data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onModificar() {
+        try {
+            $x = $this->input;
+            $data = array();
+            foreach ($this->input->post() as $key => $v) {
+                if ($v !== '') {
+                    $data[$key] = ($v !== '') ? strtoupper($v) : NULL;
+                }
+            }
+            unset($data["ID"]);
+            $this->clientes_model->onModificar($x->post('ID'), $data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

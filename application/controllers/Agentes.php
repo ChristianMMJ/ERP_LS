@@ -64,7 +64,7 @@ class Agentes extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
-        
+
     public function getAgenteByID() {
         try {
             print json_encode($this->agentes_model->getAgenteByID($this->input->get('ID')));
@@ -72,6 +72,7 @@ class Agentes extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
+
     public function getDetalleByID() {
         try {
             print json_encode($this->agentes_model->getDetalleByID($this->input->get('ID')));
@@ -90,7 +91,7 @@ class Agentes extends CI_Controller {
                 }
             }
             unset($data["Rangos"]);
-            $this->agentes_model->onAgregar($data);            
+            $this->agentes_model->onAgregar($data);
             $rangos = json_decode($this->input->post('Rangos'));
             foreach ($rangos as $k => $v) {
                 $this->db->insert('agentesporcentajes', array('Agente' => $this->input->post('Clave'), 'Dias' => $v->Dias, 'A' => $v->A, 'Porcentaje' => $v->Porcentaje));
@@ -124,4 +125,5 @@ class Agentes extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
+
 }

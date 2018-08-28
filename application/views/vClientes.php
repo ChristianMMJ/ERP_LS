@@ -45,111 +45,111 @@
                         <div class="d-none">
                             <input type="text" id="ID" name="ID" class="form-control form-control-sm" >
                         </div>
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
                             <label for="Clave" >Clave*</label>
-                            <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" maxlength="45" required placeholder="">
+                            <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" maxlength="45"  placeholder="" readonly="">
                         </div>
                         <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
                             <label for="Nombre" >Nombre*</label>
-                            <input type="text" class="form-control form-control-sm" id="Nombre" name="Nombre" maxlength="45" required placeholder="">
+                            <input type="text" class="form-control form-control-sm" id="Nombre" name="Nombre" maxlength="45"  placeholder="" required="">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
                             <label for="RazonS" >Razon Social*</label>
-                            <input type="text" class="form-control form-control-sm" id="RazonS" name="RazonS" maxlength="45" required placeholder="">
+                            <input type="text" class="form-control form-control-sm" id="RazonS" name="RazonS" maxlength="45"  placeholder=""  required="">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
                             <label for="NombreP" >Nombre P*</label>
-                            <input type="text" class="form-control form-control-sm" id="NombreP" name="NombreP" maxlength="45" required placeholder="">
+                            <input type="text" class="form-control form-control-sm" id="NombreP" name="NombreP" maxlength="45"  placeholder="" >
                         </div>      
 
                         <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
                             <label for="Sucursal" >Sucursal*</label>
-                            <input type="text" class="form-control form-control-sm" id="Sucursal" name="Sucursal" maxlength="45" required placeholder="">
+                            <input type="text" class="form-control form-control-sm" id="Sucursal" name="Sucursal" maxlength="45"  placeholder="">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
                             <label for="Direccion" >Direccion*</label>
-                            <input type="text" class="form-control form-control-sm" id="Direccion" name="Direccion" maxlength="45" required placeholder="">
+                            <input type="text" class="form-control form-control-sm" id="Direccion" name="Direccion" maxlength="45"  placeholder="">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-1">
                             <label for="NoExt" >NoExt*</label>
-                            <input type="text" class="form-control form-control-sm" id="NoExt" name="NoExt" maxlength="45" required placeholder="">
+                            <input type="text" class="form-control form-control-sm" id="NoExt" name="NoExt" maxlength="45"  placeholder="">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-1">
                             <label for="NoInt" >NoInt*</label>
-                            <input type="text" class="form-control form-control-sm" id="NoInt" name="NoInt" maxlength="45" required placeholder="">
+                            <input type="text" class="form-control form-control-sm" id="NoInt" name="NoInt" maxlength="45"  placeholder="">
                         </div>
 
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
                             <label for="Colonia" >Colonia*</label>
-                            <input type="text" class="form-control form-control-sm" id="Colonia" name="Colonia" maxlength="45" required placeholder="">
+                            <input type="text" class="form-control form-control-sm" id="Colonia" name="Colonia" maxlength="45"  placeholder="">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
                             <label for="Ciudad" >Ciudad*</label>
-                            <input type="text" class="form-control form-control-sm" id="Ciudad" name="Ciudad" maxlength="45" required placeholder="">
+                            <input type="text" class="form-control form-control-sm" id="Ciudad" name="Ciudad" maxlength="45"  placeholder="">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
                             <label for="Estado" >Estado*</label>
-                            <select class="form-control form-control-sm" id="Estado" name="Estado" maxlength="45" required ></select>
+                            <select class="form-control form-control-sm" id="Estado" name="Estado" maxlength="45"  ></select>
                         </div>
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
                             <label for="Pais" >Pais*</label>
-                            <select class="form-control form-control-sm" id="Pais" name="Pais" maxlength="45" required ></select>
+                            <select class="form-control form-control-sm" id="Pais" name="Pais" maxlength="45"  ></select>
                         </div>
 
                         <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
                             <label for="Agente" >Agente*</label>
-                            <select class="form-control form-control-sm" id="Agente" name="Agente" maxlength="45" required ></select>
+                            <select class="form-control form-control-sm" id="Agente" name="Agente" maxlength="45"  ></select>
                         </div>
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-1">
                             <label for="TelOficina" >Tel Oficina*</label>
-                            <input type="tel" class="form-control form-control-sm" id="TelOficina" name="TelOficina" maxlength="45" required placeholder="">
+                            <input type="tel" class="form-control form-control-sm" id="TelOficina" name="TelOficina" maxlength="45"  placeholder="">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-1">
                             <label for="TelPart" >Tel Particular*</label>
-                            <input type="tel" class="form-control form-control-sm" id="TelPart" name="TelPart" maxlength="45" required placeholder="">
+                            <input type="tel" class="form-control form-control-sm" id="TelPart" name="TelPart" maxlength="45"  placeholder="">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-1">
                             <label for="Fax" >Fax*</label>
-                            <input type="text" class="form-control form-control-sm" id="Fax" name="Fax" maxlength="45" required placeholder="">
+                            <input type="text" class="form-control form-control-sm" id="Fax" name="Fax" maxlength="45"  placeholder="">
                         </div>
 
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
                             <label for="RFC" >RFC*</label>
-                            <input type="text" class="form-control form-control-sm" id="RFC" name="RFC" maxlength="45" required placeholder="">
+                            <input type="text" class="form-control form-control-sm" id="RFC" name="RFC" maxlength="45"  placeholder=""  required="">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-1">
                             <label for="CodigoPostal" >Código Postal*</label>
-                            <input type="text" class="form-control form-control-sm" id="CodigoPostal" name="CodigoPostal" maxlength="45" required placeholder="">
+                            <input type="text" class="form-control form-control-sm" id="CodigoPostal" name="CodigoPostal" maxlength="45"  placeholder="">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-1">
                             <label for="LimiteCredito" >Limite de credito*</label>
-                            <input type="text" class="form-control form-control-sm" id="LimiteCredito" name="LimiteCredito" maxlength="45" required placeholder="">
+                            <input type="text" class="form-control form-control-sm" id="LimiteCredito" name="LimiteCredito" maxlength="45"  placeholder="">
+                        </div>
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
+                            <label for="ListaPrecios" >Lista de precios*</label>
+                            <select class="form-control form-control-sm" id="ListaPrecios" name="ListaPrecios"  ></select>
+                        </div>
+
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-1">
+                            <label for="DiasPlazo" >Dias Plazo*</label>
+                            <input type="text" class="form-control form-control-sm numbersOnly" id="DiasPlazo" name="DiasPlazo" maxlength="45"  placeholder=""  required="">
+                        </div>
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2">
+                            <label for="Transporte" >Transporte*</label>
+                            <select class="form-control form-control-sm" id="Transporte" name="Transporte"  ></select>
                         </div>
                         <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
-                            <label for="ListaPrecios" >Lista de precios*</label>
-                            <select class="form-control form-control-sm" id="ListaPrecios" name="ListaPrecios" required ></select>
-                        </div>
-
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-4">
-                            <label for="DiasPlazo" >Dias Plazo*</label>
-                            <input type="text" class="form-control form-control-sm numbersOnly" id="DiasPlazo" name="DiasPlazo" maxlength="45" required placeholder="">
-                        </div>
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-4">
-                            <label for="Transporte" >Transporte*</label>
-                            <select class="form-control form-control-sm" id="Transporte" name="Transporte" required ></select>
-                        </div>
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-4">
                             <label for="ObservacionesTransporte" >Observaciones transporte*</label>
-                            <input type="text" class="form-control form-control-sm" id="ObservacionesTransporte" name="ObservacionesTransporte" maxlength="190" required placeholder="">
+                            <input type="text" class="form-control form-control-sm" id="ObservacionesTransporte" name="ObservacionesTransporte" maxlength="190"  placeholder="">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-4">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-1">
                             <label for="Descuento" >Descuento*</label>
-                            <input type="text" class="form-control form-control-sm numbersOnly" id="Descuento" name="Descuento" maxlength="10" required placeholder="">
+                            <input type="text" class="form-control form-control-sm numbersOnly" id="Descuento" name="Descuento" maxlength="10"  placeholder="">
                         </div>
 
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-4">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2">
                             <label for="TipoCliente" >Tipo de cliente*</label>
-                            <select class="form-control form-control-sm" id="TipoCliente" name="TipoCliente" required >
+                            <select class="form-control form-control-sm" id="TipoCliente" name="TipoCliente"  >
                                 <option></option>
                                 <option value="1">1 May</option>
                                 <option value="2">2 Det</option>
@@ -157,9 +157,9 @@
                             </select>
                         </div>
 
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-4">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
                             <label for="Clasificacion" >Clasificacion*</label>
-                            <select class="form-control form-control-sm" id="Clasificacion" name="Clasificacion" required >
+                            <select class="form-control form-control-sm" id="Clasificacion" name="Clasificacion"  >
                                 <option></option>
                                 <option value="1">1 Bueno</option>
                                 <option value="2">2 Regular</option>
@@ -177,83 +177,75 @@
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                                     <label for="" >Encargado de compras</label>
-                                    <input type="text" class="form-control form-control-sm" id="EncargadoCompras" name="EncargadoCompras" maxlength="45" required placeholder="">
+                                    <input type="text" class="form-control form-control-sm" id="EncargadoCompras" name="EncargadoCompras" maxlength="45"  placeholder="">
                                 </div>
                                 <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">                                    
                                     <label for="" >Gerente general</label>
-                                    <input type="text" class="form-control form-control-sm" id="GerenteGeneral" name="GerenteGeneral" maxlength="45" required placeholder="">
+                                    <input type="text" class="form-control form-control-sm" id="GerenteGeneral" name="GerenteGeneral" maxlength="45"  placeholder="">
                                 </div>
                                 <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                                     <label for="" >Encargado de pagos</label>
-                                    <input type="text" class="form-control form-control-sm" id="EncargadoDePagos" name="EncargadoDePagos" maxlength="45" required placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                    <div class="card m-3">
-                        <div class="card-body">
-                            <div class="row">
+                                    <input type="text" class="form-control form-control-sm" id="EncargadoDePagos" name="EncargadoDePagos" maxlength="45"  placeholder="">
+                                </div> 
                                 <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3"> 
                                     <label for="PrimerCorreo" >1er Correo*</label>
-                                    <input type="text" class="form-control form-control-sm" id="PrimerCorreo" name="PrimerCorreo" maxlength="45" required placeholder="">
+                                    <input type="text" class="form-control form-control-sm" id="PrimerCorreo" name="PrimerCorreo" maxlength="45"  placeholder="">
                                 </div>
                                 <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
                                     <label for="SegundoCorreo" >2do Correo*</label>
-                                    <input type="text" class="form-control form-control-sm" id="SegundoCorreo" name="SegundoCorreo" maxlength="45" required placeholder="">
+                                    <input type="text" class="form-control form-control-sm" id="SegundoCorreo" name="SegundoCorreo" maxlength="45"  placeholder="">
                                 </div>
-                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
                                     <label for="FormaPago" >Forma de pago*</label>
-                                    <select class="form-control form-control-sm" id="FormaPago" name="FormaPago" required >
+                                    <select class="form-control form-control-sm" id="FormaPago" name="FormaPago"  >
                                         <option></option>
                                     </select>
                                 </div>
-                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3"> 
+                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2"> 
                                     <label for="MetodoPago" >Método de pago*</label>
-                                    <select class="form-control form-control-sm" id="MetodoPago" name="MetodoPago" required >
+                                    <select class="form-control form-control-sm" id="MetodoPago" name="MetodoPago"  >
+                                        <option></option>
+                                    </select>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2"> 
+                                    <label for="Zona" >Zona*</label>
+                                    <select class="form-control form-control-sm" id="Zona" name="Zona"  >
                                         <option></option>
                                     </select>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3"> 
-                                    <label for="Zona" >Zona*</label>
-                                    <select class="form-control form-control-sm" id="Zona" name="Zona" required >
-                                        <option></option>
-                                    </select>
-                                </div>
                                 <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
                                     <label for="Observaciones" >Observaciones*</label>
-                                    <input type="text" class="form-control form-control-sm" id="Observaciones" name="Observaciones" maxlength="99" required placeholder="">
+                                    <input type="text" class="form-control form-control-sm" id="Observaciones" name="Observaciones" maxlength="99"  placeholder="">
                                 </div> 
-                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
                                     <label for="NoCuenta" >No.Cuenta*</label>
-                                    <input type="text" class="form-control form-control-sm" id="NoCuenta" name="NoCuenta" maxlength="99" required placeholder="">
+                                    <input type="text" class="form-control form-control-sm" id="NoCuenta" name="NoCuenta" maxlength="99"  placeholder="">
                                 </div>
-                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
                                     <label for="Banco" >Banco*</label>
-                                    <input type="text" class="form-control form-control-sm" id="Banco" name="Banco" maxlength="99" required placeholder="">
+                                    <input type="text" class="form-control form-control-sm" id="Banco" name="Banco" maxlength="99"  placeholder="">
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3"> 
                                     <label for="Grupo" >Grupo*</label>
-                                    <select class="form-control form-control-sm" id="Grupo" name="Grupo" required >
+                                    <select class="form-control form-control-sm" id="Grupo" name="Grupo"  >
                                         <option></option>
                                     </select>
                                 </div>
-                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3"> 
+                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2"> 
                                     <label for="Publicidad" >Publicidad*</label>
-                                    <select class="form-control form-control-sm" id="Publicidad" name="Publicidad" required >
+                                    <select class="form-control form-control-sm" id="Publicidad" name="Publicidad"  >
                                         <option></option>
                                         <option value="1">1 = Si</option>
                                         <option value="2">2 = No</option>
                                     </select>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
                                     <label for="Cantidad" >Cantidad*</label>
-                                    <input type="text" class="form-control form-control-sm" id="Cantidad" name="Cantidad" maxlength="99" required placeholder="">
+                                    <input type="text" class="form-control form-control-sm" id="Cantidad" name="Cantidad" maxlength="99"  placeholder="">
                                 </div>
                                 <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
                                     <label for="FechaEnvio" >Fecha envió*</label>
@@ -274,7 +266,7 @@
     var master_url = base_url + 'index.php/Clientes/';
     var tblClientes = $('#tblClientes');
     var Clientes;
-    var btnNuevo = $("#btnNuevo"), btnCancelar = $("#btnCancelar"), btnEliminar = $("#btnEliminar"), btnGuardar = $("#btnGuardar");
+    var btnNuevo = $("#btnNuevo"), btnCancelar = $("#btnCancelar"), btnGuardar = $("#btnGuardar");
     var pnlTablero = $("#pnlTablero"), pnlDatos = $("#pnlDatos");
     var nuevo = false;
 
@@ -282,6 +274,8 @@
         /*FUNCIONES INICIALES*/
         init();
         handleEnter();
+         
+        
         /*FUNCIONES X BOTON*/
         btnGuardar.click(function () {
             isValid('pnlDatos');
@@ -316,8 +310,7 @@
                         processData: false,
                         data: frm
                     }).done(function (data, x, jq) {
-                        console.log(data);
-                        pnlDatos.find("[name='ID']").val(data);
+                        console.log(data); 
                         nuevo = false;
                         Clientes.ajax.reload();
                         pnlDatos.addClass("d-none");
@@ -332,43 +325,7 @@
                 swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'error');
             }
         });
-
-        btnEliminar.click(function () {
-            swal({
-                title: "¿Estas seguro?",
-                text: "Nota: No se eliminara ninguna Agente que tenga alguna relacion con otro dato dentro del sistema",
-                icon: "warning",
-                buttons: {
-                    cancelar: {
-                        text: "Cancelar",
-                        value: "cancelar"
-                    },
-                    eliminar: {
-                        text: "Finalizar",
-                        value: "eliminar"
-                    }
-                }
-            }).then((value) => {
-                switch (value) {
-                    case "eliminar":
-                        $.post(master_url + 'onEliminar', {ID: temp}).done(function () {
-                            swal('ATENCIÓN', 'SE HA ELIMINADO EL REGISTRO', 'success');
-                            Clientes.clear().draw();
-                            pnlDatos.addClass("d-none");
-                            pnlTablero.removeClass("d-none");
-                            Clientes.ajax.reload();
-                        }).fail(function (x, y, z) {
-                            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-                            console.log(x.responseText);
-                        });
-                        break;
-                    case "cancelar":
-                        swal.close();
-                        break;
-                }
-            });
-        });
-
+ 
         btnNuevo.click(function () {
             nuevo = true;
             $.each(pnlDatos.find("select"), function (k, v) {
@@ -376,7 +333,7 @@
             });
             pnlDatos.find("input,textarea").val("");
             pnlTablero.addClass("d-none");
-            pnlDatos.removeClass("d-none");
+            pnlDatos.removeClass("d-none").find("#Nombre").focus();
             $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
             getID();
         });
@@ -393,6 +350,12 @@
     function init() {
         getRecords();
         /*INICIALIZAR DETALLE*/
+        getEstados();
+        getPaises();
+        getAgentes();
+        getTransportes();
+        getZonas();
+        getGrupos();
     }
 
     function getRecords() {
@@ -449,7 +412,7 @@
             $(this).addClass("success");
             var dtm = Clientes.row(this).data();
             temp = parseInt(dtm.ID);
-            $.getJSON(master_url + 'getAgenteByID', {ID: temp}).done(function (data) {
+            $.getJSON(master_url + 'getClienteByID', {ID: temp}).done(function (data) {
                 pnlDatos.find("input").val("");
                 $.each(pnlDatos.find("select"), function (k, v) {
                     pnlDatos.find("select")[k].selectize.clear(true);
@@ -460,29 +423,113 @@
                         pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
                     }
                 });
-                btnIgualaPrecios.removeClass("d-none");
                 pnlTablero.addClass("d-none");
                 pnlDatos.removeClass('d-none');
-                pnlDatosDetalle.removeClass('d-none');
-                /*DETALLE*/
-                $.getJSON(master_url + 'getDetalleByID', {ID: dtm.Clave}).done(function (data) {
-                    if (data.length > 0) {
-                        $.each(data, function (k, v) {
-                            ClientesDetalle.row.add([v.ID, v.Agente, v.Dias, v.A, v.Porcentaje, 'A', '<button type="button" class="btn btn-danger" onclick="onEliminarDetalle(this)"><span class="fa fa-trash"></span></button>']).draw(false);
-                        });
-                    }
-                }).fail(function (x, y, z) {
-                    swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-                    console.log(x.responseText);
-                }).always(function () {
-                    $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
-                });
             }).fail(function (x, y, z) {
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
                 console.log(x.responseText);
             }).always(function () {
                 HoldOn.close();
             });
+        });
+    }
+
+    function getEstados() {
+        $.getJSON(master_url + 'getEstados').done(function (data) {
+            pnlDatos.find("#Estado")[0].selectize.addOption({text: '--', value: ''});
+            $.each(data, function (k, v) {
+                pnlDatos.find("#Estado")[0].selectize.addOption({text: v.Estado, value: v.Clave});
+            });
+        }).fail(function (x) {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        }).always(function () {
+
+        });
+    }
+
+    function getPaises() {
+        $.getJSON(master_url + 'getPaises').done(function (data) {
+            pnlDatos.find("#Pais")[0].selectize.addOption({text: '--', value: ''});
+            $.each(data, function (k, v) {
+                pnlDatos.find("#Pais")[0].selectize.addOption({text: v.Pais, value: v.Clave});
+            });
+        }).fail(function (x) {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        }).always(function () {
+
+        });
+    }
+
+    function getAgentes() {
+        $.getJSON(master_url + 'getAgentes').done(function (data) {
+            pnlDatos.find("#Agente")[0].selectize.addOption({text: '--', value: ''});
+            $.each(data, function (k, v) {
+                pnlDatos.find("#Agente")[0].selectize.addOption({text: v.Agente, value: v.Clave});
+            });
+        }).fail(function (x) {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        }).always(function () {
+
+        });
+    }
+
+    function getTransportes() {
+        $.getJSON(master_url + 'getTransportes').done(function (data) {
+            pnlDatos.find("#Transporte")[0].selectize.addOption({text: '--', value: ''});
+            $.each(data, function (k, v) {
+                pnlDatos.find("#Transporte")[0].selectize.addOption({text: v.Transporte, value: v.Clave});
+            });
+        }).fail(function (x) {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        }).always(function () {
+
+        });
+    }
+
+    function getZonas() {
+        $.getJSON(master_url + 'getZonas').done(function (data) {
+            pnlDatos.find("#Zona")[0].selectize.addOption({text: '--', value: ''});
+            $.each(data, function (k, v) {
+                pnlDatos.find("#Zona")[0].selectize.addOption({text: v.Zona, value: v.Clave});
+            });
+        }).fail(function (x) {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        }).always(function () {
+
+        });
+    }
+
+    function getGrupos() {
+        $.getJSON(master_url + 'getGrupos').done(function (data) {
+            pnlDatos.find("#Grupo")[0].selectize.addOption({text: '--', value: ''});
+            $.each(data, function (k, v) {
+                pnlDatos.find("#Grupo")[0].selectize.addOption({text: v.Grupo, value: v.Clave});
+            });
+        }).fail(function (x) {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        }).always(function () {
+
+        });
+    }
+     
+    function getID() {
+        $.getJSON(master_url + 'getID').done(function (data, x, jq) {
+            if (data.length > 0) {
+                var ID = $.isNumeric(data[0].CLAVE) ? parseInt(data[0].CLAVE) + 1 : 1;
+                pnlDatos.find("#Clave").val(ID);
+            } else {
+                pnlDatos.find("#Clave").val('1');
+            }
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
         });
     }
 </script>
