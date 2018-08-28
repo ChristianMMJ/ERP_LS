@@ -35,7 +35,7 @@ class usuario_model extends CI_Model {
             $this->db->from('usuarios AS U');
             $this->db->where('U.Usuario', $USUARIO);
             $this->db->where(' \''.$CONTRASENA . '\'  = AES_DECRYPT(U.AES, \'System32\')', NULL, FALSE);
-            $this->db->where_in('U.Estatus', 'Activo');
+            $this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY

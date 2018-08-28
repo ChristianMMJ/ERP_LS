@@ -89,7 +89,6 @@ class Usuarios extends CI_Controller {
         try {
             extract($this->input->post());
             $DATA = array(
-                'Contrasena' => ($Contrasena !== NULL) ? $Contrasena : NULL,
                 'Nombre' => ($Nombre !== NULL) ? $Nombre : NULL,
                 'Apellidos' => ($Apellidos !== NULL) ? $Apellidos : NULL,
                 'TipoAcceso' => ($TipoAcceso !== NULL) ? $TipoAcceso : NULL,
@@ -97,6 +96,7 @@ class Usuarios extends CI_Controller {
                 'Estatus' => ($Estatus !== NULL) ? $Estatus : NULL
             );
             $this->usuario_model->onModificar($ID, $DATA);
+            $this->db->set('AES', 'AES_ENCRYPT("' . $Contrasena . '",\'System32\')', false)->where('ID', $ID)->update("usuarios");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
