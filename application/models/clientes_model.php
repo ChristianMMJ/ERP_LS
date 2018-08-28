@@ -12,7 +12,7 @@ class clientes_model extends CI_Model {
 
     public function getRecords() {
         try {
-            $this->db->select("C.ID AS ID, C.Clave AS CLAVE, C.RazonSocial as NOMBRE, C.RFC AS RFC, C.Telefono AS TELEFONO, C.Estatus AS ESTATUS ", false)
+            $this->db->select("C.ID AS ID, C.Clave AS CLAVE, C.Nombre", false)
                     ->from('clientes AS C')->where_in('C.Estatus', 'ACTIVO');
             $query = $this->db->get();
             /*

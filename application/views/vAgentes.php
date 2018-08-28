@@ -487,9 +487,6 @@
             pnlDatos.removeClass("d-none");
             btnEliminar.addClass("d-none");
             $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
-            pnlDatos.find("#PrecioUno").prop("readonly", false);
-            pnlDatos.find("#PrecioDos").prop("readonly", false);
-            pnlDatos.find("#PrecioTres").prop("readonly", false);
             getID();
         });
 
