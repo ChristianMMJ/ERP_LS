@@ -49,10 +49,6 @@
                             <label for="Clave" >Clave*</label>
                             <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" maxlength="45"  placeholder="" readonly="">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
-                            <label for="Nombre" >Nombre*</label>
-                            <input type="text" class="form-control form-control-sm" id="Nombre" name="Nombre" maxlength="45"  placeholder="" required="">
-                        </div>
                         <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
                             <label for="RazonS" >Razon Social*</label>
                             <input type="text" class="form-control form-control-sm" id="RazonS" name="RazonS" maxlength="45"  placeholder=""  required="">
@@ -232,26 +228,8 @@
                                     <select class="form-control form-control-sm" id="Grupo" name="Grupo"  >
                                         <option></option>
                                     </select>
-                                </div>
-                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2"> 
-                                    <label for="Publicidad" >Publicidad*</label>
-                                    <select class="form-control form-control-sm" id="Publicidad" name="Publicidad"  >
-                                        <option></option>
-                                        <option value="1">1 = Si</option>
-                                        <option value="2">2 = No</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                                    <label for="Cantidad" >Cantidad*</label>
-                                    <input type="text" class="form-control form-control-sm" id="Cantidad" name="Cantidad" maxlength="99"  placeholder="">
-                                </div>
-                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                                    <label for="FechaEnvio" >Fecha envió*</label>
-                                    <input type="text" id="FechaEnvio" name="FechaEnvio" class="form-control form-control-sm date notEnter" >
-                                </div>
-                            </div>
+                                </div> 
+                            </div> 
                             <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
                                 <i class="fa fa-save"></i>
                             </button>
@@ -274,8 +252,8 @@
         /*FUNCIONES INICIALES*/
         init();
         handleEnter();
-         
-        
+
+
         /*FUNCIONES X BOTON*/
         btnGuardar.click(function () {
             isValid('pnlDatos');
@@ -310,7 +288,6 @@
                         processData: false,
                         data: frm
                     }).done(function (data, x, jq) {
-                        console.log(data); 
                         nuevo = false;
                         Clientes.ajax.reload();
                         pnlDatos.addClass("d-none");
@@ -325,7 +302,7 @@
                 swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'error');
             }
         });
- 
+
         btnNuevo.click(function () {
             nuevo = true;
             $.each(pnlDatos.find("select"), function (k, v) {
@@ -356,6 +333,8 @@
         getTransportes();
         getZonas();
         getGrupos();
+        getFormasDePago();
+        getMetodosDePago();
     }
 
     function getRecords() {
@@ -535,7 +514,7 @@
         $.getJSON(master_url + 'getMetodosDePago').done(function (data) {
             pnlDatos.find("#MetodoPago")[0].selectize.addOption({text: '--', value: ''});
             $.each(data, function (k, v) {
-                pnlDatos.find("#MetodoPago")[0].selectize.addOption({text: v.Grupo, value: v.Clave});
+                pnlDatos.find("#MetodoPago")[0].selectize.addOption({text: v["Metodo de pago"], value: v.Clave});
             });
         }).fail(function (x) {
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
@@ -544,7 +523,7 @@
 
         });
     }
-     
+
     function getID() {
         $.getJSON(master_url + 'getID').done(function (data, x, jq) {
             if (data.length > 0) {

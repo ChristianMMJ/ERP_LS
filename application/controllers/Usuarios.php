@@ -76,6 +76,13 @@ class Usuarios extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
+    public function onVerClave() {
+        try {
+            print json_encode($this->usuario_model->onVerClave($this->input->get('ID')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 
     public function onAgregar() {
         try {

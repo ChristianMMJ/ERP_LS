@@ -31,16 +31,21 @@
                 <hr>
                 <div class="row">
                     <div class="d-none">
-                        <input type="text"  name="ID" class="form-control form-control-sm" >
+                        <input type="text" id="ID" name="ID" class="form-control form-control-sm" >
                     </div>
                     <div class="col-12 col-md-6 col-sm-6">
                         <label for="Usuario" >Usuario*</label>
                         <input type="text" class="form-control form-control-sm"  name="Usuario" required >
                     </div>
-                    <div class="col-12 col-md-6 col-sm-6">
+
+                    <div class="col-12 col-sm-5 col-md-5 col-lg-5 col-xl-5">
                         <label for="Contrasena" >Contraseña*</label>
-                        <input type="password" class="form-control form-control-sm"  name="Contrasena" required>
+                        <input type="password" class="form-control form-control-sm animated bounceIn" id="Contrasena" name="Contrasena" required>
                     </div>
+                    <div class="col-12 col-sm-1 col-md-1 col-lg-1 col-xl-1" align="center">
+                        <button type="button" class="btn btn-info mt-4 d-none" id="VerContrasena" name="VerContrasena"><span class="fa fa-eye"></span></button>
+                    </div>
+
                     <div class="col-12 col-md-6 col-sm-6">
                         <label for="Nombre" >Nombre*</label>
                         <input type="text" id="Nombre" name="Nombre" class="form-control form-control-sm" placeholder="" required>
@@ -87,20 +92,14 @@
                             <option value="INACTIVO">INACTIVO</option>
                         </select>
                     </div>
-
                 </div>
                 <div class="row pt-2">
                     <div class="col-6 col-md-6 ">
                         <h6 class="text-danger">Los campos con * son obligatorios</h6>
                     </div>
-                    <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
+                    <button type="button" class="btn btn-info btn-lg btn-float animated slideInUp" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
                         <i class="fa fa-save"></i>
                     </button>
-                    <!--                    <div class="col-6 col-sm-6 col-md-6" align="right">
-                                            <button type="button" class="btn btn-raised btn-info btn-sm" id="btnGuardar">
-                                                <span class="fa fa-save "></span> GUARDAR
-                                            </button>
-                                        </div>-->
                 </div>
             </fieldset>
         </form>
@@ -117,10 +116,50 @@
     var btnCancelar = pnlDatos.find("#btnCancelar");
     var btnEliminar = $("#btnEliminar");
     var sEsCliente = pnlDatos.find("#TipoAcceso");
-    var nuevo = true;
+    var VerContrasena = pnlDatos.find("#VerContrasena");
+    var nuevo = true, n = 10, counter = false;
+
     $(document).ready(function () {
 
+        VerContrasena.click(function () {
+            btnGuardar.addClass('d-none');
+            $.getJSON(master_url + 'onVerClave', {ID: pnlDatos.find("#ID").val()}).done(function (data) {
+                var str = '<div id="pnlContrasena" class="row">';
+                str += '<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10">';
+                str += '<input type="text" id="ContrasenaTemporal" readonly="" class="form-control form-control-sm animated bounceIn" placeholder="" value="' + data[0].PW + '" required>';
+                str += '</div>';
+                str += '<div class="col-1 col-sm-1 col-md-1 col-lg-1 col-xl-1">';
+                str += '<span class="font-weight-bold text-info"></span>';
+                str += '</div>';
+                str += '</div>';
+                pnlDatos.find("#Contrasena").after(str);
+                pnlDatos.find("#Contrasena").addClass("d-none");
+                VerContrasena.prop("disabled", true);
+                counter = true;
+                countDown();
+            }).fail(function (x, y, z) {
+                console.log(x.responseText);
+            });
+        });
+
+        function countDown() {
+            if (n >= 0 && counter) {
+                setTimeout(countDown, 1000);
+                pnlDatos.find("#pnlContrasena").find('span').text(n);
+                n--;
+            } else {
+                pnlDatos.find("#Contrasena").removeClass("d-none");
+                VerContrasena.prop("disabled", false);
+                pnlDatos.find("#pnlContrasena").remove();
+                counter = false;
+                n = 10;
+                btnGuardar.removeClass('d-none');
+            }
+        }
+
         btnNuevo.click(function () {
+            VerContrasena.addClass("d-none");
+            btnEliminar.addClass("d-none");
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass('d-none');
             pnlDatos.find("input").val("");
@@ -130,11 +169,18 @@
             pnlDatos.find("[name='Usuario']").removeClass('disabledForms');
             pnlDatos.find("[name='Usuario']").focus();
             nuevo = true;
+            VerContrasena.prop("disabled", false);
         });
+
         btnCancelar.click(function () {
             pnlTablero.removeClass("d-none");
             pnlDatos.addClass('d-none');
+            pnlDatos.find("#Contrasena").removeClass("d-none");
+            pnlDatos.find("#pnlContrasena").remove();
+            counter = false;
+            n = 10;
         });
+
         //Evento clic del boton confirmar borrar
         btnEliminar.click(function () {
             swal({
@@ -274,7 +320,11 @@
                         });
                         pnlTablero.addClass("d-none");
                         pnlDatos.removeClass('d-none');
-
+                        if (data[0].SEG === 1) {
+                            VerContrasena.addClass("d-none");
+                        } else {
+                            VerContrasena.removeClass("d-none");
+                        }
                         pnlDatos.find("[name='Usuario']").addClass('disabledForms');
                         pnlDatos.find("[name='Contrasena']").focus().select();
                     }).fail(function (x, y, z) {

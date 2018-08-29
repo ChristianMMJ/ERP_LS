@@ -115,7 +115,10 @@ class usuario_model extends CI_Model {
 
     public function getUsuarioByID($ID) {
         try {
-            $this->db->select('U.ID, U.Usuario, U.Estatus, U.Nombre, U.Apellidos, U.TipoAcceso, U.UltimoAcceso, U.Registro, U.UltimaModificacion, AES_DECRYPT(U.AES, \'System32\') AS Contrasena', false);
+            $this->db->select('U.ID, U.Usuario, U.Estatus, U.Nombre, U.Apellidos, '
+                    . 'U.TipoAcceso, U.UltimoAcceso, U.Registro, U.UltimaModificacion, '
+                    . 'CONVERT(AES_DECRYPT(CAST(U.AES AS CHAR(10000) CHARACTER SET utf8),\'System32\') USING latin1) AS Contrasena, '
+                    . 'U.Seguridad AS SEG', false);
             $this->db->from('usuarios AS U');
             $this->db->where('U.ID', $ID);
             //$this->db->where_in('U.Estatus', 'Activo');
@@ -144,4 +147,12 @@ class usuario_model extends CI_Model {
         }
     }
 
+    public function onVerClave($CLAVE) {
+        try {
+            return $this->db->select("CONVERT(AES_DECRYPT(CAST(AES AS CHAR(10000) CHARACTER SET utf8),'System32') USING latin1) AS PW",false)
+                    ->from("usuarios AS U")->where("U.ID", $CLAVE)->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 }
