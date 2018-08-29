@@ -517,6 +517,33 @@
 
         });
     }
+
+    function getFormasDePago() {
+        $.getJSON(master_url + 'getFormasDePago').done(function (data) {
+            pnlDatos.find("#FormaPago")[0].selectize.addOption({text: '--', value: ''});
+            $.each(data, function (k, v) {
+                pnlDatos.find("#FormaPago")[0].selectize.addOption({text: v.FormaDePago, value: v.Clave});
+            });
+        }).fail(function (x) {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        }).always(function () {
+        });
+    }
+
+    function getMetodosDePago() {
+        $.getJSON(master_url + 'getMetodosDePago').done(function (data) {
+            pnlDatos.find("#MetodoPago")[0].selectize.addOption({text: '--', value: ''});
+            $.each(data, function (k, v) {
+                pnlDatos.find("#MetodoPago")[0].selectize.addOption({text: v.Grupo, value: v.Clave});
+            });
+        }).fail(function (x) {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        }).always(function () {
+
+        });
+    }
      
     function getID() {
         $.getJSON(master_url + 'getID').done(function (data, x, jq) {

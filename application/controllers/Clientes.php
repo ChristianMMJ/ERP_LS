@@ -88,6 +88,20 @@ class Clientes extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
+    public function getFormasDePago() {
+        try {
+            print json_encode($this->clientes_model->getFormasDePago());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    public function getMetodosDePago() {
+        try {
+            print json_encode($this->clientes_model->getMetodosDePago());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 
     public function getPaises() {
         try {

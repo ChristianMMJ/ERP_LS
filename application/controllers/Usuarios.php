@@ -79,7 +79,15 @@ class Usuarios extends CI_Controller {
 
     public function onAgregar() {
         try {
-            $this->usuario_model->onAgregar($this->input->post());
+            $data = array();
+            foreach ($this->input->post() as $key => $v) {
+                if ($v !== '') {
+                    $data[$key] = ($v !== '') ? strtoupper($v) : NULL;
+                }
+            }
+            unset($data["Contrasena"]);
+            $ID = $this->usuario_model->onAgregar($data);
+            $this->db->set('AES', 'AES_ENCRYPT("' . $this->input->post('Contrasena') . '",\'System32\')', false)->where('ID', $ID)->update("usuarios");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

@@ -98,6 +98,24 @@ class clientes_model extends CI_Model {
         }
     }
 
+    public function getMetodosDePago() {
+        try {
+            return $this->db->select("MP.Clave, CONCAT(MP.Clave, \" - \", MP.Descripcion) AS \"Metodo de pago\"", false)
+                            ->from('metodos_de_pago AS MP')->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getFormasDePago() {
+        try {
+            return $this->db->select("FP.Clave, CONCAT(FP.Clave, \" - \", FP.Descripcion) AS FormaDePago", false)
+                            ->from('formaspago AS FP')->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getListasDePrecios() {
         try {
             $this->db->select("LDP.ID, LDP.Descripcion AS Descripcion ", false)->from('sz_ListaDePrecios AS LDP')->where_in('LDP.Estatus', 'ACTIVO');
