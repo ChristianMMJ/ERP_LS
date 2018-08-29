@@ -16,7 +16,6 @@
                             <th>ID</th>
                             <th>Clave</th>
                             <th>Descripción</th>
-                            <th>Estatus</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -31,7 +30,7 @@
             <fieldset>
                 <div class="row">
                     <div class="col-12 col-sm-6 col-md-4 float-left">
-                        <legend >Transporte</legend>
+                        <legend >Forma de Pago</legend>
                     </div>
                     <div class="col-12 col-sm-6 col-md-8" align="right">
                         <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
@@ -49,15 +48,11 @@
                     </div>
                     <div class="col-12 col-md-6 col-sm-6">
                         <label for="Clave" >Clave*</label>
-                        <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required autofocus="">
+                        <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required >
                     </div>
                     <div class="col-12 col-md-6 col-sm-6">
                         <label for="Descripcion" >Descripción*</label>
                         <input type="text" id="Descripcion" name="Descripcion" class="form-control form-control-sm" placeholder="" required>
-                    </div>
-                    <div class="col-12 col-md-6 col-sm-6">
-                        <label for="Clave" >Clave SAT</label>
-                        <input type="text" class="form-control form-control-sm" id="ClaveSat" name="ClaveSat" required autofocus="">
                     </div>
                 </div>
                 <div class="row pt-2">
@@ -230,7 +225,7 @@
                 "dataSrc": ""
             },
             "columns": [
-                {"data": "ID"}, {"data": "Clave"}, {"data": "Descripcion"}, {"data": "Estatus"}
+                {"data": "ID"}, {"data": "Clave"}, {"data": "Descripcion"}
             ],
             "columnDefs": [
                 {

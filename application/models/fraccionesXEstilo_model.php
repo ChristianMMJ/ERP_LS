@@ -34,8 +34,29 @@ class fraccionesXEstilo_model extends CI_Model {
         }
     }
 
+    public function getDatosEmpresa() {
+        try {
+            $this->db->select("E.RazonSocial as Empresa, E.Foto as Logo "
+                            . " ", false)
+                    ->from('empresas AS E')
+                    ->where('Estatus', 'ACTIVO');
+
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getEncabezadoFXE($Estilo) {
         try {
+            $this->db->query("set sql_mode=''");
             $this->db->select("FXE.Estilo AS ESTILO,L.CLAVE AS CLINEA, L.DESCRIPCION AS DLINEA   "
                             . " ", false)
                     ->from('fraccionesxestilo AS FXE')
@@ -59,6 +80,7 @@ class fraccionesXEstilo_model extends CI_Model {
 
     public function getDeptosFXE($Estilo) {
         try {
+            $this->db->query("set sql_mode=''");
             $this->db->select("D.Clave AS CDEPTO, D.Descripcion AS DDEPTO  "
                             . " ", false)
                     ->from('fraccionesxestilo AS FXE')

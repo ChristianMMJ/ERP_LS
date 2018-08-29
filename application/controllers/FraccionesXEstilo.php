@@ -157,6 +157,7 @@ class FraccionesXEstilo extends CI_Controller {
     public function onImprimirFraccionesXEstilo() {
         $cm = $this->fraccionesXEstilo_model;
 
+        $DatosEmpresa = $cm->getDatosEmpresa();
         $Encabezado = $cm->getEncabezadoFXE($this->input->get('Estilo'));
         $Departamentos = $cm->getDeptosFXE($this->input->get('Estilo'));
         $Fracciones = $cm->getFraccionesFXE($this->input->get('Estilo'));
@@ -165,6 +166,8 @@ class FraccionesXEstilo extends CI_Controller {
 
             $pdf = new PDF('P', 'mm', array(215.9, 279.4));
 
+            $pdf->Logo = $DatosEmpresa[0]->Logo;
+            $pdf->Empresa = $DatosEmpresa[0]->Empresa;
             $pdf->Estilo = $Encabezado[0]->ESTILO;
             $pdf->Clinea = $Encabezado[0]->CLINEA;
             $pdf->Dlinea = $Encabezado[0]->DLINEA;

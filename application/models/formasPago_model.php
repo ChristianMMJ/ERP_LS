@@ -12,7 +12,7 @@ class formasPago_model extends CI_Model {
 
     public function getRecords() {
         try {
-            return $this->db->select("T.ID, T.Clave, T.Descripcion, T.Estatus")->from("FormasPago AS T")->where("T.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("T.ID, T.Clave, T.Descripcion")->from("FormasPago AS T")->where("T.Estatus", "ACTIVO")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

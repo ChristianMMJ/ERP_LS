@@ -2,9 +2,27 @@
 
 class PDF extends FPDF {
 
+    public $Logo;
+    public $Empresa;
     public $Estilo;
     public $Clinea;
     public $Dlinea;
+
+    function getLogo() {
+        return $this->Logo;
+    }
+
+    function getEmpresa() {
+        return $this->Empresa;
+    }
+
+    function setLogo($Logo) {
+        $this->Logo = $Logo;
+    }
+
+    function setEmpresa($Empresa) {
+        $this->Empresa = $Empresa;
+    }
 
     function getEstilo() {
         return $this->Estilo;
@@ -32,11 +50,11 @@ class PDF extends FPDF {
 
     function Header() {
 
-        $this->Image('img/lsbck.png', /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30);
+        $this->Image($this->getLogo(), /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30);
         $this->SetFont('Arial', 'B', 10);
         $this->SetY(5);
         $this->SetX(40);
-        $this->Cell(110, 4, utf8_decode("CALZADO LOBO, S.A. DE C.V."), 0/* BORDE */, 1, 'L');
+        $this->Cell(110, 4, utf8_decode($this->getEmpresa()), 0/* BORDE */, 1, 'L');
         $this->SetY(7);
         $this->SetX(170);
         $this->SetFont('Arial', 'B', 9);

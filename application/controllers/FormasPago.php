@@ -84,8 +84,7 @@ class FormasPago extends CI_Controller {
             $this->formasPago_model->onAgregar(array(
                 'Clave' => ($x->post('Clave') !== NULL) ? $x->post('Clave') : NULL,
                 'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL,
-                'Estatus' => 'ACTIVO',
-                'ClaveSat' => ($x->post('ClaveSat') !== NULL) ? strtoupper($x->post('ClaveSat')) : NULL
+                'Estatus' => 'ACTIVO'
             ));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -97,8 +96,7 @@ class FormasPago extends CI_Controller {
             var_dump($this->input->post());
             $x = $this->input;
             $this->formasPago_model->onModificar($x->post('ID'), array(
-                'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL,
-                'ClaveSat' => ($x->post('ClaveSat') !== NULL) ? strtoupper($x->post('ClaveSat')) : NULL
+                'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL
             ));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

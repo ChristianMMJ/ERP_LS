@@ -15,7 +15,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Clave</th>
-                            <th>Nombre</th> 
+                            <th>Nombre</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -28,7 +28,7 @@
     <form id="frmNuevo">
         <fieldset>
             <!--            PRIMER CONTENEDOR-->
-            <div class="card  mx-3 mt-3 ">
+            <div class="card  m-3">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12 col-sm-6 col-md-4 float-left">
@@ -56,9 +56,9 @@
                         <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
                             <label for="NombreP" >Nombre P*</label>
                             <input type="text" class="form-control form-control-sm" id="NombreP" name="NombreP" maxlength="45"  placeholder="" >
-                        </div>      
+                        </div>
 
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
                             <label for="Sucursal" >Sucursal*</label>
                             <input type="text" class="form-control form-control-sm" id="Sucursal" name="Sucursal" maxlength="45"  placeholder="">
                         </div>
@@ -92,7 +92,7 @@
                             <select class="form-control form-control-sm" id="Pais" name="Pais" maxlength="45"  ></select>
                         </div>
 
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
                             <label for="Agente" >Agente*</label>
                             <select class="form-control form-control-sm" id="Agente" name="Agente" maxlength="45"  ></select>
                         </div>
@@ -104,10 +104,7 @@
                             <label for="TelPart" >Tel Particular*</label>
                             <input type="tel" class="form-control form-control-sm" id="TelPart" name="TelPart" maxlength="45"  placeholder="">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-1">
-                            <label for="Fax" >Fax*</label>
-                            <input type="text" class="form-control form-control-sm" id="Fax" name="Fax" maxlength="45"  placeholder="">
-                        </div>
+
 
                         <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
                             <label for="RFC" >RFC*</label>
@@ -166,75 +163,72 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                    <div class="card mt-3 mx-3">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                                    <label for="" >Encargado de compras</label>
-                                    <input type="text" class="form-control form-control-sm" id="EncargadoCompras" name="EncargadoCompras" maxlength="45"  placeholder="">
-                                </div>
-                                <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">                                    
-                                    <label for="" >Gerente general</label>
-                                    <input type="text" class="form-control form-control-sm" id="GerenteGeneral" name="GerenteGeneral" maxlength="45"  placeholder="">
-                                </div>
-                                <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                                    <label for="" >Encargado de pagos</label>
-                                    <input type="text" class="form-control form-control-sm" id="EncargadoDePagos" name="EncargadoDePagos" maxlength="45"  placeholder="">
-                                </div> 
-                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3"> 
-                                    <label for="PrimerCorreo" >1er Correo*</label>
-                                    <input type="text" class="form-control form-control-sm" id="PrimerCorreo" name="PrimerCorreo" maxlength="45"  placeholder="">
-                                </div>
-                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                                    <label for="SegundoCorreo" >2do Correo*</label>
-                                    <input type="text" class="form-control form-control-sm" id="SegundoCorreo" name="SegundoCorreo" maxlength="45"  placeholder="">
-                                </div>
-                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
-                                    <label for="FormaPago" >Forma de pago*</label>
-                                    <select class="form-control form-control-sm" id="FormaPago" name="FormaPago"  >
-                                        <option></option>
-                                    </select>
-                                </div>
-                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2"> 
-                                    <label for="MetodoPago" >Método de pago*</label>
-                                    <select class="form-control form-control-sm" id="MetodoPago" name="MetodoPago"  >
-                                        <option></option>
-                                    </select>
-                                </div>
-                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2"> 
-                                    <label for="Zona" >Zona*</label>
-                                    <select class="form-control form-control-sm" id="Zona" name="Zona"  >
-                                        <option></option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                                    <label for="Observaciones" >Observaciones*</label>
-                                    <input type="text" class="form-control form-control-sm" id="Observaciones" name="Observaciones" maxlength="99"  placeholder="">
-                                </div> 
-                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
-                                    <label for="NoCuenta" >No.Cuenta*</label>
-                                    <input type="text" class="form-control form-control-sm" id="NoCuenta" name="NoCuenta" maxlength="99"  placeholder="">
-                                </div>
-                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
-                                    <label for="Banco" >Banco*</label>
-                                    <input type="text" class="form-control form-control-sm" id="Banco" name="Banco" maxlength="99"  placeholder="">
-                                </div>
-                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3"> 
-                                    <label for="Grupo" >Grupo*</label>
-                                    <select class="form-control form-control-sm" id="Grupo" name="Grupo"  >
-                                        <option></option>
-                                    </select>
-                                </div> 
-                            </div> 
-                            <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
-                                <i class="fa fa-save"></i>
-                            </button>
+            <!--            SEGUNDO CONTENEDOR-->
+            <div class="card m-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                            <label for="" >Encargado de compras</label>
+                            <input type="text" class="form-control form-control-sm" id="EncargadoCompras" name="EncargadoCompras" maxlength="45"  placeholder="">
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                            <label for="" >Gerente general</label>
+                            <input type="text" class="form-control form-control-sm" id="GerenteGeneral" name="GerenteGeneral" maxlength="45"  placeholder="">
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                            <label for="" >Encargado de pagos</label>
+                            <input type="text" class="form-control form-control-sm" id="EncargadoDePagos" name="EncargadoDePagos" maxlength="45"  placeholder="">
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                            <label for="PrimerCorreo" >1er Correo*</label>
+                            <input type="text" class="form-control form-control-sm" id="PrimerCorreo" name="PrimerCorreo" maxlength="45"  placeholder="">
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                            <label for="SegundoCorreo" >2do Correo*</label>
+                            <input type="text" class="form-control form-control-sm" id="SegundoCorreo" name="SegundoCorreo" maxlength="45"  placeholder="">
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
+                            <label for="FormaPago" >Forma de pago*</label>
+                            <select class="form-control form-control-sm" id="FormaPago" name="FormaPago"  >
+                                <option></option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
+                            <label for="MetodoPago" >Método de pago*</label>
+                            <select class="form-control form-control-sm" id="MetodoPago" name="MetodoPago"  >
+                                <option></option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
+                            <label for="Zona" >Zona*</label>
+                            <select class="form-control form-control-sm" id="Zona" name="Zona"  >
+                                <option></option>
+                            </select>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                            <label for="Observaciones" >Observaciones*</label>
+                            <input type="text" class="form-control form-control-sm" id="Observaciones" name="Observaciones" maxlength="99"  placeholder="">
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
+                            <label for="NoCuenta" >No.Cuenta*</label>
+                            <input type="text" class="form-control form-control-sm" id="NoCuenta" name="NoCuenta" maxlength="99"  placeholder="">
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
+                            <label for="Banco" >Banco*</label>
+                            <input type="text" class="form-control form-control-sm" id="Banco" name="Banco" maxlength="99"  placeholder="">
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                            <label for="Grupo" >Grupo*</label>
+                            <select class="form-control form-control-sm" id="Grupo" name="Grupo"  >
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
+                        <i class="fa fa-save"></i>
+                    </button>
                 </div>
             </div>
         </fieldset>
@@ -252,6 +246,16 @@
         /*FUNCIONES INICIALES*/
         init();
         handleEnter();
+
+        //Valida RFC
+        pnlDatos.find("[name='RFC']").blur(function () {
+            var rfc = $(this).val().trim(); // -Elimina los espacios que pueda tener antes o después
+            var rfcCorrecto = rfcValido(rfc); //Comprobar RFC
+            if (rfcCorrecto) {
+            } else {
+                pnlDatos.find("[name='RFC']").val("");
+            }
+        });
 
 
         /*FUNCIONES X BOTON*/
