@@ -37,12 +37,21 @@
                         <label for="Usuario" >Usuario*</label>
                         <input type="text" class="form-control form-control-sm"  name="Usuario" required >
                     </div>
-
                     <div class="col-12 col-sm-5 col-md-5 col-lg-5 col-xl-5">
-                        <label for="Contrasena" >Contraseña*</label>
-                        <input type="password" class="form-control form-control-sm animated bounceIn" id="Contrasena" name="Contrasena" required>
+                        <div class="row">
+                            <div class="col-12 col-sm-10 col-md-10 col-lg-10 col-xl-10">
+                                <label for="Contrasena" >Contraseña*</label>
+                                <input type="password" class="form-control form-control-sm animated bounceIn" id="Contrasena" name="Contrasena" required>
+                            </div>
+                            <div class="col-12 col-sm-10 col-md-10 col-lg-2 col-xl-2">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="Seguridad" name="Seguridad" >
+                                    <label class="custom-control-label" for="Seguridad">Seguridad</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-12 col-sm-1 col-md-1 col-lg-1 col-xl-1" align="center">
+                    <div class="col-12 col-sm-1 col-md-1 col-lg-1 col-xl-1" align="center"> 
                         <button type="button" class="btn btn-info mt-4 d-none" id="VerContrasena" name="VerContrasena"><span class="fa fa-eye"></span></button>
                     </div>
 
@@ -166,10 +175,12 @@
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
+            pnlDatos.find("[name='Contrasena']").removeClass('disabledForms');
             pnlDatos.find("[name='Usuario']").removeClass('disabledForms');
             pnlDatos.find("[name='Usuario']").focus();
             nuevo = true;
             VerContrasena.prop("disabled", false);
+            onRevisarSeguridad();
         });
 
         btnCancelar.click(function () {
@@ -277,10 +288,8 @@
             dataType: "JSON"
         }).done(function (data, x, jq) {
             $("#tblRegistros").html(getTable('tblUsuarios', data));
-            $('#tblUsuarios tfoot th').each(function () {
-                $(this).html('');
-            });
-            var tblSelected = $('#tblUsuarios').DataTable(tableOptions);
+
+            tblSelected = $('#tblUsuarios').DataTable(tableOptions);
             $('#tblUsuarios_filter input[type=search]').focus();
             $('#tblUsuarios tbody').on('click', 'tr', function () {
                 nuevo = false;
@@ -321,13 +330,9 @@
                         });
                         pnlTablero.addClass("d-none");
                         pnlDatos.removeClass('d-none');
-                        if (seg === 1) {
-                            VerContrasena.addClass("d-none");
-                        } else {
-                            VerContrasena.removeClass("d-none");
-                        }
+                        onRevisarSeguridad();
                         pnlDatos.find("[name='Usuario']").addClass('disabledForms');
-                        pnlDatos.find("[name='Contrasena']").focus().select();
+                        pnlDatos.find("[name='Contrasena']").addClass('disabledForms');
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
@@ -344,7 +349,7 @@
             HoldOn.close();
         });
     }
-
+    var tblSelected;
     function getEmpresas() {
         $.getJSON(master_url + 'getEmpresas').done(function (data) {
             $.each(data, function (k, v) {
@@ -354,5 +359,15 @@
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
             console.log(x.responseText);
         });
+    }
+
+    function onRevisarSeguridad() {
+        if (seg === 1) {
+            pnlDatos.find("#Seguridad").parent().addClass("d-none");
+            VerContrasena.addClass("d-none");
+        } else {
+            pnlDatos.find("#Seguridad").parent().removeClass("d-none");
+            VerContrasena.removeClass("d-none");
+        }
     }
 </script>

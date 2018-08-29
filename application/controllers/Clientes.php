@@ -147,7 +147,7 @@ class Clientes extends CI_Controller {
         try {
             $x = $this->input;
             $data = array();
-            foreach ($this->input->post() as $key => $v) {
+            foreach ($x->post() as $key => $v) {
                 if ($v !== '') {
                     $data[$key] = ($v !== '') ? strtoupper($v) : NULL;
                 }
@@ -164,7 +164,7 @@ class Clientes extends CI_Controller {
         try {
             $x = $this->input;
             $data = array();
-            foreach ($this->input->post() as $key => $v) {
+            foreach ($x->post() as $key => $v) {
                 if ($v !== '') {
                     $data[$key] = ($v !== '') ? strtoupper($v) : NULL;
                 }
