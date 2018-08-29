@@ -264,6 +264,7 @@
         getEmpresas();
         handleEnter();
     });
+    var seg = <?php print $_SESSION["SEG"]; ?>;
     function getRecords() {
         temp = 0;
         HoldOn.open({
@@ -320,7 +321,7 @@
                         });
                         pnlTablero.addClass("d-none");
                         pnlDatos.removeClass('d-none');
-                        if (data[0].SEG === 1) {
+                        if (seg === 1) {
                             VerContrasena.addClass("d-none");
                         } else {
                             VerContrasena.removeClass("d-none");
