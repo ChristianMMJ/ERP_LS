@@ -11,13 +11,14 @@
 
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navCatalogos" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Usuarios
+                    <span class="fa fa-user-circle"></span>  Usuarios
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCatalogos">
-                    <a class="dropdown-item" href="<?php print base_url('Usuarios') ?>"> Usuarios</a>
+                    <a class="dropdown-item" href="<?php print base_url('Usuarios.shoes') ?>"><span class="fa fa-user-circle"></span>  Usuarios</a>
+                    <a class="dropdown-item" href="<?php print base_url('ListaDePrecios.shoes') ?>"><span class="fa fa-coins"></span>  Lista de precios</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#"> Accesos</a>
-                    <a class="dropdown-item" href="#"> Token de Seguridad</a>
+                    <a class="dropdown-item" href="#"><span class="fa fa-key"></span>  Accesos</a>
+                    <a class="dropdown-item" href="#"><span class="fa fa-exclamation-circle"></span>  Token de Seguridad</a>
                 </div>
             </li>
 
