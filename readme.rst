@@ -8,9 +8,7 @@ This is an Application Development Framework - a toolkit.
 Release Information
 *******************
 
-This repo contains in-development code for future releases. To download the
-latest stable release please visit the `CodeIgniter Downloads
-<https://codeigniter.com/download>`_ page.
+This repo contains in-development code for future releases. 
 
 **************************
 Changelog and New Features
