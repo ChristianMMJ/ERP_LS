@@ -153,7 +153,7 @@
         </ul>-->
     <ul class="list-unstyled components">
         <li class="item">
-            <a  href="<?php print base_url('MenuProveedores') ?>">
+            <a  href="<?php print base_url('MenuProveedores.shoes') ?>">
                 <div class="row pl-2">
                     <div class="col-2">
                         <i class="fa fa-user-secret"></i>
@@ -165,7 +165,7 @@
             </a>
         </li>
         <li class="item">
-            <a href="<?php print base_url('MenuMateriales') ?>">
+            <a href="<?php print base_url('MenuMateriales.shoes') ?>">
                 <div class="row pl-2">
                     <div class="col-2">
                         <i class="fa fa-cube"></i>
@@ -177,7 +177,7 @@
             </a>
         </li>
         <li class="item">
-            <a href="<?php print base_url('MenuClientes') ?>">
+            <a href="<?php print base_url('MenuClientes.shoes') ?>">
                 <div class="row pl-2">
                     <div class="col-2">
                         <i class="fa fa-users"></i>
@@ -190,7 +190,7 @@
         </li>
 
         <li class="item">
-            <a href="<?php print base_url('MenuFichasTecnicas') ?>">
+            <a href="<?php print base_url('MenuFichasTecnicas.shoes') ?>">
                 <div class="row pl-2">
                     <div class="col-2">
                         <i class="fa fa-file-invoice"></i>
@@ -202,7 +202,7 @@
             </a>
         </li>
         <li class="item">
-            <a href="<?php print base_url('MenuProduccion') ?>">
+            <a href="<?php print base_url('MenuProduccion.shoes') ?>">
                 <div class="row pl-2">
                     <div class="col-2">
                         <i class="fa fa-industry"></i>
@@ -226,7 +226,7 @@
             </a>
         </li>
         <li class="item">
-            <a href="<?php print base_url('MenuNomina') ?>">
+            <a href="<?php print base_url('MenuNomina.shoes') ?>">
                 <div class="row pl-2">
                     <div class="col-2">
                         <i class="fas fa-hand-holding-usd"></i>
@@ -238,7 +238,7 @@
             </a>
         </li>
         <li class="item">
-            <a href="<?php print base_url('MenuParametros') ?>">
+            <a href="<?php print base_url('MenuParametros.shoes') ?>">
                 <div class="row pl-2">
                     <div class="col-2">
                         <i class="fa fa-cogs"></i>

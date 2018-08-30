@@ -143,6 +143,14 @@ class Clientes extends CI_Controller {
         }
     }
 
+    public function getListasDePrecios() {
+        try {
+            print json_encode($this->clientes_model->getListasDePrecios());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onAgregar() {
         try {
             $x = $this->input;

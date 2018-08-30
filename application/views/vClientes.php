@@ -331,14 +331,15 @@
     function init() {
         getRecords();
         /*INICIALIZAR DETALLE*/
-        getEstados();
-        getPaises();
-        getAgentes();
-        getTransportes();
-        getZonas();
-        getGrupos();
-        getFormasDePago();
-        getMetodosDePago();
+        getOptions('getEstados', 'Estado', 'Clave', 'Metodo de pago');//ESTADOS
+        getOptions('getPaises', 'Pais', 'Clave', 'Pais');//PAISES
+        getOptions('getAgentes', 'Agente', 'Clave', 'Agente');//AGENTES
+        getOptions('getTransportes', 'Transporte', 'Clave', 'Transporte');//TRANSPORTES
+        getOptions('getZonas', 'Zona', 'Clave', 'Zona');//ZONAS
+        getOptions('getGrupos', 'Grupo', 'Clave', 'Grupo');//GRUPOS
+        getOptions('getFormasDePago', 'FormaPago', 'Clave', 'FormaDePago');//FORMAS DE PAGO
+        getOptions('getListasDePrecios', 'ListaPrecios', 'Clave', 'ListaPrecios');//LISTAS DE PRECIOS
+        getOptions('getMetodosDePago', 'MetodoPago', 'Clave', 'Metodo de pago');//METODOS DE PAGO
     }
 
     function getRecords() {
@@ -417,117 +418,17 @@
         });
     }
 
-    function getEstados() {
-        $.getJSON(master_url + 'getEstados').done(function (data) {
-            pnlDatos.find("#Estado")[0].selectize.addOption({text: '--', value: ''});
+    function getOptions(url, comp, key, field) {
+        $.getJSON(master_url + url).done(function (data) {
             $.each(data, function (k, v) {
-                pnlDatos.find("#Estado")[0].selectize.addOption({text: v.Estado, value: v.Clave});
+                pnlDatos.find("#" + comp)[0].selectize.addOption({text: v[field], value: v[key]});
             });
-        }).fail(function (x) {
+        }).fail(function (x, y, z) {
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
             console.log(x.responseText);
-        }).always(function () {
-
         });
     }
-
-    function getPaises() {
-        $.getJSON(master_url + 'getPaises').done(function (data) {
-            pnlDatos.find("#Pais")[0].selectize.addOption({text: '--', value: ''});
-            $.each(data, function (k, v) {
-                pnlDatos.find("#Pais")[0].selectize.addOption({text: v.Pais, value: v.Clave});
-            });
-        }).fail(function (x) {
-            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-            console.log(x.responseText);
-        }).always(function () {
-
-        });
-    }
-
-    function getAgentes() {
-        $.getJSON(master_url + 'getAgentes').done(function (data) {
-            pnlDatos.find("#Agente")[0].selectize.addOption({text: '--', value: ''});
-            $.each(data, function (k, v) {
-                pnlDatos.find("#Agente")[0].selectize.addOption({text: v.Agente, value: v.Clave});
-            });
-        }).fail(function (x) {
-            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-            console.log(x.responseText);
-        }).always(function () {
-
-        });
-    }
-
-    function getTransportes() {
-        $.getJSON(master_url + 'getTransportes').done(function (data) {
-            pnlDatos.find("#Transporte")[0].selectize.addOption({text: '--', value: ''});
-            $.each(data, function (k, v) {
-                pnlDatos.find("#Transporte")[0].selectize.addOption({text: v.Transporte, value: v.Clave});
-            });
-        }).fail(function (x) {
-            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-            console.log(x.responseText);
-        }).always(function () {
-
-        });
-    }
-
-    function getZonas() {
-        $.getJSON(master_url + 'getZonas').done(function (data) {
-            pnlDatos.find("#Zona")[0].selectize.addOption({text: '--', value: ''});
-            $.each(data, function (k, v) {
-                pnlDatos.find("#Zona")[0].selectize.addOption({text: v.Zona, value: v.Clave});
-            });
-        }).fail(function (x) {
-            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-            console.log(x.responseText);
-        }).always(function () {
-
-        });
-    }
-
-    function getGrupos() {
-        $.getJSON(master_url + 'getGrupos').done(function (data) {
-            pnlDatos.find("#Grupo")[0].selectize.addOption({text: '--', value: ''});
-            $.each(data, function (k, v) {
-                pnlDatos.find("#Grupo")[0].selectize.addOption({text: v.Grupo, value: v.Clave});
-            });
-        }).fail(function (x) {
-            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-            console.log(x.responseText);
-        }).always(function () {
-
-        });
-    }
-
-    function getFormasDePago() {
-        $.getJSON(master_url + 'getFormasDePago').done(function (data) {
-            pnlDatos.find("#FormaPago")[0].selectize.addOption({text: '--', value: ''});
-            $.each(data, function (k, v) {
-                pnlDatos.find("#FormaPago")[0].selectize.addOption({text: v.FormaDePago, value: v.Clave});
-            });
-        }).fail(function (x) {
-            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-            console.log(x.responseText);
-        }).always(function () {
-        });
-    }
-
-    function getMetodosDePago() {
-        $.getJSON(master_url + 'getMetodosDePago').done(function (data) {
-            pnlDatos.find("#MetodoPago")[0].selectize.addOption({text: '--', value: ''});
-            $.each(data, function (k, v) {
-                pnlDatos.find("#MetodoPago")[0].selectize.addOption({text: v["Metodo de pago"], value: v.Clave});
-            });
-        }).fail(function (x) {
-            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-            console.log(x.responseText);
-        }).always(function () {
-
-        });
-    }
-
+    
     function getID() {
         $.getJSON(master_url + 'getID').done(function (data, x, jq) {
             if (data.length > 0) {

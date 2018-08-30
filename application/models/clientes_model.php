@@ -52,6 +52,15 @@ class clientes_model extends CI_Model {
         }
     }
 
+    public function getListasDePrecios() {
+        try {
+            return $this->db->select("LP.Lista AS Clave, CONCAT(LP.Lista,'-',LP.Descripcion) AS ListaPrecios", false)
+                            ->from('listadeprecios AS LP')->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getPaises() {
         try {
             return $this->db->select("E.Clave, CONCAT(E.Clave, \" - \", E.Descripcion) AS Pais", false)
@@ -111,21 +120,6 @@ class clientes_model extends CI_Model {
         try {
             return $this->db->select("FP.Clave, CONCAT(FP.Clave, \" - \", FP.Descripcion) AS FormaDePago", false)
                             ->from('formaspago AS FP')->get()->result();
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function getListasDePrecios() {
-        try {
-            $this->db->select("LDP.ID, LDP.Descripcion AS Descripcion ", false)->from('sz_ListaDePrecios AS LDP')->where_in('LDP.Estatus', 'ACTIVO');
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-            $data = $query->result();
-            return $data;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
