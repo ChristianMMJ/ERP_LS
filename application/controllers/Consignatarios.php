@@ -67,7 +67,7 @@ class Consignatarios extends CI_Controller {
 
     public function getID() {
         try {
-            print json_encode($this->consignatarios_model->getID());
+            print json_encode($this->consignatarios_model->getID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

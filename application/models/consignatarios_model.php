@@ -12,17 +12,10 @@ class consignatarios_model extends CI_Model {
 
     public function getRecords() {
         try {
-            $this->db->select("C.ID, C.Clave, C.Cliente, C.Consignatario, C.Direccion, "
-                            . "C.Colonia, C.Ciudad, C.Estado, C.CodigoPostal, C.RFC, "
-                            . "C.TelOficina, C.TelParticular, C.Transporte, C.Estatus, C.Registro", false)
-                    ->from('consignatarios AS C')->where_in('C.Estatus', 'ACTIVO');
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-            $data = $query->result();
-            return $data;
+            return $this->db->select("C.ID, C.Clave, CONCAT(CL.Clave,' - ',CL.RazonS) AS Cliente, CONCAT(C.Clave,' - ',C.Consignatario) AS Consignatario , C.Direccion, "
+                                    . "C.Colonia, C.Ciudad, C.Estado, C.CodigoPostal, C.RFC, "
+                                    . "C.TelOficina, C.TelParticular, C.Transporte, C.Estatus, C.Registro", false)
+                            ->from('consignatarios AS C')->join('Clientes AS CL', 'C.Cliente = CL.Clave')->where_in('C.Estatus', 'ACTIVO')->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -36,9 +29,9 @@ class consignatarios_model extends CI_Model {
         }
     }
 
-    public function getID() {
+    public function getID($C) {
         try {
-            return $this->db->select("A.Clave AS CLAVE")->from("consignatarios AS A")->order_by("Clave", "DESC")->limit(1)->get()->result();
+            return $this->db->select("C.Clave AS CLAVE")->from("consignatarios AS C")->where("C.Cliente", $C)->limit(1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -56,7 +49,7 @@ class consignatarios_model extends CI_Model {
 
     public function getClientes() {
         try {
-            return $this->db->select("C.Clave AS Clave, CONCAT(C.Clave, \" - \",C.RazonS) AS Cliente", false)
+            return $this->db->select("C.Clave AS Clave, CONCAT(C.Clave, \"-\",C.RazonS) AS Cliente", false)
                             ->from('clientes AS C')->where_in('C.Estatus', 'ACTIVO')->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
