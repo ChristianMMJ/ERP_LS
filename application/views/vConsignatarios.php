@@ -15,7 +15,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Cliente</th>
-                            <th>Descripción</th>
+                            <th>Consignatario</th>
                             <th>Dirección</th>
                             <th>Colonia</th>
                             <th>Ciudad</th>
@@ -57,7 +57,7 @@
                     </div>
                     <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
                         <label for="Clave" >Clave*</label>
-                        <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required placeholder="Clave del color">
+                        <input type="text" class="form-control form-control-sm numbersOnly" id="Clave" name="Clave" required placeholder="Clave del color">
                     </div>
                     <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
                         <label for="" >Consignatario*</label>
@@ -131,6 +131,26 @@
     $(document).ready(function () {
         init();
         handleEnter();
+
+        pnlDatos.find("#Cliente").change(function () {
+            var id = $(this).val();
+            $.getJSON(master_url + 'getID', {ID: id}).done(function (data) {
+                if (data.length > 0) {
+                    var ID = $.isNumeric(data[0].CLAVE) ? parseInt(data[0].CLAVE) + 1 : 1;
+                    pnlDatos.find("#Clave").val(ID).select().focus();
+                } else {
+                    if (id !== '') {
+                        pnlDatos.find("#Clave").val('1').select().focus();
+                    } else {
+                        pnlDatos.find("#Cliente")[0].selectize.focus();
+                    }
+                }
+            }).fail(function (x, y, z) {
+                console.log(x, y, z);
+            }).always(function () {
+                HoldOn.close();
+            });
+        });
 
         btnGuardar.click(function () {
             isValid('pnlDatos');

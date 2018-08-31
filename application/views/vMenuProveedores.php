@@ -11,7 +11,7 @@
 
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navCatalogos" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Catálogos
+                    <span class="fa fa-address-book"></span> Catálogos
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCatalogos">
                     <a class="dropdown-item" href="<?php print base_url('Proveedores/?origen=PROVEEDORES'); ?>"> Proveedores</a>
@@ -20,7 +20,7 @@
             </li>
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navConsultas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Consultas
+                    <span class="fa fa-list-ul"></span>  Consultas
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navConsultas">
                     <a class="dropdown-item" href="#"> Prueba.</a>
@@ -29,18 +29,16 @@
 
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navMaquiladoras" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Maquiladoras
+                    <span class="fa fa-building"></span> Maquiladoras
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navMaquiladoras">
                     <a class="dropdown-item" href="<?php print base_url('Maquilas/?origen=PROVEEDORES'); ?>"> Maquilas</a>
                 </div>
-
-
             </li>
 
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navReportes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Reportes
+                    <span class="fa fa-file-pdf"></span>  Reportes
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navReportes">
                     <a class="dropdown-item" href="#"> Prueba</a>

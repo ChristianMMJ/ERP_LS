@@ -93,6 +93,6 @@
 </style>
 <script>
     function onMenuDisplay(e) {
-        window.location.href = '<?php print base_url(); ?>' + e + '/';
+        window.location.href = '<?php print base_url(); ?>' + e + '.shoes/';
     }
 </script>

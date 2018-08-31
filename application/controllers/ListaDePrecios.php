@@ -4,12 +4,12 @@
 header('Access-Control-Allow-Origin: *');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Consignatarios extends CI_Controller {
+class ListaDePrecios extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('consignatarios_model');
+        $this->load->library('session')->model('listadeprecios_model');
     }
 
     public function index() {
@@ -17,8 +17,7 @@ class Consignatarios extends CI_Controller {
             $this->load->view('vEncabezado');
             switch ($this->session->userdata["TipoAcceso"]) {
                 case 'SUPER ADMINISTRADOR':
-                    $this->load->view('vNavGeneral');
-                    $this->load->view('vMenuClientes');
+                    $this->load->view('vNavGeneral')->view('vMenuParametros');
                     break;
                 case 'ADMINISTRACION':
                     $this->load->view('vMenuAdministracion');
@@ -43,7 +42,7 @@ class Consignatarios extends CI_Controller {
                     break;
             }
 
-            $this->load->view('vFondo')->view('vConsignatarios')->view('vFooter');
+            $this->load->view('vFondo')->view('vListaDePrecios')->view('vFooter');
         } else {
             $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
         }
@@ -51,15 +50,15 @@ class Consignatarios extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->consignatarios_model->getRecords());
+            print json_encode($this->listadeprecios_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getConsignatarioByID() {
+    public function getListaDePreciosByID() {
         try {
-            print json_encode($this->consignatarios_model->getConsignatarioByID($this->input->get('ID')));
+            print json_encode($this->listadeprecios_model->getListaDePreciosByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -67,7 +66,7 @@ class Consignatarios extends CI_Controller {
 
     public function getID() {
         try {
-            print json_encode($this->consignatarios_model->getID($this->input->get('ID')));
+            print json_encode($this->listadeprecios_model->getID());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -75,35 +74,11 @@ class Consignatarios extends CI_Controller {
 
     public function onComprobarClave() {
         try {
-            print json_encode($this->consignatarios_model->onComprobarClave($this->input->get('Clave')));
+            print json_encode($this->listadeprecios_model->onComprobarClave($this->input->get('Clave')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
-    }
-
-    public function getEstados() {
-        try {
-            print json_encode($this->consignatarios_model->getEstados());
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function getTransportes() {
-        try {
-            print json_encode($this->consignatarios_model->getTransportes());
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function getClientes() {
-        try {
-            print json_encode($this->consignatarios_model->getClientes());
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
+    }  
 
     public function onAgregar() {
         try {
@@ -114,9 +89,7 @@ class Consignatarios extends CI_Controller {
                     $data[$key] = ($v !== '') ? strtoupper($v) : NULL;
                 }
             }
-            $data["Estatus"] = 'ACTIVO';
-            $data["Registro"] = Date('d/m/Y h:i:s');
-            $this->consignatarios_model->onAgregar($data);
+            $this->listadeprecios_model->onAgregar($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -132,10 +105,9 @@ class Consignatarios extends CI_Controller {
                 }
             }
             unset($data["ID"]);
-            $this->consignatarios_model->onModificar($x->post('ID'), $data);
+            $this->listadeprecios_model->onModificar($x->post('ID'), $data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
-
 }
