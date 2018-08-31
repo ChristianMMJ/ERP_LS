@@ -81,14 +81,14 @@ class fraccionesXEstilo_model extends CI_Model {
     public function getDeptosFXE($Estilo) {
         try {
             $this->db->query("set sql_mode=''");
-            $this->db->select("D.Clave AS CDEPTO, D.Descripcion AS DDEPTO  "
+            $this->db->select("CAST(D.Clave AS SIGNED ) AS CDEPTO, D.Descripcion AS DDEPTO  "
                             . " ", false)
                     ->from('fraccionesxestilo AS FXE')
                     ->join('Fracciones AS F', 'ON FXE.Fraccion = F.Clave')
                     ->join('Departamentos AS D', 'ON D.Clave = F.Departamento')
                     ->where('FXE.Estilo', $Estilo)
                     ->group_by(array('D.Clave', 'D.Descripcion'))
-                    ->order_by('D.Clave', 'ASC');
+                    ->order_by('CDEPTO', 'ASC');
 
 
             $query = $this->db->get();
@@ -106,7 +106,7 @@ class fraccionesXEstilo_model extends CI_Model {
 
     public function getFraccionesFXE($Estilo) {
         try {
-            $this->db->select("D.Clave AS CDEPTO, F.Clave AS CFRACCION,F.Descripcion AS DFRACCION, "
+            $this->db->select("D.Clave AS CDEPTO, CAST(F.Clave AS SIGNED ) AS CFRACCION,F.Descripcion AS DFRACCION, "
                             . "CostoMO AS COSTOMO, CostoVTA  AS COSTOVTA "
                             . " ", false)
                     ->from('fraccionesxestilo AS FXE')
@@ -115,7 +115,7 @@ class fraccionesXEstilo_model extends CI_Model {
                     ->where('FXE.Estilo', $Estilo)
                     ->where('FXE.AfectaCostoVTA', '1')
                     ->order_by('D.Clave', 'ASC')
-                    ->order_by('F.Clave', 'ASC');
+                    ->order_by('CFRACCION', 'ASC');
 
 
             $query = $this->db->get();

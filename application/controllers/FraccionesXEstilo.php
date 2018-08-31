@@ -217,8 +217,8 @@ class FraccionesXEstilo extends CI_Controller {
                 $pdf->RowNoBorder(array(
                     "",
                     "Total x Depto",
-                    $TotalD_CVTA,
-                    $TotalD_CMO
+                    $TotalD_CMO,
+                    $TotalD_CVTA
                 ));
             }
             $pdf->SetX(110);
@@ -231,8 +231,8 @@ class FraccionesXEstilo extends CI_Controller {
             $pdf->RowNoBorder(array(
                 "",
                 "Total x Estilo",
-                $GTotalD_CVTA,
-                $GTotalD_CMO
+                $GTotalD_CMO,
+                $GTotalD_CVTA
             ));
 
 

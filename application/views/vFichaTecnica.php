@@ -40,6 +40,9 @@
                     <button type="button" class="btn btn-danger btn-sm d-none" id="btnEliminar">
                         <span class="fa fa-trash fa-1x"></span> ELIMINAR
                     </button>
+                    <button type="button" class="btn btn-warning btn-sm d-none" id="btnImprimirFichaTecnica">
+                        <span class="fa fa-file-invoice fa-1x"></span> FRACCIONES POR ESTILO
+                    </button>
                 </div>
             </div>
             <div class=" row">
@@ -180,11 +183,21 @@
     var nuevo = true;
     var btnAgregar = pnlControlesDetalle.find("#btnAgregar");
 
+    var tblFichaTecnicaDetalle = pnlDetalle.find('#tblFichaTecnicaDetalle');
+    var FichaTecnicaDetalle;
+    var tblFichaTecnica = $('#tblFichaTecnica');
+    var FichaTecnica;
+
     $(document).ready(function () {
+
 
         pnlDatos.find("#FechaAlta").inputmask({alias: "date"});
         btnAgregar.click(function () {
-            onAgregar();
+            isValid('pnlDatos');
+            if (valido) {
+                pnlDatos.find("#FechaAlta").prop("readonly", true);
+                onAgregarFila();
+            }
         });
 
         pnlDatos.find("[name='Estilo']").change(function () {
@@ -261,15 +274,6 @@
             pnlTablero.removeClass("d-none");
             pnlDatos.addClass('d-none');
             pnlDetalle.addClass('d-none');
-            $.each(pnlDatos.find("select"), function (k, v) {
-                pnlDatos.find("select")[k].selectize.clear(true);
-            });
-            Estilo[0].selectize.enable();
-            Color[0].selectize.enable();
-            if ($.fn.DataTable.isDataTable('#tblFichaTecnicaDetalle')) {
-                FichaTecnicaDetalle.clear().draw();
-            }
-            nuevo = true;
         });
 
         getRecords();
@@ -279,8 +283,7 @@
         handleEnter();
     });
 
-    var tblFichaTecnicaDetalle = pnlDetalle.find('#tblFichaTecnicaDetalle');
-    var FichaTecnicaDetalle;
+
     function getFichaTecnicaDetalleByID(Estilo, Color) {
         $.fn.dataTable.ext.errMode = 'throw';
         if ($.fn.DataTable.isDataTable('#tblFichaTecnicaDetalle')) {
@@ -412,8 +415,6 @@
 
     }
 
-    var tblFichaTecnica = $('#tblFichaTecnica');
-    var FichaTecnica;
     function getRecords() {
         HoldOn.open({theme: 'sk-bounce', message: 'CARGANDO DATOS...'});
         temp = 0;
@@ -471,7 +472,6 @@
             tblFichaTecnica.find("tbody tr").removeClass("success");
             $(this).addClass("success");
             var dtm = FichaTecnica.row(this).data();
-            console.log(dtm);
             $.getJSON(master_url + 'getFichaTecnicaByEstiloByColor', {Estilo: dtm.EstiloId, Color: dtm.ColorId}).done(function (data, x, jq) {
                 pnlDatos.find("input").val("");
                 $.each(pnlDatos.find("select"), function (k, v) {
@@ -555,7 +555,7 @@
 
     function getFotoXEstilo(Estilo) {
         $.getJSON(master_url + 'getEstiloByID', {Estilo: Estilo}).done(function (data, x, jq) {
-            console.log('getFotoXEstilo', data);
+
             if (data.length > 0) {
                 var dtm = data[0];
                 var vp = pnlDetalle.find("#VistaPrevia");
@@ -605,14 +605,6 @@
             }).always(function () {
                 HoldOn.close();
             });
-        }
-    }
-
-    function onAgregar() {
-        isValid('pnlDatos');
-        if (valido) {
-            pnlDatos.find("#FechaAlta").prop("readonly", true);
-            onAgregarFila();
         }
     }
 

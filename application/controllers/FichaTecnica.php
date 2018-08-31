@@ -212,4 +212,102 @@ class FichaTecnica extends CI_Controller {
         }
     }
 
+    public function onImprimirFraccionesXEstilo() {
+        $cm = $this->fraccionesXEstilo_model;
+
+        $DatosEmpresa = $cm->getDatosEmpresa();
+        $Encabezado = $cm->getEncabezadoFXE($this->input->get('Estilo'));
+        $Departamentos = $cm->getDeptosFXE($this->input->get('Estilo'));
+        $Fracciones = $cm->getFraccionesFXE($this->input->get('Estilo'));
+
+        if (!empty($Encabezado)) {
+
+            $pdf = new PDF('P', 'mm', array(215.9, 279.4));
+
+            $pdf->Logo = $DatosEmpresa[0]->Logo;
+            $pdf->Empresa = $DatosEmpresa[0]->Empresa;
+            $pdf->Estilo = $Encabezado[0]->ESTILO;
+            $pdf->Clinea = $Encabezado[0]->CLINEA;
+            $pdf->Dlinea = $Encabezado[0]->DLINEA;
+
+            $pdf->AddPage();
+            $pdf->SetAutoPageBreak(true, 10);
+
+            $GTotalD_CVTA = 0;
+            $GTotalD_CMO = 0;
+            foreach ($Departamentos as $key => $D) {
+                $pdf->SetX(5);
+                $pdf->SetFont('Arial', 'BI', 8.5);
+                $pdf->Cell(10, 5, utf8_decode($D->CDEPTO) . ' ' . utf8_decode($D->DDEPTO), 0/* BORDE */, 1, 'L');
+
+                $TotalD_CVTA = 0;
+                $TotalD_CMO = 0;
+                foreach ($Fracciones as $key => $F) {
+                    if ($F->CDEPTO === $D->CDEPTO) {
+
+                        $pdf->SetFont('Arial', '', 7.5);
+                        $anchos = array(10/* 0 */, 80/* 0 */, 30/* 1 */, 15/* 2 */);
+                        $aligns = array('L', 'L', 'L', 'L');
+                        $pdf->SetAligns($aligns);
+                        $pdf->SetWidths($anchos);
+                        $pdf->SetMarginLeft(70);
+                        $pdf->RowX(array(
+                            utf8_decode($F->CFRACCION),
+                            utf8_decode($F->DFRACCION),
+                            utf8_decode($F->COSTOMO),
+                            utf8_decode($F->COSTOVTA)
+                        ));
+
+                        $TotalD_CVTA += $F->COSTOVTA;
+                        $TotalD_CMO += $F->COSTOMO;
+
+                        $GTotalD_CVTA += $F->COSTOVTA;
+                        $GTotalD_CMO += $F->COSTOMO;
+                    }
+                }
+                $pdf->SetX(110);
+                $pdf->SetFont('Arial', 'BI', 8.5);
+                $anchos = array(10/* 0 */, 80/* 0 */, 30/* 1 */, 15/* 2 */);
+                $aligns = array('L', 'C', 'L', 'L');
+                $pdf->SetAligns($aligns);
+                $pdf->SetWidths($anchos);
+                $pdf->SetMarginLeft(70);
+                $pdf->RowNoBorder(array(
+                    "",
+                    "Total x Depto",
+                    $TotalD_CVTA,
+                    $TotalD_CMO
+                ));
+            }
+            $pdf->SetX(110);
+            $pdf->SetFont('Arial', 'BI', 9.5);
+            $anchos = array(10/* 0 */, 80/* 0 */, 30/* 1 */, 15/* 2 */);
+            $aligns = array('L', 'C', 'L', 'L');
+            $pdf->SetAligns($aligns);
+            $pdf->SetWidths($anchos);
+            $pdf->SetMarginLeft(70);
+            $pdf->RowNoBorder(array(
+                "",
+                "Total x Estilo",
+                $GTotalD_CVTA,
+                $GTotalD_CMO
+            ));
+
+
+            /* FIN RESUMEN */
+            $path = 'uploads/Reportes/Nomina';
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $file_name = "FRACCIONES POR ESTILO " . date("d-m-Y his");
+            $url = $path . '/' . $file_name . '.pdf';
+            /* Borramos el archivo anterior */
+            if (delete_files('uploads/Reportes/Nomina/')) {
+                /* ELIMINA LA EXISTENCIA DE CUALQUIER ARCHIVO EN EL DIRECTORIO */
+            }
+            $pdf->Output($url);
+            print base_url() . $url;
+        }
+    }
+
 }

@@ -15,10 +15,8 @@
                         <tr>
                             <th>ID</th>
                             <th>Clave</th>
-                            <th>Depto.Articulo</th>
                             <th>Descripción</th>
-                            <th>U.M</th>
-                            <th>Estatus</th>
+
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -542,21 +540,6 @@
         }
     }
 
-    function getID() {
-        $.getJSON(master_url + 'getID').done(function (data, x, jq) {
-            if (data.length > 0) {
-                var ID = $.isNumeric(data[0].CLAVE) ? parseInt(data[0].CLAVE) + 1 : 1;
-                pnlDatos.find("#Clave").val(ID);
-            } else {
-                pnlDatos.find("#Clave").val('1');
-            }
-        }).fail(function (x, y, z) {
-            console.log(x, y, z);
-        }).always(function () {
-            HoldOn.close();
-        });
-    }
-
     function getRecords() {
         temp = 0;
         HoldOn.open({
@@ -575,7 +558,7 @@
                 "dataSrc": ""
             },
             "columns": [
-                {"data": "ID"}, {"data": "Clave"}, {"data": "Departamento"}, {"data": "Descripcion"}, {"data": "UM"}, {"data": "Estatus"}
+                {"data": "ID"}, {"data": "Clave"}, {"data": "Descripcion"}
             ],
             "columnDefs": [
                 {
@@ -594,7 +577,7 @@
             "scrollCollapse": false,
             "bSort": true,
             "aaSorting": [
-                [0, 'desc']/*ID*/
+                [1, 'desc']/*ID*/
             ],
             initComplete: function (a, b) {
                 HoldOn.close();

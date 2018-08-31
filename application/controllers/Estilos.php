@@ -165,6 +165,14 @@ class Estilos extends CI_Controller {
         }
     }
 
+    public function getEstiloByClave() {
+        try {
+            print json_encode($this->estilos_model->getEstiloByClave($this->input->get('Clave')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onAgregar() {
         try {
             $x = $this->input;

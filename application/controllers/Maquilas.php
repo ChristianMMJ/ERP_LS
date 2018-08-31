@@ -96,6 +96,14 @@ class Maquilas extends CI_Controller {
         }
     }
 
+    public function getMaquilaByClave() {
+        try {
+            print json_encode($this->maquilas_model->getMaquilaByClave($this->input->get('Clave')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onAgregar() {
         try {
             $x = $this->input;

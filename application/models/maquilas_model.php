@@ -34,6 +34,14 @@ class maquilas_model extends CI_Model {
         }
     }
 
+    public function getMaquilaByClave($IDX) {
+        try {
+            return $this->db->select("M.*")->from("Maquilas AS M")->where("M.Estatus", "ACTIVO")->where("M.Clave", $IDX)->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getID() {
         try {
             return $this->db->select("CONVERT(M.Clave, UNSIGNED INTEGER) AS CLAVE")->from("Maquilas AS M")->where("M.Estatus", "ACTIVO")->order_by("CLAVE", "DESC")->limit(1)->get()->result();

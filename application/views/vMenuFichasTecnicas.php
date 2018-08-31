@@ -37,8 +37,7 @@
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php print base_url('FichaTecnicaFija'); ?>"> Mat. Fijos Ficha Técnica</a>
                     <a class="dropdown-item" href="<?php print base_url('FichaTecnica/?origen=FICHASTECNICAS'); ?>"> Ficha Técnica</a>
-                    <a class="dropdown-item" href="<?php print base_url('FichaTecnicaProceso/?origen=FICHASTECNICAS'); ?>"> Ficha Técnica de Proceso</a>
-                    <a class="dropdown-item" href="<?php print base_url('Fracciones Nómina/?origen=FICHASTECNICAS'); ?>"> Ficha Técnica de Proceso</a>
+                    <a class="dropdown-item" href="<?php print base_url('FraccionesXEstilo/?origen=FICHASTECNICAS'); ?>"> Ficha Técnica de Proceso</a>
                 </div>
             </li>
 
@@ -56,7 +55,8 @@
                     Costos Estilos
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCostosEst">
-                    <a class="dropdown-item" href="#"> Pruebas</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlFichaTecnicaCompra"><span class="fa fa-file-invoice"></span> Ficha Técnica para Compra</a>
+
                 </div>
             </li>
 
@@ -71,7 +71,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link " href="#" id="navCaptura" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="btn btn-primary " href="#" id="navCaptura" >
                     Menu Producción
                 </a>
             </li>
@@ -92,3 +92,6 @@
         </ul>
     </div>
 </nav>
+
+<?php
+$this->load->view('vFichaTecnicaCompra');

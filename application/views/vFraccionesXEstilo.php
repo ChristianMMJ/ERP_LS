@@ -161,7 +161,6 @@
     $(document).ready(function () {
 
         btnImprimirFraccionesXEstilo.click(function () {
-            console.log(temp);
             if (temp.length > 0) {
                 //HoldOn.open({  message: 'Espere...', theme: 'sk-cube'});
                 $.get(master_url + 'onImprimirFraccionesXEstilo', {Estilo: temp}).done(function (data) {
@@ -181,8 +180,8 @@
                                 // Custom CSS styling for iframe wrapping element
                                 // You can use this to set custom iframe dimensions
                                 css: {
-                                    width: "100%",
-                                    height: "100%"
+                                    width: "85%",
+                                    height: "85%"
                                 },
                                 // Iframe tag attributes
                                 attr: {

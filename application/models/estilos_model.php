@@ -50,6 +50,14 @@ class estilos_model extends CI_Model {
         }
     }
 
+    public function getEstiloByClave($IDX) {
+        try {
+            return $this->db->select("E.*")->from("Estilos AS E")->where("E.Estatus", "ACTIVO")->where("E.Clave", $IDX)->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getID() {
         try {
             return $this->db->select("E.Clave AS CLAVE")->from("Estilos AS E")->where("E.Estatus", "Activo")->order_by("E.Clave", "DESC")->limit(1)->get()->result();
