@@ -32,6 +32,7 @@
                     Capturas
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCapturas">
+                    <a class="dropdown-item" href="<?php print base_url('Pedidos.shoes');?>"><span class="fa fa-check"></span> Pedidos</a>
                     <a class="dropdown-item" href="#"> Prueba.</a>
                 </div>
             </li>

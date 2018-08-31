@@ -464,6 +464,12 @@
                         var input = '<input type="text" class="form-control form-control-sm numbersOnly" maxlength="10" name="Precio" autofocus>';
                         var exist = $(this).find("#Precio").val();
                         var celda = $(this);
+                        var componente = tblPrecioVentaParaMaquilas.find("[name='Precio']");
+                        if (componente.val() !== undefined) {
+                            var valor = componente.val();
+                            var padre = componente.parent();
+                            padre.html(valor);
+                        }
                         if (exist === undefined && celda.text() !== '') {
                             var vActual = celda.text();
                             celda.html(input);
@@ -473,12 +479,15 @@
                             var padre = celda.parent();
                             input_precio.focus().select();
                             input_precio.focusout(function () {
+                                if (precio_actual !== vActual) {
+                                    onModificarPrecioMaquila(r, padre, celda, this);
+                                } else {
+                                    console.log('component', componente.val())
+                                    celda.html(precio_actual);
+                                }
+                            }).change(function () {
                                 onModificarPrecioMaquila(r, padre, celda, this);
-                            });
-                            input_precio.change(function () {
-                                onModificarPrecioMaquila(r, padre, celda, this);
-                            });
-                            input_precio.keyup(function (e) {
+                            }).keyup(function (e) {
                                 if (e.keyCode === 13) {
                                     onModificarPrecioMaquila(r, padre, celda, this);
                                 }
@@ -511,16 +520,17 @@
             }).then((value) => {
                 switch (value) {
                     case "aceptar":
-                        var precio_format = '$' + $.number(v, 2, '.', ',');
+                        var precio_format = $.number(v, 2, '.', ',');
                         celda.html(precio_format);
                         PrecioVentaParaMaquilas.cell(padre, 2).data(precio_format).draw();
-                        onEditarPrecioPorMaquila({PARENT: temp, ID: r[0], CELDA: 'PRECIO', VALOR: precio_format});
+                        onEditarPrecioPorMaquila({PARENT: temp, ID: r[0], CELDA: 'PRECIO', VALOR: v});
                         break;
                     case "cancelar":
-                        var precio_format = '$' + $.number(precio_actual, 2, '.', ',');
+                        var precio_format = $.number(precio_actual, 2, '.', ',');
                         celda.html(precio_format);
-                        PrecioVentaParaMaquilas.cell(padre, 2).data(precio_format).draw();
+                        PrecioVentaParaMaquilas.cell(padre, 2).data(precio_actual).draw();
                         swal.close();
+                        input.focus();
                         break;
                 }
             });
@@ -533,9 +543,9 @@
                 closeOnEsc: false,
                 closeOnClickOutside: false
             }).then((action) => {
-                var precio_format = '$' + $.number(precio_actual, 2, '.', ',');
+                var precio_format = $.number(precio_actual, 2, '.', ',');
                 celda.html(precio_format);
-                PrecioVentaParaMaquilas.cell(padre, 2).data(precio_format).draw();
+                PrecioVentaParaMaquilas.cell(padre, 2).data(precio_actual).draw();
             });
         }
     }

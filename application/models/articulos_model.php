@@ -42,7 +42,6 @@ class articulos_model extends CI_Model {
     public function getMaquilas($ID) {
         try {
             return $this->db->select("M.Clave AS ID,CONCAT(M.Clave,' - ',IFNULL( M.Nombre,'')) AS Maquila", false)->from("maquilas AS M")
-                            ->where("M.ID NOT IN(SELECT PM.Maquila FROM preciosmaquilas AS PM WHERE PM.Articulo = $ID)", null, false)
                             ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -51,7 +50,7 @@ class articulos_model extends CI_Model {
 
     public function getDetalleByID($ID) {
         try {
-            $this->db->select("pvm.ID AS ID, M.Nombre AS Maquila, pvm.Precio AS Precio, 'A' AS Estatus ", false)->from("preciosmaquilas AS pvm")
+            $this->db->select("pvm.ID AS ID,CONCAT(M.Clave,' - ', M.Nombre) AS Maquila, pvm.Precio AS Precio, 'A' AS Estatus ", false)->from("preciosmaquilas AS pvm")
                     ->join('maquilas AS M', 'pvm.Maquila = M.Clave')->where('pvm.Articulo', $ID)->like('pvm.Estatus', 'A');
             $query = $this->db->get();
             /*
