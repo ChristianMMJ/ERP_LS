@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-dialog-centered modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Imprimir Ficha Técnica p' Compras</h5>
+                <h5 class="modal-title">Imprimir Ficha Técnica</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -37,25 +37,36 @@
                     <div class="row">
                         <div class="col-12 col-sm-4">
                             <label>Mano de Obra</label>
-                            <input type="text" maxlength="2" class="form-control form-control-sm numbersOnly" id="ManoObra" name="ManoObra" >
+                            <input type="text" maxlength="6" class="form-control form-control-sm numbersOnly" id="ManoObra" name="ManoObra" >
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12 col-sm-4">
                             <label>Gastos</label>
-                            <input type="text" maxlength="2" class="form-control form-control-sm numbersOnly" id="Gastos" name="Gastos" " >
+                            <input type="text" maxlength="6" class="form-control form-control-sm numbersOnly" id="Gastos" name="Gastos"  >
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12 col-sm-4">
                             <label>Utilidad</label>
-                            <input type="text" maxlength="4" class="form-control form-control-sm numbersOnly" id="Utilidad" name="Utilidad" >
+                            <input type="text" maxlength="6" class="form-control form-control-sm numbersOnly" id="Utilidad" name="Utilidad" >
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <label class="text-danger">Ficha Sin Precios</label>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="FichaSinPrecios" name="FichaSinPrecios" >
+                                <label class="custom-control-label" for="FichaSinPrecios"></label>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12 col-sm-4">
                             <label>% Desperdicio</label>
                             <input type="text" maxlength="4" class="form-control form-control-sm numbersOnly disabledForms" id="Desperdicio" name="Desperdicio" >
+                        </div>
+                        <div class="col-12 col-sm-8">
+                            <br>
+                            <label class="badge badge-info">Por piezas de estilo y maquila</label>
                         </div>
                     </div>
                 </form>
@@ -73,11 +84,13 @@
     $(document).ready(function () {
 
         $("#Estilo").change(function () {
+            console.log('entra');
             $("#Color")[0].selectize.clear(true);
             $("#Color")[0].selectize.clearOptions();
             getColoresXEstilo($(this).val());
             getEstiloByClave($(this).val());
         });
+
 
         $("#Maquila").change(function () {
             var Piezas = parseInt($('#Piezas').val());
@@ -93,12 +106,16 @@
         });
 
         $('#btnImprimirFichaTecnica').on("click", function () {
+            var TipoFicha = $("#FichaSinPrecios")[0].checked ? 'onImprimirFichaTecnicaSinPrecios' : 'onImprimirFichaTecnicaCompra';
+
+
             HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
             var frm = new FormData($('#mdlFichaTecnicaCompra').find("#frmFichaTecnicaCompras")[0]);
             var maq = $("#Maquila").find("option:selected").text();
+
             frm.append('NomMaquila', maq);
             $.ajax({
-                url: base_url + 'index.php/FichaTecnicaCompra/onImprimirFichaTecnicaCompra',
+                url: base_url + 'index.php/FichaTecnicaCompra/' + TipoFicha,
                 type: "POST",
                 cache: false,
                 contentType: false,
@@ -170,19 +187,20 @@
 
     function getEstiloByClave(Estilo) {
         $.getJSON(base_url + 'index.php/Estilos/getEstiloByClave', {Clave: Estilo}).done(function (data, x, jq) {
-            $("#Piezas").val(parseInt(data[0].PiezasCorte));
+            if (data.length > 0) {
+                $("#Piezas").val(parseInt(data[0].PiezasCorte));
+            }
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         });
     }
 
     function getColoresXEstilo(Estilo) {
+
         $.getJSON(base_url + 'index.php/FichaTecnica/getColoresXEstilo', {Estilo: Estilo}).done(function (data, x, jq) {
             $.each(data, function (k, v) {
                 $("#Color")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
             });
-            $("#Color")[0].selectize.focus();
-            $("#Color")[0].selectize.open();
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         });

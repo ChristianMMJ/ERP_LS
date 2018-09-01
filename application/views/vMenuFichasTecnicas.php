@@ -55,7 +55,7 @@
                     Costos Estilos
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCostosEst">
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlFichaTecnicaCompra"><span class="fa fa-file-invoice"></span> Ficha Técnica para Compra</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlFichaTecnicaCompra"><span class="fa fa-file-invoice"></span> Ficha Técnica</a>
 
                 </div>
             </li>

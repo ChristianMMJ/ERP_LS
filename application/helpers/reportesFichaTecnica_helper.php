@@ -86,6 +86,8 @@ class PDF extends FPDF {
 
     function Header() {
 
+        $this->SetLineWidth(0.4);
+
         $this->Image($this->getLogo(), /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30);
         $this->SetFont('Arial', 'B', 9);
         $this->SetY(4);
@@ -146,23 +148,25 @@ class PDF extends FPDF {
 
 
         /* ENCABEZADO DETALLE TITULOS */
-        $anchos = array(45/* 0 */, 55/* 1 */, 15/* 2 */, 15/* 3 */, 20/* 4 */, 15/* 5 */, 30/* 6 */, 10/* 7 */);
-        $aligns = array('L', 'L', 'L', 'L', 'L', 'L', 'L', 'L');
-
+        $this->SetFont('Arial', 'B', 7);
         $this->SetY(25);
         $this->SetX(5);
-        $this->SetFont('Arial', 'B', 7.5);
-        $this->SetWidths($anchos);
-        $this->SetAligns($aligns);
-        $this->Row(array(
-            'Pieza',
-            utf8_decode('Artículo'),
-            'U.M',
-            'Precio',
-            'Consumo',
-            'Costo',
-            'Consumo y Costo',
-            '.' . $this->getDesperdicio()));
+        $this->Cell(48.5, 4, utf8_decode('Pieza'), 'B'/* BORDE */, 0, 'L');
+        $this->SetX(53.5);
+        $this->Cell(72.5, 4, utf8_decode('Artículo'), 'B'/* BORDE */, 0, 'L');
+        $this->SetX(126);
+        $this->Cell(12, 4, utf8_decode('U.M'), 'B'/* BORDE */, 0, 'L');
+        $this->SetX(138);
+        $this->Cell(13, 4, utf8_decode('Precio'), 'B'/* BORDE */, 0, 'L');
+        $this->SetX(151);
+        $this->Cell(15, 4, utf8_decode('Consumo'), 'B'/* BORDE */, 0, 'L');
+        $this->SetX(166);
+        $this->Cell(11, 4, utf8_decode('Costo'), 'B'/* BORDE */, 0, 'L');
+        $this->SetX(177);
+        $this->Cell(23, 4, utf8_decode('Consumo y Costo'), 'B'/* BORDE */, 0, 'L');
+        $this->SetX(200);
+        $this->Cell(10, 4, '.' . $this->getDesperdicio() . '%', 'B'/* BORDE */, 0, 'R');
+        $this->SetY(29);
     }
 
     function Footer() {
@@ -173,16 +177,16 @@ class PDF extends FPDF {
         $this->Cell(35, 4, utf8_decode('Elaboró'), 'T'/* BORDE */, 0, 'C');
 
         $this->SetX($margen_firmas += 40);
-        $this->Cell(35, 4, utf8_decode('Elaboró'), 'T'/* BORDE */, 0, 'C');
+        $this->Cell(35, 4, utf8_decode('Diseño'), 'T'/* BORDE */, 0, 'C');
 
         $this->SetX($margen_firmas += 40);
-        $this->Cell(35, 4, utf8_decode('Elaboró'), 'T'/* BORDE */, 0, 'C');
+        $this->Cell(35, 4, utf8_decode('Ingeniería'), 'T'/* BORDE */, 0, 'C');
 
         $this->SetX($margen_firmas += 40);
-        $this->Cell(35, 4, utf8_decode('Elaboró'), 'T'/* BORDE */, 0, 'C');
+        $this->Cell(35, 4, utf8_decode('Compras'), 'T'/* BORDE */, 0, 'C');
 
         $this->SetX($margen_firmas += 40);
-        $this->Cell(35, 4, utf8_decode('Elaboró'), 'T'/* BORDE */, 0, 'C');
+        $this->Cell(35, 4, utf8_decode('Ventas'), 'T'/* BORDE */, 0, 'C');
 
 
         $this->SetY(272);
