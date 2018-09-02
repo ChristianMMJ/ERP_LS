@@ -33,16 +33,20 @@
                 <div class="d-none">
                     <input type="text" class="" id="ID" name="ID" >
                 </div>
-                <div class="col-sm-4">
+                <div class="col-6 col-sm-2">
                     <label for="Ano">Año*</label>
                     <input type="text" class="form-control form-control-sm numbersOnly" maxlength="4" id="Ano" name="Ano" required >
                 </div>
 
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <label for="Sem">Fecha Inicio*</label>
                     <input type="text" class="form-control form-control-sm notEnter" id="FechaIni" name="FechaIni" required >
                 </div>
-                <div class="col-sm-4">
+                <div class="col-12 col-sm-3">
+                    <label for="Sem">Días*</label>
+                    <input type="text" class="form-control form-control-sm numbersOnly" maxlength="1" data-toggle="tooltip" data-placement="bottom" title="Capture el No. de días a tomar de cada semana" id="Dias" name="Dias" required >
+                </div>
+                <div class="col-12 col-sm-2">
                     <button type="button"  class="btn btn-primary btn-sm mt-4" id="btnGenerarSemanas" data-toggle="tooltip" data-placement="top" title="Generar Semanas" >
                         <i class="fa fa-plus"></i>
                     </button>
@@ -194,46 +198,80 @@
             }
 
         });
+        pnlDatos.find("#Dias").change(function () {
+            var diasCapturados = parseInt($(this).val());
+            if (diasCapturados > 1 && diasCapturados < 7) {
+
+            } else {
+                swal({
+                    title: "ATENCIÓN",
+                    text: "CANTIDAD DE DÍAS INCORRECTA (debe de ser entre 1 y 7 días)",
+                    icon: "warning"
+                }).then((action) => {
+                    $(this).val('');
+                    $(this).focus();
+
+                });
+
+            }
+        });
         pnlDatos.find("#FechaIni").inputmask({alias: "date"});
         $('#ControlesAgregarExtras').find("#FechaI").inputmask({alias: "date"});
         $('#ControlesAgregarExtras').find("#FechaF").inputmask({alias: "date"});
         pnlDatos.find("#btnGenerarSemanas").click(function () {
+            HoldOn.open({
+                theme: "sk-bounce",
+                message: "CARGANDO DATOS..."
+            });
             if (pnlDatos.find("#Ano").val() !== '') {
-                if (pnlDatosDetalle.find("#tblDetalle > tbody > tr").length > 0) {
-                    swal('Atención', 'Ya se han generado las semanas', 'warning');
-                } else {
-                    HoldOn.open({
-                        theme: "sk-bounce",
-                        message: "CARGANDO DATOS..."
-                    });
-                    var feC = pnlDatos.find("#FechaIni").val().split("/");
-                    var feI = new Date(feC[2], feC[1] - 1, feC[0]);
-                    var cont = 1;
-                    var Sem = 1;
-                    var esInicio = true;
-                    tblDetalleSemanasProduccion = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
-                    while (cont <= 104) {
-                        if (esInicio) {
-                            //console.log('Sem: ' + Sem);
-                            //console.log(convertDate(feI));
-                            esInicio = false;
-                        } else {
-                            tblDetalleSemanasProduccion.row.add([
-                                pnlDatos.find("#Ano").val(),
-                                Sem,
-                                convertDate(feI),
-                                convertDate(feI.setDate(feI.getDate() + 6))
-                            ]).draw(false);
-                            Sem++;
-                            //console.log(convertDate(feI));
-                            feI.setDate(feI.getDate() + 1);
-                            esInicio = true;
+                if (pnlDatos.find("#Dias").val() !== '') {
+                    if (pnlDatosDetalle.find("#tblDetalle > tbody > tr").length > 0) {
+                        HoldOn.close();
+                        swal('Atención', 'Ya se han generado las semanas', 'warning');
+                    } else {
+                        var feC = pnlDatos.find("#FechaIni").val().split("/");
+                        var feI = new Date(feC[2], feC[1] - 1, feC[0]);
+                        var cont = 1;
+                        var Sem = 1;
+                        var esInicio = true;
+                        var diasRestantes = 0;
+                        var diasSemanaNatural = 7;
+                        var diasSemana = parseInt(pnlDatos.find("#Dias").val());
+                        tblDetalleSemanasProduccion = pnlDatosDetalle.find("#tblDetalle").DataTable(tblInicial);
+                        while (cont <= 104) {
+                            if (esInicio) {
+                                //console.log('Sem: ' + Sem);
+                                //console.log(convertDate(feI));
+                                esInicio = false;
+                            } else {
+                                tblDetalleSemanasProduccion.row.add([
+                                    pnlDatos.find("#Ano").val(),
+                                    Sem,
+                                    convertDate(feI),
+                                    convertDate(feI.setDate(feI.getDate() + diasSemana))
+                                ]).draw(false);
+                                Sem++;
+                                //console.log(convertDate(feI));
+                                diasRestantes = diasSemanaNatural - diasSemana;
+                                feI.setDate(feI.getDate() + diasRestantes);
+                                esInicio = true;
+                            }
+                            cont++;
                         }
-                        cont++;
+                        btnGuardar.focus();
                     }
-                    btnGuardar.focus();
+                } else {
+                    HoldOn.close();
+                    swal({
+                        title: "ATENCIÓN",
+                        text: "DEBES INGRESAR LOS DÍAS DE LA SEMANA",
+                        icon: "warning"
+                    }).then((action) => {
+                        pnlDatos.find("#Dias").focus();
+                    });
                 }
             } else {
+                HoldOn.close();
                 swal({
                     title: "ATENCIÓN",
                     text: "DEBES INGRESAR UN AÑO",
@@ -244,6 +282,10 @@
             }
         });
         btnGuardar.click(function () {
+            HoldOn.open({
+                theme: "sk-bounce",
+                message: "CARGANDO DATOS..."
+            });
             AnoI = pnlDatos.find("#Ano").val();
             isValid('pnlDatos');
             if (valido) {
@@ -289,10 +331,11 @@
                         $('#RegistrosDetalleE').removeClass("d-none");
                         getSemanasProduccionByAno(AnoI);
                         btnGuardar.addClass("d-none");
+                        HoldOn.close();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
-                        HoldOn.close();
+
                     });
                 }
             } else {
@@ -327,7 +370,6 @@
             pnlTablero.removeClass("d-none");
             pnlDatosDetalle.addClass('d-none');
             pnlDatos.addClass('d-none');
-            nuevo = true;
         });
         btnAgregarSemExtra.click(function () {
             if ($('#ControlesAgregarExtras').find('#Semana').val() !== ''
@@ -357,8 +399,6 @@
                     });
                 }).fail(function (x, y, z) {
                     console.log(x, y, z);
-                }).always(function () {
-                    HoldOn.close();
                 });
             } else {
                 swal('ATENCION', 'DEBES COMPLETAR TODOS LOS CAMPOS', 'info');
@@ -378,11 +418,6 @@
         handleEnter();
     });
 
-    function validate(event, val) {
-        if (((event.which !== 46 || (event.which === 46 && val === '')) || val.indexOf('.') !== -1) && (event.which < 48 || event.which > 57)) {
-            event.preventDefault();
-        }
-    }
 
     function onModificarSemanaXID(value, IDX) {
         $.ajax({
@@ -396,8 +431,6 @@
             RegistrosDetalleE.ajax.reload();
         }).fail(function (x, y, z) {
             console.log(x, y, z);
-        }).always(function () {
-            HoldOn.close();
         });
     }
 

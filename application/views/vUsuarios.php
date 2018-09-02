@@ -51,7 +51,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-1 col-md-1 col-lg-1 col-xl-1" align="center"> 
+                    <div class="col-12 col-sm-1 col-md-1 col-lg-1 col-xl-1" align="center">
                         <button type="button" class="btn btn-info mt-4 d-none" id="VerContrasena" name="VerContrasena"><span class="fa fa-eye"></span></button>
                     </div>
 
@@ -83,7 +83,7 @@
                             <option value="COBRANZA">COBRANZA</option>
                             <option value="COBRANZA">COBRANZA</option>
                             <option value="MAQUILAS">MAQUILAS</option>
-                            <option value="AGENTES">MAQUILAS</option>
+                            <option value="AGENTES">AGENTES</option>
                             <option value="DESTAJOS">DESTAJOS</option>
                         </select>
                     </div>

@@ -14,17 +14,17 @@
                     Catálogos
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCatalogos">
-                    <a class="dropdown-item" href="<?php print base_url('Agentes.shoes');?>"> Agentes</a>
-                    <a class="dropdown-item" href="<?php print base_url('Paises.shoes');?>"> Paises</a>
-                    <a class="dropdown-item" href="<?php print base_url('Estados.shoes');?>"> Estados</a>
-                    <a class="dropdown-item" href="<?php print base_url('GruposClientes.shoes');?>"> Grupos de Clientes</a>
-                    <a class="dropdown-item" href="<?php print base_url('Zonas.shoes');?>"> Zonas</a>
-                    <a class="dropdown-item" href="<?php print base_url('Transportes.shoes');?>"> Transportes</a>
-                    <a class="dropdown-item" href="<?php print base_url('Clientes.shoes');?>"> Clientes</a>
-                    <a class="dropdown-item" href="<?php print base_url('Consignatarios.shoes');?>"> Consignatarios</a>
-                    <a class="dropdown-item" href="<?php print base_url('MetodosDePago.shoes');?>"> Metodos de Pago</a>
-                    <a class="dropdown-item" href="<?php print base_url('FormasPago.shoes');?>"> Formas de Pagos</a>
-                    <a class="dropdown-item" href="<?php print base_url('SemanasProduccion/?origen=CLIENTES');?>"> Semanas Prod.</a>
+                    <a class="dropdown-item" href="<?php print base_url('Agentes.shoes'); ?>"> Agentes</a>
+                    <a class="dropdown-item" href="<?php print base_url('Paises.shoes'); ?>"> Paises</a>
+                    <a class="dropdown-item" href="<?php print base_url('Estados.shoes'); ?>"> Estados</a>
+                    <a class="dropdown-item" href="<?php print base_url('GruposClientes.shoes'); ?>"> Grupos de Clientes</a>
+                    <a class="dropdown-item" href="<?php print base_url('Zonas.shoes'); ?>"> Zonas</a>
+                    <a class="dropdown-item" href="<?php print base_url('Transportes.shoes'); ?>"> Transportes</a>
+                    <a class="dropdown-item" href="<?php print base_url('Clientes.shoes'); ?>"> Clientes</a>
+                    <a class="dropdown-item" href="<?php print base_url('Consignatarios.shoes'); ?>"> Consignatarios</a>
+                    <a class="dropdown-item" href="<?php print base_url('MetodosDePago.shoes'); ?>"> Métodos de Pago</a>
+                    <a class="dropdown-item" href="<?php print base_url('FormasPago.shoes'); ?>"> Formas de Pagos</a>
+                    <a class="dropdown-item" href="<?php print base_url('SemanasProduccion/?origen=CLIENTES'); ?>"> Semanas Prod.</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -32,7 +32,7 @@
                     Capturas
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCapturas">
-                    <a class="dropdown-item" href="<?php print base_url('Pedidos.shoes');?>"><span class="fa fa-check"></span> Pedidos</a>
+                    <a class="dropdown-item" href="<?php print base_url('Pedidos.shoes'); ?>"><span class="fa fa-check"></span> Pedidos</a>
                     <a class="dropdown-item" href="#"> Prueba.</a>
                 </div>
             </li>

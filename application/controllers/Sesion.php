@@ -17,29 +17,12 @@ class Sesion extends CI_Controller {
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             $this->load->view('vEncabezado')->view('vFondo');
             switch ($this->session->TipoAcceso) {
-                case 'SUPER ADMINISTRADOR': $this->load->view('vNavGeneral');
+                case 'SUPER ADMINISTRADOR':
+                    $this->load->view('vNavGeneral');
                     $this->load->view('vMenuPrincipal')->view('vNavGeneral')->view('vQuickMenu');
                     break;
-                case 'ADMINISTRACION':
-                    $this->load->view('vMenuAdministracion');
-                    break;
-                case 'CONTABILIDAD':
-                    $this->load->view('vMenuContabilidad');
-                    break;
-                case 'RECURSOS HUMANOS':
-                    $this->load->view('vMenuRecursosHumanos');
-                    break;
-                case 'INGENIERIA':
-                    $this->load->view('vMenuIngenieria');
-                    break;
-                case 'DISEÑO Y DESARROLLO':
-                    $this->load->view('vMenuDisDes');
-                    break;
-                case 'ALMACEN':
-                    $this->load->view('vMenuAlmacen');
-                    break;
-                case 'PRODUCCION':
-                    $this->load->view('vMenuProduccion');
+                case 'VENTAS':
+                    $this->load->view('vMenuClientes');
                     break;
             }
             $this->load->view('vFooter');
@@ -70,7 +53,7 @@ class Sesion extends CI_Controller {
                     'LOGGED' => TRUE,
                     'TipoAcceso' => $data[0]->TipoAcceso,
                     'Empresa' => $data[0]->Empresa,
-                    'SEG'=>$data[0]->Seguridad
+                    'SEG' => $data[0]->Seguridad
                 );
                 $this->session->mark_as_temp('LOGGED', 28800);
                 $this->session->set_userdata($newdata);

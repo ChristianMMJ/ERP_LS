@@ -80,38 +80,36 @@
 </div>
 <script>
 
-
+    var mdlFichaTecnicaCompra = $('#mdlFichaTecnicaCompra');
     $(document).ready(function () {
 
-        $("#Estilo").change(function () {
-            console.log('entra');
+        mdlFichaTecnicaCompra.find("#Estilo").change(function () {
             $("#Color")[0].selectize.clear(true);
             $("#Color")[0].selectize.clearOptions();
-            getColoresXEstilo($(this).val());
-            getEstiloByClave($(this).val());
+            getColoresXEstiloReporte($(this).val());
+            getEstiloByClaveReporte($(this).val());
         });
 
-
-        $("#Maquila").change(function () {
+        mdlFichaTecnicaCompra.find("#Maquila").change(function () {
             var Piezas = parseInt($('#Piezas').val());
             getDesperdicioByMaquilaPiezas($(this).val(), Piezas);
         });
 
-        $('#mdlFichaTecnicaCompra').on('shown.bs.modal', function () {
-            $("input").val("");
-            $.each($("select"), function (k, v) {
-                $("select")[k].selectize.clear(true);
+        mdlFichaTecnicaCompra.on('shown.bs.modal', function () {
+            mdlFichaTecnicaCompra.find("input").val("");
+            $.each(mdlFichaTecnicaCompra.find("select"), function (k, v) {
+                mdlFichaTecnicaCompra.find("select")[k].selectize.clear(true);
             });
-            $('#Estilo')[0].selectize.focus();
+            mdlFichaTecnicaCompra.find('#Estilo')[0].selectize.focus();
         });
 
-        $('#btnImprimirFichaTecnica').on("click", function () {
-            var TipoFicha = $("#FichaSinPrecios")[0].checked ? 'onImprimirFichaTecnicaSinPrecios' : 'onImprimirFichaTecnicaCompra';
+        mdlFichaTecnicaCompra.find('#btnImprimirFichaTecnica').on("click", function () {
+            var TipoFicha = mdlFichaTecnicaCompra.find("#FichaSinPrecios")[0].checked ? 'onImprimirFichaTecnicaSinPrecios' : 'onImprimirFichaTecnicaCompra';
 
 
             HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
             var frm = new FormData($('#mdlFichaTecnicaCompra').find("#frmFichaTecnicaCompras")[0]);
-            var maq = $("#Maquila").find("option:selected").text();
+            var maq = mdlFichaTecnicaCompra.find("#Maquila").find("option:selected").text();
 
             frm.append('NomMaquila', maq);
             $.ajax({
@@ -161,45 +159,45 @@
             });
         });
         handleEnter();
-        getEstilos();
-        getMaquilas();
+        getEstilosReporte();
+        getMaquilasCostosEstilos();
     });
 
-    function getMaquilas() {
+    function getMaquilasCostosEstilos() {
         $.getJSON(base_url + 'index.php/Estilos/getMaquilas').done(function (data, x, jq) {
             $.each(data, function (k, v) {
-                $("#Maquila")[0].selectize.addOption({text: v.Maquila, value: v.Clave});
+                mdlFichaTecnicaCompra.find("#Maquila")[0].selectize.addOption({text: v.Maquila, value: v.Clave});
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         });
     }
 
-    function getEstilos() {
+    function getEstilosReporte() {
         $.getJSON(base_url + 'index.php/FichaTecnica/getEstilos').done(function (data, x, jq) {
             $.each(data, function (k, v) {
-                $("#Estilo")[0].selectize.addOption({text: v.Estilo, value: v.Clave});
+                mdlFichaTecnicaCompra.find("#Estilo")[0].selectize.addOption({text: v.Estilo, value: v.Clave});
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         });
     }
 
-    function getEstiloByClave(Estilo) {
+    function getEstiloByClaveReporte(Estilo) {
         $.getJSON(base_url + 'index.php/Estilos/getEstiloByClave', {Clave: Estilo}).done(function (data, x, jq) {
             if (data.length > 0) {
-                $("#Piezas").val(parseInt(data[0].PiezasCorte));
+                mdlFichaTecnicaCompra.find("#Piezas").val(parseInt(data[0].PiezasCorte));
             }
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         });
     }
 
-    function getColoresXEstilo(Estilo) {
+    function getColoresXEstiloReporte(Estilo) {
 
         $.getJSON(base_url + 'index.php/FichaTecnica/getColoresXEstilo', {Estilo: Estilo}).done(function (data, x, jq) {
             $.each(data, function (k, v) {
-                $("#Color")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
+                mdlFichaTecnicaCompra.find("#Color")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);
@@ -210,13 +208,13 @@
         $.getJSON(base_url + 'index.php/Maquilas/getMaquilaByClave', {Clave: Maquila}).done(function (data, x, jq) {
             console.log(data, Piezas);
             if (Piezas <= 10) {
-                $("#Desperdicio").val(parseFloat(data[0].PorExtra3a10));
+                mdlFichaTecnicaCompra.find("#Desperdicio").val(parseFloat(data[0].PorExtra3a10));
             } else if (Piezas <= 14) {
-                $("#Desperdicio").val(parseFloat(data[0].PorExtra11a14));
+                mdlFichaTecnicaCompra.find("#Desperdicio").val(parseFloat(data[0].PorExtra11a14));
             } else if (Piezas <= 18) {
-                $("#Desperdicio").val(parseFloat(data[0].PorExtra15a18));
+                mdlFichaTecnicaCompra.find("#Desperdicio").val(parseFloat(data[0].PorExtra15a18));
             } else if (Piezas > 19) {
-                $("#Desperdicio").val(parseFloat(data[0].PorExtra19a));
+                mdlFichaTecnicaCompra.find("#Desperdicio").val(parseFloat(data[0].PorExtra19a));
             }
 
 

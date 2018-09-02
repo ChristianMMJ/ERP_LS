@@ -20,26 +20,8 @@ class Clientes extends CI_Controller {
                     $this->load->view('vNavGeneral');
                     $this->load->view('vMenuClientes');
                     break;
-                case 'ADMINISTRACION':
-                    $this->load->view('vMenuAdministracion');
-                    break;
-                case 'CONTABILIDAD':
-                    $this->load->view('vMenuContabilidad');
-                    break;
-                case 'RECURSOS HUMANOS':
-                    $this->load->view('vMenuRecursosHumanos');
-                    break;
-                case 'INGENIERIA':
-                    $this->load->view('vMenuIngenieria');
-                    break;
-                case 'DISEÑO Y DESARROLLO':
-                    $this->load->view('vMenuDisDes');
-                    break;
-                case 'ALMACEN':
-                    $this->load->view('vMenuAlmacen');
-                    break;
-                case 'PRODUCCION':
-                    $this->load->view('vMenuProduccion');
+                case 'VENTAS':
+                    $this->load->view('vMenuClientes');
                     break;
             }
 
@@ -88,6 +70,7 @@ class Clientes extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
+
     public function getFormasDePago() {
         try {
             print json_encode($this->clientes_model->getFormasDePago());
@@ -95,6 +78,7 @@ class Clientes extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
+
     public function getMetodosDePago() {
         try {
             print json_encode($this->clientes_model->getMetodosDePago());
