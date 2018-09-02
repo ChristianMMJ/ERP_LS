@@ -31,7 +31,7 @@
 <div class="d-none animated fadeIn text-dark" id="pnlDatos">
     <form id="frmNuevo">
         <fieldset>
-            <!--            PRIMER CONTENEDOR-->
+            <!--PRIMER CONTENEDOR-->
             <div class="card  m-3 ">
                 <div class="card-body">
                     <div class="row">
@@ -71,22 +71,29 @@
                             <label for="FechaRecepcion" >Fecha Recepción*</label>
                             <input type="text" id="FechaRecepcion" name="FechaRecepcion" class="form-control form-control-sm date notEnter" >
                         </div>
-                    </div>
+                    </div>  
+                </div>
+            </div>
+            <!--SEGUNDO CONTENEDOR-->
+            <div class="card  m-3 ">
+                <div class="card-body">
                     <div class="row">
-                        <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
                             <label for="Estilo" >Estilo*</label>
-                            <input type="text" class="form-control form-control-sm" id="Estilo" name="Estilo" placeholder="">
+                            <select class="form-control form-control-sm" id="Estilo" name="Estilo" required placeholder="">
+                            </select>
                         </div>
-                        <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
                             <label for="Color" >Color*</label>
                             <select class="form-control form-control-sm" id="Color" name="Color" required placeholder="">
                             </select>
+                            <div id="spin" class="d-none" align="center"><span class="fa fa-cog fa-spin fa-2x"></span></div>
                         </div>
-                        <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
                             <label for="FechaEntrega" >Fecha Entrega*</label>
                             <input type="text" id="FechaEntrega" name="FechaEntrega" class="form-control form-control-sm date notEnter" >
                         </div>
-                        <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
                             <label for="Recibido" >Recibido*</label>
                             <select class="form-control form-control-sm" id="Recibido" name="Recibido" required placeholder="">
                                 <option></option>
@@ -96,14 +103,65 @@
                                 <option value="5">5 - Int</option>
                             </select>
                         </div>
-                    </div>
-                    <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-                        <label for="Maquila" >Maquila*</label>
-                        <input type="text" id="Maquila" name="Maquila" class="form-control form-control-sm date notEnter" >
-                    </div>
-                    <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-                        <label for="Maquila" >Maquila*</label>
-                        <input type="text" id="Maquila" name="Maquila" class="form-control form-control-sm date notEnter" >
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
+                            <label for="Maquila" >Maquila*</label>
+                            <input type="text" id="Maquila" name="Maquila" class="form-control form-control-sm date notEnter" >
+                        </div>
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
+                            <label for="Semana" >Semana*</label>
+                            <input type="text" id="Semana" name="Semana" class="form-control form-control-sm" >
+                        </div>
+                        <!--BREAK-->
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
+                            <label for="Recio" >Recio*</label>
+                            <input type="text" id="Recio" name="Recio" class="form-control form-control-sm" >
+                        </div>
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
+                            <label for="Recio" >Produccion maquila/semana*</label>
+                            <input type="text" id="Recio" name="Recio" class="form-control form-control-sm" >
+                        </div>
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
+                            <label for="Precio" >Precio*</label>
+                            <input type="text" id="Precio" name="Precio" class="form-control form-control-sm" >
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <label for="Observaciones" >Observaciones*</label>
+                            <div class="row">
+                                <div class="col-6">
+                                    <input type="text" id="Precio" name="Precio" class="form-control form-control-sm">
+                                </div>
+                                <div class="col-6">
+                                    <input type="text" id="Precio" name="Precio" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                        </div>
+                        <!--TALLAS-->
+                        <div class="col-12">
+                            <div class="table-responsive" style="overflow-x:auto; white-space: nowrap;">
+                                <label class="font-weight-bold" for="Tallas">Tallas</label>
+                                <table id="tblTallas" class="Tallas" >
+                                    <thead></thead>
+                                    <tbody>
+                                        <tr>
+                                            <?php
+                                            for ($index = 1; $index < 23; $index++) {
+                                                print '<td><input type="text" style="width: 45px;" maxlength="4" class="numbersOnly" name="T' . $index . '" disabled></td>';
+                                            }
+                                            ?>
+                                            <td class="font-weight-bold">Pares</td>
+                                        </tr>
+                                        <tr>
+                                            <?php
+                                            for ($index = 1; $index < 23; $index++) {
+                                                print '<td><input type="text" style="width: 45px;" maxlength="4" class="form-control form-control-sm numbersOnly" name="C' . $index . '"></td>';
+                                            }
+                                            ?>
+                                            <td><input type="text" style="width: 55px;" maxlength="4" class="numbersOnly" disabled=""  name="TPares"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                     <div class="row pt-2">
                         <div class="col-6 col-sm-6 col-md-6 col-lg-6">
@@ -117,6 +175,68 @@
                     </div>
                 </div>
             </div>
+            <!--FIN SEGUNDO CONTENEDOR-->
+            <!--DETALLE-->
+
+            <!--SEGUNDO CONTENEDOR-->
+            <div class="card  m-3 ">
+                <div class="card-body">
+                    <div class="row">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Recibido</th>
+                                    <th scope="col">EstiloID</th>
+                                    <th scope="col">Estilo</th>
+                                    <th scope="col">ColorID</th>
+                                    <th scope="col">Color</th>
+                                    <th scope="col">Semana</th>
+                                    <th scope="col">Maquila</th>
+                                    
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th><!--5-->
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                    
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th><!--5-->
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                    
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th><!--5-->
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                    
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th><!--5-->
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                    
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                    
+                                    <th scope="col">Precio</th>
+                                    <th scope="col">Pares</th>
+                                    <th scope="col">Fecha de entrega</th>
+                                    <th scope="col">Eliminar</th>
+                                    <!--OUT-->
+                                    <th scope="col">Recio</th>
+                                    <th scope="col">Titulo Observaciones</th>
+                                    <th scope="col">Observaciones</th>
+                                    <th scope="col">Serie</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table> 
+                    </div>
+                </div>
+            </div>
         </fieldset>
     </form>
 </div>
@@ -126,6 +246,7 @@
     var Pedidos;
     var btnNuevo = $("#btnNuevo"), btnCancelar = $("#btnCancelar"), btnEliminar = $("#btnEliminar"), btnGuardar = $("#btnGuardar");
     var pnlTablero = $("#pnlTablero"), pnlDatos = $("#pnlDatos"), pnlDatosDetalle = $("#pnlDatosDetalle");
+    var PedidoDetalle, tblPedidoDetalle = pnlDatos.find("#tblPedidoDetalle");
     var nuevo = false;
 
     $(document).ready(function () {
@@ -172,10 +293,43 @@
             pnlTablero.removeClass("d-none");
             pnlDatos.addClass("d-none");
         });
+
+        pnlDatos.find("#Estilo").change(function () {
+            pnlDatos.find("#spin").removeClass("d-none");
+            pnlDatos.find("#Color").addClass("d-none");
+            pnlDatos.find("#Color")[0].selectize.clear(true);
+
+            //OBTENER COLORES POR ESTILO
+            $.getJSON(master_url + 'getColoresXEstilo', {Estilo: $(this).val()}).done(function (data) {
+                $.each(data, function (k, v) {
+                    pnlDatos.find("#Color")[0].selectize.addOption({text: v.Color, value: v.Clave});
+                });
+                pnlDatos.find("#spin").addClass("d-none");
+                pnlDatos.find("#Color").removeClass("d-none");
+                pnlDatos.find("#Color")[0].selectize.open().focus();
+            }).fail(function (x, y, z) {
+                console.log(x, y, z);
+            });
+            //OBTENER MAQUILA            
+            $.getJSON(master_url + 'getMaquilaXEstilo', {Estilo: $(this).val()}).done(function (data) {
+                console.log(data);
+                $.each(data, function (k, v) {
+                    pnlDatos.find("#Color")[0].selectize.addOption({text: v.Color, value: v.Clave});
+                });
+                pnlDatos.find("#spin").addClass("d-none");
+                pnlDatos.find("#Color").removeClass("d-none");
+                pnlDatos.find("#Color")[0].selectize.open().focus();
+            }).fail(function (x, y, z) {
+                console.log(x, y, z);
+            });
+        });
     });
 
     function init() {
         getRecords();
+        getOptions("getClientes", "Cliente", "Clave", "Cliente");//Clientes
+        getOptions("getAgentes", "Agente", "Clave", "Agente");//Agentes
+        getOptions("getEstilos", "Estilo", "Clave", "Estilo");//Estilos
     }
 
 
@@ -257,7 +411,6 @@
                 HoldOn.close();
             });
         });
-
     }
 
     function getOptions(url, comp, key, field) {
@@ -288,3 +441,9 @@
         });
     }
 </script>
+<style>
+    table tbody tr:hover {
+        background-color: transparent;
+        color: #000 !important;
+    } 
+</style>
