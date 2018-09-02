@@ -78,7 +78,47 @@ class Pedidos extends CI_Controller {
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
-    }  
+    }
+
+    public function getClientes() {
+        try {
+            print json_encode($this->pedidos_model->getClientes());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getAgentes() {
+        try {
+            print json_encode($this->pedidos_model->getAgentes());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getEstilos() {
+        try {
+            print json_encode($this->pedidos_model->getEstilos());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getColoresXEstilo() {
+        try {
+            print json_encode($this->pedidos_model->getColoresXEstilo($this->input->get('Estilo')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getMaquilaXEstilo() {
+        try {
+            print json_encode($this->pedidos_model->getMaquilaXEstilo($this->input->get('Estilo')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 
     public function onAgregar() {
         try {
@@ -110,4 +150,5 @@ class Pedidos extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
+
 }

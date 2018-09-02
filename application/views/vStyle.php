@@ -73,8 +73,16 @@
 
     .form-control {
         color: #000 !important;
+        border: 1px solid #9E9E9E;
     }
-
+    
+    .form-control:focus { 
+        -webkit-box-shadow: 0 0 0 0.2rem rgba(44, 62, 80, 0.25);
+        box-shadow: 0 0 0 0.2rem #CDDC39;
+        font-weight: bold;
+        z-index: 1050 ;
+    }
+    
     /*Tablas */
     table tbody tr{
         cursor: pointer;
@@ -146,5 +154,8 @@
     }
     .btn:not(.dropdown-toggle):not(.navbar-brand){
         box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)!important;
+    }    
+    label{
+        font-weight: bold;
     }
 </style>
