@@ -23,6 +23,15 @@ class Agentes extends CI_Controller {
                 case 'VENTAS':
                     $this->load->view('vMenuClientes');
                     break;
+                case 'PRODUCCION':
+                    $this->load->view('vMenuProduccion');
+                    break;
+                case 'RECURSOS HUMANOS':
+                    $this->load->view('vMenuProduccion');
+                    break;
+                case 'FACTURACION':
+                    $this->load->view('vMenuFacturacion');
+                    break;
             }
 
             $this->load->view('vFondo')->view('vAgentes')->view('vFooter');

@@ -36,7 +36,7 @@
                         <span class="fa fa-arrow-left" ></span> REGRESAR
                     </button>
                     <button type="button" class="btn btn-warning btn-sm d-none" id="btnImprimirFraccionesXEstilo">
-                        <span class="fa fa-file-invoice fa-1x"></span> FRACCIONES POR ESTILO
+                        <span class="fa fa-file-invoice fa-1x"></span> IMPRIMIR
                     </button>
                 </div>
             </div>

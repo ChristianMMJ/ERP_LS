@@ -19,26 +19,11 @@ class ListaDePrecios extends CI_Controller {
                 case 'SUPER ADMINISTRADOR':
                     $this->load->view('vNavGeneral')->view('vMenuParametros');
                     break;
-                case 'ADMINISTRACION':
-                    $this->load->view('vMenuAdministracion');
+                case 'VENTAS':
+                    $this->load->view('vMenuClientes');
                     break;
-                case 'CONTABILIDAD':
-                    $this->load->view('vMenuContabilidad');
-                    break;
-                case 'RECURSOS HUMANOS':
-                    $this->load->view('vMenuRecursosHumanos');
-                    break;
-                case 'INGENIERIA':
-                    $this->load->view('vMenuIngenieria');
-                    break;
-                case 'DISEÑO Y DESARROLLO':
-                    $this->load->view('vMenuDisDes');
-                    break;
-                case 'ALMACEN':
-                    $this->load->view('vMenuAlmacen');
-                    break;
-                case 'PRODUCCION':
-                    $this->load->view('vMenuProduccion');
+                case 'FACTURACION':
+                    $this->load->view('vMenuFacturacion');
                     break;
             }
 
@@ -78,7 +63,7 @@ class ListaDePrecios extends CI_Controller {
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
-    }  
+    }
 
     public function onAgregar() {
         try {
@@ -110,4 +95,5 @@ class ListaDePrecios extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
+
 }

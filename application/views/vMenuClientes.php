@@ -25,6 +25,7 @@
                     <a class="dropdown-item" href="<?php print base_url('MetodosDePago.shoes'); ?>"> Métodos de Pago</a>
                     <a class="dropdown-item" href="<?php print base_url('FormasPago.shoes'); ?>"> Formas de Pagos</a>
                     <a class="dropdown-item" href="<?php print base_url('SemanasProduccion/?origen=CLIENTES'); ?>"> Semanas Prod.</a>
+                    <a class="dropdown-item" href="<?php print base_url('ListaDePrecios.shoes'); ?>"> Listas de Precios</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -73,6 +74,12 @@
                 </div>
             </li>
 
+            <li class="nav-item mx-1 d-none" id="btnRegresar">
+                <a class="btn btn-danger " href="<?php print base_url(isset($_GET['parentMenu']) ? $_GET['parentMenu'] : ""); ?>">
+                    <i class="fa fa-arrow-left"></i> Regresar
+                </a>
+            </li>
+
             <li class="nav-item dropdown ml-auto">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <?php echo $this->session->userdata('Nombre') . ' ' . $this->session->userdata('Apellidos'); ?>
@@ -88,3 +95,20 @@
         </ul>
     </div>
 </nav>
+<script>
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+    var menu;
+    $(document).ready(function () {
+        menu = getParameterByName('parentMenu');
+        if (menu !== '' && menu === 'MenuNomina' || menu === 'MenuContabilidad') {
+            $('#btnRegresar').removeClass('d-none');
+        } else {
+            $('#btnRegresar').addClass('d-none');
+        }
+    });
+</script>

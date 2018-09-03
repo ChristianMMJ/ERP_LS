@@ -70,8 +70,8 @@
                 </div>
             </li>
 
-            <li class="nav-item">
-                <a class="btn btn-primary " href="#" id="navCaptura" >
+            <li class="nav-item mx-1">
+                <a class="btn btn-primary text-success " href="<?php print base_url('MenuProduccion/?parentMenu=MenuFichasTecnicas'); ?>">
                     Menu Producción
                 </a>
             </li>

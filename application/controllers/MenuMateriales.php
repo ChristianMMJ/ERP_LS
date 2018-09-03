@@ -15,31 +15,20 @@ class MenuMateriales extends CI_Controller {
             $this->load->view('vEncabezado');
             $this->load->view('vFondo');
 
+
             switch ($this->session->userdata["TipoAcceso"]) {
                 case 'SUPER ADMINISTRADOR':
                     $this->load->view('vNavGeneral');
                     $this->load->view('vMenuMateriales');
                     break;
-                case 'ADMINISTRACION':
-                    $this->load->view('vMenuAdministracion');
-                    break;
-                case 'CONTABILIDAD':
-                    $this->load->view('vMenuContabilidad');
-                    break;
-                case 'RECURSOS HUMANOS':
-                    $this->load->view('vMenuRecursosHumanos');
-                    break;
-                case 'INGENIERIA':
-                    $this->load->view('vMenuIngenieria');
+                case 'VENTAS':
+                    $this->load->view('vMenuClientes');
                     break;
                 case 'DISEÑO Y DESARROLLO':
-                    $this->load->view('vMenuDisDes');
+                    $this->load->view('vMenuFichasTecnicas');
                     break;
-                case 'ALMACEN':
-                    $this->load->view('vMenuAlmacen');
-                    break;
-                case 'PRODUCCION':
-                    $this->load->view('vMenuProduccion');
+                case 'RECURSOS HUMANOS':
+                    $this->load->view('vMenuMateriales');
                     break;
             }
 

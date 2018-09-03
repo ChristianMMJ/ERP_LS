@@ -23,6 +23,9 @@ class Estados extends CI_Controller {
                 case 'VENTAS':
                     $this->load->view('vMenuClientes');
                     break;
+                case 'FACTURACION':
+                    $this->load->view('vMenuFacturacion');
+                    break;
             }
 
             $this->load->view('vFondo');

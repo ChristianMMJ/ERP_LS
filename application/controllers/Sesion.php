@@ -24,6 +24,15 @@ class Sesion extends CI_Controller {
                 case 'VENTAS':
                     $this->load->view('vMenuClientes');
                     break;
+                case 'DISEÑO Y DESARROLLO':
+                    $this->load->view('vMenuFichasTecnicas');
+                    break;
+                case 'RECURSOS HUMANOS':
+                    $this->load->view('vMenuNominas');
+                    break;
+                case 'FACTURACION':
+                    $this->load->view('vMenuFacturacion');
+                    break;
             }
             $this->load->view('vFooter');
         } else {

@@ -14,8 +14,20 @@ class MenuFichasTecnicas extends CI_Controller {
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             $this->load->view('vEncabezado');
             $this->load->view('vFondo');
-            $this->load->view('vNavGeneral');
-            $this->load->view('vMenuFichasTecnicas');
+
+
+            switch ($this->session->userdata["TipoAcceso"]) {
+                case 'SUPER ADMINISTRADOR':
+                    $this->load->view('vNavGeneral');
+                    $this->load->view('vMenuFichasTecnicas');
+                    break;
+                case 'VENTAS':
+                    $this->load->view('vMenuClientes');
+                    break;
+                case 'DISEÑO Y DESARROLLO':
+                    $this->load->view('vMenuFichasTecnicas');
+                    break;
+            }
             $this->load->view('vFooter');
         } else {
             $this->load->view('vEncabezado');

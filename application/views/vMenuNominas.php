@@ -16,7 +16,7 @@
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCatalogos">
                     <a class="dropdown-item" href="<?php print base_url('Departamentos/?origen=NOMINAS'); ?>"> Departamentos</a>
                     <a class="dropdown-item" href="<?php print base_url('Fracciones/?origen=NOMINAS'); ?>"> Fracciones</a>
-                    <a class="dropdown-item" href="<?php print base_url('FraccionesXEstilo'); ?>"> Fracciones Por Estilo</a>
+                    <a class="dropdown-item" href="<?php print base_url('FraccionesXEstilo/?origen=NOMINAS'); ?>"> Fracciones Por Estilo</a>
                     <a class="dropdown-item" href="<?php print base_url('Semanas'); ?>"> Semanas Nómina</a>
                 </div>
 
@@ -48,6 +48,16 @@
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navReportes">
                     <a class="dropdown-item" href="#"> Prueba</a>
                 </div>
+            </li>
+            <li class="nav-item mx-1">
+                <a class="btn btn-primary text-success" href="<?php print base_url('MenuProduccion/?parentMenu=MenuNomina'); ?>">
+                    Menu Producción
+                </a>
+            </li>
+            <li class="nav-item mx-1">
+                <a class="btn btn-primary text-success" href="<?php print base_url('MenuClientes/?parentMenu=MenuNomina'); ?>">
+                    Menu Clientes
+                </a>
             </li>
 
             <li class="nav-item dropdown ml-auto">
