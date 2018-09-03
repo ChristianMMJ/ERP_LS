@@ -17,6 +17,7 @@
                     <a class="dropdown-item" href="<?php print base_url('ListaDePrecios.shoes'); ?>"> Listas de Precios</a>
                     <a class="dropdown-item" href="<?php print base_url('Agentes.shoes'); ?>"> Agentes</a>
                     <a class="dropdown-item" href="<?php print base_url('Estados.shoes'); ?>"> Estados</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlTipoCambio"> Tipo Cambio Moneda</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navCapturas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -68,4 +69,5 @@
             </li>
         </ul>
     </div>
-</nav>
+</nav><?php
+$this->load->view('vTipoCambio');

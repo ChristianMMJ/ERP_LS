@@ -18,6 +18,7 @@
                     <a class="dropdown-item" href="<?php print base_url('Unidades'); ?>"> Unidades de Medida</a>
                     <a class="dropdown-item" href="<?php print base_url('Articulos/?origen=MATERIALES'); ?>"> Artículos</a>
                     <a class="dropdown-item" href="<?php print base_url('Proveedores/?origen=MATERIALES'); ?>"> Proveedores</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlTipoCambio"> Tipo Cambio Moneda</a>
                 </div>
 
 
@@ -64,3 +65,5 @@
         </ul>
     </div>
 </nav>
+<?php
+$this->load->view('vTipoCambio');

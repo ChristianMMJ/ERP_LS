@@ -14,6 +14,9 @@ class MenuClientes extends CI_Controller {
             $this->load->view('vEncabezado');
             $this->load->view('vFondo');
             switch ($this->session->userdata["TipoAcceso"]) {
+                case 'SUPER ADMINISTRADOR':
+                    $this->load->view('vMenuFacturacion');
+                    break;
                 case 'FACTURACION':
                     $this->load->view('vMenuFacturacion');
                     break;
