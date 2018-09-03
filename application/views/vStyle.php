@@ -1,22 +1,6 @@
 <style>
 
-    .btn-float{
-        width: 61.1px;
-        height: 61.1px;
-        font-size: 1.625rem;
-        position: fixed;
-        bottom: 35px;
-        right: 30px;
-        margin-bottom: 0;
-        z-index: 99999 ;
-        border-radius: 50%;
-        min-width: 56px;
-    }
 
-    .btn-group > .btn:not(:first-child), .btn-group > .btn-group:not(:first-child) > .btn {
-
-        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)!important;
-    }
     /*Hacer disbaled de selectize igual a bootstrap*/
     .selectize-control .selectize-input.disabled {
         background-color: #ecf0f1;
@@ -26,7 +10,13 @@
     .selectize-input {
         padding-right: 18px;
     }
-
+    .selectize-input.focus {
+        border-color: #597ea2;
+        outline: 0;
+        /* -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);*/
+        /* box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6); */
+        box-shadow: 0 0 0 0.2rem #CDDC39 ;
+    }
     /*Legend*/
     legend {
         font-size: 1.3rem;
@@ -73,16 +63,15 @@
 
     .form-control {
         color: #000 !important;
-        border: 1px solid #9E9E9E;
     }
-    
-    .form-control:focus { 
+
+    .form-control:focus {
         -webkit-box-shadow: 0 0 0 0.2rem rgba(44, 62, 80, 0.25);
         box-shadow: 0 0 0 0.2rem #CDDC39;
         font-weight: bold;
         z-index: 1050 ;
     }
-    
+
     /*Tablas */
     table tbody tr{
         cursor: pointer;
@@ -154,7 +143,30 @@
     }
     .btn:not(.dropdown-toggle):not(.navbar-brand){
         box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)!important;
-    }    
+    }
+
+    .btn-float{
+        width: 61.1px;
+        height: 61.1px;
+        font-size: 1.625rem;
+        position: fixed;
+        bottom: 35px;
+        right: 30px;
+        margin-bottom: 0;
+        z-index: 99999 ;
+        border-radius: 50%;
+        min-width: 56px;
+    }
+
+    .btn:not(.dropdown-toggle):not(.navbar-brand):focus {
+        box-shadow: 0 0 0 0.2rem #CDDC39 !important;
+    }
+    .btn-group > .btn:not(:first-child), .btn-group > .btn-group:not(:first-child) > .btn {
+
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)!important;
+    }
+
+
     label{
         font-weight: bold;
     }

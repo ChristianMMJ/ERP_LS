@@ -150,7 +150,13 @@
 
 
                 } else {
-                    swal('ATENCIÓN', 'NO EXISTEN DATOS PARA EL REPORTE', 'error');
+                    swal({
+                        title: "ATENCIÓN",
+                        text: "ESTILO NO VÁLIDO",
+                        icon: "error"
+                    }).then((action) => {
+                        mdlFichaTecnicaCompra.find('#Estilo')[0].selectize.focus();
+                    });
                 }
                 HoldOn.close();
             }).fail(function (x, y, z) {
