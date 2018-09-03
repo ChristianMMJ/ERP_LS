@@ -23,32 +23,19 @@ class Maquilas extends CI_Controller {
 
                     if ($Origen === 'PRODUCCION') {
                         $this->load->view('vMenuProduccion');
+                    } else if ($Origen === 'PROVEEDORES') {
+                        $this->load->view('vMenuProduccion');
                     }
                     //Cuando no viene de ningun modulo y lo teclean
                     else {
                         $this->load->view('vMenuPrincipal');
                     }
                     break;
-                case 'ADMINISTRACION':
-                    $this->load->view('vMenuAdministracion');
-                    break;
-                case 'CONTABILIDAD':
-                    $this->load->view('vMenuContabilidad');
-                    break;
-                case 'RECURSOS HUMANOS':
-                    $this->load->view('vMenuRecursosHumanos');
-                    break;
-                case 'INGENIERIA':
-                    $this->load->view('vMenuIngenieria');
-                    break;
-                case 'DISEÑO Y DESARROLLO':
-                    $this->load->view('vMenuDisDes');
-                    break;
-                case 'ALMACEN':
-                    $this->load->view('vMenuAlmacen');
-                    break;
                 case 'PRODUCCION':
                     $this->load->view('vMenuProduccion');
+                    break;
+                case 'PROVEEDORES':
+                    $this->load->view('vMenuProveedores');
                     break;
             }
 

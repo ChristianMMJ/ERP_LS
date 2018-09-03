@@ -29,10 +29,6 @@ class FichaTecnicaCompra extends CI_Controller {
         $Grupos = $cm->getGruposFT($this->input->post('Estilo'), $this->input->post('Color'));
         $Departamentos = $cm->getDeptosFT($this->input->post('Estilo'), $this->input->post('Color'));
         $FichaTecnica = $cm->getFichaTecnicaDetalleByID($this->input->post('Estilo'), $this->input->post('Color'), $this->input->post('Maquila'), $this->input->post('Desperdicio'));
-        $ManoObra = $cm->getManoObra($this->input->post('Estilo'));
-        $ManoObraPOST = ($this->input->post('ManoObra') !== "") ? $this->input->post('ManoObra') : 0;
-        $GastosPOST = ($this->input->post('Gastos') !== "") ? $this->input->post('Gastos') : 0;
-        $UtilidadPOST = ($this->input->post('Utilidad') !== "") ? $this->input->post('Utilidad') : 0;
 
 
         if (!empty($Encabezado)) {
@@ -151,7 +147,7 @@ class FichaTecnicaCompra extends CI_Controller {
             if (!file_exists($path)) {
                 mkdir($path, 0777, true);
             }
-            $file_name = "FICHA TECNICA PARA COMPRAS " . date("d-m-Y his");
+            $file_name = "FICHA TECNICA SPRECIO ESTILO " . $this->input->post('Estilo') . ' COLOR ' . $this->input->post('Color') . ' ' . date("d-m-Y his");
             $url = $path . '/' . $file_name . '.pdf';
             /* Borramos el archivo anterior */
             if (delete_files('uploads/Reportes/FichaTecnica/')) {
@@ -401,7 +397,8 @@ class FichaTecnicaCompra extends CI_Controller {
             if (!file_exists($path)) {
                 mkdir($path, 0777, true);
             }
-            $file_name = "FICHA TECNICA PARA COMPRAS " . date("d-m-Y his");
+            $file_name = "FICHA TECNICA ESTILO " . $this->input->post('Estilo') . ' COLOR ' . $this->input->post('Color') . ' ' . date("d-m-Y his");
+
             $url = $path . '/' . $file_name . '.pdf';
             /* Borramos el archivo anterior */
             if (delete_files('uploads/Reportes/FichaTecnica/')) {

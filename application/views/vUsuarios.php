@@ -68,19 +68,14 @@
                         <select id="TipoAcceso" name="TipoAcceso" class="form-control form-control-sm required" >
                             <option value=""></option>
                             <option value="SUPER ADMINISTRADOR">SUPER ADMINISTRADOR</option>
-                            <option value="ADMINISTRACION">ADMINISTRACIÓN</option>
                             <option value="CONTABILIDAD">CONTABILIDAD</option>
                             <option value="RECURSOS HUMANOS">RECURSOS HUMANOS</option>
                             <option value="VENTAS">VENTAS</option>
                             <option value="FACTURACION">FACTURACIÓN</option>
-                            <option value="INGENIERIA">INGENIERÍA</option>
                             <option value="DISEÑO Y DESARROLLO">DISEÑO Y DESARROLLO</option>
                             <option value="ALMACEN">ALMACÉN</option>
                             <option value="PRODUCCION">PRODUCCIÓN</option>
-                            <option value="CALIDAD">CALIDAD</option>
-                            <option value="RECEPCION">RECEPCIÓN</option>
                             <option value="PROVEEDORES">PROVEEDORES</option>
-                            <option value="COBRANZA">COBRANZA</option>
                             <option value="MAQUILAS">MAQUILAS</option>
                             <option value="AGENTES">AGENTES</option>
                             <option value="DESTAJOS">DESTAJOS</option>

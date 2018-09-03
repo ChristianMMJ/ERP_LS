@@ -18,13 +18,13 @@
     <div class="card-body text-dark">
         <form id="frmNuevo">
             <div class="row">
-                <div class="col-md-2 float-left">
+                <div class="col-md-4 float-left">
                     <legend class="float-left">Semanas <strong id="lAno"></strong></legend>
                 </div>
-                <div class="col-md-7 float-right">
+                <div class="col-md-4 float-right">
 
                 </div>
-                <div class="col-md-3 float-right" align="right">
+                <div class="col-md-4 float-right" align="right">
                     <button type="button" class="btn btn-secondary btn-sm" id="btnCancelar"><span class="fa fa-arrow-left"></span> REGRESAR </button>
 <!--                    <button type="button" class="btn btn-primary btn-sm" id="btnGuardar"><span class="fa fa-save "></span> GUARDAR</button>-->
                 </div>

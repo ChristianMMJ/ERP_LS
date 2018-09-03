@@ -37,6 +37,9 @@ class SemanasProduccion extends CI_Controller {
                 case 'VENTAS':
                     $this->load->view('vMenuClientes');
                     break;
+                case 'PRODUCCION':
+                    $this->load->view('vMenuProduccion');
+                    break;
             }
 
             $this->load->view('vFondo');

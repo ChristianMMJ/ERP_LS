@@ -33,6 +33,15 @@ class Sesion extends CI_Controller {
                 case 'FACTURACION':
                     $this->load->view('vMenuFacturacion');
                     break;
+                case 'ALMACEN':
+                    $this->load->view('vMenuMateriales');
+                    break;
+                case 'PRODUCCION':
+                    $this->load->view('vMenuProduccion');
+                    break;
+                case 'PROVEEDORES':
+                    $this->load->view('vMenuProveedores');
+                    break;
             }
             $this->load->view('vFooter');
         } else {

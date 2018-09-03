@@ -34,6 +34,9 @@ class Fracciones extends CI_Controller {
                 case 'RECURSOS HUMANOS':
                     $this->load->view('vMenuNominas');
                     break;
+                case 'PRODUCCION':
+                    $this->load->view('vMenuProduccion');
+                    break;
             }
 
             $this->load->view('vFondo')->view('vFracciones')->view('vFooter');

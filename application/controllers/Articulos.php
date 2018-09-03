@@ -35,6 +35,9 @@ class Articulos extends CI_Controller {
                 case 'DISEÑO Y DESARROLLO':
                     $this->load->view('vMenuFichasTecnicas');
                     break;
+                case 'ALMACEN':
+                    $this->load->view('vMenuMateriales');
+                    break;
             }
 
             $this->load->view('vFondo');

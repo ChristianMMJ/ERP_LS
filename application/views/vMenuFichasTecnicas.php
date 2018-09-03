@@ -71,7 +71,7 @@
             </li>
 
             <li class="nav-item mx-1">
-                <a class="btn btn-primary text-success " href="<?php print base_url('MenuProduccion/?parentMenu=MenuFichasTecnicas'); ?>">
+                <a class="btn btn-info" href="<?php print base_url('MenuProduccion/?parentMenu=MenuFichasTecnicas'); ?>">
                     Menu Producción
                 </a>
             </li>

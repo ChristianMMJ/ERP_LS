@@ -12,7 +12,7 @@ class usuario_model extends CI_Model {
 
     public function getRecords() {
         try {
-            $this->db->select("ID, CONCAT(U.Nombre, ' ', IFNULL(U.Apellidos,'')) AS Nombre,
+            $this->db->select("ID, U.usuario  AS Nombre,
                 CONCAT('<span class=\'label label-info\'>',ifnull(U.UltimoAcceso,'--'),'</span>') AS 'Último Acceso',
                   (CASE WHEN  U.Estatus ='Activo' THEN CONCAT('<span class=\'label label-success\'>','ACTIVO','</span>')
                     ELSE CONCAT('<span class=\'label label-danger\'>','INACTIVO','</span>') END) AS Estatus ,
@@ -34,7 +34,7 @@ class usuario_model extends CI_Model {
             $this->db->select('U.*', false);
             $this->db->from('usuarios AS U');
             $this->db->where('U.Usuario', $USUARIO);
-            $this->db->where(' \''.$CONTRASENA . '\'  = AES_DECRYPT(U.AES, \'System32\')', NULL, FALSE);
+            $this->db->where(' \'' . $CONTRASENA . '\'  = AES_DECRYPT(U.AES, \'System32\')', NULL, FALSE);
             $this->db->where_in('U.Estatus', 'ACTIVO');
             $query = $this->db->get();
             /*
@@ -149,10 +149,11 @@ class usuario_model extends CI_Model {
 
     public function onVerClave($CLAVE) {
         try {
-            return $this->db->select("CONVERT(AES_DECRYPT(CAST(AES AS CHAR(10000) CHARACTER SET utf8),'System32') USING latin1) AS PW",false)
-                    ->from("usuarios AS U")->where("U.ID", $CLAVE)->get()->result();
+            return $this->db->select("CONVERT(AES_DECRYPT(CAST(AES AS CHAR(10000) CHARACTER SET utf8),'System32') USING latin1) AS PW", false)
+                            ->from("usuarios AS U")->where("U.ID", $CLAVE)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
+
 }

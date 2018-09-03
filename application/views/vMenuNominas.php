@@ -50,13 +50,13 @@
                 </div>
             </li>
             <li class="nav-item mx-1">
-                <a class="btn btn-primary text-success" href="<?php print base_url('MenuProduccion/?parentMenu=MenuNomina'); ?>">
-                    Menu Producción
+                <a class="btn btn-info" href="<?php print base_url('MenuProduccion/?parentMenu=MenuNomina'); ?>">
+                    Menú Producción
                 </a>
             </li>
             <li class="nav-item mx-1">
-                <a class="btn btn-primary text-success" href="<?php print base_url('MenuClientes/?parentMenu=MenuNomina'); ?>">
-                    Menu Clientes
+                <a class="btn btn-info" href="<?php print base_url('MenuClientes/?parentMenu=MenuNomina'); ?>">
+                    Menú Clientes
                 </a>
             </li>
 
