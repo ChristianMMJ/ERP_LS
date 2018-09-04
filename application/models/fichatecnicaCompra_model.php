@@ -127,8 +127,20 @@ U.Descripcion AS UNIDAD,
 PM.Precio AS PRECIO,
 FT.Consumo AS CONSUMO,
 FT.Consumo *  PM.Precio AS COSTO,
-FT.Consumo + (FT.Consumo * \'' . $Desperdicio . '\') AS CONSUMO_COSTO,
-FT.Consumo *  PM.Precio + ((FT.Consumo *  PM.Precio) * \'' . $Desperdicio . '\') AS DESPERDICIO
+
+CASE WHEN G.Clave IN (1,2)
+THEN
+FT.Consumo + (FT.Consumo * \'' . $Desperdicio . '\')
+ELSE
+FT.Consumo
+END AS CONSUMO_COSTO,
+
+CASE WHEN G.Clave IN (1,2)
+THEN
+FT.Consumo *  PM.Precio + ((FT.Consumo *  PM.Precio) * \'' . $Desperdicio . '\')
+ELSE
+FT.Consumo *  PM.Precio
+END AS DESPERDICIO
 ', false)
                     ->from('FichaTecnica AS FT')
                     ->join('piezas AS P', 'P.Clave = FT.Pieza')
@@ -148,7 +160,7 @@ FT.Consumo *  PM.Precio + ((FT.Consumo *  PM.Precio) * \'' . $Desperdicio . '\')
              * FOR DEBUG ONLY
              */
             $str = $this->db->last_query();
-//            print $str;
+            //print $str;
             $data = $query->result();
             return $data;
         } catch (Exception $exc) {

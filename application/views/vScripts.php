@@ -32,7 +32,8 @@
         });
         $("select").selectize({
             hideSelected: true,
-            openOnFocus: false
+            openOnFocus: false,
+            selectOnTab: false
         });
 //            $("select").not('.NotOpenDropDown').not('.notSelect').selectize({
 //                hideSelected: true,

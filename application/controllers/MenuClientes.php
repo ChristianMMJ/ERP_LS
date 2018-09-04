@@ -27,6 +27,9 @@ class MenuClientes extends CI_Controller {
                 case 'RECURSOS HUMANOS':
                     $this->load->view('vMenuClientes');
                     break;
+                case 'CONTABILIDAD':
+                    $this->load->view('vMenuClientes');
+                    break;
             }
 
             $this->load->view('vFooter');

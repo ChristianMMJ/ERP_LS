@@ -241,7 +241,7 @@ class FichaTecnicaCompra extends CI_Controller {
                                 $TOTAL_DESPERDICIO_DEPTOS += $F->DESPERDICIO;
 
                                 //TOTALES GENERALES
-                                $TOTAL_CONSUMO_COSTO_GEN += $F->CONSUMO_COSTO;
+                                $TOTAL_CONSUMO_COSTO_GEN += $F->COSTO;
                                 $TOTAL_DESPERDICIO_GEN += $F->DESPERDICIO;
                             }
                         }

@@ -37,22 +37,24 @@
                         <label for="Usuario" >Usuario*</label>
                         <input type="text" class="form-control form-control-sm"  name="Usuario" required >
                     </div>
-                    <div class="col-12 col-sm-5 col-md-5 col-lg-5 col-xl-5">
-                        <div class="row">
-                            <div class="col-12 col-sm-10 col-md-10 col-lg-10 col-xl-10">
-                                <label for="Contrasena" >Contraseña*</label>
-                                <input type="password" class="form-control form-control-sm animated bounceIn" id="Contrasena" name="Contrasena" required>
-                            </div>
-                            <div class="col-12 col-sm-10 col-md-10 col-lg-2 col-xl-2">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="Seguridad" name="Seguridad" >
-                                    <label class="custom-control-label" for="Seguridad">Seguridad</label>
-                                </div>
-                            </div>
+                    <div class="col-12 col-sm-5 col-md-5 col-lg-5 col-xl-4">
+
+                        <label for="Contrasena" >Contraseña*</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control form-control-sm animated bounceIn" id="Contrasena" name="Contrasena" required>
+                            <span class="input-group-prepend">
+                                <span class="input-group-text text-dark " id="VerContrasena" name="VerContrasena" onclick="onVerExistencias()" data-toggle="tooltip" data-placement="top" title="Existencia en Tiendas">
+                                    <i class="fa fa-eye"></i>
+                                </span>
+                            </span>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-1 col-md-1 col-lg-1 col-xl-1" align="center">
-                        <button type="button" class="btn btn-info mt-4 d-none" id="VerContrasena" name="VerContrasena"><span class="fa fa-eye"></span></button>
+                    <div class="col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 " >
+                        <label for="Consumo">Seguridad</label>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="Seguridad" name="Seguridad" >
+                            <label class="custom-control-label" for="Seguridad"></label>
+                        </div>
                     </div>
 
                     <div class="col-12 col-md-6 col-sm-6">
@@ -124,20 +126,28 @@
 
     $(document).ready(function () {
 
+        $("#TipoAcceso").selectize({
+            onDropdownClose: function (dropdown) {
+                console.log(this);
+                this.$control_input.blur();
+            }
+        });
+
         VerContrasena.click(function () {
             btnGuardar.addClass('d-none');
             $.getJSON(master_url + 'onVerClave', {ID: pnlDatos.find("#ID").val()}).done(function (data) {
                 var str = '<div id="pnlContrasena" class="row">';
-                str += '<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10">';
+                str += '<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">';
                 str += '<input type="text" id="ContrasenaTemporal" readonly="" class="form-control form-control-sm animated bounceIn" placeholder="" value="' + data[0].PW + '" required>';
                 str += '</div>';
-                str += '<div class="col-1 col-sm-1 col-md-1 col-lg-1 col-xl-1">';
-                str += '<span class="font-weight-bold text-info"></span>';
-                str += '</div>';
+//                str += '<div class="col-12 col-sm-3 col-md-1 col-lg-2 col-xl-2">';
+//                str += '<span class="font-weight-bold text-info"></span>';
+//                str += '</div>';
                 str += '</div>';
                 pnlDatos.find("#Contrasena").after(str);
                 pnlDatos.find("#Contrasena").addClass("d-none");
-                VerContrasena.prop("disabled", true);
+                VerContrasena.addClass("disabledForms");
+
                 counter = true;
                 countDown();
             }).fail(function (x, y, z) {
@@ -152,7 +162,7 @@
                 n--;
             } else {
                 pnlDatos.find("#Contrasena").removeClass("d-none");
-                VerContrasena.prop("disabled", false);
+                VerContrasena.removeClass("disabledForms");
                 pnlDatos.find("#pnlContrasena").remove();
                 counter = false;
                 n = 10;

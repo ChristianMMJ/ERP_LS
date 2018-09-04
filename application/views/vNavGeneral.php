@@ -214,7 +214,7 @@
             </a>
         </li>
         <li class="item">
-            <a href="#">
+            <a href="<?php print base_url('MenuContabilidad.shoes') ?>">
                 <div class="row pl-2">
                     <div class="col-2">
                         <i class="fa fa-calculator"></i>

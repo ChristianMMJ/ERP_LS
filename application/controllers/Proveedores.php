@@ -39,6 +39,9 @@ class Proveedores extends CI_Controller {
                 case 'PROVEEDORES':
                     $this->load->view('vMenuProveedores');
                     break;
+                case 'CONTABILIDAD':
+                    $this->load->view('vMenuContabilidad');
+                    break;
             }
 
             $this->load->view('vFondo');

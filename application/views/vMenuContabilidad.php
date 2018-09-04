@@ -1,7 +1,7 @@
 <!-- Contenido  -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
     <button class="btn btn-primary text-success btn-sm navbar-brand" id="sidebarCollapse">
-        <i class="fas fa-hand-holding-usd"></i> Nóminas
+        <i class="fa fa-calculator"></i> CONTABILIDAD
     </button>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -14,51 +14,42 @@
                     Catálogos
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCatalogos">
-                    <a class="dropdown-item" href="<?php print base_url('Departamentos/?origen=NOMINAS'); ?>"> Departamentos</a>
-                    <a class="dropdown-item" href="<?php print base_url('Fracciones/?origen=NOMINAS'); ?>"> Fracciones</a>
-                    <a class="dropdown-item" href="<?php print base_url('FraccionesXEstilo/?origen=NOMINAS'); ?>"> Fracciones Por Estilo</a>
-                    <a class="dropdown-item" href="<?php print base_url('Semanas'); ?>"> Semanas Nómina</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlTipoCambio"> Tipo Cambio Moneda</a>
                 </div>
-
+            </li>
+            <li class="nav-item dropdown">
+                <a class="btn btn-primary dropdown-toggle" href="#" id="navCapturas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Capturas
+                </a>
+                <div class="dropdown-menu dropdown-menu" aria-labelledby="navCapturas">
+                    <a class="dropdown-item" href="#"> --</a>
+                </div>
             </li>
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navConsultas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Consultas
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navConsultas">
-                    <a class="dropdown-item" href="#"> Prueba.</a>
+                    <a class="dropdown-item" href="#"> --</a>
                 </div>
             </li>
 
-            <li class="nav-item dropdown">
-                <a class="btn btn-primary dropdown-toggle" href="#" id="navEmpleados" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Empleados
-                </a>
-                <div class="dropdown-menu dropdown-menu" aria-labelledby="navEmpleados">
-                    <a class="dropdown-item" href="#"> Pruebas</a>
-                </div>
-
-
-            </li>
-
-            <li class="nav-item dropdown">
-                <a class="btn btn-primary dropdown-toggle" href="#" id="navReportes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Reportes
-                </a>
-                <div class="dropdown-menu dropdown-menu" aria-labelledby="navReportes">
-                    <a class="dropdown-item" href="#"> Prueba</a>
-                </div>
-            </li>
             <li class="nav-item mx-1">
-                <a class="btn btn-info" href="<?php print base_url('MenuProduccion/?parentMenu=MenuNomina'); ?>">
-                    Menú Producción
+                <a class="btn btn-info" href="<?php print base_url('MenuMateriales/?parentMenu=MenuContabilidad'); ?>">
+                    Menú Materiales
                 </a>
             </li>
             <li class="nav-item mx-1">
-                <a class="btn btn-info" href="<?php print base_url('MenuClientes/?parentMenu=MenuNomina'); ?>">
+                <a class="btn btn-info" href="<?php print base_url('MenuClientes/?parentMenu=MenuContabilidad'); ?>">
                     Menú Clientes
                 </a>
             </li>
+            <li class="nav-item mx-1">
+                <a class="btn btn-info" href="<?php print base_url('MenuProveedores/?parentMenu=MenuContabilidad'); ?>">
+                    Menú Proveedores
+                </a>
+            </li>
+
 
             <li class="nav-item dropdown ml-auto">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -75,3 +66,5 @@
         </ul>
     </div>
 </nav>
+<?php
+$this->load->view('vTipoCambio');

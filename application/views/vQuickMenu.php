@@ -36,7 +36,7 @@
                     <figcaption class="figure-caption text-nowrap mt-4"><h4>PRODUCCIÓN</h4></figcaption>
                 </figure>
             </div>
-            <div class="card col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2  animated fadeInDown" onclick="">
+            <div class="card col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2  animated fadeInDown" onclick="onMenuDisplay('MenuContabilidad');">
                 <figure class="figure">
                     <span class="fa fa-calculator fa-2x mt-5"></span>
                     <figcaption class="figure-caption text-nowrap mt-4"><h4>CONTABILIDAD</h4></figcaption>

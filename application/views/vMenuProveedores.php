@@ -1,7 +1,7 @@
 <!-- Contenido  -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
     <button class="btn btn-primary text-success btn-sm navbar-brand" id="sidebarCollapse">
-        <i class="fa fa-home"></i> Proveedores
+        <i class="fa fa-user-secret"></i> Proveedores
     </button>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -45,6 +45,12 @@
                 </div>
             </li>
 
+            <li class="nav-item mx-1 d-none" id="btnRegresar">
+                <a class="btn btn-danger " href="<?php print base_url(isset($_GET['parentMenu']) ? $_GET['parentMenu'] : ""); ?>">
+                    <i class="fa fa-arrow-left"></i> Regresar
+                </a>
+            </li>
+
             <li class="nav-item dropdown ml-auto">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <?php echo $this->session->userdata('Nombre') . ' ' . $this->session->userdata('Apellidos'); ?>
@@ -60,3 +66,20 @@
         </ul>
     </div>
 </nav>
+<script>
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+    var menu;
+    $(document).ready(function () {
+        menu = getParameterByName('parentMenu');
+        if (menu !== '' && menu === 'MenuNomina' || menu === 'MenuContabilidad') {
+            $('#btnRegresar').removeClass('d-none');
+        } else {
+            $('#btnRegresar').addClass('d-none');
+        }
+    });
+</script>

@@ -42,6 +42,9 @@ class Sesion extends CI_Controller {
                 case 'PROVEEDORES':
                     $this->load->view('vMenuProveedores');
                     break;
+                case 'CONTABILIDAD':
+                    $this->load->view('vMenuContabilidad');
+                    break;
             }
             $this->load->view('vFooter');
         } else {

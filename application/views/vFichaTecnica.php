@@ -98,7 +98,7 @@
                             </div>
                         </div>
                         <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                            <button type="button" id="btnAgregar" class="btn btn-primary mt-4"><span class="fa fa-check"></span></button>
+                            <button type="button" id="btnAgregar" class="btn btn-primary mt-4"><span class="fa fa-save"></span></button>
                         </div>
                     </div>
                 </div>

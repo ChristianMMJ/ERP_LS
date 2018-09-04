@@ -10,7 +10,12 @@
             <div class="modal-body">
                 <form id="frmTipoCambio">
                     <div class="row">
-
+                        <div class="col-12">
+                            <label>Consulta Online</label>
+                            <a id="iframe"class="btn btn-warning" href="http://www.sistemascasa.com.mx/informacion_indicadores_5.php">
+                                <i class="fab fa-internet-explorer"></i> IR AL SITIO WEB
+                            </a>
+                        </div>
                         <div class="col-12">
                             <label>Dolar</label>
                             <input type="text" maxlength="5" class="form-control form-control-sm numbersOnly" id="Dolar" name="Dolar" >
@@ -27,6 +32,8 @@
                             <label>Jen</label>
                             <input type="text" maxlength="5" class="form-control form-control-sm numbersOnly" id="Jen" name="Jen" >
                         </div>
+
+
                     </div>
                 </form>
             </div>
@@ -42,6 +49,17 @@
     var mdlTipoCambio = $('#mdlTipoCambio');
     $(document).ready(function () {
 
+        $("#iframe").fancybox({
+            'width': '75%',
+            'height': '75%',
+            'autoScale': false,
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'type': 'iframe',
+            iframe: {
+                preload: false
+            }
+        });
         mdlTipoCambio.on('shown.bs.modal', function () {
             mdlTipoCambio.find("input").val("");
             getTipoCambio();

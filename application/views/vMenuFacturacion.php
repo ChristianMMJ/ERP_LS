@@ -1,7 +1,7 @@
 <!-- Contenido  -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
     <button class="btn btn-primary text-success btn-sm navbar-brand" id="sidebarCollapse">
-        <i class="fa fa-home"></i> FACTURACIÓN
+        <i class="fa fa-file-invoice"></i> FACTURACIÓN
     </button>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -18,6 +18,7 @@
                     <a class="dropdown-item" href="<?php print base_url('Agentes.shoes'); ?>"> Agentes</a>
                     <a class="dropdown-item" href="<?php print base_url('Estados.shoes'); ?>"> Estados</a>
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlTipoCambio"> Tipo Cambio Moneda</a>
+                </div>
             </li>
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navCapturas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
