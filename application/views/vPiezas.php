@@ -114,6 +114,11 @@
         /*FUNCIONES INICIALES*/
         init();
         handleEnter();
+        validacionSelectPorContenedor(pnlDatos);
+        setFocusSelectToSelectOnChange('#Departamento', '#Clasificacion', pnlDatos);
+        setFocusSelectToSelectOnChange('#Clasificacion', '#Rango', pnlDatos);
+        setFocusSelectToSelectOnChange('#Rango', '#Obliga', pnlDatos);
+        setFocusSelectToInputOnChange('#Obliga', '#btnGuardar', pnlDatos);
 
         /*FUNCIONES X BOTON*/
         btnGuardar.click(function () {

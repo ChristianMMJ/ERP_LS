@@ -41,17 +41,17 @@ class ListaDePrecios extends CI_Controller {
         }
     }
 
-    public function getListaDePreciosByID() {
+    public function getID() {
         try {
-            print json_encode($this->listadeprecios_model->getListaDePreciosByID($this->input->get('ID')));
+            print json_encode($this->listadeprecios_model->getID());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getID() {
+    public function getListaDePreciosByID() {
         try {
-            print json_encode($this->listadeprecios_model->getID());
+            print json_encode($this->listadeprecios_model->getListaDePreciosByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

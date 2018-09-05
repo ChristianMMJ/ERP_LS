@@ -16,8 +16,8 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Clave</th> 
-                            <th>Descripcion</th> 
+                            <th>Clave</th>
+                            <th>Descripcion</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -49,7 +49,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                             <label for="Clave" >Clave*</label>
-                            <input type="text" class="form-control form-control-sm numbersOnly" id="Lista" name="Lista" required placeholder="">
+                            <input type="text" class="form-control form-control-sm numbersOnly disabledForms" id="Lista" name="Lista" required placeholder="">
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                             <label for="Descripcion" >Descripción*</label>
@@ -113,7 +113,8 @@
             pnlDatos.find("input,textarea").val("");
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass("d-none");
-            pnlDatos.find("#Lista").focus();
+            getID();
+            pnlDatos.find("#Descripcion").focus();
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
@@ -209,6 +210,21 @@
             });
         });
 
+    }
+
+    function getID() {
+        $.getJSON(master_url + 'getID').done(function (data, x, jq) {
+            if (data.length > 0) {
+                var ID = $.isNumeric(data[0].CLAVE) ? parseInt(data[0].CLAVE) + 1 : 1;
+                pnlDatos.find("#Lista").val(ID);
+            } else {
+                pnlDatos.find("#Lista").val('1');
+            }
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
+        });
     }
 
     function getOptions(url, comp, key, field) {

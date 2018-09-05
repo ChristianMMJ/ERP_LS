@@ -35,7 +35,7 @@
                     </div>
                     <div class="col-12 col-md-6 col-sm-6">
                         <label for="Clave" >Clave*</label>
-                        <input type="text" class="form-control form-control-sm"  name="Clave" required >
+                        <input type="text" class="form-control form-control-sm disabledForms"  name="Clave" required >
                     </div>
                     <div class="col-12 col-md-6 col-sm-6">
                         <label for="Nombre" >Nombre*</label>
@@ -43,7 +43,7 @@
                     </div>
                     <div class="col-12 col-md-12 col-sm-12">
                         <label for="" >Tipo Concepto*</label>
-                        <select id="Tipo" name="Tipo" class="form-control form-control-sm" >
+                        <select id="Tipo" name="Tipo" class="form-control form-control-sm required" >
                             <option value=""></option>
                             <option value="DIRECTOS">DIRECTOS</option>
                             <option value="INDIRECTOS">INDIRECTOS</option>
@@ -83,6 +83,9 @@
     var nuevo = true;
 
     $(document).ready(function () {
+
+        verificarValorSelect('#Tipo', pnlDatos)
+        setFocusSelectToInputOnChange('#Tipo', '#btnGuardar', pnlDatos);
 
         btnNuevo.click(function () {
             pnlTablero.addClass("d-none");

@@ -126,12 +126,12 @@
 
     $(document).ready(function () {
 
-        $("#TipoAcceso").selectize({
-            onDropdownClose: function (dropdown) {
-                console.log(this);
-                this.$control_input.blur();
-            }
-        });
+        validacionSelectPorContenedor(pnlDatos);
+        setFocusSelectToSelectOnChange('#TipoAcceso', '#Empresa', pnlDatos);
+        setFocusSelectToSelectOnChange('#Empresa', '#Estatus', pnlDatos);
+        setFocusSelectToInputOnChange('#Estatus', '#btnGuardar', pnlDatos);
+
+
 
         VerContrasena.click(function () {
             btnGuardar.addClass('d-none');

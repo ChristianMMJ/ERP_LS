@@ -160,6 +160,11 @@
 
     $(document).ready(function () {
 
+        validacionSelectPorContenedor(pnlDatos);
+        setFocusSelectToInputOnChange('#Estilo', '#FechaAlta', pnlDatos);
+        setFocusSelectToSelectOnChange('#Departamento', '#Fraccion', pnlDatos);
+        setFocusSelectToInputOnChange('#Fraccion', '#CostoMO', pnlDatos);
+
         btnImprimirFraccionesXEstilo.click(function () {
             if (temp.length > 0) {
                 //HoldOn.open({  message: 'Espere...', theme: 'sk-cube'});

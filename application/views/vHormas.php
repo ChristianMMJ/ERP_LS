@@ -125,7 +125,7 @@
                                 </tr>
                                 <tr class="rCapturaCantidades" id="rCantidades">
                                     <td class="text-info">Cantidades</td>
-                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C1"></td>
+                                    <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  id="C1" name="C1"></td>
                                     <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C2"></td>
                                     <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C3"></td>
                                     <td><input type="text" style="width: 35px;" class="numbersOnly" maxlength="3"  name="C4"></td>
@@ -179,44 +179,15 @@
     var nuevo = false;
 
 
-    function getSerieXClave(Serie) {
-        $.ajax({
-            url: master_url + 'getSerieXClave',
-            type: "POST",
-            dataType: "JSON",
-            data: {
-                Clave: Serie
-            }
-        }).done(function (data, x, jq) {
 
-            if (data.length > 0) {
-                $.each(data[0], function (k, v) {
-                    var Can = k.replace("T", "C");
-                    if (parseInt(v) <= 0) {
-                        console.log("[name='" + Can + "']");
-                        pnlDatos.find('#rCantidades').find("[name='" + Can + "']").prop('disabled', true);
-                    } else if (parseInt(v) > 0) {
-                        pnlDatos.find('#rCantidades').find("[name='" + Can + "']").prop('disabled', false);
-                        pnlDatos.find('#rTallasBuscaManual').find("[name='" + k + "']").val(v);
-                    }
-                });
-            } else {
-                pnlDatos.find('#rTallasBuscaManual').find('#rTallasBuscaManual').find("input").val("");
-                pnlDatos.find('#rCantidades').find("input").prop('disabled', true);
-            }
-
-
-        }).fail(function (x, y, z) {
-            console.log(x, y, z);
-        }).always(function () {
-            HoldOn.close();
-        });
-    }
 
     $(document).ready(function () {
         /*FUNCIONES INICIALES*/
         init();
         handleEnter();
+        validacionSelectPorContenedor(pnlDatos);
+        setFocusSelectToSelectOnChange('#Serie', '#Maquila', pnlDatos);
+        setFocusSelectToInputOnChange('#Maquila', '#C1', pnlDatos);
 
         pnlDatos.find("[name='Serie']").change(function () {
             getSerieXClave($(this).val());
@@ -346,6 +317,39 @@
         getMaquilas();
     }
 
+    function getSerieXClave(Serie) {
+        $.ajax({
+            url: master_url + 'getSerieXClave',
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                Clave: Serie
+            }
+        }).done(function (data, x, jq) {
+
+            if (data.length > 0) {
+                $.each(data[0], function (k, v) {
+                    var Can = k.replace("T", "C");
+                    if (parseInt(v) <= 0) {
+                        console.log("[name='" + Can + "']");
+                        pnlDatos.find('#rCantidades').find("[name='" + Can + "']").prop('disabled', true);
+                    } else if (parseInt(v) > 0) {
+                        pnlDatos.find('#rCantidades').find("[name='" + Can + "']").prop('disabled', false);
+                        pnlDatos.find('#rTallasBuscaManual').find("[name='" + k + "']").val(v);
+                    }
+                });
+            } else {
+                pnlDatos.find('#rTallasBuscaManual').find('#rTallasBuscaManual').find("input").val("");
+                pnlDatos.find('#rCantidades').find("input").prop('disabled', true);
+            }
+
+
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
+        });
+    }
     function getID() {
         $.getJSON(master_url + 'getID').done(function (data, x, jq) {
             console.log(data);

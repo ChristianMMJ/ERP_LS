@@ -57,15 +57,15 @@
                     </div>
                     <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
                         <label for="Clave" >Clave*</label>
-                        <input type="text" class="form-control form-control-sm numbersOnly" id="Clave" name="Clave" required placeholder="Clave del color">
+                        <input type="text" class="form-control form-control-sm numbersOnly disabledForms" id="Clave" name="Clave" required placeholder="Clave del color">
                     </div>
                     <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
                         <label for="" >Consignatario*</label>
-                        <input type="text" id="Consignatario" name="Consignatario" class="form-control form-control-sm"  required=""/>
+                        <input type="text" id="Consignatario" name="Consignatario" class="form-control form-control-sm "  required=""/>
                     </div>
                     <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
                         <label for="Direccion" >Dirección*</label>
-                        <textarea id="Direccion" name="Direccion" maxlength="100" class="form-control" rows="2" cols="4"></textarea>
+                        <textarea id="Direccion" name="Direccion" maxlength="100" required="" class="form-control" rows="2" cols="4"></textarea>
                     </div>
                     <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
                         <label for="" >Colonia*</label>
@@ -76,26 +76,26 @@
                         <input type="text" id="Ciudad" name="Ciudad" class="form-control form-control-sm"  required=""/>
                     </div>
                     <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
-                        <label>Estado</label>
+                        <label>Estado*</label>
                         <select id="Estado" name="Estado" class="form-control form-control-sm" >
                             <option value=""></option>
                         </select>
                     </div>
                     <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
-                        <label for="" >Código Postal*</label>
-                        <input type="text" id="CodigoPostal" name="CodigoPostal" class="form-control form-control-sm numbersOnly"  required=""/>
+                        <label for="" >Código Postal</label>
+                        <input type="text" id="CodigoPostal" name="CodigoPostal" class="form-control form-control-sm numbersOnly"  />
                     </div>
                     <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
-                        <label for="" >RFC*</label>
-                        <input type="text" id="RFC" name="RFC" class="form-control form-control-sm"  required=""/>
+                        <label for="" >RFC</label>
+                        <input type="text" id="RFC" name="RFC" class="form-control form-control-sm "  />
                     </div>
                     <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
-                        <label for="" >Tel.Oficina*</label>
-                        <input type="text" id="TelOficina" name="TelOficina" class="form-control form-control-sm"  required=""/>
+                        <label for="" >Tel.Oficina</label>
+                        <input type="text" id="TelOficina" name="TelOficina" class="form-control form-control-sm"  />
                     </div>
                     <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
-                        <label for="" >Tel.Particular*</label>
-                        <input type="text" id="TelParticular" name="TelParticular" class="form-control form-control-sm"  required=""/>
+                        <label for="" >Tel.Particular</label>
+                        <input type="text" id="TelParticular" name="TelParticular" class="form-control form-control-sm"  />
                     </div>
                     <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
                         <label>Transporte</label>
@@ -125,22 +125,25 @@
     var btnNuevo = $("#btnNuevo"), btnCancelar = $("#btnCancelar"), btnEliminar = $("#btnEliminar"), btnGuardar = $("#btnGuardar");
     var pnlTablero = $("#pnlTablero"), pnlDatos = $("#pnlDatos");
     var nuevo = false;
-    //Filter by only first letter
-    //https://github.com/selectize/selectize.js/issues/795
 
     $(document).ready(function () {
         init();
         handleEnter();
-
+        validacionSelectPorContenedor(pnlDatos);
+        setFocusSelectToInputOnChange('#Cliente', '#Clave', pnlDatos);
+        setFocusSelectToInputOnChange('#Estado', '#CodigoPostal', pnlDatos);
+        setFocusSelectToInputOnChange('#Transporte', '#btnGuardar', pnlDatos);
         pnlDatos.find("#Cliente").change(function () {
             var id = $(this).val();
             $.getJSON(master_url + 'getID', {ID: id}).done(function (data) {
                 if (data.length > 0) {
                     var ID = $.isNumeric(data[0].CLAVE) ? parseInt(data[0].CLAVE) + 1 : 1;
-                    pnlDatos.find("#Clave").val(ID).select().focus();
+                    pnlDatos.find("#Clave").val(ID);
+                    pnlDatos.find("#Consignatario").focus();
                 } else {
                     if (id !== '') {
-                        pnlDatos.find("#Clave").val('1').select().focus();
+                        pnlDatos.find("#Clave").val('1');
+                        pnlDatos.find("#Consignatario").focus();
                     } else {
                         pnlDatos.find("#Cliente")[0].selectize.focus();
                     }

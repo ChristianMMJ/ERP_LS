@@ -44,21 +44,25 @@
                 <div class="d-none">
                     <input type="text" class="" id="ID" name="ID" >
                 </div>
-                <div class="col-sm">
+                <div class="col-12 col-sm-3">
                     <label for="Clave">Clave*</label>
                     <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required >
                 </div>
-                <div class="col-sm">
+                <div class="col-12 col-sm-3">
                     <label for="PuntoInicial">Punto Inicial*</label>
                     <input type="text" class="form-control form-control-sm numbersOnly" maxlength="4" id="PuntoInicial" name="PuntoInicial" required >
                 </div>
-                <div class="col-sm">
-                    <label for="PuntoFinal">Punto Final*</label>
-                    <input type="text"  class="form-control form-control-sm numbersOnly" maxlength="4" id="PuntoFinal" name="PuntoFinal" required >
+                <div class="col-6 col-sm-3">
+                    <label for="MediosPuntos">Medios Puntos</label>
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" id="MediosPuntos" checked="">
-                        <label class="custom-control-label" for="MediosPuntos">Medios Puntos</label>
+                        <label class="custom-control-label" for="MediosPuntos"></label>
                     </div>
+                </div>
+                <div class="col-12 col-sm-3">
+                    <label for="PuntoFinal">Punto Final*</label>
+                    <input type="text"  class="form-control form-control-sm numbersOnly" maxlength="4" id="PuntoFinal" name="PuntoFinal" required >
+
                 </div>
             </div>
             <div class="row">
@@ -90,16 +94,7 @@
 
             </div>
 
-            <div class="row">
-                <div class="col-sm">
-                    <label for="Estatus">Estatus*</label>
-                    <select class="form-control form-control-sm "  name="Estatus">
-                        <option value=""></option>
-                        <option>ACTIVO</option>
-                        <option>INACTIVO</option>
-                    </select>
-                </div>
-            </div>
+
             <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
                 <i class="fa fa-save"></i>
             </button>
@@ -160,7 +155,20 @@
 
                 } else {
                     guardar = false;
-                    onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'EL PUNTO INICIAL NO DEBE SER MAYOR AL PUNTO FINAL', 'danger');
+
+                    swal({
+                        title: "ATENCIÓN",
+                        text: "EL PUNTO INICIAL NO DEBE SER MAYOR AL PUNTO FINAL",
+                        icon: "warning",
+                        closeOnClickOutside: false,
+                        closeOnEsc: false,
+                        buttons: false,
+                        timer: 2000
+                    }).then((action) => {
+                        pnlDatos.find('#PuntoFinal').focus();
+                        pnlDatos.find("#PuntoFinal").select();
+                    });
+
                 }
             }
 

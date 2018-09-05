@@ -11,6 +11,34 @@
         return isMobile;
     }
 
+    //Verifica que el select tenga un valor valido
+    function verificarValorSelect(id, div) {
+        div.find('.selectize-control').find('input' + id + '-selectized').on('blur', function () {
+            var select_actual = div.find(id)[0].selectize.getValue();
+            if (select_actual === '') {
+                $(this).focus();
+            }
+        });
+    }
+    //Se pasa el pnl o div que contendra los select a validar
+    function validacionSelectPorContenedor(contenedor) {
+        $.each(contenedor.find("select"), function (k, v) {
+            verificarValorSelect('#' + $(v).attr('id'), contenedor);
+        });
+    }
+    //Establece el foco de un select a otro select cuando no tiene el evento change definido
+    function setFocusSelectToSelectOnChange(id, idDestino, div) {
+        div.find(id).change(function () {
+            div.find(idDestino)[0].selectize.focus();
+        });
+    }
+    //Establece el foco de un select a un input
+    function setFocusSelectToInputOnChange(id, idDestino, div) {
+        div.find(id).change(function () {
+            div.find(idDestino).focus();
+        });
+    }
+
 
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
@@ -32,17 +60,9 @@
         });
         $("select").selectize({
             hideSelected: true,
-            openOnFocus: false,
-            selectOnTab: false
+            openOnFocus: false
         });
-//            $("select").not('.NotOpenDropDown').not('.notSelect').selectize({
-//                hideSelected: true,
-//                openOnFocus: true
-//            });
-//            $("select").filter('.NotOpenDropDown').not('.notSelect').selectize({
-//                hideSelected: true,
-//                openOnFocus: false
-//            });
+
 
 
         $('.modal').on('shown.bs.modal', function (e) {
@@ -57,11 +77,6 @@
         $('[data-provide="datepicker"]').addClass("notEnter");
         $('[data-provide="datepicker"]').val();
 
-//            $('[data-provide="timepicker"]').inputmask({mask: "h:s t\\m",
-//                placeholder: "hh:mm xm - hh:mm xm",
-//                alias: "datetime",
-//                hourFormat: "12"
-//            });
 
         $('[data-provide="timepicker"]').inputmask("hh:mm:ss", {
             hourFormat: "24",

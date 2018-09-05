@@ -113,7 +113,10 @@
         /*FUNCIONES INICIALES*/
         init();
         handleEnter();
-
+        validacionSelectPorContenedor(pnlDatos);
+        setFocusSelectToSelectOnChange('#Tipo', '#Avance', pnlDatos);
+        setFocusSelectToSelectOnChange('#Avance', '#Fraccion', pnlDatos);
+        setFocusSelectToInputOnChange('#Fraccion', '#btnGuardar', pnlDatos);
         pnlDatos.find("[name='Avance']").change(function () {
             console.log(parseInt($(this).val()));
             if (parseInt($(this).val()) === 1) {

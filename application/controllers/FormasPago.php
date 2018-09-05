@@ -43,6 +43,14 @@ class FormasPago extends CI_Controller {
         }
     }
 
+    public function onComprobarClave() {
+        try {
+            print json_encode($this->formasPago_model->onComprobarClave($this->input->get('Clave')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getID() {
         try {
             print json_encode($this->formasPago_model->getID());

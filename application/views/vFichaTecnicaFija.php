@@ -29,7 +29,7 @@
                     </div>
                     <div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-1">
                         <label for="Consumo">Consumo*</label>
-                        <input type="text" maxlength="8" class="form-control form-control-sm numbersOnly"  name="Consumo" required="">
+                        <input type="text" maxlength="8" class="form-control form-control-sm numbersOnly" id="Consumo" name="Consumo" required="">
                     </div>
                     <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
                         <i class="fa fa-save"></i>
@@ -101,6 +101,10 @@
         /*FUNCIONES INICIALES*/
         init();
         handleEnter();
+        validacionSelectPorContenedor(pnlTablero);
+        setFocusSelectToSelectOnChange('#Pieza', '#Grupo', pnlTablero);
+        setFocusSelectToSelectOnChange('#Grupo', '#Articulo', pnlTablero);
+        setFocusSelectToInputOnChange('#Articulo', '#Consumo', pnlTablero);
         /*FUNCIONES X BOTON*/
         btnGuardar.click(function () {
             isValid('pnlTablero');

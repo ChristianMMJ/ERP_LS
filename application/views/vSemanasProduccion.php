@@ -163,14 +163,18 @@
     var FechaIni;
     $(document).ready(function () {
         pnlDatos.find("#Ano").change(function () {
-            if ($(this).val().length < 4) {
+            if ($(this).val().length < 4 && parseInt($(this).val()) > 2016 || parseInt($(this).val()) > 2020) {
                 swal({
                     title: "ATENCIÓN",
                     text: "AÑO INCORRECTO",
-                    icon: "warning"
+                    icon: "warning",
+                    closeOnClickOutside: false,
+                    closeOnEsc: false,
+                    buttons: false,
+                    timer: 1000
                 }).then((action) => {
+                    pnlDatos.find("#Ano").val("");
                     pnlDatos.find("#Ano").focus();
-                    pnlDatos.find("#Ano").select();
                 });
             } else {
                 $.ajax({

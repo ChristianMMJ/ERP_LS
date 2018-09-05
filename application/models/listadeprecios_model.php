@@ -10,7 +10,7 @@ class listadeprecios_model extends CI_Model {
         parent::__construct();
     }
 
-    public function getRecords() { 
+    public function getRecords() {
         try {
             return $this->db->select("LP.ID, LP.Lista AS Clave, CONCAT(LP.Lista,'-',LP.Descripcion) AS ListaPrecios", false)
                             ->from('listadeprecios AS LP')->get()->result();
@@ -29,7 +29,11 @@ class listadeprecios_model extends CI_Model {
 
     public function getID() {
         try {
-            return $this->db->select("A.Clave AS CLAVE")->from("listadeprecios AS A")->order_by("Clave", "DESC")->limit(1)->get()->result();
+            return $this->db->select("CONVERT(F.Lista, UNSIGNED INTEGER) AS 'CLAVE'")
+                            ->from("listadeprecios AS F")
+                            ->where("CONVERT(F.Lista, UNSIGNED INTEGER) < 99", null, false)
+                            ->order_by("CLAVE", "DESC")
+                            ->limit(1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -69,4 +73,5 @@ class listadeprecios_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
+
 }

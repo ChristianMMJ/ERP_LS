@@ -13,7 +13,7 @@
 
                         <div class="col-12 col-sm-8">
                             <label>Estilo</label>
-                            <select class="form-control form-control-sm required" id="Estilo" name="Estilo" required="">
+                            <select class="form-control form-control-sm required selectize" id="Estilo" name="Estilo" required="">
                                 <option value=""></option>
                             </select>
                         </div>
@@ -23,13 +23,13 @@
                         </div>
                         <div class="col-12 col-sm-12">
                             <label>Color</label>
-                            <select class="form-control form-control-sm required" id="Color" name="Color" required="">
+                            <select class="form-control form-control-sm required selectize" id="Color" name="Color" required="">
                                 <option value=""></option>
                             </select>
                         </div>
                         <div class="col-12 col-sm-12">
                             <label>Maquila</label>
-                            <select class="form-control form-control-sm required" id="Maquila" name="Maquila" required="">
+                            <select class="form-control form-control-sm required selectize" id="Maquila" name="Maquila" required="">
                                 <option value=""></option>
                             </select>
                         </div>
@@ -81,7 +81,13 @@
 <script>
 
     var mdlFichaTecnicaCompra = $('#mdlFichaTecnicaCompra');
+
+
+
     $(document).ready(function () {
+
+        validacionSelectPorContenedor(mdlFichaTecnicaCompra);
+        setFocusSelectToSelectOnChange('#Color', '#Maquila', mdlFichaTecnicaCompra);
 
         mdlFichaTecnicaCompra.find("#Estilo").change(function () {
             $("#Color")[0].selectize.clear(true);
@@ -93,7 +99,10 @@
         mdlFichaTecnicaCompra.find("#Maquila").change(function () {
             var Piezas = parseInt($('#Piezas').val());
             getDesperdicioByMaquilaPiezas($(this).val(), Piezas);
+            mdlFichaTecnicaCompra.find("#ManoObra").focus();
         });
+
+
 
         mdlFichaTecnicaCompra.on('shown.bs.modal', function () {
             mdlFichaTecnicaCompra.find("input").val("");
@@ -205,6 +214,7 @@
             $.each(data, function (k, v) {
                 mdlFichaTecnicaCompra.find("#Color")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
             });
+            mdlFichaTecnicaCompra.find("#Color")[0].selectize.focus();
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         });
@@ -212,17 +222,19 @@
 
     function getDesperdicioByMaquilaPiezas(Maquila, Piezas) {
         $.getJSON(base_url + 'index.php/Maquilas/getMaquilaByClave', {Clave: Maquila}).done(function (data, x, jq) {
-            console.log(data, Piezas);
-            if (Piezas <= 10) {
-                mdlFichaTecnicaCompra.find("#Desperdicio").val(parseFloat(data[0].PorExtra3a10));
-            } else if (Piezas <= 14) {
-                mdlFichaTecnicaCompra.find("#Desperdicio").val(parseFloat(data[0].PorExtra11a14));
-            } else if (Piezas <= 18) {
-                mdlFichaTecnicaCompra.find("#Desperdicio").val(parseFloat(data[0].PorExtra15a18));
-            } else if (Piezas > 19) {
-                mdlFichaTecnicaCompra.find("#Desperdicio").val(parseFloat(data[0].PorExtra19a));
+            if (data.length > 0) {
+                if (Piezas <= 10) {
+                    mdlFichaTecnicaCompra.find("#Desperdicio").val(parseFloat(data[0].PorExtra3a10));
+                } else if (Piezas <= 14) {
+                    mdlFichaTecnicaCompra.find("#Desperdicio").val(parseFloat(data[0].PorExtra11a14));
+                } else if (Piezas <= 18) {
+                    mdlFichaTecnicaCompra.find("#Desperdicio").val(parseFloat(data[0].PorExtra15a18));
+                } else if (Piezas > 19) {
+                    mdlFichaTecnicaCompra.find("#Desperdicio").val(parseFloat(data[0].PorExtra19a));
+                }
+            } else {
+                mdlFichaTecnicaCompra.find("#Desperdicio").val('0')
             }
-
 
         }).fail(function (x, y, z) {
             console.log(x, y, z);

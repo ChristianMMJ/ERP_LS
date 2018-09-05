@@ -85,6 +85,12 @@
         init();
         handleEnter();
 
+        pnlDatos.find("#Clave").focusout(function () {
+            if (nuevo) {
+                onComprobarClave(this);
+            }
+        });
+
         /*FUNCIONES X BOTON*/
         btnGuardar.click(function () {
             isValid('pnlDatos');
@@ -173,9 +179,7 @@
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass("d-none");
             btnEliminar.addClass("d-none");
-            getID();
-            pnlDatos.find("[name='Clave']").addClass('disabledForms');
-            pnlDatos.find("[name='Descripcion']").focus();
+            pnlDatos.find("[name='Clave']").focus();
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
@@ -189,6 +193,35 @@
 
     function init() {
         getRecords();
+    }
+
+    function onComprobarClave(e) {
+        if (nuevo) {
+            $.getJSON(master_url + 'onComprobarClave', {Clave: $(e).val()}).done(function (data) {
+
+                if (data.length > 0) {
+                    swal({
+                        title: "ATENCIÓN",
+                        text: "LA CLAVE " + pnlDatos.find("#Clave").val() + " YA EXISTE",
+                        icon: "warning",
+                        buttons: {
+                            eliminar: {
+                                text: "Aceptar",
+                                value: "aceptar"
+                            }
+                        }
+                    }).then((value) => {
+                        switch (value) {
+                            case "aceptar":
+                                pnlDatos.find("#Clave").val('').focus();
+                                break;
+                        }
+                    });
+                }
+            }).fail(function (x, y, z) {
+                console.log(x.responseText);
+            });
+        }
     }
 
     function getID() {

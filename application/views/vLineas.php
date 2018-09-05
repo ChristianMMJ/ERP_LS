@@ -109,6 +109,9 @@
         /*FUNCIONES INICIALES*/
         init();
         handleEnter();
+        validacionSelectPorContenedor(pnlDatos);
+        setFocusSelectToSelectOnChange('#Temporada', '#Tipo', pnlDatos);
+        setFocusSelectToInputOnChange('#Tipo', '#btnGuardar', pnlDatos);
 
         /*FUNCIONES X BOTON*/
         btnGuardar.click(function () {

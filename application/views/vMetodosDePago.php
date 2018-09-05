@@ -130,14 +130,15 @@
         });
 
         btnNuevo.click(function () {
-            nuevo = true;;
+            nuevo = true;
+            ;
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
             pnlDatos.find("input,textarea").val("");
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass("d-none");
-            btnEliminar.addClass("d-none"); 
+            btnEliminar.addClass("d-none");
             $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
             pnlDatos.find("#Clave").focus()
         });
@@ -243,10 +244,6 @@
                             cancelar: {
                                 text: "Cancelar",
                                 value: "cancelar"
-                            },
-                            eliminar: {
-                                text: "Aceptar",
-                                value: "aceptar"
                             }
                         }
                     }).then((value) => {
@@ -254,14 +251,10 @@
                             case "aceptar":
                                 pnlDatos.find("#Clave").val('').focus();
                                 break;
-                            case "cancelar":
-                                swal.close();
-                                pnlDatos.find("#Clave").val('').focus();
-                                break;
                         }
                     });
                 }
-            }).fail(function (x, y, z) { 
+            }).fail(function (x, y, z) {
                 console.log(x.responseText);
             });
         }

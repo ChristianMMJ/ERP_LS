@@ -189,7 +189,12 @@
     var FichaTecnica;
 
     $(document).ready(function () {
-
+        validacionSelectPorContenedor(pnlDatos);
+        setFocusSelectToSelectOnChange('#Estilo', '#Color', pnlDatos);
+        setFocusSelectToInputOnChange('#Color', '#FechaAlta', pnlDatos);
+        setFocusSelectToSelectOnChange('#Pieza', '#Grupo', pnlDatos);
+        setFocusSelectToSelectOnChange('#Grupo', '#Articulo', pnlDatos);
+        setFocusSelectToInputOnChange('#Articulo', '#PzXPar', pnlDatos);
 
         pnlDatos.find("#FechaAlta").inputmask({alias: "date"});
         btnAgregar.click(function () {
@@ -582,7 +587,7 @@
             if (parseInt(data[0].EXISTE) > 0) {
                 onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'EL ESTILO YA HA SIDO CAPTURADO', 'danger');
                 pnlDatos.find("[name='Estilo']")[0].selectize.clear();
-                pnlDatos.find("[name='Estilo']")[0].selectize.focus();
+                //pnlDatos.find("[name='Color']")[0].selectize.focus();
             } else {
                 getFotoXEstilo(Estilo);
             }

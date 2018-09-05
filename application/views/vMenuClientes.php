@@ -25,7 +25,6 @@
                     <a class="dropdown-item" href="<?php print base_url('MetodosDePago.shoes'); ?>"> Métodos de Pago</a>
                     <a class="dropdown-item" href="<?php print base_url('FormasPago.shoes'); ?>"> Formas de Pagos</a>
                     <a class="dropdown-item" href="<?php print base_url('SemanasProduccion/?origen=CLIENTES'); ?>"> Semanas Prod.</a>
-                    <a class="dropdown-item" href="<?php print base_url('ListaDePrecios.shoes'); ?>"> Listas de Precios</a>
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlTipoCambio"> Tipo Cambio Moneda</a>
                 </div>
             </li>

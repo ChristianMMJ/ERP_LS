@@ -73,7 +73,7 @@ class Series extends CI_Controller {
                 'Clave' => ($x->post('Clave') !== NULL) ? $x->post('Clave') : NULL,
                 'PuntoInicial' => ($x->post('PuntoInicial') !== NULL) ? $x->post('PuntoInicial') : NULL,
                 'PuntoFinal' => ($x->post('PuntoFinal') !== NULL) ? $x->post('PuntoFinal') : NULL,
-                'Estatus' => ($x->post('Estatus') !== NULL) ? $x->post('Estatus') : NULL,
+                'Estatus' => 'ACTIVO',
                 'T1' => ($x->post('T1') !== NULL) ? $x->post('T1') : 0,
                 'T2' => ($x->post('T2') !== NULL) ? $x->post('T2') : 0,
                 'T3' => ($x->post('T3') !== NULL) ? $x->post('T3') : 0,
@@ -110,8 +110,7 @@ class Series extends CI_Controller {
             $DATA = array(
                 'Clave' => ($this->input->post('Clave') !== NULL) ? $this->input->post('Clave') : NULL,
                 'PuntoInicial' => ($this->input->post('PuntoInicial') !== NULL) ? $this->input->post('PuntoInicial') : NULL,
-                'PuntoFinal' => ($this->input->post('PuntoFinal') !== NULL) ? $this->input->post('PuntoFinal') : NULL,
-                'Estatus' => ($this->input->post('Estatus') !== NULL) ? $this->input->post('Estatus') : NULL
+                'PuntoFinal' => ($this->input->post('PuntoFinal') !== NULL) ? $this->input->post('PuntoFinal') : NULL
             );
             $this->series_model->onModificar($ID, $DATA);
         } catch (Exception $exc) {

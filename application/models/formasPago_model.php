@@ -34,6 +34,14 @@ class formasPago_model extends CI_Model {
         }
     }
 
+    public function onComprobarClave($C) {
+        try {
+            return $this->db->select("CONVERT(T.Clave, UNSIGNED INTEGER) AS CLAVE")->from("FormasPago AS T")->where("T.Clave", $C)->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onAgregar($array) {
         try {
             $this->db->insert("FormasPago", $array);

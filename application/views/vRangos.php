@@ -266,6 +266,8 @@
         /*FUNCIONES INICIALES*/
         init();
         handleEnter();
+        validacionSelectPorContenedor(pnlDatos);
+        setFocusSelectToInputOnChange('#Serie', '#PtoInUno', pnlDatos);
 
         /*FUNCIONES X BOTON*/
         pnlDatos.find("#Clave").focusout(function () {

@@ -51,7 +51,7 @@
                     </div>
                     <div class="col-12 col-md-6 col-sm-6">
                         <label for="Clave" >Clave*</label>
-                        <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required autofocus="">
+                        <input type="text" class="form-control form-control-sm disabledForms" id="Clave" name="Clave" required>
                     </div>
                     <div class="col-12 col-md-6 col-sm-6">
                         <label for="Descripcion" >Descripción*</label>
@@ -279,7 +279,7 @@
                 btnEliminar.removeClass("d-none");
 
                 pnlDatos.find("[name='Clave']").addClass('disabledForms');
-                pnlDatos.find("#Descripcion").focus().select();
+                pnlDatos.find("[name='Descripcion']").focus().select();
             }).fail(function (x, y, z) {
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
                 console.log(x.responseText);

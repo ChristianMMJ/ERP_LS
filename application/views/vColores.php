@@ -61,7 +61,7 @@
                         <input type="text" class="form-control form-control-sm numbersOnly disabledForms" id="Clave" name="Clave" required placeholder="Clave del color">
                     </div>
                     <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
-                        <label for="" >Descripción*</label>
+                        <label for="" >Descripción</label>
                         <textarea id="Descripcion" name="Descripcion" class="form-control" rows="2" cols="4"></textarea>
                     </div>
                     <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
@@ -72,7 +72,7 @@
                         </select>
                     </div>
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                        <label for="" >Obs.para la orden de producción*</label>
+                        <label for="" >Obs.para la orden de producción</label>
                         <textarea id="ObservacionesOrdenProduccion" name="ObservacionesOrdenProduccion" maxlength="100" class="form-control" rows="2" cols="4"></textarea>
                     </div>
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
@@ -97,12 +97,12 @@
                         </select>
                     </div>
                     <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                        <label for="trPiel" >Piel*</label>
-                        <input type="text" class="form-control form-control-sm" id="trPiel" name="trPiel" required placeholder="">
-                        <label for="trForro" >Forro*</label>
-                        <input type="text" class="form-control form-control-sm" id="trForro" name="trForro" required placeholder="">
-                        <label for="trSuela" >Suela*</label>
-                        <input type="text" class="form-control form-control-sm" id="trSuela" name="trSuela" required placeholder="">
+                        <label for="trPiel" >Piel</label>
+                        <input type="text" class="form-control form-control-sm" id="trPiel" name="trPiel"  placeholder="">
+                        <label for="trForro" >Forro</label>
+                        <input type="text" class="form-control form-control-sm" id="trForro" name="trForro"  placeholder="">
+                        <label for="trSuela" >Suela</label>
+                        <input type="text" class="form-control form-control-sm" id="trSuela" name="trSuela"  placeholder="">
                     </div>
                 </div>
                 <div class="row pt-2">
@@ -131,6 +131,8 @@
         /*FUNCIONES INICIALES*/
         init();
         handleEnter();
+        validacionSelectPorContenedor(pnlDatos);
+        setFocusSelectToInputOnChange('#trEtiqueta', '#trPiel', pnlDatos);
 
         /*FUNCIONES X BOTON*/
         pnlDatos.find("#Descripcion").keyup(function () {
@@ -175,6 +177,7 @@
                         HoldOn.close();
                     });
                 } else {
+                    frm.append('Estatus', 'ACTIVO');
                     $.ajax({
                         url: master_url + 'onAgregar',
                         type: "POST",

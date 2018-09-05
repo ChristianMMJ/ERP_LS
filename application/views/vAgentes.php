@@ -72,7 +72,7 @@
                         </div>
                     </div>
                 </div>
-            </div> 
+            </div>
             <!--            SEGUNDO CONTENEDOR-->
             <div class="card mx-3 mt-3 ">
                 <div class="card-body">
@@ -292,15 +292,13 @@
                         </div>
                     </div>
                 </div>
-            </div> 
+            </div>
         </fieldset>
     </form>
 </div>
 <div class="card mx-3 mt-3 d-none animated fadeIn" id="pnlDatosDetalle">
     <div class="card-body text-dark">
-        <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
-            <i class="fa fa-save"></i>
-        </button>
+
         <div class="row">
             <div class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-3">
                 <label for="Dias" class="font-weight-bold">Dias*</label>
@@ -335,6 +333,9 @@
                 </table>
             </div>
         </div>
+        <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
+            <i class="fa fa-save"></i>
+        </button>
     </div>
 </div>
 <script>
@@ -486,6 +487,7 @@
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass("d-none");
             btnEliminar.addClass("d-none");
+            pnlDatos.find('#Nombre').focus();
             $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
             getID();
         });
@@ -645,6 +647,7 @@
                 pnlTablero.addClass("d-none");
                 pnlDatos.removeClass('d-none');
                 pnlDatosDetalle.removeClass('d-none');
+                pnlDatos.find('#Nombre').focus().select();
                 /*DETALLE*/
                 $.getJSON(master_url + 'getDetalleByID', {ID: dtm.Clave}).done(function (data) {
                     if (data.length > 0) {

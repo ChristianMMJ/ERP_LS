@@ -71,7 +71,7 @@
 
                     <div class="col-12 col-md-4 col-sm-4">
                         <label for="" >Estado*</label>
-                        <select id="Tipo" name="Estado" class="form-control form-control-sm" >
+                        <select id="Estado" name="Estado" class="form-control form-control-sm" >
                             <option value=""></option>
                             <option value=""></option>
                             <option value="Aguascalientes">Aguascalientes</option>
@@ -110,7 +110,7 @@
                     </div>
                     <div class="col-12 col-md-2 col-sm-4">
                         <label for="CP">Código Postal</label>
-                        <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="8"   name="CP"  >
+                        <input type="text" class="form-control form-control-sm numbersOnly"  maxlength="8" id="CP"   name="CP"  >
                     </div>
                     <div class="col-12 col-md-2 col-sm-4">
                         <label for="Telefono">Teléfono</label>
@@ -189,6 +189,9 @@
     var sEsCliente = pnlDatos.find("#TipoAcceso");
     var nuevo = true;
     $(document).ready(function () {
+
+        validacionSelectPorContenedor(pnlDatos);
+        setFocusSelectToInputOnChange('#Estado', '#CP', pnlDatos);
 
         pnlDatos.find("#PorcentajeComprasPorPedidoF").keyup(function () {
             onComprobarValor(this, 'PorcentajeComprasPorPedidoR', 'keyup');
@@ -300,7 +303,20 @@
             var rfcCorrecto = rfcValido(rfc); //Comprobar RFC
             if (rfcCorrecto) {
             } else {
-                pnlDatos.find("[name='RFC']").val("");
+
+                swal({
+                    title: "ATENCIÓN",
+                    text: "RFC NO VÁLIDO",
+                    icon: "warning",
+                    closeOnClickOutside: false,
+                    closeOnEsc: false,
+                    buttons: false,
+                    timer: 1200
+                }).then((action) => {
+                    pnlDatos.find("[name='RFC']").val("");
+                    pnlDatos.find("[name='RFC']").focus();
+                });
+
             }
         });
         /*CALLS*/
