@@ -163,7 +163,7 @@
                     <div class="col-6 col-md-6 ">
                         <h6 class="text-danger">Los campos con * son obligatorios</h6>
                     </div>
-                    <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
+                    <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" disabled data-toggle="tooltip" data-placement="left" title="Guardar">
                         <i class="fa fa-save"></i>
                     </button>
                     <!--                    <div class="col-6 col-sm-6 col-md-6" align="right">
@@ -190,8 +190,24 @@
     var nuevo = true;
     $(document).ready(function () {
 
+<<<<<<< HEAD
         validacionSelectPorContenedor(pnlDatos);
         setFocusSelectToInputOnChange('#Estado', '#CP', pnlDatos);
+=======
+        pnlDatos.find("#frmNuevo").change(function () {
+            isValid('pnlDatos');
+            if (valido) {
+                btnGuardar.prop("disabled", false);
+            } else {
+                btnGuardar.prop("disabled", true);
+            }
+        });
+
+        pnlDatos.find("input[id='Estado-selectized']").blur(function () {
+            onNextFocus('Estado', '');
+        });
+
+>>>>>>> 1a1f79a4a923184ab19c2a321c138154cd38ecbb
 
         pnlDatos.find("#PorcentajeComprasPorPedidoF").keyup(function () {
             onComprobarValor(this, 'PorcentajeComprasPorPedidoR', 'keyup');
@@ -323,6 +339,7 @@
         getRecords();
         handleEnter();
     });
+
     function getRecords() {
         temp = 0;
         HoldOn.open({
@@ -443,6 +460,16 @@
                 vv.val(1 - v.val());
             } else {
                 vv.val('');
+            }
+        }
+    }
+
+    function onNextFocus(main_component, next_component) {
+        if (pnlDatos.find("#" + main_component).val() === '') {
+            pnlDatos.find("#" + main_component)[0].selectize.focus();
+        } else {
+            if (next_component !== '') {
+                pnlDatos.find("#" + next_component)[0].selectize.focus();
             }
         }
     }

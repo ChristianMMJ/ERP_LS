@@ -54,11 +54,11 @@
                         </div>
                         <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-2">
                             <label for="Clave" >Clave*</label>
-                            <input type="text" class="form-control form-control-sm numbersOnly disabledForms" id="Clave" name="Clave" required placeholder="20180814">
+                            <input type="text" class="form-control form-control-sm numbersOnly disabledForms" id="Clave" name="Clave" required="" placeholder="20180814">
                         </div>
                         <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
                             <label for="" >Tipo de articulo*</label>
-                            <select id="Departamento" name="Departamento" class="form-control form-control-sm" >
+                            <select id="Departamento" name="Departamento" class="form-control form-control-sm" required="">
                                 <option value=""></option>
                                 <option value="10">10 PIEL/FORRO</option>
                                 <option value="80">80 SUELA/PLANTA</option>
@@ -67,18 +67,18 @@
                         </div>
                         <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
                             <label for="" >Descripción*</label>
-                            <input type="text" class="form-control form-control-sm" id="Descripcion" name="Descripcion" required >
+                            <input type="text" class="form-control form-control-sm" id="Descripcion" name="Descripcion" required="" >
 
                         </div>
                         <div class="col-12 col-sm-6 col-md-3 col-xl-2">
                             <label for="" >Grupo*</label>
-                            <select id="Grupo" name="Grupo" class="form-control form-control-sm required" >
+                            <select id="Grupo" name="Grupo" class="form-control form-control-sm required" required="">
                                 <option value=""></option>
                             </select>
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-xl-2">
                             <label for="" >Tipo*</label>
-                            <select id="TipoArticulo" name="TipoArticulo" class="form-control form-control-sm required" >
+                            <select id="TipoArticulo" name="TipoArticulo" class="form-control form-control-sm required"  required="">
                                 <option value=""></option>
                                 <option value="0">0-PRODUCCIÓN</option>
                                 <option value="222">222-PROTOTIPO</option>
@@ -86,13 +86,13 @@
                         </div>
                         <div class="col-12 col-sm-6 col-md-3 col-xl-1">
                             <label for="" >Unidad*</label>
-                            <select id="UnidadMedida" name="UnidadMedida" class="form-control form-control-sm required" >
+                            <select id="UnidadMedida" name="UnidadMedida" class="form-control form-control-sm required" required="">
                                 <option value=""></option>
                             </select>
                         </div>
                         <div class="col-12 col-sm-6 col-md-3 col-xl-1">
                             <label for="" >Moneda*</label>
-                            <select id="Tmnda" name="Tmnda" class="form-control form-control-sm required" >
+                            <select id="Tmnda" name="Tmnda" class="form-control form-control-sm required" required="">
                                 <option value=""></option>
                                 <option value="1">1-Nacional</option>
                                 <option value="2">2-Dolar</option>
@@ -120,19 +120,19 @@
                             <legend>Proveedores del Artículo</legend>
                         </div>
                         <div class="col-12 col-sm-12 col-md-12 col-xl-4">
-                            <select id="ProveedorUno" name="ProveedorUno" class="form-control form-control-sm mb-2" >
+                            <select id="ProveedorUno" name="ProveedorUno" class="form-control form-control-sm mb-2" required="">
                                 <option value=""></option>
                             </select>
                             <input type="text" class="form-control form-control-sm numbersOnly mb-2" id="PrecioUno" name="PrecioUno"  placeholder="Precio pactado">
                         </div>
                         <div class="col-12 col-sm-12 col-md-12 col-xl-4">
-                            <select id="ProveedorDos" name="ProveedorDos" class="form-control form-control-sm mb-2" >
+                            <select id="ProveedorDos" name="ProveedorDos" class="form-control form-control-sm mb-2" required="">
                                 <option value=""></option>
                             </select>
                             <input type="text" class="form-control form-control-sm numbersOnly mb-2" id="PrecioDos" name="PrecioDos"   placeholder="Precio pactado">
                         </div>
                         <div class="col-12 col-sm-12 col-md-12 col-xl-4">
-                            <select id="ProveedorTres" name="ProveedorTres" class="form-control form-control-sm mb-2" >
+                            <select id="ProveedorTres" name="ProveedorTres" class="form-control form-control-sm mb-2" required="">
                                 <option value=""></option>
                             </select>
                             <input type="text" class="form-control form-control-sm numbersOnly mb-2" id="PrecioTres" name="PrecioTres"   placeholder="Precio pactado">
@@ -168,11 +168,12 @@
                         <div class="col-6 col-md-6 ">
                             <h6 class="text-danger">Los campos con * son obligatorios</h6>
                         </div>
-
+                        <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
+                            <i class="fa fa-save"></i>
+                        </button>
                     </div>
                 </div>
             </div>
-
         </fieldset>
     </form>
 </div>
@@ -482,7 +483,6 @@
                                 if (precio_actual !== vActual) {
                                     onModificarPrecioMaquila(r, padre, celda, this);
                                 } else {
-                                    console.log('component', componente.val())
                                     celda.html(precio_actual);
                                 }
                             }).change(function () {
