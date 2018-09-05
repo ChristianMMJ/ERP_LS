@@ -82,8 +82,8 @@ class clientes_model extends CI_Model {
 
     public function getGrupos() {
         try {
-            return $this->db->select("G.Clave, CONCAT(G.Clave, \" - \", g.Nombre) AS Grupo", false)
-                            ->from('grupos AS G')->get()->result();
+            return $this->db->select("G.Clave, CONCAT(G.Clave, \" - \", g.Descripcion) AS Grupo", false)
+                            ->from('gruposclientes AS G')->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

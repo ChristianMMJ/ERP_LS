@@ -71,7 +71,7 @@
 
                     <div class="col-12 col-md-4 col-sm-4">
                         <label for="" >Estado*</label>
-                        <select id="Tipo" name="Estado" class="form-control form-control-sm" >
+                        <select id="Estado" name="Estado" class="form-control form-control-sm" >
                             <option value=""></option>
                             <option value=""></option>
                             <option value="Aguascalientes">Aguascalientes</option>
@@ -163,7 +163,7 @@
                     <div class="col-6 col-md-6 ">
                         <h6 class="text-danger">Los campos con * son obligatorios</h6>
                     </div>
-                    <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
+                    <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" disabled data-toggle="tooltip" data-placement="left" title="Guardar">
                         <i class="fa fa-save"></i>
                     </button>
                     <!--                    <div class="col-6 col-sm-6 col-md-6" align="right">
@@ -189,6 +189,20 @@
     var sEsCliente = pnlDatos.find("#TipoAcceso");
     var nuevo = true;
     $(document).ready(function () {
+
+        pnlDatos.find("#frmNuevo").change(function () {
+            isValid('pnlDatos');
+            if (valido) {
+                btnGuardar.prop("disabled", false);
+            } else {
+                btnGuardar.prop("disabled", true);
+            }
+        });
+
+        pnlDatos.find("input[id='Estado-selectized']").blur(function () {
+            onNextFocus('Estado', '');
+        });
+
 
         pnlDatos.find("#PorcentajeComprasPorPedidoF").keyup(function () {
             onComprobarValor(this, 'PorcentajeComprasPorPedidoR', 'keyup');
@@ -307,6 +321,7 @@
         getRecords();
         handleEnter();
     });
+
     function getRecords() {
         temp = 0;
         HoldOn.open({
@@ -427,6 +442,16 @@
                 vv.val(1 - v.val());
             } else {
                 vv.val('');
+            }
+        }
+    }
+
+    function onNextFocus(main_component, next_component) {
+        if (pnlDatos.find("#" + main_component).val() === '') {
+            pnlDatos.find("#" + main_component)[0].selectize.focus();
+        } else {
+            if (next_component !== '') {
+                pnlDatos.find("#" + next_component)[0].selectize.focus();
             }
         }
     }

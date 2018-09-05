@@ -112,9 +112,33 @@ class Pedidos extends CI_Controller {
         }
     }
 
-    public function getMaquilaXEstilo() {
+    public function getMaquilas() {
         try {
-            print json_encode($this->pedidos_model->getMaquilaXEstilo($this->input->get('Estilo')));
+            print json_encode($this->pedidos_model->getMaquilas());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getMaquilaSerieXEstilo() {
+        try {
+            print json_encode($this->pedidos_model->getMaquilaSerieXEstilo($this->input->get('Estilo')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getAgenteXCliente() {
+        try {
+            print json_encode($this->pedidos_model->getAgenteXCliente($this->input->get('Cliente')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getSemanaXFechaDeEntrega() {
+        try {
+            print json_encode($this->pedidos_model->getSemanaXFechaDeEntrega($this->input->get('Fecha')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -129,7 +153,47 @@ class Pedidos extends CI_Controller {
                     $data[$key] = ($v !== '') ? strtoupper($v) : NULL;
                 }
             }
-            $this->pedidos_model->onAgregar($data);
+            $data["Usuario"] = $_SESSION["USERNAME"];
+            $data["Estatus"] = 'A';
+            $data["Registro"] = Date('d/m/Y h:i:s');
+            unset($data["Detalle"]);
+            $ID = $this->pedidos_model->onAgregar($data);
+            $Detalle = json_decode($this->input->post("Detalle"));
+            foreach ($Detalle as $key => $v) {
+                $dt = date_parse($v->FechaEntrega);
+                $data = array(
+                    "Pedido" => $ID,
+                    "Estilo" => ($v->Estilo !== '') ? $v->Estilo : NULL,
+                    "Color" => ($v->Color !== '') ? $v->Color : NULL,
+                    "FechaEntrega" => ($v->FechaEntrega !== '') ? $v->FechaEntrega : NULL,
+                    "Maquila" => ($v->Maquila !== '') ? $v->Maquila : NULL,
+                    "Semana" => ($v->Semana !== '') ? $v->Semana : NULL,
+                    "Ano" => $dt["year"],
+                    "Recio" => ($v->Recio !== '') ? $v->Recio : NULL,
+                    "Precio" => ($v->Precio !== '') ? $v->Precio : NULL,
+                    "Observacion" => ($v->Observacion !== '') ? $v->Observacion : NULL,
+                    "ObservacionDetalle" => ($v->ObservacionDetalle !== '') ? $v->ObservacionDetalle : NULL,
+                    "Serie" => ($v->Serie !== '') ? $v->Serie : NULL,
+                    "Control" => ($v->Control !== '') ? $v->Control : NULL,
+                    "C1" => ($v->C1 !== '') ? $v->C1 : NULL, "C2" => ($v->C2 !== '') ? $v->C2 : NULL,
+                    "C3" => ($v->C3 !== '') ? $v->C3 : NULL, "C4" => ($v->C4 !== '') ? $v->C4 : NULL,
+                    "C5" => ($v->C5 !== '') ? $v->C5 : NULL, "C6" => ($v->C6 !== '') ? $v->C6 : NULL,
+                    "C7" => ($v->C7 !== '') ? $v->C7 : NULL, "C8" => ($v->C8 !== '') ? $v->C8 : NULL,
+                    "C9" => ($v->C9 !== '') ? $v->C9 : NULL, "C10" => ($v->C10 !== '') ? $v->C10 : NULL,
+                    "C11" => ($v->C11 !== '') ? $v->C11 : NULL, "C12" => ($v->C12 !== '') ? $v->C12 : NULL,
+                    "C13" => ($v->C13 !== '') ? $v->C13 : NULL, "C14" => ($v->C14 !== '') ? $v->C14 : NULL,
+                    "C15" => ($v->C15 !== '') ? $v->C15 : NULL, "C16" => ($v->C16 !== '') ? $v->C16 : NULL,
+                    "C17" => ($v->C17 !== '') ? $v->C17 : NULL, "C18" => ($v->C18 !== '') ? $v->C18 : NULL,
+                    "C19" => ($v->C19 !== '') ? $v->C19 : NULL, "C20" => ($v->C20 !== '') ? $v->C20 : NULL,
+                    "C21" => ($v->C21 !== '') ? $v->C21 : NULL, "C22" => ($v->C22 !== '') ? $v->C22 : NULL
+                );
+                $data["Estatus"] = 'A';
+                $data["Registro"] = Date('d/m/Y h:i:s');
+                $this->db->insert("pedidodetalle", $data);
+                print "\n";
+                $str = $this->db->last_query();
+                print $str;
+            }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -139,6 +203,7 @@ class Pedidos extends CI_Controller {
         try {
             $x = $this->input;
             $data = array();
+            var_dump($x->post());
             foreach ($x->post() as $key => $v) {
                 if ($v !== '') {
                     $data[$key] = ($v !== '') ? strtoupper($v) : NULL;
