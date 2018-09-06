@@ -114,8 +114,7 @@ class Semanas extends CI_Controller {
 
     public function onEliminar() {
         try {
-            extract($this->input->post());
-            $this->semanasnomina_model->onEliminar($ID);
+            $this->semanasnomina_model->onEliminar($this->input->post('Ano'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

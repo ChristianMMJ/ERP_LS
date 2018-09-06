@@ -5,7 +5,8 @@
                 <legend class="float-left">Semanas de Producción</legend>
             </div>
             <div class="col-sm-6 float-right" align="right">
-                <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
+
+                <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="top" title="Agregar"><span class="fa fa-plus"></span><br></button>
             </div>
         </div>
         <div class="card-block">
@@ -26,7 +27,7 @@
                 </div>
                 <div class="col-md-4 float-right" align="right">
                     <button type="button" class="btn btn-secondary btn-sm" id="btnCancelar"><span class="fa fa-arrow-left"></span> REGRESAR </button>
-<!--                    <button type="button" class="btn btn-primary btn-sm" id="btnGuardar"><span class="fa fa-save "></span> GUARDAR</button>-->
+                    <button type="button" class="btn btn-danger btn-sm d-none" id="btnEliminar" ><span class="fa fa-trash"></span> ELIMINAR</button>
                 </div>
             </div>
             <div class="row" id="ControlesEncabezado">
@@ -143,6 +144,7 @@
     /*DATATABLE GLOBAL*/
     var tblDetalleSemanasProduccion;
     var tblDetalleSemanasProduccionE = $('#tblRegistrosDetalle'), RegistrosDetalleE;
+    var btnEliminar = $("#btnEliminar");
     var tblInicial = {
         "dom": 'rt',
         "autoWidth": false,
@@ -335,6 +337,7 @@
                         $('#RegistrosDetalleE').removeClass("d-none");
                         getSemanasProduccionByAno(AnoI);
                         btnGuardar.addClass("d-none");
+                        btnEliminar.removeClass('d-none');
                         HoldOn.close();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
@@ -367,6 +370,7 @@
             pnlDatos.find('#lAno').text('');
             $('#ControlesEncabezado').removeClass("d-none");
             pnlDatos.find('#Ano').focus();
+            btnEliminar.addClass('d-none');
             nuevo = true;
         });
         btnCancelar.click(function () {
@@ -416,6 +420,38 @@
                 });
             }
 
+        });
+        btnEliminar.click(function () {
+            if (temp !== 0 && temp !== undefined && temp > 0) {
+                swal({
+                    title: "Confirmar", text: "Deseas eliminar el registro?", icon: "warning", buttons: ["Cancelar", "Aceptar"]
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        HoldOn.open({
+                            theme: "sk-bounce",
+                            message: "CARGANDO DATOS..."
+                        });
+                        $.ajax({
+                            url: master_url + 'onEliminar',
+                            type: "POST",
+                            data: {
+                                Ano: temp
+                            }
+                        }).done(function (data, x, jq) {
+
+                            pnlDatos.addClass("d-none");
+                            pnlDatosDetalle.addClass("d-none");
+                            pnlTablero.removeClass("d-none");
+                            $('#ControlesAgregarExtras').addClass("d-none");
+                            getRecords();
+                        }).fail(function (x, y, z) {
+                            console.log(x, y, z);
+                        }).always(function () {
+                            HoldOn.close();
+                        });
+                    }
+                });
+            }
         });
         /*CALLS*/
         getRecords();
@@ -505,6 +541,7 @@
                             pnlTablero.addClass("d-none");
                             pnlDatos.removeClass('d-none');
                             btnGuardar.addClass("d-none");
+                            btnEliminar.removeClass('d-none');
                         }).fail(function (x, y, z) {
                             console.log(x, y, z);
                         }).always(function () {
@@ -523,6 +560,8 @@
                         }
                     });
                 });
+            } else {
+                $("#tblRegistros").html('<div class="col-12 my-4"><center><h3>NO EXISTEN SEMANAS GENERADAS</h3></center></div>');
             }
         }).fail(function (x, y, z) {
             console.log(x, y, z);

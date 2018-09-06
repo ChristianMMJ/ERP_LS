@@ -68,10 +68,10 @@ class semanasNomina_model extends CI_Model {
         }
     }
 
-    public function onEliminar($ID) {
+    public function onEliminar($Ano) {
         try {
             $this->db->set('Estatus', 'INACTIVO');
-            $this->db->where('ID', $ID);
+            $this->db->where('Ano', $Ano);
             $this->db->update("SemanasNomina");
 //            print $str = $this->db->last_query();
         } catch (Exception $exc) {

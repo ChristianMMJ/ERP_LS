@@ -133,8 +133,7 @@ class SemanasProduccion extends CI_Controller {
 
     public function onEliminar() {
         try {
-            extract($this->input->post());
-            $this->semanasproduccion_model->onEliminar($ID);
+            $this->semanasproduccion_model->onEliminar($this->input->post('Ano'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
