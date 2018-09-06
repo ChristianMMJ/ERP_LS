@@ -138,7 +138,7 @@ class Pedidos extends CI_Controller {
 
     public function getProduccionMaquilaSemana() {
         try {
-            print json_encode($this->pedidos_model->getProduccionMaquilaSemana($this->input->get('Maquila'),$this->input->get('Semana')));
+            print json_encode($this->pedidos_model->getProduccionMaquilaSemana($this->input->get('Maquila'), $this->input->get('Semana')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -277,7 +277,10 @@ class Pedidos extends CI_Controller {
     function onImprimirPedido() {
         try {
             $pdf = new PDF('L', 'mm', array(215.9, 279.4));
-
+            $Pedido = $this->pedidos_model->getPedidosByID($this->input->post('ID'));
+                
+            $Encabezado = $Pedido[0];
+            $pdf->setPedido($Encabezado->Clave);
             /* FIN RESUMEN */
             $path = 'uploads/Reportes/Pedidos';
             if (!file_exists($path)) {
@@ -329,8 +332,8 @@ class Pedidos extends CI_Controller {
             $xlog["Mes"] = Date('m');
             $xlog["Anio"] = Date('Y');
             $xlog["Registro"] = Date('d/m/Y h:i:s a');
-            $xlog["Padre"] = getPadre();
-            $xlog["Hijo"] = getHijo();
+            $xlog["Padre"] = $this->getPadre();
+            $xlog["Hijo"] = $this->getHijo();
             $xlog["Estatus"] = 'ACTIVO';
             $this->db->insert('logs', $xlog);
         } catch (Exception $exc) {

@@ -94,10 +94,11 @@
                             <div id="spin" class="d-none" align="center"><span class="fa fa-cog fa-spin fa-2x"></span></div>
                         </div>
                         <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
-                            <label for="FechaEntrega" >Fecha Entrega*</label>
-                            <input type="text" id="FechaEntrega" name="FechaEntrega" class="form-control form-control-sm date notEnter">
+                            <label for="Maquila" >Maquila*</label>
+                            <select class="form-control form-control-sm"  type="text" id="Maquila" name="Maquila">
+                            </select>
                         </div>
-                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1">
                             <label for="Recibido" >Recibido*</label>
                             <select class="form-control form-control-sm" id="Recibido" name="Recibido" required placeholder="">
                                 <option></option>
@@ -107,30 +108,36 @@
                                 <option value="5">5 - Int</option>
                             </select>
                         </div>
-                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
-                            <label for="Maquila" >Maquila*</label>
-                            <select class="form-control form-control-sm"  type="text" id="Maquila" name="Maquila">
-                            </select>
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1">
+                            <label for="FechaEntrega" >Fecha Entrega*</label>
+                            <input type="text" id="FechaEntrega" name="FechaEntrega" class="form-control form-control-sm date notEnter">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1">
                             <label for="Semana" >Semana*</label>
                             <input type="text" id="Semana" name="Semana" class="form-control form-control-sm" placeholder="No ha especificado una fecha de entrega">
                         </div>
                         <!--BREAK-->
-                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1">
                             <label for="Recio" >Recio*</label>
                             <input type="text" id="Recio" name="Recio" class="form-control form-control-sm" maxlength="5">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
-                            <label for="Recio" >Produccion maquila/semana*</label>
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1">
+                            <label for="ProduccionMaquilaSemana" >Prod. Maq/Sem*</label>
                             <input type="text" id="ProduccionMaquilaSemana" name="ProduccionMaquilaSemana" class="form-control form-control-sm" placeholder="0" disabled="">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1">
                             <label for="Precio" >Precio*</label>
-                            <input type="text" id="Precio" name="Precio" class="form-control form-control-sm numbersOnly" maxlength="8">
+                            <div class="input-group">
+                                <input type="text" id="Precio" name="Precio" class="form-control form-control-sm numbersOnly" maxlength="8" disabled="">
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text text-dark " id="AgregaObservaciones" name="AgregaObservaciones" data-toggle="tooltip" data-placement="top" title="Agregar observaciones">
+                                        <i class="fa fa-eye"></i>
+                                    </span>
+                                </span>
+                            </div>
                             <input type="text" id="Serie" class="form-control form-control-sm d-none" readonly="" >
                         </div>
-                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 d-none">
                             <label for="Observaciones" >Observaciones*</label>
                             <div class="row">
                                 <div class="col-6">
@@ -269,6 +276,10 @@
         init();
         handleEnter();
 
+        pnlDatos.find("#AgregaObservaciones").click(function () {
+            onAgregarObservaciones();
+        });
+
         $.each(pnlDatos.find("select"), function () {
             verificarValorSelect('#' + $(this).attr('id'), pnlDatos);
         });
@@ -276,7 +287,7 @@
         btnImprimir.click(function () {
             if (temp > 0) {
                 //HoldOn.open({  message: 'Espere...', theme: 'sk-cube'});
-                $.get(master_url + 'onImprimirPedido', {Estilo: temp}).done(function (data) {
+                $.post(master_url + 'onImprimirPedido', {ID: temp}).done(function (data) {
                     console.log(data);
 
                     $.fancybox.open({
@@ -310,17 +321,6 @@
                 });
             } else {
                 swal('ATENCIÓN', 'NO HA SIDO POSIBLE MOSTRAR EL PEDIDO PARA SU IMPRESIÓN', 'warning');
-            }
-        });
-
-        pnlDatos.find("#frmNuevo").change(function () {
-            isValid('pnlDatos');
-            if (tblPedidoDetalle.find("tbody tr").length > 0) {
-                if (valido) {
-                    btnGuardar.prop("disabled", false);
-                } else {
-                    btnGuardar.prop("disabled", true);
-                }
             }
         });
 
@@ -523,7 +523,7 @@
                         nuevo = false;
                         var dtm = JSON.parse(e);
                         getPedidoByID(dtm.ID);
-
+                        temp = dtm.ID;
 //                        $.each(tblPedidoDetalle.find("tbody tr"), function (k, v) {
 //                            PedidoDetalle.cell($(this), 38).data('N').draw();
 //                        });
@@ -543,6 +543,7 @@
 
         btnNuevo.click(function () {
             nuevo = true;
+            pnlDatos.find("#Precio").prop('disabled', true);
             pnlDatos.find("#Clave").prop('disabled', false);
             pnlDatos.find("#Cliente")[0].selectize.enable();
             pnlDatos.find("#Agente")[0].selectize.enable();
@@ -590,6 +591,15 @@
                 });
             } else {
                 pnlDatos.find("#Agente")[0].selectize.clear(true);
+            }
+        });
+
+        pnlDatos.find("#Color").change(function () {
+            var color = $(this).val();
+            if (color !== '') {
+                pnlDatos.find("#Precio").prop('disabled', false);
+            } else {
+                pnlDatos.find("#Precio").prop('disabled', true);
             }
         });
 
@@ -1202,6 +1212,23 @@
             console.log('OK');
         });
     }
+
+    function onAgregarObservaciones() {
+        swal({
+            text: 'Observaciones',
+            content: "input",
+            button: {
+                text: "Aceptar",
+                closeModal: true
+            },
+            closeOnClickOutside: false,
+            closeOnEsc: false
+        }).then((Observaciones) => {
+            pnlDatos.find("#Observacion").val(Observaciones);
+            pnlDatos.find("#ObservacionDetalle").val(Observaciones);
+            pnlDatos.find("[name='C1']").focus();
+        });
+    }
 </script>
 <style>
     #tblPedidoDetalle table tbody{
@@ -1271,16 +1298,6 @@
         cursor: pointer;
         background-color: #fff;
     }
-    .swal-modal{
-        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)!important;
-    }
-    .swal-overlay { 
-        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0.63+1,0+53,0.65+100 */
-        background: -moz-linear-gradient(top, rgba(0,0,0,0.63) 0%, rgba(0,0,0,0.63) 1%, rgba(0,0,0,0) 53%, rgba(0,0,0,0.65) 100%); /* FF3.6-15 */
-        background: -webkit-linear-gradient(top, rgba(0,0,0,0.63) 0%,rgba(0,0,0,0.63) 1%,rgba(0,0,0,0) 53%,rgba(0,0,0,0.65) 100%); /* Chrome10-25,Safari5.1-6 */
-        background: linear-gradient(to bottom, rgba(0,0,0,0.63) 0%,rgba(0,0,0,0.63) 1%,rgba(0,0,0,0) 53%,rgba(0,0,0,0.65) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a1000000', endColorstr='#a6000000',GradientType=0 ); /* IE6-9 */
-    } 
     .container-fluid {
         width: 100%;
         padding-right: 0px; 
@@ -1288,4 +1305,5 @@
         margin-right: auto;
         margin-left: auto;
     }
+
 </style>

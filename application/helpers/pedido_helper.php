@@ -101,7 +101,7 @@ class PDF extends FPDF {
         $this->SetY($base);
         $this->SetX(90);
         $this->SetFillColor(225, 225, 234);
-        $this->Cell(30, $alto_celda, utf8_decode("Folio"), 1/* BORDE */, 1, 'C', 1);
+        $this->Cell(30, $alto_celda, utf8_decode("Pedido"), 1/* BORDE */, 1, 'C', 1);
         $this->SetFillColor(250, 250, 250);
         $this->SetX(90);
         $this->Cell(30, $alto_celda, utf8_decode($this->getPedido()), 1/* BORDE */, 1, 'C');
