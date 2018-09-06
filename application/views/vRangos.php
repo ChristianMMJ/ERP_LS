@@ -454,7 +454,7 @@
                 $.each(data[0], function (k, v) {
                     pnlDatos.find("[name='" + k + "']").val(v);
                     if (pnlDatos.find("[name='" + k + "']").is('select')) {
-                        pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
+                        pnlDatos.find("[name='" + k + "']")[0].selectize.addItem(v, true);
                     }
                 });
                 pnlTablero.addClass("d-none");

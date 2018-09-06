@@ -1,3 +1,12 @@
+<style>
+    .selectize-input.focus2 {
+        border-color: #597ea2;
+        outline: 0;
+        /* -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6); */
+        /* box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6); */
+        box-shadow: 0 0 0 0 transparent !important;
+    }
+</style>
 <script>
     var valido = false;
     var base_url = "<?php print base_url(); ?>";
@@ -22,17 +31,23 @@
     }
     //Se pasa el pnl o div que contendra los select a validar
     function validacionSelectPorContenedor(contenedor) {
-        $.each(contenedor.find("select"), function (k, v) {
+        $.each(contenedor.find("select.required"), function (k, v) {
             verificarValorSelect('#' + $(v).attr('id'), contenedor);
         });
     }
+    var idDestinoG = '';
+    var idOrigenG = '';
+    var paramsG;
     //Establece el foco de un select a otro select cuando no tiene el evento change definido
     function setFocusSelectToSelectOnChange(id, idDestino, div) {
+        //paramsG = params;
         div.find(id).change(function () {
             div.find(idDestino)[0].selectize.focus();
         });
+
     }
     //Establece el foco de un select a un input
+
     function setFocusSelectToInputOnChange(id, idDestino, div) {
         div.find(id).change(function () {
             div.find(idDestino).focus();
@@ -53,14 +68,17 @@
 
             return true;
         });
-        $(window).click(function () {
-            if (parseInt($('#myNav').width()) > 0) {
-                closeNav();
-            }
-        });
+
         $("select").selectize({
             hideSelected: true,
-            openOnFocus: false
+            openOnFocus: false,
+//            onItemAdd: function (value, item) {
+//                $.each(paramsG.Origen, function (k, v) {
+//                    $(v).change(function () {
+//                        $(paramsG.Destino[k])[0].selectize.focus();
+//                    });
+//                });
+//            }
         });
 
 

@@ -353,6 +353,7 @@
         setFocusSelectToSelectOnChange('#MaqPlant3', '#MaqPlant4', pnlDatos);
         setFocusSelectToInputOnChange('#MaqPlant4', '#PiezasCorte', pnlDatos);
 
+
         pnlDatos.find("#Clave").focusout(function () {
             if (nuevo) {
                 onComprobarClave(this);
@@ -410,50 +411,67 @@
 
         /*FUNCIONES X BOTON*/
         btnGuardar.click(function () {
-            isValid('pnlDatos');
-            if (valido) {
-                var frm = new FormData(pnlDatos.find("#frmNuevo")[0]);
-                if (!nuevo) {
-                    $.ajax({
-                        url: master_url + 'onModificar',
-                        type: "POST",
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        data: frm
-                    }).done(function (data, x, jq) {
-                        swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO', 'info');
-                        Estilos.ajax.reload();
-                        pnlDatos.addClass("d-none");
-                        pnlTablero.removeClass("d-none");
-                    }).fail(function (x, y, z) {
-                        console.log(x, y, z);
-                    }).always(function () {
-                        HoldOn.close();
-                    });
+
+
+            var foto = $('#Foto').val();
+            if (foto !== "" && foto !== "N") {
+                isValid('pnlDatos');
+                if (valido) {
+                    var frm = new FormData(pnlDatos.find("#frmNuevo")[0]);
+                    if (!nuevo) {
+                        $.ajax({
+                            url: master_url + 'onModificar',
+                            type: "POST",
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            data: frm
+                        }).done(function (data, x, jq) {
+                            swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO', 'info');
+                            Estilos.ajax.reload();
+                            pnlDatos.addClass("d-none");
+                            pnlTablero.removeClass("d-none");
+                        }).fail(function (x, y, z) {
+                            console.log(x, y, z);
+                        }).always(function () {
+                            HoldOn.close();
+                        });
+                    } else {
+
+                        $.ajax({
+                            url: master_url + 'onAgregar',
+                            type: "POST",
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            data: frm
+                        }).done(function (data, x, jq) {
+                            pnlDatos.find("[name='ID']").val(data);
+                            nuevo = false;
+                            Estilos.ajax.reload();
+                            pnlDatos.addClass("d-none");
+                            pnlTablero.removeClass("d-none");
+                        }).fail(function (x, y, z) {
+                            console.log(x, y, z);
+                        }).always(function () {
+                            HoldOn.close();
+                        });
+                    }
                 } else {
-                    $.ajax({
-                        url: master_url + 'onAgregar',
-                        type: "POST",
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        data: frm
-                    }).done(function (data, x, jq) {
-                        pnlDatos.find("[name='ID']").val(data);
-                        nuevo = false;
-                        Estilos.ajax.reload();
-                        pnlDatos.addClass("d-none");
-                        pnlTablero.removeClass("d-none");
-                    }).fail(function (x, y, z) {
-                        console.log(x, y, z);
-                    }).always(function () {
-                        HoldOn.close();
-                    });
+                    swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'error');
                 }
             } else {
-                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'error');
+                swal({
+                    title: "ATENCIÓN",
+                    text: "DEBE DE SELECCIONAR UNA FOTOFRAFÍA PARA EL ESTILO ",
+                    icon: "warning",
+                    closeOnClickOutside: false,
+                    closeOnEsc: false
+                }).then((action) => {
+                    btnArchivo.focus();
+                });
             }
+
         });
 
         btnEliminar.click(function () {
@@ -506,6 +524,7 @@
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
+
         });
 
         btnCancelar.click(function () {
@@ -592,7 +611,7 @@
                     if (k !== 'Foto') {
                         pnlDatos.find("[name='" + k + "']").val(v);
                         if (pnlDatos.find("[name='" + k + "']").is('select')) {
-                            pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
+                            pnlDatos.find("[name='" + k + "']")[0].selectize.addItem(v, true);
                         }
                     }
                 });
@@ -618,6 +637,8 @@
                 pnlDatos.find("#Clave").addClass('disabledForms');
                 pnlDatos.find("#Descripcion").focus().select();
                 pnlDatos.find('#dFechaBaja').removeClass('d-none');
+
+
             }).fail(function (x, y, z) {
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
 
@@ -780,4 +801,5 @@
             });
         }
     }
+
 </script>

@@ -71,7 +71,7 @@
                             <input type="text" class="form-control form-control-sm" id="NoExt" name="NoExt" maxlength="45"  placeholder="" required="">
                         </div>
                         <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-1">
-                            <label for="NoInt" >NoInt*</label>
+                            <label for="NoInt" >NoInt</label>
                             <input type="text" class="form-control form-control-sm" id="NoInt" name="NoInt" maxlength="45"  placeholder="" >
                         </div>
 
@@ -85,16 +85,16 @@
                         </div>
                         <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
                             <label for="Estado" >Estado*</label>
-                            <select class="form-control form-control-sm" id="Estado" name="Estado" maxlength="45"  required=""></select>
+                            <select class="form-control form-control-sm required" id="Estado" name="Estado" maxlength="45"  required=""></select>
                         </div>
                         <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
                             <label for="Pais" >Pais*</label>
-                            <select class="form-control form-control-sm" id="Pais" name="Pais" maxlength="45"  required=""></select>
+                            <select class="form-control form-control-sm required" id="Pais" name="Pais" maxlength="45"  required=""></select>
                         </div>
 
                         <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
                             <label for="Agente" >Agente*</label>
-                            <select class="form-control form-control-sm" id="Agente" name="Agente" maxlength="45"  required=""></select>
+                            <select class="form-control form-control-sm required" id="Agente" name="Agente" maxlength="45"  required=""></select>
                         </div>
                         <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-1">
                             <label for="TelOficina" >Tel 1*</label>
@@ -111,58 +111,58 @@
                             <input type="text" class="form-control form-control-sm" id="RFC" name="RFC" maxlength="45"  placeholder=""  required="">
                         </div>
                         <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
-                            <label for="CodigoPostal" >Código Postal*</label>
+                            <label for="CodigoPostal" >Código Postal</label>
                             <input type="text" class="form-control form-control-sm" id="CodigoPostal" name="CodigoPostal" maxlength="45"  placeholder="">
                         </div>
                         <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
-                            <label for="LimiteCredito" >Limite de credito*</label>
+                            <label for="LimiteCredito" >Limite de credito</label>
                             <input type="text" class="form-control form-control-sm" id="LimiteCredito" name="LimiteCredito" maxlength="45"  placeholder="">
                         </div>
                         <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
                             <label for="ListaPrecios" >Lista de precios*</label>
-                            <select class="form-control form-control-sm" id="ListaPrecios" name="ListaPrecios" required=""></select>
+                            <select class="form-control form-control-sm required" id="ListaPrecios" name="ListaPrecios" required=""></select>
                         </div>
 
                         <div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2">
-                            <label for="DiasPlazo" >Dias Plazo*</label>
-                            <input type="text" class="form-control form-control-sm numbersOnly" id="DiasPlazo" name="DiasPlazo" maxlength="45"  placeholder=""  required="">
+                            <label for="DiasPlazo" >Dias Plazo</label>
+                            <input type="text" class="form-control form-control-sm numbersOnly" id="DiasPlazo" name="DiasPlazo" maxlength="45"  placeholder=""  >
                         </div>
                         <div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2">
-                            <label for="Transporte" >Transporte*</label>
-                            <select class="form-control form-control-sm" id="Transporte" name="Transporte"  required=""></select>
+                            <label for="Transporte" >Transporte</label>
+                            <select class="form-control form-control-sm" id="Transporte" name="Transporte"  ></select>
                         </div>
                         <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
-                            <label for="ObservacionesTransporte" >Observaciones transporte*</label>
+                            <label for="ObservacionesTransporte" >Observaciones transporte</label>
                             <input type="text" class="form-control form-control-sm" id="ObservacionesTransporte" name="ObservacionesTransporte" maxlength="190"  placeholder="">
                         </div>
                         <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-1">
-                            <label for="Descuento" >Descuento*</label>
-                            <input type="text" class="form-control form-control-sm numbersOnly" id="Descuento" name="Descuento" maxlength="10"  placeholder="">
+                            <label for="Descuento" >% Desc.</label>
+                            <input type="text" class="form-control form-control-sm numbersOnly" data-toggle="tooltip" data-placement="left" title="Ej. 0.15 para un 15%" id="Descuento" name="Descuento" maxlength="10"  placeholder="">
                         </div>
 
                         <div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2">
-                            <label for="TipoCliente" >Tipo de cliente*</label>
-                            <select class="form-control form-control-sm" id="TipoCliente" name="TipoCliente" required="">
+                            <label for="TipoCliente" >Tipo de cliente</label>
+                            <select class="form-control form-control-sm" id="TipoCliente" name="TipoCliente">
                                 <option></option>
-                                <option value="1">1 May</option>
-                                <option value="2">2 Det</option>
-                                <option value="3">3 Cata</option>
+                                <option value="1">1 MAYOREO</option>
+                                <option value="2">2 DETALLISTA</option>
+                                <option value="3">3 CATÁLOGO</option>
                             </select>
                         </div>
 
                         <div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2">
-                            <label for="Clasificacion" >Clasificacion*</label>
-                            <select class="form-control form-control-sm" id="Clasificacion" name="Clasificacion" required="">
+                            <label for="Clasificacion" >Clasificacion</label>
+                            <select class="form-control form-control-sm" id="Clasificacion" name="Clasificacion" >
                                 <option></option>
-                                <option value="1">1 Bueno</option>
-                                <option value="2">2 Regular</option>
-                                <option value="3">3 Malo</option>
-                                <option value="4">4 Sin clasificar</option>
+                                <option value="1">1 BUENO</option>
+                                <option value="2">2 REGULAR</option>
+                                <option value="3">3 MALO</option>
+                                <option value="4">4 SIN CLASIFICAR</option>
                             </select>
                         </div>
                         <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4">
-                            <label for="Grupo" >Grupo*</label>
-                            <select class="form-control form-control-sm" id="Grupo" name="Grupo" required="">
+                            <label for="Grupo" >Grupo</label>
+                            <select class="form-control form-control-sm" id="Grupo" name="Grupo" >
                                 <option></option>
                             </select>
                         </div>
@@ -188,24 +188,24 @@
                     </div>
                     <div class="row">
                         <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                            <label for="PrimerCorreo" >Correo 1*</label>
-                            <input type="text" class="form-control form-control-sm" id="PrimerCorreo" name="PrimerCorreo" maxlength="45"  placeholder="">
+                            <label for="PrimerCorreo" >Correo 1</label>
+                            <input type="text" class="form-control form-control-sm" id="PrimerCorreo" name="PrimerCorreo" maxlength="45"  placeholder="" >
                         </div>
                         <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                            <label for="SegundoCorreo" >Correo 2*</label>
+                            <label for="SegundoCorreo" >Correo 2</label>
                             <input type="text" class="form-control form-control-sm" id="SegundoCorreo" name="SegundoCorreo" maxlength="45"  placeholder="">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
                             <label for="FormaPago" >Forma de pago*</label>
-                            <select class="form-control form-control-sm" id="FormaPago" name="FormaPago"  required="">
+                            <select class="form-control form-control-sm required" id="FormaPago" name="FormaPago"  required="">
                                 <option></option>
                             </select>
                         </div>
                         <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
                             <label for="MetodoPago" >Método de pago*</label>
-                            <select class="form-control form-control-sm" id="MetodoPago" name="MetodoPago"  required="">
+                            <select class="form-control form-control-sm required" id="MetodoPago" name="MetodoPago"  required="">
                                 <option></option>
                             </select>
                         </div>
@@ -214,11 +214,11 @@
                             <input type="text" class="form-control form-control-sm" id="NoCuenta" name="NoCuenta" maxlength="99"  placeholder="" required="">
                         </div>
                         <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
-                            <label for="Banco" >Banco*</label>
-                            <input type="text" class="form-control form-control-sm" id="Banco" name="Banco" maxlength="99"  placeholder="" required="">
+                            <label for="Banco" >Banco</label>
+                            <input type="text" class="form-control form-control-sm" id="Banco" name="Banco" maxlength="99"  placeholder="" >
                         </div>
                         <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
-                            <label for="Zona" >Zona*</label>
+                            <label for="Zona" >Zona</label>
                             <select class="form-control form-control-sm" id="Zona" name="Zona"  required="">
                                 <option></option>
                             </select>
@@ -226,8 +226,8 @@
                     </div>
                     <div class="row">
                         <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-4">
-                            <label for="Observaciones" >Observaciones*</label>
-                            <input type="text" class="form-control form-control-sm" id="Observaciones" name="Observaciones" maxlength="99"  placeholder="" required="">
+                            <label for="Observaciones" >Observaciones</label>
+                            <input type="text" class="form-control form-control-sm" id="Observaciones" name="Observaciones" maxlength="99"  placeholder="" >
                         </div>
 
 
@@ -252,6 +252,18 @@
         /*FUNCIONES INICIALES*/
         init();
         handleEnter();
+        validacionSelectPorContenedor(pnlDatos);
+        setFocusSelectToSelectOnChange('#Estado', '#Pais', pnlDatos);
+        setFocusSelectToSelectOnChange('#Pais', '#Agente', pnlDatos);
+        setFocusSelectToInputOnChange('#Agente', '#TelOficina', pnlDatos);
+        setFocusSelectToInputOnChange('#ListaPrecios', '#DiasPlazo', pnlDatos);
+        setFocusSelectToInputOnChange('#Transporte', '#ObservacionesTransporte', pnlDatos);
+        setFocusSelectToSelectOnChange('#TipoCliente', '#Clasificacion', pnlDatos);
+        setFocusSelectToSelectOnChange('#Clasificacion', '#Grupo', pnlDatos);
+        setFocusSelectToInputOnChange('#Grupo', '#EncargadoCompras', pnlDatos);
+        setFocusSelectToSelectOnChange('#FormaPago', '#MetodoPago', pnlDatos);
+        setFocusSelectToInputOnChange('#MetodoPago', '#NoCuenta', pnlDatos);
+        setFocusSelectToInputOnChange('#Zona', '#Observaciones', pnlDatos);
 
 
         //Valida RFC
@@ -425,7 +437,7 @@
                 $.each(data[0], function (k, v) {
                     pnlDatos.find("[name='" + k + "']").val(v);
                     if (pnlDatos.find("[name='" + k + "']").is('select')) {
-                        pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
+                        pnlDatos.find("[name='" + k + "']")[0].selectize.addItem(v, true);
                     }
                 });
                 //RFC Y NOMBRE P

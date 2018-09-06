@@ -57,8 +57,8 @@
                     </select>
                 </div>
                 <div class="col-12 col-sm-4 col-md-4 col-lg-4">
-                    <label for="FechaAlta">Fecha de alta*</label>
-                    <input type="text" class="form-control form-control-sm notEnter" id="FechaAlta" name="FechaAlta" required >
+                    <label for="FechaAlta">Fecha de alta</label>
+                    <input type="text" class="form-control form-control-sm notEnter" id="FechaAlta" name="FechaAlta"  >
                 </div>
             </div>
         </form>
@@ -484,11 +484,12 @@
                 });
                 Estilo[0].selectize.disable();
                 Color[0].selectize.disable();
+                pnlDatos.find("#FechaAlta").prop("readonly", true);
                 $.getJSON(master_url + 'getColoresXEstilo', {Estilo: dtm.EstiloId}).done(function (data, x, jq) {
                     $.each(data, function (k, v) {
                         pnlDatos.find("[name='Color']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
                     });
-                    pnlDatos.find("[name='Color']")[0].selectize.setValue(dtm.ColorId);
+                    pnlDatos.find("[name='Color']")[0].selectize.addItem(dtm.ColorId, true);
                 }).fail(function (x, y, z) {
                     console.log(x.responseText);
                     console.log("\n");
@@ -496,7 +497,7 @@
                 }).always(function () {
                 });
                 pnlControlesDetalle.find("[name='Pieza']")[0].selectize.focus();
-                pnlDatos.find("#Estilo")[0].selectize.setValue(data[0].Estilo);
+                pnlDatos.find("#Estilo")[0].selectize.addItem(data[0].Estilo, true);
                 getFotoXEstilo(dtm.EstiloId);
                 getFichaTecnicaDetalleByID(dtm.EstiloId, dtm.ColorId);
                 pnlTablero.addClass("d-none");
