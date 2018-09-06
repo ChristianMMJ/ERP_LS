@@ -12,8 +12,28 @@ class pedidos_model extends CI_Model {
 
     public function getRecords() {
         try {
-            return $this->db->select("P.ID, P.Clave, P.Cliente, P.FechaPedido", false)
-                            ->from('pedidos AS P')->get()->result();
+            return $this->db->select("P.ID, P.Clave, CONCAT(IFNULL(P.Cliente,''),' ', IFNULL(C.RazonS,'')) AS Cliente, P.FechaPedido", false)
+                            ->from('pedidos AS P')
+                            ->join("clientes AS C", "P.Cliente = C.Clave", 'left')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getPedidosByID($ID) {
+        try {
+            return $this->db->select("PD.ID as PDID, P.Clave, P.Cliente, P.Agente, P.FechaPedido, P.FechaRecepcion, P.Usuario, P.Estatus, P.Registro, 
+                                    PD.Pedido, PD.Estilo, PD.Color, PD.FechaEntrega, PD.Maquila, PD.Semana, PD.Ano, PD.Recio, PD.Precio, PD.Observacion, PD.ObservacionDetalle, PD.Serie, PD.Control,
+                                    PD.C1, PD.C2, PD.C3, PD.C4, PD.C5, PD.C6, PD.C7, PD.C8, PD.C9, PD.C10, PD.C11, PD.C12, PD.C13, PD.C14, PD.C15, PD.C16, PD.C17, PD.C18, PD.C19, PD.C20, PD.C21, PD.C22, 
+                                    'A' AS EstatusDetalle, PD.Recibido,
+                                    S.Clave AS Serie, PD.Pares,
+                                    S.T1, S.T2, S.T3, S.T4, S.T5, S.T6, S.T7, S.T8, S.T9, S.T10, S.T11, S.T12, S.T13, S.T14, S.T15, S.T16, S.T17, S.T18, S.T19, S.T20, S.T21, S.T22", false)
+                            ->from('pedidos AS P')
+                            ->join('pedidodetalle AS PD', 'P.Clave = PD.Pedido')
+                            ->join('series AS S', 'PD.Serie = S.Clave')
+                            ->where('P.ID', $ID)
+                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -103,6 +123,15 @@ class pedidos_model extends CI_Model {
         try {
             return $this->db->select("A.Clave, CONCAT(A.Clave, \" - \", A.Nombre) AS Agente", false)
                             ->from('agentes AS A')->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getAnosValidos() {
+        try {
+            return $this->db->select("SP.Ano Anos", false)
+                            ->from('semanasproduccion AS SP')->group_by(array('SP.Ano'))->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

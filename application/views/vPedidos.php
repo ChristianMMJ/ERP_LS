@@ -37,7 +37,10 @@
                         <div class="col-12 col-sm-6 col-md-4 float-left">
                             <legend >Pedido</legend>
                         </div>
-                        <div class="col-12 col-sm-6 col-md-8" align="right">
+                        <div class="col-12 col-sm-3 col-md-8" align="right">
+                            <button type="button" class="btn btn-info btn-sm d-none" id="btnImprimir" >
+                                <span class="fa fa-print" ></span> IMPRIMIR
+                            </button> 
                             <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
                                 <span class="fa fa-arrow-left" ></span> REGRESAR
                             </button>
@@ -50,25 +53,25 @@
                         </div>
                         <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
                             <label for="Pedido" >Pedido*</label>
-                            <input type="text" class="form-control form-control-sm numbersOnly" id="Clave" required placeholder="">
+                            <input type="text" class="form-control form-control-sm numbersOnly" id="Clave" required="" placeholder="">
                         </div>
                         <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-3">
                             <label for="Cliente" >Cliente*</label> 
-                            <select class="form-control form-control-sm" id="Cliente" name="Cliente" required placeholder="">
+                            <select class="form-control form-control-sm" id="Cliente" name="Cliente" required="" placeholder="">
                             </select>
                         </div>
                         <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-3">
                             <label for="Agente" >Agente*</label>
-                            <select class="form-control form-control-sm" id="Agente" name="Agente" required placeholder="">
+                            <select class="form-control form-control-sm" id="Agente" name="Agente" required="" placeholder="">
                             </select>
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-2 col-xl-2">
                             <label for="FechaPedido" >Fecha Pedido*</label>
-                            <input type="text" id="FechaPedido" name="FechaPedido" class="form-control form-control-sm date notEnter" >
+                            <input type="text" id="FechaPedido" name="FechaPedido" class="form-control form-control-sm date notEnter" required="">
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-2 col-xl-2">
                             <label for="FechaRecepcion" >Fecha Recepción*</label>
-                            <input type="text" id="FechaRecepcion" name="FechaRecepcion" class="form-control form-control-sm date notEnter" >
+                            <input type="text" id="FechaRecepcion" name="FechaRecepcion" class="form-control form-control-sm date notEnter" required="">
                         </div>
                     </div>  
                 </div>
@@ -90,7 +93,7 @@
                         </div>
                         <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
                             <label for="FechaEntrega" >Fecha Entrega*</label>
-                            <input type="text" id="FechaEntrega" name="FechaEntrega" class="form-control form-control-sm date notEnter" >
+                            <input type="text" id="FechaEntrega" name="FechaEntrega" class="form-control form-control-sm date notEnter">
                         </div>
                         <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
                             <label for="Recibido" >Recibido*</label>
@@ -118,7 +121,7 @@
                         </div>
                         <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
                             <label for="Recio" >Produccion maquila/semana*</label>
-                            <input type="text" id="ProduccionMaquilaSemana" name="ProduccionMaquilaSemana" class="form-control form-control-sm" placeholder="0" >
+                            <input type="text" id="ProduccionMaquilaSemana" name="ProduccionMaquilaSemana" class="form-control form-control-sm" placeholder="0" disabled="">
                         </div>
                         <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
                             <label for="Precio" >Precio*</label>
@@ -231,10 +234,17 @@
                                     <th scope="col">Observaciones</th><!--36-->
                                     <th scope="col">Serie</th><!--37-->
                                     <th scope="col">Estatus Registro</th><!--38-->
+                                    <th scope="col">Importe</th><!--39-->
                                 </tr>
                             </thead>
                             <tbody></tbody>
                         </table> 
+                        <div class="w-100"></div>
+                        <div class="col-8 font-weight-bold" align="right">Pares</div> 
+                        <div id="ParesTotales" class="col-1 font-weight-bold zoom"></div>
+                        <div class="col-1 font-weight-bold">Total</div>
+                        <div id="Total" class="col-1 font-weight-bold zoom"></div>
+                        <div class="col-1 font-weight-bold "></div>
                     </div>
                 </div>
             </div>
@@ -245,19 +255,56 @@
     var master_url = base_url + 'index.php/Pedidos/';
     var tblPedidos = $('#tblPedidos');
     var Pedidos;
-    var btnNuevo = $("#btnNuevo"), btnCancelar = $("#btnCancelar"), btnEliminar = $("#btnEliminar"), btnGuardar = $("#btnGuardar");
+    var btnNuevo = $("#btnNuevo"), btnCancelar = $("#btnCancelar"), btnEliminar = $("#btnEliminar"), btnGuardar = $("#btnGuardar"), btnImprimir = $("#btnImprimir");
     var pnlTablero = $("#pnlTablero"), pnlDatos = $("#pnlDatos"), pnlDatosDetalle = $("#pnlDatosDetalle");
     var PedidoDetalle, tblPedidoDetalle = pnlDatos.find("#tblPedidoDetalle");
     var nuevo = false;
     var _animate_ = {enter: 'animated fadeInLeft', exit: 'animated fadeOutDown'}, _placement_ = {from: "bottom", align: "left"};
+    var Cliente = '';
 
     $(document).ready(function () {
         init();
         handleEnter();
 
-        var d = new Date("03/12/2018");
-        var n = d.getFullYear();
-        console.log("AÑO ", n);
+        btnImprimir.click(function () { 
+            if (temp > 0) {
+                //HoldOn.open({  message: 'Espere...', theme: 'sk-cube'});
+                $.get(master_url + 'onImprimirPedido', {Estilo: temp}).done(function (data) {
+                    console.log(data);
+
+                    $.fancybox.open({
+                        src: data,
+                        type: 'iframe',
+                        opts: {
+                            afterShow: function (instance, current) {
+                                console.info('done!');
+                            },
+                            iframe: {
+                                // Iframe template
+                                tpl: '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen allowtransparency="true" src=""></iframe>',
+                                preload: true,
+                                // Custom CSS styling for iframe wrapping element
+                                // You can use this to set custom iframe dimensions
+                                css: {
+                                    width: "85%",
+                                    height: "85%"
+                                },
+                                // Iframe tag attributes
+                                attr: {
+                                    scrolling: "auto"
+                                }
+                            }
+                        }
+                    });
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                }).always(function () {
+                    HoldOn.close();
+                });
+            } else {
+                swal('ATENCIÓN', 'NO HA SIDO POSIBLE MOSTRAR EL PEDIDO PARA SU IMPRESIÓN', 'warning');
+            }
+        });
 
         pnlDatos.find("#frmNuevo").change(function () {
             isValid('pnlDatos');
@@ -270,12 +317,25 @@
             }
         });
 
-        pnlDatos.find("input[id='Estilo-selectized']").blur(function () {
+        pnlDatos.find("input[id='Estilo-selectized']").on('blur', function () {
             onNextFocus('Estilo', 'Color');
         });
 
         pnlDatos.find("#Precio").focusout(function () {
-
+            var Precio = pnlDatos.find("#Precio").val();
+            if (Precio.length <= 0) {
+                swal({
+                    title: "ATENCIÓN",
+                    text: "Debe de establecer un precio",
+                    icon: "warning",
+                    focusConfirm: true,
+                    closeOnClickOutside: false,
+                    closeOnEsc: false
+                }).then((value) => {
+                    pnlDatos.find("#Precio").val('');
+                    pnlDatos.find("#Precio").focus();
+                });
+            }
         });
 
         pnlDatos.find("[name*='T']").change(function () {
@@ -283,6 +343,39 @@
         });
 
         pnlDatos.find("#FechaEntrega").focusout(function () {
+            //OBTENER ANOS DE ENTREGA
+            $.getJSON(master_url + 'getAnosValidos').done(function (data) {
+                console.log('DTA: ', data);
+                var anos = data[0];
+                var fecha_valida = false;
+                var fe = pnlDatos.find("#FechaEntrega").val();
+                if (fe !== '') {
+                    $.each(data, function (k, v) {
+                        console.log(k, ',', v);
+                        if (fe.includes(v.Anos)) {
+                            fecha_valida = true;
+                            return false;
+                        }
+                    });
+                    if (!fecha_valida) {
+                        swal({
+                            title: "ATENCIÓN",
+                            text: "NO EXISTEN SEMANAS DE PRODUCCIÓN PARA ESTA FECHA ",
+                            icon: "warning",
+                            closeOnClickOutside: false,
+                            closeOnEsc: false
+                        }).then((value) => {
+                            pnlDatos.find("#FechaEntrega").val('');
+                            pnlDatos.find("#Semana").val('');
+                            pnlDatos.find("#FechaEntrega").focus();
+                        });
+                    }
+                }
+            }).fail(function (x, y, z) {
+                console.log(x.responseText);
+            }).always(function () {
+
+            });
             //OBTENER AGENTE POR CLIENTE
             $.getJSON(master_url + 'getSemanaXFechaDeEntrega', {Fecha: $(this).val()}).done(function (data) {
                 if (data.length > 0) {
@@ -298,7 +391,7 @@
             if (valido) {
                 var f = new FormData();
                 f.append('Clave', pnlDatos.find("#Clave").val());
-                f.append('Cliente', pnlDatos.find("#Cliente").val());
+                f.append('Cliente', Cliente);
                 f.append('Agente', pnlDatos.find("#Agente").val());
                 f.append('FechaPedido', pnlDatos.find("#FechaPedido").val());
                 f.append('FechaRecepcion', pnlDatos.find("#FechaRecepcion").val());
@@ -306,7 +399,6 @@
                     var detalle = [];
                     $.each(tblPedidoDetalle.find("tbody tr"), function (k, v) {
                         var tr = PedidoDetalle.row($(this)).data();
-                        console.log(tr);
                         if (tr[38] === 'N') {
                             var d = new Date(tr[32]);
                             var n = d.getFullYear();
@@ -323,6 +415,8 @@
                                 Serie: tr[37],
                                 Control: 0,
                                 Ano: n,
+                                Recibido: tr[1],
+                                Pares: tr[31],
                                 C1: $(tr[8]).find("div.cantidad").text(),
                                 C2: $(tr[9]).find("div.cantidad").text(),
                                 C3: $(tr[10]).find("div.cantidad").text(),
@@ -351,12 +445,15 @@
                     onSave('onModificar', f, function () {
                         swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO', 'info');
                         nuevo = false;
+                        pnlTablero.removeClass("d-none");
+                        pnlDatos.addClass("d-none");
                         Pedidos.ajax.reload();
+                        PedidoDetalle.clear().draw();
                     });
                 } else {
                     var detalle = [];
                     $.each(tblPedidoDetalle.find("tbody tr"), function (k, v) {
-                        var tr = PedidoDetalle.row($(this)).data(); 
+                        var tr = PedidoDetalle.row($(this)).data();
                         var d = new Date(tr[32]);
                         var n = d.getFullYear();
                         detalle.push({
@@ -372,6 +469,8 @@
                             Serie: tr[37],
                             Control: 0,
                             Ano: n,
+                            Recibido: tr[1],
+                            Pares: tr[31],
                             C1: $(tr[8]).find("div.cantidad").text(),
                             C2: $(tr[9]).find("div.cantidad").text(),
                             C3: $(tr[10]).find("div.cantidad").text(),
@@ -398,8 +497,11 @@
                     });
                     f.append('Detalle', JSON.stringify(detalle));
                     onSave('onAgregar', f, function () {
-                        nuevo = true;
+                        nuevo = false;
                         Pedidos.ajax.reload();
+                        PedidoDetalle.clear().draw();
+                        pnlTablero.removeClass("d-none");
+                        pnlDatos.addClass("d-none");
                     });
                 }
             } else {
@@ -409,6 +511,11 @@
 
         btnNuevo.click(function () {
             nuevo = true;
+            pnlDatos.find("#Clave").prop('disabled', false);
+            pnlDatos.find("#Cliente")[0].selectize.enable();
+            pnlDatos.find("#Agente")[0].selectize.enable();
+            pnlDatos.find("#FechaPedido").prop('disabled', false);
+            pnlDatos.find("#FechaRecepcion").prop('disabled', false);
             pnlDatos.find("input,textarea").val("");
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass("d-none");
@@ -421,15 +528,26 @@
         });
 
         btnCancelar.click(function () {
+            btnGuardar.prop("disabled", true);
+            pnlDatos.find("#Cliente")[0].selectize.enable();
+            pnlDatos.find("#Agente")[0].selectize.enable();
+            pnlDatos.find("#Clave").prop('disabled', true);
+            pnlDatos.find("#FechaPedido").prop('disabled', true);
+            pnlDatos.find("#FechaRecepcion").prop('disabled', true);
             pnlTablero.removeClass("d-none");
             pnlDatos.addClass("d-none");
+            btnImprimir.addClass("d-none");
             PedidoDetalle.clear().draw();
+            Pedidos.ajax.reload();
+            Cliente = 0;
         });
 
         pnlDatos.find("#Cliente").change(function () {
             if ($(this).val() !== '') {
                 //OBTENER AGENTE POR CLIENTE
-                $.getJSON(master_url + 'getAgenteXCliente', {Cliente: $(this).val()}).done(function (data) {
+                Cliente = pnlDatos.find("#Cliente").val();
+                console.log('this:', $(this).val(), ',', Cliente);
+                $.getJSON(master_url + 'getAgenteXCliente', {Cliente: Cliente}).done(function (data) {
                     if (data.length > 0) {
                         pnlDatos.find("#Agente")[0].selectize.clear(true);
                         pnlDatos.find("#Agente")[0].selectize.setValue(data[0].Agente);
@@ -449,6 +567,7 @@
                 pnlDatos.find("#spin").removeClass("d-none");
                 pnlDatos.find("#Color").addClass("d-none");
                 pnlDatos.find("#Color")[0].selectize.clear(true);
+                pnlDatos.find("#Color")[0].selectize.clearOptions();
                 //OBTENER COLORES POR ESTILO
                 $.getJSON(master_url + 'getColoresXEstilo', {Estilo: $(this).val()}).done(function (data) {
                     $.each(data, function (k, v) {
@@ -615,15 +734,71 @@
                 $.each(pnlDatos.find("select"), function (k, v) {
                     pnlDatos.find("select")[k].selectize.clear(true);
                 });
-                $.each(data[0], function (k, v) {
-                    pnlDatos.find("[name='" + k + "']").val(v);
-                    if (pnlDatos.find("[name='" + k + "']").is('select')) {
-                        pnlDatos.find("[name='" + k + "']")[0].selectize.setValue(v);
-                    }
+                var dt = data[0];//Encabezado
+                //SEGURIDAD 
+                pnlDatos.find("#Clave").val(dt.Clave);
+                pnlDatos.find("#Clave").prop('disabled', true);
+                pnlDatos.find("#FechaPedido").prop('disabled', true);
+                pnlDatos.find("#FechaRecepcion").prop('disabled', true);
+                pnlDatos.find("#Cliente")[0].selectize.disable();
+                pnlDatos.find("#Agente")[0].selectize.disable();
+
+                pnlDatos.find("#Cliente")[0].selectize.setValue(dt.Cliente);
+                pnlDatos.find("#FechaPedido").val(dt.FechaPedido);
+                pnlDatos.find("#FechaRecepcion").val(dt.FechaRecepcion);
+                pnlDatos.find("#Agente")[0].selectize.setValue(dt.Agente);
+
+                btnImprimir.removeClass("d-none");
+
+                //ASIGNAR DETALLE
+                var tal = '<div class="row"><div class="col-12 text-danger text-nowrap talla" align="center">';
+                var cnt = '</div><div class="col-12 cantidad" align="center">';
+                $.each(data, function (k, v) {
+                    var dtm = [
+                        v.PDID, //ID 
+                        v.Recibido, //Recibido 
+                        v.Estilo, //EstiloID
+                        '<p class="text-nowrap">' + v.Estilo + '</p>', //Estilo
+                        v.Color, //ColorID
+                        v.Color,
+                        v.Semana,
+                        v.Maquila,
+                        tal + v.T1 + cnt + v.C1 + '</div></div>',
+                        tal + v.T2 + cnt + v.C2 + '</div></div>',
+                        tal + v.T3 + cnt + v.C3 + '</div></div>',
+                        tal + v.T4 + cnt + v.C4 + '</div></div>',
+                        tal + v.T5 + cnt + v.C5 + '</div></div>',
+                        tal + v.T6 + cnt + v.C6 + '</div></div>',
+                        tal + v.T7 + cnt + v.C7 + '</div></div>',
+                        tal + v.T8 + cnt + v.C8 + '</div></div>',
+                        tal + v.T9 + cnt + v.C9 + '</div></div>',
+                        tal + v.T10 + cnt + v.C10 + '</div></div>',
+                        tal + v.T11 + cnt + v.C11 + '</div></div>',
+                        tal + v.T12 + cnt + v.C12 + '</div></div>',
+                        tal + v.T13 + cnt + v.C13 + '</div></div>',
+                        tal + v.T14 + cnt + v.C14 + '</div></div>',
+                        tal + v.T15 + cnt + v.C15 + '</div></div>',
+                        tal + v.T16 + cnt + v.C16 + '</div></div>',
+                        tal + v.T17 + cnt + v.C17 + '</div></div>',
+                        tal + v.T18 + cnt + v.C18 + '</div></div>',
+                        tal + v.T19 + cnt + v.C19 + '</div></div>',
+                        tal + v.T20 + cnt + v.C20 + '</div></div>',
+                        tal + v.T21 + cnt + v.C21 + '</div></div>',
+                        tal + v.T22 + cnt + v.C22 + '</div></div>',
+                        v.Precio,
+                        v.Pares,
+                        v.FechaEntrega,
+                        '<button type="button" class="btn btn-danger" onclick="onEliminar(this,2)"><span class="fa fa-trash"></span></button>',
+                        v.Recio,
+                        v.Observacion,
+                        v.ObservacionDetalle,
+                        v.Serie,
+                        'A', (v.Pares * v.Precio)];
+                    PedidoDetalle.row.add(dtm).draw(false);
                 });
                 pnlTablero.addClass("d-none");
                 pnlDatos.removeClass('d-none');
-                pnlDatos.find("#Descripcion").focus().select();
+                $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
             }).fail(function (x, y, z) {
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
             }).always(function () {
@@ -635,7 +810,7 @@
             tblPedidoDetalle.DataTable().destroy();
         }
         PedidoDetalle = tblPedidoDetalle.DataTable({
-            "dom": 'rtip',
+            "dom": 'rt',
             buttons: buttons,
             "columnDefs": [
                 //ID
@@ -691,14 +866,18 @@
                     "targets": [38],
                     "visible": false,
                     "searchable": false
+                },
+                //IMPORTE
+                {
+                    "targets": [39],
+                    "visible": false,
+                    "searchable": false
                 }
             ],
             language: lang,
-            select: true,
             "autoWidth": true,
             "colReorder": true,
             "displayLength": 50,
-            "scrollX": true,
             "scrollY": 300,
             "bLengthChange": false,
             "deferRender": true,
@@ -709,6 +888,24 @@
             ],
             "createdRow": function (row, data, index) {
                 $(row).find("td").slice(4, 26).addClass("zoom");
+            },
+            "footerCallback": function (row, data, start, end, display) {
+                var api = this.api();//Get access to Datatable API
+                // Update footer
+                var pares = api.column(31).data().reduce(function (a, b) {
+                    var ax = 0, bx = 0;
+                    ax = $.isNumeric(a) ? parseFloat(a) : 0;
+                    bx = $.isNumeric(b) ? parseFloat(b) : 0;
+                    return  (ax + bx);
+                }, 0);
+                var total = api.column(39).data().reduce(function (a, b) {
+                    var ax = 0, bx = 0;
+                    ax = $.isNumeric(a) ? parseFloat(a) : 0;
+                    bx = $.isNumeric(b) ? parseFloat(b) : 0;
+                    return  (ax + bx);
+                }, 0);
+                $("#ParesTotales").html("<span class='text-warning'>" + pares + "</span>");
+                $("#Total").html("<span class='text-info'>$" + $.number(total, 3, '.', ',') + "</span>");
             },
             initComplete: function (x, y) {
                 HoldOn.close();
@@ -759,6 +956,7 @@
             HoldOn.close();
         });
     }
+
     var added = false;
     function onCalcularPares(e) {
         var Estilo = pnlDatos.find("#Estilo");
@@ -767,17 +965,18 @@
         var Maquila = pnlDatos.find("#Maquila");
         var Precio = pnlDatos.find("#Precio");
         var FechaDeEntrega = pnlDatos.find("#FechaEntrega");
+        var Recibido = pnlDatos.find("#Recibido");
         var Recio = pnlDatos.find("#Recio");
         var Titulo = pnlDatos.find("#Observacion");
         var Observaciones = pnlDatos.find("#ObservacionDetalle");
-        var tp = 0;
+        var total_pares = 0;
         $.each(pnlDatos.find("#tblTallas input[name*='C']"), function (k, v) {
-            tp += (parseInt($(v).val()) > 0) ? parseInt($(v).val()) : 0;
+            total_pares += (parseInt($(v).val()) > 0) ? parseInt($(v).val()) : 0;
         });
         pnlDatos.find("#TPares").addClass('animated bounceOut faster').one('animationend oAnimationEnd mozAnimationEnd webkitAnimationEnd', function () {
             $(this).removeClass('animated bounceOut faster');
             $(this).addClass('animated bounceIn faster');
-            pnlDatos.find("#TPares").val(tp);
+            pnlDatos.find("#TPares").val(total_pares);
         });
         var encabezados = pnlDatos.find("#tblTallas tbody tr:eq(0)");
         var input = $(e);
@@ -785,75 +984,118 @@
         var indice_valor = encabezados.find("td").eq(padre).find("input").val();
         //VALIDACIONES
         if (Estilo.val() !== '' && Color.val() !== '' && Semana.val() !== '' && Maquila.val() !== '' && parseInt(pnlDatos.find("#TPares").val()) > 0
-                && Estilo.text() !== '') {
-            if (indice_valor === '') {
-                if (tp > 0) {
-                    //REVISAR SI ESE ESTILO/COLOR NO HA SIDO AGREGADO CON ANTERIORIDAD
-                    onRevisarRegistro(Estilo.val(), Color.val());
-                    if (!added) {
-                        //AÑADIR FILA 
-                        var tal = '<div class="row"><div class="col-12 text-danger text-nowrap talla" align="center">';
-                        var cnt = '</div><div class="col-12 cantidad" align="center">';
-                        PedidoDetalle.row.add([
-                            0, //ID 
-                            pnlDatos.find("#Recibido").val(), //Recibido 
-                            Estilo.val(), //EstiloID
-                            '<p class="text-nowrap">' + Estilo.text() + '</p>', //Estilo
-                            Color.val(), //ColorID
-                            Color.text(),
-                            Semana.val(),
-                            Maquila.val(),
-                            tal + getTalla('T1') + cnt + getCantidad('C1') + '</div></div>',
-                            tal + getTalla('T2') + cnt + getCantidad('C2') + '</div></div>',
-                            tal + getTalla('T3') + cnt + getCantidad('C3') + '</div></div>',
-                            tal + getTalla('T4') + cnt + getCantidad('C4') + '</div></div>',
-                            tal + getTalla('T5') + cnt + getCantidad('C5') + '</div></div>',
-                            tal + getTalla('T6') + cnt + getCantidad('C6') + '</div></div>',
-                            tal + getTalla('T7') + cnt + getCantidad('C7') + '</div></div>',
-                            tal + getTalla('T8') + cnt + getCantidad('C8') + '</div></div>',
-                            tal + getTalla('T9') + cnt + getCantidad('C9') + '</div></div>',
-                            tal + getTalla('T10') + cnt + getCantidad('C10') + '</div></div>',
-                            tal + getTalla('T11') + cnt + getCantidad('C11') + '</div></div>',
-                            tal + getTalla('T12') + cnt + getCantidad('C12') + '</div></div>',
-                            tal + getTalla('T13') + cnt + getCantidad('C13') + '</div></div>',
-                            tal + getTalla('T14') + cnt + getCantidad('C14') + '</div></div>',
-                            tal + getTalla('T15') + cnt + getCantidad('C15') + '</div></div>',
-                            tal + getTalla('T16') + cnt + getCantidad('C16') + '</div></div>',
-                            tal + getTalla('T17') + cnt + getCantidad('C17') + '</div></div>',
-                            tal + getTalla('T18') + cnt + getCantidad('C18') + '</div></div>',
-                            tal + getTalla('T19') + cnt + getCantidad('C19') + '</div></div>',
-                            tal + getTalla('T20') + cnt + getCantidad('C20') + '</div></div>',
-                            tal + getTalla('T21') + cnt + getCantidad('C21') + '</div></div>',
-                            tal + getTalla('T22') + cnt + getCantidad('C22') + '</div></div>',
-                            Precio.val(),
-                            tp,
-                            FechaDeEntrega.val(),
-                            '<button type="button" class="btn btn-danger" onclick="onEliminar(this)"><span class="fa fa-trash"></span></button>',
-                            Recio.val(),
-                            Titulo.val(),
-                            Observaciones.val(),
-                            pnlDatos.find("#Serie").val(),
-                            'N']).draw(false);
-                        tp = 0;
-                        pnlDatos.find("#TPares").val(0);
-                        pnlDatos.find("[name*='C']").val('');
-                        Estilo[0].selectize.clear(true);
-                        Estilo[0].selectize.focus();
-                        Estilo[0].selectize.open();
+                && Estilo.text() !== '' && Precio.val() !== '') {
+            if (Precio.val() !== '' && Precio.val().length > 0) {
+                if (indice_valor === '') {
+                    if (total_pares > 0) {
+                        //REVISAR SI ESE ESTILO/COLOR NO HA SIDO AGREGADO CON ANTERIORIDAD
+                        onRevisarRegistro(Estilo.val(), Color.val());
+                        if (!added) {
+                            //AÑADIR FILA 
+                            var tal = '<div class="row"><div class="col-12 text-danger text-nowrap talla" align="center">';
+                            var cnt = '</div><div class="col-12 cantidad" align="center">';
+                            var dtm = [
+                                0, //ID 
+                                Recibido.val(), //Recibido 
+                                Estilo.val(), //EstiloID
+                                '<p class="text-nowrap">' + Estilo.text() + '</p>', //Estilo
+                                Color.val(), //ColorID
+                                Color.text(),
+                                Semana.val(),
+                                Maquila.val(),
+                                tal + getTalla('T1') + cnt + getCantidad('C1') + '</div></div>',
+                                tal + getTalla('T2') + cnt + getCantidad('C2') + '</div></div>',
+                                tal + getTalla('T3') + cnt + getCantidad('C3') + '</div></div>',
+                                tal + getTalla('T4') + cnt + getCantidad('C4') + '</div></div>',
+                                tal + getTalla('T5') + cnt + getCantidad('C5') + '</div></div>',
+                                tal + getTalla('T6') + cnt + getCantidad('C6') + '</div></div>',
+                                tal + getTalla('T7') + cnt + getCantidad('C7') + '</div></div>',
+                                tal + getTalla('T8') + cnt + getCantidad('C8') + '</div></div>',
+                                tal + getTalla('T9') + cnt + getCantidad('C9') + '</div></div>',
+                                tal + getTalla('T10') + cnt + getCantidad('C10') + '</div></div>',
+                                tal + getTalla('T11') + cnt + getCantidad('C11') + '</div></div>',
+                                tal + getTalla('T12') + cnt + getCantidad('C12') + '</div></div>',
+                                tal + getTalla('T13') + cnt + getCantidad('C13') + '</div></div>',
+                                tal + getTalla('T14') + cnt + getCantidad('C14') + '</div></div>',
+                                tal + getTalla('T15') + cnt + getCantidad('C15') + '</div></div>',
+                                tal + getTalla('T16') + cnt + getCantidad('C16') + '</div></div>',
+                                tal + getTalla('T17') + cnt + getCantidad('C17') + '</div></div>',
+                                tal + getTalla('T18') + cnt + getCantidad('C18') + '</div></div>',
+                                tal + getTalla('T19') + cnt + getCantidad('C19') + '</div></div>',
+                                tal + getTalla('T20') + cnt + getCantidad('C20') + '</div></div>',
+                                tal + getTalla('T21') + cnt + getCantidad('C21') + '</div></div>',
+                                tal + getTalla('T22') + cnt + getCantidad('C22') + '</div></div>',
+                                Precio.val(),
+                                total_pares,
+                                FechaDeEntrega.val(),
+                                '<button type="button" class="btn btn-danger" onclick="onEliminar(this,1)"><span class="fa fa-trash"></span></button>',
+                                Recio.val(),
+                                Titulo.val(),
+                                Observaciones.val(),
+                                pnlDatos.find("#Serie").val(),
+                                'N', (total_pares * Precio.val())
+                            ];
+                            PedidoDetalle.row.add(dtm).draw(false);
+                            //CLEAR
+                            total_pares = 0;
+                            pnlDatos.find("#TPares").val(0);
+                            pnlDatos.find("[name*='C']").val('');
+                            Estilo[0].selectize.clear(true);
+                            Estilo[0].selectize.focus();
+                            Estilo[0].selectize.open();
+                            FechaDeEntrega.val('');
+                            Recibido[0].selectize.clear(true);
+                            Maquila[0].selectize.clear(true);
+                            Semana.val('');
+                            Recio.val('');
+                            Precio.val('');
+                            Titulo.val('');
+                            Observaciones.val('');
+                            Estilo[0].selectize.clear(true);
+                        } else {
+                            swal('ATENCIÓN', 'ESTA COMBINACION DE ESTILO/COLOR YA HA SIDO AGREGADA', 'warning');
+                        }
                     } else {
-                        swal('ATENCIÓN', 'ESTA COMBINACION DE ESTILO/COLOR YA HA SIDO AGREGADA', 'warning');
-                    }
-                } else {
 
+                    }
                 }
+            } else {
+                swal('ATENCIÓN', 'EL PRECIO NO ES VÁLIDO', 'warning');
             }
         }
 //FIN VALIDACIONES
     }
 
-    function onEliminar(r)
-    {
-        PedidoDetalle.row($(r).parents('tr')).remove().draw();
+    function onEliminar(r, index) {
+        swal({
+            title: "¿Deseas eliminar el registro? ",
+            text: "*El registro se eliminará de forma permanente*",
+            icon: "warning",
+            buttons: ["Cancelar", "Aceptar"],
+            closeOnClickOutside: false,
+            closeOnEsc: false,
+            dangerMode: true
+        }).then((willDelete) => {
+            if (willDelete) {
+                switch (index) {
+                    case 1:
+                        //REMOVER (NO GUARDADO)
+                        PedidoDetalle.row($(r).parents('tr')).remove().draw();
+                        break;
+                    case 2:
+                        var dt = PedidoDetalle.row($(r).parents('tr')).data();
+                        $.post(master_url + 'onEliminar', {ID: dt[0]}).done(function (data) {
+                            //REMOVER AL EDITAR (GUARDADO)
+                            PedidoDetalle.row($(r).parents('tr')).remove().draw();
+                            swal('ATENCIÓN', 'SE HA ELIMINADO EL REGISTRO', 'success');
+                        }).fail(function (x, y, z) {
+                            console.log(x, y, z);
+                        }).always(function () {
+                        });
+                        break;
+                }
+            }
+        });
     }
 
     function getTalla(e) {
@@ -947,9 +1189,25 @@
         float:left;
         z-index:4;
         position:relative;
-        -webkit-transform: scale(1.75);
-        transform: scale(1.75);
+        -webkit-transform: scale(2);
+        transform: scale(2);
         top:-10px;
         box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)!important;
+        cursor: pointer;
+    }
+    
+    div.zoom:hover{
+        cursor: pointer;
+        background-color: #fff;
+    }
+    .swal-modal{
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)!important;
+    }
+    .swal-overlay { 
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0.63+1,0+53,0.65+100 */
+        background: -moz-linear-gradient(top, rgba(0,0,0,0.63) 0%, rgba(0,0,0,0.63) 1%, rgba(0,0,0,0) 53%, rgba(0,0,0,0.65) 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top, rgba(0,0,0,0.63) 0%,rgba(0,0,0,0.63) 1%,rgba(0,0,0,0) 53%,rgba(0,0,0,0.65) 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom, rgba(0,0,0,0.63) 0%,rgba(0,0,0,0.63) 1%,rgba(0,0,0,0) 53%,rgba(0,0,0,0.65) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a1000000', endColorstr='#a6000000',GradientType=0 ); /* IE6-9 */
     }
 </style>

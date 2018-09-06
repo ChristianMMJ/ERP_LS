@@ -9,7 +9,7 @@ class Pedidos extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('pedidos_model');
+        $this->load->library('session')->helper('pedido_helper')->model('pedidos_model');
     }
 
     public function index() {
@@ -120,6 +120,14 @@ class Pedidos extends CI_Controller {
         }
     }
 
+    public function getAnosValidos() {
+        try {
+            print json_encode($this->pedidos_model->getAnosValidos());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getMaquilaSerieXEstilo() {
         try {
             print json_encode($this->pedidos_model->getMaquilaSerieXEstilo($this->input->get('Estilo')));
@@ -175,6 +183,7 @@ class Pedidos extends CI_Controller {
                     "ObservacionDetalle" => ($v->ObservacionDetalle !== '') ? $v->ObservacionDetalle : NULL,
                     "Serie" => ($v->Serie !== '') ? $v->Serie : NULL,
                     "Control" => ($v->Control !== '') ? $v->Control : NULL,
+                    "Pares" => ($v->Pares !== '') ? $v->Pares : NULL,
                     "C1" => ($v->C1 !== '') ? $v->C1 : NULL, "C2" => ($v->C2 !== '') ? $v->C2 : NULL,
                     "C3" => ($v->C3 !== '') ? $v->C3 : NULL, "C4" => ($v->C4 !== '') ? $v->C4 : NULL,
                     "C5" => ($v->C5 !== '') ? $v->C5 : NULL, "C6" => ($v->C6 !== '') ? $v->C6 : NULL,
@@ -185,14 +194,12 @@ class Pedidos extends CI_Controller {
                     "C15" => ($v->C15 !== '') ? $v->C15 : NULL, "C16" => ($v->C16 !== '') ? $v->C16 : NULL,
                     "C17" => ($v->C17 !== '') ? $v->C17 : NULL, "C18" => ($v->C18 !== '') ? $v->C18 : NULL,
                     "C19" => ($v->C19 !== '') ? $v->C19 : NULL, "C20" => ($v->C20 !== '') ? $v->C20 : NULL,
-                    "C21" => ($v->C21 !== '') ? $v->C21 : NULL, "C22" => ($v->C22 !== '') ? $v->C22 : NULL
+                    "C21" => ($v->C21 !== '') ? $v->C21 : NULL, "C22" => ($v->C22 !== '') ? $v->C22 : NULL,
+                    "Recibido" => ($v->Recibido !== '') ? $v->Recibido : NULL
                 );
                 $data["Estatus"] = 'A';
                 $data["Registro"] = Date('d/m/Y h:i:s');
                 $this->db->insert("pedidodetalle", $data);
-                print "\n";
-                $str = $this->db->last_query();
-                print $str;
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -202,15 +209,93 @@ class Pedidos extends CI_Controller {
     public function onModificar() {
         try {
             $x = $this->input;
-            $data = array();
-            var_dump($x->post());
-            foreach ($x->post() as $key => $v) {
-                if ($v !== '') {
-                    $data[$key] = ($v !== '') ? strtoupper($v) : NULL;
-                }
+            foreach ($Detalle as $key => $v) {
+                $dt = date_parse($v->FechaEntrega);
+                $data = array(
+                    "Pedido" => $x->post('ID'),
+                    "Estilo" => ($v->Estilo !== '') ? $v->Estilo : NULL,
+                    "Color" => ($v->Color !== '') ? $v->Color : NULL,
+                    "FechaEntrega" => ($v->FechaEntrega !== '') ? $v->FechaEntrega : NULL,
+                    "Maquila" => ($v->Maquila !== '') ? $v->Maquila : NULL,
+                    "Semana" => ($v->Semana !== '') ? $v->Semana : NULL,
+                    "Ano" => $dt["year"],
+                    "Recio" => ($v->Recio !== '') ? $v->Recio : NULL,
+                    "Precio" => ($v->Precio !== '') ? $v->Precio : NULL,
+                    "Observacion" => ($v->Observacion !== '') ? $v->Observacion : NULL,
+                    "ObservacionDetalle" => ($v->ObservacionDetalle !== '') ? $v->ObservacionDetalle : NULL,
+                    "Serie" => ($v->Serie !== '') ? $v->Serie : NULL,
+                    "Control" => ($v->Control !== '') ? $v->Control : NULL,
+                    "Pares" => ($v->Pares !== '') ? $v->Pares : NULL,
+                    "C1" => ($v->C1 !== '') ? $v->C1 : NULL, "C2" => ($v->C2 !== '') ? $v->C2 : NULL,
+                    "C3" => ($v->C3 !== '') ? $v->C3 : NULL, "C4" => ($v->C4 !== '') ? $v->C4 : NULL,
+                    "C5" => ($v->C5 !== '') ? $v->C5 : NULL, "C6" => ($v->C6 !== '') ? $v->C6 : NULL,
+                    "C7" => ($v->C7 !== '') ? $v->C7 : NULL, "C8" => ($v->C8 !== '') ? $v->C8 : NULL,
+                    "C9" => ($v->C9 !== '') ? $v->C9 : NULL, "C10" => ($v->C10 !== '') ? $v->C10 : NULL,
+                    "C11" => ($v->C11 !== '') ? $v->C11 : NULL, "C12" => ($v->C12 !== '') ? $v->C12 : NULL,
+                    "C13" => ($v->C13 !== '') ? $v->C13 : NULL, "C14" => ($v->C14 !== '') ? $v->C14 : NULL,
+                    "C15" => ($v->C15 !== '') ? $v->C15 : NULL, "C16" => ($v->C16 !== '') ? $v->C16 : NULL,
+                    "C17" => ($v->C17 !== '') ? $v->C17 : NULL, "C18" => ($v->C18 !== '') ? $v->C18 : NULL,
+                    "C19" => ($v->C19 !== '') ? $v->C19 : NULL, "C20" => ($v->C20 !== '') ? $v->C20 : NULL,
+                    "C21" => ($v->C21 !== '') ? $v->C21 : NULL, "C22" => ($v->C22 !== '') ? $v->C22 : NULL,
+                    "Recibido" => ($v->Recibido !== '') ? $v->Recibido : NULL
+                );
+                $data["Estatus"] = 'A';
+                $data["Registro"] = Date('d/m/Y h:i:s');
+                $this->db->insert("pedidodetalle", $data);
             }
-            unset($data["ID"]);
-            $this->pedidos_model->onModificar($x->post('ID'), $data);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onEliminar() {
+        try {
+            print "\n Eliminando... \n";
+            var_dump($this->input->post());
+            print "\n";
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    function onImprimirPedido() {
+        try {
+            $pdf = new PDF('L', 'mm', array(215.9, 279.4));
+            
+            /* FIN RESUMEN */
+            $path = 'uploads/Reportes/Pedidos';
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $file_name = "Pedido " . date("d-m-Y_his");
+            $url = $path . '/' . $file_name . '.pdf';
+            /* Borramos el archivo anterior */
+                
+            $pdf->Output($url);
+            print base_url() . $url;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    } 
+
+    public function onLog($Accion) {
+        try {
+            /* LOG TO ACCIONS */
+            $xlog = array();
+            $xlog["Empresa"] = $this->session->Empresa;
+            $xlog["Tipo"] = $this->session->TipoAcceso;
+            $xlog["IdUsuario"] = $this->session->ID;
+            $xlog["Usuario"] = $this->session->Nombre . " " . $this->session->Apellidos;
+            $xlog["Modulo"] = "PEDIDOS";
+            $xlog["Accion"] = $Accion;
+            $xlog["Fecha"] = Date('d/m/Y');
+            $xlog["Hora"] = Date('h:i:s a');
+            $xlog["Dia"] = Date('d');
+            $xlog["Mes"] = Date('m');
+            $xlog["Anio"] = Date('Y');
+            $xlog["Registro"] = Date('d/m/Y h:i:s a');
+            $xlog["Estatus"] = 'ACTIVO';
+            $this->db->insert('logs', $xlog);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
