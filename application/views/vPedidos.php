@@ -18,6 +18,8 @@
                             <th>ID</th>
                             <th>Clave</th> 
                             <th>Cliente</th> 
+                            <th>Agente</th> 
+                            <th>Pares</th> 
                             <th>Fecha de entrega</th> 
                         </tr>
                     </thead>
@@ -49,7 +51,7 @@
                     <hr>
                     <div class="row">
                         <div class="d-none">
-                            <input type="text" id="ID" name="ID" class="form-control form-control-sm" >
+                            <input type="text" id="ID" name="ID" class="form-control form-control-sm d-none" readonly="" >
                         </div>
                         <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
                             <label for="Pedido" >Pedido*</label>
@@ -117,7 +119,7 @@
                         <!--BREAK-->
                         <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
                             <label for="Recio" >Recio*</label>
-                            <input type="text" id="Recio" name="Recio" class="form-control form-control-sm" >
+                            <input type="text" id="Recio" name="Recio" class="form-control form-control-sm" maxlength="5">
                         </div>
                         <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
                             <label for="Recio" >Produccion maquila/semana*</label>
@@ -125,17 +127,17 @@
                         </div>
                         <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
                             <label for="Precio" >Precio*</label>
-                            <input type="text" id="Precio" name="Precio" class="form-control form-control-sm numbersOnly" >
+                            <input type="text" id="Precio" name="Precio" class="form-control form-control-sm numbersOnly" maxlength="8">
                             <input type="text" id="Serie" class="form-control form-control-sm d-none" readonly="" >
                         </div>
                         <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                             <label for="Observaciones" >Observaciones*</label>
                             <div class="row">
                                 <div class="col-6">
-                                    <input type="text" id="Observacion" name="Observacion" class="form-control form-control-sm" placeholder="Titulo">
+                                    <input type="text" id="Observacion" name="Observacion" class="form-control form-control-sm" placeholder="Titulo" maxlength="99">
                                 </div>
                                 <div class="col-6">
-                                    <input type="text" id="ObservacionDetalle" name="ObservacionDetalle" class="form-control form-control-sm" placeholder="Descripción">
+                                    <input type="text" id="ObservacionDetalle" name="ObservacionDetalle" class="form-control form-control-sm" placeholder="Descripción" maxlength="99">
                                 </div>
                             </div>
                         </div>
@@ -172,7 +174,7 @@
                             <h6 class="text-danger">Los campos con * son obligatorios</h6>
                         </div>
                         <div class="col-6 col-sm-6 col-md-6" align="right">
-                            <button type="button" class="btn btn-info btn-lg btn-float animated slideInUp" disabled="" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
+                            <button type="button" class="btn btn-info btn-lg btn-float animated slideInUp d-none" disabled="" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
                                 <i class="fa fa-save"></i>
                             </button>
                         </div>
@@ -239,7 +241,8 @@
                             </thead>
                             <tbody></tbody>
                         </table> 
-                        <div class="w-100"></div>
+                    </div>
+                    <div class="row mt-3">
                         <div class="col-8 font-weight-bold" align="right">Pares</div> 
                         <div id="ParesTotales" class="col-1 font-weight-bold zoom"></div>
                         <div class="col-1 font-weight-bold">Total</div>
@@ -266,7 +269,11 @@
         init();
         handleEnter();
 
-        btnImprimir.click(function () { 
+        $.each(pnlDatos.find("select"), function () {
+            verificarValorSelect('#' + $(this).attr('id'), pnlDatos);
+        });
+
+        btnImprimir.click(function () {
             if (temp > 0) {
                 //HoldOn.open({  message: 'Espere...', theme: 'sk-cube'});
                 $.get(master_url + 'onImprimirPedido', {Estilo: temp}).done(function (data) {
@@ -317,10 +324,6 @@
             }
         });
 
-        pnlDatos.find("input[id='Estilo-selectized']").on('blur', function () {
-            onNextFocus('Estilo', 'Color');
-        });
-
         pnlDatos.find("#Precio").focusout(function () {
             var Precio = pnlDatos.find("#Precio").val();
             if (Precio.length <= 0) {
@@ -363,7 +366,9 @@
                             text: "NO EXISTEN SEMANAS DE PRODUCCIÓN PARA ESTA FECHA ",
                             icon: "warning",
                             closeOnClickOutside: false,
-                            closeOnEsc: false
+                            closeOnEsc: false,
+                            buttons: false,
+                            timer: 1200
                         }).then((value) => {
                             pnlDatos.find("#FechaEntrega").val('');
                             pnlDatos.find("#Semana").val('');
@@ -380,9 +385,11 @@
             $.getJSON(master_url + 'getSemanaXFechaDeEntrega', {Fecha: $(this).val()}).done(function (data) {
                 if (data.length > 0) {
                     pnlDatos.find("#Semana").val(data[0].Semana);
+                    getProduccionMaquilaSemana(pnlDatos.find("#Maquila").val(), data[0].Semana);
                 }
             }).fail(function (x, y, z) {
                 console.log(x, y, z);
+            }).always(function () {
             });
         });
 
@@ -404,10 +411,12 @@
                             var n = d.getFullYear();
                             detalle.push({
                                 Estilo: tr[2],
+                                EstiloT: tr[3],
                                 Color: tr[4],
+                                ColorT: tr[5],
                                 FechaEntrega: tr[32],
-                                Maquila: tr[6],
-                                Semana: tr[7],
+                                Maquila: tr[7],
+                                Semana: tr[6],
                                 Recio: tr[34],
                                 Precio: tr[30],
                                 Observacion: tr[35],
@@ -442,13 +451,24 @@
                             });
                         }
                     });
-                    onSave('onModificar', f, function () {
-                        swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO', 'info');
+                    f.append('Detalle', JSON.stringify(detalle));
+                    f.append('ID', pnlDatos.find("#ID").val());
+                    onSave('onModificar', f, function (e) {
+                        swal({
+                            title: "ATENCIÓN",
+                            text: "SE HA MODIFICADO EL REGISTRO",
+                            icon: "success",
+                            closeOnClickOutside: false,
+                            closeOnEsc: false,
+                            buttons: false,
+                            timer: 1200
+                        });
                         nuevo = false;
-                        pnlTablero.removeClass("d-none");
-                        pnlDatos.addClass("d-none");
                         Pedidos.ajax.reload();
-                        PedidoDetalle.clear().draw();
+                        getPedidoByID(pnlDatos.find("#ID").val());
+//                        $.each(tblPedidoDetalle.find("tbody tr"), function (k, v) {
+//                            PedidoDetalle.cell($(this), 38).data('N').draw();
+//                        }); 
                     });
                 } else {
                     var detalle = [];
@@ -458,10 +478,12 @@
                         var n = d.getFullYear();
                         detalle.push({
                             Estilo: tr[2],
+                            EstiloT: tr[3],
                             Color: tr[4],
+                            ColorT: tr[5],
                             FechaEntrega: tr[32],
-                            Maquila: tr[6],
-                            Semana: tr[7],
+                            Maquila: tr[7],
+                            Semana: tr[6],
                             Recio: tr[34],
                             Precio: tr[30],
                             Observacion: tr[35],
@@ -496,12 +518,22 @@
                         });
                     });
                     f.append('Detalle', JSON.stringify(detalle));
-                    onSave('onAgregar', f, function () {
+                    onSave('onAgregar', f, function (e) {
+                        console.log('onAgregar: ', e);
                         nuevo = false;
+                        var dtm = JSON.parse(e);
+                        getPedidoByID(dtm.ID);
+
+//                        $.each(tblPedidoDetalle.find("tbody tr"), function (k, v) {
+//                            PedidoDetalle.cell($(this), 38).data('N').draw();
+//                        });
                         Pedidos.ajax.reload();
-                        PedidoDetalle.clear().draw();
-                        pnlTablero.removeClass("d-none");
-                        pnlDatos.addClass("d-none");
+                        //NUEVO > MODIFICAR
+                        pnlDatos.find("#Clave").prop('disabled', true);
+                        pnlDatos.find("#FechaPedido").prop('disabled', true);
+                        pnlDatos.find("#FechaRecepcion").prop('disabled', true);
+                        pnlDatos.find("#Cliente")[0].selectize.disable();
+                        pnlDatos.find("#Agente")[0].selectize.disable();
                     });
                 }
             } else {
@@ -543,7 +575,7 @@
         });
 
         pnlDatos.find("#Cliente").change(function () {
-            if ($(this).val() !== '') {
+            if ($(this).val() !== '' && nuevo) {
                 //OBTENER AGENTE POR CLIENTE
                 Cliente = pnlDatos.find("#Cliente").val();
                 console.log('this:', $(this).val(), ',', Cliente);
@@ -691,7 +723,7 @@
                 "dataSrc": ""
             },
             "columns": [
-                {"data": "ID"}, {"data": "Clave"}, {"data": "Cliente"}, {"data": "FechaPedido"}
+                {"data": "ID"}, {"data": "Clave"}, {"data": "Cliente"}, {"data": "Agente"}, {"data": "Pares"}, {"data": "FechaPedido"}
             ],
             "columnDefs": [
                 {
@@ -705,7 +737,7 @@
             "autoWidth": true,
             "colReorder": true,
             "displayLength": 20,
-            "scrollX": true,
+            "scrollX": false,
             "bLengthChange": false,
             "deferRender": true,
             "scrollCollapse": false,
@@ -729,81 +761,7 @@
             $(this).addClass("success");
             var dtm = Pedidos.row(this).data();
             temp = parseInt(dtm.ID);
-            $.getJSON(master_url + 'getPedidosByID', {ID: temp}).done(function (data) {
-                pnlDatos.find("input").val("");
-                $.each(pnlDatos.find("select"), function (k, v) {
-                    pnlDatos.find("select")[k].selectize.clear(true);
-                });
-                var dt = data[0];//Encabezado
-                //SEGURIDAD 
-                pnlDatos.find("#Clave").val(dt.Clave);
-                pnlDatos.find("#Clave").prop('disabled', true);
-                pnlDatos.find("#FechaPedido").prop('disabled', true);
-                pnlDatos.find("#FechaRecepcion").prop('disabled', true);
-                pnlDatos.find("#Cliente")[0].selectize.disable();
-                pnlDatos.find("#Agente")[0].selectize.disable();
-
-                pnlDatos.find("#Cliente")[0].selectize.setValue(dt.Cliente);
-                pnlDatos.find("#FechaPedido").val(dt.FechaPedido);
-                pnlDatos.find("#FechaRecepcion").val(dt.FechaRecepcion);
-                pnlDatos.find("#Agente")[0].selectize.setValue(dt.Agente);
-
-                btnImprimir.removeClass("d-none");
-
-                //ASIGNAR DETALLE
-                var tal = '<div class="row"><div class="col-12 text-danger text-nowrap talla" align="center">';
-                var cnt = '</div><div class="col-12 cantidad" align="center">';
-                $.each(data, function (k, v) {
-                    var dtm = [
-                        v.PDID, //ID 
-                        v.Recibido, //Recibido 
-                        v.Estilo, //EstiloID
-                        '<p class="text-nowrap">' + v.Estilo + '</p>', //Estilo
-                        v.Color, //ColorID
-                        v.Color,
-                        v.Semana,
-                        v.Maquila,
-                        tal + v.T1 + cnt + v.C1 + '</div></div>',
-                        tal + v.T2 + cnt + v.C2 + '</div></div>',
-                        tal + v.T3 + cnt + v.C3 + '</div></div>',
-                        tal + v.T4 + cnt + v.C4 + '</div></div>',
-                        tal + v.T5 + cnt + v.C5 + '</div></div>',
-                        tal + v.T6 + cnt + v.C6 + '</div></div>',
-                        tal + v.T7 + cnt + v.C7 + '</div></div>',
-                        tal + v.T8 + cnt + v.C8 + '</div></div>',
-                        tal + v.T9 + cnt + v.C9 + '</div></div>',
-                        tal + v.T10 + cnt + v.C10 + '</div></div>',
-                        tal + v.T11 + cnt + v.C11 + '</div></div>',
-                        tal + v.T12 + cnt + v.C12 + '</div></div>',
-                        tal + v.T13 + cnt + v.C13 + '</div></div>',
-                        tal + v.T14 + cnt + v.C14 + '</div></div>',
-                        tal + v.T15 + cnt + v.C15 + '</div></div>',
-                        tal + v.T16 + cnt + v.C16 + '</div></div>',
-                        tal + v.T17 + cnt + v.C17 + '</div></div>',
-                        tal + v.T18 + cnt + v.C18 + '</div></div>',
-                        tal + v.T19 + cnt + v.C19 + '</div></div>',
-                        tal + v.T20 + cnt + v.C20 + '</div></div>',
-                        tal + v.T21 + cnt + v.C21 + '</div></div>',
-                        tal + v.T22 + cnt + v.C22 + '</div></div>',
-                        v.Precio,
-                        v.Pares,
-                        v.FechaEntrega,
-                        '<button type="button" class="btn btn-danger" onclick="onEliminar(this,2)"><span class="fa fa-trash"></span></button>',
-                        v.Recio,
-                        v.Observacion,
-                        v.ObservacionDetalle,
-                        v.Serie,
-                        'A', (v.Pares * v.Precio)];
-                    PedidoDetalle.row.add(dtm).draw(false);
-                });
-                pnlTablero.addClass("d-none");
-                pnlDatos.removeClass('d-none');
-                $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
-            }).fail(function (x, y, z) {
-                swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-            }).always(function () {
-                HoldOn.close();
-            });
+            getPedidoByID(temp);
         });
         $.fn.dataTable.ext.errMode = 'throw';
         if ($.fn.DataTable.isDataTable('#tblPedidoDetalle')) {
@@ -812,6 +770,13 @@
         PedidoDetalle = tblPedidoDetalle.DataTable({
             "dom": 'rt',
             buttons: buttons,
+            "ajax": {
+                "url": master_url + 'getPedidosByID',
+                "dataSrc": "",
+                "data": {
+                    "ID": temp
+                }
+            },
             "columnDefs": [
                 //ID
                 {
@@ -879,12 +844,12 @@
             "colReorder": true,
             "displayLength": 50,
             "scrollY": 300,
+            "scrollX": false,
             "bLengthChange": false,
             "deferRender": true,
-            "scrollCollapse": false,
             "bSort": true,
             "aaSorting": [
-                [1, 'ASC']
+                [0, 'ASC']
             ],
             "createdRow": function (row, data, index) {
                 $(row).find("td").slice(4, 26).addClass("zoom");
@@ -933,8 +898,8 @@
             processData: false,
             data: f
         }).done(function (data, x, jq) {
-            console.log(data);
-            fu();
+            console.log('onSave: ', data);
+            fu(data);
         }).fail(function (x, y, z) {
             console.log(x.responseText, y, z);
         }).always(function () {
@@ -957,7 +922,7 @@
         });
     }
 
-    var added = false;
+    var added = false, agregado = 0;
     function onCalcularPares(e) {
         var Estilo = pnlDatos.find("#Estilo");
         var Color = pnlDatos.find("#Color");
@@ -998,7 +963,7 @@
                                 0, //ID 
                                 Recibido.val(), //Recibido 
                                 Estilo.val(), //EstiloID
-                                '<p class="text-nowrap">' + Estilo.text() + '</p>', //Estilo
+                                Estilo.text(), //Estilo
                                 Color.val(), //ColorID
                                 Color.text(),
                                 Semana.val(),
@@ -1052,11 +1017,22 @@
                             Titulo.val('');
                             Observaciones.val('');
                             Estilo[0].selectize.clear(true);
+                            agregado = 1;
+                            console.log("\nAGREGADO: ", agregado);
+                            btnGuardar.trigger('click');
                         } else {
-                            swal('ATENCIÓN', 'ESTA COMBINACION DE ESTILO/COLOR YA HA SIDO AGREGADA', 'warning');
+                            swal({
+                                title: "ATENCIÓN",
+                                text: "ESTA COMBINACION DE ESTILO/COLOR YA HA SIDO AGREGADA",
+                                icon: "warning",
+                                closeOnClickOutside: false,
+                                closeOnEsc: false,
+                                buttons: false,
+                                timer: 2000
+                            });
                         }
                     } else {
-
+                        //ZERO PARES
                     }
                 }
             } else {
@@ -1087,7 +1063,15 @@
                         $.post(master_url + 'onEliminar', {ID: dt[0]}).done(function (data) {
                             //REMOVER AL EDITAR (GUARDADO)
                             PedidoDetalle.row($(r).parents('tr')).remove().draw();
-                            swal('ATENCIÓN', 'SE HA ELIMINADO EL REGISTRO', 'success');
+                            swal({
+                                title: "ATENCIÓN",
+                                text: "SE HA ELIMINADO EL REGISTRO",
+                                icon: "success",
+                                closeOnClickOutside: false,
+                                closeOnEsc: false,
+                                buttons: false,
+                                timer: 1500
+                            });
                         }).fail(function (x, y, z) {
                             console.log(x, y, z);
                         }).always(function () {
@@ -1106,16 +1090,6 @@
         return parseInt(pnlDatos.find("#tblTallas tbody tr:eq(1)").find("[name='" + e + "']").val()) > 0 ? pnlDatos.find("#tblTallas tbody tr:eq(1)").find("[name='" + e + "']").val() : 0;
     }
 
-    function onNextFocus(main_component, next_component) {
-        if (pnlDatos.find("#" + main_component).val() === '') {
-            pnlDatos.find("#" + main_component)[0].selectize.focus();
-        } else {
-            if (next_component !== '') {
-                pnlDatos.find("#" + next_component)[0].selectize.focus();
-            }
-        }
-    }
-
     function onRevisarRegistro(estilo, color) {
         added = false;
         if (PedidoDetalle.rows().count() > 0) {
@@ -1130,6 +1104,103 @@
         } else {
             added = false;
         }
+    }
+
+    function getPedidoByID(temp) {
+        PedidoDetalle.clear().draw();
+        $.getJSON(master_url + 'getPedidosByID', {ID: temp}).done(function (data) {
+            console.log(data);
+            pnlDatos.find("input").val("");
+            $.each(pnlDatos.find("select"), function (k, v) {
+                pnlDatos.find("select")[k].selectize.clear(true);
+            });
+            var dt = data[0];//Encabezado
+            //SEGURIDAD 
+            pnlDatos.find("#ID").val(dt.PDID);
+            pnlDatos.find("#Clave").val(dt.Clave);
+            pnlDatos.find("#Cliente")[0].selectize.setValue(dt.Cliente);
+            pnlDatos.find("#FechaPedido").val(dt.FechaPedido);
+            pnlDatos.find("#FechaRecepcion").val(dt.FechaRecepcion);
+            pnlDatos.find("#Agente")[0].selectize.setValue(dt.Agente);
+
+            pnlDatos.find("#Clave").prop('disabled', true);
+            pnlDatos.find("#FechaPedido").prop('disabled', true);
+            pnlDatos.find("#FechaRecepcion").prop('disabled', true);
+            pnlDatos.find("#Cliente")[0].selectize.disable();
+            pnlDatos.find("#Agente")[0].selectize.disable();
+
+            btnImprimir.removeClass("d-none");
+
+            //ASIGNAR DETALLE
+            var tal = '<div class="row"><div class="col-12 text-danger text-nowrap talla" align="center">';
+            var cnt = '</div><div class="col-12 cantidad" align="center">';
+            $.each(data, function (k, v) {
+                var dtm = [
+                    v.PDID, //ID 
+                    v.Recibido, //Recibido 
+                    v.Estilo, //EstiloID
+                    '<p class="text-nowrap">' + v.EstiloT + '</p>', //Estilo
+                    v.Color, //ColorID
+                    v.ColorT,
+                    v.Semana,
+                    v.Maquila,
+                    tal + v.T1 + cnt + v.C1 + '</div></div>',
+                    tal + v.T2 + cnt + v.C2 + '</div></div>',
+                    tal + v.T3 + cnt + v.C3 + '</div></div>',
+                    tal + v.T4 + cnt + v.C4 + '</div></div>',
+                    tal + v.T5 + cnt + v.C5 + '</div></div>',
+                    tal + v.T6 + cnt + v.C6 + '</div></div>',
+                    tal + v.T7 + cnt + v.C7 + '</div></div>',
+                    tal + v.T8 + cnt + v.C8 + '</div></div>',
+                    tal + v.T9 + cnt + v.C9 + '</div></div>',
+                    tal + v.T10 + cnt + v.C10 + '</div></div>',
+                    tal + v.T11 + cnt + v.C11 + '</div></div>',
+                    tal + v.T12 + cnt + v.C12 + '</div></div>',
+                    tal + v.T13 + cnt + v.C13 + '</div></div>',
+                    tal + v.T14 + cnt + v.C14 + '</div></div>',
+                    tal + v.T15 + cnt + v.C15 + '</div></div>',
+                    tal + v.T16 + cnt + v.C16 + '</div></div>',
+                    tal + v.T17 + cnt + v.C17 + '</div></div>',
+                    tal + v.T18 + cnt + v.C18 + '</div></div>',
+                    tal + v.T19 + cnt + v.C19 + '</div></div>',
+                    tal + v.T20 + cnt + v.C20 + '</div></div>',
+                    tal + v.T21 + cnt + v.C21 + '</div></div>',
+                    tal + v.T22 + cnt + v.C22 + '</div></div>',
+                    v.Precio,
+                    v.Pares,
+                    v.FechaEntrega,
+                    '<button type="button" class="btn btn-danger" onclick="onEliminar(this,2)"><span class="fa fa-trash"></span></button>',
+                    v.Recio,
+                    v.Observacion,
+                    v.ObservacionDetalle,
+                    v.Serie,
+                    'A', (v.Pares * v.Precio)];
+                PedidoDetalle.row.add(dtm).draw(false);
+            });
+            pnlTablero.addClass("d-none");
+            pnlDatos.removeClass('d-none');
+            $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
+        }).fail(function (x, y, z) {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+        }).always(function () {
+            HoldOn.close();
+        });
+    }
+    function onReload() {
+        console.log(temp);
+        PedidoDetalle.ajax.reload();
+    }
+
+    function getProduccionMaquilaSemana(M, S) {
+        $.getJSON(master_url + 'getProduccionMaquilaSemana', {Maquila: M, Semana: S}).done(function (data) {
+            if (data.length > 0) {
+                pnlDatos.find("#ProduccionMaquilaSemana").val(data[0].Pares);
+            }
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            console.log('OK');
+        });
     }
 </script>
 <style>
@@ -1195,7 +1266,7 @@
         box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)!important;
         cursor: pointer;
     }
-    
+
     div.zoom:hover{
         cursor: pointer;
         background-color: #fff;
@@ -1209,5 +1280,12 @@
         background: -webkit-linear-gradient(top, rgba(0,0,0,0.63) 0%,rgba(0,0,0,0.63) 1%,rgba(0,0,0,0) 53%,rgba(0,0,0,0.65) 100%); /* Chrome10-25,Safari5.1-6 */
         background: linear-gradient(to bottom, rgba(0,0,0,0.63) 0%,rgba(0,0,0,0.63) 1%,rgba(0,0,0,0) 53%,rgba(0,0,0,0.65) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a1000000', endColorstr='#a6000000',GradientType=0 ); /* IE6-9 */
+    } 
+    .container-fluid {
+        width: 100%;
+        padding-right: 0px; 
+        padding-left: 0px; 
+        margin-right: auto;
+        margin-left: auto;
     }
 </style>

@@ -12,8 +12,10 @@ class pedidos_model extends CI_Model {
 
     public function getRecords() {
         try {
-            return $this->db->select("P.ID, P.Clave, CONCAT(IFNULL(P.Cliente,''),' ', IFNULL(C.RazonS,'')) AS Cliente, P.FechaPedido", false)
+            return $this->db->select("P.ID, P.Clave, CONCAT(IFNULL(P.Cliente,''),' ', IFNULL(C.RazonS,'')) AS Cliente, A.Nombre Agente,P.FechaPedido, SUM(PD.Pares) AS Pares", false)
                             ->from('pedidos AS P')
+                            ->join('pedidodetalle AS PD', 'P.Clave = PD.Pedido')
+                            ->join('agentes AS A', 'P.Agente = A.Clave')
                             ->join("clientes AS C", "P.Cliente = C.Clave", 'left')
                             ->get()->result();
         } catch (Exception $exc) {
@@ -24,7 +26,7 @@ class pedidos_model extends CI_Model {
     public function getPedidosByID($ID) {
         try {
             return $this->db->select("PD.ID as PDID, P.Clave, P.Cliente, P.Agente, P.FechaPedido, P.FechaRecepcion, P.Usuario, P.Estatus, P.Registro, 
-                                    PD.Pedido, PD.Estilo, PD.Color, PD.FechaEntrega, PD.Maquila, PD.Semana, PD.Ano, PD.Recio, PD.Precio, PD.Observacion, PD.ObservacionDetalle, PD.Serie, PD.Control,
+                                    PD.Pedido, PD.Estilo,PD.EstiloT, PD.Color, PD.ColorT,PD.FechaEntrega, PD.Maquila, PD.Semana, PD.Ano, PD.Recio, PD.Precio, PD.Observacion, PD.ObservacionDetalle, PD.Serie, PD.Control,
                                     PD.C1, PD.C2, PD.C3, PD.C4, PD.C5, PD.C6, PD.C7, PD.C8, PD.C9, PD.C10, PD.C11, PD.C12, PD.C13, PD.C14, PD.C15, PD.C16, PD.C17, PD.C18, PD.C19, PD.C20, PD.C21, PD.C22, 
                                     'A' AS EstatusDetalle, PD.Recibido,
                                     S.Clave AS Serie, PD.Pares,
@@ -88,6 +90,16 @@ class pedidos_model extends CI_Model {
     public function onEliminar($ID) {
         try {
             $this->db->set('Estatus', 'INACTIVO')->where('ID', $ID)->update("pedidos");
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getProduccionMaquilaSemana($M, $S) {
+        try {
+            return $this->db->select('SUM(PD.Pares) AS Pares', false)->from('pedidodetalle AS PD')
+                            ->where('PD.Maquila', $M)->where('PD.Semana', $S)->where('PD.Estatus', 'A')
+                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -180,11 +192,10 @@ class pedidos_model extends CI_Model {
                             ->from('Colores AS C')
                             ->where('C.Estilo', $Estilo)
                             ->where('C.Estatus', 'ACTIVO')
-                            ->order_by('ID', 'ASC')
+                            ->order_by('C.Clave', 'ASC')
                             ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
-
 }

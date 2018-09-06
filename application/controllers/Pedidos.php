@@ -136,6 +136,14 @@ class Pedidos extends CI_Controller {
         }
     }
 
+    public function getProduccionMaquilaSemana() {
+        try {
+            print json_encode($this->pedidos_model->getProduccionMaquilaSemana($this->input->get('Maquila'),$this->input->get('Semana')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getAgenteXCliente() {
         try {
             print json_encode($this->pedidos_model->getAgenteXCliente($this->input->get('Cliente')));
@@ -172,7 +180,9 @@ class Pedidos extends CI_Controller {
                 $data = array(
                     "Pedido" => $ID,
                     "Estilo" => ($v->Estilo !== '') ? $v->Estilo : NULL,
+                    "EstiloT" => ($v->EstiloT !== '') ? $v->EstiloT : NULL,
                     "Color" => ($v->Color !== '') ? $v->Color : NULL,
+                    "ColorT" => ($v->ColorT !== '') ? $v->ColorT : NULL,
                     "FechaEntrega" => ($v->FechaEntrega !== '') ? $v->FechaEntrega : NULL,
                     "Maquila" => ($v->Maquila !== '') ? $v->Maquila : NULL,
                     "Semana" => ($v->Semana !== '') ? $v->Semana : NULL,
@@ -200,7 +210,10 @@ class Pedidos extends CI_Controller {
                 $data["Estatus"] = 'A';
                 $data["Registro"] = Date('d/m/Y h:i:s');
                 $this->db->insert("pedidodetalle", $data);
+                $this->onLog("AGREGO " . $v->Pares . " PARES AL PEDIDO $ID DEL ESTILO: " . $v->EstiloT . ", COLOR: " . $v->ColorT);
             }
+            //RETURN ID
+            print '{ "ID":' . $ID . ',"EVT":"Agregar"}';
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -209,12 +222,15 @@ class Pedidos extends CI_Controller {
     public function onModificar() {
         try {
             $x = $this->input;
+            $Detalle = json_decode($this->input->post("Detalle"));
             foreach ($Detalle as $key => $v) {
                 $dt = date_parse($v->FechaEntrega);
                 $data = array(
-                    "Pedido" => $x->post('ID'),
+                    "Pedido" => $x->post('Clave'),
                     "Estilo" => ($v->Estilo !== '') ? $v->Estilo : NULL,
+                    "EstiloT" => ($v->EstiloT !== '') ? $v->EstiloT : NULL,
                     "Color" => ($v->Color !== '') ? $v->Color : NULL,
+                    "ColorT" => ($v->ColorT !== '') ? $v->ColorT : NULL,
                     "FechaEntrega" => ($v->FechaEntrega !== '') ? $v->FechaEntrega : NULL,
                     "Maquila" => ($v->Maquila !== '') ? $v->Maquila : NULL,
                     "Semana" => ($v->Semana !== '') ? $v->Semana : NULL,
@@ -243,6 +259,8 @@ class Pedidos extends CI_Controller {
                 $data["Registro"] = Date('d/m/Y h:i:s');
                 $this->db->insert("pedidodetalle", $data);
             }
+            //RETURN ID
+            print '{ "ID":' . $ID . ',"EVT":"Agregar"}';
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -250,9 +268,7 @@ class Pedidos extends CI_Controller {
 
     public function onEliminar() {
         try {
-            print "\n Eliminando... \n";
-            var_dump($this->input->post());
-            print "\n";
+            $this->db->where('ID', $this->input->post('ID'))->delete('pedidodetalle');
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -261,7 +277,7 @@ class Pedidos extends CI_Controller {
     function onImprimirPedido() {
         try {
             $pdf = new PDF('L', 'mm', array(215.9, 279.4));
-            
+
             /* FIN RESUMEN */
             $path = 'uploads/Reportes/Pedidos';
             if (!file_exists($path)) {
@@ -270,13 +286,32 @@ class Pedidos extends CI_Controller {
             $file_name = "Pedido " . date("d-m-Y_his");
             $url = $path . '/' . $file_name . '.pdf';
             /* Borramos el archivo anterior */
-                
+
             $pdf->Output($url);
             print base_url() . $url;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
-    } 
+    }
+
+    public $Padre = '';
+    public $Hijo = '';
+
+    function getPadre() {
+        return $this->Padre;
+    }
+
+    function getHijo() {
+        return $this->Hijo;
+    }
+
+    function setPadre($Padre) {
+        $this->Padre = $Padre;
+    }
+
+    function setHijo($Hijo) {
+        $this->Hijo = $Hijo;
+    }
 
     public function onLog($Accion) {
         try {
@@ -287,13 +322,15 @@ class Pedidos extends CI_Controller {
             $xlog["IdUsuario"] = $this->session->ID;
             $xlog["Usuario"] = $this->session->Nombre . " " . $this->session->Apellidos;
             $xlog["Modulo"] = "PEDIDOS";
-            $xlog["Accion"] = $Accion;
+            $xlog["Accion"] = $this->session->Nombre . " " . $this->session->Apellidos . ":" . $Accion;
             $xlog["Fecha"] = Date('d/m/Y');
             $xlog["Hora"] = Date('h:i:s a');
             $xlog["Dia"] = Date('d');
             $xlog["Mes"] = Date('m');
             $xlog["Anio"] = Date('Y');
             $xlog["Registro"] = Date('d/m/Y h:i:s a');
+            $xlog["Padre"] = getPadre();
+            $xlog["Hijo"] = getHijo();
             $xlog["Estatus"] = 'ACTIVO';
             $this->db->insert('logs', $xlog);
         } catch (Exception $exc) {
