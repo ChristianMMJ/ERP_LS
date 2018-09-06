@@ -337,7 +337,9 @@
                         $('#RegistrosDetalleE').removeClass("d-none");
                         getSemanasProduccionByAno(AnoI);
                         btnGuardar.addClass("d-none");
-                        btnEliminar.removeClass('d-none');
+                        if (seg === 1) {
+                            btnEliminar.removeClass('d-none');
+                        }
                         HoldOn.close();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
@@ -541,7 +543,9 @@
                             pnlTablero.addClass("d-none");
                             pnlDatos.removeClass('d-none');
                             btnGuardar.addClass("d-none");
-                            btnEliminar.removeClass('d-none');
+                            if (seg === 1) {
+                                btnEliminar.removeClass('d-none');
+                            }
                         }).fail(function (x, y, z) {
                             console.log(x, y, z);
                         }).always(function () {

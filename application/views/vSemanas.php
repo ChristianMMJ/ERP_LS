@@ -294,7 +294,9 @@
                         $('#RegistrosDetalleE').removeClass("d-none");
                         getSemanasNominaByAno(AnoI);
                         btnGuardar.addClass("d-none");
-                        btnEliminar.removeClass('d-none');
+                        if (seg === 1) {
+                            btnEliminar.removeClass('d-none');
+                        }
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
@@ -507,7 +509,9 @@
                             pnlTablero.addClass("d-none");
                             pnlDatos.removeClass('d-none');
                             btnGuardar.addClass("d-none");
-                            btnEliminar.removeClass('d-none');
+                            if (seg === 1) {
+                                btnEliminar.removeClass('d-none');
+                            }
                         }).fail(function (x, y, z) {
                             console.log(x, y, z);
                         }).always(function () {
