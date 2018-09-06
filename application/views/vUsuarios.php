@@ -43,7 +43,7 @@
                         <div class="input-group">
                             <input type="password" class="form-control form-control-sm animated bounceIn" id="Contrasena" name="Contrasena" required>
                             <span class="input-group-prepend">
-                                <span class="input-group-text text-dark " id="VerContrasena" name="VerContrasena" onclick="onVerExistencias()" data-toggle="tooltip" data-placement="top" title="Existencia en Tiendas">
+                                <span class="input-group-text text-dark " id="VerContrasena" name="VerContrasena" data-toggle="tooltip" data-placement="top" title="Ver Contraseña">
                                     <i class="fa fa-eye"></i>
                                 </span>
                             </span>
@@ -122,7 +122,7 @@
     var btnEliminar = $("#btnEliminar");
     var sEsCliente = pnlDatos.find("#TipoAcceso");
     var VerContrasena = pnlDatos.find("#VerContrasena");
-    var nuevo = true, n = 10, counter = false;
+    var nuevo = true, n = 5, counter = false;
 
     $(document).ready(function () {
 
@@ -134,44 +134,32 @@
 
 
         VerContrasena.click(function () {
-            btnGuardar.addClass('d-none');
-            $.getJSON(master_url + 'onVerClave', {ID: pnlDatos.find("#ID").val()}).done(function (data) {
-                var str = '<div id="pnlContrasena" class="row">';
-                str += '<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">';
-                str += '<input type="text" id="ContrasenaTemporal" readonly="" class="form-control form-control-sm animated bounceIn" placeholder="" value="' + data[0].PW + '" required>';
-                str += '</div>';
-//                str += '<div class="col-12 col-sm-3 col-md-1 col-lg-2 col-xl-2">';
-//                str += '<span class="font-weight-bold text-info"></span>';
-//                str += '</div>';
-                str += '</div>';
-                pnlDatos.find("#Contrasena").after(str);
-                pnlDatos.find("#Contrasena").addClass("d-none");
+            if (nuevo) {
+                pnlDatos.find("#Contrasena").attr("type", "text");
                 VerContrasena.addClass("disabledForms");
-
                 counter = true;
                 countDown();
-            }).fail(function (x, y, z) {
-                console.log(x.responseText);
-            });
+            } else {
+                pnlDatos.find("#Contrasena").attr("type", "text");
+                VerContrasena.addClass("disabledForms");
+                counter = true;
+                countDown();
+            }
         });
 
         function countDown() {
             if (n >= 0 && counter) {
                 setTimeout(countDown, 1000);
-                pnlDatos.find("#pnlContrasena").find('span').text(n);
                 n--;
             } else {
-                pnlDatos.find("#Contrasena").removeClass("d-none");
+                pnlDatos.find("#Contrasena").attr("type", "password");
                 VerContrasena.removeClass("disabledForms");
-                pnlDatos.find("#pnlContrasena").remove();
                 counter = false;
-                n = 10;
-                btnGuardar.removeClass('d-none');
+                n = 5;
             }
         }
 
         btnNuevo.click(function () {
-            VerContrasena.addClass("d-none");
             btnEliminar.addClass("d-none");
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass('d-none');
@@ -183,7 +171,6 @@
             pnlDatos.find("[name='Usuario']").removeClass('disabledForms');
             pnlDatos.find("[name='Usuario']").focus();
             nuevo = true;
-            VerContrasena.prop("disabled", false);
             onRevisarSeguridad();
         });
 
@@ -336,7 +323,13 @@
                         pnlDatos.removeClass('d-none');
                         onRevisarSeguridad();
                         pnlDatos.find("[name='Usuario']").addClass('disabledForms');
-                        pnlDatos.find("[name='Contrasena']").addClass('disabledForms');
+
+                        if (seg === 1) {
+                            pnlDatos.find("[name='Contrasena']").removeClass('disabledForms');
+                        } else {
+                            pnlDatos.find("[name='Contrasena']").addClass('disabledForms');
+                        }
+                        pnlDatos.find("[name='Nombre']").focus();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {

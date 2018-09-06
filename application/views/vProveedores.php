@@ -43,34 +43,34 @@
                     </div>
                     <div class="col-12 col-md-4 col-sm-4">
                         <label for="NombreF" >Nombre F*</label>
-                        <input type="text" class="form-control form-control-sm"  name="NombreF" >
+                        <input type="text" class="form-control form-control-sm"  name="NombreF" required>
                     </div>
                     <div class="col-12 col-md-4 col-sm-4">
                         <label for="Direccion" >Dirección*</label>
-                        <input type="text" class="form-control form-control-sm"  name="Direccion" >
+                        <input type="text" class="form-control form-control-sm"  name="Direccion" required>
                     </div>
                     <div class="col-6 col-md-2 col-sm-2">
-                        <label for="NoExt" >No. Ext.*</label>
+                        <label for="NoExt" >No. Ext.</label>
                         <input type="text" class="form-control form-control-sm"  name="NoExt" >
                     </div>
                     <div class="col-6 col-md-2 col-sm-2">
-                        <label for="NoInt" >No. Int.*</label>
+                        <label for="NoInt" >No. Int.</label>
                         <input type="text" class="form-control form-control-sm"  name="NoInt" >
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 col-md-4 col-sm-4">
-                        <label for="Colonia" >Colonia*</label>
+                        <label for="Colonia" >Colonia</label>
                         <input type="text" class="form-control form-control-sm"  name="Colonia" >
                     </div>
 
                     <div class="col-12 col-md-4 col-sm-4">
-                        <label for="Ciudad" >Ciudad*</label>
+                        <label for="Ciudad" >Ciudad</label>
                         <input type="text" class="form-control form-control-sm"  name="Ciudad" >
                     </div>
 
                     <div class="col-12 col-md-4 col-sm-4">
-                        <label for="" >Estado*</label>
+                        <label for="" >Estado</label>
                         <select id="Estado" name="Estado" class="form-control form-control-sm" >
                             <option value=""></option>
                             <option value=""></option>
@@ -152,18 +152,18 @@
                     </div>
                     <div class="col-12 col-md-4 col-xl-2">
                         <label for="">% P' Compras x Pedido F</label>
-                        <input type="text" class="form-control form-control-sm numbersOnly" placeholder="Ej: 0.8"  maxlength="8" id="PorcentajeComprasPorPedidoF"   name="PorcentajeComprasPorPedidoF"  >
+                        <input type="text" class="form-control form-control-sm numbersOnly" placeholder="Ej: 0.15 para un %15" required="" maxlength="8" id="PorcentajeComprasPorPedidoF"   name="PorcentajeComprasPorPedidoF"  >
                     </div>
                     <div class="col-12 col-md-4 col-xl-2">
                         <label for="">% P' Compras x Pedido R</label>
-                        <input type="text" class="form-control form-control-sm numbersOnly" placeholder="Ej: 0.2" maxlength="8"  id="PorcentajeComprasPorPedidoR" name="PorcentajeComprasPorPedidoR"  >
+                        <input type="text" class="form-control form-control-sm numbersOnly" readonly=""  maxlength="8"  id="PorcentajeComprasPorPedidoR" name="PorcentajeComprasPorPedidoR"  >
                     </div>
                 </div>
                 <div class="row pt-2">
                     <div class="col-6 col-md-6 ">
                         <h6 class="text-danger">Los campos con * son obligatorios</h6>
                     </div>
-                    <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" disabled data-toggle="tooltip" data-placement="left" title="Guardar">
+                    <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar"  data-toggle="tooltip" data-placement="left" title="Guardar">
                         <i class="fa fa-save"></i>
                     </button>
                     <!--                    <div class="col-6 col-sm-6 col-md-6" align="right">
@@ -198,9 +198,7 @@
             onComprobarValor(this, 'PorcentajeComprasPorPedidoR', 'keyup');
         });
 
-        pnlDatos.find("#PorcentajeComprasPorPedidoR").keyup(function () {
-            onComprobarValor(this, 'PorcentajeComprasPorPedidoF', 'keyup');
-        });
+
 
         btnNuevo.click(function () {
             pnlTablero.addClass("d-none");
@@ -432,19 +430,22 @@
         var p = parseFloat($.isNumeric(v.val()) ? v.val() : 0) + parseFloat($.isNumeric(vv.val()) ? vv.val() : 0);
         console.log(v.val(), ',', vv.val(), ',', p, ',', evt);
         if (v.val() > 1) {
-            swal('ATENCIÓN', 'EL VALOR INGRESADO DEBE DE SER MENOR A 1', 'error').then((value) => {
+            swal({
+                title: "ATENCIÓN",
+                text: "EL VALOR DEBE SER MENOR A 1",
+                icon: "error",
+                closeOnClickOutside: false,
+                closeOnEsc: false,
+                buttons: false,
+                timer: 1000
+            }).then((action) => {
+                v.val('');
                 v.focus();
-            });
-        }
-        if (p > 1) {
-            swal('ATENCIÓN', 'LA SUMATORIA DEBE DE SER MENOR A 1', 'error').then((value) => {
-                vv.focus();
+
             });
         } else {
-            if (v.val() !== '', v.val() > 0) {
+            if (v.val() !== '' && v.val() > 0) {
                 vv.val(1 - v.val());
-            } else {
-                vv.val('');
             }
         }
     }
