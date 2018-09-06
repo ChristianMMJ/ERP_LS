@@ -152,7 +152,7 @@
                             <legend>Ubicación del Almacén</legend>
                         </div>
                         <div class="col-12 col-sm-3 col-md-3 col-xl-3 mb-3">
-                            <input type="text" class="form-control form-control-sm" id="UbicacionUno" name="UbicacionUno" placeholder="UBICACION 1 1">
+                            <input type="text" class="form-control form-control-sm" id="UbicacionUno" name="UbicacionUno" placeholder="UBICACION 1">
                         </div>
                         <div class="col-12 col-sm-3 col-md-3 col-xl-3 mb-3">
                             <input type="text" class="form-control form-control-sm" id="UbicacionDos" name="UbicacionDos"  placeholder="UBICACION 2">
@@ -229,6 +229,19 @@
         /*FUNCIONES INICIALES*/
         init();
         handleEnter();
+        validacionSelectPorContenedor(pnlDatos);
+        setFocusSelectToInputOnChange('#Departamento', '#Descripcion', pnlDatos);
+        setFocusSelectToSelectOnChange('#Grupo', '#TipoArticulo', pnlDatos);
+        setFocusSelectToSelectOnChange('#TipoArticulo', '#UnidadMedida', pnlDatos);
+        setFocusSelectToSelectOnChange('#UnidadMedida', '#Tmnda', pnlDatos);
+        setFocusSelectToInputOnChange('#Tmnda', '#Min', pnlDatos);
+
+
+        setFocusSelectToInputOnChange('#ProveedorUno', '#PrecioUno', pnlDatos);
+        setFocusSelectToInputOnChange('#ProveedorDos', '#PrecioDos', pnlDatos);
+        setFocusSelectToInputOnChange('#ProveedorTres', '#PrecioTres', pnlDatos);
+
+
         /*FUNCIONES X BOTON*/
         btnIgualaPrecios.click(function () {
             swal({

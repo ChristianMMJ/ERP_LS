@@ -163,7 +163,7 @@
     var FechaIni;
     $(document).ready(function () {
         pnlDatos.find("#Ano").change(function () {
-            if ($(this).val().length < 4 && parseInt($(this).val()) > 2016 || parseInt($(this).val()) > 2020) {
+            if (parseInt($(this).val()) < 2016 || parseInt($(this).val()) > 2020) {
                 swal({
                     title: "ATENCIÓN",
                     text: "AÑO INCORRECTO",

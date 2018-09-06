@@ -58,13 +58,13 @@
                 <div class="row">
                     <div class="col-12 col-sm-4 col-md-4 ">
                         <label for="" >Proc. Inicial*</label>
-                        <select id="Temporada" name="DepartamentoInicial" class="form-control form-control-sm required" >
+                        <select id="DepartamentoInicial" name="DepartamentoInicial" class="form-control form-control-sm required" >
                             <option value=""></option>
                         </select>
                     </div>
                     <div class="col-12 col-sm-4 col-md-4 ">
                         <label for="" >Proc. Final*</label>
-                        <select id="Temporada" name="DepartamentoFinal" class="form-control form-control-sm required" >
+                        <select id="DepartamentoFinal" name="DepartamentoFinal" class="form-control form-control-sm required" >
                             <option value=""></option>
                         </select>
                     </div>
@@ -232,6 +232,13 @@
         /*FUNCIONES INICIALES*/
         init();
         handleEnter();
+        validacionSelectPorContenedor(pnlDatos);
+        setFocusSelectToSelectOnChange('#DepartamentoInicial', '#DepartamentoFinal', pnlDatos);
+        setFocusSelectToSelectOnChange('#DepartamentoFinal', '#EntregaMat1', pnlDatos);
+        setFocusSelectToSelectOnChange('#EntregaMat1', '#EntregaMat2', pnlDatos);
+        setFocusSelectToSelectOnChange('#EntregaMat2', '#EntregaMat3', pnlDatos);
+        setFocusSelectToInputOnChange('#EntregaMat3', '#Direccion', pnlDatos);
+        setFocusSelectToInputOnChange('#Estatus', '#btnGuardar', pnlDatos);
 
         /*FUNCIONES X BOTON*/
         btnGuardar.click(function () {
@@ -345,11 +352,14 @@
                     pnlDatos.find('#Opcion1').removeClass('d-none');
                     pnlDatos.find('#Opcion2').addClass('d-none');
                     pnlDatos.find('#Opcion3').addClass('d-none');
+                    pnlDatos.find('#PorExtraXProduccion').focus().select();
+
                     break;
                 case 2:
                     pnlDatos.find('#Opcion2').removeClass('d-none');
                     pnlDatos.find('#Opcion1').addClass('d-none');
                     pnlDatos.find('#Opcion3').addClass('d-none');
+                    pnlDatos.find('#PorExtraXBotaAlta').focus().select();
                     break;
                 case 3:
                     pnlDatos.find('#Opcion3').removeClass('d-none');
