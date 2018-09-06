@@ -190,24 +190,9 @@
     var nuevo = true;
     $(document).ready(function () {
 
-<<<<<<< HEAD
+
         validacionSelectPorContenedor(pnlDatos);
         setFocusSelectToInputOnChange('#Estado', '#CP', pnlDatos);
-=======
-        pnlDatos.find("#frmNuevo").change(function () {
-            isValid('pnlDatos');
-            if (valido) {
-                btnGuardar.prop("disabled", false);
-            } else {
-                btnGuardar.prop("disabled", true);
-            }
-        });
-
-        pnlDatos.find("input[id='Estado-selectized']").blur(function () {
-            onNextFocus('Estado', '');
-        });
-
->>>>>>> 1a1f79a4a923184ab19c2a321c138154cd38ecbb
 
         pnlDatos.find("#PorcentajeComprasPorPedidoF").keyup(function () {
             onComprobarValor(this, 'PorcentajeComprasPorPedidoR', 'keyup');
@@ -464,13 +449,4 @@
         }
     }
 
-    function onNextFocus(main_component, next_component) {
-        if (pnlDatos.find("#" + main_component).val() === '') {
-            pnlDatos.find("#" + main_component)[0].selectize.focus();
-        } else {
-            if (next_component !== '') {
-                pnlDatos.find("#" + next_component)[0].selectize.focus();
-            }
-        }
-    }
 </script>

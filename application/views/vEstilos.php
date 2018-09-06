@@ -73,7 +73,7 @@
                             </div>
                             <div class="col-6  col-sm-2 col-md-2 col-lg-2 col-xl-3">
                                 <label for="" >F. Alta</label>
-                                <input type="text" id="FechaAlta" name="FechaAlta" class="form-control form-control-sm date notEnter" >
+                                <input type="text" id="FechaAlta" name="FechaAlta" class="form-control form-control-sm date notEnter required" required="" >
                             </div>
                             <div class="col-6  col-sm-2 col-md-2 col-lg-2 col-xl-3" id="dFechaBaja">
                                 <label for="" >F. Baja</label>
@@ -90,13 +90,13 @@
                             </div>
                             <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
                                 <label for="" >Horma*</label>
-                                <select id="Horma" name="Horma" class="form-control form-control-sm" >
+                                <select id="Horma" name="Horma" class="form-control form-control-sm required" >
                                     <option value=""></option>
                                 </select>
                             </div>
                             <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
                                 <label for="" >Genero*</label>
-                                <select id="Genero" name="Genero" class="form-control form-control-sm" >
+                                <select id="Genero" name="Genero" class="form-control form-control-sm required" >
                                     <option value=""></option>
                                 </select>
                             </div>
@@ -114,7 +114,7 @@
                             </div>
                             <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
                                 <label for="Serie">Serie*</label>
-                                <select class="form-control form-control-sm required"  name="Serie" required="">
+                                <select class="form-control form-control-sm required" id="Serie" name="Serie" required="">
                                     <option value=""></option>
                                 </select>
                             </div>
@@ -135,24 +135,24 @@
                         <div class="row">
                             <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
                                 <label for="ConsumoPiel">C. Piel</label>
-                                <input type="text" maxlength="3" class="form-control form-control-sm numbersOnly" placeholder=""  name="ConsumoPiel">
+                                <input type="text" maxlength="3" class="form-control form-control-sm numbersOnly" placeholder="" id="ConsumoPiel" name="ConsumoPiel">
                             </div>
                             <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
                                 <label for="ConsumoForro">C. Forro</label>
-                                <input type="text" maxlength="3" class="form-control form-control-sm numbersOnly" placeholder=""  name="ConsumoForro">
+                                <input type="text" maxlength="3" class="form-control form-control-sm numbersOnly" placeholder="" id="ConsumoForro" name="ConsumoForro">
                             </div>
                         </div>
                         <!--QUINTO RENGLON-->
                         <div class="row">
                             <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
                                 <label for="Maquila">Maquila*</label>
-                                <select class="form-control form-control-sm required"  name="Maquila" required="">
+                                <select class="form-control form-control-sm required" id="Maquila" name="Maquila" required="">
                                     <option value=""></option>
                                 </select>
                             </div>
                             <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
                                 <label for="Liberado">Liberado Para:</label>
-                                <select class="form-control form-control-sm"   name="Liberado">
+                                <select class="form-control form-control-sm" id="Liberado"  name="Liberado">
                                     <option value=""></option>
                                     <option value="1">1 DISEÑO</option>
                                     <option value="2">2 PRODUCCIÓN</option>
@@ -160,8 +160,8 @@
                                 </select>
                             </div>
                             <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
-                                <label for="Costos">Costos:</label>
-                                <select class="form-control form-control-sm"   name="Costos">
+                                <label for="Costos">Costos*</label>
+                                <select class="form-control form-control-sm required"  id="Costos" name="Costos">
                                     <option value=""></option>
                                     <option value="0">0 SI</option>
                                     <option value="1">1 NO</option>
@@ -172,7 +172,7 @@
                         <div class="row">
                             <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
                                 <label for="Herramental">Herramental</label>
-                                <select class="form-control form-control-sm"   name="Herramental">
+                                <select class="form-control form-control-sm" id="Herramental"  name="Herramental">
                                     <option value=""></option>
                                     <option value="1">1 PATRÓN BASE</option>
                                     <option value="2">2 CARTÓN Y TESEO</option>
@@ -193,18 +193,19 @@
                         <!--SEPTIMO RENGLON-->
                         <div class="row">
                             <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
-                                <label for="" >Temporada*</label>
-                                <select id="Temporada" name="Temporada" class="form-control form-control-sm" >
-                                    <option value=""></option>
-                                </select>
-                            </div>
-                            <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
                                 <label for="PuntoCentra">Punto Central</label>
                                 <input type="text" class="form-control form-control-sm numbersOnly" maxlength="4" id="PuntoCentral" name="PuntoCentral">
                             </div>
                             <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
+                                <label for="" >Temporada*</label>
+                                <select id="Temporada" name="Temporada" class="form-control form-control-sm required" >
+                                    <option value=""></option>
+                                </select>
+                            </div>
+
+                            <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
                                 <label for="EstatusEstilo">Estatus del Estilo*</label>
-                                <select class="form-control form-control-sm required"   name="EstatusEstilo" required="">
+                                <select class="form-control form-control-sm required" id="EstatusEstilo"  name="EstatusEstilo" required="">
                                     <option value=""></option>
                                     <option value="0">0 PRODUCCIÓN</option>
                                     <option value="1">1 PROTOTIPO</option>
@@ -214,7 +215,7 @@
                             </div>
                             <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
                                 <label for="TipoConstruccion">Tipo Construcción</label>
-                                <select class="form-control form-control-sm"   name="TipoConstruccion">
+                                <select class="form-control form-control-sm"  id="TipoConstruccion" name="TipoConstruccion">
                                     <option value=""></option>
                                     <option value="1">1 OPANCA</option>
                                     <option value="2">2 PEGADO</option>
@@ -226,25 +227,25 @@
                         <div class="row">
                             <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
                                 <label for="Observaciones" ><span class="badge badge-warning">Maquila o Plantilla</span> 1 </label>
-                                <select class="form-control form-control-sm"   name="MaqPlant1">
+                                <select class="form-control form-control-sm" id="MaqPlant1"  name="MaqPlant1">
                                     <option value=""></option>
                                 </select>
                             </div>
                             <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
                                 <label for="">2</label>
-                                <select class="form-control form-control-sm"   name="MaqPlant2">
+                                <select class="form-control form-control-sm" id="MaqPlant2"  name="MaqPlant2">
                                     <option value=""></option>
                                 </select>
                             </div>
                             <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
                                 <label for="">3</label>
-                                <select class="form-control form-control-sm"   name="MaqPlant3">
+                                <select class="form-control form-control-sm" id="MaqPlant3"  name="MaqPlant3">
                                     <option value=""></option>
                                 </select>
                             </div>
                             <div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-3">
                                 <label for="">4</label>
-                                <select class="form-control form-control-sm"   name="MaqPlant4">
+                                <select class="form-control form-control-sm"  id="MaqPlant4" name="MaqPlant4">
                                     <option value=""></option>
                                 </select>
                             </div>
@@ -257,7 +258,7 @@
 
                             <div class="col-6 col-md-2 col-sm-2">
                                 <label for="">Pzas Corte</label>
-                                <input type="text" maxlength="4" class="form-control form-control-sm numbersOnly" placeholder="PIEZAS CORTE"  name="PiezasCorte">
+                                <input type="text" maxlength="4" class="form-control form-control-sm numbersOnly" placeholder="PIEZAS CORTE" id="PiezasCorte" name="PiezasCorte">
                             </div>
                             <div class="col-6 col-md-2 col-sm-2">
                                 <label for="">Glp Corte P.</label>
@@ -333,9 +334,46 @@
         init();
         handleEnter();
 
+        validacionSelectPorContenedor(pnlDatos);
+        setFocusSelectToSelectOnChange('#Linea', '#Horma', pnlDatos);
+        setFocusSelectToSelectOnChange('#Horma', '#Genero', pnlDatos);
+        setFocusSelectToSelectOnChange('#Genero', '#GdoDif', pnlDatos);
+        setFocusSelectToSelectOnChange('#GdoDif', '#Serie', pnlDatos);
+        setFocusSelectToSelectOnChange('#Serie', '#Corrida', pnlDatos);
+        setFocusSelectToInputOnChange('#Corrida', '#ConsumoPiel', pnlDatos);
+        setFocusSelectToSelectOnChange('#Maquila', '#Liberado', pnlDatos);
+        setFocusSelectToSelectOnChange('#Liberado', '#Costos', pnlDatos);
+        setFocusSelectToSelectOnChange('#Costos', '#Herramental', pnlDatos);
+        setFocusSelectToInputOnChange('#Herramental', '#Observaciones', pnlDatos);
+        setFocusSelectToSelectOnChange('#PuntoCentral', '#EstatusEstilo', pnlDatos);
+        setFocusSelectToSelectOnChange('#EstatusEstilo', '#TipoConstruccion', pnlDatos);
+        setFocusSelectToSelectOnChange('#TipoConstruccion', '#MaqPlant1', pnlDatos);
+        setFocusSelectToSelectOnChange('#MaqPlant1', '#MaqPlant2', pnlDatos);
+        setFocusSelectToSelectOnChange('#MaqPlant2', '#MaqPlant3', pnlDatos);
+        setFocusSelectToSelectOnChange('#MaqPlant3', '#MaqPlant4', pnlDatos);
+        setFocusSelectToInputOnChange('#MaqPlant4', '#PiezasCorte', pnlDatos);
+
         pnlDatos.find("#Clave").focusout(function () {
             if (nuevo) {
                 onComprobarClave(this);
+            }
+        });
+
+        pnlDatos.find("#Ano").change(function () {
+            if (($(this).val()) < 2016 || ($(this).val()) > 2025) {
+
+                swal({
+                    title: "ATENCIÓN",
+                    text: "AÑO INCORRECTO",
+                    icon: "warning",
+                    closeOnClickOutside: false,
+                    closeOnEsc: false,
+                    buttons: false,
+                    timer: 1000
+                }).then((action) => {
+                    pnlDatos.find("#Ano").val("");
+                    pnlDatos.find("#Ano").focus();
+                });
             }
         });
 

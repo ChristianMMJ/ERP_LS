@@ -97,11 +97,11 @@
                             <select class="form-control form-control-sm" id="Agente" name="Agente" maxlength="45"  required=""></select>
                         </div>
                         <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-1">
-                            <label for="TelOficina" >Tel Oficina*</label>
+                            <label for="TelOficina" >Tel 1*</label>
                             <input type="tel" class="form-control form-control-sm" id="TelOficina" name="TelOficina" maxlength="45"  placeholder="">
                         </div>
                         <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-1">
-                            <label for="TelPart" >Tel Particular*</label>
+                            <label for="TelPart" >Tel 2*</label>
                             <input type="tel" class="form-control form-control-sm" id="TelPart" name="TelPart" maxlength="45"  placeholder="">
                         </div>
 
@@ -110,11 +110,11 @@
                             <label for="RFC" >RFC*</label>
                             <input type="text" class="form-control form-control-sm" id="RFC" name="RFC" maxlength="45"  placeholder=""  required="">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-1">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
                             <label for="CodigoPostal" >Código Postal*</label>
                             <input type="text" class="form-control form-control-sm" id="CodigoPostal" name="CodigoPostal" maxlength="45"  placeholder="">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-1">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
                             <label for="LimiteCredito" >Limite de credito*</label>
                             <input type="text" class="form-control form-control-sm" id="LimiteCredito" name="LimiteCredito" maxlength="45"  placeholder="">
                         </div>
@@ -123,7 +123,7 @@
                             <select class="form-control form-control-sm" id="ListaPrecios" name="ListaPrecios" required=""></select>
                         </div>
 
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-1">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2">
                             <label for="DiasPlazo" >Dias Plazo*</label>
                             <input type="text" class="form-control form-control-sm numbersOnly" id="DiasPlazo" name="DiasPlazo" maxlength="45"  placeholder=""  required="">
                         </div>
@@ -150,7 +150,7 @@
                             </select>
                         </div>
 
-                        <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
+                        <div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2">
                             <label for="Clasificacion" >Clasificacion*</label>
                             <select class="form-control form-control-sm" id="Clasificacion" name="Clasificacion" required="">
                                 <option></option>
@@ -160,6 +160,12 @@
                                 <option value="4">4 Sin clasificar</option>
                             </select>
                         </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4">
+                            <label for="Grupo" >Grupo*</label>
+                            <select class="form-control form-control-sm" id="Grupo" name="Grupo" required="">
+                                <option></option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -167,26 +173,30 @@
             <div class="card m-3">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-3 col-xl-3">
                             <label for="" >Encargado de compras</label>
                             <input type="text" class="form-control form-control-sm" id="EncargadoCompras" name="EncargadoCompras" maxlength="45"  placeholder="">
                         </div>
-                        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-3 col-xl-3">
                             <label for="" >Gerente general</label>
                             <input type="text" class="form-control form-control-sm" id="GerenteGeneral" name="GerenteGeneral" maxlength="45"  placeholder="">
                         </div>
-                        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-3 col-xl-3">
                             <label for="" >Encargado de pagos</label>
                             <input type="text" class="form-control form-control-sm" id="EncargadoDePagos" name="EncargadoDePagos" maxlength="45"  placeholder="">
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                            <label for="PrimerCorreo" >1er Correo*</label>
+                            <label for="PrimerCorreo" >Correo 1*</label>
                             <input type="text" class="form-control form-control-sm" id="PrimerCorreo" name="PrimerCorreo" maxlength="45"  placeholder="">
                         </div>
                         <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                            <label for="SegundoCorreo" >2do Correo*</label>
+                            <label for="SegundoCorreo" >Correo 2*</label>
                             <input type="text" class="form-control form-control-sm" id="SegundoCorreo" name="SegundoCorreo" maxlength="45"  placeholder="">
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
                             <label for="FormaPago" >Forma de pago*</label>
                             <select class="form-control form-control-sm" id="FormaPago" name="FormaPago"  required="">
@@ -200,18 +210,6 @@
                             </select>
                         </div>
                         <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
-                            <label for="Zona" >Zona*</label>
-                            <select class="form-control form-control-sm" id="Zona" name="Zona"  required="">
-                                <option></option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                            <label for="Observaciones" >Observaciones*</label>
-                            <input type="text" class="form-control form-control-sm" id="Observaciones" name="Observaciones" maxlength="99"  placeholder="" required="">
-                        </div>
-                        <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
                             <label for="NoCuenta" >No.Cuenta*</label>
                             <input type="text" class="form-control form-control-sm" id="NoCuenta" name="NoCuenta" maxlength="99"  placeholder="" required="">
                         </div>
@@ -219,12 +217,20 @@
                             <label for="Banco" >Banco*</label>
                             <input type="text" class="form-control form-control-sm" id="Banco" name="Banco" maxlength="99"  placeholder="" required="">
                         </div>
-                        <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                            <label for="Grupo" >Grupo*</label>
-                            <select class="form-control form-control-sm" id="Grupo" name="Grupo" required="">
+                        <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
+                            <label for="Zona" >Zona*</label>
+                            <select class="form-control form-control-sm" id="Zona" name="Zona"  required="">
                                 <option></option>
                             </select>
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-4">
+                            <label for="Observaciones" >Observaciones*</label>
+                            <input type="text" class="form-control form-control-sm" id="Observaciones" name="Observaciones" maxlength="99"  placeholder="" required="">
+                        </div>
+
+
                     </div>
                     <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
                         <i class="fa fa-save"></i>
@@ -247,58 +253,6 @@
         init();
         handleEnter();
 
-        pnlDatos.find("#frmNuevo").change(function () {
-            isValid('pnlDatos');
-            if (valido) {
-                btnGuardar.prop("disabled", false);
-            } else {
-                btnGuardar.prop("disabled", true);
-            }
-        });
-
-        pnlDatos.find("input[id='Grupo-selectized']").blur(function () {
-            onNextFocus('Grupo', '');
-        });
-
-        pnlDatos.find("input[id='Zona-selectized']").blur(function () {
-            onNextFocus('Zona', '');
-        });
-
-        pnlDatos.find("input[id='MetodoPago-selectized']").blur(function () {
-            onNextFocus('MetodoPago', 'Zona');
-        });
-
-        pnlDatos.find("input[id='FormaPago-selectized']").blur(function () {
-            onNextFocus('FormaPago', 'MetodoPago');
-        });
-
-        pnlDatos.find("input[id='Clasificacion-selectized']").blur(function () {
-            onNextFocus('Clasificacion', '');
-        });
-
-        pnlDatos.find("input[id='TipoCliente-selectized']").blur(function () {
-            onNextFocus('TipoCliente', 'Clasificacion');
-        });
-
-        pnlDatos.find("input[id='Transporte-selectized']").blur(function () {
-            onNextFocus('Transporte', '');
-        });
-
-        pnlDatos.find("input[id='ListaPrecios-selectized']").blur(function () {
-            onNextFocus('ListaPrecios', '');
-        });
-
-        pnlDatos.find("input[id='Agente-selectized']").blur(function () {
-            onNextFocus('Agente', '');
-        });
-
-        pnlDatos.find("input[id='Pais-selectized']").blur(function () {
-            onNextFocus('Pais', 'Agente');
-        });
-
-        pnlDatos.find("input[id='Estado-selectized']").blur(function () {
-            onNextFocus('Estado', 'Pais');
-        });
 
         //Valida RFC
         pnlDatos.find("[name='RFC']").focusout(function () {
@@ -306,7 +260,18 @@
             var rfcCorrecto = rfcValido(rfc); //Comprobar RFC
             if (rfcCorrecto) {
             } else {
-                pnlDatos.find("[name='RFC']").val("");
+                swal({
+                    title: "ATENCIÓN",
+                    text: "RFC NO VÁLIDO",
+                    icon: "warning",
+                    closeOnClickOutside: false,
+                    closeOnEsc: false,
+                    buttons: false,
+                    timer: 1200
+                }).then((action) => {
+                    pnlDatos.find("[name='RFC']").val("");
+                    pnlDatos.find("[name='RFC']").focus();
+                });
             }
         });
 
@@ -373,7 +338,6 @@
             $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
             pnlDatos.find("#RazonS").focus();
             getID();
-            btnGuardar.prop("disabled", true);
         });
 
         btnCancelar.click(function () {
@@ -505,13 +469,5 @@
         });
     }
 
-    function onNextFocus(main_component, next_component) {
-        if (pnlDatos.find("#" + main_component).val() === '') {
-            pnlDatos.find("#" + main_component)[0].selectize.focus();
-        } else {
-            if (next_component !== '') {
-                pnlDatos.find("#" + next_component)[0].selectize.focus();
-            }
-        }
-    }
+
 </script>
