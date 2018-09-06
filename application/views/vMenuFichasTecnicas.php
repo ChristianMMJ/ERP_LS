@@ -11,7 +11,7 @@
 
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navCatalogos" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Catálogos
+                    <span class="fas fa-wrench"></span> Catálogos
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCatalogos">
                     <a class="dropdown-item" href="<?php print base_url('Grupos/?origen=FICHASTECNICAS'); ?>"> Grupos</a>
@@ -30,7 +30,7 @@
             </li>
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navFichaTecnica" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Ficha Técnica
+                    <span class="fa fa-file-invoice"></span> Ficha Técnica
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navFichaTecnica">
                     <a class="dropdown-item" href="<?php print base_url('Estilos/?origen=FICHASTECNICAS'); ?>"> Estilos</a>
@@ -43,7 +43,7 @@
 
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navPedidosMuestras" data-toggle="dropdown" anavPedidosria-haspopup="true" aria-expanded="false">
-                    Pedidos Muestras
+                    <span class="fas fa-pencil-alt"></span> Pedidos Muestras
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navPedidosMuestras">
                     <a class="dropdown-item" href="#"> Pruebas</a>
@@ -52,7 +52,7 @@
 
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navCostosEst" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Costos Estilos
+                    <span class="fas fa-dollar-sign"></span>  Costos Estilos
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCostosEst">
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlFichaTecnicaCompra"><span class="fa fa-file-invoice"></span> Ficha Técnica</a>
@@ -63,7 +63,7 @@
 
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navReportes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Reportes
+                    <span class="fa fa-file-pdf"></span> Reportes
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navReportes">
                     <a class="dropdown-item" href="#"> Prueba</a>
@@ -72,7 +72,7 @@
 
             <li class="nav-item mx-1">
                 <a class="btn btn-info" href="<?php print base_url('MenuProduccion/?parentMenu=MenuFichasTecnicas'); ?>">
-                    Menu Producción
+                    <i class="fa fa-industry"></i> Menu Producción
                 </a>
             </li>
             </li>

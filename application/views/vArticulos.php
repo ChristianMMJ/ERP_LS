@@ -58,7 +58,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
                             <label for="" >Tipo de articulo*</label>
-                            <select id="Departamento" name="Departamento" class="form-control form-control-sm" required="">
+                            <select id="Departamento" name="Departamento" class="form-control form-control-sm required" required="">
                                 <option value=""></option>
                                 <option value="10">10 PIEL/FORRO</option>
                                 <option value="80">80 SUELA/PLANTA</option>
@@ -120,7 +120,7 @@
                             <legend>Proveedores del Artículo</legend>
                         </div>
                         <div class="col-12 col-sm-12 col-md-12 col-xl-4">
-                            <select id="ProveedorUno" name="ProveedorUno" class="form-control form-control-sm mb-2" required="">
+                            <select id="ProveedorUno" name="ProveedorUno" class="form-control form-control-sm mb-2 required" required="">
                                 <option value=""></option>
                             </select>
                             <input type="text" class="form-control form-control-sm numbersOnly mb-2" id="PrecioUno" name="PrecioUno"  placeholder="Precio pactado">
@@ -168,9 +168,7 @@
                         <div class="col-6 col-md-6 ">
                             <h6 class="text-danger">Los campos con * son obligatorios</h6>
                         </div>
-                        <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
-                            <i class="fa fa-save"></i>
-                        </button>
+
                     </div>
                 </div>
             </div>
@@ -224,6 +222,7 @@
     var pnlTablero = $("#pnlTablero"), pnlDatos = $("#pnlDatos"), pnlDatosDetalle = $("#pnlDatosDetalle");
     var PrecioVentaParaMaquilas, tblPrecioVentaParaMaquilas = $("#tblPrecioVentaParaMaquilas");
     var nuevo = false, precio_actual = 0;
+    var ClaveArticulo = 0;
 
     $(document).ready(function () {
         /*FUNCIONES INICIALES*/
@@ -235,12 +234,10 @@
         setFocusSelectToSelectOnChange('#TipoArticulo', '#UnidadMedida', pnlDatos);
         setFocusSelectToSelectOnChange('#UnidadMedida', '#Tmnda', pnlDatos);
         setFocusSelectToInputOnChange('#Tmnda', '#Min', pnlDatos);
-
-
         setFocusSelectToInputOnChange('#ProveedorUno', '#PrecioUno', pnlDatos);
         setFocusSelectToInputOnChange('#ProveedorDos', '#PrecioDos', pnlDatos);
         setFocusSelectToInputOnChange('#ProveedorTres', '#PrecioTres', pnlDatos);
-
+        setFocusSelectToInputOnChange('#Maquila', '#Precio', pnlDatosDetalle);
 
         /*FUNCIONES X BOTON*/
         btnIgualaPrecios.click(function () {
@@ -261,34 +258,74 @@
             }).then((value) => {
                 switch (value) {
                     case "cambiar":
-                        $.post(master_url + 'onIgualarPrecios', {ID: pnlDatos.find("#ID").val()}).done(function (data) {
-                            swal('ATENCIÓN', 'SE HAN CAMBIADO LOS PRECIOS Y AGREGADO NUEVAS MAQUILAS', 'success');
+                        HoldOn.open({
+                            theme: 'sk-cube',
+                            message: 'ESPERE...'
+                        });
+                        $.post(master_url + 'onIgualarPrecios', {Clave: pnlDatos.find("#Clave").val()}).done(function (data) {
+                            PrecioVentaParaMaquilas.clear().draw();
+                            getDetalleByID(ClaveArticulo);
+                            HoldOn.close();
+                            swal('ATENCIÓN', 'SE HAN CAMBIADO LOS PRECIOS A MAQUILA 1', 'success');
                         }).fail(function (x, y, z) {
                             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
                             console.log(x.responseText);
+                            HoldOn.close();
                         });
                         console.log('CAMBIANDO PRECIO...');
                         break;
                     case "cancelar":
                         swal.close();
+                        HoldOn.close();
                         break;
                 }
             });
         });
 
         pnlDatosDetalle.find("#btnAgregarPrecio").click(function () {
-            var Maquila = pnlDatosDetalle.find("#Maquila"), Precio = pnlDatosDetalle.find("#Precio");
-            if (Maquila.val() !== '' && Precio.val()) {
-                var btn = '<button type="button" class="btn btn-danger" onclick="onEliminarDetalleSN(this)"><span class="fa fa-trash"></span></button>';
-                PrecioVentaParaMaquilas.row.add([0, Maquila.val(), '$' + $.number(Precio.val(), 2, '.', ','), 'NUEVO', btn]).draw(false);
-                Maquila.val('');
-                Precio.val('');
-                Maquila.focus();
+            if (!nuevo) {
+                var Maquila = pnlDatosDetalle.find("#Maquila"), Precio = pnlDatosDetalle.find("#Precio");
+                /*COMPROBAR SI YA SE AGREGÓ*/
+                var existe = false;
+                if (pnlDatosDetalle.find("#tblPrecioVentaParaMaquilas tbody tr").length > 0) {
+                    PrecioVentaParaMaquilas.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                        var data = this.data();
+                        if (parseInt(data[4]) === parseInt(Maquila.val())) {
+                            existe = true;
+                            return false;
+                        }
+                    });
+                }
+                if (!existe) {
+                    if (Maquila.val() !== '' && Precio.val()) {
+                        var btn = '<button type="button" class="btn btn-danger" onclick="onEliminarDetalleSN(this)"><span class="fa fa-trash"></span></button>';
+                        PrecioVentaParaMaquilas.row.add([
+                            0,
+                            Maquila.val(),
+                            $.number(Precio.val(), 2, '.', ','),
+                            'NUEVO',
+                            btn]).draw(false);
+
+                        Precio.val('');
+                        Maquila[0].selectize.focus();
+                        Maquila[0].selectize.clear(true);
+                    } else {
+                        swal('ATENCIÓN', 'DEBE DE ESTABLECER UNA MAQUILA Y UN PRECIO', 'warning').then((action) => {
+                            (Maquila.val() === '') ? Maquila[0].selectize.focus() : Precio.focus();
+                        });
+                    }
+                } else {
+                    swal('ATENCIÓN', 'ESTA MAQUILA YA HA SIDO AGREGADA', 'warning').then((action) => {
+                        Maquila[0].selectize.focus();
+                        Maquila[0].selectize.clear(true);
+                    });
+                }
             } else {
-                swal('ATENCIÓN', 'DEBE DE ESTABLECER UNA MAQUILA Y UN PRECIO', 'warning').then((action) => {
-                    (Maquila.val() === '') ? Maquila.focus() : Precio.focus();
+                swal('ATENCIÓN', 'DEBE DE GUARDAR EL ARTICULO ANTES', 'warning').then((action) => {
+                    btnGuardar.focus();
                 });
             }
+
         });
 
         btnGuardar.click(function () {
@@ -299,12 +336,15 @@
                     if (PrecioVentaParaMaquilas.data().count()) {
                         var precios = [];
                         $.each(tblPrecioVentaParaMaquilas.find("tbody tr"), function (k, v) {
+
                             var r = PrecioVentaParaMaquilas.row($(this)).data();
+
                             if (r[3] === 'NUEVO') {
                                 precios.push({
                                     Maquila: r[1],
                                     Precio: r[2]
                                 });
+                                console.log(precios);
                             }
                         });
                         frm.append('Precios', JSON.stringify(precios));
@@ -331,13 +371,6 @@
                     });
                 } else {
                     var precios = [];
-                    $.each(tblPrecioVentaParaMaquilas.find("tbody tr"), function (k, v) {
-                        var r = PrecioVentaParaMaquilas.row($(this)).data();
-                        precios.push({
-                            Maquila: r[1],
-                            Precio: r[2]
-                        });
-                    });
                     frm.append('Precios', JSON.stringify(precios));
                     $.ajax({
                         url: master_url + 'onAgregar',
@@ -350,10 +383,17 @@
                         pnlDatos.find("[name='ID']").val(data);
                         nuevo = false;
                         Articulos.ajax.reload();
-                        pnlDatos.addClass("d-none");
-                        pnlDatosDetalle.addClass('d-none');
-                        pnlTablero.removeClass("d-none");
-                        btnIgualaPrecios.addClass("d-none");
+                        swal({
+                            title: "ATENCIÓN",
+                            text: "ARTÍCULO GUARDADO",
+                            icon: "success",
+                            closeOnClickOutside: false,
+                            closeOnEsc: false,
+                            buttons: false,
+                            timer: 1200
+                        }).then((action) => {
+                            pnlDatosDetalle.find('#Maquila')[0].selectize.focus();
+                        });
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
@@ -410,12 +450,14 @@
             pnlDatos.find("input,textarea").val("");
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass("d-none");
+            pnlDatosDetalle.removeClass("d-none");
             btnEliminar.addClass("d-none");
             pnlDatos.find("#Departamento")[0].selectize.focus();
             PrecioVentaParaMaquilas.clear().draw();
             getID();
             $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
             btnIgualaPrecios.addClass("d-none");
+            pnlDatos.find("#UnidadMedida")[0].selectize.enable();
             pnlDatos.find("#PrecioUno").prop("readonly", false);
             pnlDatos.find("#PrecioDos").prop("readonly", false);
             pnlDatos.find("#PrecioTres").prop("readonly", false);
@@ -427,6 +469,7 @@
             pnlDatos.addClass("d-none");
             pnlDatosDetalle.addClass("d-none");
             temp = 0;
+            ClaveArticulo = 0;
         });
     });
 
@@ -435,6 +478,7 @@
         getGrupos();
         getUnidades();
         getProveedores();
+        getMaquilas();
         /*INICIALIZAR DETALLE*/
         PrecioVentaParaMaquilas = tblPrecioVentaParaMaquilas.DataTable({
 
@@ -450,7 +494,7 @@
             "scrollCollapse": false,
             "bSort": true,
             "aaSorting": [
-                [0, 'desc']/*ID*/
+                [4, 'asc']/*ID*/
             ],
             "columnDefs": [
                 {
@@ -511,7 +555,6 @@
             }
         });
     }
-
     function onModificarPrecioMaquila(r, padre, celda, field) {
         var input = $(field);
         var v = (input.val());
@@ -562,7 +605,6 @@
             });
         }
     }
-
     function getRecords() {
         temp = 0;
         HoldOn.open({
@@ -619,11 +661,15 @@
             $(this).addClass("success");
             var dtm = Articulos.row(this).data();
             temp = parseInt(dtm.ID);
-            getMaquilas();
+            ClaveArticulo = parseInt(dtm.Clave);
+
             $.getJSON(master_url + 'getArticuloByID', {ID: temp}).done(function (data) {
                 pnlDatos.find("input").val("");
                 $.each(pnlDatos.find("select"), function (k, v) {
                     pnlDatos.find("select")[k].selectize.clear(true);
+                });
+                $.each(pnlDatosDetalle.find("select"), function (k, v) {
+                    pnlDatosDetalle.find("select")[k].selectize.clear(true);
                 });
                 $.each(data[0], function (k, v) {
                     pnlDatos.find("[name='" + k + "']").val(v);
@@ -643,19 +689,9 @@
                 pnlDatos.find("#PrecioDos").prop("readonly", true);
                 pnlDatos.find("#PrecioTres").prop("readonly", true);
 
-                /*DETALLE*/
-                $.getJSON(master_url + 'getDetalleByID', {ID: dtm.Clave}).done(function (data) {
-                    if (data.length > 0) {
-                        $.each(data, function (k, v) {
-                            PrecioVentaParaMaquilas.row.add([v.ID, v.Maquila, v.Precio, 'A', '<button type="button" class="btn btn-danger" onclick="onEliminarDetalle(' + v.ID + ',this)"><span class="fa fa-trash"></span></button>']).draw(false);
-                        });
-                    }
-                }).fail(function (x, y, z) {
-                    swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-                    console.log(x.responseText);
-                }).always(function () {
-                    $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
-                });
+                getDetalleByID(ClaveArticulo);
+
+
             }).fail(function (x, y, z) {
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
                 console.log(x.responseText);
@@ -664,6 +700,22 @@
             });
         });
 
+    }
+
+    function getDetalleByID(IDX) {
+        /*DETALLE*/
+        $.getJSON(master_url + 'getDetalleByID', {ID: IDX}).done(function (data) {
+            if (data.length > 0) {
+                $.each(data, function (k, v) {
+                    PrecioVentaParaMaquilas.row.add([v.ID, v.Maquila, v.Precio, v.Estatus, v.ClaveMaquila, '<button type="button" class="btn btn-danger" onclick="onEliminarDetalle(' + v.ID + ',this)"><span class="fa fa-trash"></span></button>']).draw(false);
+                });
+            }
+        }).fail(function (x, y, z) {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        }).always(function () {
+            $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
+        });
     }
     function getGrupos() {
         $.getJSON(master_url + 'getGrupos').done(function (data) {
@@ -691,7 +743,6 @@
 
         });
     }
-
     function getProveedores() {
         $.getJSON(master_url + 'getProveedores').done(function (data) {
             pnlDatos.find("#ProveedorUno")[0].selectize.addOption({text: '--', value: ''});
@@ -707,7 +758,6 @@
 
         });
     }
-
     function getMaquilas() {
         $.getJSON(master_url + 'getMaquilas', {ID: temp}).done(function (data) {
             $.each(data, function (k, v) {
@@ -720,7 +770,6 @@
 
         });
     }
-
     function getID() {
         $.getJSON(master_url + 'getID').done(function (data, x, jq) {
             if (data.length > 0) {
@@ -735,7 +784,6 @@
             HoldOn.close();
         });
     }
-
     function onEliminarDetalle(e, c) {
         swal({
             title: "¿Estas seguro?",
@@ -771,7 +819,6 @@
     function onEliminarDetalleSN(e) {
         PrecioVentaParaMaquilas.row($(e).parents('tr')).remove().draw();
     }
-
     function onEditarPrecioPorMaquila(x) {
         $.post(master_url + 'onEditarPrecioPorMaquila', x).done(function (data) {
         }).fail(function (x, y, z) {

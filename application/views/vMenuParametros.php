@@ -24,7 +24,7 @@
 
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navEmpresas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Empresas
+                    <span class="fa fa-building"></span> Empresas
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navEmpresas">
                     <a class="dropdown-item" href="<?php print base_url('Empresas') ?>"> Empresas</a>

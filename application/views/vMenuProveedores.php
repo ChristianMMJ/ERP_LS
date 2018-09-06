@@ -11,7 +11,7 @@
 
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navCatalogos" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fa fa-address-book"></span> Catálogos
+                    <span class="fas fa-wrench"></span> Catálogos
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCatalogos">
                     <a class="dropdown-item" href="<?php print base_url('Proveedores/?origen=PROVEEDORES'); ?>"> Proveedores</a>
@@ -20,7 +20,7 @@
             </li>
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navConsultas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fa fa-list-ul"></span>  Consultas
+                    <span class="fa fa-search"></span>  Consultas
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navConsultas">
                     <a class="dropdown-item" href="#"> Prueba.</a>

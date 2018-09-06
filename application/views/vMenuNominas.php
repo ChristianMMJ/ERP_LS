@@ -11,7 +11,7 @@
 
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navCatalogos" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Catálogos
+                    <span class="fas fa-wrench"></span> Catálogos
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCatalogos">
                     <a class="dropdown-item" href="<?php print base_url('Departamentos/?origen=NOMINAS'); ?>"> Departamentos</a>
@@ -23,7 +23,7 @@
             </li>
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navConsultas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Consultas
+                    <span class="fas fa-search"></span> Consultas
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navConsultas">
                     <a class="dropdown-item" href="#"> Prueba.</a>
@@ -32,7 +32,7 @@
 
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navEmpleados" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Empleados
+                    <span class="fas fa-users"></span>  Empleados
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navEmpleados">
                     <a class="dropdown-item" href="#"> Pruebas</a>
@@ -43,7 +43,7 @@
 
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navReportes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Reportes
+                    <span class="fa fa-file-pdf"></span> Reportes
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navReportes">
                     <a class="dropdown-item" href="#"> Prueba</a>
@@ -51,12 +51,12 @@
             </li>
             <li class="nav-item mx-1">
                 <a class="btn btn-info" href="<?php print base_url('MenuProduccion/?parentMenu=MenuNomina'); ?>">
-                    Menú Producción
+                    <span class="fa fa-industry"></span>  Menú Producción
                 </a>
             </li>
             <li class="nav-item mx-1">
                 <a class="btn btn-info" href="<?php print base_url('MenuClientes/?parentMenu=MenuNomina'); ?>">
-                    Menú Clientes
+                    <span class="fa fa-users"></span>  Menú Clientes
                 </a>
             </li>
 

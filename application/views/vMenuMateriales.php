@@ -34,7 +34,7 @@
 
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navCaptura" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fas fa-pencil-alt"></span>  Captura
+                    <span class="fas fa-pencil-alt"></span>  Capturas
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCaptura">
                     <a class="dropdown-item" href="#"> Grupos</a>

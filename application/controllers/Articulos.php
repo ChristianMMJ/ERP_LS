@@ -144,7 +144,6 @@ class Articulos extends CI_Controller {
                 'UbicacionCuatro' => $x->post('UbicacionCuatro'),
                 'TipoArticulo' => $x->post('TipoArticulo'),
                 'Estatus' => 'ACTIVO',
-                'Registro' => $x->post('Registro'),
                 'PrecioUno' => $x->post('PrecioUno'),
                 'PrecioDos' => $x->post('PrecioDos'),
                 'PrecioTres' => $x->post('PrecioTres')
@@ -185,7 +184,10 @@ class Articulos extends CI_Controller {
 
             $precios = json_decode($this->input->post('Precios'));
             foreach ($precios as $k => $v) {
-                $precio = array('Articulo' => $x->post('ID'), 'Maquila' => $v->Maquila, 'Precio' => $v->Precio, 'Estatus' => 'ACTIVO');
+                $precio = array(
+                    'Articulo' => $x->post('Clave'),
+                    'Maquila' => $v->Maquila,
+                    'Precio' => $v->Precio, 'Estatus' => 'A');
                 $this->db->insert('preciosmaquilas', $precio);
             }
         } catch (Exception $exc) {
@@ -211,12 +213,13 @@ class Articulos extends CI_Controller {
 
     function onIgualarPrecios() {
         try {
-            $ID = $this->input->post('ID');
-            $precio = $this->articulos_model->getPrimerMaquilaPrecio($this->input->post('ID'))[0]->PRECIO;
-            $maquilas = $this->articulos_model->getMaquilas($ID);
+            $Articulo = $this->input->post('Clave');
+            $precio = $this->articulos_model->getPrimerMaquilaPrecio($this->input->post('Clave'))[0]->PRECIO;
+            $maquilas = $this->articulos_model->getMaquilasXArticulo($Articulo);
             foreach ($maquilas as $k => $v) {
-                $p = array('Articulo' => $ID, 'Maquila' => $v->ID, 'MaquilaT' => $v->Maquila, 'Precio' => $precio, 'Estatus' => 'ACTIVO');
-                $this->db->insert('preciosmaquilas', $p);
+                $p = array(
+                    'Precio' => $precio);
+                $this->db->where('ID', $v->ID)->update("preciosmaquilas", $p);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

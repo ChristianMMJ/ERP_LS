@@ -11,7 +11,7 @@
 
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navCatalogos" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Catálogos
+                    <span class="fas fa-wrench"></span> Catálogos
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCatalogos">
                     <a class="dropdown-item"  href="<?php print base_url('Agentes'); ?>"> Agentes</a>
@@ -23,7 +23,7 @@
             </li>
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navCapturas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Capturas
+                    <span class="fas fa-pencil-alt"></span> Capturas
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCapturas">
                     <a class="dropdown-item" href="#"> Prueba.</a>
@@ -31,7 +31,7 @@
             </li>
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navConsultas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Consultas
+                    <span class="fas fa-search"></span> Consultas
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navConsultas">
                     <a class="dropdown-item" href="#"> Prueba.</a>
@@ -41,7 +41,7 @@
 
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navReportes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Reportes
+                    <span class="fa fa-file-pdf"></span> Reportes
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navReportes">
                     <a class="dropdown-item" href="#"> Prueba</a>
@@ -50,7 +50,7 @@
 
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navEstadisticas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Estadísticas
+                    <span class="fa fa-chart-line"></span> Estadísticas
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navEstadisticas">
                     <a class="dropdown-item" href="#"> Prueba</a>
@@ -59,7 +59,7 @@
 
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navUtilerias" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Utilerías
+                    <span class="fa fa-atlas"></span> Utilerías
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navUtilerias">
                     <a class="dropdown-item" href="#"> Prueba</a>

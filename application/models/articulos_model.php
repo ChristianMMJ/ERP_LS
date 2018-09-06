@@ -30,10 +30,21 @@ class articulos_model extends CI_Model {
         }
     }
 
-    public function getPrimerMaquilaPrecio($ID) {
+    public function getPrimerMaquilaPrecio($Clave) {
         try {
             return $this->db->select("PM.Precio AS PRECIO", false)->from('preciosmaquilas AS PM')
-                            ->where('PM.Articulo', $ID)->order_by('PM.ID', 'DESC')->limit(1)->get()->result();
+                            ->where('PM.Articulo', $Clave)->order_by('PM.ID', 'ASC')->limit(1)->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getMaquilasXArticulo($Articulo) {
+        try {
+            return $this->db->select("PM.ID as ID ,PM.Maquila  AS Maquila", false)
+                            ->from("preciosmaquilas AS PM")
+                            ->where('PM.Articulo', $Articulo)
+                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -50,7 +61,11 @@ class articulos_model extends CI_Model {
 
     public function getDetalleByID($ID) {
         try {
-            $this->db->select("pvm.ID AS ID,CONCAT(M.Clave,' - ', M.Nombre) AS Maquila, pvm.Precio AS Precio, 'A' AS Estatus ", false)->from("preciosmaquilas AS pvm")
+            $this->db->select("pvm.ID AS ID,"
+                            . "CONCAT(M.Clave,' - ', M.Nombre) AS Maquila, "
+                            . "pvm.Precio AS Precio, "
+                            . "'A' AS Estatus,"
+                            . "M.Clave AS ClaveMaquila ", false)->from("preciosmaquilas AS pvm")
                     ->join('maquilas AS M', 'pvm.Maquila = M.Clave')->where('pvm.Articulo', $ID)->like('pvm.Estatus', 'A');
             $query = $this->db->get();
             /*

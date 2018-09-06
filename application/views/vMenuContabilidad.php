@@ -11,7 +11,7 @@
 
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navCatalogos" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Catálogos
+                    <span class="fas fa-wrench"></span> Catálogos
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCatalogos">
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlTipoCambio"> Tipo Cambio Moneda</a>
@@ -19,7 +19,7 @@
             </li>
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navCapturas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Capturas
+                    <span class="fas fa-pencil-alt"></span> Capturas
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCapturas">
                     <a class="dropdown-item" href="#"> --</a>
@@ -27,7 +27,7 @@
             </li>
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navConsultas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Consultas
+                    <span class="fas fa-search"></span> Consultas
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navConsultas">
                     <a class="dropdown-item" href="#"> --</a>
@@ -36,17 +36,17 @@
 
             <li class="nav-item mx-1">
                 <a class="btn btn-info" href="<?php print base_url('MenuMateriales/?parentMenu=MenuContabilidad'); ?>">
-                    Menú Materiales
+                    <span class="fas fa-cube"></span> Menú Materiales
                 </a>
             </li>
             <li class="nav-item mx-1">
                 <a class="btn btn-info" href="<?php print base_url('MenuClientes/?parentMenu=MenuContabilidad'); ?>">
-                    Menú Clientes
+                    <span class="fa fa-users"></span> Menú Clientes
                 </a>
             </li>
             <li class="nav-item mx-1">
                 <a class="btn btn-info" href="<?php print base_url('MenuProveedores/?parentMenu=MenuContabilidad'); ?>">
-                    Menú Proveedores
+                    <span class="fa fa-user-secret"></span> Menú Proveedores
                 </a>
             </li>
 
