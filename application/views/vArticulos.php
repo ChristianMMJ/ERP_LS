@@ -684,10 +684,13 @@
                 pnlDatos.find("#Departamento")[0].selectize.focus();
 
                 /*DESHABILITAR CAMPOS CLAVE DEL ARTICULO*/
-                pnlDatos.find("#UnidadMedida")[0].selectize.disable();
-                pnlDatos.find("#PrecioUno").prop("readonly", true);
-                pnlDatos.find("#PrecioDos").prop("readonly", true);
-                pnlDatos.find("#PrecioTres").prop("readonly", true);
+                if (seg === 0) {
+                    pnlDatos.find("#UnidadMedida")[0].selectize.disable();
+                    pnlDatos.find("#PrecioUno").prop("readonly", true);
+                    pnlDatos.find("#PrecioDos").prop("readonly", true);
+                    pnlDatos.find("#PrecioTres").prop("readonly", true);
+                }
+
 
                 getDetalleByID(ClaveArticulo);
 

@@ -390,10 +390,12 @@
                             pnlTablero.addClass("d-none");
                             pnlDatos.removeClass('d-none');
                             pnlDatos.find("[name='Direccion']").focus().select();
-                            pnlDatos.find("[name='Clave']").addClass("disabledForms");
-                            pnlDatos.find("[name='NombreI']").addClass("disabledForms");
-                            pnlDatos.find("[name='NombreF']").addClass("disabledForms");
-                            pnlDatos.find("[name='RFC']").addClass("disabledForms");
+                            if (seg === 0) {
+                                pnlDatos.find("[name='Clave']").addClass("disabledForms");
+                                pnlDatos.find("[name='NombreI']").addClass("disabledForms");
+                                pnlDatos.find("[name='NombreF']").addClass("disabledForms");
+                                pnlDatos.find("[name='RFC']").addClass("disabledForms");
+                            }
                         }).fail(function (x, y, z) {
                             console.log(x, y, z);
                         }).always(function () {

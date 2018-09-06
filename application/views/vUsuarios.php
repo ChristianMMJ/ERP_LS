@@ -266,7 +266,7 @@
         getEmpresas();
         handleEnter();
     });
-    var seg = <?php print $_SESSION["SEG"]; ?>;
+
     function getRecords() {
         temp = 0;
         HoldOn.open({

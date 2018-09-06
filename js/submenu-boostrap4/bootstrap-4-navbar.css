@@ -19,7 +19,3 @@
 .dropdown-menu .show > .dropdown-toggle::after{
     transform: rotate(-90deg);
 }
-
-.dropdown-submenu {
-    padding: 0.25rem 17px;
-}

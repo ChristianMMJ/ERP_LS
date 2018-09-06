@@ -462,7 +462,7 @@
                 btnEliminar.removeClass("d-none");
 
                 pnlDatos.find("[name='Clave']").addClass('disabledForms');
-                pnlDatos.find("#Descripcion").focus().select();
+                pnlDatos.find("#PtoInUno").focus().select();
             }).fail(function (x, y, z) {
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
                 console.log(x.responseText);

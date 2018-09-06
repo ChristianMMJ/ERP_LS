@@ -440,12 +440,19 @@
                         pnlDatos.find("[name='" + k + "']")[0].selectize.addItem(v, true);
                     }
                 });
-                //RFC Y NOMBRE P
-                pnlDatos.find("#RazonS").prop('readonly', true);
-                pnlDatos.find("#NombreP").prop('readonly', true);
-
                 pnlTablero.addClass("d-none");
                 pnlDatos.removeClass('d-none');
+
+
+                //RFC Y NOMBRE P
+                if (seg === 0) {
+                    pnlDatos.find("#RazonS").prop('readonly', true);
+                    pnlDatos.find("#NombreP").prop('readonly', true);
+                    pnlDatos.find("#RFC").prop('readonly', true);
+                    pnlDatos.find("#Sucursal").focus().select();
+                }
+                pnlDatos.find("#RazonS").focus().select();
+
             }).fail(function (x, y, z) {
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
                 console.log(x.responseText);

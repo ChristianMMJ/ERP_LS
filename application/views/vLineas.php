@@ -196,19 +196,24 @@
             });
         });
 
+        pnlDatos.find("#Clave").focusout(function () {
+            if (nuevo) {
+                onComprobarClave(this);
+            }
+        });
+
         btnNuevo.click(function () {
             nuevo = true;
             pnlDatos.find("input").val("");
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass("d-none");
             btnEliminar.addClass("d-none");
-            getID();
-            pnlDatos.find("[name='Clave']").addClass('disabledForms');
-            pnlDatos.find("[name='Descripcion']").focus();
+
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
             pnlDatos.find("#Ano").val((new Date()).getFullYear());
+            pnlDatos.find("[name='Clave']").focus();
         });
 
         btnCancelar.click(function () {
@@ -222,21 +227,36 @@
         getTemporadas();
     }
 
-    function getID() {
-        $.getJSON(master_url + 'getID').done(function (data, x, jq) {
-            if (data.length > 0) {
-                var ID = $.isNumeric(data[0].CLAVE) ? parseInt(data[0].CLAVE) + 1 : 1;
-                pnlDatos.find("#Clave").val(ID);
-            } else {
-                pnlDatos.find("#Clave").val('1');
-            }
-        }).fail(function (x, y, z) {
-            console.log(x, y, z);
-        }).always(function () {
-            HoldOn.close();
-        });
-    }
+    function onComprobarClave(e) {
+        if (nuevo) {
+            $.getJSON(master_url + 'onComprobarClave', {Clave: $(e).val()}).done(function (data) {
 
+                if (data.length > 0) {
+                    swal({
+                        title: "ATENCIÓN",
+                        text: "LA CLAVE " + pnlDatos.find("#Clave").val() + " YA EXISTE",
+                        icon: "warning",
+                        buttons: {
+                            eliminar: {
+                                text: "Aceptar",
+                                value: "aceptar"
+                            }
+                        }
+                    }).then((value) => {
+                        switch (value) {
+                            case "aceptar":
+                                swal.close();
+                                pnlDatos.find("#Clave").val('').focus();
+                                break;
+                        }
+                    });
+                }
+            }).fail(function (x, y, z) {
+                swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+                console.log(x.responseText);
+            });
+        }
+    }
     function getRecords() {
         temp = 0;
         HoldOn.open({
@@ -305,7 +325,7 @@
                 pnlTablero.addClass("d-none");
                 pnlDatos.removeClass('d-none');
                 btnEliminar.removeClass("d-none");
-
+                pnlDatos.find("[name='Clave']").addClass('disabledForms');
                 pnlDatos.find("#Descripcion").focus().select();
             }).fail(function (x, y, z) {
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');

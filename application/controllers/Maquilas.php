@@ -24,7 +24,7 @@ class Maquilas extends CI_Controller {
                     if ($Origen === 'PRODUCCION') {
                         $this->load->view('vMenuProduccion');
                     } else if ($Origen === 'PROVEEDORES') {
-                        $this->load->view('vMenuProduccion');
+                        $this->load->view('vMenuProveedores');
                     }
                     //Cuando no viene de ningun modulo y lo teclean
                     else {

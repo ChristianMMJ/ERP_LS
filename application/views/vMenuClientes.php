@@ -28,15 +28,27 @@
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlTipoCambio"> Tipo Cambio Moneda</a>
                 </div>
             </li>
+
+
             <li class="nav-item dropdown">
-                <a class="btn btn-primary dropdown-toggle" href="#" id="navCapturas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="btn btn-primary dropdown-toggle" href="#" id="navCaptura" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="fas fa-pencil-alt"></span>  Capturas
                 </a>
-                <div class="dropdown-menu dropdown-menu" aria-labelledby="navCapturas">
-                    <a class="dropdown-item" href="<?php print base_url('Pedidos.shoes'); ?>"><span class="fa fa-check"></span> Pedidos</a>
-                    <a class="dropdown-item" href="#"> Prueba.</a>
-                </div>
+                <ul class="dropdown-menu" aria-labelledby="navCaptura">
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#">Pedidos</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="<?php print base_url('Pedidos.shoes'); ?>">Autorizados</a>
+                            <a class="dropdown-item" href="#">Pendientes por Anticipo</a>
+                            <a class="dropdown-item" href="#">Elimina pedido c/ Control</a>
+                            <a class="dropdown-item" href="#">Elimina pedido s/ Control</a>
+                        </div>
+                    </li>
+                    <a class="dropdown-item" href="#">Documentos Directos</a>
+                </ul>
             </li>
+
+
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navConsultas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="fas fa-search"></span> Consultas
@@ -110,6 +122,8 @@
         } else {
             $('#btnRegresar').addClass('d-none');
         }
+
+
     });
 </script>
 

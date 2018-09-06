@@ -34,9 +34,9 @@ class lineas_model extends CI_Model {
         }
     }
 
-    public function getID() {
+    public function onComprobarClave($C) {
         try {
-            return $this->db->select("CONVERT(L.Clave, UNSIGNED INTEGER) AS CLAVE")->from("Lineas AS L")->where("L.Estatus", "ACTIVO")->order_by("CLAVE", "DESC")->limit(1)->get()->result();
+            return $this->db->select("L.Clave")->from("Lineas AS L")->where("L.Clave", $C)->where("L.Estatus", "ACTIVO")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

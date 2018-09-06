@@ -346,10 +346,6 @@
                         text: "LA CLAVE " + pnlDatos.find("#Clave").val() + " YA EXISTE",
                         icon: "warning",
                         buttons: {
-                            cancelar: {
-                                text: "Cancelar",
-                                value: "cancelar"
-                            },
                             eliminar: {
                                 text: "Aceptar",
                                 value: "aceptar"
@@ -358,9 +354,6 @@
                     }).then((value) => {
                         switch (value) {
                             case "aceptar":
-                                pnlDatos.find("#Clave").val('').focus();
-                                break;
-                            case "cancelar":
                                 swal.close();
                                 pnlDatos.find("#Clave").val('').focus();
                                 break;
