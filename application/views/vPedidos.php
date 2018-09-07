@@ -53,27 +53,41 @@
                         <div class="d-none">
                             <input type="text" id="ID" name="ID" class="form-control form-control-sm d-none" readonly="" >
                         </div>
-                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1">
                             <label for="Pedido" >Pedido*</label>
                             <input type="text" class="form-control form-control-sm numbersOnly" id="Clave" required="" placeholder="">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-3">
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-4">
                             <label for="Cliente" >Cliente*</label> 
                             <select class="form-control form-control-sm" id="Cliente" name="Cliente" required="" placeholder="">
                             </select>
                         </div>
-                        <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-3">
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-2">
                             <label for="Agente" >Agente*</label>
                             <select class="form-control form-control-sm" id="Agente" name="Agente" required="" placeholder="">
                             </select>
                         </div>
-                        <div class="col-12 col-sm-6 col-md-6 col-lg-2 col-xl-2">
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-2 col-xl-1">
                             <label for="FechaPedido" >Fecha Pedido*</label>
                             <input type="text" id="FechaPedido" name="FechaPedido" class="form-control form-control-sm date notEnter" required="">
                         </div>
-                        <div class="col-12 col-sm-6 col-md-6 col-lg-2 col-xl-2">
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1">
+                            <label for="FechaEntrega" >Fecha Entrega*</label>
+                            <input type="text" id="FechaEntrega" name="FechaEntrega" class="form-control form-control-sm date notEnter">
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-2 col-xl-1">
                             <label for="FechaRecepcion" >Fecha Recepción*</label>
                             <input type="text" id="FechaRecepcion" name="FechaRecepcion" class="form-control form-control-sm date notEnter" required="">
+                        </div>
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1">
+                            <label for="Recibido" >Recibido*</label>
+                            <select class="form-control form-control-sm" id="Recibido" name="Recibido" required placeholder="">
+                                <option></option>
+                                <option value="1">1 - Agente</option>
+                                <option value="3">3 - Tel</option>
+                                <option value="4">4 - Per</option>
+                                <option value="5">5 - Int</option>
+                            </select>
                         </div>
                     </div>  
                 </div>
@@ -98,21 +112,7 @@
                             <select class="form-control form-control-sm"  type="text" id="Maquila" name="Maquila">
                             </select>
                         </div>
-                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1">
-                            <label for="Recibido" >Recibido*</label>
-                            <select class="form-control form-control-sm" id="Recibido" name="Recibido" required placeholder="">
-                                <option></option>
-                                <option value="1">1 - Agente</option>
-                                <option value="3">3 - Tel</option>
-                                <option value="4">4 - Per</option>
-                                <option value="5">5 - Int</option>
-                            </select>
-                        </div>
-                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1">
-                            <label for="FechaEntrega" >Fecha Entrega*</label>
-                            <input type="text" id="FechaEntrega" name="FechaEntrega" class="form-control form-control-sm date notEnter">
-                        </div>
-                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1">
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
                             <label for="Semana" >Semana*</label>
                             <input type="text" id="Semana" name="Semana" class="form-control form-control-sm" placeholder="No ha especificado una fecha de entrega">
                         </div>
@@ -125,10 +125,10 @@
                             <label for="ProduccionMaquilaSemana" >Prod. Maq/Sem*</label>
                             <input type="text" id="ProduccionMaquilaSemana" name="ProduccionMaquilaSemana" class="form-control form-control-sm" placeholder="0" disabled="">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1">
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
                             <label for="Precio" >Precio*</label>
                             <div class="input-group">
-                                <input type="text" id="Precio" name="Precio" class="form-control form-control-sm numbersOnly" maxlength="8" disabled="">
+                                <input type="text" id="Precio" name="Precio" class="form-control form-control-sm numbersOnly" maxlength="8" readonly="">
                                 <span class="input-group-prepend">
                                     <span class="input-group-text text-dark " id="AgregaObservaciones" name="AgregaObservaciones" data-toggle="tooltip" data-placement="top" title="Agregar observaciones">
                                         <i class="fa fa-eye"></i>
@@ -235,7 +235,7 @@
 
                                     <th scope="col">Precio</th><!--30-->
                                     <th scope="col">Pares</th><!--31-->
-                                    <th scope="col">Fecha de entrega</th><!--32-->
+                                    <th scope="col">F. Ent</th><!--32-->
                                     <th scope="col">Eliminar</th><!--33-->
                                     <!--OUT-->
                                     <th scope="col">Recio</th><!--34-->
@@ -529,9 +529,10 @@
 //                        });
                         Pedidos.ajax.reload();
                         //NUEVO > MODIFICAR
-                        pnlDatos.find("#Clave").prop('disabled', true);
-                        pnlDatos.find("#FechaPedido").prop('disabled', true);
-                        pnlDatos.find("#FechaRecepcion").prop('disabled', true);
+                        pnlDatos.find("#Clave").prop('readonly', true);
+                        pnlDatos.find("#FechaPedido").prop('readonly', true);
+                        pnlDatos.find("#FechaRecepcion").prop('readonly', true);
+                        pnlDatos.find("#FechaEntrega").prop('readonly', true);
                         pnlDatos.find("#Cliente")[0].selectize.disable();
                         pnlDatos.find("#Agente")[0].selectize.disable();
                     });
@@ -543,12 +544,15 @@
 
         btnNuevo.click(function () {
             nuevo = true;
-            pnlDatos.find("#Precio").prop('disabled', true);
-            pnlDatos.find("#Clave").prop('disabled', false);
+            pnlDatos.find("#FechaEntrega").prop('readonly', false);
+            pnlDatos.find("#Semana").prop('readonly', false);
+            pnlDatos.find("#Recibido")[0].selectize.enable();
+            pnlDatos.find("#Precio").prop('readonly', true);
+            pnlDatos.find("#Clave").prop('readonly', false);
             pnlDatos.find("#Cliente")[0].selectize.enable();
             pnlDatos.find("#Agente")[0].selectize.enable();
-            pnlDatos.find("#FechaPedido").prop('disabled', false);
-            pnlDatos.find("#FechaRecepcion").prop('disabled', false);
+            pnlDatos.find("#FechaPedido").prop('readonly', false);
+            pnlDatos.find("#FechaRecepcion").prop('readonly', false);
             pnlDatos.find("input,textarea").val("");
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass("d-none");
@@ -564,9 +568,12 @@
             btnGuardar.prop("disabled", true);
             pnlDatos.find("#Cliente")[0].selectize.enable();
             pnlDatos.find("#Agente")[0].selectize.enable();
-            pnlDatos.find("#Clave").prop('disabled', true);
-            pnlDatos.find("#FechaPedido").prop('disabled', true);
-            pnlDatos.find("#FechaRecepcion").prop('disabled', true);
+            pnlDatos.find("#FechaEntrega").prop('readonly', true);
+            pnlDatos.find("#Semana").prop('readonly', true);
+            pnlDatos.find("#Recibido")[0].selectize.disable();
+            pnlDatos.find("#Clave").prop('readonly', true);
+            pnlDatos.find("#FechaPedido").prop('readonly', true);
+            pnlDatos.find("#FechaRecepcion").prop('readonly', true);
             pnlTablero.removeClass("d-none");
             pnlDatos.addClass("d-none");
             btnImprimir.addClass("d-none");
@@ -597,9 +604,9 @@
         pnlDatos.find("#Color").change(function () {
             var color = $(this).val();
             if (color !== '') {
-                pnlDatos.find("#Precio").prop('disabled', false);
+                pnlDatos.find("#Precio").prop('readonly', false);
             } else {
-                pnlDatos.find("#Precio").prop('disabled', true);
+                pnlDatos.find("#Precio").prop('readonly', true);
             }
         });
 
@@ -934,6 +941,7 @@
 
     var added = false, agregado = 0;
     function onCalcularPares(e) {
+        pnlDatos.find("#Recibido")[0].selectize.enable();
         var Estilo = pnlDatos.find("#Estilo");
         var Color = pnlDatos.find("#Color");
         var Semana = pnlDatos.find("#Semana");
@@ -1018,10 +1026,10 @@
                             Estilo[0].selectize.clear(true);
                             Estilo[0].selectize.focus();
                             Estilo[0].selectize.open();
-                            FechaDeEntrega.val('');
-                            Recibido[0].selectize.clear(true);
+                            FechaDeEntrega.prop('readonly', true);
+                            Semana.prop('readonly', true);
+                            Recibido[0].selectize.disable();
                             Maquila[0].selectize.clear(true);
-                            Semana.val('');
                             Recio.val('');
                             Precio.val('');
                             Titulo.val('');
@@ -1133,14 +1141,19 @@
             pnlDatos.find("#FechaRecepcion").val(dt.FechaRecepcion);
             pnlDatos.find("#Agente")[0].selectize.setValue(dt.Agente);
 
-            pnlDatos.find("#Clave").prop('disabled', true);
-            pnlDatos.find("#FechaPedido").prop('disabled', true);
-            pnlDatos.find("#FechaRecepcion").prop('disabled', true);
+            pnlDatos.find("#FechaEntrega").val(dt.FechaEntrega);
+            pnlDatos.find("#Semana").val(dt.Semana);
+            pnlDatos.find("#Recibido")[0].selectize.setValue(dt.Recibido);
+
+            pnlDatos.find("#Clave").prop('readonly', true);
+            pnlDatos.find("#FechaPedido").prop('readonly', true);
+            pnlDatos.find("#FechaRecepcion").prop('readonly', true);
+            pnlDatos.find("#FechaEntrega").prop('readonly', true);
+            pnlDatos.find("#Recibido")[0].selectize.disable();
             pnlDatos.find("#Cliente")[0].selectize.disable();
             pnlDatos.find("#Agente")[0].selectize.disable();
 
             btnImprimir.removeClass("d-none");
-
             //ASIGNAR DETALLE
             var tal = '<div class="row"><div class="col-12 text-danger text-nowrap talla" align="center">';
             var cnt = '</div><div class="col-12 cantidad" align="center">';

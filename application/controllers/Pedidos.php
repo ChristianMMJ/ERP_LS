@@ -277,10 +277,17 @@ class Pedidos extends CI_Controller {
     function onImprimirPedido() {
         try {
             $pdf = new PDF('L', 'mm', array(215.9, 279.4));
-            $Pedido = $this->pedidos_model->getPedidosByID($this->input->post('ID'));
+            $Pedido = $this->pedidos_model->getPedidoByID($this->input->post('ID'));
                 
             $Encabezado = $Pedido[0];
             $pdf->setPedido($Encabezado->Clave);
+            $pdf->setCliente($Encabezado->ClienteT); 
+            $pdf->setFecha($Encabezado->FechaPedido); 
+            $pdf->setCiudad($Encabezado->Ciudad); 
+            $pdf->setEstado($Encabezado->Estado); 
+            $pdf->setRFC($Encabezado->RFC); 
+            $pdf->setAgente($Encabezado->AgenteT); 
+            
             /* FIN RESUMEN */
             $path = 'uploads/Reportes/Pedidos';
             if (!file_exists($path)) {
