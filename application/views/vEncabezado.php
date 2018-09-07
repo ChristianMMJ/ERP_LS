@@ -39,9 +39,10 @@
         <script src="<?php print base_url(); ?>js/jquery-3.2.1.min.js"></script>
         <!--Estilo principal-->
         <link rel="stylesheet" href="<?php echo base_url(); ?>css/bootstrap-flaty.css">
-        <!--Submenu-->
+        <!--Submenu
+        <!--
         <link href="<?php print base_url('js/submenu-boostrap4/bootstrap-4-navbar.min.css') ?>" rel="stylesheet">
-
+        -->
         <!--DataTables Plugin-->
         <link rel="stylesheet" href="<?php echo base_url(); ?>js/tabletools/master/DataTables/datatables.min.css">
         <script src="<?php echo base_url(); ?>js/tabletools/master/DataTables/datatables.min.js"></script>

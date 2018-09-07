@@ -16,11 +16,11 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Clave</th> 
-                            <th>Cliente</th> 
-                            <th>Agente</th> 
-                            <th>Pares</th> 
-                            <th>Fecha de entrega</th> 
+                            <th>Clave</th>
+                            <th>Cliente</th>
+                            <th>Agente</th>
+                            <th>Pares</th>
+                            <th>Fecha de entrega</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -42,7 +42,7 @@
                         <div class="col-12 col-sm-3 col-md-8" align="right">
                             <button type="button" class="btn btn-info btn-sm d-none" id="btnImprimir" >
                                 <span class="fa fa-print" ></span> IMPRIMIR
-                            </button> 
+                            </button>
                             <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
                                 <span class="fa fa-arrow-left" ></span> REGRESAR
                             </button>
@@ -57,8 +57,8 @@
                             <label for="Pedido" >Pedido*</label>
                             <input type="text" class="form-control form-control-sm numbersOnly" id="Clave" required="" placeholder="">
                         </div>
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-4">
-                            <label for="Cliente" >Cliente*</label> 
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3">
+                            <label for="Cliente" >Cliente*</label>
                             <select class="form-control form-control-sm" id="Cliente" name="Cliente" required="" placeholder="">
                             </select>
                         </div>
@@ -93,8 +93,8 @@
                             <button type="button" class="btn btn-info " id="AgregaObservaciones" name="AgregaObservaciones" data-toggle="tooltip" data-placement="top" title="Agregar observaciones">
                                 <i class="fa fa-eye"></i> Obs.
                                 </span>
-                        </div>  
-                    </div>  
+                        </div>
+                    </div>
                 </div>
             </div>
             <!--SEGUNDO CONTENEDOR-->
@@ -182,9 +182,9 @@
                         </div>
                     </div>
                     <div class="row pt-2">
-                        <div class="col-6 col-sm-6 col-md-6 col-lg-6">
-                            <h6 class="text-danger">Los campos con * son obligatorios</h6>
-                        </div>
+                        <!--                        <div class="col-6 col-sm-6 col-md-6 col-lg-6">
+                                                    <h6 class="text-danger">Los campos con * son obligatorios</h6>
+                                                </div>-->
                         <div class="col-6 col-sm-6 col-md-6" align="right">
                             <button type="button" class="btn btn-info btn-lg btn-float animated slideInUp d-none" disabled="" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
                                 <i class="fa fa-save"></i>
@@ -199,17 +199,17 @@
             <div class="card  m-3 ">
                 <div class="card-body">
                     <div class="row">
-                        <table id="tblPedidoDetalle" class="table table-hover display">
+                        <table id="tblPedidoDetalle" class="table table-hover">
                             <thead>
                                 <tr>
                                     <th scope="col">ID</th><!--0-->
                                     <th scope="col">Recibido</th><!--1-->
                                     <th scope="col">Estilo</th><!--2-->
-                                    <th scope="col">EstiloT</th><!--3-->
+                                    <th scope="col">Estilo</th><!--3-->
                                     <th scope="col">Color</th><!--4-->
-                                    <th scope="col">ColorT</th><!--5-->
-                                    <th scope="col">Semana</th><!--6-->
-                                    <th scope="col">Maquila</th><!--7-->
+                                    <th scope="col">Color</th><!--5-->
+                                    <th scope="col">Sem</th><!--6-->
+                                    <th scope="col">Maq</th><!--7-->
 
                                     <th scope="col"></th><!--8-->
                                     <th scope="col"></th>
@@ -252,10 +252,10 @@
                                 </tr>
                             </thead>
                             <tbody></tbody>
-                        </table> 
+                        </table>
                     </div>
                     <div class="row mt-3">
-                        <div class="col-8 font-weight-bold" align="right">Pares</div> 
+                        <div class="col-8 font-weight-bold" align="right">Pares</div>
                         <div id="ParesTotales" class="col-1 font-weight-bold zoom"></div>
                         <div class="col-1 font-weight-bold">Total</div>
                         <div id="Total" class="col-1 font-weight-bold zoom"></div>
@@ -474,7 +474,7 @@
                         getPedidoByID(pnlDatos.find("#ID").val());
 //                        $.each(tblPedidoDetalle.find("tbody tr"), function (k, v) {
 //                            PedidoDetalle.cell($(this), 38).data('N').draw();
-//                        }); 
+//                        });
                     });
                 } else {
                     var detalle = [];
@@ -634,7 +634,7 @@
                 }).fail(function (x, y, z) {
                     console.log(x, y, z);
                 });
-                //OBTENER MAQUILA/SERIE      
+                //OBTENER MAQUILA/SERIE
                 $.getJSON(master_url + 'getMaquilaSerieXEstilo', {Estilo: $(this).val()}).done(function (data) {
                     if (data.length > 0) {
                         var dtm = data[0];
@@ -645,7 +645,7 @@
                         var indice = 0;
                         $.each(data[0], function (k, v) {
                             if (parseInt(v) > 0) {
-//                                pnlDatos.find("[name='C" + indice + "']").prop('disabled',false); 
+//                                pnlDatos.find("[name='C" + indice + "']").prop('disabled',false);
                                 pnlDatos.find("[name='" + k + "']").val(v);
                             } else {
 //                                pnlDatos.find("[name='C" + indice + "']").prop('disabled',true);
@@ -866,40 +866,33 @@
             "autoWidth": true,
             "colReorder": true,
             "displayLength": 50,
-            "scrollY": 500,
-            "scrollX": true,
+            "scrollY": 300,
+            "scrollX": false,
             "bLengthChange": false,
             "deferRender": true,
             "bSort": true,
-
             "createdRow": function (row, data, index) {
-                console.log(index,', Row', row);
-                console.log('Row data',data[3]/*Estilo*/, data[5]/*Color*/,);
                 $.each($(row).find("td"), function (k, v) {
                     var c = $(v);
                     var index = parseInt(k);
                     switch (index) {
                         case 0:
                             /*ESTILO*/
-                            c.not(".Serie").attr('title', data[35]);
-                            c.addClass('Estilo');
+                            c.attr('title', data[3]);
                             break;
                         case 1:
                             /*COLOR*/
-                            c.not(".Serie").attr('title', data[36]);
-                            c.addClass('Color');
-                            break;
-                        case 2:
-                            /*SEMANA*/
-                            c.addClass('Semana');
-                        case 3:
-                            /*Maquila*/
-                            c.addClass('Maquila');
+                            c.attr('title', data[5]);
                             break;
                     }
+
+                    $(row).find("td").slice(4, 26).addClass("zoom");
                 });
-                $(row).find("td").slice(4, 26).addClass("zoom");
+
             },
+//            "createdRow": function (row, data, index) {
+//                $(row).find("td").slice(4, 26).addClass("zoom");
+//            },
             "footerCallback": function (row, data, start, end, display) {
                 var api = this.api();//Get access to Datatable API
                 // Update footer
@@ -1003,12 +996,12 @@
                         //REVISAR SI ESE ESTILO/COLOR NO HA SIDO AGREGADO CON ANTERIORIDAD
                         onRevisarRegistro(Estilo.val(), Color.val());
                         if (!added) {
-                            //AÑADIR FILA 
+                            //AÑADIR FILA
                             var tal = '<div class="row"><div class="col-12 text-danger text-nowrap talla" align="center">';
                             var cnt = '</div><div class="col-12 cantidad" align="center">';
                             var dtm = [
-                                0, //ID 
-                                Recibido.val(), //Recibido 
+                                0, //ID
+                                Recibido.val(), //Recibido
                                 Estilo.val(), //EstiloID
                                 Estilo.text(), //Estilo
                                 Color.val(), //ColorID
@@ -1160,7 +1153,7 @@
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
             var dt = data[0];//Encabezado
-            //SEGURIDAD 
+            //SEGURIDAD
             pnlDatos.find("#ID").val(dt.PDID);
             pnlDatos.find("#Clave").val(dt.Clave);
             pnlDatos.find("#Cliente")[0].selectize.setValue(dt.Cliente);
@@ -1186,8 +1179,8 @@
             var cnt = '</div><div class="col-12 cantidad" align="center">';
             $.each(data, function (k, v) {
                 var dtm = [
-                    v.PDID, //ID 
-                    v.Recibido, //Recibido 
+                    v.PDID, //ID
+                    v.Recibido, //Recibido
                     v.Estilo, //EstiloID
                     v.EstiloT, //Estilo
                     v.Color, //ColorID
@@ -1275,24 +1268,24 @@
         height: 300px !important;
     }
     table tbody tr:hover {
-        font-weight: bold; 
+        font-weight: bold;
         color:#000 !important;
         background-color: transparent;
-    } 
+    }
     #tblPedidoDetalle tbody td{
-        font-weight: bold; 
+        font-weight: bold;
         -webkit-transition: all .2s ease-in-out;
         transition: all .2s ease-in-out;
         left: 20px;
-        top: -5px; 
-    } 
+        top: -5px;
+    }
 
     #tblPedidoDetalle tr:hover td{
         color:#000;
         background-color: #fff;
     }
 
-    #tblPedidoDetalle td:hover{ 
+    #tblPedidoDetalle td:hover{
     }
     /* width */
     ::-webkit-scrollbar {
@@ -1301,26 +1294,26 @@
 
     /* Track */
     ::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 5px grey; 
+        box-shadow: inset 0 0 5px grey;
         border-radius: 1px;
     }
 
     /* Handle */
     ::-webkit-scrollbar-thumb {
-        background: #666666; 
+        background: #666666;
         border-radius: 10px;
     }
 
     /* Handle on hover */
     ::-webkit-scrollbar-thumb:hover {
-        background: #666666; 
+        background: #666666;
     }
 
     .zoom{
         -webkit-transition: all .2s ease-in-out;
         transition: all .2s ease-in-out;
     }
-    .zoom:hover{ 
+    .zoom:hover{
         transform-origin: 100% 0;
         width:40%;
         height:100%;
@@ -1340,26 +1333,11 @@
     }
     .container-fluid {
         width: 100%;
-        padding-right: 0px; 
-        padding-left: 0px; 
+        padding-right: 0px;
+        padding-left: 0px;
         margin-right: auto;
         margin-left: auto;
     }
-    
-    td:hover {
-        position: relative;
-    }
 
-    td[title]:hover:after {
-        text-align: center;
-        content: attr(title);
-        padding: 4px 8px 0px 0px;
-        position: absolute;
-        left: 0;
-        top: 100%;
-        white-space: nowrap;
-        z-index: 1;
-        background: #0099cc;
-        color: #fff;
-    }
+
 </style>

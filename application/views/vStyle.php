@@ -186,4 +186,29 @@
         background: linear-gradient(to bottom, rgba(0,0,0,0.63) 0%,rgba(0,0,0,0.63) 1%,rgba(0,0,0,0) 53%,rgba(0,0,0,0.65) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a1000000', endColorstr='#a6000000',GradientType=0 ); /* IE6-9 */
     }
+
+
+    /*Submenu*/
+    /*//Copy this css*/
+    .navbar-light .navbar-nav .nav-link {
+        color: rgb(64, 64, 64);
+    }
+    .btco-menu li > a {
+        padding: 10px 15px;
+        color: #000;
+
+    }
+
+    .btco-menu .active a:focus,
+    .btco-menu li a:focus ,
+    .navbar > .show > a:focus{
+        background: transparent;
+        outline: 0;
+    }
+
+
+    .dropdown-menu .show > .dropdown-toggle::after{
+        transform: rotate(-90deg);
+    }
+
 </style>

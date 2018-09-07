@@ -112,9 +112,7 @@
 <div class="card m-3 d-none animated fadeIn" id="pnlDatosDetalle">
 
     <div class="card-body text-dark">
-        <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
-            <i class="fa fa-save"></i>
-        </button>
+
         <div class="row">
             <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
                 <label for="Maquila" >Articulo*</label>
@@ -152,6 +150,9 @@
                 </table>
             </div>
         </div>
+        <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
+            <i class="fa fa-save"></i>
+        </button>
     </div>
 </div>
 <script>
