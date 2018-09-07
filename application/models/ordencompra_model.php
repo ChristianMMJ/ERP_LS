@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class articulos_model extends CI_Model {
+class ordencompra_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
@@ -12,39 +12,19 @@ class articulos_model extends CI_Model {
 
     public function getRecords() {
         try {
-            return $this->db->select("A.ID AS ID, A.Clave AS Clave, "
-                                    . "A.Descripcion AS Descripcion "
+            return $this->db->select("A.ID AS ID, A.Folio AS Folio, "
+                                    . "A.FechaOrden AS Fecha "
                                     . "", false)
-                            ->from("Articulos AS A")
+                            ->from("ordencompra AS A")
                             ->where('A.Estatus', 'ACTIVO')->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getArticuloByID($ID) {
+    public function getOrdenCompraByID($ID) {
         try {
-            return $this->db->select("A.*", false)->from("Articulos AS A")->where('A.ID', $ID)->get()->result();
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function getPrimerMaquilaPrecio($Clave) {
-        try {
-            return $this->db->select("PM.Precio AS PRECIO", false)->from('preciosmaquilas AS PM')
-                            ->where('PM.Articulo', $Clave)->order_by('PM.ID', 'ASC')->limit(1)->get()->result();
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function getMaquilasXArticulo($Articulo) {
-        try {
-            return $this->db->select("PM.ID as ID ,PM.Maquila  AS Maquila", false)
-                            ->from("preciosmaquilas AS PM")
-                            ->where('PM.Articulo', $Articulo)
-                            ->get()->result();
+            return $this->db->select("A.*", false)->from("ordencompra AS A")->where('A.ID', $ID)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -82,25 +62,7 @@ class articulos_model extends CI_Model {
 
     public function getID() {
         try {
-            return $this->db->select("CONVERT(A.Clave, UNSIGNED INTEGER) AS CLAVE")->from("Articulos AS A")->where("A.Estatus", "ACTIVO")->order_by("CLAVE", "DESC")->limit(1)->get()->result();
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function getGrupos() {
-        try {
-            return $this->db->select("G.Clave AS ID, CONCAT(G.Clave,' - ',  IFNULL(G.Nombre,'')) AS Grupo", false)
-                            ->from("grupos AS G")->get()->result();
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function getUnidades() {
-        try {
-            return $this->db->select("U.Clave AS ID, CONCAT(U.Clave,' - ', IFNULL(U.Descripcion,'')) AS Unidad", false)
-                            ->from("unidades AS U")->get()->result();
+            return $this->db->select("CONVERT(A.Folio, UNSIGNED INTEGER) AS CLAVE")->from("ordencompra AS A")->where("A.Estatus", "ACTIVO")->order_by("CLAVE", "DESC")->limit(1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

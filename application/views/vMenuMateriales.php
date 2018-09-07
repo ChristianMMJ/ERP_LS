@@ -23,23 +23,25 @@
 
 
             </li>
-            <li class="nav-item dropdown">
-                <a class="btn btn-primary dropdown-toggle" href="#" id="navOrdCompra" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fa fa-file-invoice"></span>  Ordenes de Compra
-                </a>
-                <div class="dropdown-menu dropdown-menu" aria-labelledby="navOrdCompra">
-                    <a class="dropdown-item" href="#"> Captura O.C.</a>
-                </div>
-            </li>
 
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navCaptura" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fas fa-pencil-alt"></span>  Capturas
+                    <span class="fas fa-pencil-alt"></span> Capturas
                 </a>
-                <div class="dropdown-menu dropdown-menu" aria-labelledby="navCaptura">
-                    <a class="dropdown-item" href="#"> Grupos</a>
-                </div>
+                <ul class="dropdown-menu" aria-labelledby="navCaptura">
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#">Orden de Compra</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="<?php print base_url('OrdenCompra.shoes'); ?>">Orden Compra de Piel Forro Peletería Planta</a>
+                            <a class="dropdown-item" href="#">Orden de Compra Suela Mezclada</a>
+                            <a class="dropdown-item" href="#">Orden de Compra Suela sin Mezclar</a>
+                        </div>
+                    </li>
+                    <a class="dropdown-item" href="#">Documentos Directos</a>
+                </ul>
             </li>
+
+
 
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navReportes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

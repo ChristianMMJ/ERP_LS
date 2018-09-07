@@ -1,6 +1,11 @@
 <style>
 
-
+    .selectize-input {
+        border: 1px solid #9E9E9E;
+    }
+    .form-control {
+        border: 1px solid #9E9E9E;
+    }
     /*Hacer disbaled de selectize igual a bootstrap*/
     .selectize-control .selectize-input.disabled {
         background-color: #ecf0f1;
@@ -170,15 +175,15 @@
     label{
         font-weight: bold;
     }
-    
+
     .swal-modal{
         box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)!important;
     }
-    .swal-overlay { 
+    .swal-overlay {
         /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0.63+1,0+53,0.65+100 */
         background: -moz-linear-gradient(top, rgba(0,0,0,0.63) 0%, rgba(0,0,0,0.63) 1%, rgba(0,0,0,0) 53%, rgba(0,0,0,0.65) 100%); /* FF3.6-15 */
         background: -webkit-linear-gradient(top, rgba(0,0,0,0.63) 0%,rgba(0,0,0,0.63) 1%,rgba(0,0,0,0) 53%,rgba(0,0,0,0.65) 100%); /* Chrome10-25,Safari5.1-6 */
         background: linear-gradient(to bottom, rgba(0,0,0,0.63) 0%,rgba(0,0,0,0.63) 1%,rgba(0,0,0,0) 53%,rgba(0,0,0,0.65) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a1000000', endColorstr='#a6000000',GradientType=0 ); /* IE6-9 */
-    } 
+    }
 </style>
