@@ -293,32 +293,35 @@
             if (temp > 0) {
                 //HoldOn.open({  message: 'Espere...', theme: 'sk-cube'});
                 $.post(master_url + 'onImprimirPedido', {ID: temp}).done(function (data) {
-                    console.log(data);
-
-                    $.fancybox.open({
-                        src: data,
-                        type: 'iframe',
-                        opts: {
-                            afterShow: function (instance, current) {
-                                console.info('done!');
-                            },
-                            iframe: {
-                                // Iframe template
-                                tpl: '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen allowtransparency="true" src=""></iframe>',
-                                preload: true,
-                                // Custom CSS styling for iframe wrapping element
-                                // You can use this to set custom iframe dimensions
-                                css: {
-                                    width: "85%",
-                                    height: "85%"
+                    console.log(isMobile);
+                    if (isMobile) {
+                        window.open(data, '_blank');
+                    } else {
+                        $.fancybox.open({
+                            src: data,
+                            type: 'iframe',
+                            opts: {
+                                afterShow: function (instance, current) {
+                                    console.info('done!');
                                 },
-                                // Iframe tag attributes
-                                attr: {
-                                    scrolling: "auto"
+                                iframe: {
+                                    // Iframe template
+                                    tpl: '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen allowtransparency="true" src=""></iframe>',
+                                    preload: true,
+                                    // Custom CSS styling for iframe wrapping element
+                                    // You can use this to set custom iframe dimensions
+                                    css: {
+                                        width: "85%",
+                                        height: "85%"
+                                    },
+                                    // Iframe tag attributes
+                                    attr: {
+                                        scrolling: "auto"
+                                    }
                                 }
                             }
-                        }
-                    });
+                        });
+                    }
                 }).fail(function (x, y, z) {
                     console.log(x, y, z);
                 }).always(function () {

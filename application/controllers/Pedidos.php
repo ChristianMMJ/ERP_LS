@@ -312,7 +312,7 @@ class Pedidos extends CI_Controller {
             $pdf->SetFillColor(225, 225, 234);
             $pdf->SetY(27.5);
             $pdf->SetX($posi[0]);
-            $pdf->Cell(55, 3, "Estilo - Color", 1/* BORDE */, 0, 'L', 1);
+            $pdf->Cell(55, 3, "Estilo / Color", 1/* BORDE */, 0, 'C', 1);
             $pdf->SetX($posi[1]);
             $pdf->Cell(7, 3, "Maq", 1/* BORDE */, 0, 'L', 1);
             $pdf->SetX(67);

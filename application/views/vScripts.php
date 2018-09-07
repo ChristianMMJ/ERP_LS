@@ -57,6 +57,7 @@
 
 
     $(function () {
+        mobilecheck();
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-toggle="popover"]').popover();
         $('.numbersOnly').keypress(function (event) {
