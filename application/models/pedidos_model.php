@@ -58,7 +58,7 @@ class pedidos_model extends CI_Model {
                                     PD.C12, PD.C13, PD.C14, PD.C15, PD.C16, PD.C17, PD.C18, PD.C19, PD.C20, PD.C21, PD.C22, 
                                     'A' AS EstatusDetalle, PD.Recibido, C.ciudad AS Ciudad, CONCAT(E.Clave,' - ',E.Descripcion) AS Estado, C.RFC, C.TelPart AS Tel,
                                     S.Clave AS Serie, PD.Pares, CONCAT(C.Clave,'-',C.RazonS) AS ClienteT, C.Direccion AS Dir,C.CodigoPostal AS CP,
-                                    CONCAT(A.Clave, \" - \", A.Nombre) AS AgenteT, P.Observaciones AS Obs,
+                                    CONCAT(A.Clave, \" - \", A.Nombre) AS AgenteT, P.Observaciones AS Obs, T.Descripcion AS Transporte,
                                     S.T1, S.T2, S.T3, S.T4, S.T5, S.T6, S.T7, S.T8, S.T9, S.T10, S.T11, 
                                     S.T12, S.T13, S.T14, S.T15, S.T16, S.T17, S.T18, S.T19, S.T20, S.T21, S.T22", false)
                             ->from('pedidos AS P')
@@ -67,6 +67,7 @@ class pedidos_model extends CI_Model {
                             ->join('clientes AS C', 'P.Cliente = C.Clave')
                             ->join('estados AS E', 'C.Estado = E.Clave')
                             ->join('agentes AS A', 'P.Agente = A.Clave')
+                            ->join('transportes AS T', 'C.Transporte = T.Clave')
                             ->order_by('PD.ID', 'DESC')
                             ->where('P.ID', $ID)
                             ->get()->result();

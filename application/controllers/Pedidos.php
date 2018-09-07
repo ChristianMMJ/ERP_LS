@@ -294,6 +294,7 @@ class Pedidos extends CI_Controller {
             $pdf->setDireccion($Encabezado->Dir);
             $pdf->setCP($Encabezado->CP);
             $pdf->setAgente($Encabezado->AgenteT);
+            $pdf->setTrasp($Encabezado->Transporte);
 
             $pdf->AddPage();
             $pdf->SetAutoPageBreak(true, 10);

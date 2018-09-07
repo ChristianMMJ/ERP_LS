@@ -243,7 +243,14 @@ class PDF extends FPDF {
         $this->SetFont('Arial', 'B', 6.5);
         $this->SetFillColor(250, 250, 250);
         $this->SetX($pos[1]);
-        $this->Cell($anc[3], $alto_celda, utf8_decode($this->getObs()), 1/* BORDE */, 1, 'L');
+        $this->Cell($anc[3], $alto_celda, utf8_decode($this->getObs()), 1/* BORDE */, 0, 'L');
+
+        $this->SetFillColor(225, 225, 234);
+        $this->SetX($pos[5]);
+        $this->Cell($anc[0], $alto_celda, utf8_decode("Trans"), 1/* BORDE */, 0, 'L', 1);
+        $this->SetFillColor(250, 250, 250);
+        $this->SetX($pos[6]);
+        $this->Cell($anc[4], $alto_celda, utf8_decode($this->getTrasp()), 1/* BORDE */, 1, 'L');
 
         $this->SetY($base);
         $this->SetFont('Arial', 'B', 7);
