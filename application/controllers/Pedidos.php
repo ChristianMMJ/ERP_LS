@@ -323,9 +323,9 @@ class Pedidos extends CI_Controller {
             $pdf->Cell(10, 3, "Pares", 1/* BORDE */, 0, 'C', 1);
             $base_x = 93;
             $pdf->SetFont('Arial', 'B', 5.5);
+            $pdf->Cell(143, 3, "", 1/* BORDE */, 0, 'C', 1);
             for ($index = 1; $index <= 22; $index++) {
-                $pdf->SetX($base_x);
-                $pdf->Cell(6.5, 3, "CA$index", 1/* BORDE */, 0, 'C', 1);
+                $pdf->SetX($base_x); 
                 $base_x += 6.5;
             }
             $pdf->SetX($base_x);
@@ -380,7 +380,7 @@ class Pedidos extends CI_Controller {
                 for ($index = 1; $index <= 22; $index++) {
                     array_push($row_serie, $sv->{"T$index"});
                 }
-                array_push($row_serie, ''); 
+                array_push($row_serie, '');
                 $pdf->setFilled(true);
                 $pdf->setBorders(1);
                 $pdf->Row($row_serie);

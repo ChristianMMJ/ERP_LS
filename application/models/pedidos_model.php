@@ -79,6 +79,7 @@ class pedidos_model extends CI_Model {
 
     public function getSerieXPedido($ID) {
         try {
+            $this->db->query("set sql_mode=''");
             return $this->db->select("PD.ID as PDID, PD.Pedido,
                                     S.Clave AS Serie,
                                     S.T1, S.T2, S.T3, S.T4, S.T5, S.T6, S.T7, S.T8, S.T9, S.T10, 
