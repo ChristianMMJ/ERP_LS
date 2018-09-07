@@ -170,78 +170,104 @@ class PDF extends FPDF {
     function Header() {
         $this->Image('img/lsbck.png', /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30);
         $this->SetFont('Arial', 'B', 8.25);
+
+        $pos = array(65/* 0 */, 80/* 1 */, 145/* 2 */, 160/* 3 */, 40/* 4 */, 200/* 5 */, 215/* 6 */);
+        $anc = array(15/* 0 */, 65/* 1 */, 40/* 2 */, 120/* 3 */, 55/* 4 */);
+
         $base = 6;
         $alto_celda = 4;
         $this->SetY($base);
-        $this->SetX(35);
-        $this->Cell(110, $alto_celda, utf8_decode("CALZADO LOBO, S.A. DE C.V."), 0/* BORDE */, 1, 'L');
-        $this->SetY(9);
-        $this->SetX(35);
+        $this->SetX(40);
+        $this->Cell(110, $alto_celda, utf8_decode("CALZADO LOBO, S.A. DE C.V."), 0/* BORDE */, 0, 'L');
+        $this->SetX(85);
         $this->Cell(110, $alto_celda, utf8_decode("Rio Santiago No. 245 Col. San Miguel"), 0/* BORDE */, 1, 'L');
 
+        $base = $base + 4;
         $this->SetY($base);
-        $this->SetX(90);
+        $this->SetX($pos[4]);
         $this->SetFillColor(225, 225, 234);
-        $this->Cell(30, $alto_celda, utf8_decode("Pedido"), 1/* BORDE */, 1, 'C', 1);
+        $this->Cell(25, $alto_celda, utf8_decode("Pedido"), 1/* BORDE */, 1, 'C', 1);
         $this->SetFillColor(250, 250, 250);
-        $this->SetX(90);
-        $this->Cell(30, $alto_celda, utf8_decode($this->getPedido()), 1/* BORDE */, 1, 'C');
-         
-        $this->SetX(90);
-        $this->SetFillColor(225, 225, 234);
-        $this->Cell(30, $alto_celda, utf8_decode("Fe Ped. "), 1/* BORDE */, 1, 'C', 1);
-        $this->SetFillColor(250, 250, 250);
-        $this->SetX(90);
-        $this->Cell(30, $alto_celda, utf8_decode($this->getFecha()), 1/* BORDE */, 1, 'C');
+        $this->SetX($pos[4]);
+        $this->Cell(25, $alto_celda, utf8_decode($this->getPedido()), 1/* BORDE */, 1, 'C');
 
-        $this->SetFont('Arial', 'B', 7.5);
+        $this->SetX($pos[4]);
         $this->SetFillColor(225, 225, 234);
-        $this->SetY($base);
-        $this->SetX(120);
-        $this->Cell(15, $alto_celda, utf8_decode("Cliente"), 1/* BORDE */, 0, 'L', 1);
+        $this->Cell(25, $alto_celda, utf8_decode("Fe Ped. "), 1/* BORDE */, 1, 'C', 1);
         $this->SetFillColor(250, 250, 250);
-        $this->SetY($base);
-        $this->SetX(135);
-        $this->Cell(139.5, $alto_celda, utf8_decode($this->getCliente()), 1/* BORDE */, 1, 'L', 1);
+        $this->SetX($pos[4]);
+        $this->Cell(25, $alto_celda, utf8_decode($this->getFecha()), 1/* BORDE */, 1, 'C');
 
+        $this->SetFont('Arial', 'B', 7);
         $this->SetFillColor(225, 225, 234);
-        $this->SetX(120);
-        $this->Cell(15, $alto_celda, utf8_decode("Ciudad"), 1/* BORDE */, 0, 'L', 1);
+        $this->SetY($base);
+        $this->SetX($pos[0]);
+        $this->Cell($anc[0], $alto_celda, utf8_decode("Cliente"), 1/* BORDE */, 0, 'L', 1);
         $this->SetFillColor(250, 250, 250);
-        $this->SetX(135);
-        $this->Cell(65, $alto_celda, utf8_decode($this->getCiudad()), 1/* BORDE */, 0, 'L');
+        $this->SetY($base);
+        $this->SetX($pos[1]);
+        $this->Cell($anc[3], $alto_celda, utf8_decode($this->getCliente()), 1/* BORDE */, 1, 'L', 1);
 
         $this->SetFillColor(225, 225, 234);
-        $this->SetX(200);
-        $this->Cell(15, $alto_celda, utf8_decode("Estado"), 1/* BORDE */, 0, 'L', 1);
+        $this->SetX($pos[0]);
+        $this->Cell($anc[0], $alto_celda, utf8_decode("Ciudad"), 1/* BORDE */, 0, 'L', 1);
         $this->SetFillColor(250, 250, 250);
-        $this->SetX(215);
-        $this->Cell(59.5, $alto_celda, utf8_decode($this->getEstado()), 1/* BORDE */, 1, 'L');
- 
+        $this->SetX($pos[1]);
+        $this->Cell($anc[1], $alto_celda, utf8_decode($this->getCiudad()), 1/* BORDE */, 0, 'L');
+
         $this->SetFillColor(225, 225, 234);
-        $this->SetX(120);
-        $this->Cell(15, $alto_celda, utf8_decode("R.F.C"), 1/* BORDE */, 0, 'L', 1);
+        $this->SetX($pos[2]);
+        $this->Cell($anc[0], $alto_celda, utf8_decode("Estado"), 1/* BORDE */, 0, 'L', 1);
         $this->SetFillColor(250, 250, 250);
-        $this->SetX(135);
-        $this->Cell(92, $alto_celda, utf8_decode($this->getRFC()), 1/* BORDE */, 0, 'L');
- 
+        $this->SetX($pos[3]);
+        $this->Cell($anc[2], $alto_celda, utf8_decode($this->getEstado()), 1/* BORDE */, 1, 'L');
+
         $this->SetFillColor(225, 225, 234);
-        $this->SetX(200);
-        $this->Cell(15, $alto_celda, utf8_decode("Tel."), 1/* BORDE */, 0, 'L', 1);
+        $this->SetX($pos[0]);
+        $this->Cell($anc[0], $alto_celda, utf8_decode("R.F.C"), 1/* BORDE */, 0, 'L', 1);
         $this->SetFillColor(250, 250, 250);
-        $this->SetX(215);
-        $this->Cell(59.5, $alto_celda, utf8_decode($this->getTel()), 1/* BORDE */, 1, 'L');
-        
-        
-        
-        
- 
+        $this->SetX($pos[1]);
+        $this->Cell($anc[1], $alto_celda, utf8_decode($this->getRFC()), 1/* BORDE */, 0, 'L');
+
         $this->SetFillColor(225, 225, 234);
-        $this->SetX(120);
-        $this->Cell(15, $alto_celda, utf8_decode("Agente"), 1/* BORDE */, 0, 'L', 1);
+        $this->SetX($pos[2]);
+        $this->Cell($anc[0], $alto_celda, utf8_decode("Tel."), 1/* BORDE */, 0, 'L', 1);
         $this->SetFillColor(250, 250, 250);
-        $this->SetX(135);
-        $this->Cell(92, $alto_celda, utf8_decode($this->getAgente()), 1/* BORDE */, 1, 'L');
+        $this->SetX($pos[3]);
+        $this->Cell($anc[2], $alto_celda, utf8_decode($this->getTel()), 1/* BORDE */, 1, 'L');
+
+        $this->SetFont('Arial', 'B', 7);
+        $this->SetFillColor(225, 225, 234);
+        $this->SetX($pos[0]);
+        $this->Cell($anc[0], $alto_celda, utf8_decode("Obs."), 1/* BORDE */, 0, 'L', 1);
+        $this->SetFont('Arial', 'B', 6.5);
+        $this->SetFillColor(250, 250, 250);
+        $this->SetX($pos[1]);
+        $this->Cell($anc[3], $alto_celda, utf8_decode($this->getObs()), 1/* BORDE */, 1, 'L');
+
+        $this->SetY($base);
+        $this->SetFont('Arial', 'B', 7);
+        $this->SetFillColor(225, 225, 234);
+        $this->SetX($pos[5]);
+        $this->Cell($anc[0], $alto_celda, utf8_decode("Dirección"), 1/* BORDE */, 0, 'L', 1);
+        $this->SetY($base);
+        $this->SetFillColor(250, 250, 250);
+        $this->SetX($pos[6]);
+        $this->Cell($anc[4], $alto_celda, utf8_decode($this->getDireccion()), 1/* BORDE */, 1, 'L', 1);
+
+        $this->SetFillColor(225, 225, 234);
+        $this->SetX($pos[5]);
+        $this->Cell($anc[0], $alto_celda, utf8_decode("Agente"), 1/* BORDE */, 0, 'L', 1);
+        $this->SetFillColor(250, 250, 250);
+        $this->SetX($pos[6]);
+        $this->Cell($anc[4], $alto_celda, utf8_decode($this->getAgente()), 1/* BORDE */, 1, 'L');
+
+        $this->SetFillColor(225, 225, 234);
+        $this->SetX($pos[5]);
+        $this->Cell($anc[0], $alto_celda, utf8_decode("C.P"), 1/* BORDE */, 0, 'L', 1);
+        $this->SetFillColor(250, 250, 250);
+        $this->SetX($pos[6]);
+        $this->Cell($anc[4], $alto_celda, utf8_decode($this->getCP()), 1/* BORDE */, 1, 'L');
 
         $this->AliasNbPages('{totalPages}');
         // Go to 1.5 cm from bottom
@@ -252,13 +278,6 @@ class PDF extends FPDF {
         // Print centered page number
         $this->SetTextColor(0, 0, 0);
         $this->Cell(35, 3, utf8_decode('Pag. ' . $this->PageNo() . ' de {totalPages}'), 0, 0, 'R');
-
-        /* ENCABEZADO DETALLE TITULOS */
-        $anchos = array(15/* 0 */, 12/* 1 */, 103/* 2 */, 15/* 3 */, 20/* 4 */, 13/* 5 */, 19/* 6 */, 10/* 7 */, 17/* 8 */, 17/* 9 */, 29/* 10 */);
-        $aligns = array('L', 'L', 'L', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C');
-
-        $this->SetY(20);
-        $this->SetX(5);
     }
 
     function Footer() {
@@ -296,7 +315,7 @@ class PDF extends FPDF {
     }
 
     var $widths;
-    var $aligns;
+    var $aligns; 
 
     function SetWidths($w) {
         //Set the array of column widths
@@ -313,12 +332,39 @@ class PDF extends FPDF {
         $nb = 0;
         for ($i = 0; $i < count($data); $i++)
             $nb = max($nb, $this->NbLines($this->widths[$i], $data[$i]));
+        $h = 5 * $nb;
+        //Issue a page break first if needed
+        $this->CheckPageBreak($h);
+        //Draw the cells of the row
+        for ($i = 0; $i < count($data); $i++) {
+            $w = $this->widths[$i];
+            $a = isset($this->aligns[$i]) ? $this->aligns[$i] : 'L';
+            //Save the current position
+            $x = $this->GetX();
+            $y = $this->GetY();
+            //Draw the border
+            $this->Rect($x, $y, $w, $h);
+            //Print the text 
+            $this->SetFillColor(225, 225, 234);
+            $this->MultiCell($w, 5, $data[$i], $this->getBorders(), $a, $this->getFilled());
+            //Put the position to the right of the cell
+            $this->SetXY($x + $w, $y);
+        }
+        //Go to the next line
+        $this->Ln($h);
+    }
+
+    function RowNoBorder($data) {
+        //Calculate the height of the row
+        $nb = 0;
+        for ($i = 0; $i < count($data); $i++)
+            $nb = max($nb, $this->NbLines($this->widths[$i], $data[$i]));
         $h = 4 * $nb;
         //Issue a page break first if needed
         $this->CheckPageBreak($h);
 
         //Se pone para que depues de insertar una pagina establezca la posicion en X = 5
-        $this->SetX(5);
+        $this->SetX($this->x);
 
         //Draw the cells of the row
         for ($i = 0; $i < count($data); $i++) {
@@ -331,7 +377,8 @@ class PDF extends FPDF {
             //Draw the border
             //$this->Rect($x, $y, $w, $h);
             //Print the text
-            $this->MultiCell($w, 4, $data[$i], $this->getBorders(), $a, $this->getFilled());
+            $this->SetFillColor(225, 225, 234);
+            $this->MultiCell($w, 4, $data[$i], 0, $a, $this->getFilled());
             //Put the position to the right of the cell
             $this->SetXY($x + $w, $y);
         }

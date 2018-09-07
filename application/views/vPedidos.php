@@ -53,33 +53,33 @@
                         <div class="d-none">
                             <input type="text" id="ID" name="ID" class="form-control form-control-sm d-none" readonly="" >
                         </div>
-                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-2 col-xl-1">
                             <label for="Pedido" >Pedido*</label>
                             <input type="text" class="form-control form-control-sm numbersOnly" id="Clave" required="" placeholder="">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-4">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-4">
                             <label for="Cliente" >Cliente*</label> 
                             <select class="form-control form-control-sm" id="Cliente" name="Cliente" required="" placeholder="">
                             </select>
                         </div>
-                        <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-2">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
                             <label for="Agente" >Agente*</label>
                             <select class="form-control form-control-sm" id="Agente" name="Agente" required="" placeholder="">
                             </select>
                         </div>
-                        <div class="col-12 col-sm-6 col-md-6 col-lg-2 col-xl-1">
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-1">
                             <label for="FechaPedido" >Fecha Pedido*</label>
                             <input type="text" id="FechaPedido" name="FechaPedido" class="form-control form-control-sm date notEnter" required="">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-1">
                             <label for="FechaEntrega" >Fecha Entrega*</label>
                             <input type="text" id="FechaEntrega" name="FechaEntrega" class="form-control form-control-sm date notEnter">
                         </div>
-                        <div class="col-12 col-sm-6 col-md-6 col-lg-2 col-xl-1">
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-1">
                             <label for="FechaRecepcion" >Fecha Recepción*</label>
                             <input type="text" id="FechaRecepcion" name="FechaRecepcion" class="form-control form-control-sm date notEnter" required="">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-1">
                             <label for="Recibido" >Recibido*</label>
                             <select class="form-control form-control-sm" id="Recibido" name="Recibido" required placeholder="">
                                 <option></option>
@@ -89,6 +89,11 @@
                                 <option value="5">5 - Int</option>
                             </select>
                         </div>
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1 mt-4">
+                            <button type="button" class="btn btn-info " id="AgregaObservaciones" name="AgregaObservaciones" data-toggle="tooltip" data-placement="top" title="Agregar observaciones">
+                                <i class="fa fa-eye"></i> Obs.
+                            </span>
+                        </div>  
                     </div>  
                 </div>
             </div>
@@ -401,6 +406,7 @@
                 f.append('Cliente', Cliente);
                 f.append('Agente', pnlDatos.find("#Agente").val());
                 f.append('FechaPedido', pnlDatos.find("#FechaPedido").val());
+                f.append('Observacion', pnlDatos.find("#Observacion").val());
                 f.append('FechaRecepcion', pnlDatos.find("#FechaRecepcion").val());
                 if (!nuevo) {
                     var detalle = [];
@@ -865,9 +871,7 @@
             "bLengthChange": false,
             "deferRender": true,
             "bSort": true,
-            "aaSorting": [
-                [0, 'ASC']
-            ],
+            
             "createdRow": function (row, data, index) {
                 $(row).find("td").slice(4, 26).addClass("zoom");
             },
@@ -1032,8 +1036,6 @@
                             Maquila[0].selectize.clear(true);
                             Recio.val('');
                             Precio.val('');
-                            Titulo.val('');
-                            Observaciones.val('');
                             Estilo[0].selectize.clear(true);
                             agregado = 1;
                             console.log("\nAGREGADO: ", agregado);

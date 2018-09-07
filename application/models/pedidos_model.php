@@ -27,17 +27,21 @@ class pedidos_model extends CI_Model {
     public function getPedidosByID($ID) {
         try {
             return $this->db->select("PD.ID as PDID, P.Clave, P.Cliente, P.Agente, P.FechaPedido, P.FechaRecepcion, P.Usuario, P.Estatus, P.Registro, 
-                                    PD.Pedido, PD.Estilo,PD.EstiloT, PD.Color, PD.ColorT,PD.FechaEntrega, PD.Maquila, PD.Semana, PD.Ano, PD.Recio, PD.Precio, PD.Observacion, PD.ObservacionDetalle, PD.Serie, PD.Control,
-                                    PD.C1, PD.C2, PD.C3, PD.C4, PD.C5, PD.C6, PD.C7, PD.C8, PD.C9, PD.C10, PD.C11, PD.C12, PD.C13, PD.C14, PD.C15, PD.C16, PD.C17, PD.C18, PD.C19, PD.C20, PD.C21, PD.C22, 
+                                    PD.Pedido, PD.Estilo,PD.EstiloT, PD.Color, PD.ColorT,PD.FechaEntrega, PD.Maquila, PD.Semana, PD.Ano, PD.Recio, 
+                                    PD.Precio, PD.Observacion, PD.ObservacionDetalle, PD.Serie, PD.Control,
+                                    PD.C1, PD.C2, PD.C3, PD.C4, PD.C5, PD.C6, PD.C7, PD.C8, PD.C9, PD.C10, PD.C11, 
+                                    PD.C12, PD.C13, PD.C14, PD.C15, PD.C16, PD.C17, PD.C18, PD.C19, PD.C20, PD.C21, PD.C22, 
                                     'A' AS EstatusDetalle, PD.Recibido,
                                     S.Clave AS Serie, PD.Pares, CONCAT(C.Clave,'-',C.RazonS) AS ClienteT,
                                     CONCAT(A.Clave, \" - \", A.Nombre) AS AgenteT,
-                                    S.T1, S.T2, S.T3, S.T4, S.T5, S.T6, S.T7, S.T8, S.T9, S.T10, S.T11, S.T12, S.T13, S.T14, S.T15, S.T16, S.T17, S.T18, S.T19, S.T20, S.T21, S.T22", false)
+                                    S.T1, S.T2, S.T3, S.T4, S.T5, S.T6, S.T7, S.T8, S.T9, S.T10, S.T11, 
+                                    S.T12, S.T13, S.T14, S.T15, S.T16, S.T17, S.T18, S.T19, S.T20, S.T21, S.T22", false)
                             ->from('pedidos AS P')
                             ->join('pedidodetalle AS PD', 'P.Clave = PD.Pedido')
                             ->join('series AS S', 'PD.Serie = S.Clave')
                             ->join('clientes AS C', 'P.Cliente = C.Clave')
                             ->join('agentes AS A', 'P.Agente = A.Clave')
+                            ->order_by('S.Clave', 'ASC')
                             ->where('P.ID', $ID)
                             ->get()->result();
         } catch (Exception $exc) {
@@ -48,18 +52,44 @@ class pedidos_model extends CI_Model {
     public function getPedidoByID($ID) {
         try {
             return $this->db->select("PD.ID as PDID, P.Clave, P.Cliente, P.Agente, P.FechaPedido, P.FechaRecepcion, P.Usuario, P.Estatus, P.Registro, 
-                                    PD.Pedido, PD.Estilo,PD.EstiloT, PD.Color, PD.ColorT,PD.FechaEntrega, PD.Maquila, PD.Semana, PD.Ano, PD.Recio, PD.Precio, PD.Observacion, PD.ObservacionDetalle, PD.Serie, PD.Control,
-                                    PD.C1, PD.C2, PD.C3, PD.C4, PD.C5, PD.C6, PD.C7, PD.C8, PD.C9, PD.C10, PD.C11, PD.C12, PD.C13, PD.C14, PD.C15, PD.C16, PD.C17, PD.C18, PD.C19, PD.C20, PD.C21, PD.C22, 
-                                    'A' AS EstatusDetalle, PD.Recibido, C.ciudad AS Ciudad, E.Descripcion AS Estado, C.RFC, C.TelPart AS Tel,
-                                    S.Clave AS Serie, PD.Pares, CONCAT(C.Clave,'-',C.RazonS) AS ClienteT,
-                                    CONCAT(A.Clave, \" - \", A.Nombre) AS AgenteT,
-                                    S.T1, S.T2, S.T3, S.T4, S.T5, S.T6, S.T7, S.T8, S.T9, S.T10, S.T11, S.T12, S.T13, S.T14, S.T15, S.T16, S.T17, S.T18, S.T19, S.T20, S.T21, S.T22", false)
+                                    PD.Pedido, PD.Estilo,PD.EstiloT, PD.Color, PD.ColorT,PD.FechaEntrega, PD.Maquila, PD.Semana, PD.Ano, PD.Recio, PD.Precio, 
+                                    PD.Observacion, PD.ObservacionDetalle, PD.Serie, PD.Control,
+                                    PD.C1, PD.C2, PD.C3, PD.C4, PD.C5, PD.C6, PD.C7, PD.C8, PD.C9, PD.C10, PD.C11, 
+                                    PD.C12, PD.C13, PD.C14, PD.C15, PD.C16, PD.C17, PD.C18, PD.C19, PD.C20, PD.C21, PD.C22, 
+                                    'A' AS EstatusDetalle, PD.Recibido, C.ciudad AS Ciudad, CONCAT(E.Clave,' - ',E.Descripcion) AS Estado, C.RFC, C.TelPart AS Tel,
+                                    S.Clave AS Serie, PD.Pares, CONCAT(C.Clave,'-',C.RazonS) AS ClienteT, C.Direccion AS Dir,C.CodigoPostal AS CP,
+                                    CONCAT(A.Clave, \" - \", A.Nombre) AS AgenteT, P.Observaciones AS Obs,
+                                    S.T1, S.T2, S.T3, S.T4, S.T5, S.T6, S.T7, S.T8, S.T9, S.T10, S.T11, 
+                                    S.T12, S.T13, S.T14, S.T15, S.T16, S.T17, S.T18, S.T19, S.T20, S.T21, S.T22", false)
                             ->from('pedidos AS P')
                             ->join('pedidodetalle AS PD', 'P.Clave = PD.Pedido')
                             ->join('series AS S', 'PD.Serie = S.Clave')
                             ->join('clientes AS C', 'P.Cliente = C.Clave')
                             ->join('estados AS E', 'C.Estado = E.Clave')
                             ->join('agentes AS A', 'P.Agente = A.Clave')
+                            ->order_by('PD.ID', 'DESC')
+                            ->where('P.ID', $ID)
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getSerieXPedido($ID) {
+        try {
+            return $this->db->select("PD.ID as PDID, PD.Pedido,
+                                    S.Clave AS Serie,
+                                    S.T1, S.T2, S.T3, S.T4, S.T5, S.T6, S.T7, S.T8, S.T9, S.T10, 
+                                    S.T11, S.T12, S.T13, S.T14, S.T15, S.T16, S.T17, S.T18, S.T19, S.T20, 
+                                    S.T21, S.T22", false)
+                            ->from('pedidos AS P')
+                            ->join('pedidodetalle AS PD', 'P.Clave = PD.Pedido')
+                            ->join('series AS S', 'PD.Serie = S.Clave')
+                            ->join('clientes AS C', 'P.Cliente = C.Clave')
+                            ->join('estados AS E', 'C.Estado = E.Clave')
+                            ->join('agentes AS A', 'P.Agente = A.Clave')
+                            ->group_by(array('S.Clave'))
+                            ->order_by('S.Clave', 'ASC')
                             ->where('P.ID', $ID)
                             ->get()->result();
         } catch (Exception $exc) {
