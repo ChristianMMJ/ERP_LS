@@ -169,6 +169,7 @@ class Pedidos extends CI_Controller {
                     $data[$key] = ($v !== '') ? strtoupper($v) : NULL;
                 }
             }
+            unset($data["Observacion"]);
             $data["Observaciones"] = $x->post('Observacion');
             $data["Usuario"] = $_SESSION["USERNAME"];
             $data["Estatus"] = 'A';

@@ -92,7 +92,7 @@
                         <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1 mt-4">
                             <button type="button" class="btn btn-info " id="AgregaObservaciones" name="AgregaObservaciones" data-toggle="tooltip" data-placement="top" title="Agregar observaciones">
                                 <i class="fa fa-eye"></i> Obs.
-                            </span>
+                                </span>
                         </div>  
                     </div>  
                 </div>
@@ -199,15 +199,15 @@
             <div class="card  m-3 ">
                 <div class="card-body">
                     <div class="row">
-                        <table id="tblPedidoDetalle" class="table table-hover">
+                        <table id="tblPedidoDetalle" class="table table-hover display">
                             <thead>
                                 <tr>
                                     <th scope="col">ID</th><!--0-->
                                     <th scope="col">Recibido</th><!--1-->
-                                    <th scope="col">EstiloID</th><!--2-->
-                                    <th scope="col">Estilo</th><!--3-->
-                                    <th scope="col">ColorID</th><!--4-->
-                                    <th scope="col">Color</th><!--5-->
+                                    <th scope="col">Estilo</th><!--2-->
+                                    <th scope="col">EstiloT</th><!--3-->
+                                    <th scope="col">Color</th><!--4-->
+                                    <th scope="col">ColorT</th><!--5-->
                                     <th scope="col">Semana</th><!--6-->
                                     <th scope="col">Maquila</th><!--7-->
 
@@ -815,13 +815,13 @@
                 },
                 //ESTILO ID
                 {
-                    "targets": [2],
+                    "targets": [3],
                     "visible": false,
                     "searchable": false
                 },
                 //COLOR ID
                 {
-                    "targets": [4],
+                    "targets": [5],
                     "visible": false,
                     "searchable": false
                 },
@@ -866,13 +866,38 @@
             "autoWidth": true,
             "colReorder": true,
             "displayLength": 50,
-            "scrollY": 300,
-            "scrollX": false,
+            "scrollY": 500,
+            "scrollX": true,
             "bLengthChange": false,
             "deferRender": true,
             "bSort": true,
-            
+
             "createdRow": function (row, data, index) {
+                console.log(index,', Row', row);
+                console.log('Row data',data[3]/*Estilo*/, data[5]/*Color*/,);
+                $.each($(row).find("td"), function (k, v) {
+                    var c = $(v);
+                    var index = parseInt(k);
+                    switch (index) {
+                        case 0:
+                            /*ESTILO*/
+                            c.not(".Serie").attr('title', data[35]);
+                            c.addClass('Estilo');
+                            break;
+                        case 1:
+                            /*COLOR*/
+                            c.not(".Serie").attr('title', data[36]);
+                            c.addClass('Color');
+                            break;
+                        case 2:
+                            /*SEMANA*/
+                            c.addClass('Semana');
+                        case 3:
+                            /*Maquila*/
+                            c.addClass('Maquila');
+                            break;
+                    }
+                });
                 $(row).find("td").slice(4, 26).addClass("zoom");
             },
             "footerCallback": function (row, data, start, end, display) {
@@ -1164,7 +1189,7 @@
                     v.PDID, //ID 
                     v.Recibido, //Recibido 
                     v.Estilo, //EstiloID
-                    '<p class="text-nowrap">' + v.EstiloT + '</p>', //Estilo
+                    v.EstiloT, //Estilo
                     v.Color, //ColorID
                     v.ColorT,
                     v.Semana,
@@ -1320,5 +1345,21 @@
         margin-right: auto;
         margin-left: auto;
     }
+    
+    td:hover {
+        position: relative;
+    }
 
+    td[title]:hover:after {
+        text-align: center;
+        content: attr(title);
+        padding: 4px 8px 0px 0px;
+        position: absolute;
+        left: 0;
+        top: 100%;
+        white-space: nowrap;
+        z-index: 1;
+        background: #0099cc;
+        color: #fff;
+    }
 </style>

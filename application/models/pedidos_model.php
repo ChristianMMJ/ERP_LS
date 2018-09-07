@@ -12,6 +12,7 @@ class pedidos_model extends CI_Model {
 
     public function getRecords() {
         try {
+            $this->db->query("set sql_mode=''");
             return $this->db->select("P.ID, P.Clave, CONCAT(IFNULL(P.Cliente,''),' ', IFNULL(C.RazonS,'')) AS Cliente, A.Nombre Agente,P.FechaPedido, SUM(PD.Pares) AS Pares", false)
                             ->from('pedidos AS P')
                             ->join('pedidodetalle AS PD', 'P.Clave = PD.Pedido')
