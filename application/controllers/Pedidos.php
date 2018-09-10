@@ -543,6 +543,7 @@ class Pedidos extends CI_Controller {
             $pdf->setY(27.5);
             foreach ($Series as $sk => $sv) {
                 /* TALLAS */
+                $aligns[0] = 'C';
                 $pdf->SetFont('Arial', 'B', 6);
                 $pdf->SetX($posi[0]);
                 $pdf->SetAligns($aligns);
@@ -569,6 +570,7 @@ class Pedidos extends CI_Controller {
                 foreach ($Pedido as $k => $v) {
                     /* PRIMER DETALLE */
                     if ($sv->Serie === $v->Serie) {
+                        $aligns[0] = 'L';
                         $pdf->SetAligns($aligns);
                         $pdf->SetWidths($anchos);
                         $pdf->SetX($posi[0]);
@@ -605,9 +607,9 @@ class Pedidos extends CI_Controller {
                         $pdf->SetWidths(array(198.5, 72.5));
                         $pdf->SetX($posi[0]);
                         if (count($suelin) > 0) {
-                            array_push($suela, 'OBS. ' . $v->OBSTITULO . ", " . $v->OBSCONTENIDO, 'SUELA: ' . $suelin[0]->Suela); //3 
+                            array_push($suela, 'OBS. ' . $v->OBSTITULO . " | " . $v->OBSCONTENIDO, 'SUELA: ' . $suelin[0]->Suela); //3 
                         } else {
-                            array_push($suela, 'OBS. ' . $v->OBSTITULO . ", " . $v->OBSCONTENIDO, 'SUELA NO DISPONIBLE'); //3 
+                            array_push($suela, 'OBS. ' . $v->OBSTITULO . " | " . $v->OBSCONTENIDO, 'SUELA NO DISPONIBLE'); //3 
                         }
                         $pdf->SetFont('Arial', 'BI', 6);
                         $pdf->Row($suela);
@@ -635,6 +637,9 @@ class Pedidos extends CI_Controller {
             $path = 'uploads/Reportes/Pedidos';
             if (!file_exists($path)) {
                 mkdir($path, 0777, true);
+            }
+            if (delete_files('uploads/Reportes/Pedidos/')) {
+                /* ELIMINA LA EXISTENCIA DE CUALQUIER ARCHIVO EN EL DIRECTORIO */
             }
             $file_name = "Pedido $IDX " . date("d_m_Y_his");
             $url = $path . '/' . $file_name . '.pdf';

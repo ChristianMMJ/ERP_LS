@@ -224,6 +224,7 @@ class pedidos_model extends CI_Model {
 
     public function getEstilos() {
         try {
+            $this->db->query("set sql_mode=''");//FULL GROUP
             return $this->db->select("E.Clave AS Clave,CONCAT(E.Clave,'-',IFNULL(E.Descripcion,'')) AS Estilo")
                             ->from("Estilos AS E")
                             ->join('fichatecnica AS FT', 'FT.Estilo = E.Clave')

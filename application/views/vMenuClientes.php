@@ -69,20 +69,11 @@
             </li>
 
             <li class="nav-item dropdown">
-                <a class="btn btn-primary dropdown-toggle" href="#" id="navEstadisticas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fa fa-chart-line"></span> Estadísticas
-                </a>
-                <div class="dropdown-menu dropdown-menu" aria-labelledby="navEstadisticas">
-                    <a class="dropdown-item" href="#"> Prueba</a>
-                </div>
-            </li>
-
-            <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navUtilerias" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="fa fa-atlas"></span>   Utilerías
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navUtilerias">
-                    <a class="dropdown-item" href="#"> Prueba</a>
+                    <a class="dropdown-item" href="#"> Estadísticas</a>
                 </div>
             </li>
 

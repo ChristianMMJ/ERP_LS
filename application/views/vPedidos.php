@@ -331,7 +331,8 @@
             if (temp > 0) {
                 //HoldOn.open({  message: 'Espere...', theme: 'sk-cube'});
                 $.post(master_url + 'onImprimirPedidoReducido', {ID: temp}).done(function (data) {
-                    if (isMobile) {
+                    //check Apple device
+                    if (isAppleDevice() || isMobile) {
                         window.open(data, '_blank');
                     } else {
                         $.fancybox.open({
@@ -1273,6 +1274,14 @@
         mdlObservaciones.find("#ObservacionesX").val(pnlDatos.find("#Observacion").val());
         mdlObservaciones.find("#DescripcionObservacionesX").val(pnlDatos.find("#ObservacionDetalle").val());
         mdlObservaciones.modal('show');
+    }
+
+    function isAppleDevice() {
+        return (
+                (navigator.userAgent.toLowerCase().indexOf("ipad") > -1) ||
+                (navigator.userAgent.toLowerCase().indexOf("iphone") > -1) ||
+                (navigator.userAgent.toLowerCase().indexOf("ipod") > -1)
+                );
     }
 </script>
 <style>
