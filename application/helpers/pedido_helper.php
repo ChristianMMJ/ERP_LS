@@ -22,6 +22,15 @@ class PDF extends FPDF {
     public $CP = '';
     public $Colonia = '';
     public $Trasp = '';
+    public $Registro = '';
+
+    function getRegistro() {
+        return $this->Registro;
+    }
+
+    function setRegistro($Registro) {
+        $this->Registro = $Registro;
+    }
 
     function getCiudad() {
         return $this->Ciudad;
@@ -191,12 +200,22 @@ class PDF extends FPDF {
         $this->SetX($pos[4]);
         $this->Cell(25, $alto_celda, utf8_decode($this->getPedido()), 1/* BORDE */, 1, 'C');
 
+        $Y = $this->GetY();
+
+        $this->SetX($pos[4] - 30);
+        $this->SetFillColor(225, 225, 234);
+        $this->Cell(30, $alto_celda, utf8_decode("Fe Cap. "), 1/* BORDE */, 1, 'C', 1);
+        $this->SetFillColor(250, 250, 250);
+        $this->SetX($pos[4] - 30);
+        $this->Cell(30, $alto_celda, utf8_decode($this->getRegistro()), 1/* BORDE */, 1, 'C');
+
+        $this->SetY($Y);
         $this->SetX($pos[4]);
         $this->SetFillColor(225, 225, 234);
         $this->Cell(25, $alto_celda, utf8_decode("Fe Ped. "), 1/* BORDE */, 1, 'C', 1);
         $this->SetFillColor(250, 250, 250);
         $this->SetX($pos[4]);
-        $this->Cell(25, $alto_celda, utf8_decode($this->getFecha()), 1/* BORDE */, 1, 'C');
+        $this->Cell(25, $alto_celda, utf8_decode($this->getFecha()), 1/* BORDE */, 0, 'C');
 
         $this->SetFont('Arial', 'B', 7);
         $this->SetFillColor(225, 225, 234);

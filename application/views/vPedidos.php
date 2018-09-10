@@ -255,17 +255,50 @@
                         </table>
                     </div>
                     <div class="row mt-3">
-                        <div class="col-8 font-weight-bold" align="right">Pares</div>
-                        <div id="ParesTotales" class="col-1 font-weight-bold zoom"></div>
-                        <div class="col-1 font-weight-bold">Total</div>
-                        <div id="Total" class="col-1 font-weight-bold zoom"></div>
-                        <div class="col-1 font-weight-bold "></div>
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 font-weight-bold "></div>
+
+                        <div class="col-12 col-sm-12 col-md-3 col-lg-1 col-xl-1 font-weight-bold" align="center">Pares</div>
+                        <div id="ParesTotales" class="col-12 col-sm-12 col-md-3 col-lg-1 col-xl-1 font-weight-bold text-nowrap" align="center"></div>
+
+                        <div class="col-12 col-sm-12 col-md-3 col-lg-1 col-xl-1 font-weight-bold" align="center">Total</div>
+                        <div id="Total" class="col-12 col-sm-12 col-md-3 col-lg-1 col-xl-1 font-weight-bold text-nowrap" align="center"></div>
                     </div>
                 </div>
             </div>
         </fieldset>
     </form>
 </div>
+
+<div class="modal" id="mdlObservaciones">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Observaciones</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <label>Observacion</label>
+                        <textarea id="ObservacionesX" name="Observaciones" rows="4" cols="20" class="form-control">
+                        </textarea>
+                    </div>
+                    <div class="col-12">
+                        <label>Descripción</label>
+                        <textarea id="DescripcionObservacionesX" name="DescripcionObservaciones" rows="4" cols="20" class="form-control">
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer"> 
+                <button type="button" id="btnGuardarObs" class="btn btn-secondary" data-dismiss="modal">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     var master_url = base_url + 'index.php/Pedidos/';
     var tblPedidos = $('#tblPedidos');
@@ -275,11 +308,16 @@
     var PedidoDetalle, tblPedidoDetalle = pnlDatos.find("#tblPedidoDetalle");
     var nuevo = false;
     var _animate_ = {enter: 'animated fadeInLeft', exit: 'animated fadeOutDown'}, _placement_ = {from: "bottom", align: "left"};
-    var Cliente = '';
+    var Cliente = '', mdlObservaciones = $("#mdlObservaciones");
 
     $(document).ready(function () {
         init();
         handleEnter();
+
+        mdlObservaciones.find("#btnGuardarObs").click(function () {
+            pnlDatos.find("#Observacion").val(mdlObservaciones.find("#ObservacionesX").val());
+            pnlDatos.find("#ObservacionDetalle").val(mdlObservaciones.find("#DescripcionObservacionesX").val());
+        });
 
         pnlDatos.find("#AgregaObservaciones").click(function () {
             onAgregarObservaciones();
@@ -292,8 +330,7 @@
         btnImprimir.click(function () {
             if (temp > 0) {
                 //HoldOn.open({  message: 'Espere...', theme: 'sk-cube'});
-                $.post(master_url + 'onImprimirPedido', {ID: temp}).done(function (data) {
-                    console.log(isMobile);
+                $.post(master_url + 'onImprimirPedidoReducido', {ID: temp}).done(function (data) {
                     if (isMobile) {
                         window.open(data, '_blank');
                     } else {
@@ -311,8 +348,8 @@
                                     // Custom CSS styling for iframe wrapping element
                                     // You can use this to set custom iframe dimensions
                                     css: {
-                                        width: "85%",
-                                        height: "85%"
+                                        width: "100%",
+                                        height: "100%"
                                     },
                                     // Iframe tag attributes
                                     attr: {
@@ -350,19 +387,16 @@
         });
 
         pnlDatos.find("[name*='T']").change(function () {
-            console.log("T: ", $(this).val());
         });
 
         pnlDatos.find("#FechaEntrega").focusout(function () {
             //OBTENER ANOS DE ENTREGA
             $.getJSON(master_url + 'getAnosValidos').done(function (data) {
-                console.log('DTA: ', data);
                 var anos = data[0];
                 var fecha_valida = false;
                 var fe = pnlDatos.find("#FechaEntrega").val();
                 if (fe !== '') {
                     $.each(data, function (k, v) {
-                        console.log(k, ',', v);
                         if (fe.includes(v.Anos)) {
                             fecha_valida = true;
                             return false;
@@ -528,7 +562,6 @@
                     });
                     f.append('Detalle', JSON.stringify(detalle));
                     onSave('onAgregar', f, function (e) {
-                        console.log('onAgregar: ', e);
                         nuevo = false;
                         var dtm = JSON.parse(e);
                         getPedidoByID(dtm.ID);
@@ -595,7 +628,6 @@
             if ($(this).val() !== '' && nuevo) {
                 //OBTENER AGENTE POR CLIENTE
                 Cliente = pnlDatos.find("#Cliente").val();
-                console.log('this:', $(this).val(), ',', Cliente);
                 $.getJSON(master_url + 'getAgenteXCliente', {Cliente: Cliente}).done(function (data) {
                     if (data.length > 0) {
                         pnlDatos.find("#Agente")[0].selectize.clear(true);
@@ -656,10 +688,7 @@
                             }
                             indice += 1;
                         });
-                        //MOSTRAR FOTO
-                        console.log(data[0].Foto);
-                        //MOSTRAR FOTO
-                        console.log(data[0].Foto);
+                        //MOSTRAR FOTO 
                         if (dtm.Foto !== null && dtm.Foto !== undefined && dtm.Foto !== '') {
                             var ext = getExt(dtm.Foto);
                             if (ext === "gif" || ext === "jpg" || ext === "png" || ext === "jpeg") {
@@ -940,7 +969,6 @@
             processData: false,
             data: f
         }).done(function (data, x, jq) {
-            console.log('onSave: ', data);
             fu(data);
         }).fail(function (x, y, z) {
             console.log(x.responseText, y, z);
@@ -1059,7 +1087,6 @@
                             Precio.val('');
                             Estilo[0].selectize.clear(true);
                             agregado = 1;
-                            console.log("\nAGREGADO: ", agregado);
                             btnGuardar.trigger('click');
                         } else {
                             swal({
@@ -1135,7 +1162,6 @@
         added = false;
         if (PedidoDetalle.rows().count() > 0) {
             $.each(tblPedidoDetalle.find("tbody tr"), function () {
-                console.log($(this));
                 var tr = PedidoDetalle.row($(this)).data();
                 if (tr[2] === estilo && tr[4] === color) {
                     added = true;
@@ -1150,7 +1176,6 @@
     function getPedidoByID(temp) {
         PedidoDetalle.clear().draw();
         $.getJSON(master_url + 'getPedidosByID', {ID: temp}).done(function (data) {
-            console.log(data);
             pnlDatos.find("input").val("");
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
@@ -1216,7 +1241,6 @@
         });
     }
     function onReload() {
-        console.log(temp);
         PedidoDetalle.ajax.reload();
     }
 
@@ -1228,25 +1252,27 @@
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
-            console.log('OK');
         });
     }
 
     function onAgregarObservaciones() {
-        swal({
-            text: 'Observaciones',
-            content: "input",
-            button: {
-                text: "Aceptar",
-                closeModal: true
-            },
-            closeOnClickOutside: false,
-            closeOnEsc: false
-        }).then((Observaciones) => {
-            pnlDatos.find("#Observacion").val(Observaciones);
-            pnlDatos.find("#ObservacionDetalle").val(Observaciones);
-            pnlDatos.find("[name='C1']").focus();
-        });
+//        swal({
+//            text: 'Observaciones',
+//            content: "input",
+//            button: {
+//                text: "Aceptar",
+//                closeModal: true
+//            },
+//            closeOnClickOutside: false,
+//            closeOnEsc: false
+//        }).then((Observaciones) => {
+//            pnlDatos.find("#Observacion").val(Observaciones);
+//            pnlDatos.find("#ObservacionDetalle").val(Observaciones);
+//            pnlDatos.find("[name='C1']").focus();
+//        });
+        mdlObservaciones.find("#ObservacionesX").val(pnlDatos.find("#Observacion").val());
+        mdlObservaciones.find("#DescripcionObservacionesX").val(pnlDatos.find("#ObservacionDetalle").val());
+        mdlObservaciones.modal('show');
     }
 </script>
 <style>
