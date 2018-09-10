@@ -50,6 +50,20 @@ class pedidos_model extends CI_Model {
         }
     }
 
+    public function getSuelaByArticulo($Art) {
+        try {
+            return $this->db->select("A.Clave, A.Descripcion AS Suela", false)
+                            ->from('fichatecnica as FT')
+                            ->join('Articulos AS A', 'FT.Articulo = A.Clave')
+                            ->where('FT.Estilo', $Art)
+                            ->where('A.Grupo', 3)
+                            ->limit(1)
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getPedidoByID($ID) {
         try {
             return $this->db->select("PD.ID as PDID, P.Clave, P.Cliente, P.Agente, P.FechaPedido, P.FechaRecepcion, P.Usuario, P.Estatus, P.Registro, 

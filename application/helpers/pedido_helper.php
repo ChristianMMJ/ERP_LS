@@ -247,7 +247,7 @@ class PDF extends FPDF {
 
         $this->SetFillColor(225, 225, 234);
         $this->SetX($pos[5]);
-        $this->Cell($anc[0], $alto_celda, utf8_decode("Trans"), 1/* BORDE */, 0, 'L', 1);
+        $this->Cell($anc[0], $alto_celda, utf8_decode("Trans."), 1/* BORDE */, 0, 'L', 1);
         $this->SetFillColor(250, 250, 250);
         $this->SetX($pos[6]);
         $this->Cell($anc[4], $alto_celda, utf8_decode($this->getTrasp()), 1/* BORDE */, 1, 'L');
@@ -322,7 +322,16 @@ class PDF extends FPDF {
     }
 
     var $widths;
-    var $aligns; 
+    var $aligns;
+    var $alto = 5;
+
+    function getAlto() {
+        return $this->alto;
+    }
+
+    function setAlto($alto) {
+        $this->alto = $alto;
+    }
 
     function SetWidths($w) {
         //Set the array of column widths
@@ -339,7 +348,7 @@ class PDF extends FPDF {
         $nb = 0;
         for ($i = 0; $i < count($data); $i++)
             $nb = max($nb, $this->NbLines($this->widths[$i], $data[$i]));
-        $h = 5 * $nb;
+        $h = $this->getAlto() * $nb;
         //Issue a page break first if needed
         $this->CheckPageBreak($h);
         //Draw the cells of the row
@@ -353,7 +362,7 @@ class PDF extends FPDF {
             $this->Rect($x, $y, $w, $h);
             //Print the text 
             $this->SetFillColor(225, 225, 234);
-            $this->MultiCell($w, 5, $data[$i], $this->getBorders(), $a, $this->getFilled());
+            $this->MultiCell($w, $this->getAlto(), $data[$i], $this->getBorders(), $a, $this->getFilled());
             //Put the position to the right of the cell
             $this->SetXY($x + $w, $y);
         }

@@ -169,9 +169,10 @@
                     </div>
                 </div>
             </div>
-            <!--            SEGUNDO CONTENEDOR-->
+            <!--            SEGUNDA SECCION-->
             <div class="card m-3">
                 <div class="card-body">
+                    <legend>Datos para facturación electrónica</legend>
                     <div class="row">
                         <div class="col-12 col-sm-12 col-md-4 col-lg-3 col-xl-3">
                             <label for="" >Encargado de compras</label>
@@ -229,9 +230,35 @@
                             <label for="Observaciones" >Observaciones</label>
                             <input type="text" class="form-control form-control-sm" id="Observaciones" name="Observaciones" maxlength="99"  placeholder="" >
                         </div>
-
-
-                    </div>
+                    </div> 
+                </div>
+            </div>
+            <!--            TERCERA SECCION-->
+            <div class="card m-3">
+                <div class="card-body">
+                    <legend>Datos para complemento de pago</legend>
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <label for="CLABE" >CLABE*</label>
+                            <input type="text" class="form-control form-control-sm" id="CLABE" name="CLABE" maxlength="45"  placeholder="" required="">
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <label for="FormaDePagoElectronico" >Forma de pago*</label>
+                            <select class="form-control form-control-sm" id="FormaDePagoElectronico" name="FormaDePagoElectronico" placeholder="" required="">
+                                <option></option>
+                            </select>
+                        </div>  
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <label for="MetodoDePagosElectronicos" >Metodos de pagos electrónicos*</label>
+                            <select class="form-control form-control-sm" id="MetodoDePagosElectronicos" name="MetodoDePagosElectronicos" placeholder="" required="">
+                                <option></option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <label for="CorreoPagos" >Correo (pagos)*</label>
+                            <input type="text" class="form-control form-control-sm" id="CorreoPagos" name="CorreoPagos" maxlength="45"  placeholder="" required="">
+                        </div>
+                    </div>                      
                     <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
                         <i class="fa fa-save"></i>
                     </button>
@@ -373,6 +400,8 @@
         getOptions('getFormasDePago', 'FormaPago', 'Clave', 'FormaDePago');//FORMAS DE PAGO
         getOptions('getListasDePrecios', 'ListaPrecios', 'Clave', 'ListaPrecios');//LISTAS DE PRECIOS
         getOptions('getMetodosDePago', 'MetodoPago', 'Clave', 'Metodo de pago');//METODOS DE PAGO
+        getOptions('getMetodosDePago', 'MetodoDePagosElectronicos', 'Clave', 'Metodo de pago');//METODOS DE PAGOS ELECTRONICOS
+        getOptions('getFormasDePago', 'FormaDePagoElectronico', 'Clave', 'FormaDePago');//FORMAS DE PAGO ELECTRONICOS
     }
 
     function getRecords() {
@@ -487,6 +516,4 @@
             HoldOn.close();
         });
     }
-
-
 </script>

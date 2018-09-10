@@ -1180,6 +1180,7 @@
             //ASIGNAR DETALLE
             var tal = '<div class="row"><div class="col-12 text-danger text-nowrap talla" align="center">';
             var cnt = '</div><div class="col-12 cantidad" align="center">';
+            var close = '</div></div>';
             $.each(data, function (k, v) {
                 var dtm = [
                     v.PDID, //ID
@@ -1189,38 +1190,20 @@
                     v.Color, //ColorID
                     v.ColorT,
                     v.Semana,
-                    v.Maquila,
-                    tal + v.T1 + cnt + v.C1 + '</div></div>',
-                    tal + v.T2 + cnt + v.C2 + '</div></div>',
-                    tal + v.T3 + cnt + v.C3 + '</div></div>',
-                    tal + v.T4 + cnt + v.C4 + '</div></div>',
-                    tal + v.T5 + cnt + v.C5 + '</div></div>',
-                    tal + v.T6 + cnt + v.C6 + '</div></div>',
-                    tal + v.T7 + cnt + v.C7 + '</div></div>',
-                    tal + v.T8 + cnt + v.C8 + '</div></div>',
-                    tal + v.T9 + cnt + v.C9 + '</div></div>',
-                    tal + v.T10 + cnt + v.C10 + '</div></div>',
-                    tal + v.T11 + cnt + v.C11 + '</div></div>',
-                    tal + v.T12 + cnt + v.C12 + '</div></div>',
-                    tal + v.T13 + cnt + v.C13 + '</div></div>',
-                    tal + v.T14 + cnt + v.C14 + '</div></div>',
-                    tal + v.T15 + cnt + v.C15 + '</div></div>',
-                    tal + v.T16 + cnt + v.C16 + '</div></div>',
-                    tal + v.T17 + cnt + v.C17 + '</div></div>',
-                    tal + v.T18 + cnt + v.C18 + '</div></div>',
-                    tal + v.T19 + cnt + v.C19 + '</div></div>',
-                    tal + v.T20 + cnt + v.C20 + '</div></div>',
-                    tal + v.T21 + cnt + v.C21 + '</div></div>',
-                    tal + v.T22 + cnt + v.C22 + '</div></div>',
-                    v.Precio,
-                    v.Pares,
-                    v.FechaEntrega,
-                    '<button type="button" class="btn btn-danger" onclick="onEliminar(this,2)"><span class="fa fa-trash"></span></button>',
-                    v.Recio,
-                    v.Observacion,
-                    v.ObservacionDetalle,
-                    v.Serie,
-                    'A', (v.Pares * v.Precio)];
+                    v.Maquila];
+                for (var i = 1, max = 23; i < max; i++) {
+                    dtm.push(tal + (v["T" + i] !== '0' ? v["T" + i] : '-') + cnt + (v["C" + i] !== '0' ? v["C" + i] : '-') + close);
+                }
+                dtm.push(v.Precio);
+                dtm.push(v.Pares);
+                dtm.push(v.FechaEntrega);
+                dtm.push('<button type="button" class="btn btn-danger" onclick="onEliminar(this,2)"><span class="fa fa-trash"></span></button>');
+                dtm.push(v.Recio);
+                dtm.push(v.Observacion);
+                dtm.push(v.ObservacionDetalle);
+                dtm.push(v.Serie);
+                dtm.push('A');
+                dtm.push((v.Pares * v.Precio));
                 PedidoDetalle.row.add(dtm).draw(false);
             });
             pnlTablero.addClass("d-none");

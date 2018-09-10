@@ -325,7 +325,7 @@ class Pedidos extends CI_Controller {
             $pdf->SetFont('Arial', 'B', 5.5);
             $pdf->Cell(143, 3, "", 1/* BORDE */, 0, 'C', 1);
             for ($index = 1; $index <= 22; $index++) {
-                $pdf->SetX($base_x); 
+                $pdf->SetX($base_x);
                 $base_x += 6.5;
             }
             $pdf->SetX($base_x);
@@ -378,11 +378,12 @@ class Pedidos extends CI_Controller {
                 $row_serie = array();
                 array_push($row_serie, '');
                 for ($index = 1; $index <= 22; $index++) {
-                    array_push($row_serie, $sv->{"T$index"});
+                    array_push($row_serie, ($sv->{"T$index"} !== '0') ? $sv->{"T$index"} : '');
                 }
                 array_push($row_serie, '');
                 $pdf->setFilled(true);
                 $pdf->setBorders(1);
+                $pdf->setAlto(3);
                 $pdf->Row($row_serie);
                 $pdf->setFilled(false);
                 $pdf->setBorders(0);
@@ -395,36 +396,68 @@ class Pedidos extends CI_Controller {
                         $pdf->SetX($posi[0]);
                         $pdf->SetFont('Arial', '', 6);
                         $row = array();
-                        array_push($row, $v->EstiloT . "/" . $v->ColorT);
-                        array_push($row, $v->Maquila);
-                        array_push($row, $v->Semana);
-                        array_push($row, $v->Recio);
-                        array_push($row, $v->Pares);
+                        $estilo_color = $v->EstiloT . "/" . $v->ColorT;
+                        array_push($row, $estilo_color); //0
+                        array_push($row, $v->Maquila); //1
+                        array_push($row, $v->Semana); //2
+                        array_push($row, $v->Recio); //3
+                        array_push($row, $v->Pares); //4
                         for ($index = 1; $index <= 22; $index++) {
-                            array_push($row, $v->{"C$index"});
+                            array_push($row, ( $v->{"C$index"} !== '0') ? $v->{"C$index"} : ''); //5
                         }
-                        array_push($row, number_format($v->Precio, 3, ".", ",")); //PRECIO
-                        array_push($row, number_format(($v->Pares * $v->Precio), 3, ".", ",")); //TOTAL
-                        array_push($row, $v->FechaEntrega); //ENTREGA
+                        array_push($row, number_format($v->Precio, 3, ".", ",")); //PRECIO 6
+                        $precio = ($v->Pares * $v->Precio);
+                        if (strlen($precio) >= 12) {
+                            $pdf->SetFont('Arial', '', 3.5);
+                        } else {
+                            $pdf->SetFont('Arial', '', 6);
+                        }
+                        array_push($row, number_format($precio, 3, ".", ",")); //TOTAL 7
+                        array_push($row, $v->FechaEntrega); //ENTREGA 8
+                        if (strlen($estilo_color) >= 40) {
+                            $pdf->setAlto(3.5);
+                        } else {
+                            $pdf->setAlto(4.5);
+                        }
                         $pdf->Row($row);
                         $pares_totales += $v->Pares;
                         $total_final += ($v->Pares * $v->Precio);
                         /* FIN PRIMER DETALLE */
 
-                        /* SEGUNDO DETALLE */
+                        /* SEGUNDO DETALLE (SUELA) */
+                        $suela = array();
+                        $suelin = $this->pedidos_model->getSuelaByArticulo($v->Estilo);
+                        $pdf->SetAligns(array('R', 'L', 'L', 'L'));
+                        $pdf->SetWidths(array(271));
+                        $pdf->SetX($posi[0]);
+                        if (count($suelin) > 0) {
+                            array_push($suela, 'SUELA: ' . $suelin[0]->Suela); //3 
+                        } else {
+                            array_push($suela, 'Suela No disponible'); //3 
+                        }
+                        $pdf->SetFont('Arial', 'BI', 6);
+                        $pdf->Row($suela);
 
-                        /* SEGUNDO DETALLE */
+
+                        /* SEGUNDO DETALLE (SUELA) */
                     }
                 }
             }
             /* TOTALES */
-            $pdf->SetX(5);
+            $Y = $pdf->GetY();
+            $pdf->SetX(46);
             $pdf->SetFont('Arial', 'BI', 7);
-            $anchos = array(55/* 0 */, 23/* 0 */, 10/* 0 */, 143/* 1 */, 10/* 2 */, 30/* 3 */, 10/* 3 */);
-            $aligns = array('R', 'C', 'C', 'R', 'L', 'L');
+            $aligns = array('C', 'C');
             $pdf->SetAligns($aligns);
-            $pdf->SetWidths($anchos);
-            $pdf->Row(array("", "Pares x pedido", $pares_totales, "", "Total", "$" . number_format($total_final, 3, ".", ",")));
+            $pdf->SetWidths(array(15, 32));
+            $pdf->setFilled(true);
+            $pdf->setBorders(1);
+            $pdf->Row(array("PARES", $pares_totales));
+            $pdf->SetY($Y);
+            $pdf->SetX(231);
+            $pdf->SetAligns($aligns);
+            $pdf->SetWidths(array(15, 30));
+            $pdf->Row(array("TOTAL", "$" . number_format($total_final, 3, ".", ",")));
 
             /* FIN RESUMEN */
             $path = 'uploads/Reportes/Pedidos';
