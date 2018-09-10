@@ -29,8 +29,7 @@
 
     /*No edición en controles*/
     .disabledForms {
-        opacity: 0.8;
-        background-color: #d6d6d6;
+        background-color: #ecf0f1;
         pointer-events: none;
     }
     /*Fondo aplicacion*/
@@ -153,12 +152,12 @@
     .btn-float{
         width: 61.1px;
         height: 61.1px;
-        font-size: 1.625rem;
+        /*        font-size: 1.625rem;*/
         position: fixed;
         bottom: 35px;
         right: 30px;
         margin-bottom: 0;
-        z-index: 99999 ;
+        z-index: 9999 !important;
         border-radius: 50%;
         min-width: 56px;
     }

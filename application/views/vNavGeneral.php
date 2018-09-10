@@ -154,99 +154,44 @@
     <ul class="list-unstyled components">
         <li class="item">
             <a  href="<?php print base_url('MenuProveedores.shoes') ?>">
-                <div class="row pl-2">
-                    <div class="col-2">
-                        <i class="fa fa-user-secret"></i>
-                    </div>
-                    <div class="col-10">
-                        Proveedores
-                    </div>
-                </div>
+                <i class="fa fa-user-secret" style="width: 45px;"></i>Proveedores
             </a>
         </li>
         <li class="item">
             <a href="<?php print base_url('MenuMateriales.shoes') ?>">
-                <div class="row pl-2">
-                    <div class="col-2">
-                        <i class="fa fa-cube"></i>
-                    </div>
-                    <div class="col-10">
-                        Materiales
-                    </div>
-                </div>
+                <i class="fa fa-cube" style="width: 45px;"></i>Materiales
             </a>
         </li>
         <li class="item">
             <a href="<?php print base_url('MenuClientes.shoes') ?>">
-                <div class="row pl-2">
-                    <div class="col-2">
-                        <i class="fa fa-users"></i>
-                    </div>
-                    <div class="col-10">
-                        Clientes
-                    </div>
-                </div>
+                <i class="fa fa-users" style="width: 45px;"></i>Clientes
             </a>
         </li>
 
         <li class="item">
             <a href="<?php print base_url('MenuFichasTecnicas.shoes') ?>">
-                <div class="row pl-2">
-                    <div class="col-2">
-                        <i class="fa fa-file-invoice"></i>
-                    </div>
-                    <div class="col-10">
-                        Fichas Técnicas
-                    </div>
-                </div>
+                <i class="fa fa-file-invoice" style="width: 45px;"></i>Fichas Técnicas
             </a>
         </li>
         <li class="item">
             <a href="<?php print base_url('MenuProduccion.shoes') ?>">
-                <div class="row pl-2">
-                    <div class="col-2">
-                        <i class="fa fa-industry"></i>
-                    </div>
-                    <div class="col-10">
-                        Producción
-                    </div>
-                </div>
+                <i class="fa fa-industry" style="width: 45px;"></i>Producción
             </a>
         </li>
         <li class="item">
             <a href="<?php print base_url('MenuContabilidad.shoes') ?>">
-                <div class="row pl-2">
-                    <div class="col-2">
-                        <i class="fa fa-calculator"></i>
-                    </div>
-                    <div class="col-10">
-                        Contabilidad
-                    </div>
+                <i class="fa fa-calculator" style="width: 45px;"></i>Contabilidad
                 </div>
             </a>
         </li>
         <li class="item">
             <a href="<?php print base_url('MenuNomina.shoes') ?>">
-                <div class="row pl-2">
-                    <div class="col-2">
-                        <i class="fas fa-hand-holding-usd"></i>
-                    </div>
-                    <div class="col-10">
-                        Nóminas
-                    </div>
-                </div>
+                <i class="fas fa-hand-holding-usd" style="width: 45px;"></i>Nóminas
             </a>
         </li>
         <li class="item">
             <a href="<?php print base_url('MenuParametros.shoes') ?>">
-                <div class="row pl-2">
-                    <div class="col-2">
-                        <i class="fa fa-cogs"></i>
-                    </div>
-                    <div class="col-10">
-                        Parámetros
-                    </div>
-                </div>
+                <i class="fa fa-cogs" style="width: 45px;"></i>Parámetros
             </a>
         </li>
 

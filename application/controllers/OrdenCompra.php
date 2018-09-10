@@ -55,9 +55,17 @@ class OrdenCompra extends CI_Controller {
         }
     }
 
-    public function getDetalleByID() {
+    public function getPrecioCompraByArticuloByProveedor() {
         try {
-            print json_encode($this->ordencompra_model->getDetalleByID($this->input->get('ID')));
+            print json_encode($this->ordencompra_model->getPrecioCompraByArticuloByProveedor($this->input->get('Articulo'), $this->input->get('Proveedor')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getArticuloByDeptoByProveedor() {
+        try {
+            print json_encode($this->ordencompra_model->getArticuloByDeptoByProveedor($this->input->get('Departamento'), $this->input->get('Proveedor')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -79,9 +87,25 @@ class OrdenCompra extends CI_Controller {
         }
     }
 
-    public function getID() {
+    public function onComprobarSemanasProduccion() {
         try {
-            print json_encode($this->ordencompra_model->getID());
+            print json_encode($this->ordencompra_model->onComprobarSemanasProduccion($this->input->get('Clave'), $this->input->get('Ano')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onComprobarMaquilas() {
+        try {
+            print json_encode($this->ordencompra_model->onComprobarMaquilas($this->input->get('Clave')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getFolio() {
+        try {
+            print json_encode($this->ordencompra_model->getFolio($this->input->get('tp')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -91,35 +115,22 @@ class OrdenCompra extends CI_Controller {
         try {
             $x = $this->input;
             $datos = array(
-                'Clave' => $x->post('Clave'),
-                'Departamento' => $x->post('Departamento'),
-                'Descripcion' => $x->post('Descripcion'),
-                'Grupo' => $x->post('Grupo'),
-                'UnidadMedida' => $x->post('UnidadMedida'),
-                'Tmnda' => $x->post('Tmnda'),
-                'Min' => $x->post('Min'),
-                'Max' => $x->post('Max'),
-                'ProveedorUno' => $x->post('ProveedorUno'),
-                'ProveedorDos' => $x->post('ProveedorDos'),
-                'ProveedorTres' => $x->post('ProveedorTres'),
+                'Tp' => $x->post('Tp'),
+                'Proveedor' => $x->post('Proveedor'),
+                'Tipo' => $x->post('Tipo'),
+                'Folio' => $x->post('Folio'),
+                'FechaOrden' => $x->post('FechaOrden'),
+                'FechaCaptura' => Date('d/m/Y'),
+                'FechaEntrega' => $x->post('FechaEntrega'),
+                'ConsignarA' => $x->post('ConsignarA'),
+                'Sem' => $x->post('Sem'),
+                'Maq' => $x->post('Maq'),
+                'Ano' => $x->post('Ano'),
                 'Observaciones' => $x->post('Observaciones'),
-                'UbicacionUno' => $x->post('UbicacionUno'),
-                'UbicacionDos' => $x->post('UbicacionDos'),
-                'UbicacionTres' => $x->post('UbicacionTres'),
-                'UbicacionCuatro' => $x->post('UbicacionCuatro'),
-                'TipoArticulo' => $x->post('TipoArticulo'),
                 'Estatus' => 'ACTIVO',
-                'PrecioUno' => $x->post('PrecioUno'),
-                'PrecioDos' => $x->post('PrecioDos'),
-                'PrecioTres' => $x->post('PrecioTres')
+                'Usuario' => $this->session->userdata('ID')
             );
             $ID = $this->ordencompra_model->onAgregar($datos);
-
-            $precios = json_decode($this->input->post('Precios'));
-            foreach ($precios as $k => $v) {
-                $precio = array('Articulo' => $ID, 'Maquila' => $v->Maquila, 'Precio' => $v->Precio, 'Estatus' => 'ACTIVO');
-                $this->db->insert('preciosmaquilas', $precio);
-            }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -129,32 +140,9 @@ class OrdenCompra extends CI_Controller {
         try {
             $x = $this->input;
             $datos = array(
-                'Departamento' => $x->post('Departamento'),
-                'Descripcion' => $x->post('Descripcion'), /* REQUIERE PERMISO */
-                'Grupo' => $x->post('Grupo'),
-                'Tmnda' => $x->post('Tmnda'),
-                'Min' => $x->post('Min'),
-                'Max' => $x->post('Max'),
-                'ProveedorUno' => $x->post('ProveedorUno'),
-                'ProveedorDos' => $x->post('ProveedorDos'),
-                'ProveedorTres' => $x->post('ProveedorTres'),
-                'Observaciones' => $x->post('Observaciones'),
-                'UbicacionUno' => $x->post('UbicacionUno'),
-                'UbicacionDos' => $x->post('UbicacionDos'),
-                'UbicacionTres' => $x->post('UbicacionTres'),
-                'UbicacionCuatro' => $x->post('UbicacionCuatro'),
-                'TipoArticulo' => $x->post('TipoArticulo')
+                'Estatus' => $x->post('Estatus'),
             );
             $this->ordencompra_model->onModificar($x->post('ID'), $datos);
-
-            $precios = json_decode($this->input->post('Precios'));
-            foreach ($precios as $k => $v) {
-                $precio = array(
-                    'Articulo' => $x->post('Clave'),
-                    'Maquila' => $v->Maquila,
-                    'Precio' => $v->Precio, 'Estatus' => 'A');
-                $this->db->insert('preciosmaquilas', $precio);
-            }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -163,6 +151,16 @@ class OrdenCompra extends CI_Controller {
     public function onEliminar() {
         try {
             $this->ordencompra_model->onEliminar($this->input->post('ID'));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    /* DETALLE */
+
+    public function getDetalleByID() {
+        try {
+            print json_encode($this->ordencompra_model->getDetalleByID($this->input->post('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
