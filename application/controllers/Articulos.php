@@ -9,7 +9,7 @@ class Articulos extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('articulos_model');
+        $this->load->library('session')->model('articulos_model')->model('articulos10_model');
     }
 
     public function index() {
@@ -149,6 +149,7 @@ class Articulos extends CI_Controller {
                 'PrecioTres' => $x->post('PrecioTres')
             );
             $ID = $this->articulos_model->onAgregar($datos);
+            $this->articulos10_model->onAgregar($datos);
 
             $precios = json_decode($this->input->post('Precios'));
             foreach ($precios as $k => $v) {
@@ -181,6 +182,7 @@ class Articulos extends CI_Controller {
                 'TipoArticulo' => $x->post('TipoArticulo')
             );
             $this->articulos_model->onModificar($x->post('ID'), $datos);
+            $this->articulos10_model->onModificar($x->post('ID'), $datos);
 
             $precios = json_decode($this->input->post('Precios'));
             foreach ($precios as $k => $v) {

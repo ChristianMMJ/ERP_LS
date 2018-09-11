@@ -49,7 +49,7 @@ class ordencompra_model extends CI_Model {
     public function getFolio($tp) {
         try {
             return $this->db->select("CONVERT(A.Folio, UNSIGNED INTEGER) AS Folio")->from("ordencompra AS A")
-                            ->where("A.Estatus", "ACTIVO")
+//                            ->where_in("A.Estatus", array("ACTIVO", "CERRADA"))
                             ->where("A.Tp", $tp)
                             ->order_by("Folio", "DESC")
                             ->limit(1)
@@ -70,6 +70,26 @@ class ordencompra_model extends CI_Model {
                             . " ", false)
                     ->from("articulos AS A")
                     ->where('A.Clave', $Articulo);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getPorcentajesCompraByProveedor($Proveedor) {
+        try {
+            $this->db->select("P.PorcentajeComprasPorPedidoF PorFactura , "
+                            . "PorcentajeComprasPorPedidoR PorRemision "
+                            . " ", false)
+                    ->from("proveedores AS P")
+                    ->where('P.Clave', $Proveedor);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -164,6 +184,25 @@ class ordencompra_model extends CI_Model {
 
     /* DETALLE */
 
+    public function getDetalleParaSepararByID($ID) {
+        try {
+            $this->db->select('OCD.ID, OCD.Articulo, OCD.Cantidad, OCD.Precio, OCD.Subtotal '
+                    . '', false);
+            $this->db->from('ordencompradetalle AS OCD')
+                    ->where('OCD.OrdenCompra', $ID);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getDetalleByID($ID) {
         try {
             $this->db->select('OCD.ID,'
@@ -202,6 +241,14 @@ class ordencompra_model extends CI_Model {
         }
     }
 
+    public function onModificarDetalle($ID, $DATA) {
+        try {
+            $this->db->where('ID', $ID)->update("ordencompradetalle", $DATA);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     /* REPORTES */
 
     public function getDatosEmpresa() {
@@ -226,9 +273,11 @@ class ordencompra_model extends CI_Model {
         }
     }
 
-    public function getReporteOrdenCompra($ID, $TP) {
+    public function getReporteOrdenCompra($ID) {
         try {
-            $this->db->select('OC.Folio,'
+            $this->db->select(''
+                    . 'OC.Tp,'
+                    . 'OC.Folio,'
                     . 'OC.FechaOrden,'
                     . 'OC.FechaCaptura,'
                     . 'OC.Estatus,'
@@ -254,8 +303,8 @@ class ordencompra_model extends CI_Model {
                     ->join('proveedores AS P', 'OC.Proveedor = P.Clave')
                     ->join('articulos AS A', ' A.Clave = OCD.Articulo')
                     ->join('Unidades AS U', 'U.Clave = A.UnidadMedida')
-                    ->where('OC.ID', $ID)
-                    ->where('OC.Tp', $TP);
+                    ->where('OC.ID', $ID);
+//                    ->where('OC.Tp', $TP);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY

@@ -203,10 +203,9 @@
     var btnCerrarOrden = pnlDatos.find('#btnCerrarOrden');
     var btnCancelar = pnlDatos.find('#btnCancelar');
     var btnImprimir = pnlDatos.find('#btnImprimir');
-
     var btnVerProveedores = pnlDatos.find('#btnVerProveedores');
     var btnVerArticulos = pnlDatos.find('#btnVerArticulos');
-
+    var nuevoTemp = 0;
     $(document).ready(function () {
         /*FUNCIONES INICIALES*/
         init();
@@ -270,6 +269,7 @@
             var tipo = pnlDatos.find("#Tipo").val();
             if (tipo !== '') {
                 getArticuloByDeptoByProveedor(tipo, $(this).val());
+                getPorcentajesCompraByProveedor($(this).val());
             } else {
                 swal({
                     title: "ATENCIÓN",
@@ -297,9 +297,15 @@
 
         /*FUNCIONES X BOTON*/
         btnImprimir.click(function () {
-            //HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
-            var tp = pnlDatos.find("#Tp").val();
-            $.post(master_url + 'onImprimirOrdenCompra', {ID: temp, Tp: tp}).done(function (data, x, jq) {
+            //HoldOn.open({theme: 'sk-bounce', message: 'GENERANDO REPORTE...'});
+            var movs = [];
+            movs.push({
+                ID: temp
+            });
+            movs.push({
+                ID: (nuevoTemp === 0) ? 0 : nuevoTemp
+            });
+            $.post(master_url + 'onImprimirOrdenCompra', {movs: JSON.stringify(movs)}).done(function (data, x, jq) {
                 console.log(data);
                 if (data.length > 0) {
 
@@ -317,8 +323,8 @@
                                 // Custom CSS styling for iframe wrapping element
                                 // You can use this to set custom iframe dimensions
                                 css: {
-                                    width: "85%",
-                                    height: "85%"
+                                    width: "100%",
+                                    height: "100%"
                                 },
                                 // Iframe tag attributes
                                 attr: {
@@ -415,6 +421,7 @@
 
         btnNuevo.click(function () {
             nuevo = true;
+            nuevoTemp = 0;
             pnlDatos.find("input").val("");
             pnlDatosDetalle.find("input").val("");
             $.each(pnlDatos.find("select"), function (k, v) {
@@ -507,6 +514,7 @@
         });
 
         btnCerrarOrden.click(function () {
+            var FolioActual = pnlDatos.find("#Folio").val();
             swal({
                 title: "Confirmar",
                 text: "Deseas cerrar la Orden de Compra?",
@@ -515,32 +523,142 @@
                 dangerMode: true
             }).then((willDelete) => {
                 if (willDelete) {
-                    HoldOn.open({
-                        theme: "sk-bounce",
-                        message: "CARGANDO DATOS..."
-                    });
-                    $.post(master_url + 'onCerrarOrden', {ID: temp}).done(function (data, x, jq) {
-                        btnCancelar.addClass('d-none');
-                        btnCerrarOrden.addClass('d-none');
-                        btnImprimir.removeClass('d-none');
-                        pnlTablero.removeClass("d-none");
-                        pnlDatos.addClass("d-none");
-                        pnlDatosDetalle.addClass("d-none");
-                        Compras.ajax.reload();
-                    }).fail(function (x, y, z) {
-                        console.log(x, y, z);
-                    }).always(function () {
-                        HoldOn.close();
-                    });
-                }
-            });
+                    if (!seParte) {
+
+                        HoldOn.open({theme: "sk-bounce", message: "POR FAVOR ESPERE..."});
+                        $.post(master_url + 'onCerrarOrden', {ID: temp}).done(function (data, x, jq) {
+                            btnCancelar.addClass('d-none');
+                            btnCerrarOrden.addClass('d-none');
+                            btnImprimir.removeClass('d-none');
+                            pnlDatosDetalle.find('#ControlesDetalle').addClass('d-none');
+                            HoldOn.close();
+                            Compras.ajax.reload();
+                            btnImprimir.trigger('click');
+                        }).fail(function (x, y, z) {
+                            console.log(x, y, z);
+                        });
+
+                    } else {//Else de si se parte en dos o no
+                        HoldOn.open({theme: "sk-bounce", message: "POR FAVOR ESPERE..."});
+                        //Para encabezado nuevo de TP 2
+                        $.getJSON(master_url + 'getOrdenCompraByID', {ID: temp}).done(function (dataEncabezado) {
+                            var enc = dataEncabezado[0];
+                            var frm = new FormData();
+                            $.when($.getJSON(master_url + 'getFolio', {tp: '2'}).done(function (data, x, jq) {
+                                if (data.length > 0) {
+                                    folioNuevo = $.isNumeric(data[0].Folio) ? parseInt(data[0].Folio) + 1 : 1;
+                                } else {
+                                    folioNuevo = 1;
+                                }
+                            })).done(function (x) {
+                                frm.append('Tp', 2);
+                                frm.append('Ano', enc.Ano);
+                                frm.append('Proveedor', enc.Proveedor);
+                                frm.append('Tipo', enc.Tipo);
+                                frm.append('Folio', folioNuevo);
+                                frm.append('FechaOrden', enc.FechaOrden);
+                                frm.append('FechaCaptura', enc.FechaCaptura);
+                                frm.append('FechaEntrega', enc.FechaEntrega);
+                                frm.append('ConsignarA', enc.ConsignarA);
+                                frm.append('Sem', enc.Sem);
+                                frm.append('Maq', enc.Maq);
+                                frm.append('Ano', enc.Ano);
+                                frm.append('Observaciones', enc.Observaciones);
+                                frm.append('Estatus', 'CERRADA');
+                                //Inserta nuevo encabezado y regresa el ID para agregarlo en el detalle del nuevo encabezado
+                                //Partiendo del anterior encabezado y actualizando el movimiento anterior
+                                $.ajax({
+                                    url: master_url + 'onAgregarCompraPartida',
+                                    type: "POST",
+                                    cache: false,
+                                    contentType: false,
+                                    processData: false,
+                                    data: frm
+                                }).done(function (data, x, jq) {
+                                    nuevoTemp = data; //ID nuevo Encabezado
+                                    //ACtualizamos estatus del encabezado anterior a CERRADO y TP siempre 1
+                                    $.post(master_url + 'onCerrarOrdenAnterior', {ID: temp}).done(function (data, x, jq) {
+                                        $.getJSON(master_url + 'getDetalleParaSepararByID', {ID: temp}).done(function (data) {
+                                            $.each(data, function (k, v) {
+                                                var Precio = v.Precio;
+                                                var Articulo = v.Articulo;
+                                                var NuevaCantidadNueva = v.Cantidad * PorRemision;
+                                                var NuevaSubtotalNueva = NuevaCantidadNueva * Precio;
+                                                //Para modificar anterior y restarle el porcentaje
+                                                var NuevaCantidadAnterior = v.Cantidad * PorFactura;
+                                                var NuevaSubtotalAnterior = NuevaCantidadAnterior * Precio;
+
+                                                //insert OC Detalle
+                                                var detalle = {
+                                                    OrdenCompra: nuevoTemp,
+                                                    Articulo: Articulo,
+                                                    Cantidad: NuevaCantidadNueva,
+                                                    Precio: Precio,
+                                                    SubTotal: NuevaSubtotalNueva
+                                                };
+                                                //update actual o.c
+                                                $.post(master_url + 'onAgregarDetalle', detalle).done(function (data) {
+                                                    var detalleAnterior = {
+                                                        ID: v.ID,
+                                                        Cantidad: NuevaCantidadAnterior,
+                                                        SubTotal: NuevaSubtotalAnterior
+                                                    };
+                                                    $.post(master_url + 'onModificarDetalle', detalleAnterior).done(function (data) {
+
+                                                        HoldOn.close();
+                                                        swal({
+                                                            title: 'Importante',
+                                                            text: 'Se ha cerrado la compra TP 1 con el FOLIO: ' + FolioActual,
+                                                            type: 'success'
+                                                        }).then((value) => {
+                                                            swal({
+                                                                title: 'Importante',
+                                                                text: 'Se ha cerrado la compra TP 2 con el FOLIO: ' + folioNuevo,
+                                                                type: 'success'
+                                                            }).then((value) => {
+                                                                btnCancelar.addClass('d-none');
+                                                                btnCerrarOrden.addClass('d-none');
+                                                                btnImprimir.removeClass('d-none');
+                                                                pnlDatosDetalle.find('#ControlesDetalle').addClass('d-none');
+                                                                ComprasDetalle.ajax.reload();
+                                                                Compras.ajax.reload();
+                                                                HoldOn.close();
+                                                                btnImprimir.trigger('click');
+                                                            });
+                                                        });
+                                                    }).fail(function (x, y, z) {
+                                                        console.log(x, y, z);
+                                                    });
+
+                                                }).fail(function (x, y, z) {
+                                                    console.log(x, y, z);
+                                                });
+                                            });
+                                        }).fail(function (x) {
+                                            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+                                            console.log(x.responseText);
+                                        });
+                                    }).fail(function (x, y, z) {
+                                        console.log(x, y, z);
+                                    }); //CERRAR ORDEN ANTERIOR
+                                }).fail(function (x, y, z) {
+                                    console.log(x, y, z);
+                                });//AGREGA NUEVO ENCABEZADO
+                            });
+                        }).fail(function (x) {
+                            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+                            console.log(x.responseText);
+                        });//OBTENER COMPRA ACTUAL
+                    }//IF DE PARTIR EN DOS
+                }// Cierra IF de aceptar
+            });//Cierra SWALL
         });
     });
 
     function init() {
         getRecords();
     }
-    var estatus;
+
     function getRecords() {
         temp = 0;
         HoldOn.open({
@@ -653,7 +771,8 @@
                 pnlTablero.addClass("d-none");
                 pnlDatos.removeClass('d-none');
                 pnlDatosDetalle.removeClass('d-none');
-                pnlDatosDetalle.find('#ControlesDetalle').addClass('d-none');
+
+
                 pnlDatos.find('input').attr('readonly', true);
                 $.each(pnlDatos.find("select"), function (k, v) {
                     pnlDatos.find("select")[k].selectize.disable();
@@ -663,6 +782,7 @@
                     btnCancelar.addClass('d-none');
                     btnCerrarOrden.addClass('d-none');
                     btnImprimir.removeClass('d-none');
+                    pnlDatosDetalle.find('#ControlesDetalle').addClass('d-none');
                 } else {
                     btnCancelar.removeClass('d-none');
                     btnCerrarOrden.removeClass('d-none');
@@ -683,9 +803,9 @@
                             pnlDatos.find("[name='" + k + "']")[0].selectize.addItem(v, true);
                         }
                     });
+                    getArticuloByDeptoByProveedor(data[0].Tipo, data[0].Proveedor);
+                    getPorcentajesCompraByProveedor(data[0].Proveedor);
                 });
-
-
                 //Cargar Detalle
                 getDetalleByID(temp);
             }).fail(function (x, y, z) {
@@ -707,6 +827,40 @@
             }
         }).fail(function (x, y, z) {
             console.log(x, y, z);
+        });
+    }
+    var estatus;
+    var PorRemision = 0;
+    var PorFactura = 0;
+    var seParte = false;
+    var tpParte = 0;
+    var folioNuevo = 0;
+
+    function getPorcentajesCompraByProveedor(proveedor) {
+        $.getJSON(master_url + 'getPorcentajesCompraByProveedor', {Proveedor: proveedor}).done(function (data) {
+            console.log(data);
+            if (data.length > 0) {
+                PorRemision = parseFloat(data[0].PorRemision);
+                PorFactura = parseFloat(data[0].PorFactura);
+                if (PorRemision === 0 && PorFactura === 0) {
+                    seParte = false;
+                } else if (PorRemision === 1 || PorFactura === 1) {
+                    seParte = false;
+                } else {
+                    seParte = true;
+                    if (parseFloat(PorFactura) >= parseFloat(PorRemision)) {
+                        tpParte = 1;
+                    } else {
+                        tpParte = 2;
+                    }
+                }
+            } else {
+                seParte = false;
+            }
+            console.log(seParte);
+        }).fail(function (x) {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
         });
     }
     function getArticuloByDeptoByProveedor(Departamento, Proveedor) {
