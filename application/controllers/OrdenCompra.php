@@ -3,13 +3,14 @@
 /* NO TOCAR */
 header('Access-Control-Allow-Origin: *');
 defined('BASEPATH') OR exit('No direct script access allowed');
+require_once APPPATH . "/third_party/fpdf17/fpdf.php";
 
 class OrdenCompra extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('ordencompra_model');
+        $this->load->library('session')->model('ordencompra_model')->helper('reportesCompras_helper')->helper('file');
     }
 
     public function index() {
@@ -131,16 +132,17 @@ class OrdenCompra extends CI_Controller {
                 'Usuario' => $this->session->userdata('ID')
             );
             $ID = $this->ordencompra_model->onAgregar($datos);
+            print $ID;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function onModificar() {
+    public function onCerrarOrden() {
         try {
             $x = $this->input;
             $datos = array(
-                'Estatus' => $x->post('Estatus'),
+                'Estatus' => 'CERRADA',
             );
             $this->ordencompra_model->onModificar($x->post('ID'), $datos);
         } catch (Exception $exc) {
@@ -163,6 +165,112 @@ class OrdenCompra extends CI_Controller {
             print json_encode($this->ordencompra_model->getDetalleByID($this->input->post('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onAgregarDetalle() {
+        try {
+            $e = $this->input;
+            $this->db->insert("ordencompradetalle", array(
+                'OrdenCompra' => $e->post('OrdenCompra'),
+                'Articulo' => $e->post('Articulo'),
+                'Cantidad' => $e->post('Cantidad'),
+                'Precio' => $e->post('Precio'),
+                'Subtotal' => $e->post('SubTotal')
+            ));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onEliminarDetalleByID() {
+        try {
+            $this->ordencompra_model->onEliminarDetalleByID($this->input->post('ID'));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    /* REPORTES */
+
+    public function onImprimirOrdenCompra() {
+        $cm = $this->ordencompra_model;
+
+        $DatosEmpresa = $cm->getDatosEmpresa();
+        $OrdenCompra = $cm->getReporteOrdenCompra($this->input->post('ID'), $this->input->post('Tp'));
+
+        if (!empty($OrdenCompra)) {
+
+            $pdf = new PDF('L', 'mm', array(215.9, 279.4));
+            $pdf->Logo = $DatosEmpresa[0]->Logo;
+            $pdf->Empresa = $DatosEmpresa[0]->Empresa;
+            $pdf->Direccion = $DatosEmpresa[0]->Direccion;
+            $pdf->Direccion2 = $DatosEmpresa[0]->Direccion2;
+            $pdf->FechaOrden = $OrdenCompra[0]->FechaOrden;
+            $pdf->FechaCaptura = $OrdenCompra[0]->FechaCaptura;
+            $pdf->ClaveProveedor = $OrdenCompra[0]->Proveedor;
+            $pdf->Proveedor = $OrdenCompra[0]->NombreProveedor;
+            $pdf->Observaciones = $OrdenCompra[0]->Observaciones;
+            $pdf->ConsignarA = $OrdenCompra[0]->ConsignarA;
+            $pdf->Folio = $OrdenCompra[0]->Folio;
+            $pdf->Estatus = $OrdenCompra[0]->Estatus;
+
+
+            $pdf->AddPage();
+            $pdf->SetAutoPageBreak(true, 26.9);
+
+            $SubTotal = 0;
+            $TotalCantidad = 0;
+            foreach ($OrdenCompra as $keyFT => $F) {
+                $pdf->SetLineWidth(0.25);
+                $pdf->SetX(5);
+                $pdf->SetFont('Arial', '', 8);
+                $anchos = array(10/* 0 */, 65/* 1 */, 20/* 2 */, 20/* 3 */, 20/* 4 */, 20/* 5 */, 15/* 6 */, 15/* 7 */, 27/* 8 */, 27/* 9 */, 30/* 10 */);
+                $aligns = array('L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L');
+                $pdf->SetAligns($aligns);
+                $pdf->SetWidths($anchos);
+
+                $pdf->Row(array(
+                    utf8_decode($F->Articulo),
+                    mb_strimwidth(utf8_decode($F->NombreArticulo), 0, 60, "..."),
+                    number_format($F->Cantidad, 2, ".", ","),
+                    utf8_decode($F->Unidad),
+                    '$' . number_format($F->Precio, 2, ".", ","),
+                    '$' . number_format($F->SubTotal, 2, ".", ","),
+                    $F->Sem,
+                    $F->Maq,
+                    '',
+                    '',
+                    utf8_decode($F->FechaEntrega)
+                ));
+                //TOTALES GRUPOS
+                $SubTotal += $F->SubTotal;
+                $TotalCantidad += $F->Cantidad;
+            }
+            $pdf->SetFont('Arial', 'B', 9);
+            $pdf->RowNoBorder(array('', '', number_format($TotalCantidad, 2, ".", ","), '',
+                'Subtotal:', '$' . number_format($SubTotal, 2, ".", ","), '', '', '', '', ''
+            ));
+            //Pintamos el IVA si es TP 1
+            if ($this->input->post('Tp') == '1') {
+                $IVA = $SubTotal * 0.16;
+                $Total = $SubTotal + $IVA;
+                $pdf->RowNoBorder(array('', '', '', '', 'IVA:', '$' . number_format($IVA, 2, ".", ","), '', '', '', '', ''));
+                $pdf->RowNoBorder(array('', '', '', '', 'Total:', '$' . number_format($Total, 2, ".", ","), '', '', '', '', ''));
+            }
+            /* FIN RESUMEN */
+            $path = 'uploads/Reportes/OrdenesCompra';
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $file_name = "ORDEN DE COMPRA " . date("d-m-Y his");
+            $url = $path . '/' . $file_name . '.pdf';
+            /* Borramos el archivo anterior */
+            if (delete_files('uploads/Reportes/OrdenesCompra/')) {
+                /* ELIMINA LA EXISTENCIA DE CUALQUIER ARCHIVO EN EL DIRECTORIO */
+            }
+            $pdf->Output($url);
+            print base_url() . $url;
         }
     }
 

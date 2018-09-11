@@ -15,12 +15,31 @@
                         <tr>
                             <th>ID</th>
                             <th>Tipo</th>
+                            <th>Departamento</th>
                             <th>Folio</th>
                             <th>Proveedor</th>
                             <th>Fecha</th>
+                            <th>Año</th>
+                            <th>Sem</th>
+                            <th>Maq</th>
+                            <th>Estatus</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tipo</th>
+                            <th>Departamento</th>
+                            <th>Folio</th>
+                            <th>Proveedor</th>
+                            <th>Fecha</th>
+                            <th>Año</th>
+                            <th>Semana</th>
+                            <th>Maquila</th>
+                            <th>Estatus</th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -35,16 +54,22 @@
                     <legend >Orden Compra</legend>
                 </div>
                 <div class="col-12 col-sm-6 col-md-8" align="right">
-                    <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
+                    <button type="button" class="btn btn-primary btn-sm" id="btnRegresar" >
                         <span class="fa fa-arrow-left" ></span> REGRESAR
                     </button>
-                    <button type="button" class="btn btn-warning btn-sm" id="btnImprimir" >
+                    <button type="button" class="btn btn-secondary btn-sm " id="btnVerProveedores" >
+                        <span class="fa fa-user-secret" ></span> PROVEEDORES
+                    </button>
+                    <button type="button" class="btn btn-info btn-sm " id="btnVerArticulos" >
+                        <span class="fa fa-cube" ></span> ARTÍCULOS
+                    </button>
+                    <button type="button" class="btn btn-warning btn-sm d-none" id="btnImprimir" >
                         <span class="fa fa-print" ></span> IMPRIMIR O.C.
                     </button>
-                    <button type="button" class="btn btn-danger btn-sm" id="btnEliminar" >
+                    <button type="button" class="btn btn-danger btn-sm d-none" id="btnCancelar" >
                         <span class="fa fa-ban" ></span> CANCELAR O.C.
                     </button>
-                    <button type="button" class="btn btn-success btn-lg btn-float" id="btnCerrarOrden" data-toggle="tooltip" data-placement="left" title="Cerrar Orden">
+                    <button type="button" class="btn btn-success btn-lg btn-float d-none" id="btnCerrarOrden" data-toggle="tooltip" data-placement="left" title="Cerrar Orden">
                         <i class="fa fa-money-bill"></i>
                     </button>
                 </div>
@@ -60,7 +85,7 @@
                 </div>
                 <div class="col-12 col-sm-6 col-md-3 col-lg-2 col-xl-1">
                     <label for="Folio" >Folio</label>
-                    <input type="text" class="form-control form-control-sm numbersOnly" readonly="" id="Folio" name="Folio" required="">
+                    <input type="text" class="form-control form-control-sm numbersOnly disabledForms" readonly="" id="Folio" name="Folio" required="">
                 </div>
                 <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-2">
                     <label for="" >Tipo*</label>
@@ -102,7 +127,7 @@
                 </div>
                 <div class="col-12 col-sm-6 col-md-6 col-xl-5">
                     <label for="Observaciones" >Observaciones</label>
-                    <input type="text" class="form-control form-control-sm " maxlength="2" id="Observaciones" name="Observaciones" required="">
+                    <input type="text" class="form-control form-control-sm "  id="Observaciones" name="Observaciones">
                 </div>
 
             </div>
@@ -111,9 +136,8 @@
 
 </div>
 <div class="card m-3 d-none animated fadeIn" id="pnlDatosDetalle" >
-
     <div class="card-body text-dark">
-        <div class="row">
+        <div class="row" id="ControlesDetalle">
             <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
                 <label for="Articulo" >Articulo*</label>
                 <!--<input type="text" class="form-control form-control-sm" id="Maquila" name="Maquila" required placeholder="Maquila 1">-->
@@ -126,19 +150,20 @@
                 <input type="text" class="form-control form-control-sm numbersOnly disabledForms" id="Precio" name="Precio" required placeholder="0.0">
             </div>
             <div class="col-12 col-sm-3 col-md-2 col-lg-2 col-xl-1">
-                <label for="Precio" >Cantidad*</label>
-                <input type="text" class="form-control form-control-sm numbersOnly" id="Precio" name="Precio" required placeholder="0.0">
+                <label for="Cantidad" >Cantidad*</label>
+                <input type="text" class="form-control form-control-sm numbersOnly" id="Cantidad" name="Cantidad" required>
             </div>
             <div class="col-12 col-sm-2 col-md-1 col-lg-1 col-xl-1 my-2 d-sm-block pt-3">
-                <button type="button" id="btnAgregarPrecio" class="btn btn-primary btn-sm d-sm-block" data-toggle="tooltip" data-placement="right" title="Agregar"><span class="fa fa-plus"></span></button>
+                <button type="button" id="btnAgregar" class="btn btn-primary btn-sm d-sm-block" data-toggle="tooltip" data-placement="right" title="Agregar"><span class="fa fa-plus"></span></button>
             </div>
-
+        </div>
+        <div class="row">
             <div class="col-12 mt-4">
                 <table id="tblComprasDetalle" class="table table-sm" style="width:100%">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>ClaveArticulo</th>
+                            <th class="d-none">ID</th>
+                            <th class="d-none">ClaveArticulo</th>
                             <th>Articulo</th>
                             <th>Cantidad</th>
                             <th>Unidad</th>
@@ -150,8 +175,8 @@
                     <tbody></tbody>
                     <tfoot>
                         <tr>
-                            <td></td>
-                            <td></td>
+                            <td class="d-none"></td>
+                            <td class="d-none"></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -162,9 +187,7 @@
                     </tfoot>
                 </table>
             </div>
-
         </div>
-
     </div>
 </div>
 
@@ -172,10 +195,17 @@
     var master_url = base_url + 'index.php/OrdenCompra/';
     var tblCompras = $('#tblCompras');
     var Compras;
-    var btnNuevo = $("#btnNuevo"), btnCancelar = $("#btnCancelar"), btnEliminar = $("#btnEliminar"), btnGuardar = $("#btnGuardar");
+    var btnNuevo = $("#btnNuevo"), btnAgregar = $("#btnAgregar");
     var pnlTablero = $("#pnlTablero"), pnlDatos = $("#pnlDatos"), pnlDatosDetalle = $("#pnlDatosDetalle");
     var nuevo = false;
     var tblComprasDetalle = $("#tblComprasDetalle"), ComprasDetalle;
+    var btnRegresar = pnlDatos.find("#btnRegresar");
+    var btnCerrarOrden = pnlDatos.find('#btnCerrarOrden');
+    var btnCancelar = pnlDatos.find('#btnCancelar');
+    var btnImprimir = pnlDatos.find('#btnImprimir');
+
+    var btnVerProveedores = pnlDatos.find('#btnVerProveedores');
+    var btnVerArticulos = pnlDatos.find('#btnVerArticulos');
 
     $(document).ready(function () {
         /*FUNCIONES INICIALES*/
@@ -185,13 +215,14 @@
         validacionSelectPorContenedor(pnlDatosDetalle);
         setFocusSelectToSelectOnChange('#Tipo', '#Proveedor', pnlDatos);
         setFocusSelectToInputOnChange('#Proveedor', '#FechaOrden', pnlDatos);
-        setFocusSelectToInputOnChange('#Articulo', '#Precio', pnlDatosDetalle);
+        setFocusSelectToInputOnChange('#Articulo', '#Cantidad', pnlDatosDetalle);
 
         pnlDatos.find("#Tp").change(function () {
             var tp = parseInt($(this).val());
             if (tp === 1 || tp === 2) {
                 getFolio(tp);
                 pnlDatos.find('#Tipo')[0].selectize.focus();
+                getProveedores(tp);
             } else {
                 swal({
                     title: "ATENCIÓN",
@@ -265,30 +296,91 @@
         });
 
         /*FUNCIONES X BOTON*/
-        btnGuardar.click(function () {
+        btnImprimir.click(function () {
+            //HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+            var tp = pnlDatos.find("#Tp").val();
+            $.post(master_url + 'onImprimirOrdenCompra', {ID: temp, Tp: tp}).done(function (data, x, jq) {
+                console.log(data);
+                if (data.length > 0) {
+
+                    $.fancybox.open({
+                        src: data,
+                        type: 'iframe',
+                        opts: {
+                            afterShow: function (instance, current) {
+                                console.info('done!');
+                            },
+                            iframe: {
+                                // Iframe template
+                                tpl: '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen allowtransparency="true" src=""></iframe>',
+                                preload: true,
+                                // Custom CSS styling for iframe wrapping element
+                                // You can use this to set custom iframe dimensions
+                                css: {
+                                    width: "85%",
+                                    height: "85%"
+                                },
+                                // Iframe tag attributes
+                                attr: {
+                                    scrolling: "auto"
+                                }
+                            }
+                        }
+                    });
+
+
+                } else {
+                    swal({
+                        title: "ATENCIÓN",
+                        text: "NO EXISTE ORDEN DE COMPRA",
+                        icon: "error"
+                    });
+                }
+                HoldOn.close();
+            }).fail(function (x, y, z) {
+                console.log(x, y, z);
+            });
+
+        });
+
+        btnCancelar.click(function () {
+            if (temp !== 0 && temp !== undefined && temp > 0) {
+                swal({
+                    title: "Confirmar",
+                    text: "Deseas cancelar el registro?",
+                    icon: "warning",
+                    buttons: ["Cancelar", "Aceptar"],
+                    dangerMode: true
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        HoldOn.open({
+                            theme: "sk-bounce",
+                            message: "CARGANDO DATOS..."
+                        });
+                        $.post(master_url + 'onEliminar', {ID: temp}).done(function (data, x, jq) {
+                            pnlTablero.removeClass("d-none");
+                            pnlDatos.addClass("d-none");
+                            pnlDatosDetalle.addClass("d-none");
+                            Compras.ajax.reload();
+                        }).fail(function (x, y, z) {
+                            console.log(x, y, z);
+                        }).always(function () {
+                            HoldOn.close();
+                        });
+                    }
+                });
+            } else {
+                onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
+            }
+        });
+
+        btnAgregar.click(function () {
             isValid('pnlDatos');
             if (valido) {
                 var frm = new FormData(pnlDatos.find("#frmNuevo")[0]);
                 if (!nuevo) {
-                    $.ajax({
-                        url: master_url + 'onModificar',
-                        type: "POST",
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        data: frm
-                    }).done(function (data, x, jq) {
-                        swal('ATENCIÓN', 'SE HAN GUARDADO LOS CAMBIOS', 'info');
-                        nuevo = false;
-                        Compras.ajax.reload();
-                        pnlDatos.addClass("d-none");
-                        pnlDatosDetalle.addClass('d-none');
-                        pnlTablero.removeClass("d-none");
-                    }).fail(function (x, y, z) {
-                        console.log(x, y, z);
-                    }).always(function () {
-                        HoldOn.close();
-                    });
+                    //AgregaDetalle
+                    onAgregarDetalle(pnlDatos.find("#ID").val());
                 } else {
                     $.ajax({
                         url: master_url + 'onAgregar',
@@ -298,20 +390,18 @@
                         processData: false,
                         data: frm
                     }).done(function (data, x, jq) {
-                        pnlDatos.find("[name='ID']").val(data);
-                        nuevo = false;
+                        pnlDatos.find("#ID").val(data);
+                        temp = data;
                         Compras.ajax.reload();
-                        swal({
-                            title: "ATENCIÓN",
-                            text: "ORDEN DE COMPRA GUARDADA",
-                            icon: "success",
-                            closeOnClickOutside: false,
-                            closeOnEsc: false,
-                            buttons: false,
-                            timer: 1200
-                        }).then((action) => {
-                            //Aqui se imprime el reporte
+                        //Deshabilida encabezado
+                        pnlDatos.find('input').attr('readonly', true);
+                        $.each(pnlDatos.find("select"), function (k, v) {
+                            pnlDatos.find("select")[k].selectize.disable();
                         });
+                        btnCancelar.removeClass('d-none');
+                        btnCerrarOrden.removeClass('d-none');
+                        //AgregaDetalle
+                        onAgregarDetalle(data);
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     }).always(function () {
@@ -333,29 +423,124 @@
             $.each(pnlDatosDetalle.find("select"), function (k, v) {
                 pnlDatosDetalle.find("select")[k].selectize.clear(true);
             });
+            if ($.fn.DataTable.isDataTable('#tblComprasDetalle')) {
+                ComprasDetalle.clear().draw();
+            }
+            pnlDatos.find('input').attr('readonly', false);
+            $.each(pnlDatos.find("select"), function (k, v) {
+                pnlDatos.find("select")[k].selectize.enable();
+            });
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass("d-none");
             pnlDatosDetalle.removeClass("d-none");
-            btnEliminar.addClass("d-none");
+            pnlDatosDetalle.find('#ControlesDetalle').removeClass('d-none');
+            btnCancelar.addClass('d-none');
+            btnCerrarOrden.addClass('d-none');
+            btnImprimir.addClass('d-none');
             var d = new Date();
             var n = d.getFullYear();
             pnlDatos.find("#Ano").val(n);
+            pnlDatos.find("#FechaOrden").val(getToday());
             pnlDatos.find("#Tp").focus();
             $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
             temp = 0;
         });
 
-        btnCancelar.click(function () {
+        btnRegresar.click(function () {
             pnlTablero.removeClass("d-none");
             pnlDatos.addClass("d-none");
             pnlDatosDetalle.addClass("d-none");
+        });
+
+        btnVerArticulos.click(function () {
+            $.fancybox.open({
+                src: base_url + '/Articulos/?origen=MATERIALES',
+                type: 'iframe',
+                opts: {
+                    afterShow: function (instance, current) {
+                        console.info('done!');
+                    },
+                    iframe: {
+                        // Iframe template
+                        tpl: '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen allowtransparency="true" src=""></iframe>',
+                        preload: true,
+                        // Custom CSS styling for iframe wrapping element
+                        // You can use this to set custom iframe dimensions
+                        css: {
+                            width: "85%",
+                            height: "85%"
+                        },
+                        // Iframe tag attributes
+                        attr: {
+                            scrolling: "auto"
+                        }
+                    }
+                }
+            });
+        });
+
+        btnVerProveedores.click(function () {
+            $.fancybox.open({
+                src: base_url + '/Proveedores/?origen=MATERIALES',
+                type: 'iframe',
+                opts: {
+                    afterShow: function (instance, current) {
+                        console.info('done!');
+                    },
+                    iframe: {
+                        // Iframe template
+                        tpl: '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen allowtransparency="true" src=""></iframe>',
+                        preload: true,
+                        // Custom CSS styling for iframe wrapping element
+                        // You can use this to set custom iframe dimensions
+                        css: {
+                            width: "85%",
+                            height: "85%"
+                        },
+                        // Iframe tag attributes
+                        attr: {
+                            scrolling: "auto"
+                        }
+                    }
+                }
+            });
+        });
+
+        btnCerrarOrden.click(function () {
+            swal({
+                title: "Confirmar",
+                text: "Deseas cerrar la Orden de Compra?",
+                icon: "warning",
+                buttons: ["Cancelar", "Aceptar"],
+                dangerMode: true
+            }).then((willDelete) => {
+                if (willDelete) {
+                    HoldOn.open({
+                        theme: "sk-bounce",
+                        message: "CARGANDO DATOS..."
+                    });
+                    $.post(master_url + 'onCerrarOrden', {ID: temp}).done(function (data, x, jq) {
+                        btnCancelar.addClass('d-none');
+                        btnCerrarOrden.addClass('d-none');
+                        btnImprimir.removeClass('d-none');
+                        pnlTablero.removeClass("d-none");
+                        pnlDatos.addClass("d-none");
+                        pnlDatosDetalle.addClass("d-none");
+                        Compras.ajax.reload();
+                    }).fail(function (x, y, z) {
+                        console.log(x, y, z);
+                    }).always(function () {
+                        HoldOn.close();
+                    });
+                }
+            });
         });
     });
 
     function init() {
         getRecords();
-        getProveedores();
     }
+    var estatus;
     function getRecords() {
         temp = 0;
         HoldOn.open({
@@ -374,7 +559,10 @@
                 "dataSrc": ""
             },
             "columns": [
-                {"data": "ID"}, {"data": "Tipo"}, {"data": "Folio"}, {"data": "Proveedor"}, {"data": "Fecha"}
+                {"data": "ID"}, {"data": "Tp"}, {"data": "Tipo"},
+                {"data": "Folio"}, {"data": "Proveedor"}, {"data": "Fecha"},
+                {"data": "Ano"}, {"data": "Sem"}, {"data": "Maq"},
+                {"data": "Estatus"}
             ],
             "columnDefs": [
                 {
@@ -393,12 +581,51 @@
             "scrollCollapse": false,
             "bSort": true,
             "aaSorting": [
-                [2, 'desc']/*Folio*/
+                [1, 'desc'], [3, 'desc']/*Folio*/
             ],
+            "createdRow": function (row, data, index) {
+                $.each($(row).find("td"), function (k, v) {
+                    var c = $(v);
+                    var index = parseInt(k);
+                    switch (index) {
+                        case 2:
+                            /*FOLIO*/
+                            c.addClass('text-info text-strong');
+                            break;
+                        case 5:
+                            /*ANO*/
+                            c.addClass('text-info text-strong');
+                            break;
+                        case 6:
+                            /*SEM*/
+                            c.addClass('text-info text-strong');
+                            break;
+                        case 7:
+                            /*MAQ*/
+                            c.addClass('text-info text-strong');
+                            break;
+                    }
+                });
+            },
             initComplete: function (a, b) {
                 HoldOn.close();
             }
         });
+
+        $('#tblCompras tfoot th').each(function () {
+            var title = $(this).text();
+            $(this).html('<input type="text" placeholder="Buscar por ' + title + '" class="form-control form-control-sm" style="width: 100%;"/>');
+        });
+
+        Compras.columns().every(function () {
+            var that = this;
+            $('input', this.footer()).on('keyup change', function () {
+                if (that.search() !== this.value) {
+                    that.search(this.value).draw();
+                }
+            });
+        });
+
 
         $('#tblCompras_filter input[type=search]').focus();
 
@@ -421,20 +648,46 @@
                 $.each(pnlDatosDetalle.find("select"), function (k, v) {
                     pnlDatosDetalle.find("select")[k].selectize.clear(true);
                 });
-                $.each(data[0], function (k, v) {
-                    pnlDatos.find("[name='" + k + "']").val(v);
-                    if (pnlDatos.find("[name='" + k + "']").is('select')) {
-                        pnlDatos.find("[name='" + k + "']")[0].selectize.addItem(v, true);
-                    }
-                });
+
+
                 pnlTablero.addClass("d-none");
                 pnlDatos.removeClass('d-none');
                 pnlDatosDetalle.removeClass('d-none');
+                pnlDatosDetalle.find('#ControlesDetalle').addClass('d-none');
+                pnlDatos.find('input').attr('readonly', true);
+                $.each(pnlDatos.find("select"), function (k, v) {
+                    pnlDatos.find("select")[k].selectize.disable();
+                });
+                estatus = data[0].Estatus;
+                if (estatus === 'CERRADA') {
+                    btnCancelar.addClass('d-none');
+                    btnCerrarOrden.addClass('d-none');
+                    btnImprimir.removeClass('d-none');
+                } else {
+                    btnCancelar.removeClass('d-none');
+                    btnCerrarOrden.removeClass('d-none');
+                    btnImprimir.addClass('d-none');
+                }
+
+                //Obtener proveedor en base al tp
+                $.when($.getJSON(master_url + 'getProveedores').done(function (data) {
+                    pnlDatos.find("#Proveedor")[0].selectize.clear(true);
+                    pnlDatos.find("#Proveedor")[0].selectize.clearOptions();
+                    $.each(data, function (k, v) {
+                        pnlDatos.find("#Proveedor")[0].selectize.addOption({text: (data[0].Tp === 1) ? v.ProveedorF : v.ProveedorI, value: v.ID});
+                    });
+                })).done(function (x) {
+                    $.each(data[0], function (k, v) {
+                        pnlDatos.find("[name='" + k + "']").val(v);
+                        if (pnlDatos.find("[name='" + k + "']").is('select')) {
+                            pnlDatos.find("[name='" + k + "']")[0].selectize.addItem(v, true);
+                        }
+                    });
+                });
+
 
                 //Cargar Detalle
                 getDetalleByID(temp);
-
-
             }).fail(function (x, y, z) {
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
                 console.log(x.responseText);
@@ -482,10 +735,12 @@
             console.log(x.responseText);
         });
     }
-    function getProveedores() {
+    function getProveedores(tp) {
+        pnlDatos.find("#Proveedor")[0].selectize.clear(true);
+        pnlDatos.find("#Proveedor")[0].selectize.clearOptions();
         $.getJSON(master_url + 'getProveedores').done(function (data) {
             $.each(data, function (k, v) {
-                pnlDatos.find("#Proveedor")[0].selectize.addOption({text: v.Proveedor, value: v.ID});
+                pnlDatos.find("#Proveedor")[0].selectize.addOption({text: (tp === 1) ? v.ProveedorF : v.ProveedorI, value: v.ID});
             });
         }).fail(function (x) {
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
@@ -654,10 +909,99 @@
         });
 
     }
+    function onAgregarDetalle(IDX) {
 
+        var existe = false;
+        var articulo = pnlDatosDetalle.find("#Articulo").val();
+        var cantidad = parseFloat(pnlDatosDetalle.find("#Cantidad").val());
+        var precio = parseFloat(pnlDatosDetalle.find("#Precio").val());
+        /*COMPROBAR SI YA SE AGREGÓ*/
+        if (pnlDatosDetalle.find("#tblComprasDetalle tbody tr").length > 0) {
+            ComprasDetalle.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                var data = this.data();
+                console.log(data.ClaveArticulo, 's', articulo);
+                if (data.ClaveArticulo === articulo) {
+                    existe = true;
+                    return false;
+                }
+            });
+        }
 
+        if (!existe) {
+            var detalle = {
+                OrdenCompra: IDX,
+                Articulo: articulo,
+                Cantidad: cantidad,
+                Precio: precio,
+                SubTotal: parseFloat(cantidad * precio)
+            };
+            $.post(master_url + 'onAgregarDetalle', detalle).done(function (data) {
+                if (nuevo) {
+                    getDetalleByID(IDX);
+                    nuevo = false;
+                } else {
+                    ComprasDetalle.ajax.reload();
+                }
 
+                pnlDatosDetalle.find("input").val('');
+                pnlDatosDetalle.find("[name='Articulo']")[0].selectize.clear(true);
+                pnlDatosDetalle.find("[name='Articulo']")[0].selectize.focus();
+            }).fail(function (x, y, z) {
+                console.log(x, y, z);
+            });
+        } else {
+            swal({
+                title: "ERROR",
+                text: "YA SE HA AGREGADO ESTE ARTÍCULO",
+                icon: "error",
+                closeOnClickOutside: false,
+                closeOnEsc: false
+            }).then((willDelete) => {
+                pnlDatosDetalle.find("input").val('');
+                pnlDatosDetalle.find("[name='Articulo']")[0].selectize.clear(true);
+                pnlDatosDetalle.find("[name='Articulo']")[0].selectize.focus();
+            });
+        }
 
+    }
+    function onEliminarDetalleByID(IDX) {
+        if (estatus === 'CERRADA') {
+            swal({
+                title: "COMPRA CERRADA",
+                text: "NO SE PUEDE ELIMINAR ARTÍCULO",
+                icon: "error",
+                closeOnClickOutside: false,
+                closeOnEsc: false,
+                buttons: false,
+                timer: 2000
+            });
+        } else {
+            swal({
+                buttons: ["Cancelar", "Aceptar"],
+                title: 'Estas Seguro?',
+                text: "Esta acción no se puede revertir",
+                icon: "warning",
+                closeOnEsc: false,
+                closeOnClickOutside: false
+            }).then((action) => {
+                if (action) {
+                    $.ajax({
+                        url: master_url + 'onEliminarDetalleByID',
+                        type: "POST",
+                        data: {
+                            ID: IDX
+                        }
+                    }).done(function (data, x, jq) {
+                        ComprasDetalle.ajax.reload();
+                    }).fail(function (x, y, z) {
+                        console.log(x, y, z);
+                    }).always(function () {
+                        HoldOn.close();
+                    });
+                }
+            });
+        }
+    }
 </script>
 <style>
     .text-strong {
@@ -675,6 +1019,10 @@
     td{
         -webkit-transition: all .2s ease-in-out;
         transition: all .2s ease-in-out;
+    }
+
+    td span.badge{
+        font-size: 100% !important;
     }
 </style>
 

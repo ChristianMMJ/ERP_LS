@@ -12,12 +12,27 @@ class ordencompra_model extends CI_Model {
 
     public function getRecords() {
         try {
-            return $this->db->select("OC.ID AS ID, OC.Tipo AS Tipo, OC.Folio AS Folio, CONCAT(P.Clave,'-',P.NombreI) AS Proveedor, "
-                                    . "OC.FechaOrden AS Fecha "
+            return $this->db->select("OC.ID AS ID, "
+                                    . "OC.Tp AS Tp, "
+                                    . "CASE WHEN OC.Tipo = '10' THEN '10 PIEL Y FORRO' "
+                                    . "ELSE '90 PELETERIA' END AS Tipo,"
+                                    . "OC.Folio AS Folio, "
+                                    . "OC.Ano AS Ano, "
+                                    . "OC.Sem AS Sem, "
+                                    . "OC.Maq AS Maq, "
+                                    . "CASE WHEN OC.Tp ='1' THEN  CONCAT(P.Clave,'-',P.NombreF) ELSE "
+                                    . "CONCAT(P.Clave,'-',P.NombreI) END AS Proveedor, "
+                                    . "OC.FechaOrden AS Fecha, "
+                                    . "CASE WHEN OC.Estatus = 'ACTIVO' THEN "
+                                    . "CONCAT('<span class=''badge badge-info''>','ACTIVA','</span>') "
+                                    . "ELSE "
+                                    . "CONCAT('<span class=''badge badge-success''>','CERRADA','</span>') "
+                                    . "END AS Estatus "
                                     . "", false)
                             ->from("ordencompra AS OC")
                             ->join("proveedores AS P", 'P.Clave =  OC.Proveedor')
-                            ->where('OC.Estatus', 'ACTIVO')->get()->result();
+                            ->where_in('OC.Estatus', array('ACTIVO', 'CERRADA'))
+                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -110,7 +125,9 @@ class ordencompra_model extends CI_Model {
 
     public function getProveedores() {
         try {
-            return $this->db->select("P.Clave AS ID, CONCAT(P.Clave,' ',IFNULL(P.NombreF,'')) AS Proveedor", false)
+            return $this->db->select("P.Clave AS ID, "
+                                    . "CONCAT(P.Clave,' ',IFNULL(P.NombreI,'')) AS ProveedorI, "
+                                    . "CONCAT(P.Clave,' ',IFNULL(P.NombreF,'')) AS ProveedorF ", false)
                             ->from("proveedores AS P")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -119,7 +136,7 @@ class ordencompra_model extends CI_Model {
 
     public function onAgregar($array) {
         try {
-            $this->db->insert("articulos", $array);
+            $this->db->insert("ordencompra", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             $LastIdInserted = $row['LAST_INSERT_ID()'];
@@ -131,7 +148,7 @@ class ordencompra_model extends CI_Model {
 
     public function onModificar($ID, $DATA) {
         try {
-            $this->db->where('ID', $ID)->update("articulos", $DATA);
+            $this->db->where('ID', $ID)->update("ordencompra", $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -139,7 +156,7 @@ class ordencompra_model extends CI_Model {
 
     public function onEliminar($ID) {
         try {
-            $this->db->set('Estatus', 'INACTIVO')->where('ID', $ID)->update("articulos");
+            $this->db->set('Estatus', 'CANCELADA')->where('ID', $ID)->update("ordencompra");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -156,13 +173,89 @@ class ordencompra_model extends CI_Model {
                     . 'UM.Descripcion AS Unidad,'
                     . "OCD.Precio AS Precio,"
                     . "OCD.Subtotal AS Subtotal,"
-                    . 'CONCAT(\'<span class="fa fa-trash fa-lg" onclick="onEliminarCompraDetalleByID(\',OCD.ID,\')">\',\'</span>\') AS Eliminar'
+                    . 'CONCAT(\'<span class="fa fa-trash fa-lg" onclick="onEliminarDetalleByID(\',OCD.ID,\')">\',\'</span>\') AS Eliminar'
                     . '', false);
             $this->db->from('ordencompradetalle AS OCD')
                     ->join('ordencompra AS OC', 'OC.ID= OCD.OrdenCompra', 'left')
                     ->join('articulos AS A', 'A.Clave = OCD.Articulo', 'left')
                     ->join('Unidades AS UM', 'A.UnidadMedida = UM.Clave', 'left')
                     ->where('OC.ID', $ID);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onEliminarDetalleByID($ID) {
+        try {
+            $this->db->where('ID', $ID);
+            $this->db->delete("ordencompradetalle");
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    /* REPORTES */
+
+    public function getDatosEmpresa() {
+        try {
+            $this->db->select("E.RazonSocial as Empresa, E.Foto as Logo,"
+                            . "CONCAT(E.Direccion,' ',E.NoExt,' Col. ',E.Colonia) AS Direccion, "
+                            . "CONCAT(E.Ciudad,', ',EDOS.Descripcion,'  Tel. 1464646 AL 49   E-mail: compras@lobosolo.com.mx') AS Direccion2 "
+                            . " ", false)
+                    ->from('empresas AS E')
+                    ->join('estados AS EDOS', 'EDOS.Clave = E.Estado');
+
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getReporteOrdenCompra($ID, $TP) {
+        try {
+            $this->db->select('OC.Folio,'
+                    . 'OC.FechaOrden,'
+                    . 'OC.FechaCaptura,'
+                    . 'OC.Estatus,'
+                    . "OC.Proveedor,"
+                    . "CASE WHEN OC.Tp = '1' THEN "
+                    . "P.NombreF "
+                    . "ELSE P.NombreI "
+                    . "END AS NombreProveedor,"
+                    . "OC.ConsignarA,"
+                    . "OC.Observaciones,"
+                    . "OCD.Cantidad,"
+                    . "U.Descripcion AS Unidad,"
+                    . "OCD.Articulo,"
+                    . "A.Descripcion AS NombreArticulo,"
+                    . "OCD.Precio,"
+                    . "OCD.SubTotal,"
+                    . "OC.Sem,"
+                    . "OC.Maq,"
+                    . "OC.FechaEntrega"
+                    . '', false);
+            $this->db->from('ordencompra AS OC')
+                    ->join('ordencompradetalle AS OCD', 'OCD.OrdenCompra = OC.ID')
+                    ->join('proveedores AS P', 'OC.Proveedor = P.Clave')
+                    ->join('articulos AS A', ' A.Clave = OCD.Articulo')
+                    ->join('Unidades AS U', 'U.Clave = A.UnidadMedida')
+                    ->where('OC.ID', $ID)
+                    ->where('OC.Tp', $TP);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY

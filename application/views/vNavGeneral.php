@@ -238,7 +238,7 @@
         } else {
             event = 'click';
         }
-        $('#sidebarCollapse').on(event, function () {
+        $('#sidebarCollapse').on('click', function () {
             $('#sidebar').addClass('active');
             $('.overlay').addClass('active');
             $('.collapse.in').toggleClass('in');
