@@ -82,6 +82,9 @@
         <script src="<?php print base_url(); ?>js/inputmask/inputmask.phone.extensions.js"></script>
         <script src="<?php print base_url(); ?>js/inputmask/jquery.inputmask.min.js"></script>
 
+        <!-- BOOTSTRAP TOUR JS -->
+        <link href="<?php echo base_url(); ?>js/bootstrap-tour-master/build/css/bootstrap-tour.min.css" rel="stylesheet">
+        <script src="<?php echo base_url(); ?>js/bootstrap-tour-master/build/js/bootstrap-tour.js"></script>
 
         <!--Masked number format money etc-->
         <script src="<?php print base_url(); ?>js/jquery.maskedinput.min.js"></script>
