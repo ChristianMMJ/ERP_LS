@@ -194,7 +194,7 @@ class Pedidos extends CI_Controller {
                     "Observacion" => ($v->Observacion !== '') ? $v->Observacion : NULL,
                     "ObservacionDetalle" => ($v->ObservacionDetalle !== '') ? $v->ObservacionDetalle : NULL,
                     "Serie" => ($v->Serie !== '') ? $v->Serie : NULL,
-                    "Control" => ($v->Control !== '') ? $v->Control : NULL,
+                    "Control" => 0,
                     "Pares" => ($v->Pares !== '') ? $v->Pares : NULL,
                     "C1" => ($v->C1 !== '') ? $v->C1 : NULL, "C2" => ($v->C2 !== '') ? $v->C2 : NULL,
                     "C3" => ($v->C3 !== '') ? $v->C3 : NULL, "C4" => ($v->C4 !== '') ? $v->C4 : NULL,
@@ -276,202 +276,6 @@ class Pedidos extends CI_Controller {
         }
     }
 
-    function onImprimirPedido() {
-        try {
-            $pdf = new PDF('L', 'mm', array(215.9, 279.4));
-            $IDX = $this->input->post('ID');
-            $Pedido = $this->pedidos_model->getPedidoByID($IDX);
-            $Series = $this->pedidos_model->getSerieXPedido($IDX);
-
-            $pdf->SetFont('Arial', '', 7.5);
-            $Encabezado = $Pedido[0];
-            $pdf->setPedido($Encabezado->Clave);
-            $pdf->setCliente($Encabezado->ClienteT);
-            $pdf->setFecha($Encabezado->FechaPedido);
-            $pdf->setCiudad($Encabezado->Ciudad);
-            $pdf->setEstado($Encabezado->Estado);
-            $pdf->setRFC($Encabezado->RFC);
-            $pdf->setTel($Encabezado->Tel);
-            $pdf->setObs($Encabezado->Obs);
-            $pdf->setDireccion($Encabezado->Dir);
-            $pdf->setCP($Encabezado->CP);
-            $pdf->setAgente($Encabezado->AgenteT);
-            $pdf->setTrasp($Encabezado->Transporte);
-            $pdf->setRegistro($Encabezado->Registro);
-
-            $pdf->AddPage();
-            $pdf->SetAutoPageBreak(true, 10);
-
-            $anchos = array(10/* 0 */, 80/* 0 */, 30/* 1 */, 15/* 2 */);
-            $aligns = array('L', 'L', 'L', 'L');
-            $pdf->SetAligns($aligns);
-            $pdf->SetWidths($anchos);
-            $pdf->SetTextColor(0, 0, 0);
-            $posi = array(5, 60, 68, 75, 85, 95);
-            /* ENCABEZADO DETALLE */
-            $pdf->SetFont('Arial', 'B', 6.5);
-
-            $pdf->SetFillColor(225, 225, 234);
-            $pdf->SetY(27.5);
-            $pdf->SetX($posi[0]);
-            $pdf->Cell(55, 3, "Estilo / Color", 1/* BORDE */, 0, 'C', 1);
-            $pdf->SetX($posi[1]);
-            $pdf->Cell(7, 3, "Maq", 1/* BORDE */, 0, 'L', 1);
-            $pdf->SetX(67);
-            $pdf->Cell(7, 3, "Sem", 1/* BORDE */, 0, 'L', 1);
-            $pdf->SetX(74);
-            $pdf->Cell(9, 3, "Recio", 1/* BORDE */, 0, 'C', 1);
-            $pdf->SetX(83);
-            $pdf->Cell(10, 3, "Pares", 1/* BORDE */, 0, 'C', 1);
-            $base_x = 93;
-            $pdf->SetFont('Arial', 'B', 5.5);
-            $pdf->Cell(143, 3, "", 1/* BORDE */, 0, 'C', 1);
-            for ($index = 1; $index <= 22; $index++) {
-                $pdf->SetX($base_x);
-                $base_x += 6.5;
-            }
-            $pdf->SetX($base_x);
-            $pdf->Cell(10, 3, "Precio", 1/* BORDE */, 0, 'C', 1);
-            $base_x += 10;
-            $pdf->SetX($base_x);
-            $pdf->Cell(15, 3, "Total", 1/* BORDE */, 0, 'C', 1);
-            $base_x += 15;
-            $pdf->SetX($base_x);
-            $pdf->Cell(15, 3, "Entrega", 1/* BORDE */, 1, 'C', 1);
-            /* FIN ENCABEZADO DETALLE */
-
-            $pares_totales = 0;
-            $total_final = 0;
-//SIRVE DE PRUEBAS
-//            foreach ($Series as $sk => $sv) {
-//                print "\n * * * Serie" . $sv->Serie . " * * * \n";
-//                foreach ($Pedido as $k => $v) {
-//                    if ($sv->Serie === $v->Serie) {
-//                        print $v->EstiloT . "/" . $v->ColorT . "/Pares: " . $v->Pares . "\n";
-//                    }
-//                }
-//            }
-//            print "\n";
-            /* RESUMEN */
-
-            $pdf->SetFont('Arial', 'B', 7);
-            $anchos = array(55/* 0 */, 7/* 1 */, 7/* 2 */, 9/* 3 */, 10/* 4 */, 6.5/* 5 */);
-            for ($index = 1; $index < 22; $index++) {
-                array_push($anchos, 6.5);
-            }
-            array_push($anchos, 10); //PRECIO
-            array_push($anchos, 15); //TOTAL
-            array_push($anchos, 15); //ENTREGA
-
-            $aligns = array('L'/* 0 */, 'C', 'C', 'C', 'C');
-            for ($index = 1; $index <= 22; $index++) {
-                array_push($aligns, 'C');
-            }
-            array_push($aligns, 'C'); //PRECIO
-            array_push($aligns, 'L'); //TOTAL
-            array_push($aligns, 'C'); //ENTREGA
-
-            foreach ($Series as $sk => $sv) {
-                /* TALLAS */
-                $pdf->SetFont('Arial', 'B', 6);
-                $pdf->SetX($posi[0]);
-                $pdf->SetAligns($aligns);
-                $pdf->SetWidths(array(88, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 40));
-                $row_serie = array();
-                array_push($row_serie, '');
-                for ($index = 1; $index <= 22; $index++) {
-                    array_push($row_serie, ($sv->{"T$index"} !== '0') ? $sv->{"T$index"} : '');
-                }
-                array_push($row_serie, '');
-                $pdf->setFilled(true);
-                $pdf->setBorders(1);
-                $pdf->setAlto(3);
-                $pdf->Row($row_serie);
-                $pdf->setFilled(false);
-                $pdf->setBorders(0);
-                /* FIN TALLAS */
-                foreach ($Pedido as $k => $v) {
-                    /* PRIMER DETALLE */
-                    if ($sv->Serie === $v->Serie) {
-                        $pdf->SetAligns($aligns);
-                        $pdf->SetWidths($anchos);
-                        $pdf->SetX($posi[0]);
-                        $pdf->SetFont('Arial', '', 6);
-                        $row = array();
-                        $estilo_color = $v->EstiloT . "/" . $v->ColorT;
-                        array_push($row, $estilo_color, $v->Maquila, $v->Semana, $v->Recio, $v->Pares); //4
-                        for ($index = 1; $index <= 22; $index++) {
-                            array_push($row, ( $v->{"C$index"} !== '0') ? $v->{"C$index"} : ''); //5
-                        }
-                        array_push($row, number_format($v->Precio, 3, ".", ",")); //PRECIO 6
-                        $precio = ($v->Pares * $v->Precio);
-                        if (strlen($precio) >= 12) {
-                            $pdf->SetFont('Arial', '', 3.5);
-                        } else {
-                            $pdf->SetFont('Arial', '', 6);
-                        }
-                        array_push($row, number_format($precio, 3, ".", ",")); //TOTAL 7
-                        array_push($row, $v->FechaEntrega); //ENTREGA 8
-                        if (strlen($estilo_color) >= 40) {
-                            $pdf->setAlto(3.5);
-                        } else {
-                            $pdf->setAlto(4.5);
-                        }
-                        $pdf->Row($row);
-                        $pares_totales += $v->Pares;
-                        $total_final += ($v->Pares * $v->Precio);
-                        /* FIN PRIMER DETALLE */
-
-                        /* SEGUNDO DETALLE (SUELA) */
-                        $suela = array();
-                        $suelin = $this->pedidos_model->getSuelaByArticulo($v->Estilo);
-                        $pdf->SetAligns(array('R', 'L', 'L', 'L'));
-                        $pdf->SetWidths(array(271));
-                        $pdf->SetX($posi[0]);
-                        if (count($suelin) > 0) {
-                            array_push($suela, 'SUELA: ' . $suelin[0]->Suela); //3 
-                        } else {
-                            array_push($suela, 'SUELA NO DISPONIBLE'); //3 
-                        }
-                        $pdf->SetFont('Arial', 'BI', 6);
-                        $pdf->Row($suela);
-                        /* SEGUNDO DETALLE (SUELA) */
-                    }
-                }
-            }
-            /* TOTALES */
-            $Y = $pdf->GetY();
-            $pdf->SetX(46);
-            $pdf->SetFont('Arial', 'BI', 7);
-            $aligns = array('C', 'C');
-            $pdf->SetAligns($aligns);
-            $pdf->SetWidths(array(15, 32));
-            $pdf->setFilled(true);
-            $pdf->setBorders(1);
-            $pdf->Row(array("PARES", $pares_totales));
-            $pdf->SetY($Y);
-            $pdf->SetX(231);
-            $pdf->SetAligns($aligns);
-            $pdf->SetWidths(array(15, 30));
-            $pdf->Row(array("TOTAL", "$" . number_format($total_final, 3, ".", ",")));
-
-            /* FIN RESUMEN */
-            $path = 'uploads/Reportes/Pedidos';
-            if (!file_exists($path)) {
-                mkdir($path, 0777, true);
-            }
-            $file_name = "Pedido " . date("d-m-Y_his");
-            $url = $path . '/' . $file_name . '.pdf';
-            /* Borramos el archivo anterior */
-
-            $pdf->Output($url);
-            $this->onLog("GENERO UN REPORTE DEL PEDIDO $IDX");
-            print base_url() . $url;
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
     function onImprimirPedidoReducido() {
         try {
             $pdf = new PDF('L', 'mm', array(215.9, 279.4));
@@ -480,20 +284,20 @@ class Pedidos extends CI_Controller {
             $Series = $this->pedidos_model->getSerieXPedido($IDX);
 
             $pdf->SetFont('Arial', '', 7.5);
-            $Encabezado = $Pedido[0];
-            $pdf->setPedido($Encabezado->Clave);
-            $pdf->setCliente($Encabezado->ClienteT);
-            $pdf->setFecha($Encabezado->FechaPedido);
-            $pdf->setCiudad($Encabezado->Ciudad);
-            $pdf->setEstado($Encabezado->Estado);
-            $pdf->setRFC($Encabezado->RFC);
-            $pdf->setTel($Encabezado->Tel);
-            $pdf->setObs($Encabezado->OBSCLIENTE);
-            $pdf->setDireccion($Encabezado->Dir);
-            $pdf->setCP($Encabezado->CP);
-            $pdf->setAgente($Encabezado->AgenteT);
-            $pdf->setTrasp($Encabezado->Transporte);
-            $pdf->setRegistro($Encabezado->Registro);
+            $E = $Pedido[0];
+            $pdf->setPedido($E->Clave);
+            $pdf->setCliente($E->ClienteT);
+            $pdf->setFecha($E->FechaPedido);
+            $pdf->setCiudad($E->Ciudad);
+            $pdf->setEstado($E->Estado);
+            $pdf->setRFC($E->RFC);
+            $pdf->setTel($E->Tel);
+            $pdf->setObs($E->OBSCLIENTE);
+            $pdf->setDireccion($E->Dir);
+            $pdf->setCP($E->CP);
+            $pdf->setAgente($E->AgenteT);
+            $pdf->setTrasp($E->Transporte);
+            $pdf->setRegistro($E->Registro);
 
             $pdf->AddPage();
             $pdf->SetAutoPageBreak(true, 10);
@@ -511,18 +315,8 @@ class Pedidos extends CI_Controller {
 
             $pares_totales = 0;
             $total_final = 0;
-//SIRVE DE PRUEBAS
-//            foreach ($Series as $sk => $sv) {
-//                print "\n * * * Serie" . $sv->Serie . " * * * \n";
-//                foreach ($Pedido as $k => $v) {
-//                    if ($sv->Serie === $v->Serie) {
-//                        print $v->EstiloT . "/" . $v->ColorT . "/Pares: " . $v->Pares . "\n";
-//                    }
-//                }
-//            }
-//            print "\n";
+            
             /* RESUMEN */
-
             $pdf->SetFont('Arial', 'B', 7);
             $anchos = array(55/* 0 */, 7/* 1 */, 7/* 2 */, 9/* 3 */, 10/* 4 */, 6.5/* 5 */);
             for ($index = 1; $index < 22; $index++) {
@@ -540,7 +334,7 @@ class Pedidos extends CI_Controller {
             array_push($aligns, 'C'); //TOTAL
             array_push($aligns, 'C'); //ENTREGA
 
-            $pdf->setY(27.5);
+            $pdf->setY(35);//DISTANCIA ENTRE EL ENCABEZADO Y EL DETALLE
             foreach ($Series as $sk => $sv) {
                 /* TALLAS */
                 $aligns[0] = 'C';
@@ -548,22 +342,22 @@ class Pedidos extends CI_Controller {
                 $pdf->SetX($posi[0]);
                 $pdf->SetAligns($aligns);
                 $pdf->SetWidths(array(55, 7, 7, 9, 10, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 10, 15, 15));
-                $row_serie = array();
-                array_push($row_serie, 'Estilo/Color');
-                array_push($row_serie, 'Maq');
-                array_push($row_serie, 'Sem');
-                array_push($row_serie, 'Recio');
-                array_push($row_serie, 'Pares');
+                $rs = array();
+                array_push($rs, 'Estilo/Color');
+                array_push($rs, 'Maq');
+                array_push($rs, 'Sem');
+                array_push($rs, 'Recio');
+                array_push($rs, 'Pares');
                 for ($index = 1; $index <= 22; $index++) {
-                    array_push($row_serie, ($sv->{"T$index"} !== '0') ? $sv->{"T$index"} : '');
+                    array_push($rs, ($sv->{"T$index"} !== '0') ? $sv->{"T$index"} : '');
                 }
-                array_push($row_serie, 'Precio');
-                array_push($row_serie, 'Total');
-                array_push($row_serie, 'Entrega');
+                array_push($rs, 'Precio');
+                array_push($rs, 'Total');
+                array_push($rs, 'Entrega');
                 $pdf->setFilled(true);
                 $pdf->setBorders(1);
                 $pdf->setAlto(3);
-                $pdf->Row($row_serie);
+                $pdf->Row($rs);
                 $pdf->setFilled(false);
                 $pdf->setBorders(0);
                 /* FIN TALLAS */
