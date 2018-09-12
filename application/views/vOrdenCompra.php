@@ -866,9 +866,32 @@
     function getArticuloByDeptoByProveedor(Departamento, Proveedor) {
         if (pnlDatos.find("#Proveedor").val() !== "") {
             $.getJSON(master_url + 'getArticuloByDeptoByProveedor', {Departamento: Departamento, Proveedor: Proveedor}).done(function (data) {
-                $.each(data, function (k, v) {
-                    pnlDatosDetalle.find("#Articulo")[0].selectize.addOption({text: v.Articulo, value: v.CLAVE});
-                });
+                if (data.length > 0) {
+                    $.each(data, function (k, v) {
+                        pnlDatosDetalle.find("#Articulo")[0].selectize.addOption({text: v.Articulo, value: v.CLAVE});
+                    });
+                } else {
+                    swal({
+                        title: "ATENCIÓN",
+                        text: "EL TIPO/PROVEEDOR NO TIENE ARTICULOS REGISTRADOS",
+                        icon: "warning",
+                        buttons: {
+                            eliminar: {
+                                text: "Aceptar",
+                                value: "aceptar"
+                            }
+                        }
+                    }).then((value) => {
+                        switch (value) {
+                            case "aceptar":
+                                swal.close();
+                                pnlDatos.find("#Proveedor")[0].selectize.clear(true);
+                                pnlDatos.find("#Proveedor")[0].selectize.focus();
+                                break;
+                        }
+                    });
+
+                }
             }).fail(function (x) {
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
                 console.log(x.responseText);
@@ -880,7 +903,6 @@
             console.log(data);
             if (data.length > 0) {
                 pnlDatosDetalle.find("#Precio").val(data[0].Precio);
-
             } else {
 
             }

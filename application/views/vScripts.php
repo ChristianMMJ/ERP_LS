@@ -74,13 +74,20 @@
         $("select").selectize({
             hideSelected: true,
             openOnFocus: false,
-//            onItemAdd: function (value, item) {
-//                $.each(paramsG.Origen, function (k, v) {
-//                    $(v).change(function () {
-//                        $(paramsG.Destino[k])[0].selectize.focus();
-//                    });
-//                });
-//            }
+            score: function (search)
+            {
+                return function (option)
+                {
+                    if (option.text.indexOf(search) === 0)
+                    {
+                        return 1;
+                    } else if (option.text.indexOf(search) >= 3)
+                    {
+                        return 1;
+                    }
+                    return 0;
+                }
+            }
         });
 
 
