@@ -34,14 +34,22 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                 <strong>Observaciones o motivo de reasignación</strong>
-                <input type="text"  id="ObservacionesTitulo" name="ObservacionesTitulo" class="form-control form-control-sm mb-3" placeholder="Observacion uno" />
-                <input type="text"  id="Observaciones" name="Observaciones" class="form-control form-control-sm" placeholder="Observacion dos"/>
+                <input type="text" id="ObservacionesTitulo" name="ObservacionesTitulo" class="form-control form-control-sm mb-3" placeholder="Observacion uno" />
             </div>
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12 mt-3" align="right">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6"> 
+                <br>
+                <input type="text" id="Observaciones" name="Observaciones" class="form-control form-control-sm" placeholder="Observacion dos"/>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-3" align="right">
                 <button type="button" class="btn btn-primary" id="btnAsignar" data-toggle="tooltip" data-placement="top" title="Asignar">
                     <span class="fa fa-check"></span>
+                </button>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 mt-3" align="left">
+                <button type="button" class="btn btn-warning" id="btnReload" data-toggle="tooltip" data-placement="top" title="Refrescar">
+                    <span class="fa fa-retweet"></span>
                 </button>
             </div>
         </div>
@@ -103,8 +111,7 @@
 </div>
 
 <div class="dropdown-menu animated flipInX" style="font-size: 12px;" id='menu'>
-    <a class="dropdown-item text-primary" href="#" onclick="btnAsignar.trigger('click')"><i class="fa fa-check"></i> Asignar</a>
-    <a class="dropdown-item text-danger" href="#" onclick="btnDeshacer.trigger('click')"><i class="fa fa-undo"></i> Deshacer</a>
+    <a class="dropdown-item text-primary" href="#" onclick="btnAsignar.trigger('click')"><i class="fa fa-check"></i> Asignar</a> 
     <a class="dropdown-item text-info" href="#" onclick="btnReload.trigger('click')"><i class="fa fa-exchange-alt"></i> Refrescar</a> 
 </div>
 <script>

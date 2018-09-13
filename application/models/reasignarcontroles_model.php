@@ -76,22 +76,12 @@ class reasignarcontroles_model extends CI_Model {
         }
     }
 
-    public function getMaximoConsecutivo($M, $S, $ID) {
+    public function getMaximoConsecutivo($M, $S) {
         try {
-            $this->db->select('CASE WHEN CT.Consecutivo IS NULL THEN 1 ELSE CT.Consecutivo+1 END AS MAX', false)->from('PedidoDetalle AS PD')
-                    ->join('Pedidos AS PE', 'PD.Pedido = PE.Clave')
-                    ->join('Clientes AS CL', 'CL.Clave = PE.Cliente')
-                    ->join('Estilos AS E', 'PD.Estilo = E.Clave')
-                    ->join('colores AS C', 'PD.color = C.Clave AND C.Estilo = E.Clave')
-                    ->join('series AS S', 'E.Serie = S.Clave')
-                    ->join('Controles AS CT', 'CT.PedidoDetalle = PD.ID', 'left')
-                    ->where('PD.Maquila', $M)->where('PD.Semana', $S);
-            if ($ID > 0) {
-                $this->db->where_not_in('PD.ID', array($ID));
-            }
-            return $this->db->order_by('CT.Consecutivo', 'DESC')
-                            ->limit(1)
-                            ->get()->result();
+            $this->db->select("CASE WHEN (Consecutivo + 1)  IS NULL THEN 1 WHEN (Consecutivo + 1)  = ''  THEN  1 ELSE (Consecutivo + 1)  END AS MAXIMO", 
+                    false)->from('controles AS C')
+                    ->where('C.Maquila', $M)->where('C.Semana', $S);
+            return $this->db->order_by('C.Consecutivo', 'DESC')->limit(1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -120,7 +110,7 @@ class reasignarcontroles_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-    
+
     public function getMaximoConsecutivoZero($M, $S, $ID) {
         try {
             $this->db->select('CASE WHEN CT.Consecutivo IS NULL THEN 1 ELSE CT.Consecutivo+1 END AS MAX', false)->from('PedidoDetalle AS PD')
@@ -149,4 +139,5 @@ class reasignarcontroles_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
+
 }

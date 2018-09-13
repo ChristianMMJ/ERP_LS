@@ -73,6 +73,7 @@ class CerrarProg extends CI_Controller {
                             $M = str_pad($v->Maquila, 2, '0', STR_PAD_LEFT);
                             $S = str_pad($v->Semana, 2, '0', STR_PAD_LEFT);
                             $C = str_pad($this->cerrarprog_model->getMaximoConsecutivo($v->Maquila, $v->Semana, 0)[0]->MAX, 3, '0', STR_PAD_LEFT);
+                            $C = $C > 0 ? $C : str_pad(1, 3, '0', STR_PAD_LEFT);
                             $this->cerrarprog_model->onAgregarControl(array(
                                 'Control' => $Y . $S . $M . $C,
                                 'FechaProgramacion' => Date('d/m/Y h:i:s a'),
@@ -88,10 +89,7 @@ class CerrarProg extends CI_Controller {
                     }
                     break;
                 case 2:
-                    foreach ($controles as $k => $v) {
-                        print "\n";
-                        print_r($v);
-                        print "\n";
+                    foreach ($controles as $k => $v) { 
                         $this->cerrarprog_model->onAgregarHistorialControl(array(
                             'Control' => $v->Control,
                             'Estilo' => $v->Estilo,

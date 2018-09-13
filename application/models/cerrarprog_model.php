@@ -78,18 +78,16 @@ class cerrarprog_model extends CI_Model {
 
     public function getMaximoConsecutivo($M, $S, $ID) {
         try {
-            $this->db->select('CASE WHEN CT.Consecutivo IS NULL THEN 1 ELSE CT.Consecutivo+1 END AS MAX', false)->from('PedidoDetalle AS PD')
+            $this->db->select('CASE WHEN CT.Consecutivo IS NULL THEN 1 ELSE CT.Consecutivo+1 END AS MAX', false)
+                    ->from('PedidoDetalle AS PD')
                     ->join('Pedidos AS PE', 'PD.Pedido = PE.Clave')
                     ->join('Clientes AS CL', 'CL.Clave = PE.Cliente')
                     ->join('Estilos AS E', 'PD.Estilo = E.Clave')
                     ->join('colores AS C', 'PD.color = C.Clave AND C.Estilo = E.Clave')
                     ->join('series AS S', 'E.Serie = S.Clave')
                     ->join('Controles AS CT', 'CT.PedidoDetalle = PD.ID', 'left')
-                    ->where('PD.Control', 0)->where('PD.Maquila', $M)->where('PD.Semana', $S);
-            if ($ID > 0) {
-                $this->db->where_not_in('PD.ID', array($ID));
-            }
-            return $this->db->order_by('CT.Consecutivo', 'DESC')
+                    ->where_not_in('PD.Control', array(0))->where('PD.Maquila', $M)->where('PD.Semana', $S); 
+              return $this->db->order_by('CT.Consecutivo', 'DESC')
                             ->limit(1)
                             ->get()->result();
         } catch (Exception $exc) {

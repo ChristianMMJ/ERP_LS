@@ -76,23 +76,29 @@ class ReasignarControles extends CI_Controller {
                 $Y = substr(Date('Y'), 2);
                 $M = str_pad($v->Maquila, 2, '0', STR_PAD_LEFT);
                 $S = str_pad($v->Semana, 2, '0', STR_PAD_LEFT);
-                $IDN = $this->reasignarcontroles_model->getMaximoConsecutivo($v->Maquila, $v->Semana, 0);
-
-                print "\n" . $v->Maquila . ", " . $v->Semana . "; " . $v->ID . " \n";
-
+                $IDN = $this->reasignarcontroles_model->getMaximoConsecutivo($M, $S, 0);
+                print $this->db->last_query();
+                print "\n * * * IDN : $v->Maquila, $v->Semana * * * \n";
+                print_r($v);
                 print_r($IDN);
+                print "\n * * * FIN IDN : $v->Maquila, $v->Semana * * * \n";
                 if (count($IDN) > 0) {
-                    $C = str_pad($IDN[0]->MAX, 3, '0', STR_PAD_LEFT);
-                    print "\n consecutivo\n";
-                    print_r($IDN);
-                    print "\n";
-                    $this->db->set('Control', $Y . $S . $M . ($C > 0) ? $C : str_pad(1, 3, '0', STR_PAD_LEFT))->where('ID', $v->PedidoDetalle)->update('pedidodetalle');
+                    $C = str_pad($IDN[0]->MAXIMO, 3, '0', STR_PAD_LEFT);
+                    /* CAMBIAR EN CONTROLES; LA SEMANA, LA MAQUILA Y EL CONSECUTIVO EN 'N' */
+                    $this->db->set('Semana', $S)->set('Maquila', $M)
+                            ->set('Consecutivo', $C)
+                            ->where('PedidoDetalle', $v->PedidoDetalle)->update('controles');
+                    /* MODIFICAR EN EL PEDIDO (DETALLE), EL CONTROL */
+                    $this->db->set('Control', $Y . $S . $M . $C)->where('ID', $v->PedidoDetalle)->update('pedidodetalle');
                 } else {
-                    $Y = substr(Date('Y'), 2);
-                    $M = str_pad($v->Maquila, 2, '0', STR_PAD_LEFT);
-                    $S = str_pad($v->Semana, 2, '0', STR_PAD_LEFT);
-                    $C = str_pad($this->reasignarcontroles_model->getMaximoConsecutivoZero($v->Maquila, $v->Semana, 0)[0]->MAX, 3, '0', STR_PAD_LEFT);
-                    $this->db->set('Control', $Y . $S . $M . ($C > 0) ? $C : str_pad(1, 3, '0', STR_PAD_LEFT))->where('ID', $v->PedidoDetalle)->update('pedidodetalle'); 
+                    //VACIO
+                    /* CAMBIAR EN CONTROLES; LA SEMANA, LA MAQUILA Y EL CONSECUTIVO EN 001 */
+                    $C = str_pad(1, 3, '0', STR_PAD_LEFT);
+                    $this->db->set('Semana', $S)->set('Maquila', $M)
+                            ->set('Consecutivo', $C)
+                            ->where('PedidoDetalle', $v->PedidoDetalle)->update('controles');
+                    /* MODIFICAR EN EL PEDIDO (DETALLE), EL CONTROL */
+                    $this->db->set('Control', $Y . $S . $M . $C)->where('ID', $v->PedidoDetalle)->update('pedidodetalle');
                 }
             }
         } catch (Exception $exc) {
