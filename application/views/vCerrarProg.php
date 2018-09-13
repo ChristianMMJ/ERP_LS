@@ -2,10 +2,13 @@
     <div class="card-body">
         <div class="row">
             <div class="col-sm-12 text-center text-danger font-italic">
-                <legend class="float-left">Seleccionar control</legend>
+                <legend class="float-left  font-weight-bold">Seleccionar pedidos por maquilador/semana/año para generar control</legend>
             </div>
         </div>
         <div class="row" style="padding-left: 15px">
+            <div class="col-12 col-sm-6 col-lg-1 mt-3" align="center">
+                <button type="button" class="btn btn-warning" id="btnHistorialDeControles" data-toggle="tooltip" data-placement="top" title="Historial"><span class="fa fa-history"></span><br></button>
+            </div>
             <div class="col-12 col-sm-6 col-lg-3" data-column="12">
                 <strong>Maquila</strong>
                 <input type="text" class="form-control form-control-sm column_filter" id="col12_filter" autofocus>
@@ -18,11 +21,10 @@
                 <strong>Año</strong>
                 <input type="text" class="form-control form-control-sm column_filter" id="col14_filter">
             </div>
-            <div class="col-12 col-sm-6 col-lg-3 mt-3">
-                <button type="button" class="btn btn-primary" id="btnAsignar" data-toggle="tooltip" data-placement="top" title="Asignar"><span class="fa fa-check"></span><br></button>
+            <div class="col-12 col-sm-6 col-lg-2 mt-3">
+                <button type="button" class="btn btn-primary mx-5" id="btnAsignar" data-toggle="tooltip" data-placement="top" title="Asignar"><span class="fa fa-check"></span><br></button>
                 <button type="button" class="btn btn-danger" id="btnDeshacer" data-toggle="tooltip" data-placement="top" title="Deshacer"><span class="fa fa-undo"></span><br></button>
                 <button type="button" class="btn btn-info" id="btnReload" data-toggle="tooltip" data-placement="top" title="Refrescar"><span class="fa fa-exchange-alt"></span><br></button>
-                <button type="button" class="btn btn-warning" id="btnHistorialDeControles" data-toggle="tooltip" data-placement="top" title="Historial"><span class="fa fa-history"></span><br></button>
             </div>
         </div>
         <br>
@@ -142,6 +144,7 @@
     var btnHistorialDeControles = $("#btnHistorialDeControles");
     var mdlHistorial = $("#mdlHistorial");
     var tblHistorial = mdlHistorial.find('#tblHistorial');
+    var pnlTablero = $("#pnlTablero");
     // IIFE - Immediately Invoked Function Expression
     (function (yc) {
         // The global jQuery object is passed as a parameter
@@ -313,7 +316,13 @@
                         }
                     });
                 } else {
+                    //COMPROBAR CAMPOS DE MAQUILA,SEMANA Y AÑO
+                    /* var maq = pnlTablero.find("#col12_filter"), sem = pnlTablero.find("#col13_filter"), ano = pnlTablero.find("#col14_filter");
+                     if (maq.val() === '' && sem.val() === '' && ano.val() === '') {*/
                     swal('ATENCIÓN', 'NO HA SELECCIONADO NINGÚN REGISTRO', 'warning');
+                    /*} else {
+                     CerrarProg.rows().select();
+                     }*/
                 }
             });
 
@@ -326,9 +335,10 @@
     }));
 
     function init() {
-        getRecords(); 
+        getRecords();
         $("#col12_filter").focus();
-       
+        handleEnter();
+        pnlTablero.find("#col14_filter").val((new Date()).getFullYear());
         Historial = tblHistorial.DataTable({
             dom: 'Brt',
             buttons: [
@@ -563,7 +573,7 @@
                 }
                 var td = $(this).find("td.focus");
                 var g = '<input id="EditingField" type="text" class="form-control form-control-sm">';
-                
+
                 var g = '<input id="EditingField" type="text" class="form-control form-control-sm" value="' + cell.data() + '" autofocus>';
                 td.html(g);
                 td.find("#EditingField").focus();
@@ -618,7 +628,7 @@
                 FechaEntrega: r.Entrega,
                 Ano: r.Anio,
                 Marca: r.Marca
-            }); 
+            });
         });
         var f = new FormData();
         f.append('Marca', i);
@@ -631,8 +641,14 @@
             processData: false,
             data: f
         }).done(function (data, x, jq) {
-            swal('INFO', 'SE HAN ' + (i > 0 ? 'MARCADO' : 'DESMARCADO') + ' LOS REGISTROS', 'success');
+            swal({
+                title: 'INFO',
+                text: 'SE HAN ' + (i > 0 ? 'MARCADO' : 'DESMARCADO') + ' LOS REGISTROS',
+                icon: 'success',
+                timer: 1100
+            });
             CerrarProg.ajax.reload();
+            $("#col12_filter").focus().select();
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {

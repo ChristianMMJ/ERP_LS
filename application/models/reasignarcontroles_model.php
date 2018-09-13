@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class cerrarprog_model extends CI_Model {
+class reasignarcontroles_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
@@ -45,8 +45,8 @@ class cerrarprog_model extends CI_Model {
                             ->join('Estilos AS E', 'PD.Estilo = E.Clave')
                             ->join('colores AS C', 'PD.color = C.Clave AND C.Estilo = E.Clave')
                             ->join('series AS S', 'E.Serie = S.Clave')
-                            ->join('Controles AS CT', 'CT.PedidoDetalle = PD.ID', 'left')
-                            ->where('PD.Control', 0)->get()->result();
+                            ->join('Controles AS CT', 'CT.PedidoDetalle = PD.ID')
+                            ->where('PD.Control != 0', null, false)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -85,7 +85,7 @@ class cerrarprog_model extends CI_Model {
                     ->join('colores AS C', 'PD.color = C.Clave AND C.Estilo = E.Clave')
                     ->join('series AS S', 'E.Serie = S.Clave')
                     ->join('Controles AS CT', 'CT.PedidoDetalle = PD.ID', 'left')
-                    ->where('PD.Control', 0)->where('PD.Maquila', $M)->where('PD.Semana', $S);
+                    ->where('PD.Maquila', $M)->where('PD.Semana', $S);
             if ($ID > 0) {
                 $this->db->where_not_in('PD.ID', array($ID));
             }
@@ -108,6 +108,43 @@ class cerrarprog_model extends CI_Model {
     public function onAgregarHistorialControl($x) {
         try {
             $this->db->insert("HistorialControles", $x);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getMaquilas() {
+        try {
+            return $this->db->select("CONVERT(M.Clave, UNSIGNED INTEGER) AS Clave, CONCAT(M.Clave,' - ',M.Nombre) AS Maquila")->from("Maquilas AS M")->where("M.Estatus", "ACTIVO")->order_by('Clave', 'ASC')->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    
+    public function getMaximoConsecutivoZero($M, $S, $ID) {
+        try {
+            $this->db->select('CASE WHEN CT.Consecutivo IS NULL THEN 1 ELSE CT.Consecutivo+1 END AS MAX', false)->from('PedidoDetalle AS PD')
+                    ->join('Pedidos AS PE', 'PD.Pedido = PE.Clave')
+                    ->join('Clientes AS CL', 'CL.Clave = PE.Cliente')
+                    ->join('Estilos AS E', 'PD.Estilo = E.Clave')
+                    ->join('colores AS C', 'PD.color = C.Clave AND C.Estilo = E.Clave')
+                    ->join('series AS S', 'E.Serie = S.Clave')
+                    ->join('Controles AS CT', 'CT.PedidoDetalle = PD.ID', 'left')
+                    ->where('PD.Control', 0)->where('PD.Maquila', $M)->where('PD.Semana', $S);
+            if ($ID > 0) {
+                $this->db->where_not_in('PD.ID', array($ID));
+            }
+            return $this->db->order_by('CT.Consecutivo', 'DESC')
+                            ->limit(1)
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onAgregarControlZero($x) {
+        try {
+            $this->db->insert("Controles", $x);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

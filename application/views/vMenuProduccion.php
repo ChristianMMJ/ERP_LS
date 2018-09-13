@@ -26,7 +26,8 @@
                     <span class="fas fa-pencil-alt"></span> Capturas
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCapturas">
-                    <a class="dropdown-item" href="<?php print base_url('CerrarProg'); ?>"> Marca pedido para control.</a>
+                    <a class="dropdown-item" href="<?php print base_url('CerrarProg'); ?>"><span class="fa fa-hand-pointer"></span> Marcar pedidos para control</a>
+                    <a class="dropdown-item" href="<?php print base_url('ReasignarControles'); ?>"><span class="fa fa-retweet"></span> Reasignar controles</a>
                 </div>
             </li>
             <li class="nav-item dropdown">

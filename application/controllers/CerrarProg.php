@@ -12,7 +12,35 @@ class CerrarProg extends CI_Controller {
 
     public function index() {
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
-            $this->load->view('vEncabezado')->view('vMenuProduccion')->view('vCerrarProg')->view('vFooter');
+            $this->load->view('vEncabezado');
+            switch ($this->session->userdata["TipoAcceso"]) {
+                case 'SUPER ADMINISTRADOR':
+                    $this->load->view('vNavGeneral')->view('vMenuProduccion');
+                    break;
+                case 'ADMINISTRACION':
+                    $this->load->view('vMenuAdministracion');
+                    break;
+                case 'CONTABILIDAD':
+                    $this->load->view('vMenuContabilidad');
+                    break;
+                case 'RECURSOS HUMANOS':
+                    $this->load->view('vMenuRecursosHumanos');
+                    break;
+                case 'INGENIERIA':
+                    $this->load->view('vMenuIngenieria');
+                    break;
+                case 'DISEÑO Y DESARROLLO':
+                    $this->load->view('vMenuDisDes');
+                    break;
+                case 'ALMACEN':
+                    $this->load->view('vMenuAlmacen');
+                    break;
+                case 'PRODUCCION':
+                    $this->load->view('vMenuProduccion');
+                    break;
+            }
+
+            $this->load->view('vFondo')->view('vCerrarProg')->view('vFooter');
         } else {
             $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
         }
@@ -55,6 +83,7 @@ class CerrarProg extends CI_Controller {
                                 'Estatus' => 'A', 'Departamento' => 1,
                                 'Ano' => $Y, 'Maquila' => $M, 'Semana' => $S, 'Consecutivo' => $C
                             ));
+                            $this->db->set('Control', $Y . $S . $M . $C)->where('ID', $v->PedidoDetalle)->update('pedidodetalle');
                         }
                     }
                     break;
@@ -89,6 +118,7 @@ class CerrarProg extends CI_Controller {
                             'Usuario' => $_SESSION["USERNAME"]
                         ));
                         $this->db->where('Pedido', $v->Pedido)->where('PedidoDetalle', $v->PedidoDetalle)->delete('Controles');
+                        $this->db->set('Control', 0)->where('ID', $v->PedidoDetalle)->update('pedidodetalle');
                     }
                     break;
             }
@@ -96,4 +126,5 @@ class CerrarProg extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
+
 }

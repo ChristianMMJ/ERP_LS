@@ -80,6 +80,14 @@ class Pedidos extends CI_Controller {
         }
     }
 
+    public function onVerificarByID() {
+        try {
+            print json_encode($this->pedidos_model->onVerificarByID($this->input->get('ID')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getClientes() {
         try {
             print json_encode($this->pedidos_model->getClientes());
@@ -315,7 +323,7 @@ class Pedidos extends CI_Controller {
 
             $pares_totales = 0;
             $total_final = 0;
-            
+
             /* RESUMEN */
             $pdf->SetFont('Arial', 'B', 7);
             $anchos = array(55/* 0 */, 7/* 1 */, 7/* 2 */, 9/* 3 */, 10/* 4 */, 6.5/* 5 */);
@@ -334,7 +342,7 @@ class Pedidos extends CI_Controller {
             array_push($aligns, 'C'); //TOTAL
             array_push($aligns, 'C'); //ENTREGA
 
-            $pdf->setY(35);//DISTANCIA ENTRE EL ENCABEZADO Y EL DETALLE
+            $pdf->setY(35); //DISTANCIA ENTRE EL ENCABEZADO Y EL DETALLE
             foreach ($Series as $sk => $sv) {
                 /* TALLAS */
                 $aligns[0] = 'C';

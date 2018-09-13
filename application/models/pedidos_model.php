@@ -168,6 +168,16 @@ class pedidos_model extends CI_Model {
         }
     }
 
+    public function onVerificarByID($ID) {
+        try {
+            return $this->db->select('COUNT(*) AS Control', false)->from('controles AS C')
+                            ->where('C.PedidoDetalle', $ID)->where('C.Estatus', 'A')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getProduccionMaquilaSemana($M, $S) {
         try {
             return $this->db->select('SUM(PD.Pares) AS Pares', false)->from('pedidodetalle AS PD')
@@ -224,7 +234,7 @@ class pedidos_model extends CI_Model {
 
     public function getEstilos() {
         try {
-            $this->db->query("set sql_mode=''");//FULL GROUP
+            $this->db->query("set sql_mode=''"); //FULL GROUP
             return $this->db->select("E.Clave AS Clave,CONCAT(E.Clave,'-',IFNULL(E.Descripcion,'')) AS Estilo")
                             ->from("Estilos AS E")
                             ->join('fichatecnica AS FT', 'FT.Estilo = E.Clave')

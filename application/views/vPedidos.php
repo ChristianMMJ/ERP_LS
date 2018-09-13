@@ -387,9 +387,6 @@
             }
         });
 
-        pnlDatos.find("[name*='T']").change(function () {
-        });
-
         pnlDatos.find("#FechaEntrega").focusout(function () {
             //OBTENER ANOS DE ENTREGA
             $.getJSON(master_url + 'getAnosValidos').done(function (data) {
@@ -465,7 +462,7 @@
                                 Precio: tr[30],
                                 Observacion: tr[35],
                                 ObservacionDetalle: tr[36],
-                                Serie: tr[37], 
+                                Serie: tr[37],
                                 Ano: n,
                                 Recibido: tr[1],
                                 Pares: tr[31],
@@ -531,7 +528,7 @@
                             Precio: tr[30],
                             Observacion: tr[35],
                             ObservacionDetalle: tr[36],
-                            Serie: tr[37], 
+                            Serie: tr[37],
                             Ano: n,
                             Recibido: tr[1],
                             Pares: tr[31],
@@ -1126,22 +1123,38 @@
                         PedidoDetalle.row($(r).parents('tr')).remove().draw();
                         break;
                     case 2:
+                        //CHECAR SI TIENE CONTROL
                         var dt = PedidoDetalle.row($(r).parents('tr')).data();
-                        $.post(master_url + 'onEliminar', {ID: dt[0]}).done(function (data) {
-                            //REMOVER AL EDITAR (GUARDADO)
-                            PedidoDetalle.row($(r).parents('tr')).remove().draw();
-                            swal({
-                                title: "ATENCIÓN",
-                                text: "SE HA ELIMINADO EL REGISTRO",
-                                icon: "success",
-                                closeOnClickOutside: false,
-                                closeOnEsc: false,
-                                buttons: false,
-                                timer: 1500
-                            });
-                        }).fail(function (x, y, z) {
-                            console.log(x, y, z);
-                        }).always(function () {
+                        $.getJSON(master_url + 'onVerificarByID', {ID: dt[0]}).done(function (data) {
+                            console.log(data);
+                            var x = data[0];
+                            if (parseInt(x.Control) <= 0) {
+                                console.log('No Tiene control ', dt[0]);
+                                $.post(master_url + 'onEliminar', {ID: dt[0]}).done(function (data) {
+                                    //REMOVER AL EDITAR (GUARDADO)
+                                    PedidoDetalle.row($(r).parents('tr')).remove().draw();
+                                    swal({
+                                        title: "ATENCIÓN",
+                                        text: "SE HA ELIMINADO EL REGISTRO",
+                                        icon: "success",
+                                        closeOnClickOutside: false,
+                                        closeOnEsc: false,
+                                        buttons: false,
+                                        timer: 1500
+                                    });
+                                }).fail(function (x, y, z) {
+                                    console.log(x, y, z);
+                                }).always(function () {
+                                });
+                            } else {
+                                swal({
+                                    title: "ATENCIÓN",
+                                    text: "YA TIENE UN CONTROL ASIGNADO, ELIMINE PRIMERO EL CONTROL.",
+                                    icon: "error",
+                                    closeOnClickOutside: false,
+                                    closeOnEsc: false
+                                });
+                            }
                         });
                         break;
                 }
