@@ -2,7 +2,7 @@
     <div class="card-body ">
         <div class="row">
             <div class="col-sm-8 float-left">
-                <legend class="float-left">Órdenes de Compra (PIEL, FORRO, PELETERIA, PLANTA)</legend>
+                <legend class="float-left">Órdenes de Compra (PIEL, FORRO, PELETERIA)</legend>
             </div>
             <div class="col-sm-4 float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>

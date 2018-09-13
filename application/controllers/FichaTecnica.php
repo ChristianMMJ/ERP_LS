@@ -16,10 +16,22 @@ class FichaTecnica extends CI_Controller {
             switch ($this->session->userdata["TipoAcceso"]) {
                 case 'SUPER ADMINISTRADOR':
                     $this->load->view('vNavGeneral');
-                    $this->load->view('vMenuFichasTecnicas');
+                    //Validamos que no venga vacia y asignamos un valor por defecto
+                    $Origen = isset($_GET['origen']) ? $_GET['origen'] : "";
+
+                    if ($Origen === 'FICHASTECNICAS') {
+                        $this->load->view('vMenuFichasTecnicas');
+                    } else if ($Origen === 'MATERIALES') {
+                        $this->load->view('vMenuMateriales');
+                    } else {
+                        $this->load->view('vMenuPrincipal');
+                    }
                     break;
                 case 'DISEÑO Y DESARROLLO':
                     $this->load->view('vMenuFichasTecnicas');
+                    break;
+                case 'ALMACEN':
+                    $this->load->view('vMenuMateriales');
                     break;
             }
 

@@ -19,6 +19,9 @@
                     <a class="dropdown-item" href="<?php print base_url('Articulos/?origen=MATERIALES'); ?>"> Artículos</a>
                     <a class="dropdown-item" href="<?php print base_url('Proveedores/?origen=MATERIALES'); ?>"> Proveedores</a>
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlTipoCambio"> Tipo Cambio Moneda</a>
+                    <a class="dropdown-item" href="<?php print base_url('FichaTecnica/?origen=MATERIALES'); ?>"> Fichas Tecnicas</a>
+                    <a class="dropdown-item" href="<?php print base_url('FraccionesXEstilo/?origen=MATERIALES'); ?>"> Fichas Tecnicas Proceso</a>
+                    <a class="dropdown-item" href="<?php print base_url('SuelaPlantaCompras.shoes'); ?>">Suelas, Plantas para Compras</a>
                 </div>
 
 
@@ -32,7 +35,7 @@
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" href="#">Orden de Compra</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="<?php print base_url('OrdenCompra.shoes'); ?>">Orden Compra de Piel Forro Peletería Planta</a>
+                            <a class="dropdown-item" href="<?php print base_url('OrdenCompra.shoes'); ?>">Orden Compra de Piel Forro Peletería</a>
                             <a class="dropdown-item" href="#">Orden de Compra Suela Mezclada</a>
                             <a class="dropdown-item" href="#">Orden de Compra Suela sin Mezclar</a>
                         </div>

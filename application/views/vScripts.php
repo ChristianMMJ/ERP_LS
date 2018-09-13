@@ -71,7 +71,7 @@
             return true;
         });
 
-        $("select").selectize({
+        $("select").not('.NotSelectize').selectize({
             hideSelected: true,
             openOnFocus: false,
             score: function (search)
@@ -468,7 +468,7 @@
                     , next
                     ;
             if (e.keyCode === 13) {
-                focusable = form.find('input,a,select,button,textarea').filter(':visible:enabled').not('.disabledForms');
+                focusable = form.find('input,a,select,button,textarea').filter(':visible:enabled').not('.disabledForms').not('.selectNotEnter');
                 next = focusable.eq(focusable.index(this) + 1);
                 if (next.length) {
                     next.focus();

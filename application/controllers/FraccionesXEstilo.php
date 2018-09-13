@@ -24,9 +24,10 @@ class FraccionesXEstilo extends CI_Controller {
 
                     if ($Origen === 'FICHASTECNICAS') {
                         $this->load->view('vMenuFichasTecnicas');
-                    } else
-                    if ($Origen === 'NOMINAS') {
+                    } else if ($Origen === 'NOMINAS') {
                         $this->load->view('vMenuNominas');
+                    } else if ($Origen === 'MATERIALES') {
+                        $this->load->view('vMenuMateriales');
                     } else {
                         $this->load->view('vMenuPrincipal');
                     }
@@ -40,6 +41,9 @@ class FraccionesXEstilo extends CI_Controller {
                     break;
                 case 'PRODUCCION':
                     $this->load->view('vMenuProduccion');
+                    break;
+                case 'ALMACEN':
+                    $this->load->view('vMenuMateriales');
                     break;
             }
 
