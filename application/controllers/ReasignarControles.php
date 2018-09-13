@@ -89,7 +89,10 @@ class ReasignarControles extends CI_Controller {
                             ->set('Consecutivo', $C)
                             ->where('PedidoDetalle', $v->PedidoDetalle)->update('controles');
                     /* MODIFICAR EN EL PEDIDO (DETALLE), EL CONTROL */
-                    $this->db->set('Control', $Y . $S . $M . $C)->where('ID', $v->PedidoDetalle)->update('pedidodetalle');
+                    $this->db->set('Control', $Y . $S . $M . $C)
+                            ->set('Observacion', $v->Observacion)
+                            ->set('ObservacionDetalle', $v->Adicionales)
+                            ->where('ID', $v->PedidoDetalle)->update('pedidodetalle');
                 } else {
                     //VACIO
                     /* CAMBIAR EN CONTROLES; LA SEMANA, LA MAQUILA Y EL CONSECUTIVO EN 001 */
@@ -98,7 +101,10 @@ class ReasignarControles extends CI_Controller {
                             ->set('Consecutivo', $C)
                             ->where('PedidoDetalle', $v->PedidoDetalle)->update('controles');
                     /* MODIFICAR EN EL PEDIDO (DETALLE), EL CONTROL */
-                    $this->db->set('Control', $Y . $S . $M . $C)->where('ID', $v->PedidoDetalle)->update('pedidodetalle');
+                    $this->db->set('Control', $Y . $S . $M . $C)
+                            ->set('Observacion', $v->Observacion)
+                            ->set('ObservacionDetalle', $v->Adicionales)
+                            ->where('ID', $v->PedidoDetalle)->update('pedidodetalle');
                 }
             }
         } catch (Exception $exc) {

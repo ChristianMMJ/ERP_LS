@@ -34,15 +34,15 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                <strong>Observaciones o motivo de reasignación</strong>
-                <input type="text" id="ObservacionesTitulo" name="ObservacionesTitulo" class="form-control form-control-sm mb-3" placeholder="Observacion uno" />
+            <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
+                <strong>Observaciones</strong>
+                <input type="text" id="ObservacionesTitulo" name="Observaciones" class="form-control form-control-sm mb-3" placeholder="Observacion uno" />
             </div>
-            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6"> 
-                <br>
-                <input type="text" id="Observaciones" name="Observaciones" class="form-control form-control-sm" placeholder="Observacion dos"/>
+            <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">  
+                <strong>Observaciones adicionales</strong>
+                <input type="text" id="Observaciones" name="Adicionales" class="form-control form-control-sm" placeholder="Observacion dos"/>
             </div>
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-3" align="right">
+            <div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 mt-3" align="left">
                 <button type="button" class="btn btn-primary" id="btnAsignar" data-toggle="tooltip" data-placement="top" title="Asignar">
                     <span class="fa fa-check"></span>
                 </button>
@@ -319,7 +319,9 @@
                                         FechaEntrega: r.Entrega, 
                                         Marca: r.Marca,
                                         Semana: (pnlTablero.find("#Semana").val()),
-                                        Maquila: (pnlTablero.find("#Maquila").val())
+                                        Maquila: (pnlTablero.find("#Maquila").val()),
+                                        Observacion: (pnlTablero.find("#Observaciones").val()),
+                                        Adicionales: (pnlTablero.find("#Adicionales").val())
                                     });
                                 });
                                 var f = new FormData();
