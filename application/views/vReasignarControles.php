@@ -6,7 +6,12 @@
             </div>
         </div>
         <div class="row" style="padding-left: 15px">
-            <div class="col-12 col-sm-12 col-lg-3" data-column="12">
+            <div class="col-12 col-sm-1 col-lg-1 col-md-1 col-xl-1" align="center">
+                <button type="button" class="btn btn-warning" id="btnReload" data-toggle="tooltip" data-placement="top" title="Refrescar">
+                    <span class="fa fa-retweet"></span>
+                </button>
+            </div>
+            <div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2" data-column="12">
                 <strong>Inicial</strong>
                 <input type="text" class="form-control form-control-sm" id="ControlInicial" autofocus placeholder="Ej:180152001">
             </div>
@@ -18,19 +23,19 @@
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" data-column="12">
                         <strong>Maquila asignada</strong>
-                        <input type="text" class="form-control form-control-sm column_filter" id="col12_filter" placeholder="Maquila 1" maxlength="4"> 
+                        <input type="text" class="form-control form-control-sm column_filter" id="col12_filter" placeholder="Maquila 1" maxlength="4" onblur="onChecarMaquilaValida(this)"> 
                     </div>
                     <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" data-column="13">
                         <strong>Semana asignada</strong>
-                        <input type="text" class="form-control form-control-sm column_filter" id="col13_filter" placeholder="Semana 1" maxlength="3">
+                        <input type="text" class="form-control form-control-sm column_filter" id="col13_filter" placeholder="Semana 1" maxlength="3" onblur="onChecarSemanaValida(this)">
                     </div>
                     <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                         <strong>Maquila a asignar</strong>
-                        <input type="text"  class="form-control form-control-sm column_filter" id="Maquila" placeholder="Maquila 2" maxlength="4"> 
+                        <input type="text"  class="form-control form-control-sm column_filter" id="Maquila" placeholder="Maquila 2" maxlength="4" onblur="onChecarMaquilaValida(this)"> 
                     </div>
                     <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" data-column="15">
                         <strong>Semana a asignar</strong>
-                        <input type="text" class="form-control form-control-sm column_filter" id="Semana" placeholder="Semana 2" maxlength="3">
+                        <input type="text" class="form-control form-control-sm column_filter" id="Semana" placeholder="Semana 2" maxlength="3" onblur="onChecarSemanaValida(this)">
                     </div>
                 </div>
             </div>
@@ -43,14 +48,11 @@
                 <input type="text" id="Observaciones" name="Adicionales" class="form-control form-control-sm" placeholder="Observacion dos"/>
             </div>
             <div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 mt-3" align="left">
-                <button type="button" class="btn btn-primary" id="btnAsignar" data-toggle="tooltip" data-placement="top" title="Asignar">
+                <button type="button" class="btn btn-primary" id="btnAsignar" data-toggle="tooltip" data-placement="top" title="Asignar" disabled="">
                     <span class="fa fa-check"></span>
                 </button>
             </div>
             <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 mt-3" align="left">
-                <button type="button" class="btn btn-warning" id="btnReload" data-toggle="tooltip" data-placement="top" title="Refrescar">
-                    <span class="fa fa-retweet"></span>
-                </button>
             </div>
         </div>
         <br>
@@ -285,7 +287,7 @@
                     if (maquila_nueva.val() !== '' && semana_nueva !== '') {
                         swal({
                             title: "Estas seguro?",
-                            text: "Serán reasignados los '" + tblReasignarControles.find("tbody tr").length + "' controles, una vez completada la acción",
+                            text: "Serán reasignados los '" + tblReasignarControles.find("tbody tr").length + "' controles, una vez completada la acción: " + ReasignarControles.rows().count(),
                             icon: "warning",
                             buttons: true
                         }).then((willDelete) => {
@@ -295,7 +297,7 @@
                                     var r = ReasignarControles.row($(this)).data(), str = r.Anio, res = str.substr(2, 4);
                                     controles.push({
                                         ID: r.ID,
-                                        Ano: res, 
+                                        Ano: res,
                                         Estilo: r.IdEstilo,
                                         Color: r.IdColor,
                                         Serie: r.SerieID,
@@ -303,7 +305,7 @@
                                         Cliente: r.Cliente,
                                         Pares: r.Pares,
                                         Pedido: r.ID_PEDIDO,
-                                        PedidoDetalle: r.ID, 
+                                        PedidoDetalle: r.ID,
                                         Control: r.Control,
                                         DescripcionEstilo: r["Descripcion Estilo"],
                                         ColorDescripcion: r["Descripcion Color"],
@@ -316,7 +318,7 @@
                                         Precio: r.Precio,
                                         Importe: r.Importe,
                                         Descuento: r.Desc,
-                                        FechaEntrega: r.Entrega, 
+                                        FechaEntrega: r.Entrega,
                                         Marca: r.Marca,
                                         Semana: (pnlTablero.find("#Semana").val()),
                                         Maquila: (pnlTablero.find("#Maquila").val()),
@@ -337,12 +339,13 @@
                                     console.log(data);
                                     swal({
                                         title: 'INFO',
-                                        text: 'SE HAN GENERADO LOS REGISTROS',
+                                        text: 'SE HAN REASIGNADO LOS REGISTROS',
                                         icon: 'success',
                                         timer: 1500
                                     });
                                     ReasignarControles.ajax.reload();
                                     $("#col12_filter").focus().select();
+                                    btnAsignar.prop("disabled", true);
                                 }).fail(function (x, y, z) {
                                     console.log(x, y, z);
                                 }).always(function () {
@@ -369,6 +372,50 @@
         }
         );
     }));
+
+    function onChecarMaquilaValida(e) {
+        $.getJSON(master_url + 'onChecarMaquilaValida', {ID: $(e).val()}).done(function (data) {
+            if (parseInt(data[0].Maquila) <= 0) {
+                swal({
+                    title: "Indique una maquila válida",
+                    text: "La maquila " + $(e).val() + " no existe.",
+                    icon: "warning",
+                    focusConfirm: true,
+                    closeOnClickOutside: false,
+                    closeOnEsc: false
+                }).then((value) => {
+                    $(e).focus().select();
+                });
+            }
+        }).fail(function () {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        }).always(function () {
+
+        });
+    }
+
+    function onChecarSemanaValida(e) {
+        $.getJSON(master_url + 'onChecarSemanaValida', {ID: $(e).val()}).done(function (data) {
+            if (parseInt(data[0].Maquila) <= 0) {
+                swal({
+                    title: "Indique una semana de producción válida",
+                    text: "La semana " + $(e).val() + " no existe o no ha sido generada.",
+                    icon: "warning",
+                    focusConfirm: true,
+                    closeOnClickOutside: false,
+                    closeOnEsc: false
+                }).then((value) => {
+                    $(e).focus().select();
+                });
+            }
+        }).fail(function () {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        }).always(function () {
+
+        });
+    }
 
     function pad(str, max) {
         str = str.toString();

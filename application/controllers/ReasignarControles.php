@@ -61,6 +61,22 @@ class ReasignarControles extends CI_Controller {
         }
     }
 
+    public function onChecarMaquilaValida() {
+        try {
+            print json_encode($this->reasignarcontroles_model->onChecarMaquilaValida($this->input->get('ID')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onChecarSemanaValida() {
+        try {
+            print json_encode($this->reasignarcontroles_model->onChecarSemanaValida($this->input->get('ID')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getHistorialDeControles() {
         try {
             print json_encode($this->reasignarcontroles_model->getHistorialDeControles());
@@ -77,11 +93,6 @@ class ReasignarControles extends CI_Controller {
                 $M = str_pad($v->Maquila, 2, '0', STR_PAD_LEFT);
                 $S = str_pad($v->Semana, 2, '0', STR_PAD_LEFT);
                 $IDN = $this->reasignarcontroles_model->getMaximoConsecutivo($M, $S, 0);
-                print $this->db->last_query();
-                print "\n * * * IDN : $v->Maquila, $v->Semana * * * \n";
-                print_r($v);
-                print_r($IDN);
-                print "\n * * * FIN IDN : $v->Maquila, $v->Semana * * * \n";
                 if (count($IDN) > 0) {
                     $C = str_pad($IDN[0]->MAXIMO, 3, '0', STR_PAD_LEFT);
                     /* CAMBIAR EN CONTROLES; LA SEMANA, LA MAQUILA Y EL CONSECUTIVO EN 'N' */
@@ -111,5 +122,4 @@ class ReasignarControles extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
-
 }
