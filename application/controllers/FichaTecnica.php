@@ -79,6 +79,14 @@ class FichaTecnica extends CI_Controller {
         }
     }
 
+    public function getArticulosByClave() {
+        try {
+            print json_encode($this->fichatecnica_model->getArticulosByClave($this->input->post('Articulo')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onComprobarExisteEstiloColor() {
         try {
             print json_encode($this->fichatecnica_model->onComprobarExisteEstiloColor($this->input->get('Estilo'), $this->input->get('Color')));

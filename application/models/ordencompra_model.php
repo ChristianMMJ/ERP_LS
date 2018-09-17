@@ -451,7 +451,8 @@ where sc.ArticuloCBZ= '$Articulo' ", false);
                     ->join('proveedores AS P', 'OC.Proveedor = P.Clave')
                     ->join('articulos AS A', ' A.Clave = OCD.Articulo')
                     ->join('Unidades AS U', 'U.Clave = A.UnidadMedida')
-                    ->where('OC.ID', $ID);
+                    ->where('OC.ID', $ID)
+                    ->order_by('OCD.Articulo', 'ASC');
 //                    ->where('OC.Tp', $TP);
             $query = $this->db->get();
             /*

@@ -70,16 +70,21 @@
                     <select class="form-control form-control-sm" id="Pieza"  name="Pieza">
                     </select>
                 </div>
+                <!--                <div class="col-12 col-sm-12 col-md-4 col-lg-2">
+                                    <label for="Grupo">Grupo</label>
+                                    <select class="form-control form-control-sm " id="Grupo"  name="Grupo">
+                                    </select>
+                                </div>-->
                 <div class="col-12 col-sm-12 col-md-4 col-lg-2">
-                    <label for="Grupo">Grupo</label>
-                    <select class="form-control form-control-sm " id="Grupo"  name="Grupo">
-                    </select>
-                </div>
-                <div class="col-12 col-sm-12 col-md-4 col-lg-2">
+                    <!--                    <label for="Articulo">Articulo</label>
+                                        <select class="form-control form-control-sm " id="Articulo"  name="Articulo">
+                                        </select>-->
                     <label for="Articulo">Articulo</label>
-                    <select class="form-control form-control-sm " id="Articulo"  name="Articulo">
+                    <select class="form-control form-control-sm NotSelectize" id="Articulo"   name="Articulo">
+                        <option value=""></option>
                     </select>
                 </div>
+
                 <div class="col-12 col-sm-12 col-md-4 col-lg-2">
                     <label for="Consumo">PzXPar</label>
                     <input type="text" id="PzXPar" name="PzXPar" class="form-control form-control-sm numbersOnly" maxlength="4">
@@ -88,6 +93,7 @@
                     <label for="Consumo">Consumo</label>
                     <input type="text"  id="Consumo" name="Consumo" class="form-control form-control-sm numbersOnly" maxlength="7">
                 </div>
+
                 <div class="col-12 col-sm-12 col-md-4 col-lg-2">
                     <div class="row">
                         <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
@@ -188,7 +194,71 @@
     var tblFichaTecnica = $('#tblFichaTecnica');
     var FichaTecnica;
 
+
+    var Selectizer = function () {
+        return {
+            loadOptions: function (query, callback) {
+
+                if (query.length >= 2) {
+                    //HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+                    console.log(query);
+                    $.ajax({
+                        url: this.settings.remoteUrl,
+                        type: "POST",
+                        dataType: "JSON",
+                        data: {
+                            Articulo: query
+                        }
+                    }).done(function (data, x, jq) {
+                        console.log(data);
+                        callback(data);
+                        //HoldOn.close();
+                    }).fail(function (x, y, z) {
+                        callback();
+                        console.log(x, y, z);
+                        //HoldOn.close();
+                    }).always(function () {
+                    });
+
+                } else {
+                    return callback();
+                }
+            },
+            renderOptions: function (data, escape) {
+                return '<div class="list-group" style="border-bottom: 0.5px solid #000;">' +
+                        '<div class="d-flex w-100 justify-content-between">' +
+                        '<span class="text-dark" style="font-size: 14px;"><strong>' + data.Clave + '</strong></span>' +
+                        // '<p><strong>' + data.Clave + '</strong></p>' +
+                        '</div>' +
+                        '<span class="text-info" style="font-size: 13px;"><strong>' + data.Articulo + '</strong></span>' +
+                        '</div>';
+            }
+        };
+    }();
+
     $(document).ready(function () {
+
+
+
+        $('#Articulo').selectize({
+            valueField: 'Clave',
+            labelField: 'Articulo',
+            searchField: ['Articulo', 'Clave'],
+            create: false,
+            maxItems: 1,
+            sortField: [
+                {
+                    field: 'Clave',
+                    direction: 'asc'
+                }
+            ],
+            loadingClass: 'loading',
+            render: {option: Selectizer.renderOptions},
+            remoteUrl: master_url + 'getArticulosByClave',
+            load: Selectizer.loadOptions
+        });
+
+
         validacionSelectPorContenedor(pnlDatos);
         setFocusSelectToSelectOnChange('#Estilo', '#Color', pnlDatos);
         setFocusSelectToInputOnChange('#Color', '#FechaAlta', pnlDatos);
@@ -221,12 +291,12 @@
             }
         });
 
-        pnlDatos.find("[name='Grupo']").change(function () {
-            console.log($(this).val());
-            pnlControlesDetalle.find("[name='Articulo']")[0].selectize.clear(true);
-            pnlControlesDetalle.find("[name='Articulo']")[0].selectize.clearOptions();
-            getArticulosRequeridos($(this).val());
-        });
+//        pnlDatos.find("[name='Grupo']").change(function () {
+//            console.log($(this).val());
+//            pnlControlesDetalle.find("[name='Articulo']")[0].selectize.clear(true);
+//            pnlControlesDetalle.find("[name='Articulo']")[0].selectize.clearOptions();
+//            getArticulosRequeridos($(this).val());
+//        });
 
         btnEliminar.click(function () {
             if (temp !== 0 && temp !== undefined && temp > 0) {
@@ -496,7 +566,7 @@
                     console.log(x, y, z);
                 }).always(function () {
                 });
-                pnlControlesDetalle.find("[name='Pieza']")[0].selectize.focus();
+
                 pnlDatos.find("#Estilo")[0].selectize.addItem(data[0].Estilo, true);
                 getFotoXEstilo(dtm.EstiloId);
                 getFichaTecnicaDetalleByID(dtm.EstiloId, dtm.ColorId);
@@ -504,6 +574,10 @@
                 pnlDetalle.removeClass('d-none');
                 pnlControlesDetalle.removeClass('d-none');
                 pnlDatos.removeClass('d-none');
+                pnlControlesDetalle.find("[name='Articulo']")[0].selectize.clear(true);
+                pnlControlesDetalle.find("[name='Articulo']")[0].selectize.clearOptions();
+                pnlControlesDetalle.find("[name='Pieza']")[0].selectize.focus();
+
             }).fail(function (x, y, z) {
                 console.log(x, y, z);
             }).always(function () {

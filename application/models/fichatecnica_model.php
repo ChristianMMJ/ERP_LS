@@ -151,6 +151,26 @@ class fichatecnica_model extends CI_Model {
         }
     }
 
+    public function getArticulosByClave($Clave) {
+        try {
+            $this->db->select("CAST(M.Clave AS SIGNED ) AS Clave, IFNULL(M.Descripcion,'') AS Articulo", false)
+                    ->from('Articulos AS M')
+                    ->where_in('M.Estatus', array('ACTIVO'));
+            $this->db->where('M.Clave', $Clave);
+            $this->db->or_like('M.Descripcion', $Clave);
+
+
+            $this->db->order_by("Clave", "ASC");
+            $query = $this->db->get();
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getPiezas() {
         try {
             return $this->db->select("CAST(P.Clave AS SIGNED ) AS ID, CONCAT(P.Clave,' - ',IFNULL(P.Descripcion,'')) AS Descripcion ", false)

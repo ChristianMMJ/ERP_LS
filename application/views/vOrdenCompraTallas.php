@@ -868,7 +868,7 @@
     var folioNuevo = 0;
 
     function getArticulosCabecero(Cabecero, Proveedor) {
-
+        HoldOn.open({theme: 'sk-bounce', message: 'CARGANDO DATOS...'});
         $.ajax({
             url: master_url + 'getArticulosCabecero',
             type: "POST",
@@ -893,7 +893,8 @@
                 pnlDatosDetalle.find('#tblTallas').find("input").val("");
                 pnlDatosDetalle.find('#rCantidades').find("input").prop('disabled', true);
             }
-
+            HoldOn.close();
+            pnlDatosDetalle.find('#rCantidades').find('#C1').focus();
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         });
