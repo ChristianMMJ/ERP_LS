@@ -35,9 +35,8 @@
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" href="#">Orden de Compra</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="<?php print base_url('OrdenCompra.shoes'); ?>">Orden Compra de Piel Forro Peletería</a>
-                            <a class="dropdown-item" href="#">Orden de Compra Suela Mezclada</a>
-                            <a class="dropdown-item" href="#">Orden de Compra Suela sin Mezclar</a>
+                            <a class="dropdown-item" href="<?php print base_url('OrdenCompra.shoes'); ?>">Orden Compra de Piel, Forro, Peletería</a>
+                            <a class="dropdown-item" href="<?php print base_url('OrdenCompraTallas.shoes'); ?>">Orden de Compra Planta, Suela, Entresuela</a>
                         </div>
                     </li>
                     <a class="dropdown-item" href="#">Documentos Directos</a>

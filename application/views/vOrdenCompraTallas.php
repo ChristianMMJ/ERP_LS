@@ -2,7 +2,7 @@
     <div class="card-body ">
         <div class="row">
             <div class="col-sm-8 float-left">
-                <legend class="float-left">Órdenes de Compra (PIEL, FORRO, PELETERIA)</legend>
+                <legend class="float-left">Órdenes de Compra (PLANTAS, SUELAS, ENTRESUELAS)</legend>
             </div>
             <div class="col-sm-4 float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
@@ -51,7 +51,7 @@
         <form id="frmNuevo">
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 float-left">
-                    <legend >Orden Compra</legend>
+                    <legend >Orden Compra por Tallas</legend>
                 </div>
                 <div class="col-12 col-sm-6 col-md-8" align="right">
                     <button type="button" class="btn btn-primary btn-sm" id="btnRegresar" >
@@ -91,8 +91,7 @@
                     <label for="" >Tipo*</label>
                     <select id="Tipo" name="Tipo" class="form-control form-control-sm required" required="">
                         <option value=""></option>
-                        <option value="10">10 PIEL/FORRO</option>
-                        <option value="90">90 PELETERIA</option>
+                        <option value="80">80 SUELA</option>
                     </select>
                 </div>
                 <div class="col-12 col-sm-4 col-md-3 col-xl-3" >
@@ -138,25 +137,61 @@
 <div class="card m-3 d-none animated fadeIn" id="pnlDatosDetalle" >
     <div class="card-body text-dark">
         <div class="row" id="ControlesDetalle">
-            <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
-                <label for="Articulo" >Articulo*</label>
-                <!--<input type="text" class="form-control form-control-sm" id="Maquila" name="Maquila" required placeholder="Maquila 1">-->
-                <select id="Articulo" name="Articulo" class="form-control form-control-sm" >
+            <div class="col-12 col-sm-4 col-md-3 col-xl-3" >
+                <label for="" >Artículo CBZ*</label>
+                <select id="Articulo" name="Articulo" class="form-control form-control-sm required" required="" >
                     <option value=""></option>
                 </select>
             </div>
-            <div class="col-12 col-sm-3 col-md-2 col-lg-2 col-xl-2">
-                <label for="Precio" >Precio</label>
-                <input type="text" class="form-control form-control-sm numbersOnly disabledForms" id="Precio" name="Precio" required placeholder="0.0">
-            </div>
-            <div class="col-12 col-sm-3 col-md-2 col-lg-2 col-xl-1">
-                <label for="Cantidad" >Cantidad*</label>
-                <input type="text" class="form-control form-control-sm numbersOnly" id="Cantidad" name="Cantidad" required>
-            </div>
-            <div class="col-12 col-sm-2 col-md-1 col-lg-1 col-xl-1 my-2 d-sm-block pt-3">
-                <button type="button" id="btnAgregar" class="btn btn-primary btn-sm d-sm-block" data-toggle="tooltip" data-placement="right" title="Agregar"><span class="fa fa-plus"></span></button>
+            <!--TALLAS-->
+            <div class="col-12">
+                <div class="table-responsive" style="overflow-x:auto; white-space: nowrap;">
+                    <label class="font-weight-bold" for="Tallas"></label>
+                    <table id="tblTallas" class="Tallas" >
+                        <thead></thead>
+                        <tbody>
+                            <tr id="rArticulos">
+                                <td class="font-weight-bold">Art.</td>
+                                <?php
+                                for ($index = 1; $index < 21; $index++) {
+                                    print '<td><input type="text" style="width: 55px;" id="A' . $index . '" name="A' . $index . '" disabled></td>';
+                                }
+                                ?>
+                            </tr>
+                            <tr id="rPrecios">
+                                <td class="font-weight-bold">Precio</td>
+                                <?php
+                                for ($index = 1; $index < 21; $index++) {
+                                    print '<td><input type="text" style="width: 55px;" id="P' . $index . '" name="P' . $index . '" disabled></td>';
+                                }
+                                ?>
+                            </tr>
+                            <tr id="rTallasBuscaManual">
+                                <td class="font-weight-bold">Tallas</td>
+                                <?php
+                                for ($index = 1; $index < 21; $index++) {
+                                    print '<td><input type="text" style="width: 55px;" id="T' . $index . '" name="T' . $index . '" disabled></td>';
+                                }
+                                ?>
+                                <td class="font-weight-bold">Agregar</td>
+                            </tr>
+                            <tr class="rCapturaCantidades" id="rCantidades">
+                                <td class="font-weight-bold">Cant.</td>
+                                <?php
+                                for ($index = 1; $index < 21; $index++) {
+                                    print '<td><input type="text" style="width: 55px;" id="C' . $index . '" class="form-control form-control-sm numbersOnly " name="C' . $index . '" ></td>';
+                                }
+                                ?>
+                                <td>
+                                    <button type="button" id="btnAgregar" class="btn btn-primary btn-sm d-sm-block" data-toggle="tooltip" data-placement="right" title="Agregar"><span class="fa fa-plus"></span></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+        <!--        DETALLE-->
         <div class="row">
             <div class="col-12 mt-4">
                 <table id="tblComprasDetalle" class="table table-sm" style="width:100%">
@@ -190,9 +225,8 @@
         </div>
     </div>
 </div>
-
 <script>
-    var master_url = base_url + 'index.php/OrdenCompra/';
+    var master_url = base_url + 'index.php/OrdenCompraTallas/';
     var tblCompras = $('#tblCompras');
     var Compras;
     var btnNuevo = $("#btnNuevo"), btnAgregar = $("#btnAgregar");
@@ -214,7 +248,7 @@
         validacionSelectPorContenedor(pnlDatosDetalle);
         setFocusSelectToSelectOnChange('#Tipo', '#Proveedor', pnlDatos);
         setFocusSelectToInputOnChange('#Proveedor', '#FechaOrden', pnlDatos);
-        setFocusSelectToInputOnChange('#Articulo', '#Cantidad', pnlDatosDetalle);
+        setFocusSelectToInputOnChange('#Articulo', '#C1', pnlDatosDetalle);
 
         pnlDatos.find("#Tp").change(function () {
             var tp = parseInt($(this).val());
@@ -268,7 +302,7 @@
             pnlDatosDetalle.find("#Articulo")[0].selectize.clearOptions();
             var tipo = pnlDatos.find("#Tipo").val();
             if (tipo !== '') {
-                getArticuloByDeptoByProveedor(tipo, $(this).val());
+                getCabecerosByProveedor($(this).val());
                 getPorcentajesCompraByProveedor($(this).val());
             } else {
                 swal({
@@ -285,14 +319,8 @@
             }
         });
 
-        pnlDatos.find("#Tipo").change(function () {
-            var prov = pnlDatos.find("#Proveedor").val();
-            getArticuloByDeptoByProveedor($(this).val(), prov);
-        });
-
         pnlDatosDetalle.find("#Articulo").change(function () {
-            var prov = pnlDatos.find("#Proveedor").val();
-            getPrecioCompraByArticuloByProveedor($(this).val(), prov);
+            getArticulosCabecero($(this).val(), pnlDatos.find("#Proveedor").val());
         });
 
         /*FUNCIONES X BOTON*/
@@ -306,7 +334,6 @@
                 ID: (nuevoTemp === 0) ? 0 : nuevoTemp
             });
             $.post(master_url + 'onImprimirOrdenCompra', {movs: JSON.stringify(movs)}).done(function (data, x, jq) {
-                console.log(data);
                 if (data.length > 0) {
 
                     $.fancybox.open({
@@ -381,6 +408,7 @@
         });
 
         btnAgregar.click(function () {
+
             isValid('pnlDatos');
             if (valido) {
                 var frm = new FormData(pnlDatos.find("#frmNuevo")[0]);
@@ -437,6 +465,7 @@
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.enable();
             });
+            pnlDatos.find("#Tipo")[0].selectize.addItem('80', true);
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass("d-none");
             pnlDatosDetalle.removeClass("d-none");
@@ -609,12 +638,12 @@
                                                         swal({
                                                             title: 'Importante',
                                                             text: 'Se ha cerrado la compra TP 1 con el FOLIO: ' + FolioActual,
-                                                            type: 'success'
+                                                            icon: 'success'
                                                         }).then((value) => {
                                                             swal({
                                                                 title: 'Importante',
                                                                 text: 'Se ha cerrado la compra TP 2 con el FOLIO: ' + folioNuevo,
-                                                                type: 'success'
+                                                                icon: 'success'
                                                             }).then((value) => {
                                                                 btnCancelar.addClass('d-none');
                                                                 btnCerrarOrden.addClass('d-none');
@@ -758,6 +787,7 @@
             var dtm = Compras.row(this).data();
             temp = parseInt(dtm.ID);
             nuevoTemp = 0;
+
             $.getJSON(master_url + 'getOrdenCompraByID', {ID: temp}).done(function (data) {
                 pnlDatos.find("input").val("");
                 $.each(pnlDatos.find("select"), function (k, v) {
@@ -803,9 +833,10 @@
                             pnlDatos.find("[name='" + k + "']")[0].selectize.addItem(v, true);
                         }
                     });
-                    getArticuloByDeptoByProveedor(data[0].Tipo, data[0].Proveedor);
+                    getCabecerosByProveedor(data[0].Proveedor);
                     getPorcentajesCompraByProveedor(data[0].Proveedor);
                 });
+
                 //Cargar Detalle
                 getDetalleByID(temp);
             }).fail(function (x, y, z) {
@@ -836,9 +867,40 @@
     var tpParte = 0;
     var folioNuevo = 0;
 
+    function getArticulosCabecero(Cabecero, Proveedor) {
+
+        $.ajax({
+            url: master_url + 'getArticulosCabecero',
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                ArticuloCBZ: Cabecero,
+                Proveedor: Proveedor
+            }
+        }).done(function (data, x, jq) {
+            if (data.length > 0) {
+                //Nos traemos el arreglo de articulos del encabezado
+                $.each(data[0], function (k, v) {
+                    var Can = k.replace("A", "C");
+                    if (v === null || v === 'undefined' || v === '' || v === undefined || parseInt(v) === 0) {
+                        pnlDatosDetalle.find('#rCantidades').find("[name='" + Can + "']").prop('disabled', true);
+                    } else {
+                        pnlDatosDetalle.find('#rCantidades').find("[name='" + Can + "']").prop('disabled', false);
+                        pnlDatosDetalle.find('#tblTallas').find("[name='" + k + "']").val(v);
+                    }
+                });
+            } else {
+                pnlDatosDetalle.find('#tblTallas').find("input").val("");
+                pnlDatosDetalle.find('#rCantidades').find("input").prop('disabled', true);
+            }
+
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        });
+    }
+
     function getPorcentajesCompraByProveedor(proveedor) {
         $.getJSON(master_url + 'getPorcentajesCompraByProveedor', {Proveedor: proveedor}).done(function (data) {
-            console.log(data);
             if (data.length > 0) {
                 PorRemision = parseFloat(data[0].PorRemision);
                 PorFactura = parseFloat(data[0].PorFactura);
@@ -857,48 +919,46 @@
             } else {
                 seParte = false;
             }
-            console.log(seParte);
         }).fail(function (x) {
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
             console.log(x.responseText);
         });
     }
-    function getArticuloByDeptoByProveedor(Departamento, Proveedor) {
-        if (pnlDatos.find("#Proveedor").val() !== "") {
-            $.getJSON(master_url + 'getArticuloByDeptoByProveedor', {Departamento: Departamento, Proveedor: Proveedor}).done(function (data) {
-                if (data.length > 0) {
-                    $.each(data, function (k, v) {
-                        pnlDatosDetalle.find("#Articulo")[0].selectize.addOption({text: v.Articulo, value: v.CLAVE});
-                    });
-                } else {
-                    swal({
-                        title: "ATENCIÓN",
-                        text: "EL TIPO/PROVEEDOR NO TIENE ARTICULOS REGISTRADOS",
-                        icon: "warning",
-                        buttons: {
-                            eliminar: {
-                                text: "Aceptar",
-                                value: "aceptar"
-                            }
+    function getCabecerosByProveedor(proveedor) {
+        $.getJSON(master_url + 'getCabecerosByProveedor', {Proveedor: proveedor}).done(function (data) {
+            if (data.length > 0) {
+                $.each(data, function (k, v) {
+                    pnlDatosDetalle.find("#Articulo")[0].selectize.addOption({text: v.Articulo, value: v.CLAVE});
+                });
+            } else {
+                swal({
+                    title: "ATENCIÓN",
+                    text: "NO HAY CABECEROS REGISTRADOS PARA ESTE PROVEEDOR",
+                    icon: "warning",
+                    buttons: {
+                        eliminar: {
+                            text: "Aceptar",
+                            value: "aceptar"
                         }
-                    }).then((value) => {
-                        switch (value) {
-                            case "aceptar":
-                                swal.close();
-                                pnlDatos.find("#Proveedor")[0].selectize.clear(true);
-                                pnlDatos.find("#Proveedor")[0].selectize.focus();
-                                break;
-                        }
-                    });
+                    }
+                }).then((value) => {
+                    switch (value) {
+                        case "aceptar":
+                            swal.close();
+                            pnlDatos.find("#Proveedor")[0].selectize.clear(true);
+                            pnlDatos.find("#Proveedor")[0].selectize.focus();
+                            break;
+                    }
+                });
 
-                }
-            }).fail(function (x) {
-                swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-                console.log(x.responseText);
-            });
-        }
+            }
+        }).fail(function (x) {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        });
+
     }
-    function getPrecioCompraByArticuloByProveedor(Articulo, Proveedor) {
+    function getPrecioSerieArticulosCabecero(Articulo) {
         $.getJSON(master_url + 'getPrecioCompraByArticuloByProveedor', {Articulo: Articulo, Proveedor: Proveedor}).done(function (data) {
             console.log(data);
             if (data.length > 0) {
@@ -1078,67 +1138,86 @@
             "bSort": true,
             "keys": true,
             select: true,
-            order: [[0, 'asc']],
+            order: [[1, 'asc']],
             "initComplete": function (x, y) {
                 HoldOn.close();
             }
         });
 
     }
+    var cant_aux = 0;
+    var total;
     function onAgregarDetalle(IDX) {
+        HoldOn.open({theme: 'sk-bounce', message: 'CARGANDO DATOS...'});
+        var table = pnlDatosDetalle.find('#tblTallas');
+        var arts = pnlDatosDetalle.find("#tblTallas > tbody > tr").eq(0);
+        var precios = pnlDatosDetalle.find("#tblTallas > tbody > tr").eq(1);
 
-        var existe = false;
-        var articulo = pnlDatosDetalle.find("#Articulo").val();
-        var cantidad = parseFloat(pnlDatosDetalle.find("#Cantidad").val());
-        var precio = parseFloat(pnlDatosDetalle.find("#Precio").val());
-        /*COMPROBAR SI YA SE AGREGÓ*/
-        if (pnlDatosDetalle.find("#tblComprasDetalle tbody tr").length > 0) {
-            ComprasDetalle.rows().every(function (rowIdx, tableLoop, rowLoop) {
-                var data = this.data();
-                console.log(data.ClaveArticulo, 's', articulo);
-                if (data.ClaveArticulo === articulo) {
-                    existe = true;
-                    return false;
+        $.when($.each(table.find("input.numbersOnly:enabled"), function (k, v) {
+            if (parseFloat($(v).val()) > 0) {
+                var precio = precios.find('td').eq($(this).parent().index()).find("input").val();
+                var articulo = arts.find('td').eq($(this).parent().index()).find("input").val();
+                var articuloAnt = arts.find('td').eq($(this).parent().index() - 1).find("input").val();
+                var cantidad = parseFloat($(v).val());
+
+                if (articuloAnt === undefined) {
+                    cant_aux = cantidad;
+                    total = precio * cant_aux;
+                    var detalle = {
+                        OrdenCompra: IDX,
+                        Articulo: articulo,
+                        Cantidad: cant_aux,
+                        Precio: precio,
+                        SubTotal: parseFloat(total)
+                    };
+
+                    $.post(master_url + 'onAgregarDetalle', detalle).done(function (data) {
+                    }).fail(function (x, y, z) {
+                        console.log(x, y, z);
+                    });
+                } else if (articulo === articuloAnt) {
+                    cant_aux += cantidad;
+                    total = cant_aux * precio;
+                    var detalle = {
+                        OrdenCompra: IDX,
+                        Articulo: articulo,
+                        Cantidad: cant_aux,
+                        SubTotal: parseFloat(total)
+                    };
+                    $.post(master_url + 'onModificarDetalleByClave', detalle).done(function (data) {
+                    }).fail(function (x, y, z) {
+                        console.log(x, y, z);
+                    });
+
+                } else if (articuloAnt !== articulo) {
+                    cant_aux = cantidad;
+                    total = precio * cant_aux;
+                    var detalle = {
+                        OrdenCompra: IDX,
+                        Articulo: articulo,
+                        Cantidad: cant_aux,
+                        Precio: precio,
+                        SubTotal: parseFloat(total)
+                    };
+                    $.post(master_url + 'onAgregarDetalle', detalle).done(function (data) {
+                    }).fail(function (x, y, z) {
+                        console.log(x, y, z);
+                    });
                 }
-            });
-        }
+            }
+        })).then(function (data, textStatus, jqXHR) {
+            if (nuevo) {
+                getDetalleByID(IDX);
+                nuevo = false;
+            } else {
+                ComprasDetalle.ajax.reload();
+            }
 
-        if (!existe) {
-            var detalle = {
-                OrdenCompra: IDX,
-                Articulo: articulo,
-                Cantidad: cantidad,
-                Precio: precio,
-                SubTotal: parseFloat(cantidad * precio)
-            };
-            $.post(master_url + 'onAgregarDetalle', detalle).done(function (data) {
-                if (nuevo) {
-                    getDetalleByID(IDX);
-                    nuevo = false;
-                } else {
-                    ComprasDetalle.ajax.reload();
-                }
-
-                pnlDatosDetalle.find("input").val('');
-                pnlDatosDetalle.find("[name='Articulo']")[0].selectize.clear(true);
-                pnlDatosDetalle.find("[name='Articulo']")[0].selectize.focus();
-            }).fail(function (x, y, z) {
-                console.log(x, y, z);
-            });
-        } else {
-            swal({
-                title: "ERROR",
-                text: "YA SE HA AGREGADO ESTE ARTÍCULO",
-                icon: "error",
-                closeOnClickOutside: false,
-                closeOnEsc: false
-            }).then((willDelete) => {
-                pnlDatosDetalle.find("input").val('');
-                pnlDatosDetalle.find("[name='Articulo']")[0].selectize.clear(true);
-                pnlDatosDetalle.find("[name='Articulo']")[0].selectize.focus();
-            });
-        }
-
+            pnlDatosDetalle.find("input").val('');
+            pnlDatosDetalle.find("[name='Articulo']")[0].selectize.clear(true);
+            pnlDatosDetalle.find("[name='Articulo']")[0].selectize.focus();
+            HoldOn.close();
+        });
     }
     function onEliminarDetalleByID(IDX) {
         if (estatus === 'CERRADA') {
@@ -1199,6 +1278,11 @@
 
     td span.badge{
         font-size: 100% !important;
+    }
+
+    table tbody tr:hover {
+        background-color: #FFF;
+        color: #000 !important;
     }
 </style>
 

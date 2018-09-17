@@ -185,13 +185,13 @@ class PDF extends FPDF {
 
 
         $this->SetY(38);
-        $this->SetX(203);
-        $this->SetFont('Arial', 'B', 9.5);
+        $this->SetX(213);
+        $this->SetFont('Arial', 'B', 8);
         $this->Cell(15, 4, 'Mercancia Recibida', 0/* BORDE */, 1, 'C');
-        $this->Rect(187, 37, 50, 9);
+        $this->Rect(195, 37, 53, 9);
 
         /* ENCABEZADO DETALLE TITULOS */
-        $anchos = array(0/* 0 */, 75/* 1 */, 20/* 2 */, 20/* 3 */, 20/* 4 */, 20/* 5 */, 15/* 6 */, 15/* 7 */, 27/* 8 */, 27/* 9 */, 30/* 10 */);
+        $anchos = array(0/* 0 */, 100/* 1 */, 15/* 2 */, 10/* 3 */, 20/* 4 */, 20/* 5 */, 10/* 6 */, 20/* 7 */, 30/* 8 */, 25/* 9 */, 20/* 10 */);
         $aligns = array('L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L');
 
         $this->SetY(42);
@@ -199,7 +199,7 @@ class PDF extends FPDF {
 
         $this->SetWidths($anchos);
         $this->SetAligns($aligns);
-        $this->Row(array('', utf8_decode('Artículo'), 'Cantidad', 'Unidad', 'Precio', 'Subtotal', 'Sem', 'Maq', 'Recibido', 'Docto.', 'Fecha Ent.'));
+        $this->Row(array('', utf8_decode('Artículo'), 'Cant.', 'U.M.', 'Precio', 'Subtotal', 'Sem', 'Maq', 'Recibido', 'Docto.', 'Fecha Ent.'));
     }
 
     function Footer() {

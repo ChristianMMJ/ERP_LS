@@ -130,13 +130,33 @@ class SuelaPlantaCompras extends CI_Controller {
     public function onModificar() {
         try {
             $x = $this->input;
-            var_dump($x->post());
-            for ($i = 1; $i <= 22; $i++) {
-                if ($x->post("A$i") > 0) {
-                    $ne = $x->post("A$i") + $x->post("A$i");
-                    $this->suelaplantacompras_model->onModificar($x->post('ID'), array("A$i" => $ne));
-                }
-            }
+            $datos = array(
+                'A1' => ($x->post('A1') !== NULL) ? $x->post('A1') : 0,
+                'A2' => ($x->post('A2') !== NULL) ? $x->post('A2') : 0,
+                'A3' => ($x->post('A3') !== NULL) ? $x->post('A3') : 0,
+                'A4' => ($x->post('A4') !== NULL) ? $x->post('A4') : 0,
+                'A5' => ($x->post('A5') !== NULL) ? $x->post('A5') : 0,
+                'A6' => ($x->post('A6') !== NULL) ? $x->post('A6') : 0,
+                'A7' => ($x->post('A7') !== NULL) ? $x->post('A7') : 0,
+                'A8' => ($x->post('A8') !== NULL) ? $x->post('A8') : 0,
+                'A9' => ($x->post('A9') !== NULL) ? $x->post('A9') : 0,
+                'A10' => ($x->post('A10') !== NULL) ? $x->post('A10') : 0,
+                'A11' => ($x->post('A11') !== NULL) ? $x->post('A11') : 0,
+                'A12' => ($x->post('A12') !== NULL) ? $x->post('A12') : 0,
+                'A13' => ($x->post('A13') !== NULL) ? $x->post('A13') : 0,
+                'A14' => ($x->post('A14') !== NULL) ? $x->post('A14') : 0,
+                'A15' => ($x->post('A15') !== NULL) ? $x->post('A15') : 0,
+                'A16' => ($x->post('A16') !== NULL) ? $x->post('A16') : 0,
+                'A17' => ($x->post('A17') !== NULL) ? $x->post('A17') : 0,
+                'A18' => ($x->post('A18') !== NULL) ? $x->post('A18') : 0,
+                'A19' => ($x->post('A19') !== NULL) ? $x->post('A19') : 0,
+                'A20' => ($x->post('A20') !== NULL) ? $x->post('A20') : 0,
+                'A21' => ($x->post('A21') !== NULL) ? $x->post('A21') : 0,
+                'A22' => ($x->post('A22') !== NULL) ? $x->post('A22') : 0
+            );
+
+
+            $this->suelaplantacompras_model->onModificar($x->post('ID'), $datos);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

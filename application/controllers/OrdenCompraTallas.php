@@ -5,12 +5,14 @@ header('Access-Control-Allow-Origin: *');
 defined('BASEPATH') OR exit('No direct script access allowed');
 require_once APPPATH . "/third_party/fpdf17/fpdf.php";
 
-class OrdenCompra extends CI_Controller {
+class OrdenCompraTallas extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('ordencompra_model')->helper('reportesCompras_helper')->helper('file');
+        $this->load->library('session')->model('ordencompra_model')->model('series_model')
+                ->helper('reportesCompras_helper')
+                ->helper('file');
     }
 
     public function index() {
@@ -28,7 +30,7 @@ class OrdenCompra extends CI_Controller {
             }
 
             $this->load->view('vFondo');
-            $this->load->view('vOrdenCompra');
+            $this->load->view('vOrdenCompraTallas');
             $this->load->view('vFooter');
         } else {
             $this->load->view('vEncabezado');
@@ -39,7 +41,7 @@ class OrdenCompra extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->ordencompra_model->getRecords());
+            print json_encode($this->ordencompra_model->getRecordsTALLAS());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -48,6 +50,22 @@ class OrdenCompra extends CI_Controller {
     public function getOrdenCompraByID() {
         try {
             print json_encode($this->ordencompra_model->getOrdenCompraByID($this->input->get('ID')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getSerieXClave() {
+        try {
+            print json_encode($this->series_model->getSerieXClave($this->input->post('Clave')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getArticulosCabecero() {
+        try {
+            print json_encode($this->ordencompra_model->getArticulosCabecero($this->input->post('ArticuloCBZ'), $this->input->post('Proveedor')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -69,9 +87,9 @@ class OrdenCompra extends CI_Controller {
         }
     }
 
-    public function getArticuloByDeptoByProveedor() {
+    public function getCabecerosByProveedor() {
         try {
-            print json_encode($this->ordencompra_model->getArticuloByDeptoByProveedor($this->input->get('Departamento'), $this->input->get('Proveedor')));
+            print json_encode($this->ordencompra_model->getCabecerosByProveedor($this->input->get('Proveedor')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -238,6 +256,20 @@ class OrdenCompra extends CI_Controller {
     public function onEliminarDetalleByID() {
         try {
             $this->ordencompra_model->onEliminarDetalleByID($this->input->post('ID'));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onModificarDetalleByClave() {
+        try {
+            $e = $this->input;
+
+            $datos = array(
+                'Cantidad' => $e->post('Cantidad'),
+                'Subtotal' => $e->post('SubTotal')
+            );
+            $this->ordencompra_model->onModificarDetalleByClave($e->post('Articulo'), $e->post('OrdenCompra'), $datos);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
