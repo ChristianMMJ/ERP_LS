@@ -287,7 +287,7 @@ class Pedidos extends CI_Controller {
     function onImprimirPedidoReducido() {
         try {
             $pdf = new PDF('L', 'mm', array(215.9, 279.4));
-            $IDX = $this->input->post('ID');
+            $IDX = $this->input->post('ID'); 
             $Pedido = $this->pedidos_model->getPedidoByID($IDX);
             $Series = $this->pedidos_model->getSerieXPedido($IDX);
 

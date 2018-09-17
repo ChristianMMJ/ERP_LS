@@ -41,7 +41,7 @@ class pedidos_model extends CI_Model {
                             ->join('pedidodetalle AS PD', 'P.Clave = PD.Pedido')
                             ->join('series AS S', 'PD.Serie = S.Clave')
                             ->join('clientes AS C', 'P.Cliente = C.Clave')
-                            ->join('agentes AS A', 'P.Agente = A.Clave')
+                            ->join('agentes AS A', 'P.Agente = A.Clave', 'left')
                             ->order_by('S.Clave', 'ASC')
                             ->where('P.ID', $ID)
                             ->get()->result();
@@ -80,9 +80,9 @@ class pedidos_model extends CI_Model {
                             ->join('pedidodetalle AS PD', 'P.Clave = PD.Pedido')
                             ->join('series AS S', 'PD.Serie = S.Clave')
                             ->join('clientes AS C', 'P.Cliente = C.Clave')
-                            ->join('estados AS E', 'C.Estado = E.Clave')
-                            ->join('agentes AS A', 'P.Agente = A.Clave')
-                            ->join('transportes AS T', 'C.Transporte = T.Clave')
+                            ->join('estados AS E', 'C.Estado = E.Clave', 'left')
+                            ->join('agentes AS A', 'P.Agente = A.Clave', 'left')
+                            ->join('transportes AS T', 'C.Transporte = T.Clave', 'left')
                             ->order_by('PD.ID', 'DESC')
                             ->where('P.ID', $ID)
                             ->get()->result();

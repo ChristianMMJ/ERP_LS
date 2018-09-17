@@ -81,7 +81,7 @@ class CerrarProg extends CI_Controller {
                                 'Serie' => $v->Serie, 'Cliente' => $v->Cliente,
                                 'Pares' => $v->Pares, 'Pedido' => $v->Pedido,
                                 'PedidoDetalle' => $v->PedidoDetalle,
-                                'Estatus' => 'A', 'Departamento' => 1,
+                                'Estatus' => 'A', 'Departamento' => 1 /* 0|null|Inexistente - PEDIDO => 1 - PROGRAMADO*/,
                                 'Ano' => $Y, 'Maquila' => $M, 'Semana' => $S, 'Consecutivo' => $C
                             ));
                             $this->db->set('Control', $Y . $S . $M . $C)->where('ID', $v->PedidoDetalle)->update('pedidodetalle');

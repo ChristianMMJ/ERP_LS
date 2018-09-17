@@ -97,6 +97,7 @@ class ReasignarControles extends CI_Controller {
                     $C = str_pad($IDN[0]->MAXIMO, 3, '0', STR_PAD_LEFT);
                     /* CAMBIAR EN CONTROLES; LA SEMANA, LA MAQUILA Y EL CONSECUTIVO EN 'N' */
                     $this->db->set('Semana', $S)->set('Maquila', $M)
+                            ->set('Control', $Y . $S . $M . $C)
                             ->set('Consecutivo', $C)
                             ->where('PedidoDetalle', $v->PedidoDetalle)->update('controles');
                     /* MODIFICAR EN EL PEDIDO (DETALLE), EL CONTROL */
@@ -108,7 +109,9 @@ class ReasignarControles extends CI_Controller {
                     //VACIO
                     /* CAMBIAR EN CONTROLES; LA SEMANA, LA MAQUILA Y EL CONSECUTIVO EN 001 */
                     $C = str_pad(1, 3, '0', STR_PAD_LEFT);
-                    $this->db->set('Semana', $S)->set('Maquila', $M)
+                    $this->db->set('Semana', $S)
+                            ->set('Maquila', $M)
+                            ->set('Control', $Y . $S . $M . $C)
                             ->set('Consecutivo', $C)
                             ->where('PedidoDetalle', $v->PedidoDetalle)->update('controles');
                     /* MODIFICAR EN EL PEDIDO (DETALLE), EL CONTROL */
@@ -122,4 +125,5 @@ class ReasignarControles extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
+
 }

@@ -330,7 +330,9 @@
         btnImprimir.click(function () {
             if (temp > 0) {
                 //HoldOn.open({  message: 'Espere...', theme: 'sk-cube'});
+                console.log('temp ' + temp)
                 $.post(master_url + 'onImprimirPedidoReducido', {ID: temp}).done(function (data) {
+                    console.log(data)
                     //check Apple device
                     if (isAppleDevice() || isMobile) {
                         window.open(data, '_blank');
@@ -1188,6 +1190,7 @@
     function getPedidoByID(temp) {
         PedidoDetalle.clear().draw();
         $.getJSON(master_url + 'getPedidosByID', {ID: temp}).done(function (data) {
+            console.log(data)
             pnlDatos.find("input").val("");
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);

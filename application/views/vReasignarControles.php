@@ -27,7 +27,7 @@
                     </div>
                     <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" data-column="13">
                         <strong>Semana asignada</strong>
-                        <input type="text" class="form-control form-control-sm column_filter" id="col13_filter" placeholder="Semana 1" maxlength="3" onblur="onChecarSemanaValida(this)">
+                        <input type="text" class="form-control form-control-sm column_filter" id="col13_filter" placeholder="Semana 1" maxlength="3" onblur="onChecarSemanaValida(this);">
                     </div>
                     <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                         <strong>Maquila a asignar</strong>
@@ -45,7 +45,7 @@
             </div>
             <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">  
                 <strong>Observaciones adicionales</strong>
-                <input type="text" id="Observaciones" name="Adicionales" class="form-control form-control-sm" placeholder="Observacion dos"/>
+                <input type="text" id="Observaciones" name="Adicionales" class="form-control form-control-sm" placeholder="Observacion dos" />
             </div>
             <div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 mt-3" align="left">
                 <button type="button" class="btn btn-primary" id="btnAsignar" data-toggle="tooltip" data-placement="top" title="Asignar" disabled="">
@@ -244,6 +244,10 @@
 
             init();
 
+            $("#col12_filter, #col13_filter, #Maquila, #Semana").focusout(function () {
+                console.log($(this).val());
+            });
+
             $('#ReasignarControles').on("contextmenu", function (e) {
                 e.preventDefault();
                 var top = e.pageY + 5;
@@ -374,52 +378,67 @@
     }));
 
     function onChecarMaquilaValida(e) {
-        $.getJSON(master_url + 'onChecarMaquilaValida', {ID: $(e).val()}).done(function (data) {
-            if (parseInt(data[0].Maquila) <= 0) {
-                swal({
-                    title: "Indique una maquila válida",
-                    text: "La maquila " + $(e).val() + " no existe.",
-                    icon: "warning",
-                    focusConfirm: true,
-                    closeOnClickOutside: false,
-                    closeOnEsc: false
-                }).then((value) => {
-                    $(e).focus().select();
-                });
-            }
-        }).fail(function () {
-            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-            console.log(x.responseText);
-        }).always(function () {
-
-        });
+        var n = $(e);
+        if (n.val() !== '') {
+            $.getJSON(master_url + 'onChecarMaquilaValida', {ID: $(e).val()}).done(function (data) {
+                if (parseInt(data[0].Maquila) <= 0) {
+                    swal({
+                        title: "Indique una maquila válida",
+                        text: "La maquila " + $(e).val() + " no existe.",
+                        icon: "warning",
+                        focusConfirm: true,
+                        closeOnClickOutside: false,
+                        closeOnEsc: false
+                    }).then((value) => {
+                        $(e).val('').focus().select();
+                    });
+                }
+            }).fail(function () {
+                swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+                console.log(x.responseText);
+            }).always(function () {
+                onVerificarFormValido();
+            });
+        }
     }
 
     function onChecarSemanaValida(e) {
-        $.getJSON(master_url + 'onChecarSemanaValida', {ID: $(e).val()}).done(function (data) {
-            if (parseInt(data[0].Maquila) <= 0) {
-                swal({
-                    title: "Indique una semana de producción válida",
-                    text: "La semana " + $(e).val() + " no existe o no ha sido generada.",
-                    icon: "warning",
-                    focusConfirm: true,
-                    closeOnClickOutside: false,
-                    closeOnEsc: false
-                }).then((value) => {
-                    $(e).focus().select();
-                });
-            }
-        }).fail(function () {
-            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-            console.log(x.responseText);
-        }).always(function () {
-
-        });
+        var n = $(e);
+        if (n.val() !== '') {
+            $.getJSON(master_url + 'onChecarSemanaValida', {ID: $(e).val()}).done(function (data) {
+                if (parseInt(data[0].Semana) <= 0) {
+                    swal({
+                        title: "Indique una semana de producción válida",
+                        text: "La semana " + $(e).val() + " no existe o no ha sido generada.",
+                        icon: "warning",
+                        focusConfirm: true,
+                        closeOnClickOutside: false,
+                        closeOnEsc: false
+                    }).then((value) => {
+                        $(e).val('').focus().select();
+                    });
+                }
+            }).fail(function () {
+                swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+                console.log(x.responseText);
+            }).always(function () {
+                onVerificarFormValido();
+            });
+        }
     }
 
     function pad(str, max) {
         str = str.toString();
         return str.length < max ? pad("0" + str, max) : str;
+    }
+
+    function onVerificarFormValido() {
+        var a = pnlTablero.find("#col12_filter"), b = pnlTablero.find("#col13_filter"), c = pnlTablero.find("#Maquila"), d = pnlTablero.find("#Semana");
+        if (a.val() !== '' && b.val() !== '' && c.val() !== '' && d.val() !== '') {
+            btnAsignar.prop("disabled", false);
+        } else {
+            btnAsignar.prop("disabled", true);
+        }
     }
 
     function getOptions(url, comp, key, field) {
