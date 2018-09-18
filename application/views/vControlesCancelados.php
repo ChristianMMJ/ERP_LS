@@ -384,7 +384,7 @@
             mdlCancelar.find("#Motivo").focus();
             mdlCancelar.modal('show');
         } else {
-            swal('ATENCIÓN', 'NO HA SELECCIONADO NINGÚN REGISTRO', 'warning').then((value) => {
+            swal('ATENCIÓN', 'NO HA SELECCIONADO NINGÚN REGISTRO O NO HAY REGISTROS POR CANCELAR', 'warning').then((value) => {
                 pnlTablero.find("#col2_filter").focus();
             });
         }

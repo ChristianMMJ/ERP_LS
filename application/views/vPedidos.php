@@ -117,9 +117,9 @@
                             <select class="form-control form-control-sm"  type="text" id="Maquila" name="Maquila">
                             </select>
                         </div>
-                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-1 col-xl-1">
                             <label for="Semana" >Semana*</label>
-                            <input type="text" id="Semana" name="Semana" class="form-control form-control-sm" placeholder="No ha especificado una fecha de entrega">
+                            <input type="text" id="Semana" name="Semana" class="form-control form-control-sm" placeholder="">
                         </div>
                         <!--BREAK-->
                         <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1">
@@ -130,16 +130,9 @@
                             <label for="ProduccionMaquilaSemana" >Prod. Maq/Sem*</label>
                             <input type="text" id="ProduccionMaquilaSemana" name="ProduccionMaquilaSemana" class="form-control form-control-sm" placeholder="0" disabled="">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
-                            <label for="Precio" >Precio*</label>
-                            <div class="input-group">
-                                <input type="text" id="Precio" name="Precio" class="form-control form-control-sm numbersOnly" maxlength="8" readonly="">
-                                <span class="input-group-prepend">
-                                    <span class="input-group-text text-dark " id="AgregaObservaciones" name="AgregaObservaciones" data-toggle="tooltip" data-placement="top" title="Agregar observaciones">
-                                        <i class="fa fa-eye"></i>
-                                    </span>
-                                </span>
-                            </div>
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-1 col-xl-1">
+                            <label for="Precio" >Precio*</label> 
+                            <input type="text" id="Precio" name="Precio" class="form-control form-control-sm numbersOnly" maxlength="8" readonly="">
                             <input type="text" id="Serie" class="form-control form-control-sm d-none" readonly="" >
                         </div>
                         <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 d-none">
@@ -319,9 +312,9 @@
             pnlDatos.find("#ObservacionDetalle").val(mdlObservaciones.find("#DescripcionObservacionesX").val());
         });
 
-        pnlDatos.find("#AgregaObservaciones").click(function () {
-            onAgregarObservaciones();
-        });
+//        pnlDatos.find("#AgregaObservaciones").click(function () {
+//            onAgregarObservaciones();
+//        });
 
         $.each(pnlDatos.find("select"), function () {
             verificarValorSelect('#' + $(this).attr('id'), pnlDatos);

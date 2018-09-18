@@ -236,7 +236,7 @@ class pedidos_model extends CI_Model {
                             ->join('fichatecnica AS FT', 'FT.Estilo = E.Clave')
                             ->where("E.Estatus", "ACTIVO")
                             ->group_by('FT.Estilo')
-                            ->order_by('E.Clave', 'ASC')
+                            ->order_by('ABS(E.Clave)', 'ASC')
                             ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
