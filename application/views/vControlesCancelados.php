@@ -1,11 +1,3 @@
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="<?php print base_url(); ?>">Menu principal</a></li>
-        <li class="breadcrumb-item"><a href="#">Producción</a></li>
-        <li class="breadcrumb-item"><a href="#">Capturas</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Contro pedidos cancelados</li>
-    </ol>
-</nav>
 <div class="card mx-3 animated fadeIn" id="pnlTablero">
     <div class="card-body">
         <div class="row">
@@ -17,7 +9,7 @@
             </div>
         </div>
         <div class="row" style="padding-left: 15px">
-            <div class="col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2 mt-3" align="center">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-1 col-xl-1 mt-3" align="center">
                 <button type="button" class="btn btn-warning" id="btnReload" data-toggle="tooltip" data-placement="top" title="Refrescar"><span class="fa fa-exchange-alt"></span><br></button>
             </div>
             <div class="col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2" data-column="9">
@@ -36,10 +28,19 @@
                 <strong>Pedido</strong>
                 <input type="text" class="form-control form-control-sm numbersOnly column_filter" id="col2_filter" maxlength="25" minlength="1">
             </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2 mt-3" align="center">
-                <button type="button" class="btn btn-danger mx-5" id="btnCancelar" data-toggle="tooltip" data-placement="top" title="Cancelar búsqueda" disabled="">
-                    CANCELAR 
-                </button>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 mt-3">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                        <button type="button" class="btn btn-danger" id="btnCancelar">
+                            CANCELAR
+                        </button>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                        <button type="button" class="btn btn-danger notEnter" id="btnCancelarSeleccionados" data-toggle="tooltip" data-placement="top" title="Cancelar búsqueda seleccionada">
+                            CANCELAR (CTRL)
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
         <br>
@@ -154,6 +155,29 @@
     </div>
 </div>
 
+<div class="modal" id="mdlCancelar">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Estas seguro?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <label for="">Escriba el motivo de la cancelación</label>
+                        <textarea class="form-control" id="Motivo" name="Motivo" rows="3" autofocus=""></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer"> 
+                <button type="button" id="btnGuardar" class="btn btn-primary">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     var master_url = base_url + 'index.php/ControlesCancelados/';
@@ -163,11 +187,15 @@
     var btnDeshacer = $("#btnDeshacer");
     var btnReload = $("#btnReload");
     var pnlTablero = $("#pnlTablero");
+    var mdlCancelar = $("#mdlCancelar");
+
     // Instance the tour
     var tour = new Tour({
         name: "tour",
         steps: [
             {
+                backdrop: true,
+                orphan: true,
                 smartPlacement: true,
                 backdropContainer: 'body',
                 backdropPadding: 18,
@@ -210,7 +238,7 @@
                 placement: "auto",
                 element: "#btnCancelar",
                 title: "Cancelar",
-                content: "Permite cancelar los controles filtrados."
+                content: "Permite cancelar los controles filtrados. Se activa después de que la búsqueda obtuvo resultados."
             },
             {
                 smartPlacement: true,
@@ -226,19 +254,9 @@
                 backdropContainer: 'body',
                 backdropPadding: 5,
                 placement: "auto",
-                element: "#tblControlesCancelados",
-                title: "Controles",
-                content: "Aqui se muestran los controles filtrados o buscados por maquila, semana, año y número de pedido."
-            },
-            {
-                element: "#tblControlesCancelados tbody tr td:eq(34) button",
-                placement: 'bottom',
+                element: "#tblControlesCancelados > tbody > tr:eq(0) ",
                 title: "Cancelar",
-                content: "Desde aqui se puede cancelar el control presionando el boton rojo del registro correspondiente.",
-                backdrop: true,
-                onShown: function (tour) {
-                    $('#tblControlesCancelados tbody tr td:eq(37)').css({'position': 'relative', 'z-index': '1101'});
-                }
+                content: "Cada registro cuenta con un boton de <button type=\"button\" class=\"btn btn-danger\">CANCELAR</button><br> arroja una ventana donde preguntará cual es el motivo de la cancelación, desaparece el boton una vez cancelado el registro.",
             }
         ],
         container: "body",
@@ -306,31 +324,16 @@
         // The $ is now locally scoped
         // Listen for the jQuery ready event on the document
         $(function () {
+            mdlCancelar.find("#btnGuardar").click(function () {
+                onCancelarControlesFiltrados();
+            });
+            $("#btnCancelarSeleccionados").click(function () {
+                onCancelarSeleccionados();
+            });
 
             $('#col9_filter').inputmask({alias: "9999", "placeholder": ""});//MAQUILA
             $('#col8_filter').inputmask({alias: "99", "placeholder": ""});//SEMANA
             $('#col36_filter').inputmask({alias: "9999", "placeholder": "_"});//AÑO
-            var options = {
-                url: master_url + "getSemanasDeProduccion",
-
-                getValue: "Semana",
-
-                list: {
-                    match: {
-                        enabled: true
-                    }
-                },
-                showAnimation: {
-                    type: "slide",
-                    time: 300
-                },
-                hideAnimation: {
-                    type: "slide",
-                    time: 300
-                }
-            };
-
-            $("#col8_filter").easyAutocomplete(options);
 
 // Initialize the tour
             tour.init();
@@ -338,21 +341,6 @@
             tour.start();
 
             init();
-
-            $("#col2_filter, #col9_filter, #col8_filter, #col36_filter").on('keydown blur keyup', function () {
-                var rc = ControlesCancelados.rows().count();
-                var rch = tblControlesCancelados.find("tbody tr.selected").length;
-                var Maquila = $("#col2_filter"), Semana = $("#col9_filter"), Anio = $("#col8_filter"), Pedido = $("#col36_filter");
-                if (Maquila.val() !== '' && Semana.val() !== '' && Anio.val() !== '' && Pedido.val() !== '') {
-                    if (rc > 0) {
-                        btnCancelar.prop('disabled', false);
-                    } else {
-                        btnCancelar.prop('disabled', true);
-                    }
-                } else {
-                    btnCancelar.prop('disabled', true);
-                }
-            });
 
             $('#ControlesCancelados').on("contextmenu", function (e) {
                 e.preventDefault();
@@ -375,54 +363,10 @@
             });
 
             btnCancelar.click(function () {
-                if (tblControlesCancelados.find("tbody tr.selected").length > 0) {
-                    var nc = tblControlesCancelados.find("tbody tr.selected").length;
-                    swal({
-                        title: "¿Estas seguro?",
-                        text: "Serán cancelados los '" + nc + "' registros, una vez completada la acción",
-                        icon: "warning",
-                        content: "input",
-                        buttons: true
-                    }).then((willDelete) => {
-                        if (willDelete) {
-                            var controles = [];
-                            $.each(tblControlesCancelados.find("tbody tr.selected"), function (k, v) {
-                                var r = ControlesCancelados.row(v).data();
-                                controles.push({
-                                    Motivo: willDelete,
-                                    Pedido: r.Pedido,
-                                    PedidoDetalle: r.PEDIDOID
-                                });
-                            });
-                            var f = new FormData();
-                            f.append('Controles', JSON.stringify(controles));
-                            $.ajax({
-                                url: master_url + 'onCancelarControlesPedido',
-                                type: "POST",
-                                cache: false,
-                                contentType: false,
-                                processData: false,
-                                data: f
-                            }).done(function (data, x, jq) {
-                                console.log(data);
-                                ControlesCancelados.ajax.reload();
-                                swal({
-                                    title: "ATENCIÓN",
-                                    text: "SE HAN CANCELADO " + nc + " CONTROLES",
-                                    icon: "success",
-                                    closeOnClickOutside: false,
-                                    closeOnEsc: false,
-                                    buttons: true
-                                });
-                            }).fail(function (x, y, z) {
-                                console.log(x.responseText, y, z);
-                            }).always(function () {
-                                HoldOn.close();
-                            });
-                        }
-                    });
-                } else {
-                    swal('ATENCIÓN', 'NO HA SELECCIONADO NINGÚN REGISTRO', 'warning');
+                onValidarFiltro();
+            }).keypress(function (e) {
+                if (e.keyCode === 13) {
+                    onValidarFiltro();
                 }
             });
 
@@ -433,6 +377,18 @@
         }
         );
     }));
+
+    function onValidarFiltro() {
+        var row_count = (tblControlesCancelados.find("tbody tr:not(.Cancelado)").length > 0) ? ControlesCancelados.page.info().recordsDisplay : 0;
+        if (row_count > 0) {
+            mdlCancelar.find("#Motivo").focus();
+            mdlCancelar.modal('show');
+        } else {
+            swal('ATENCIÓN', 'NO HA SELECCIONADO NINGÚN REGISTRO', 'warning').then((value) => {
+                pnlTablero.find("#col2_filter").focus();
+            });
+        }
+    }
 
     function init() {
         getRecords();
@@ -533,7 +489,7 @@
             "createdRow": function (row, data, dataIndex, cells) {
                 $.each($(row), function (k, v) {
                     if (data["ControlEstatus"] === 'C') {
-                        $(v).addClass('HasMca');
+                        $(v).addClass('Cancelado');
                     }
                 });
             },
@@ -547,6 +503,7 @@
         });
         HoldOn.close();
     }
+
     function onCancelarControl(e, c, p, pd) {
         console.log(c, p, pd);
         swal({
@@ -572,12 +529,119 @@
         });
     }
 
-    var license = 10;
-    function onAsyncTask() {
+    function onCancelarControlesFiltrados() {
+        var row_count = ControlesCancelados.page.info().recordsDisplay;
+        var motivo = mdlCancelar.find("#Motivo").val();
+        if (row_count > 0) {
+            if (tblControlesCancelados.find("tbody tr:not(.Cancelado)").length > 0) {
+                var nc = tblControlesCancelados.find("tbody tr:not(.Cancelado)").length;
+                var controles = [];
+                $.each(tblControlesCancelados.find("tbody tr:not(.Cancelado)"), function (k, v) {
+                    var r = ControlesCancelados.row(v).data();
+                    controles.push({
+                        Motivo: motivo,
+                        Pedido: r.Pedido,
+                        PedidoDetalle: r.PEDIDOID
+                    });
+                });
+                var f = new FormData();
+                f.append('Controles', JSON.stringify(controles));
+                $.ajax({
+                    url: master_url + 'onCancelarControlesPedido',
+                    type: "POST",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: f
+                }).done(function (data, x, jq) {
+                    console.log(data);
+                    mdlCancelar.find("#Motivo").val('');
+                    mdlCancelar.modal('hide');
+                    ControlesCancelados.ajax.reload();
+                    swal({
+                        title: "ATENCIÓN",
+                        text: "SE HAN CANCELADO " + nc + " CONTROLES",
+                        icon: "success",
+                        closeOnClickOutside: false,
+                        closeOnEsc: false,
+                        buttons: true
+                    });
+                }).fail(function (x, y, z) {
+                    console.log(x.responseText, y, z);
+                }).always(function () {
+                    HoldOn.close();
+                });
+            } else {
+                swal('ATENCIÓN', 'NO HA FILTRADO NINGÚN REGISTRO', 'warning');
+            }
+        } else {
+            swal('ATENCIÓN', 'NO HA FILTRADO NINGÚN REGISTRO', 'warning');
+        }
     }
+
     function onTourStart() {
         tour.init();
         tour.restart();
+    }
+
+    function onCancelarSeleccionados() {
+        var rows_selected = tblControlesCancelados.find("tbody tr:not(.Cancelado).selected");
+        if (rows_selected.length > 0) {
+            var nc = rows_selected.length;
+            swal({
+                title: "¿Estas seguro?",
+                text: "Serán cancelados los '" + nc + "' registros seleccionados, una vez completada la acción",
+                icon: "warning",
+                content: "input",
+                buttons: {
+                    confirm: {
+                        text: "ACEPTAR",
+                        value: 'ACEPTAR'
+                    }
+                }
+            }).then((willDelete) => {
+                console.log('value ', willDelete);
+                if (willDelete) {
+                    var controles = [];
+                    $.each(rows_selected, function (k, v) {
+                        var r = ControlesCancelados.row(v).data();
+                        controles.push({
+                            Motivo: willDelete,
+                            Pedido: r.Pedido,
+                            PedidoDetalle: r.PEDIDOID
+                        });
+                        console.log('row : ', r, v);
+                    });
+                    var f = new FormData();
+                    f.append('Controles', JSON.stringify(controles));
+                    $.ajax({
+                        url: master_url + 'onCancelarControlesPedido',
+                        type: "POST",
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        data: f
+                    }).done(function (data, x, jq) {
+                        console.log(data);
+                        ControlesCancelados.ajax.reload();
+                        swal({
+                            title: "ATENCIÓN",
+                            text: "SE HAN CANCELADO " + nc + " CONTROLES",
+                            icon: "success",
+                            closeOnClickOutside: false,
+                            closeOnEsc: false,
+                            buttons: true
+                        });
+                    }).fail(function (x, y, z) {
+                        console.log(x.responseText, y, z);
+                    }).always(function () {
+                        HoldOn.close();
+                    });
+                }
+            });
+        } else {
+            swal('ATENCIÓN', 'NO HA SELECCIONADO NINGÚN REGISTRO', 'warning');
+        }
     }
 </script> 
 <style>

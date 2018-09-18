@@ -76,16 +76,12 @@ class pedidos_model extends CI_Model {
                                     CONCAT(A.Clave, \" - \", A.Nombre) AS AgenteT, P.Observaciones AS Obs, T.Descripcion AS Transporte, C.Observaciones AS OBSCLIENTE,
                                     S.T1, S.T2, S.T3, S.T4, S.T5, S.T6, S.T7, S.T8, S.T9, S.T10, S.T11, 
                                     S.T12, S.T13, S.T14, S.T15, S.T16, S.T17, S.T18, S.T19, S.T20, S.T21, S.T22", false)
-                            ->from('pedidos AS P')
-                            ->join('pedidodetalle AS PD', 'P.Clave = PD.Pedido')
-                            ->join('series AS S', 'PD.Serie = S.Clave')
-                            ->join('clientes AS C', 'P.Cliente = C.Clave')
-                            ->join('estados AS E', 'C.Estado = E.Clave', 'left')
-                            ->join('agentes AS A', 'P.Agente = A.Clave', 'left')
+                            ->from('pedidos AS P')->join('pedidodetalle AS PD', 'P.Clave = PD.Pedido')
+                            ->join('series AS S', 'PD.Serie = S.Clave')->join('clientes AS C', 'P.Cliente = C.Clave')
+                            ->join('estados AS E', 'C.Estado = E.Clave', 'left')->join('agentes AS A', 'P.Agente = A.Clave', 'left')
                             ->join('transportes AS T', 'C.Transporte = T.Clave', 'left')
                             ->order_by('PD.ID', 'DESC')
-                            ->where('P.ID', $ID)
-                            ->get()->result();
+                            ->where('P.ID', $ID)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -198,8 +194,8 @@ class pedidos_model extends CI_Model {
 
     public function getClientes() {
         try {
-            return $this->db->select("C.Clave AS Clave, CONCAT(C.Clave, \"-\",C.RazonS) AS Cliente", false)
-                            ->from('clientes AS C')->where_in('C.Estatus', 'ACTIVO')->order_by('C.Clave', 'ASC')->get()->result();
+            return $this->db->select("C.Clave AS Clave, CONCAT(C.Clave, \" - \",C.RazonS) AS Cliente", false)
+                            ->from('clientes AS C')->where_in('C.Estatus', 'ACTIVO')->order_by('ABS(C.Clave)', 'ASC')->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

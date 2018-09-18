@@ -90,7 +90,7 @@
                             </select>
                         </div>
                         <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1 mt-4">
-                            <button type="button" class="btn btn-info " id="AgregaObservaciones" name="AgregaObservaciones" data-toggle="tooltip" data-placement="top" title="Agregar observaciones">
+                            <button type="button" class="btn btn-info notEnter" id="AgregaObservaciones" name="AgregaObservaciones" data-toggle="tooltip" data-placement="top" title="Agregar observaciones">
                                 <i class="fa fa-eye"></i> Obs.
                                 </span>
                         </div>
