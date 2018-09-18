@@ -49,9 +49,14 @@
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navReportes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="fa fa-file-pdf"></span>  Reportes
                 </a>
-                <div class="dropdown-menu dropdown-menu" aria-labelledby="navReportes">
-                    <a class="dropdown-item" href="#"> Prueba</a>
-                </div>
+                <ul class="dropdown-menu" aria-labelledby="navCaptura">
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#">Explosiones</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlExplosionSemanal"> Explosión Semanal</a>
+                        </div>
+                    </li>
+                </ul>
             </li>
 
             <li class="nav-item mx-1 d-none" id="btnRegresar">
@@ -95,3 +100,4 @@
 
 <?php
 $this->load->view('vTipoCambio');
+$this->load->view('vExplosionSemanal');

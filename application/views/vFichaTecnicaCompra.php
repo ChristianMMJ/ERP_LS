@@ -102,8 +102,6 @@
             mdlFichaTecnicaCompra.find("#ManoObra").focus();
         });
 
-
-
         mdlFichaTecnicaCompra.on('shown.bs.modal', function () {
             mdlFichaTecnicaCompra.find("input").val("");
             $.each(mdlFichaTecnicaCompra.find("select"), function (k, v) {

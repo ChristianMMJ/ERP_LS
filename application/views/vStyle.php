@@ -64,6 +64,12 @@
         margin-bottom: 0rem;
     }
 
+    label.labelCheck {
+        display: inline-block;
+        margin-bottom: 0.5rem;
+        margin-top: 0rem;
+    }
+
 
     .form-control {
         color: #000 !important;
