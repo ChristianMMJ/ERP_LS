@@ -11,6 +11,180 @@ class Explosiones extends CI_Controller {
                 ->helper('explosiones_helper')->helper('file');
     }
 
+    public function onReporteExplosionSemanaSuelaDesglose() {
+        $Tipo = $this->input->post('Tipo');
+        $Maq = $this->input->post('Maq');
+        $aMaq = $this->input->post('aMaq');
+        $Sem = $this->input->post('Sem');
+        $aSem = $this->input->post('aSem');
+        $Ano = $this->input->post('Ano');
+
+        $cm = $this->explosiones_model;
+        $DatosEmpresa = $cm->getDatosEmpresa();
+        $Grupos = $cm->getGruposTallas(
+                $Ano, $Sem, $aSem, $Maq, $aMaq
+        );
+        $Pares = $cm->getPares(
+                $Ano, $Sem, $aSem, $Maq, $aMaq
+        );
+        $Materiales = $cm->getMaterialesTallas(
+                $Ano, $Sem, $aSem, $Maq, $aMaq
+        );
+        $Explosion = $cm->getExplosionMaterialesTallas(
+                $Ano, $Sem, $aSem, $Maq, $aMaq
+        );
+
+
+        if (!empty($Explosion)) {
+
+            $pdf = new PDFExpTallas('P', 'mm', array(215.9, 279.4));
+            $pdf->Logo = $DatosEmpresa[0]->Logo;
+            $pdf->Empresa = $DatosEmpresa[0]->Empresa;
+
+
+
+            $pdf->Sem = $Sem;
+            $pdf->aSem = $aSem;
+            $pdf->Maq = $Maq;
+            $pdf->aMaq = $aMaq;
+            $pdf->Pares = $Pares[0]->Pares;
+            $pdf->Tipo = '******* SUELA *******';
+            $pdf->TipoE = $Tipo;
+
+            $pdf->AddPage();
+            $pdf->SetAutoPageBreak(true, 10);
+
+            $TOTAL_EXP = 0;
+            $TOTAL_SUBT = 0;
+            foreach ($Grupos as $key => $G) {
+
+                $TOTAL_EXP_GRUPO = 0;
+                $TOTAL_SUBT_GRUPO = 0;
+
+                $pdf->SetFont('Arial', 'B', 8);
+                $pdf->SetX(5);
+                $pdf->Cell(20, 5, 'Grupo: ', 0/* BORDE */, 0, 'L');
+                $pdf->SetX(25);
+                $pdf->SetFont('Arial', '', 8);
+                $pdf->Cell(50, 5, utf8_decode($G->Clave . '     ' . $G->Nombre), 0/* BORDE */, 1, 'L');
+
+
+                foreach ($Materiales as $key => $M) {
+                    $TOTAL_EXP_ART = 0;
+                    $TOTAL_SUBT_ART = 0;
+
+                    if ($G->Clave === $M->Grupo) {
+
+                        foreach ($Explosion as $key => $D) {
+
+                            if ($G->Clave === $M->Grupo && $D->Articulo === $M->Articulo) {
+
+                                $pdf->SetLineWidth(0.25);
+                                $pdf->SetX(5);
+                                $pdf->SetFont('Arial', '', 6.5);
+
+                                $anchos = array(10/* ClaveArt */, 65/* Articulo */, 7/* UM */, 13/* Tallas */, 12/* Explosion */,
+                                    15/* Precio */, 15/* Subtotal */, 22/* Requerido */, 23/* 1raEnt */, 23/* 2daEnt */);
+                                $aligns = array('R', 'L', 'L', 'C', 'R', 'R', 'R', 'C', 'L', 'L');
+                                $pdf->SetAligns($aligns);
+                                $pdf->SetWidths($anchos);
+
+                                $ExplosionCant = ($D->Consumo * $D->Pares);
+                                $Subtotal = $ExplosionCant * $D->Precio;
+
+                                $Exp_Acum = $D->C1;
+                                $Talla = $D->T1;
+
+
+                                for ($i = 1; $i < 22; $i++) {
+                                    $sig = $i + 1;
+                                    if ($D->{"A$i"} === $D->{"A$sig"}) {
+                                        $Exp_Acum += $D->{"C$sig"};
+                                    } else {
+                                        if ($Exp_Acum > 0) {
+                                            $pdf->Row(array(
+                                                utf8_decode($D->Articulo),
+                                                mb_strimwidth(utf8_decode($D->Descripcion), 0, 55, "..."),
+                                                utf8_decode($D->Unidad),
+                                                $Talla,
+                                                $Exp_Acum,
+                                                '$' . number_format($D->Precio, 2, ".", ","),
+                                                '$' . number_format($Exp_Acum * $D->Precio, 2, ".", ","),
+                                                '',
+                                                '',
+                                                ''
+                                            ));
+                                        }
+                                        $Talla = $D->{"T$sig"};
+                                        $Exp_Acum = $D->{"C$sig"};
+                                    }
+                                }
+
+                                $TOTAL_EXP_ART += $ExplosionCant;
+                                $TOTAL_SUBT_ART += $Subtotal;
+                                $TOTAL_EXP_GRUPO += $ExplosionCant;
+                                $TOTAL_SUBT_GRUPO += $Subtotal;
+                                $TOTAL_EXP += $ExplosionCant;
+                                $TOTAL_SUBT += $Subtotal;
+                            }
+                        }
+
+                        $pdf->SetFont('Arial', 'B', 6.5);
+                        $pdf->SetX(58);
+                        $pdf->Cell(40, 4, 'Total por Articulo: ', 'B'/* BORDE */, 0, 'L');
+                        $pdf->SetFont('Arial', '', 6.5);
+                        $pdf->SetX(98);
+                        $pdf->Cell(14, 4, number_format($TOTAL_EXP_ART, 2, ".", ","), 'B'/* BORDE */, 0, 'R');
+                        $pdf->SetX(112);
+                        $pdf->Cell(15, 4, '', 'B'/* BORDE */, 0, 'R');
+                        $pdf->SetX(127);
+                        $pdf->Cell(15, 4, '$' . number_format($TOTAL_SUBT_ART, 2, ".", ","), 'B'/* BORDE */, 1, 'R');
+                        $pdf->SetX(150);
+                    }
+                }
+
+                $pdf->SetFont('Arial', 'B', 6.5);
+                $y = $pdf->GetY();
+                $pdf->SetY($y);
+                $pdf->SetX(58);
+                $pdf->Cell(40, 4, 'Totales por Grupo: ', 'B'/* BORDE */, 0, 'L');
+                $pdf->SetFont('Arial', '', 6.5);
+                $pdf->SetX(98);
+                $pdf->Cell(14, 4, number_format($TOTAL_EXP_GRUPO, 2, ".", ","), 'B'/* BORDE */, 0, 'R');
+                $pdf->SetX(112);
+                $pdf->Cell(15, 4, '', 'B'/* BORDE */, 0, 'R');
+                $pdf->SetX(127);
+                $pdf->Cell(15, 4, '$' . number_format($TOTAL_SUBT_GRUPO, 2, ".", ","), 'B'/* BORDE */, 1, 'R');
+            }
+
+            $pdf->SetFont('Arial', 'B', 6.5);
+            $pdf->SetX(58);
+            $pdf->Cell(40, 4, 'Total por Semana Maquila: ', 'B'/* BORDE */, 0, 'L');
+            $pdf->SetFont('Arial', '', 6.5);
+            $pdf->SetX(98);
+            $pdf->Cell(14, 4, number_format($TOTAL_EXP, 2, ".", ","), 'B'/* BORDE */, 0, 'R');
+            $pdf->SetX(112);
+            $pdf->Cell(15, 4, '', 'B'/* BORDE */, 0, 'R');
+            $pdf->SetX(127);
+            $pdf->Cell(15, 4, '$' . number_format($TOTAL_SUBT, 2, ".", ","), 'B'/* BORDE */, 0, 'R');
+
+
+            /* FIN RESUMEN */
+            $path = 'uploads/Reportes/Explosion';
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $file_name = "EXPLOSION MATERIALES DESGLOSE TALLAS" . ' ' . date("d-m-Y his");
+            $url = $path . '/' . $file_name . '.pdf';
+            /* Borramos el archivo anterior */
+            if (delete_files('uploads/Reportes/Explosion/')) {
+                /* ELIMINA LA EXISTENCIA DE CUALQUIER ARCHIVO EN EL DIRECTORIO */
+            }
+            $pdf->Output($url);
+            print base_url() . $url;
+        }
+    }
+
     public function onReporteExplosionSemana() {
         $Tipo = $this->input->post('Tipo');
         $Maq = $this->input->post('Maq');
@@ -61,6 +235,7 @@ class Explosiones extends CI_Controller {
             $pdf->aMaq = $aMaq;
             $pdf->Pares = $Pares[0]->Pares;
             $pdf->Tipo = $TipoE;
+            $pdf->TipoE = $Tipo;
 
             $pdf->AddPage();
             $pdf->SetAutoPageBreak(true, 10);
@@ -105,7 +280,7 @@ class Explosiones extends CI_Controller {
                                     22/* Requerido */,
                                     23/* 1raEnt */,
                                     23/* 2daEnt */);
-                                $aligns = array('R', 'L', 'L', 'L', 'R', 'R', 'R', 'L', 'L', 'L');
+                                $aligns = array('R', 'L', 'L', 'L', 'R', 'R', 'R', 'C', 'L', 'L');
                                 $pdf->SetAligns($aligns);
                                 $pdf->SetWidths($anchos);
 
@@ -123,6 +298,8 @@ class Explosiones extends CI_Controller {
 
 
                                 $Subtotal = $ExplosionCant * $D->Precio;
+                                $Porcentaje = $D->Pares * 100 / $Pares[0]->Pares;
+                                $PorcentajeSuelas = ($Tipo === '80') ? number_format($Porcentaje, 2, ".", ",") . '%' : '';
                                 $pdf->Row(array(
                                     utf8_decode($D->Articulo),
                                     mb_strimwidth(utf8_decode($D->Descripcion), 0, 55, "..."),
@@ -131,7 +308,7 @@ class Explosiones extends CI_Controller {
                                     number_format($ExplosionCant, 2, ".", ","),
                                     '$' . number_format($D->Precio, 2, ".", ","),
                                     '$' . number_format($Subtotal, 2, ".", ","),
-                                    '',
+                                    $PorcentajeSuelas,
                                     '',
                                     '',
                                 ));
@@ -182,12 +359,16 @@ class Explosiones extends CI_Controller {
                 $pdf->Cell(15, 4, '', 'B'/* BORDE */, 0, 'R');
                 $pdf->SetX(127);
                 $pdf->Cell(15, 4, '$' . number_format($TOTAL_SUBT_GRUPO, 2, ".", ","), 'B'/* BORDE */, 0, 'R');
-                $pdf->SetX(150);
-                $pdf->SetFont('Arial', 'B', 6.5);
-                $pdf->Cell(15, 4, 'Costo:', 'B'/* BORDE */, 0, 'L');
-                $pdf->SetX(165);
-                $pdf->SetFont('Arial', '', 6.5);
-                $pdf->Cell(15, 4, number_format($COSTO, 2, ".", ","), 'B'/* BORDE */, 1, 'L');
+                if ($Tipo !== '80') {
+                    $pdf->SetX(150);
+                    $pdf->SetFont('Arial', 'B', 6.5);
+                    $pdf->Cell(15, 4, 'Costo:', 'B'/* BORDE */, 0, 'L');
+                    $pdf->SetX(165);
+                    $pdf->SetFont('Arial', '', 6.5);
+                    $pdf->Cell(15, 4, number_format($COSTO, 2, ".", ","), 'B'/* BORDE */, 1, 'L');
+                } else {
+                    $pdf->Cell(15, 4, '', 0/* BORDE */, 1, 'L');
+                }
             }
 
             $pdf->SetFont('Arial', 'B', 6.5);

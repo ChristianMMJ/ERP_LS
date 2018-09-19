@@ -37,8 +37,11 @@ class suelaplantacompras_model extends CI_Model {
     public function getArticulosByGrupo($Grupo) {
         try {
             return $this->db->select("M.Clave AS ID, CONCAT(M.Clave,' - ', IFNULL(M.Descripcion,'')) AS Articulo", false)
-                            ->from('Articulos AS M')->where_in('M.Estatus', array('ACTIVO'))->where_in('M.Grupo', $Grupo)
-                            ->order_by("M.Clave", "ASC")->get()->result();
+                            ->from('Articulos AS M')->where_in('M.Estatus', array('ACTIVO'))
+                            ->where_in('M.Grupo', $Grupo)
+                            ->order_by("M.Clave", "ASC")
+                            ->get()
+                            ->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

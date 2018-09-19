@@ -71,6 +71,7 @@
                                 <option value="10">10 PIEL Y FORRO</option>
                                 <option value="80">80 SUELA</option>
                                 <option value="90">90 INDIRECTOS</option>
+                                <option value="0">80 SUELA C/ DESGLOSE</option>
                             </select>
                         </div>
                         <div class="col-12 col-sm-12 mt-2">
@@ -98,6 +99,76 @@
             });
             mdlExplosionSemanal.find('#Ano').focus();
         });
+
+        mdlExplosionSemanal.find('#btnImprimir').on("click", function () {
+            HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+
+            var Tipo = parseInt($('#Tipo').val());
+            var Reporte = '';
+
+            if (Tipo === 10 || Tipo === 80 || Tipo === 90) {
+                Reporte = 'index.php/Explosiones/onReporteExplosionSemana';
+            } else {
+                Reporte = 'index.php/Explosiones/onReporteExplosionSemanaSuelaDesglose';
+            }
+
+            var frm = new FormData(mdlExplosionSemanal.find("#frmExplosion")[0]);
+            var SinClasif = mdlExplosionSemanal.find("#SinClasif")[0].checked ? '1' : '0';
+
+            frm.append('SinClasif', SinClasif);
+            $.ajax({
+                url: base_url + Reporte,
+                type: "POST",
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: frm
+            }).done(function (data, x, jq) {
+                console.log(data);
+                if (data.length > 0) {
+
+                    $.fancybox.open({
+                        src: data,
+                        type: 'iframe',
+                        opts: {
+                            afterShow: function (instance, current) {
+                                console.info('done!');
+                            },
+                            iframe: {
+                                // Iframe template
+                                tpl: '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen allowtransparency="true" src=""></iframe>',
+                                preload: true,
+                                // Custom CSS styling for iframe wrapping element
+                                // You can use this to set custom iframe dimensions
+                                css: {
+                                    width: "85%",
+                                    height: "85%"
+                                },
+                                // Iframe tag attributes
+                                attr: {
+                                    scrolling: "auto"
+                                }
+                            }
+                        }
+                    });
+
+
+                } else {
+                    swal({
+                        title: "ATENCIÓN",
+                        text: "NO EXISTEN PROGRAMACION DE LA SEMANA/MAQUILA",
+                        icon: "error"
+                    }).then((action) => {
+                        mdlExplosionSemanal.find('#Ano').focus();
+                    });
+                }
+                HoldOn.close();
+            }).fail(function (x, y, z) {
+                console.log(x, y, z);
+                HoldOn.close();
+            });
+        });
+
         mdlExplosionSemanal.find("#Ano").change(function () {
             if (parseInt($(this).val()) < 2016 || parseInt($(this).val()) > 2020 || $(this).val() === '') {
                 swal({
@@ -189,64 +260,5 @@
         });
     }
 
-    mdlExplosionSemanal.find('#btnImprimir').on("click", function () {
 
-        HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
-        var frm = new FormData(mdlExplosionSemanal.find("#frmExplosion")[0]);
-
-        var SinClasif = mdlExplosionSemanal.find("#SinClasif")[0].checked ? '1' : '0';
-
-        frm.append('SinClasif', SinClasif);
-        $.ajax({
-            url: base_url + 'index.php/Explosiones/onReporteExplosionSemana',
-            type: "POST",
-            cache: false,
-            contentType: false,
-            processData: false,
-            data: frm
-        }).done(function (data, x, jq) {
-            console.log(data);
-            if (data.length > 0) {
-
-                $.fancybox.open({
-                    src: data,
-                    type: 'iframe',
-                    opts: {
-                        afterShow: function (instance, current) {
-                            console.info('done!');
-                        },
-                        iframe: {
-                            // Iframe template
-                            tpl: '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen allowtransparency="true" src=""></iframe>',
-                            preload: true,
-                            // Custom CSS styling for iframe wrapping element
-                            // You can use this to set custom iframe dimensions
-                            css: {
-                                width: "85%",
-                                height: "85%"
-                            },
-                            // Iframe tag attributes
-                            attr: {
-                                scrolling: "auto"
-                            }
-                        }
-                    }
-                });
-
-
-            } else {
-                swal({
-                    title: "ATENCIÓN",
-                    text: "NO EXISTEN PROGRAMACION DE LA SEMANA/MAQUILA",
-                    icon: "error"
-                }).then((action) => {
-                    mdlExplosionSemanal.find('#Ano').focus();
-                });
-            }
-            HoldOn.close();
-        }).fail(function (x, y, z) {
-            console.log(x, y, z);
-            HoldOn.close();
-        });
-    });
 </script>

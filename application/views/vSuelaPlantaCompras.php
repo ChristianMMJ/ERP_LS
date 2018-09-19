@@ -369,33 +369,35 @@
                 $.each(pnlDatos.find("select"), function (k, v) {
                     pnlDatos.find("select")[k].selectize.clear(true);
                 });
+                var grupo = parseInt(data[0].Grupo);
+                $.when($.getJSON(master_url + 'getArticulosByGrupo', {Grupo: grupo}).done(function (data, x, jq) {
 
-                $.when($.getJSON(master_url + 'getArticulosByGrupo', {Grupo: data[0].Grupo}).done(function (data, x, jq) {
                     $.each(data, function (k, v) {
                         pnlDatos.find("#ArticuloCBZ")[0].selectize.addOption({text: v.Articulo, value: v.ID});
                         pnlDatos.find("#Articulo")[0].selectize.addOption({text: v.Articulo, value: v.ID});
                     });
-                    //pnlDatos.find("#ArticuloCBZ")[0].selectize.focus();
                 })).done(function (x) {
                     $.each(data[0], function (k, v) {
                         pnlDatos.find("[name='" + k + "']").val(v);
                         if (pnlDatos.find("[name='" + k + "']").is('select')) {
-                            pnlDatos.find("[name='" + k + "']")[0].selectize.addItem(v, true);
+                            pnlDatos.find("[name='" + k + "']")[0].selectize.addItem(parseInt(v), true);
                         }
                     });
+                    getSerieXClave(data[0].Serie);
+                    pnlDatos.find("#Serie")[0].selectize.disable();
+                    pnlDatos.find("#Grupo")[0].selectize.disable();
+
+                    pnlTablero.addClass("d-none");
+                    pnlDatos.removeClass('d-none');
+                    HoldOn.close();
                 });
 
-                getSerieXClave(data[0].Serie);
-                pnlDatos.find("#Serie")[0].selectize.disable();
-                pnlDatos.find("#Grupo")[0].selectize.disable();
 
-                pnlTablero.addClass("d-none");
-                pnlDatos.removeClass('d-none');
             }).fail(function (x, y, z) {
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
                 console.log(x.responseText);
             }).always(function () {
-                HoldOn.close();
+
             });
         });
 
