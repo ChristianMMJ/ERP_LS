@@ -39,14 +39,14 @@
                     <a class="dropdown-item" href="#"> Prueba.</a>
                 </div>
             </li>
-
-
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navReportes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="fa fa-file-pdf"></span> Reportes
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navReportes">
-                    <a class="dropdown-item" href="#"> Prueba</a>
+                    <a class="dropdown-item" href="<?php print base_url('OrdenDeProduccion.shoes'); ?>"><span class="fa fa-exclamation-circle fade-infinite"></span> 1 Genera ordenes de producción semana maquila </a>
+                    <a class="dropdown-item" href="<?php print base_url('ImprimeOrdenDeProduccion.shoes'); ?>"><span class="fa fa-exclamation-circle fade-infinite"></span> 2 Elimina orden de producción </a>
+                    <a class="dropdown-item" href="<?php print base_url('ImprimeOrdenDeProduccion.shoes'); ?>"><span class="fa fa-exclamation-circle fade-infinite"></span> 3 Imprime orden de producción </a>
                 </div>
             </li>
 
@@ -106,3 +106,31 @@
         }
     });
 </script>
+<style>
+    @keyframes fadeInOut {
+        0%   { opacity:1; }
+        50%  { opacity:0.5; }
+        100% { opacity:1; }
+    }
+    @-o-keyframes fadeInOut{
+        0%   { opacity:1; }
+        50%  { opacity:0.5; }
+        100% { opacity:1; }
+    }
+    @-moz-keyframes fadeInOut{
+        0%   { opacity:1; }
+        50%  { opacity:0.5; }
+        100% { opacity:1; }
+    }
+    @-webkit-keyframes fadeInOut{
+        0%   { opacity:1; }
+        50%  { opacity:0.5; }
+        100% { opacity:1; }
+    }
+    li a:hover {
+        -webkit-animation: fadeInOut 1.5s infinite;
+        -moz-animation: fadeInOut 1.5s infinite;
+        -o-animation: fadeInOut 1.5s infinite;
+        animation: fadeInOut 1.5s infinite;
+    }
+</style>

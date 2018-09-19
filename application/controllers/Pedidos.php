@@ -252,6 +252,7 @@ class Pedidos extends CI_Controller {
                     "Serie" => ($v->Serie !== '') ? $v->Serie : NULL,
                     "Control" => ($v->Control !== '') ? $v->Control : NULL,
                     "Pares" => ($v->Pares !== '') ? $v->Pares : NULL,
+                    "Control" => 0,
                     "C1" => ($v->C1 !== '') ? $v->C1 : NULL, "C2" => ($v->C2 !== '') ? $v->C2 : NULL,
                     "C3" => ($v->C3 !== '') ? $v->C3 : NULL, "C4" => ($v->C4 !== '') ? $v->C4 : NULL,
                     "C5" => ($v->C5 !== '') ? $v->C5 : NULL, "C6" => ($v->C6 !== '') ? $v->C6 : NULL,
