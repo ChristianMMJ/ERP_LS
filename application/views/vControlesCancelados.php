@@ -1,4 +1,4 @@
-<div class="card mx-3 animated fadeIn" id="pnlTablero">
+<div class="card m-3 animated fadeIn" id="pnlTablero">
     <div class="card-body">
         <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1 text-danger font-italic ">
@@ -256,7 +256,7 @@
                 placement: "auto",
                 element: "#tblControlesCancelados > tbody > tr:eq(0) ",
                 title: "Cancelar",
-                content: "Cada registro cuenta con un boton de <button type=\"button\" class=\"btn btn-danger\">CANCELAR</button><br> arroja una ventana donde preguntará cual es el motivo de la cancelación, desaparece el boton una vez cancelado el registro.",
+                content: "Cada registro cuenta con un boton de <button type=\"button\" class=\"btn btn-danger\">CANCELAR</button><br> arroja una ventana donde preguntará cual es el motivo de la cancelación, desaparece el boton una vez cancelado el registro."
             }
         ],
         container: "body",
