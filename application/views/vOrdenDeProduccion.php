@@ -1,38 +1,97 @@
 <div class="card m-3 animated fadeIn" id="pnlTablero">
     <div class="card-body">
         <div class="row">
-            <div class="col-12 col-sm-12 col-md-12 col-lg-11 col-xl-11 text-center text-danger font-italic">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center text-danger font-italic">
                 <legend class="float-left font-weight-bold">Genera orden de producción semana / maquila</legend>
             </div> 
         </div>
         <div class="row">
-            <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1"></div>
-            <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-3">
+            <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1">
+                <button type="button" class="btn btn-warning" id="btnReload" data-toggle="tooltip" data-placement="top" title="Refrescar">
+                    <span class="fa fa-retweet"></span>
+                </button>
+            </div>
+            <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-3" data-column="12">
                 <label>Maquila</label>
-                <input type="text" class="form-control form-control-sm column_filter numbersOnly" id="Maquila" autofocus maxlength="4" onkeyup="onChecarMaquilaValida(this)">
+                <input type="text" class="form-control form-control-sm column_filter numbersOnly column_filter" id="col12_filter" autofocus maxlength="4" onkeyup="onChecarMaquilaValida(this)">
             </div>
-            <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-3">
+            <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-3" data-column="13">
                 <label>Semana</label>     
-                <input type="text" class="form-control form-control-sm column_filter numbersOnly" id="Semana" maxlength="2"  min="1" max="52" onkeyup="onChecarSemanaValida(this)">
+                <input type="text" class="form-control form-control-sm column_filter numbersOnly column_filter" id="col13_filter" maxlength="2"  min="1" max="52" onkeyup="onChecarSemanaValida(this)">
             </div>
-            <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-3">
+            <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-3" data-column="14">
                 <label>Año</label>
-                <input type="text" class="form-control form-control-sm column_filter numbersOnly" id="Anio" maxlength="4" minlength="1" onkeypress="onVerificarFormValido()" onkeyup="onVerificarFormValido()" onfocus="onVerificarFormValido()">
+                <input type="text" class="form-control form-control-sm column_filter numbersOnly column_filter" id="col14_filter" maxlength="4" minlength="1">
             </div>
             <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2 mt-4">
                 <button type="button" class="btn btn-primary" id="btnGenerar">Generar</button>
             </div>
-            <div id="Resultado" class="col-12">
+            <div id="Resultado" class="col-12 text-center my-2"></div>
+            <div id="Controles" class="table-responsive">
+                <table id="tblControles" class="table table-sm display hover" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>ID</th><!--0-->
+                            <th>IdEstilo</th><!--1-->
+                            <th>IdColor</th><!--2-->
+                            <th>Pedido</th><!--3-->
+                            <th>Cliente</th><!--4-->
 
+                            <th>Estilo</th><!--5-->
+                            <th>Color</th><!--6-->
+                            <th>Serie</th><!--7-->
+                            <th>Fecha</th><!--8-->
+                            <th>Fe - Pe</th><!--9-->
+
+                            <th>Fe - En</th><!--10-->
+                            <th>Pars</th><!--11-->
+                            <th>Maq</th><!--12-->
+                            <th>Sem</th><!--13-->
+                            <th>Año</th><!--14-->
+
+                            <th>Control</th><!--15-->
+                            <th>SerieID</th><!--16-->
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+
+                            <th style="text-align:right">Pares</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
         </div>
     </div>
 </div>
 <script>
     var master_url = base_url + 'index.php/OrdenDeProduccion/';
-    var pnlTablero = $("#pnlTablero"), Maquila = pnlTablero.find("#Maquila"),
-            Semana = pnlTablero.find("#Semana"), Anio = pnlTablero.find("#Anio"),
+    var pnlTablero = $("#pnlTablero"), Maquila = pnlTablero.find("#col12_filter"),
+            Semana = pnlTablero.find("#col13_filter"), Anio = pnlTablero.find("#col14_filter"),
             btnGenerar = pnlTablero.find("#btnGenerar"), AnioValido = (new Date()).getFullYear();
+
+    var Controles;
+    var tblControles = $('#tblControles');
+    var btnReload = $("#btnReload");
 
     // IIFE - Immediately Invoked Function Expression
     (function (yc) {
@@ -43,23 +102,176 @@
         // Listen for the jQuery ready event on the document
         $(function () {
             handleEnter();
+            getRecords();
+
             btnGenerar.prop("disabled", true);
-            pnlTablero.find("#Anio").val((new Date()).getFullYear());
+            Anio.val((new Date()).getFullYear());
+
+            Anio.focusout(function () {
+                onVerificarFormValido();
+            });
+
+            btnReload.click(function () {
+                Controles.ajax.reload();
+            });
+
             btnGenerar.click(function () {
+                btnGenerar.prop("disabled", true);
                 onAgregarAOrdenDeProduccion();
+            });
+
+            $('input.column_filter').on('keyup', function () {
+                var i = $(this).parents('div').attr('data-column');
+                tblControles.DataTable().column(i).search($('#col' + i + '_filter').val()).draw();
             });
         });
     }));
 
+
+    function getRecords() {
+        HoldOn.open({
+            theme: 'sk-cube',
+            message: 'CARGANDO...'
+        });
+        $.fn.dataTable.ext.errMode = 'throw';
+        if ($.fn.DataTable.isDataTable('#tblControles')) {
+            tblControles.DataTable().destroy();
+        }
+        Controles = tblControles.DataTable({
+            dom: 'irt',
+            buttons: [
+                {
+                    text: "Todos",
+                    className: 'btn btn-info btn-sm',
+                    titleAttr: 'Todos',
+                    action: function (dt) {
+                        Controles.rows({page: 'current'}).select();
+                    }
+                },
+                {
+                    extend: 'selectNone',
+                    className: 'btn btn-info btn-sm',
+                    text: 'Ninguno',
+                    titleAttr: 'Deseleccionar Todos'
+                }
+            ],
+            "ajax": {
+                "url": master_url + 'getRecords',
+                "dataSrc": ""
+            },
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    "targets": [1],
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    "targets": [2],
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    "targets": [16],
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    "targets": [17],
+                    "visible": false,
+                    "searchable": false
+                }],
+            "columns": [
+                {"data": "ID"}, /*0*/
+                {"data": "IdEstilo"}, /*1*/
+                {"data": "IdColor"}, /*2*/
+                {"data": "Pedido"}, /*3*/
+                {"data": "Cliente"}, /*4*/
+                {"data": "Estilo"}, /*5*/
+                {"data": "Color"}, /*6*/
+                {"data": "Serie"}, /*7*/
+                {"data": "Fecha Captura"}, /*8*/
+                {"data": "Fecha Pedido"}, /*9*/
+                {"data": "Fecha Entrega"}, /*10*/
+                {"data": "Pares"}, /*11*/
+                {"data": "Maq"}, /*12*/
+                {"data": "Semana"}, /*13*/
+                {"data": "Anio"}, /*14*/
+                {"data": "Control"}, /*15*/
+                {"data": "SerieID"}/*16*/,
+                {"data": "ID_PEDIDO"}/*17*/
+            ],
+            language: lang,
+            select: true,
+            keys: true,
+            "autoWidth": true,
+            "colReorder": true,
+            "displayLength": 9999999999,
+            "scrollY": 380,
+            "scrollX": true,
+            "bLengthChange": false,
+            "deferRender": true,
+            "scrollCollapse": false,
+            "bSort": true,
+            "aaSorting": [
+                [0, 'desc']/*ID*/
+            ],
+            "createdRow": function (row, data, dataIndex, cells) {
+                $.each($(row).find("td"), function (k, v) {
+                    switch (parseInt(k)) {
+                        case 1:
+                            $(v).attr('title', data["Cliente Razon"]);
+                            break;
+                        case 2:
+                            $(v).attr('title', data["Descripcion Estilo"]);
+                            break;
+                        case 3:
+                            $(v).attr('title', data["Descripcion Color"]);
+                            break;
+                    }
+                });
+                $.each($(row), function (k, v) {
+                    if (data["Marca"] === '0' && data["Control"] !== null) {
+                        $(v).addClass('HasMca');
+                    }
+                });
+            },
+            "footerCallback": function (row, data, start, end, display) {
+                var api = this.api(); //Get access to Datatable API
+                // Update footer
+                $(api.column(11).footer()).html(api.column(11, {page: 'current'}).data().reduce(function (a, b) {
+                    return parseFloat(a) + parseFloat(b);
+                }, 0));
+            }
+        });
+        HoldOn.close();
+    }
+
     function onAgregarAOrdenDeProduccion() {
         $.post(master_url + 'onAgregarAOrdenDeProduccion', {MAQUILA: Maquila.val(), SEMANA: Semana.val(), ANO: Anio.val()}).done(function (data) {
             console.log(data);
-            $("#Resultado").html(data);
-            swal('ATENCIÓN', 'SE HAN CREADO LAS ORDENES DE PRODUCCION DE LA MAQUILA ' + Maquila.val() + ', SEMANA ' + Semana.val(), 'success');
+            var nordenes = parseInt(data);
+            if (nordenes > 0) {
+                $("#Resultado").html('<p class="text-info font-weight-bold mt-2"> SE HAN GENERADO ' + nordenes + ' ORDENES DE PRODUCCIÓN</p>');
+                swal('ATENCIÓN', 'SE HAN CREADO ' + nordenes + ' ORDENES DE PRODUCCION DE LA MAQUILA ' + Maquila.val() + ', SEMANA ' + Semana.val() + ', AÑO ' + Anio.val(), 'success').then((value) => {
+                    Maquila.focus().select();
+                });
+            } else {
+                swal('ATENCIÓN', 'NO HAY ORDENES DE PRODUCCION DISPONIBLES EN LA MAQUILA ' + Maquila.val() + ', SEMANA ' + Semana.val() + ', AÑO ' + Anio.val(), 'warning').then((value) => {
+                    Maquila.focus().select();
+                });
+            }
         }).fail(function (x, y, z) {
-            console.log(x, y, z);
+            console.log(x.responseText);
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info').then((value) => {
+                btnGenerar.prop("disabled", false);
+            });
         }).always(function () {
-
+            btnGenerar.prop("disabled", false);
         });
     }
 
@@ -117,7 +329,7 @@
     }
 
     function onVerificarFormValido() {
-        if (parseInt(AnioValido) <= Anio.val()) {
+        if (parseInt(Anio.val()) <= parseInt(AnioValido)) {
             if (Maquila.val() !== '' && Semana.val() !== '' && Anio.val() !== '') {
                 btnGenerar.prop("disabled", false);
             } else {
@@ -132,9 +344,22 @@
                 closeOnClickOutside: false,
                 closeOnEsc: false
             }).then((value) => {
-                onVerificarFormValido();
-                Anio.val('').focus().select();
+                Anio.focus().select();
             });
         }
     }
 </script>
+<style>
+    td[title]:hover:after {
+        text-align: center;
+        content: attr(title);
+        padding: 3px 5px 0px 5px;
+        position: absolute;
+        left: 0;
+        top: 100%;
+        white-space: nowrap;
+        z-index: 1;
+        background: #0099cc;
+        color: #fff;
+    }
+</style>

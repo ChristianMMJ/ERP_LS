@@ -45,7 +45,7 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navReportes">
                     <a class="dropdown-item" href="<?php print base_url('OrdenDeProduccion.shoes'); ?>"><span class="fa fa-exclamation-circle fade-infinite"></span> 1 Genera ordenes de producción semana maquila </a>
-                    <a class="dropdown-item" href="<?php print base_url('ImprimeOrdenDeProduccion.shoes'); ?>"><span class="fa fa-exclamation-circle fade-infinite"></span> 2 Elimina orden de producción </a>
+                    <a class="dropdown-item" href="<?php print base_url('EliminaOrdenDeProduccion.shoes'); ?>"><span class="fa fa-exclamation-circle fade-infinite"></span> 2 Elimina orden de producción </a>
                     <a class="dropdown-item" href="<?php print base_url('ImprimeOrdenDeProduccion.shoes'); ?>"><span class="fa fa-exclamation-circle fade-infinite"></span> 3 Imprime orden de producción </a>
                 </div>
             </li>

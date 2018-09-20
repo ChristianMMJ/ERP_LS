@@ -578,38 +578,6 @@
                 }, 0));
             }
         });
-        var tcv = '';
-        ReasignarControles.on('key', function (e, datatable, key, cell, originalEvent) {
-            var t = $('#tblReasignarControles > tbody');
-            var a = t.find("#EditingField");
-            if (key === 13) {
-                tcv = cell.data();
-                if (a.val() !== 'undefined' && a.val() !== undefined) {
-                    var b = ReasignarControles.cell(a.parent()).index();
-                    var c = a.val();
-                    var d = a.parent();
-                    d.html(c);
-                    ReasignarControles.cell(d, b).data(c).draw();
-                }
-                var td = $(this).find("td.focus");
-                var g = '<input id="EditingField" type="text" class="form-control form-control-sm">';
-
-                var g = '<input id="EditingField" type="text" class="form-control form-control-sm" value="' + cell.data() + '" autofocus>';
-                td.html(g);
-                td.find("#EditingField").focus();
-                td.find("#EditingField").select();
-            }
-        }).on('key-blur', function (e, datatable, cell) {
-            var t = $('#tblReasignarControles > tbody');
-            var a = t.find("#EditingField");
-            if (a.val() !== 'undefined' && a.val() !== undefined) {
-                var b = ReasignarControles.cell(a.parent()).index();
-                var c = a.val() !== '' ? a.val() : tcv;
-                var d = a.parent();
-                d.html(c);
-                ReasignarControles.cell(d, b).data(c).draw();
-            }
-        });
         HoldOn.close();
     }
 

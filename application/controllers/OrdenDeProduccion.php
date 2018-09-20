@@ -42,6 +42,14 @@ class OrdenDeProduccion extends CI_Controller {
         }
     }
 
+    public function getRecords() {
+        try {
+            print json_encode($this->ordendeproduccion_model->getRecords());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onChecarMaquilaValida() {
         try {
             print json_encode($this->ordendeproduccion_model->onChecarMaquilaValida($this->input->get('ID')));
@@ -64,68 +72,115 @@ class OrdenDeProduccion extends CI_Controller {
         try {
             $x = $this->input;
             $PEDIDO_DETALLE = $this->ordendeproduccion_model->getPedidosByMaquilaSemana($x->post('MAQUILA'), $x->post('SEMANA'), $x->post('ANO'));
-            foreach ($PEDIDO_DETALLE as $key => $v) {
-                $data = array();
-                $data["Clave"] = $v->CLAVE_CLIENTE;
-                $data["Cliente"] = $v->CLIENTE;
-                $data["FechaEntrega"] = $v->FechaEntrega;
-                $data["FechaPedido"] = $v->FECHA_PEDIDO;
-                $data["Control"] = $v->Control;
-                $data["Pedido"] = $v->Pedido;
-                $data["Linea"] = $v->CLAVE_LINEA;
-                $data["LineaT"] = $v->LINEA;
-                $data["Recio"] = $v->Recio;
-                $data["Estilo"] = $v->Estilo;
-                $data["EstiloT"] = $v->EstiloT;
-                $data["Color"] = $v->Color;
-                $data["ColorT"] = $v->ColorT;
+            foreach ($PEDIDO_DETALLE as $k => $v) {
+                $op = array();
+                $op["Clave"] = $v->CLAVE_CLIENTE;
+                $op["Cliente"] = $v->CLIENTE;
+                $op["FechaEntrega"] = $v->FechaEntrega;
+                $op["FechaPedido"] = $v->FECHA_PEDIDO;
+                $op["Control"] = $v->CLAVE_CONTROL;
+                $op["ControlT"] = $v->Control;
+                $op["Pedido"] = $v->Pedido;
+                $op["PedidoDetalle"] = $v->PEDIDO_DETALLE;
+                $op["Linea"] = $v->CLAVE_LINEA;
+                $op["LineaT"] = $v->LINEA;
+                $op["Recio"] = $v->Recio;
+                $op["Estilo"] = $v->Estilo;
+                $op["EstiloT"] = $v->OESTILOT;
+                $op["Color"] = $v->Color;
+                $op["ColorT"] = $v->OCOLORT;
+                $op["Agente"] = $v->AGENTE;
+                $op["Transporte"] = $v->TRANSPORTE;
+                $op["Semana"] = $x->post('SEMANA');
+                $op["Maquila"] = $x->post('MAQUILA');
+                $op["Ano"] = $x->post('ANO');
 
-                $data["Agente"] = $v->AGENTE;
-                $data["Transporte"] = $v->TRANSPORTE;
-                
-                $data["Piel1ra"] = '';
-                $data["CantidadPiel1ra"] = '';
-                $data["Piel2da"] = '';
-                $data["CantidadPiel2da"] = '';
-                $data["Piel3ra"] = '';
-                $data["CantidadPiel3ra"] = '';
-                $data["TotalPiel"] = '';
-                $data["Forro1ra"] = '';
-                $data["CantidadForro1ra"] = '';
-                $data["Forro2da"] = '';
-                $data["CantidadForro2da"] = '';
-                $data["Forro3ra"] = '';
-                $data["CantidadForro3ra"] = '';
-                $data["TotalForro"] = '';
-                $data["Sintetico1ra"] = '';
-                $data["CantidadSintetico1ra"] = '';
-                $data["Sintetico2da"] = '';
-                $data["CantidadSintetico2da"] = '';
-                $data["Sintetico3ra"] = '';
-                $data["CantidadSintetico3ra"] = '';
-                $data["TotalSintetico"] = '';
-                
-                $data["Suela"] = '';
-                $data["SuelaT"] = '';
-                $data["Suaje"] = '';
-                
-                $data["SerieCorrida"] = $v->SERIE;
-                $data["EstatusProduccion"] = 'PROGRAMADO';
-
-                for ($index = 1; $index <= 22; $index++) {
-                    $data["S$index"] = $v->{"T$index"};
+                $P_F_S_S = $this->ordendeproduccion_model->getPIEL_FORRO_SINTETICO_SUELA($v->Estilo, $v->Color, $v->Pares);
+                $total_piel = 0;
+                $total_forro = 0;
+                $total_sintetico = 0;
+                $piel = 1;
+                $forro = 1;
+                $sintetico = 1;
+                foreach ($P_F_S_S as $kk => $vv) {
+                    switch ($vv->Grupo) {
+                        case 'PIEL':
+                            $op["Piel" . $piel] = $vv->PIEL_FORRO_SINTETICO_SUELA;
+                            $op["CantidadPiel" . $piel] = $vv->CONSUMOTOTAL;
+                            $total_piel += $vv->CONSUMOTOTAL;
+                            $piel += 1;
+                            break;
+                        case 'FORRO':
+                            $op["Forro" . $forro] = $vv->PIEL_FORRO_SINTETICO_SUELA;
+                            $op["CantidadForro" . $forro] = $vv->CONSUMOTOTAL;
+                            $total_forro += $vv->CONSUMOTOTAL;
+                            $forro += 1;
+                            break;
+                        case 'SINTETICO':
+                            $op["Sintetico" . $sintetico] = $vv->PIEL_FORRO_SINTETICO_SUELA;
+                            $op["CantidadSintetico" . $sintetico] = $vv->CONSUMOTOTAL;
+                            $total_sintetico += $vv->CONSUMOTOTAL;
+                            $sintetico += 1;
+                            break;
+                        case 'SUELA':
+                            $op["Suela"] = $vv->Clave;
+                            $op["SuelaT"] = $vv->PIEL_FORRO_SINTETICO_SUELA;
+                            break;
+                    }
                 }
 
-                $data["Horma"] = $v->HORMA;
-                $data["Pares"] = $v->Pares;
+                $op["TotalPiel"] = $total_piel;
+                $op["TotalForro"] = $total_forro;
+                $op["TotalSintetico"] = $total_sintetico;
+
+                $op["Suaje"] = '';
+
+                $op["SerieCorrida"] = $v->SERIE;
+                $op["EstatusProduccion"] = 'PROGRAMADO';
 
                 for ($index = 1; $index <= 22; $index++) {
-                    $data["C$index"] = $v->{"C$index"};
+                    $op["S$index"] = $v->{"T$index"};
                 }
-                $data["Registro"] = Date('d/m/Y h:i:s a');
-                $this->db->insert('ordendeproduccion', $data);
-                //  Observaciones, Nombre, Registro, Eliminacion
+
+                $op["Horma"] = $v->HORMA;
+                $op["Pares"] = $v->Pares;
+
+                for ($index = 1; $index <= 22; $index++) {
+                    $op["C$index"] = $v->{"C$index"};
+                }
+                $op["Registro"] = Date('d/m/Y h:i:s a');
+                $op["Usuario"] = $_SESSION["ID"];
+                $op["UsuarioT"] = $_SESSION["USERNAME"];
+
+                $this->db->insert('ordendeproduccion', $op);
+                $row = $this->db->query('SELECT LAST_INSERT_ID()')->row_array();
+                $ID = $row['LAST_INSERT_ID()'];
+
+                /* DETALLE */
+                $ORDENDEPRODUCCIOND = $this->ordendeproduccion_model->getFichaTecnicaParaOrdenDeProduccion($v->Estilo, $v->Color, $v->Pares);
+                foreach ($ORDENDEPRODUCCIOND as $kkk => $vvv) {
+                    $opd = array();
+                    $opd["OrdenDeProduccion"] = $ID;
+                    $opd["Pieza"] = $vvv->PIEZA;
+                    $opd["PiezaT"] = $vvv->PIEZAT;
+                    $opd["Departamento"] = $vvv->DEPARTAMENTO;
+                    $opd["DepartamentoT"] = $vvv->DEPARTAMENTOT;
+                    $opd["Articulo"] = $vvv->ARTICULO;
+                    $opd["ArticuloT"] = $vvv->ARTICULOT;
+                    $opd["Precio"] = $vvv->PRECIO;
+                    $opd["Consumo"] = $vvv->CONSUMO;
+                    $opd["PzXPar"] = $vvv->PZXPAR;
+                    $opd["UnidadMedida"] = $vvv->UNIDAD;
+                    $opd["UnidadMedidaT"] = $vvv->UNIDADT;
+                    $opd["Cantidad"] = $vvv->CANTIDAD_CONSUMO;
+                    $opd["Estatus"] = 'A';
+                    $opd["FechaAlta"] = Date('d/m/Y');
+                    $opd["AfectaPV"] = $vvv->AFECTAPV;
+                    $opd["PiezaClasificacion"] = $vvv->CLASIFICACION;
+                    $this->db->insert('ordendeproducciond', $opd);
+                }
             }
+            print count($PEDIDO_DETALLE);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
