@@ -100,6 +100,8 @@
         <!--JS XLXS API-->
         <script src="<?php echo base_url(); ?>js/js-xlsx/jszip.js"></script>
         <script src="<?php echo base_url(); ?>js/js-xlsx/xlsx.js"></script>
+        <!-- Shortcut key -->
+        <script src="<?php echo base_url(); ?>js/ShortCut/shortcut.js"></script>
 
         <!--FancyBoxJS-->
         <link rel="stylesheet" href="<?php echo base_url("js/fancybox/jquery.fancybox.min.css"); ?>" />
@@ -107,11 +109,11 @@
 
         <!--EasyAutocompleteJS-->
         <!-- JS file -->
-        <script src="<?php echo base_url("js/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.min.js"); ?>"></script> 
+        <script src="<?php echo base_url("js/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.min.js"); ?>"></script>
         <!-- CSS file -->
-        <link rel="stylesheet" href="<?php echo base_url("js/EasyAutocomplete-1.3.5/easy-autocomplete.min.css"); ?>"> 
+        <link rel="stylesheet" href="<?php echo base_url("js/EasyAutocomplete-1.3.5/easy-autocomplete.min.css"); ?>">
         <!-- Additional CSS Themes file - not required-->
-        <link rel="stylesheet" href="<?php echo base_url("js/EasyAutocomplete-1.3.5/easy-autocomplete.themes.min.css"); ?>"> 
+        <link rel="stylesheet" href="<?php echo base_url("js/EasyAutocomplete-1.3.5/easy-autocomplete.themes.min.css"); ?>">
 
         <!--Final Modifiers for CSS-->
 <!--        <link href="<?php print base_url(); ?>css/style.css" rel="stylesheet" />-->

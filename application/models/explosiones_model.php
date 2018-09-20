@@ -33,6 +33,7 @@ class explosiones_model extends CI_Model {
 
     public function getGrupos($Ano, $Semana, $aSemana, $Maquila, $aMaquila, $TipoE) {
         try {
+            $this->db->query("set sql_mode=''");
             $this->db->select("CAST(G.Clave AS SIGNED ) AS Clave ,G.Nombre "
                     . " ", false);
             $this->db->from('pedidodetalle PE');
@@ -97,6 +98,7 @@ class explosiones_model extends CI_Model {
 
     public function getMateriales($Ano, $Semana, $aSemana, $Maquila, $aMaquila, $TipoE) {
         try {
+            $this->db->query("set sql_mode=''");
             $this->db->select("A.Grupo, "
                             . "FT.Articulo "
                             . " ", false)
@@ -154,6 +156,7 @@ class explosiones_model extends CI_Model {
 
     public function getExplosionMateriales($Ano, $Semana, $aSemana, $Maquila, $aMaquila, $TipoE, $SinClasif) {
         try {
+            $this->db->query("set sql_mode=''");
             $this->db->select("A.Grupo, "
                             . "FT.Articulo, "
                             . "A.Descripcion, "
@@ -255,6 +258,7 @@ class explosiones_model extends CI_Model {
 
     public function getGruposTallas($Ano, $Semana, $aSemana, $Maquila, $aMaquila) {
         try {
+            $this->db->query("set sql_mode=''");
             $this->db->select("CAST(G.Clave AS SIGNED ) AS Clave ,G.Nombre "
                     . " ", false);
             $this->db->from('pedidodetalle PE');
@@ -284,6 +288,7 @@ class explosiones_model extends CI_Model {
 
     public function getMaterialesTallas($Ano, $Semana, $aSemana, $Maquila, $aMaquila) {
         try {
+            $this->db->query("set sql_mode=''");
             $this->db->select("A.Grupo, "
                             . "FT.Articulo,"
                             . "A.Descripcion AS NombreArticulo,"
@@ -318,6 +323,7 @@ class explosiones_model extends CI_Model {
 
     public function getExplosionMaterialesTallas($Ano, $Semana, $aSemana, $Maquila, $aMaquila) {
         try {
+            $this->db->query("set sql_mode=''");
             $this->db->select(""
                             . "CAST(FT.Articulo AS SIGNED ) AS ClaveART, "
                             . "SUM(PE.C1) AS C1, SUM(PE.C2) AS C2, SUM(PE.C3) AS C3, SUM(PE.C4) AS C4, SUM(PE.C5) AS C5,

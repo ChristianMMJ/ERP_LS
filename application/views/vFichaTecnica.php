@@ -237,9 +237,6 @@
     }();
 
     $(document).ready(function () {
-
-
-
         $('#Articulo').selectize({
             valueField: 'Clave',
             labelField: 'Articulo',
@@ -257,13 +254,10 @@
             remoteUrl: master_url + 'getArticulosByClave',
             load: Selectizer.loadOptions
         });
-
-
         validacionSelectPorContenedor(pnlDatos);
         setFocusSelectToSelectOnChange('#Estilo', '#Color', pnlDatos);
         setFocusSelectToInputOnChange('#Color', '#FechaAlta', pnlDatos);
-        setFocusSelectToSelectOnChange('#Pieza', '#Grupo', pnlDatos);
-        setFocusSelectToSelectOnChange('#Grupo', '#Articulo', pnlDatos);
+        setFocusSelectToSelectOnChange('#Pieza', '#Articulo', pnlDatos);
         setFocusSelectToInputOnChange('#Articulo', '#PzXPar', pnlDatos);
 
         pnlDatos.find("#FechaAlta").inputmask({alias: "date"});
@@ -349,12 +343,13 @@
             pnlTablero.removeClass("d-none");
             pnlDatos.addClass('d-none');
             pnlDetalle.addClass('d-none');
+            validaSelect = false;
         });
 
         getRecords();
         getEstilos();
         getPiezas();
-        getGrupos();
+        // getGrupos();
         handleEnter();
     });
 
