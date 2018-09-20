@@ -292,11 +292,13 @@ class explosiones_model extends CI_Model {
             $this->db->select("A.Grupo, "
                             . "FT.Articulo,"
                             . "A.Descripcion AS NombreArticulo,"
+                            . "PM.Precio, "
                             . "CAST(FT.Articulo AS SIGNED ) AS ClaveART "
                             . " ", false)
                     ->from('pedidodetalle PE')
                     ->join('fichatecnica FT', 'ON FT.Estilo =  PE.Estilo AND FT.Color = PE.Color')
                     ->join('articulos A', 'ON A.Clave =  FT.Articulo')
+                    ->join('preciosmaquilas PM', "ON PM.Articulo = FT.Articulo AND PM.Maquila ='1' ")
                     ->where("PE.Maquila BETWEEN $Maquila AND $aMaquila")
                     ->where("PE.Semana BETWEEN $Semana AND $aSemana")
                     ->where('PE.Ano', $Ano)
@@ -343,15 +345,13 @@ SC.A21, SC.A22, "
                             . "U.Descripcion AS Unidad,"
                             . "PE.Pares,"
                             . "PE.Pares *  SUM(FT.Consumo) AS Explosion,"
-                            . "SUM(FT.Consumo) AS Consumo,"
-                            . "PM.Precio "
+                            . "SUM(FT.Consumo) AS Consumo "
+                            . " "
                             . " ", false)
                     ->from('pedidodetalle PE')
                     ->join('fichatecnica FT', 'ON FT.Estilo =  PE.Estilo AND FT.Color = PE.Color')
-                    ->join('preciosmaquilas PM', "ON PM.Articulo = FT.Articulo AND PM.Maquila ='$Maquila' ")
                     ->join('articulos A', 'ON A.Clave =  FT.Articulo')
                     ->join('Unidades U', 'ON U.Clave = A.UnidadMedida')
-                    ->join('maquilas MA', "MA.Clave = '$Maquila'")
                     ->join('estilos E', 'ON E.Clave = PE.Estilo')
                     ->join('series S', 'ON S.Clave =  E.Serie')
                     ->join('suelascompras SC', 'ON SC.ArticuloCBZ =  FT.Articulo')

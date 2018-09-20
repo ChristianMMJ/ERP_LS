@@ -77,6 +77,7 @@ class Explosiones extends CI_Controller {
 
                         foreach ($Explosion as $key => $D) {
 
+
                             if ($G->Clave === $M->Grupo && $D->Articulo === $M->Articulo) {
 
                                 $pdf->SetLineWidth(0.25);
@@ -90,7 +91,7 @@ class Explosiones extends CI_Controller {
                                 $pdf->SetWidths($anchos);
 
                                 $ExplosionCant = ($D->Consumo * $D->Pares);
-                                $Subtotal = $ExplosionCant * $D->Precio;
+                                $Subtotal = $ExplosionCant * $M->Precio;
 
                                 $Exp_Acum = $D->C1;
                                 $Talla = $D->T1;
@@ -100,6 +101,22 @@ class Explosiones extends CI_Controller {
                                     $sig = $i + 1;
                                     if ($D->{"A$i"} === $D->{"A$sig"}) {
                                         $Exp_Acum += $D->{"C$sig"};
+                                    } else if ($D->{"A$sig"} === '0') {
+                                        $Exp_Acum += $D->{"C$sig"};
+                                        if ($Exp_Acum > 0) {
+                                            $pdf->Row(array(
+                                                utf8_decode($D->Articulo),
+                                                mb_strimwidth(utf8_decode($D->Descripcion), 0, 55, "..."),
+                                                utf8_decode($D->Unidad),
+                                                $Talla,
+                                                number_format($Exp_Acum, 2, ".", ","),
+                                                '$' . number_format($M->Precio, 2, ".", ","),
+                                                '$' . number_format($Exp_Acum * $M->Precio, 2, ".", ","),
+                                                '',
+                                                '',
+                                                ''
+                                            ));
+                                        }
                                     } else {
                                         if ($Exp_Acum > 0) {
                                             $pdf->Row(array(
@@ -107,9 +124,9 @@ class Explosiones extends CI_Controller {
                                                 mb_strimwidth(utf8_decode($D->Descripcion), 0, 55, "..."),
                                                 utf8_decode($D->Unidad),
                                                 $Talla,
-                                                $Exp_Acum,
-                                                '$' . number_format($D->Precio, 2, ".", ","),
-                                                '$' . number_format($Exp_Acum * $D->Precio, 2, ".", ","),
+                                                number_format($Exp_Acum, 2, ".", ","),
+                                                '$' . number_format($M->Precio, 2, ".", ","),
+                                                '$' . number_format($Exp_Acum * $M->Precio, 2, ".", ","),
                                                 '',
                                                 '',
                                                 ''
