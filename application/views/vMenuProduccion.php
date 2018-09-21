@@ -26,6 +26,7 @@
                     <span class="fas fa-pencil-alt"></span> Capturas
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCapturas">
+                    <a class="dropdown-item" href="<?php print base_url('Pedidos.shoes'); ?>"><span class="fa fa-check"></span> Pedidos</a>
                     <a class="dropdown-item" href="<?php print base_url('CerrarProg'); ?>"><span class="fa fa-hand-pointer"></span> Marcar pedidos para control</a>
                     <a class="dropdown-item" href="<?php print base_url('ReasignarControles'); ?>"><span class="fa fa-retweet"></span> Reasignar controles</a>
                     <a class="dropdown-item" href="<?php print base_url('ControlesCancelados'); ?>"><span class="fa fa-ban"></span> Control pedidos cancelados</a>
@@ -43,28 +44,30 @@
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navReportes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="fa fa-file-pdf"></span> Reportes
                 </a>
-                <div class="dropdown-menu dropdown-menu" aria-labelledby="navReportes">
+
+
+                <ul class="dropdown-menu" aria-labelledby="navReportes">
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#">Explosiones</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlExplosionSemanal"> Explosión Semanal</a>
+                        </div>
+                    </li>
                     <a class="dropdown-item" href="<?php print base_url('OrdenDeProduccion.shoes'); ?>"><span class="fa fa-exclamation-circle fade-infinite"></span> 1 Genera ordenes de producción semana maquila </a>
                     <a class="dropdown-item" href="<?php print base_url('EliminaOrdenDeProduccion.shoes'); ?>"><span class="fa fa-exclamation-circle fade-infinite"></span> 2 Elimina orden de producción </a>
                     <a class="dropdown-item" href="<?php print base_url('ImprimeOrdenDeProduccion.shoes'); ?>"><span class="fa fa-exclamation-circle fade-infinite"></span> 3 Imprime orden de producción </a>
-                </div>
+
+                </ul>
             </li>
 
-            <li class="nav-item dropdown">
-                <a class="btn btn-primary dropdown-toggle" href="#" id="navEstadisticas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fa fa-chart-line"></span> Estadísticas
-                </a>
-                <div class="dropdown-menu dropdown-menu" aria-labelledby="navEstadisticas">
-                    <a class="dropdown-item" href="#"> Prueba</a>
-                </div>
-            </li>
+
 
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navUtilerias" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="fa fa-atlas"></span> Utilerías
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navUtilerias">
-                    <a class="dropdown-item" href="#"> Prueba</a>
+                    <a class="dropdown-item" href="#"> Estadisticas</a>
                 </div>
             </li>
 
@@ -105,32 +108,8 @@
             $('#btnRegresar').addClass('d-none');
         }
     });
+    handleEnter();
 </script>
-<style>
-    @keyframes fadeInOut {
-        0%   { opacity:1; }
-        50%  { opacity:0.5; }
-        100% { opacity:1; }
-    }
-    @-o-keyframes fadeInOut{
-        0%   { opacity:1; }
-        50%  { opacity:0.5; }
-        100% { opacity:1; }
-    }
-    @-moz-keyframes fadeInOut{
-        0%   { opacity:1; }
-        50%  { opacity:0.5; }
-        100% { opacity:1; }
-    }
-    @-webkit-keyframes fadeInOut{
-        0%   { opacity:1; }
-        50%  { opacity:0.5; }
-        100% { opacity:1; }
-    }
-    li a:hover {
-        -webkit-animation: fadeInOut 1.5s infinite;
-        -moz-animation: fadeInOut 1.5s infinite;
-        -o-animation: fadeInOut 1.5s infinite;
-        animation: fadeInOut 1.5s infinite;
-    }
-</style>
+
+<?php
+$this->load->view('vExplosionSemanal');

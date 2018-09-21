@@ -39,6 +39,12 @@
                             <a class="dropdown-item" href="<?php print base_url('OrdenCompraTallas.shoes'); ?>">Orden de Compra Planta, Suela, Entresuela</a>
                         </div>
                     </li>
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#">Herr. Ordenes de Compra</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="<?php print base_url('ConfirmarOrdenCompra.shoes'); ?>" >Confirmación de Ordenes de Compra</a>
+                        </div>
+                    </li>
                     <a class="dropdown-item" href="#">Documentos Directos</a>
                 </ul>
             </li>

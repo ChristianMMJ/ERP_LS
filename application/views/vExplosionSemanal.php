@@ -40,11 +40,15 @@
 
                     </div>
                     <div class="row mt-2">
-                        <div class="col-12 col-sm-6">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="ProgramadoXDia">
-                                <label class="custom-control-label text-info labelCheck" for="ProgramadoXDia">Programado X Día</label>
-                            </div>
+                        <div class="col-12 col-sm-12">
+                            <label>Tipo <span class="badge badge-info mb-2" style="font-size: 12px;">10 Piel/Forro, 80 Suela, 90 Peletería</span></label>
+                            <select class="form-control form-control-sm required selectize" id="Tipo" name="Tipo" >
+                                <option value=""></option>
+                                <option value="10">10 PIEL Y FORRO</option>
+                                <option value="80">80 SUELA</option>
+                                <option value="90">90 INDIRECTOS</option>
+                                <option value="0">80 SUELA C/ DESGLOSE</option>
+                            </select>
                         </div>
                         <div class="col-12 col-sm-6">
                             <div class="custom-control custom-checkbox  ">
@@ -64,16 +68,7 @@
                                 <label class="custom-control-label text-info labelCheck" for="SinClasif">S/ 1ras 2das 3ras</label>
                             </div>
                         </div>
-                        <div class="col-12 col-sm-12">
-                            <label>Tipo <span class="badge badge-info mb-2" style="font-size: 12px;">10 Piel/Forro, 80 Suela, 90 Peletería</span></label>
-                            <select class="form-control form-control-sm required selectize" id="Tipo" name="Tipo" >
-                                <option value=""></option>
-                                <option value="10">10 PIEL Y FORRO</option>
-                                <option value="80">80 SUELA</option>
-                                <option value="90">90 INDIRECTOS</option>
-                                <option value="0">80 SUELA C/ DESGLOSE</option>
-                            </select>
-                        </div>
+
                         <div class="col-12 col-sm-12 mt-2">
                             <legend class="badge badge-danger" style="font-size: 14px;">Para maquila 98 sale con precios de compra y venta</legend>
                         </div>
