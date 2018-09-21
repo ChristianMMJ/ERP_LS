@@ -74,38 +74,28 @@ class confirmarOrdenCompra_model extends CI_Model {
         }
     }
 
-    public function getReporteOrdenCompra($ID) {
+    public function getReporteConfirmacionOrdenCompra($Año, $Sem, $Maq, $Tipo) {
         try {
             $this->db->select(''
-                    . 'OC.Tp,'
                     . 'OC.Folio,'
                     . 'OC.FechaOrden,'
-                    . 'OC.FechaCaptura,'
-                    . 'OC.Estatus,'
+                    . 'OC.FechaEntrega,'
+                    . "IFNULL(OC.FechaConf,'') AS FechaConf,"
                     . "OC.Proveedor,"
-                    . "CASE WHEN OC.Tp = '1' THEN "
-                    . "P.NombreF "
-                    . "ELSE P.NombreI "
-                    . "END AS NombreProveedor,"
-                    . "OC.ConsignarA,"
-                    . "OC.Observaciones,"
-                    . "OCD.Cantidad,"
-                    . "U.Descripcion AS Unidad,"
-                    . "OCD.Articulo,"
-                    . "A.Descripcion AS NombreArticulo,"
-                    . "OCD.Precio,"
-                    . "OCD.SubTotal,"
-                    . "OC.Sem,"
-                    . "OC.Maq,"
-                    . "OC.FechaEntrega"
+                    . "CASE WHEN OC.Tp ='1' THEN  P.NombreF ELSE "
+                    . "P.NombreI END AS NombreProveedor, "
+                    . "IFNULL(OC.ObservacionesConf,'') AS ObservacionesConf,"
+                    . 'IFNULL(DATEDIFF(STR_TO_DATE( OC.FechaConf , "%d/%m/%Y" ), STR_TO_DATE( OC.FechaOrden , "%d/%m/%Y" )),\'\') AS Dias,'
+                    . 'IFNULL(DATEDIFF(STR_TO_DATE( OC.FechaConf , "%d/%m/%Y" ), STR_TO_DATE( OC.FechaEntrega , "%d/%m/%Y" )),\'\') AS Dias2,'
                     . '', false);
             $this->db->from('ordencompra AS OC')
-                    ->join('ordencompradetalle AS OCD', 'OCD.OrdenCompra = OC.ID')
                     ->join('proveedores AS P', 'OC.Proveedor = P.Clave')
-                    ->join('articulos AS A', ' A.Clave = OCD.Articulo')
-                    ->join('Unidades AS U', 'U.Clave = A.UnidadMedida')
-                    ->where('OC.ID', $ID)
-                    ->order_by('OCD.Articulo', 'ASC');
+                    ->where('OC.Ano', $Año)
+                    ->where('OC.Sem', $Sem)
+                    ->where('OC.Maq', $Maq)
+                    ->where('OC.Tipo', $Tipo)
+                    ->where_in('OC.Estatus', array('ACTIVO', 'CERRADA', 'PENDIENTE', 'CONCLUIDA'))
+                    ->order_by('OC.Folio', 'ASC');
 //                    ->where('OC.Tp', $TP);
             $query = $this->db->get();
             /*

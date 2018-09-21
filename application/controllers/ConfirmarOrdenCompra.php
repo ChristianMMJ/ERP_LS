@@ -62,55 +62,57 @@ class ConfirmarOrdenCompra extends CI_Controller {
 
     public function onImprimirReporteConfirmacion() {
         $cm = $this->confirmarOrdenCompra_model;
-        //$ID_MOV_N = $v->ID2;
+        $Ano = $this->input->post('Ano');
+        $Sem = $this->input->post('Sem');
+        $Maq = $this->input->post('Maq');
+        $Tipo = $this->input->post('Tipo');
         $DatosEmpresa = $cm->getDatosEmpresa();
-        $OrdenCompra = $cm->getReporteOrdenCompra($ID_MOV);
+        $OrdenCompra = $cm->getReporteConfirmacionOrdenCompra($Ano, $Sem, $Maq, $Tipo);
         if (!empty($OrdenCompra)) {
-            $pdf = new PDF('L', 'mm', array(215.9, 279.4));
+            $pdf = new PDFConfirmaciones('P', 'mm', array(215.9, 279.4));
+
+            switch ($Tipo) {
+                case '10':
+                    $TipoE = '******* PIEL Y FORRO *******';
+                    break;
+                case '80':
+                    $TipoE = '******* SUELA *******';
+                    break;
+                case '90':
+                    $TipoE = '******* INDIRECTOS *******';
+                    break;
+            }
 
             $pdf->Logo = $DatosEmpresa[0]->Logo;
             $pdf->Empresa = $DatosEmpresa[0]->Empresa;
-            $pdf->Direccion = $DatosEmpresa[0]->Direccion;
-            $pdf->Direccion2 = $DatosEmpresa[0]->Direccion2;
-            $pdf->FechaOrden = $OrdenCompra[0]->FechaOrden;
-            $pdf->FechaCaptura = $OrdenCompra[0]->FechaCaptura;
-            $pdf->ClaveProveedor = $OrdenCompra[0]->Proveedor;
-            $pdf->Proveedor = $OrdenCompra[0]->NombreProveedor;
-            $pdf->Observaciones = $OrdenCompra[0]->Observaciones;
-            $pdf->ConsignarA = $OrdenCompra[0]->ConsignarA;
-            $pdf->Folio = $OrdenCompra[0]->Folio;
-            $pdf->Estatus = $OrdenCompra[0]->Estatus;
+            $pdf->Ano = $Ano;
+            $pdf->Sem = $Sem;
+            $pdf->Maq = $Maq;
+            $pdf->Tipo = $TipoE;
 
             $pdf->AddPage();
             $pdf->SetAutoPageBreak(true, 26.9);
 
-            $SubTotal = 0;
-            $TotalCantidad = 0;
             foreach ($OrdenCompra as $keyFT => $F) {
                 $pdf->SetLineWidth(0.25);
                 $pdf->SetX(5);
-                $pdf->SetFont('Arial', '', 7);
-                $anchos = array(10/* 0 */, 90/* 1 */, 15/* 2 */, 10/* 3 */, 20/* 4 */, 20/* 5 */, 10/* 6 */, 15/* 7 */, 30/* 8 */, 30/* 9 */, 20/* 10 */);
-                $aligns = array('L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L');
+                $pdf->SetFont('Arial', '', 6);
+                $anchos = array(8/* 0 */, 47/* 1 */, 13/* 2 */, 13/* 3 */, 13/* 4 */, 13/* 5 */, 6.5/* 6 */, 6.5/* 7 */, 85/* 8 */);
+                $aligns = array('R', 'L', 'L', 'L', 'L', 'L', 'C', 'L', 'L');
                 $pdf->SetAligns($aligns);
                 $pdf->SetWidths($anchos);
 
                 $pdf->Row(array(
-                    utf8_decode($F->Articulo),
-                    mb_strimwidth(utf8_decode($F->NombreArticulo), 0, 60, "..."),
-                    number_format($F->Cantidad, 2, ".", ","),
-                    utf8_decode($F->Unidad),
-                    '$' . number_format($F->Precio, 2, ".", ","),
-                    '$' . number_format($F->SubTotal, 2, ".", ","),
-                    $F->Sem,
-                    $F->Maq,
-                    '',
-                    '',
-                    utf8_decode($F->FechaEntrega)
+                    utf8_decode($F->Proveedor),
+                    mb_strimwidth(utf8_decode($F->NombreProveedor), 0, 50, "..."),
+                    utf8_decode($F->Folio),
+                    utf8_decode($F->FechaOrden),
+                    utf8_decode($F->FechaEntrega),
+                    utf8_decode($F->FechaConf),
+                    utf8_decode($F->Dias),
+                    utf8_decode($F->Dias2),
+                    utf8_decode($F->ObservacionesConf)
                 ));
-                //TOTALES GRUPOS
-                $SubTotal += $F->SubTotal;
-                $TotalCantidad += $F->Cantidad;
             }
 
 

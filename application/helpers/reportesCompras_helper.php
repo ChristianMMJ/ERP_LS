@@ -1,5 +1,231 @@
 <?php
 
+class PDFConfirmaciones extends FPDF {
+
+    public $Logo;
+    public $Empresa;
+    public $Ano;
+    public $Sem;
+    public $Maq;
+    public $Tipo;
+
+    function getMaq() {
+        return $this->Maq;
+    }
+
+    function getTipo() {
+        return $this->Tipo;
+    }
+
+    function setMaq($Maq) {
+        $this->Maq = $Maq;
+    }
+
+    function setTipo($Tipo) {
+        $this->Tipo = $Tipo;
+    }
+
+    function getAno() {
+        return $this->Ano;
+    }
+
+    function getSem() {
+        return $this->Sem;
+    }
+
+    function setAno($Ano) {
+        $this->Ano = $Ano;
+    }
+
+    function setSem($Sem) {
+        $this->Sem = $Sem;
+    }
+
+    function getLogo() {
+        return $this->Logo;
+    }
+
+    function getEmpresa() {
+        return $this->Empresa;
+    }
+
+    function setLogo($Logo) {
+        $this->Logo = $Logo;
+    }
+
+    function setEmpresa($Empresa) {
+        $this->Empresa = $Empresa;
+    }
+
+    function Header() {
+
+        $this->Image($this->getLogo(), /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30);
+        $this->SetFont('Arial', 'B', 10);
+        $this->SetY(5);
+        $this->SetX(36);
+        $this->Cell(60, 4, utf8_decode($this->getEmpresa()), 0/* BORDE */, 1, 'L');
+        $this->SetFont('Arial', 'B', 8);
+        $this->SetX(36);
+        $this->Cell(60, 4, utf8_decode("Órdenes de Compra fincadas del año: "), 0/* BORDE */, 1, 'L');
+        $this->SetX(64);
+        $this->Cell(25, 4, utf8_decode("Tipo:"), 0/* BORDE */, 1, 'R');
+
+        $this->SetY(9);
+        $this->SetX(95);
+        $this->Cell(25, 4, utf8_decode("de la semana:"), 0/* BORDE */, 0, 'R');
+        $this->SetX(126);
+        $this->Cell(20, 4, utf8_decode("de la maquila:"), 0/* BORDE */, 1, 'L');
+        $this->SetFont('Arial', 'B', 8);
+        $this->SetY(13);
+        $this->SetX(90);
+        $this->Cell(40, 4, $this->getTipo(), 0/* BORDE */, 1, 'C');
+
+        $this->SetFont('Arial', '', 8);
+        $this->SetY(9);
+        $this->SetX(90);
+        $this->Cell(11, 4, $this->getAno(), 0/* BORDE */, 1, 'L');
+        $this->SetY(9);
+        $this->SetX(120);
+        $this->Cell(5, 4, $this->getSem(), 0/* BORDE */, 1, 'C');
+        $this->SetY(9);
+        $this->SetX(146);
+        $this->Cell(8, 4, $this->getMaq(), 0/* BORDE */, 1, 'C');
+
+        //Paginador
+        $this->SetY(3);
+        $this->SetX(200);
+        // Select Arial italic 8
+        $this->SetFont('Arial', 'I', 7);
+        // Print centered page number
+        $this->Cell(20, 4, utf8_decode('Pag. ' . $this->PageNo() . ' de {totalPages}'), 0/* BORDE */, 1, 'C');
+
+        $this->SetY(7);
+        $this->SetX(180);
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(30, 4, utf8_decode("Fecha: " . Date('d/m/Y')), 0/* BORDE */, 1, 'R');
+        $this->AliasNbPages(' {totalPages}');
+
+
+        $this->SetY(21);
+        $this->SetX(72);
+        $this->SetFont('Arial', 'B', 7);
+        $this->Cell(39, 4, 'Fechas', 0/* BORDE */, 1, 'C');
+        $this->Rect(72, 21, 39, 8);
+        $this->Rect(111, 21, 14, 8);
+
+        /* ENCABEZADO DETALLE TITULOS */
+        $anchos = array(0/* 0 */, 55/* 1 */, 13/* 2 */, 13/* 3 */, 13/* 4 */, 13/* 5 */, 13/* 6 */, 0/* 7 */, 85/* 8 */);
+        $aligns = array('L', 'L', 'L', 'L', 'L', 'L', 'C', 'L', 'L');
+
+        $this->SetY(25);
+        $this->SetX(5);
+        $this->SetWidths($anchos);
+        $this->SetAligns($aligns);
+        $this->Row(array('', utf8_decode('Proveedor'), 'O.C.', 'Captura', 'Entrega', 'Conf.', utf8_decode('Días'), '', 'Observaciones'));
+    }
+
+    var $widths;
+    var $aligns;
+    var $x;
+
+    function SetWidths($w) {
+        //Set the array of column widths
+        $this->widths = $w;
+    }
+
+    function SetAligns($a) {
+        //Set the array of column alignments
+        $this->aligns = $a;
+    }
+
+    function SetMarginLeft($x) {
+        //Set margin left where the row inits
+        $this->x = $x;
+    }
+
+    function Row($data) {
+        //Calculate the height of the row
+        $nb = 0;
+        for ($i = 0; $i < count($data); $i++)
+            $nb = max($nb, $this->NbLines($this->widths[$i], $data[$i]));
+        $h = 4 * $nb;
+        //Issue a page break first if needed
+        $this->CheckPageBreak($h);
+
+        //Se pone para que depues de insertar una pagina establezca la posicion en X = 5
+        $this->SetX(5);
+
+        //Draw the cells of the row
+        for ($i = 0; $i < count($data); $i++) {
+            $w = $this->widths[$i];
+            $a = isset($this->aligns[$i]) ? $this->aligns[$i] : 'L';
+
+            //Save the current position
+            $x = $this->GetX();
+            $y = $this->GetY();
+            //Draw the border
+            //$this->Rect($x, $y, $w, $h);
+            //Print the text
+            $this->MultiCell($w, 4, $data[$i], 'B', $a);
+            //Put the position to the right of the cell
+            $this->SetXY($x + $w, $y);
+        }
+        //Go to the next line
+        $this->Ln($h);
+    }
+
+    function CheckPageBreak($h) {
+        //If the height h would cause an overflow, add a new page immediately
+        if ($this->GetY() + $h > $this->PageBreakTrigger)
+            $this->AddPage($this->CurOrientation);
+    }
+
+    function NbLines($w, $txt) {
+        //Computes the number of lines a MultiCell of width w will take
+        $cw = &$this->CurrentFont['cw'];
+        if ($w == 0)
+            $w = $this->w - $this->rMargin - $this->x;
+        $wmax = ($w - 2 * $this->cMargin) * 1000 / $this->FontSize;
+        $s = str_replace("\r", '', $txt);
+        $nb = strlen($s);
+        if ($nb > 0 and $s[$nb - 1] == "\n")
+            $nb--;
+        $sep = -1;
+        $i = 0;
+        $j = 0;
+        $l = 0;
+        $nl = 1;
+        while ($i < $nb) {
+            $c = $s[$i];
+            if ($c == "\n") {
+                $i++;
+                $sep = -1;
+                $j = $i;
+                $l = 0;
+                $nl++;
+                continue;
+            }
+            if ($c == ' ')
+                $sep = $i;
+            $l += $cw[$c];
+            if ($l > $wmax) {
+                if ($sep == -1) {
+                    if ($i == $j)
+                        $i++;
+                } else
+                    $i = $sep + 1;
+                $sep = -1;
+                $j = $i;
+                $l = 0;
+                $nl++;
+            } else
+                $i++;
+        }
+        return $nl;
+    }
+
+}
+
 class PDF extends FPDF {
 
     public $Logo;
@@ -154,7 +380,7 @@ class PDF extends FPDF {
         $this->Cell(30, 4, utf8_decode("PROVEEDOR:"), 'B'/* BORDE */, 0, 'L');
         $this->SetX(35);
         $this->SetFont('Arial', '', 8);
-        $this->Cell(85, 4, utf8_decode($this->getClaveProveedor() . '       ' . $this->getProveedor()), 'B'/* BORDE */, 1, 'L');
+        $this->Cell(85, 4, utf8_decode($this->getClaveProveedor() . ' ' . $this->getProveedor()), 'B'/* BORDE */, 1, 'L');
 
         $this->SetY(24);
         $this->SetX(170);
@@ -173,7 +399,9 @@ class PDF extends FPDF {
         $this->Cell(240, 4, utf8_decode($this->getObservaciones()), 'B'/* BORDE */, 1, 'L');
 
 
-        $this->AliasNbPages('{totalPages}');
+        $this->AliasNbPages(' {
+            totalPages
+        }');
         // Go to 1.5 cm from bottom
         $this->SetY(-5);
         $this->SetX(250);
@@ -181,7 +409,9 @@ class PDF extends FPDF {
         $this->SetFont('Arial', 'I', 8);
         // Print centered page number
         $this->SetTextColor(0, 0, 0);
-        $this->Cell(35, 3, utf8_decode('Pag. ' . $this->PageNo() . ' de {totalPages}'), 0, 0, 'R');
+        $this->Cell(35, 3, utf8_decode('Pag. ' . $this->PageNo() . ' de {
+            totalPages
+        }'), 0, 0, 'R');
 
 
         $this->SetY(38);

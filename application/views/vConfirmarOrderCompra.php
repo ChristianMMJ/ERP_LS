@@ -6,7 +6,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-6 col-sm-3 col-md-3 col-lg-2 col-xl-1" data-column="1">
+            <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1" data-column="1">
                 <label>Tp</label>
                 <input type="text" class="form-control form-control-sm  numbersOnly column_filter" id="col1_filter" autofocus maxlength="2" >
             </div>
@@ -14,11 +14,11 @@
                 <label>Departamento</label>
                 <input type="text" placeholder="10 PIEL/FORRO, 80 SUELA, 90 INDIR." class="form-control form-control-sm  numbersOnly column_filter" id="col2_filter" maxlength="2" >
             </div>
-            <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2" data-column="3">
+            <div class="col-6 col-sm-3 col-md-4 col-lg-2 col-xl-2" data-column="3">
                 <label>Orden Compra</label>
                 <input type="text" class="form-control form-control-sm  numbersOnly column_filter" id="col3_filter" maxlength="6">
             </div>
-            <div class="col-12 col-sm-2 col-md-2 col-lg-1 col-xl-1 mt-4">
+            <div class="col-6 col-sm-3 col-md-2 col-lg-2 col-xl-2 mt-4">
                 <button type="button" class="btn btn-warning selectNotEnter" id="btnLimpiarFiltros" data-toggle="tooltip" data-placement="right" title="Limpiar Filtros">
                     <i class="fa fa-trash"></i>
                 </button>
