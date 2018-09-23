@@ -16,11 +16,11 @@
             </div>
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3">
                 <label>Semana</label>
-                <input type="text" class="form-control form-control-sm column_filter numbersOnly" id="Semana" maxlength="2" minlength="1" onkeypress="onVerificarFormValido()" onkeyup="onVerificarFormValido()" onfocus="onVerificarFormValido()">
+                <input type="text" class="form-control form-control-sm column_filter numbersOnly" id="Semana" maxlength="2" minlength="1" onkeypress="" onkeyup="" onfocus="">
             </div>
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3">
                 <label>Año</label>
-                <input type="text" class="form-control form-control-sm column_filter numbersOnly" id="Anio" maxlength="4" minlength="1" onkeypress="onVerificarFormValido()" onkeyup="onVerificarFormValido()" onfocus="onVerificarFormValido()">
+                <input type="text" class="form-control form-control-sm column_filter numbersOnly" id="Anio" maxlength="4" minlength="1" onkeypress="" onkeyup="" onfocus="">
             </div>
             <div class="col-12 col-sm-6 col-md-4 col-lg-12 col-xl-12 mt-4" align="right">
                 <button type="button" class="btn btn-primary" id="btnGenerar">Aceptar</button>
@@ -32,6 +32,7 @@
     </div>
 </div>
 <script>
+    var master_url =  base_url + 'index.php/IOrdenDeProduccion/';
     var btnGenerar = $("#btnGenerar");
     var controlinicial = $("#ControlInicial"), controlfinal = $("#ControlFinal"), semana = $("#Semana"), Anio = $("#Anio");
     // IIFE - Immediately Invoked Function Expression
@@ -47,6 +48,7 @@
                 var params = {INICIO: controlinicial.val(), FIN: controlfinal.val(), SEMANA: semana.val(), ANIO: Anio.val()};
                 $.post(master_url + 'getOrdenDeProduccion', params).done(function (data) {
                     //check Apple device
+                    console.log(data)
                     if (isAppleDevice() || isMobile) {
                         window.open(data, '_blank');
                     } else {

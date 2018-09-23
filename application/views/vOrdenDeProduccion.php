@@ -13,15 +13,15 @@
             </div>
             <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-3" data-column="12">
                 <label>Maquila</label>
-                <input type="text" class="form-control form-control-sm column_filter numbersOnly column_filter" id="col12_filter" autofocus maxlength="4" onkeyup="onChecarMaquilaValida(this)">
+                <input type="text" class="form-control form-control-sm column_filter numbersOnly" id="col12_filter" autofocus maxlength="4" onkeyup="onChecarMaquilaValida(this)">
             </div>
             <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-3" data-column="13">
                 <label>Semana</label>     
-                <input type="text" class="form-control form-control-sm column_filter numbersOnly column_filter" id="col13_filter" maxlength="2"  min="1" max="52" onkeyup="onChecarSemanaValida(this)">
+                <input type="text" class="form-control form-control-sm column_filter numbersOnly" id="col13_filter" maxlength="2"  min="1" max="52" onkeyup="onChecarSemanaValida(this)">
             </div>
             <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-3" data-column="14">
                 <label>Año</label>
-                <input type="text" class="form-control form-control-sm column_filter numbersOnly column_filter" id="col14_filter" maxlength="4" minlength="1">
+                <input type="text" class="form-control form-control-sm column_filter numbersOnly" id="col14_filter" maxlength="4" minlength="1">
             </div>
             <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2 mt-4">
                 <button type="button" class="btn btn-primary" id="btnGenerar">Generar</button>
