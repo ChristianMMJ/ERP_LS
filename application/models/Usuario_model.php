@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class usuario_model extends CI_Model {
+class Usuario_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
@@ -17,7 +17,7 @@ class usuario_model extends CI_Model {
                   (CASE WHEN  U.Estatus ='Activo' THEN CONCAT('<span class=\'label label-success\'>','ACTIVO','</span>')
                     ELSE CONCAT('<span class=\'label label-danger\'>','INACTIVO','</span>') END) AS Estatus ,
                     U.TipoAcceso AS Acceso
-                    FROM Usuarios AS U; ", false);
+                    FROM usuarios AS U; ", false);
             $query = $this->db->get();
 
             $str = $this->db->last_query();

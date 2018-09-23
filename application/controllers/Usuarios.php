@@ -7,7 +7,7 @@ class Usuarios extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('usuario_model');
+        $this->load->library('session')->model('Usuario_model');
     }
 
     public function index() {
@@ -54,7 +54,7 @@ class Usuarios extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->usuario_model->getRecords());
+            print json_encode($this->Usuario_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -62,7 +62,7 @@ class Usuarios extends CI_Controller {
 
     public function getEmpresas() {
         try {
-            $data = $this->usuario_model->getEmpresas();
+            $data = $this->Usuario_model->getEmpresas();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -71,14 +71,14 @@ class Usuarios extends CI_Controller {
 
     public function getUsuarioByID() {
         try {
-            print json_encode($this->usuario_model->getUsuarioByID($this->input->post('ID')));
+            print json_encode($this->Usuario_model->getUsuarioByID($this->input->post('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
     public function onVerClave() {
         try {
-            print json_encode($this->usuario_model->onVerClave($this->input->get('ID')));
+            print json_encode($this->Usuario_model->onVerClave($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -93,7 +93,7 @@ class Usuarios extends CI_Controller {
                 }
             }
             unset($data["Contrasena"]);
-            $ID = $this->usuario_model->onAgregar($data);
+            $ID = $this->Usuario_model->onAgregar($data);
             $this->db->set('AES', 'AES_ENCRYPT("' . $this->input->post('Contrasena') . '",\'System32\')', false)->where('ID', $ID)->update("usuarios");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -110,7 +110,7 @@ class Usuarios extends CI_Controller {
                 'Empresa' => ($Empresa !== NULL) ? $Empresa : NULL,
                 'Estatus' => ($Estatus !== NULL) ? $Estatus : NULL
             );
-            $this->usuario_model->onModificar($ID, $DATA);
+            $this->Usuario_model->onModificar($ID, $DATA);
             $this->db->set('AES', 'AES_ENCRYPT("' . $Contrasena . '",\'System32\')', false)->where('ID', $ID)->update("usuarios");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -120,7 +120,7 @@ class Usuarios extends CI_Controller {
     public function onEliminar() {
         try {
             extract($this->input->post());
-            $this->usuario_model->onEliminar($ID);
+            $this->Usuario_model->onEliminar($ID);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

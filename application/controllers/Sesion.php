@@ -1,6 +1,5 @@
 <?php
 
-header('Access-Control-Allow-Origin: http://app.ayr.mx/');
 defined('BASEPATH') OR exit('No direct script access allowed');
 require_once APPPATH . "/third_party/fpdf17/fpdf.php";
 
@@ -10,7 +9,7 @@ class Sesion extends CI_Controller {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
         $this->load->library('session');
-        $this->load->model('usuario_model');
+        $this->load->model('Usuario_model');
     }
 
     public function index() {
@@ -54,7 +53,7 @@ class Sesion extends CI_Controller {
 
     public function getLogoByID() {
         try {
-            $data = $this->usuario_model->getLogoByID();
+            $data = $this->Usuario_model->getLogoByID();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -63,7 +62,7 @@ class Sesion extends CI_Controller {
 
     public function onIngreso() {
         try {
-            $data = $this->usuario_model->getAcceso($this->input->post('USUARIO'), $this->input->post('CONTRASENA'));
+            $data = $this->Usuario_model->getAcceso($this->input->post('USUARIO'), $this->input->post('CONTRASENA'));
             if (count($data) > 0) {
                 $newdata = array(
                     'USERNAME' => $data[0]->Usuario,
@@ -78,7 +77,7 @@ class Sesion extends CI_Controller {
                 );
                 $this->session->mark_as_temp('LOGGED', 28800);
                 $this->session->set_userdata($newdata);
-                $this->usuario_model->onModificarUltimoAcceso($data[0]->ID, date("d-m-Y H:i:s"));
+                $this->Usuario_model->onModificarUltimoAcceso($data[0]->ID, date("d-m-Y H:i:s"));
 
                 print 1;
             } else {
@@ -95,7 +94,7 @@ class Sesion extends CI_Controller {
             $DATA = array(
                 'Contrasena' => ($Contrasena !== NULL) ? $Contrasena : NULL
             );
-            $this->usuario_model->onModificar($ID, $DATA);
+            $this->Usuario_model->onModificar($ID, $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -113,7 +112,7 @@ class Sesion extends CI_Controller {
 
     public function onSendMail() {
         extract($this->input->post());
-        $data = $this->usuario_model->getContrasena($USUARIO);
+        $data = $this->Usuario_model->getContrasena($USUARIO);
         //var_dump($data);
         if (!empty($data[0])) {
             $config = Array(

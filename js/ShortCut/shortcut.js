@@ -4,6 +4,7 @@
  * By Binny V A
  * License : BSD
  */
+var code;
 shortcut = {
 	'all_shortcuts':{},//All the shortcuts are stored in this array
 	'add': function(shortcut_combination,callback,opt) {
@@ -39,7 +40,7 @@ shortcut = {
 
 				if(element.tagName == 'INPUT' || element.tagName == 'TEXTAREA') return;
 			}
-	
+                        
 			//Find Which key is pressed
 			if (e.keyCode) code = e.keyCode;
 			else if (e.which) code = e.which;
@@ -47,6 +48,7 @@ shortcut = {
 			
 			if(code == 188) character=","; //If the user presses , when the type is onkeydown
 			if(code == 190) character="."; //If the user presses , when the type is onkeydown
+                    
 
 			var keys = shortcut_combination.split("+");
 			//Key Pressed - counts the number of valid keypresses - if it is same as the number of keys, the shortcut function is invoked
@@ -221,3 +223,4 @@ shortcut = {
 		else ele['on'+type] = false;
 	}
 }
+ 

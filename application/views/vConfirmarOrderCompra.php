@@ -15,7 +15,7 @@
                 <input type="text" placeholder="10 PIEL/FORRO, 80 SUELA, 90 INDIR." class="form-control form-control-sm  numbersOnly column_filter" id="col2_filter" maxlength="2" >
             </div>
             <div class="col-6 col-sm-3 col-md-4 col-lg-2 col-xl-2" data-column="3">
-                <label>Orden Compra</label>
+                <label>Folio O.C.</label>
                 <input type="text" class="form-control form-control-sm  numbersOnly column_filter" id="col3_filter" maxlength="6">
             </div>
             <div class="col-6 col-sm-3 col-md-2 col-lg-2 col-xl-2 mt-4">
