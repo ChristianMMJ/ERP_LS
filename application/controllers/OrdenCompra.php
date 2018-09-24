@@ -10,7 +10,7 @@ class OrdenCompra extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('Ordencompra_model')->helper('reportesCompras_helper')->helper('file');
+        $this->load->library('session')->model('Ordencompra_model')->helper('ReportesCompras_helper')->helper('file');
     }
 
     public function index() {

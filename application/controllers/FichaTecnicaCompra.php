@@ -8,7 +8,7 @@ class FichaTecnicaCompra extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library('session')->model('FichaTecnicaCompra_model')
-                ->helper('reportesFichaTecnica_helper')->helper('file')->helper('array');
+                ->helper('ReportesFichaTecnica_helper')->helper('file')->helper('array');
     }
 
     public function index() {

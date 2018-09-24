@@ -13,7 +13,7 @@ class SuelaPlantaCompras extends CI_Controller {
         $this->load->library('session')
                 ->model('Suelaplantacompras_model')
                 ->model('Series_model')
-                ->helper('reportesCompras_helper')
+                ->helper('ReportesCompras_helper')
                 ->helper('file');
     }
 

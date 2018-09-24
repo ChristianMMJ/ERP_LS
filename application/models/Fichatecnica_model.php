@@ -22,7 +22,7 @@ class Fichatecnica_model extends CI_Model {
 
     public function onGenerarRecords() {
         try {
-            $sql = "INSERT INTO fichatecnicatemp (estilo, color) SELECT estilo, color FROM Fichatecnica AS FT GROUP BY Estilo, Color;";
+            $sql = "INSERT INTO fichatecnicatemp (estilo, color) SELECT estilo, color FROM fichatecnica AS FT GROUP BY Estilo, Color;";
             $this->db->query($sql);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

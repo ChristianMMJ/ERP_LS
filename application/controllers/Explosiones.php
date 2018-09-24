@@ -8,7 +8,7 @@ class Explosiones extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library('session')->model('Explosiones_model')
-                ->helper('explosiones_helper')->helper('file');
+                ->helper('Explosiones_helper')->helper('file');
     }
 
     public function onReporteExplosionSemanaSuelaDesglose() {

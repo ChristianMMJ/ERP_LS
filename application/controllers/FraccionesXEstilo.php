@@ -8,7 +8,7 @@ class FraccionesXEstilo extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library('session')->model('FraccionesXEstilo_model')
-                ->helper('reportesFracciones_helper')->helper('file')->helper('array');
+                ->helper('ReportesFracciones_helper')->helper('file')->helper('array');
     }
 
     public function index() {
