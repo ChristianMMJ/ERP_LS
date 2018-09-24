@@ -448,11 +448,11 @@
                         }
                     });
                     f.append('Detalle', JSON.stringify(detalle));
-                    f.append('ID', pnlDatos.find("#ID").val());
+                    f.append('ID', temp);
                     onSave('onModificar', f, function (e) {
                         nuevo = false;
                         Pedidos.ajax.reload();
-                        getPedidoByID(pnlDatos.find("#ID").val());
+                        getPedidoByID(temp);
                         pnlDatos.find("#Estilo")[0].selectize.focus();
                     });
                 } else {
@@ -1188,6 +1188,7 @@
             });
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass('d-none');
+            pnlDatos.find("#Estilo")[0].selectize.focus();
             $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
         }).fail(function (x, y, z) {
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
@@ -1221,7 +1222,7 @@
             closeOnClickOutside: false,
             closeOnEsc: false
         }).then((Observaciones) => {
-            pnlDatos.find("#Observacion").val(Observaciones.toUpper);
+            pnlDatos.find("#Observacion").val(Observaciones.toUpperCase());
             pnlDatos.find("#ObservacionDetalle").val(Observaciones);
             pnlDatos.find("[name='C1']").focus();
         });
