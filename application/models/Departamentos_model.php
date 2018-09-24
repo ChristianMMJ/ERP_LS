@@ -12,7 +12,7 @@ class Departamentos_model extends CI_Model {
 
     public function getRecords() {
         try {
-            return $this->db->select("D.ID, D.Clave, D.Descripcion, D.Tipo, D.Avance, D.Fraccion")->from("depatamentos AS D")->where("D.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("D.ID, D.Clave, D.Descripcion, D.Tipo, D.Avance, D.Fraccion")->from("departamentos AS D")->where("D.Estatus", "ACTIVO")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -21,7 +21,7 @@ class Departamentos_model extends CI_Model {
     public function getDepartamentos() {
         try {
             return $this->db->select("CAST(D.Clave AS SIGNED ) AS Clave,CONCAT(D.Clave,'-',D.Descripcion) AS Departamento")
-                            ->from("depatamentos AS D")
+                            ->from("departamentos AS D")
                             ->where("D.Estatus", "ACTIVO")
                             ->order_by('Clave', 'ASC')
                             ->get()->result();
@@ -44,7 +44,7 @@ class Departamentos_model extends CI_Model {
 
     public function onComprobarClave($C) {
         try {
-            return $this->db->select("G.Clave")->from("depatamentos AS G")->where("G.Clave", $C)->where("G.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("G.Clave")->from("departamentos AS G")->where("G.Clave", $C)->where("G.Estatus", "ACTIVO")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -52,7 +52,7 @@ class Departamentos_model extends CI_Model {
 
     public function getDepartamentoByID($IDX) {
         try {
-            return $this->db->select("D.*")->from("depatamentos AS D")->where("D.Estatus", "ACTIVO")->where("D.ID", $IDX)->get()->result();
+            return $this->db->select("D.*")->from("departamentos AS D")->where("D.Estatus", "ACTIVO")->where("D.ID", $IDX)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -60,7 +60,7 @@ class Departamentos_model extends CI_Model {
 
     public function getID() {
         try {
-            return $this->db->select("CONVERT(D.Clave, UNSIGNED INTEGER) AS CLAVE")->from("depatamentos AS D")->where("D.Estatus", "ACTIVO")->order_by("CLAVE", "DESC")->limit(1)->get()->result();
+            return $this->db->select("CONVERT(D.Clave, UNSIGNED INTEGER) AS CLAVE")->from("departamentos AS D")->where("D.Estatus", "ACTIVO")->order_by("CLAVE", "DESC")->limit(1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -68,7 +68,7 @@ class Departamentos_model extends CI_Model {
 
     public function onAgregar($array) {
         try {
-            $this->db->insert("depatamentos", $array);
+            $this->db->insert("departamentos", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             $LastIdInserted = $row['LAST_INSERT_ID()'];
@@ -80,7 +80,7 @@ class Departamentos_model extends CI_Model {
 
     public function onModificar($ID, $DATA) {
         try {
-            $this->db->where('ID', $ID)->update("depatamentos", $DATA);
+            $this->db->where('ID', $ID)->update("departamentos", $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -88,7 +88,7 @@ class Departamentos_model extends CI_Model {
 
     public function onEliminar($ID) {
         try {
-            $this->db->set('Estatus', 'INACTIVO')->where('ID', $ID)->update("depatamentos");
+            $this->db->set('Estatus', 'INACTIVO')->where('ID', $ID)->update("departamentos");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

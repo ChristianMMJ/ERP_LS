@@ -8,7 +8,7 @@ class IOrdenDeProduccion extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('IOrdendeproduccion_model')->helper('Explosiones_helper');
+        $this->load->library('session')->model('IOrdendeproduccion_model')->helper('ordendeproduccion_helper');
     }
 
     public function index() {
@@ -236,7 +236,7 @@ class IOrdenDeProduccion extends CI_Controller {
                             /* FIN PRIMER DETALLE */
                         }
                     }
-//                    $pdf->Rect(5, $PUNTO_INICIAL, 104/* DER-X */, $pdf->GetY()/* DER-Y */); 
+//                    $pdf->Rect(5, $PUNTO_INICIAL, 104/* DER-X */, $pdf->GetY()/* DER-Y */);
                 }
                 $pdf->Line(5, $Y, 5, $pdf->GetY());
                 $pdf->Line(108, $Y, 108, $pdf->GetY());
