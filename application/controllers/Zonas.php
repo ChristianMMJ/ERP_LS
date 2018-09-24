@@ -8,7 +8,7 @@ class Zonas extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('zonas_model');
+        $this->load->library('session')->model('Zonas_model');
     }
 
     public function index() {
@@ -37,7 +37,7 @@ class Zonas extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->zonas_model->getRecords());
+            print json_encode($this->Zonas_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -45,7 +45,7 @@ class Zonas extends CI_Controller {
 
     public function getID() {
         try {
-            print json_encode($this->zonas_model->getID());
+            print json_encode($this->Zonas_model->getID());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -53,7 +53,7 @@ class Zonas extends CI_Controller {
 
     public function getZonaByID() {
         try {
-            print json_encode($this->zonas_model->getZonaByID($this->input->get('ID')));
+            print json_encode($this->Zonas_model->getZonaByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -62,7 +62,7 @@ class Zonas extends CI_Controller {
     public function onAgregar() {
         try {
             $x = $this->input;
-            $this->zonas_model->onAgregar(array(
+            $this->Zonas_model->onAgregar(array(
                 'Clave' => ($x->post('Clave') !== NULL) ? $x->post('Clave') : NULL,
                 'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL,
                 'Estatus' => 'ACTIVO'
@@ -75,7 +75,7 @@ class Zonas extends CI_Controller {
     public function onModificar() {
         try {
             $x = $this->input;
-            $this->zonas_model->onModificar($x->post('ID'), array(
+            $this->Zonas_model->onModificar($x->post('ID'), array(
                 'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL
             ));
         } catch (Exception $exc) {
@@ -85,7 +85,7 @@ class Zonas extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->zonas_model->onEliminar($this->input->post('ID'));
+            $this->Zonas_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

@@ -7,7 +7,7 @@ class FichaTecnicaCompra extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session')->model('fichaTecnicaCompra_model')
+        $this->load->library('session')->model('FichaTecnicaCompra_model')
                 ->helper('reportesFichaTecnica_helper')->helper('file')->helper('array');
     }
 
@@ -22,7 +22,7 @@ class FichaTecnicaCompra extends CI_Controller {
     }
 
     public function onImprimirFichaTecnicaSinPrecios() {
-        $cm = $this->fichaTecnicaCompra_model;
+        $cm = $this->FichaTecnicaCompra_model;
 
         $DatosEmpresa = $cm->getDatosEmpresa();
         $Encabezado = $cm->getEncabezadoFT($this->input->post('Estilo'), $this->input->post('Color'));
@@ -159,7 +159,7 @@ class FichaTecnicaCompra extends CI_Controller {
     }
 
     public function onImprimirFichaTecnicaCompra() {
-        $cm = $this->fichaTecnicaCompra_model;
+        $cm = $this->FichaTecnicaCompra_model;
 
         $DatosEmpresa = $cm->getDatosEmpresa();
         $Encabezado = $cm->getEncabezadoFT($this->input->post('Estilo'), $this->input->post('Color'));

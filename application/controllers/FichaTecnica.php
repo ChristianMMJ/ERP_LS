@@ -6,7 +6,7 @@ class FichaTecnica extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session')->model('fichatecnica_model');
+        $this->load->library('session')->model('Fichatecnica_model');
     }
 
     public function index() {
@@ -47,9 +47,9 @@ class FichaTecnica extends CI_Controller {
 
     public function getRecords() {
         try {
-            $this->fichatecnica_model->onLimpiarTabla();
-            $this->fichatecnica_model->onGenerarRecords();
-            print json_encode($this->fichatecnica_model->getRecords());
+            $this->Fichatecnica_model->onLimpiarTabla();
+            $this->Fichatecnica_model->onGenerarRecords();
+            print json_encode($this->Fichatecnica_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -57,7 +57,7 @@ class FichaTecnica extends CI_Controller {
 
     public function getArticulosRequeridos() {
         try {
-            print json_encode($this->fichatecnica_model->getArticulosRequeridos($this->input->get('Grupo')));
+            print json_encode($this->Fichatecnica_model->getArticulosRequeridos($this->input->get('Grupo')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -65,7 +65,7 @@ class FichaTecnica extends CI_Controller {
 
     public function getGrupos() {
         try {
-            print json_encode($this->fichatecnica_model->getGrupos());
+            print json_encode($this->Fichatecnica_model->getGrupos());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -73,7 +73,7 @@ class FichaTecnica extends CI_Controller {
 
     public function getPiezas() {
         try {
-            print json_encode($this->fichatecnica_model->getPiezas());
+            print json_encode($this->Fichatecnica_model->getPiezas());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -81,7 +81,7 @@ class FichaTecnica extends CI_Controller {
 
     public function getArticulosByClave() {
         try {
-            print json_encode($this->fichatecnica_model->getArticulosByClave($this->input->post('Articulo')));
+            print json_encode($this->Fichatecnica_model->getArticulosByClave($this->input->post('Articulo')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -89,7 +89,7 @@ class FichaTecnica extends CI_Controller {
 
     public function onComprobarExisteEstiloColor() {
         try {
-            print json_encode($this->fichatecnica_model->onComprobarExisteEstiloColor($this->input->get('Estilo'), $this->input->get('Color')));
+            print json_encode($this->Fichatecnica_model->onComprobarExisteEstiloColor($this->input->get('Estilo'), $this->input->get('Color')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -97,7 +97,7 @@ class FichaTecnica extends CI_Controller {
 
     public function getEstilos() {
         try {
-            print json_encode($this->fichatecnica_model->getEstilos());
+            print json_encode($this->Fichatecnica_model->getEstilos());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -105,7 +105,7 @@ class FichaTecnica extends CI_Controller {
 
     public function getEstiloByID() {
         try {
-            print json_encode($this->fichatecnica_model->getEstiloByID($this->input->get('Estilo')));
+            print json_encode($this->Fichatecnica_model->getEstiloByID($this->input->get('Estilo')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -113,7 +113,7 @@ class FichaTecnica extends CI_Controller {
 
     public function getColoresXEstilo() {
         try {
-            print json_encode($this->fichatecnica_model->getColoresXEstilo($this->input->get('Estilo')));
+            print json_encode($this->Fichatecnica_model->getColoresXEstilo($this->input->get('Estilo')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -121,7 +121,7 @@ class FichaTecnica extends CI_Controller {
 
     public function getFichaTecnicaDetalleByID() {
         try {
-            print json_encode($this->fichatecnica_model->getFichaTecnicaDetalleByID($this->input->get('Estilo'), $this->input->get('Color')));
+            print json_encode($this->Fichatecnica_model->getFichaTecnicaDetalleByID($this->input->get('Estilo'), $this->input->get('Color')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -129,7 +129,7 @@ class FichaTecnica extends CI_Controller {
 
     public function getFichaTecnicaByEstiloByColor() {
         try {
-            print json_encode($this->fichatecnica_model->getFichaTecnicaByEstiloByColor($this->input->get('Estilo'), $this->input->get('Color')));
+            print json_encode($this->Fichatecnica_model->getFichaTecnicaByEstiloByColor($this->input->get('Estilo'), $this->input->get('Color')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -138,7 +138,7 @@ class FichaTecnica extends CI_Controller {
     public function onAgregar() {
         try {
             $x = $this->input;
-            $PRECIO = $this->fichatecnica_model->getPrecioPorArticuloByID($x->post('Articulo'));
+            $PRECIO = $this->Fichatecnica_model->getPrecioPorArticuloByID($x->post('Articulo'));
             $data = array(
                 'Estilo' => ($x->post('Estilo') !== NULL) ? $x->post('Estilo') : NULL,
                 'Color' => ($x->post('Color') !== NULL) ? $x->post('Color') : NULL,
@@ -153,7 +153,7 @@ class FichaTecnica extends CI_Controller {
             } else {
                 $data["Precio"] = 0;
             }
-            $ID = $this->fichatecnica_model->onAgregar($data);
+            $ID = $this->Fichatecnica_model->onAgregar($data);
             print $ID;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -163,7 +163,7 @@ class FichaTecnica extends CI_Controller {
     public function onModificarDetalle() {
         try {
             unset($_POST['ID']);
-            $this->fichatecnica_model->onModificar($this->input->post('ID'), $this->input->post());
+            $this->Fichatecnica_model->onModificar($this->input->post('ID'), $this->input->post());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -171,7 +171,7 @@ class FichaTecnica extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->fichatecnica_model->onEliminar($this->input->post('ID'));
+            $this->Fichatecnica_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -179,7 +179,7 @@ class FichaTecnica extends CI_Controller {
 
     public function onEliminarRenglonDetalle() {
         try {
-            $this->fichatecnica_model->onEliminarRenglonDetalle($this->input->post('ID'));
+            $this->Fichatecnica_model->onEliminarRenglonDetalle($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -215,7 +215,7 @@ class FichaTecnica extends CI_Controller {
     }
 
     public function onImprimirFraccionesXEstilo() {
-        $cm = $this->fraccionesXEstilo_model;
+        $cm = $this->FraccionesXEstilo_model;
 
         $DatosEmpresa = $cm->getDatosEmpresa();
         $Encabezado = $cm->getEncabezadoFXE($this->input->get('Estilo'));

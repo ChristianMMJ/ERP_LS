@@ -7,7 +7,7 @@ class Explosiones extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session')->model('explosiones_model')
+        $this->load->library('session')->model('Explosiones_model')
                 ->helper('explosiones_helper')->helper('file');
     }
 
@@ -19,7 +19,7 @@ class Explosiones extends CI_Controller {
         $aSem = $this->input->post('aSem');
         $Ano = $this->input->post('Ano');
 
-        $cm = $this->explosiones_model;
+        $cm = $this->Explosiones_model;
         $DatosEmpresa = $cm->getDatosEmpresa();
         $Grupos = $cm->getGruposTallas(
                 $Ano, $Sem, $aSem, $Maq, $aMaq
@@ -211,7 +211,7 @@ class Explosiones extends CI_Controller {
         $Ano = $this->input->post('Ano');
         $SinClasif = $this->input->post('SinClasif');
 
-        $cm = $this->explosiones_model;
+        $cm = $this->Explosiones_model;
         $DatosEmpresa = $cm->getDatosEmpresa();
         $Grupos = $cm->getGrupos(
                 $Ano, $Sem, $aSem, $Maq, $aMaq, $Tipo

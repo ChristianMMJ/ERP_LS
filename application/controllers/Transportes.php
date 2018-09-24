@@ -8,7 +8,7 @@ class Transportes extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('transportes_model');
+        $this->load->library('session')->model('Transportes_model');
     }
 
     public function index() {
@@ -37,7 +37,7 @@ class Transportes extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->transportes_model->getRecords());
+            print json_encode($this->Transportes_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -45,7 +45,7 @@ class Transportes extends CI_Controller {
 
     public function getID() {
         try {
-            print json_encode($this->transportes_model->getID());
+            print json_encode($this->Transportes_model->getID());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -53,7 +53,7 @@ class Transportes extends CI_Controller {
 
     public function getTransporteByID() {
         try {
-            print json_encode($this->transportes_model->getTransporteByID($this->input->get('ID')));
+            print json_encode($this->Transportes_model->getTransporteByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -62,7 +62,7 @@ class Transportes extends CI_Controller {
     public function onAgregar() {
         try {
             $x = $this->input;
-            $this->transportes_model->onAgregar(array(
+            $this->Transportes_model->onAgregar(array(
                 'Clave' => ($x->post('Clave') !== NULL) ? $x->post('Clave') : NULL,
                 'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL,
                 'Estatus' => 'ACTIVO'
@@ -75,7 +75,7 @@ class Transportes extends CI_Controller {
     public function onModificar() {
         try {
             $x = $this->input;
-            $this->transportes_model->onModificar($x->post('ID'), array(
+            $this->Transportes_model->onModificar($x->post('ID'), array(
                 'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL
             ));
         } catch (Exception $exc) {
@@ -85,7 +85,7 @@ class Transportes extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->transportes_model->onEliminar($this->input->post('ID'));
+            $this->Transportes_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

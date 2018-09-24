@@ -29,6 +29,7 @@
         </div>
     </div>
 </div>
+
 <div class="d-none animated fadeIn text-dark" id="pnlDatos">
     <form id="frmNuevo">
         <fieldset>
@@ -40,11 +41,11 @@
                             <legend >Pedido</legend>
                         </div>
                         <div class="col-12 col-sm-3 col-md-8" align="right">
-                            <button type="button" class="btn btn-info btn-sm d-none" id="btnImprimir" >
-                                <span class="fa fa-print" ></span> IMPRIMIR
-                            </button>
                             <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
                                 <span class="fa fa-arrow-left" ></span> REGRESAR
+                            </button>
+                            <button type="button" class="btn btn-info btn-sm d-none" id="btnImprimir" >
+                                <span class="fa fa-print" ></span> IMPRIMIR
                             </button>
                         </div>
                     </div>
@@ -68,31 +69,26 @@
                             </select>
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-1">
-                            <label for="FechaPedido" >Fecha Pedido*</label>
+                            <label for="FechaPedido" >Fec-Pedido*</label>
                             <input type="text" id="FechaPedido" name="FechaPedido" class="form-control form-control-sm date notEnter" required="">
                         </div>
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-1">
-                            <label for="FechaEntrega" >Fecha Entrega*</label>
+                            <label for="FechaEntrega" >Fec-Entrega*</label>
                             <input type="text" id="FechaEntrega" name="FechaEntrega" class="form-control form-control-sm date notEnter">
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-1">
-                            <label for="FechaRecepcion" >Fecha Recepción*</label>
+                            <label for="FechaRecepcion" >Fec-Recep*</label>
                             <input type="text" id="FechaRecepcion" name="FechaRecepcion" class="form-control form-control-sm date notEnter" required="">
                         </div>
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-1">
                             <label for="Recibido" >Recibido*</label>
                             <select class="form-control form-control-sm" id="Recibido" name="Recibido" required placeholder="">
                                 <option></option>
-                                <option value="1">1 - Agente</option>
+                                <option value="1">1 - Age</option>
                                 <option value="3">3 - Tel</option>
                                 <option value="4">4 - Per</option>
                                 <option value="5">5 - Int</option>
                             </select>
-                        </div>
-                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1 mt-4">
-                            <button type="button" class="btn btn-info notEnter" id="AgregaObservaciones" name="AgregaObservaciones" data-toggle="tooltip" data-placement="top" title="Agregar observaciones">
-                                <i class="fa fa-eye"></i> Obs.
-                                </span>
                         </div>
                     </div>
                 </div>
@@ -118,7 +114,7 @@
                             </select>
                         </div>
                         <div class="col-12 col-sm-4 col-md-4 col-lg-1 col-xl-1">
-                            <label for="Semana" >Semana*</label>
+                            <label for="Semana" >Sem*</label>
                             <input type="text" id="Semana" name="Semana" class="form-control form-control-sm" placeholder="">
                         </div>
                         <!--BREAK-->
@@ -126,12 +122,19 @@
                             <label for="Recio" >Recio*</label>
                             <input type="text" id="Recio" name="Recio" class="form-control form-control-sm" maxlength="5">
                         </div>
-                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1">
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
                             <label for="ProduccionMaquilaSemana" >Prod. Maq/Sem*</label>
-                            <input type="text" id="ProduccionMaquilaSemana" name="ProduccionMaquilaSemana" class="form-control form-control-sm" placeholder="0" disabled="">
+                            <div class="input-group">
+                                <input type="text" id="ProduccionMaquilaSemana" name="ProduccionMaquilaSemana" class="form-control form-control-sm" placeholder="0" disabled="">
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text text-dark" style="background-color: #3498DB; color: #FFF !important; width: 45px;" id="AgregaObservaciones" onclick="onAgregarObservaciones()" data-toggle="tooltip" data-placement="top" title="Observaciones">
+                                        <i class="fa fa-file-alt"></i>
+                                    </span>
+                                </span>
+                            </div>
                         </div>
                         <div class="col-12 col-sm-4 col-md-4 col-lg-1 col-xl-1">
-                            <label for="Precio" >Precio*</label> 
+                            <label for="Precio" >Precio*</label>
                             <input type="text" id="Precio" name="Precio" class="form-control form-control-sm numbersOnly" maxlength="8" readonly="">
                             <input type="text" id="Serie" class="form-control form-control-sm d-none" readonly="" >
                         </div>
@@ -167,7 +170,7 @@
                                                 print '<td><input type="text" style="width: 45px;" maxlength="4" class="form-control form-control-sm numbersOnly" name="C' . $index . '" onfocus="onCalcularPares(this);" on change="onCalcularPares(this);" keyup="onCalcularPares(this);" onfocusout="onCalcularPares(this);"></td>';
                                             }
                                             ?>
-                                            <td><input type="text" style="width: 55px;" maxlength="4" class="form-control form-control-sm numbersOnly animated bounceIn font-weight-bold" disabled=""  id="TPares"></td>
+                                            <td><input type="text" style="width: 55px;" maxlength="4" class="form-control form-control-sm numbersOnly font-weight-bold" disabled=""  id="TPares"></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -262,35 +265,6 @@
     </form>
 </div>
 
-<div class="modal" id="mdlObservaciones">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Observaciones</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-12">
-                        <label>Observacion</label>
-                        <textarea id="ObservacionesX" name="Observaciones" rows="4" cols="20" class="form-control">
-                        </textarea>
-                    </div>
-                    <div class="col-12">
-                        <label>Descripción</label>
-                        <textarea id="DescripcionObservacionesX" name="DescripcionObservaciones" rows="4" cols="20" class="form-control">
-                        </textarea>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer"> 
-                <button type="button" id="btnGuardarObs" class="btn btn-secondary" data-dismiss="modal">Aceptar</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script>
     var master_url = base_url + 'index.php/Pedidos/';
@@ -301,24 +275,13 @@
     var PedidoDetalle, tblPedidoDetalle = pnlDatos.find("#tblPedidoDetalle");
     var nuevo = false;
     var _animate_ = {enter: 'animated fadeInLeft', exit: 'animated fadeOutDown'}, _placement_ = {from: "bottom", align: "left"};
-    var Cliente = '', mdlObservaciones = $("#mdlObservaciones");
+    var Cliente = '';
 
     $(document).ready(function () {
         init();
         handleEnter();
 
-        mdlObservaciones.find("#btnGuardarObs").click(function () {
-            pnlDatos.find("#Observacion").val(mdlObservaciones.find("#ObservacionesX").val());
-            pnlDatos.find("#ObservacionDetalle").val(mdlObservaciones.find("#DescripcionObservacionesX").val());
-        });
-
-//        pnlDatos.find("#AgregaObservaciones").click(function () {
-//            onAgregarObservaciones();
-//        });
-
-        $.each(pnlDatos.find("select"), function () {
-            verificarValorSelect('#' + $(this).attr('id'), pnlDatos);
-        });
+        validacionSelectPorContenedor(pnlDatos);
 
         btnImprimir.click(function () {
             if (temp > 0) {
@@ -487,21 +450,10 @@
                     f.append('Detalle', JSON.stringify(detalle));
                     f.append('ID', pnlDatos.find("#ID").val());
                     onSave('onModificar', f, function (e) {
-                        swal({
-                            title: "ATENCIÓN",
-                            text: "SE HA MODIFICADO EL REGISTRO",
-                            icon: "success",
-                            closeOnClickOutside: false,
-                            closeOnEsc: false,
-                            buttons: false,
-                            timer: 1200
-                        });
                         nuevo = false;
                         Pedidos.ajax.reload();
                         getPedidoByID(pnlDatos.find("#ID").val());
-//                        $.each(tblPedidoDetalle.find("tbody tr"), function (k, v) {
-//                            PedidoDetalle.cell($(this), 38).data('N').draw();
-//                        });
+                        pnlDatos.find("#Estilo")[0].selectize.focus();
                     });
                 } else {
                     var detalle = [];
@@ -566,6 +518,7 @@
                         pnlDatos.find("#FechaEntrega").prop('readonly', true);
                         pnlDatos.find("#Cliente")[0].selectize.disable();
                         pnlDatos.find("#Agente")[0].selectize.disable();
+                        pnlDatos.find("#Estilo")[0].selectize.focus();
                     });
                 }
             } else {
@@ -677,7 +630,7 @@
                             }
                             indice += 1;
                         });
-                        //MOSTRAR FOTO 
+                        //MOSTRAR FOTO
                         if (dtm.Foto !== null && dtm.Foto !== undefined && dtm.Foto !== '') {
                             var ext = getExt(dtm.Foto);
                             if (ext === "gif" || ext === "jpg" || ext === "png" || ext === "jpeg") {
@@ -997,12 +950,9 @@
         var total_pares = 0;
         $.each(pnlDatos.find("#tblTallas input[name*='C']"), function (k, v) {
             total_pares += (parseInt($(v).val()) > 0) ? parseInt($(v).val()) : 0;
-        });
-        pnlDatos.find("#TPares").addClass('animated bounceOut faster').one('animationend oAnimationEnd mozAnimationEnd webkitAnimationEnd', function () {
-            $(this).removeClass('animated bounceOut faster');
-            $(this).addClass('animated bounceIn faster');
             pnlDatos.find("#TPares").val(total_pares);
         });
+
         var encabezados = pnlDatos.find("#tblTallas tbody tr:eq(0)");
         var input = $(e);
         var padre = input.parent().index();
@@ -1065,9 +1015,9 @@
                             total_pares = 0;
                             pnlDatos.find("#TPares").val(0);
                             pnlDatos.find("[name*='C']").val('');
-                            Estilo[0].selectize.clear(true);
-                            Estilo[0].selectize.focus();
-                            Estilo[0].selectize.open();
+                            //Estilo[0].selectize.clear(true);
+                            //Estilo[0].selectize.open();
+                            //Estilo[0].selectize.focus();
                             FechaDeEntrega.prop('readonly', true);
                             Semana.prop('readonly', true);
                             Recibido[0].selectize.disable();
@@ -1261,23 +1211,20 @@
     }
 
     function onAgregarObservaciones() {
-//        swal({
-//            text: 'Observaciones',
-//            content: "input",
-//            button: {
-//                text: "Aceptar",
-//                closeModal: true
-//            },
-//            closeOnClickOutside: false,
-//            closeOnEsc: false
-//        }).then((Observaciones) => {
-//            pnlDatos.find("#Observacion").val(Observaciones);
-//            pnlDatos.find("#ObservacionDetalle").val(Observaciones);
-//            pnlDatos.find("[name='C1']").focus();
-//        });
-        mdlObservaciones.find("#ObservacionesX").val(pnlDatos.find("#Observacion").val());
-        mdlObservaciones.find("#DescripcionObservacionesX").val(pnlDatos.find("#ObservacionDetalle").val());
-        mdlObservaciones.modal('show');
+        swal({
+            text: 'Observaciones',
+            content: "input",
+            button: {
+                text: "Aceptar",
+                closeModal: true
+            },
+            closeOnClickOutside: false,
+            closeOnEsc: false
+        }).then((Observaciones) => {
+            pnlDatos.find("#Observacion").val(Observaciones.toUpper);
+            pnlDatos.find("#ObservacionDetalle").val(Observaciones);
+            pnlDatos.find("[name='C1']").focus();
+        });
     }
 
     function isAppleDevice() {
@@ -1292,11 +1239,7 @@
     #tblPedidoDetalle table tbody{
         height: 300px !important;
     }
-    table tbody tr:hover {
-        font-weight: bold;
-        color:#000 !important;
-        background-color: transparent;
-    }
+
     #tblPedidoDetalle tbody td{
         font-weight: bold;
         -webkit-transition: all .2s ease-in-out;
@@ -1310,29 +1253,7 @@
         background-color: #fff;
     }
 
-    #tblPedidoDetalle td:hover{
-    }
-    /* width */
-    ::-webkit-scrollbar {
-        width: 10px;
-    }
 
-    /* Track */
-    ::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 5px grey;
-        border-radius: 1px;
-    }
-
-    /* Handle */
-    ::-webkit-scrollbar-thumb {
-        background: #666666;
-        border-radius: 10px;
-    }
-
-    /* Handle on hover */
-    ::-webkit-scrollbar-thumb:hover {
-        background: #666666;
-    }
 
     .zoom{
         -webkit-transition: all .2s ease-in-out;
@@ -1356,13 +1277,10 @@
         cursor: pointer;
         background-color: #fff;
     }
-    .container-fluid {
-        width: 100%;
-        padding-right: 0px;
-        padding-left: 0px;
-        margin-right: auto;
-        margin-left: auto;
-    }
 
+    #tblTallas tbody tr:hover {
+        background-color: #FFF;
+        color: #000 !important;
+    }
 
 </style>

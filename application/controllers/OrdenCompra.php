@@ -10,7 +10,7 @@ class OrdenCompra extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('ordencompra_model')->helper('reportesCompras_helper')->helper('file');
+        $this->load->library('session')->model('Ordencompra_model')->helper('reportesCompras_helper')->helper('file');
     }
 
     public function index() {
@@ -39,7 +39,7 @@ class OrdenCompra extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->ordencompra_model->getRecords());
+            print json_encode($this->Ordencompra_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -47,7 +47,7 @@ class OrdenCompra extends CI_Controller {
 
     public function getOrdenCompraByID() {
         try {
-            print json_encode($this->ordencompra_model->getOrdenCompraByID($this->input->get('ID')));
+            print json_encode($this->Ordencompra_model->getOrdenCompraByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -55,7 +55,7 @@ class OrdenCompra extends CI_Controller {
 
     public function getPrecioCompraByArticuloByProveedor() {
         try {
-            print json_encode($this->ordencompra_model->getPrecioCompraByArticuloByProveedor($this->input->get('Articulo'), $this->input->get('Proveedor')));
+            print json_encode($this->Ordencompra_model->getPrecioCompraByArticuloByProveedor($this->input->get('Articulo'), $this->input->get('Proveedor')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -63,7 +63,7 @@ class OrdenCompra extends CI_Controller {
 
     public function getPorcentajesCompraByProveedor() {
         try {
-            print json_encode($this->ordencompra_model->getPorcentajesCompraByProveedor($this->input->get('Proveedor')));
+            print json_encode($this->Ordencompra_model->getPorcentajesCompraByProveedor($this->input->get('Proveedor')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -71,7 +71,7 @@ class OrdenCompra extends CI_Controller {
 
     public function getArticuloByDeptoByProveedor() {
         try {
-            print json_encode($this->ordencompra_model->getArticuloByDeptoByProveedor($this->input->get('Departamento'), $this->input->get('Proveedor')));
+            print json_encode($this->Ordencompra_model->getArticuloByDeptoByProveedor($this->input->get('Departamento'), $this->input->get('Proveedor')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -79,7 +79,7 @@ class OrdenCompra extends CI_Controller {
 
     public function getMaquilas() {
         try {
-            print json_encode($this->ordencompra_model->getMaquilas($this->input->get('ID')));
+            print json_encode($this->Ordencompra_model->getMaquilas($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -87,7 +87,7 @@ class OrdenCompra extends CI_Controller {
 
     public function getProveedores() {
         try {
-            print json_encode($this->ordencompra_model->getProveedores());
+            print json_encode($this->Ordencompra_model->getProveedores());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -95,7 +95,7 @@ class OrdenCompra extends CI_Controller {
 
     public function onComprobarSemanasProduccion() {
         try {
-            print json_encode($this->ordencompra_model->onComprobarSemanasProduccion($this->input->get('Clave'), $this->input->get('Ano')));
+            print json_encode($this->Ordencompra_model->onComprobarSemanasProduccion($this->input->get('Clave'), $this->input->get('Ano')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -103,7 +103,7 @@ class OrdenCompra extends CI_Controller {
 
     public function onComprobarMaquilas() {
         try {
-            print json_encode($this->ordencompra_model->onComprobarMaquilas($this->input->get('Clave')));
+            print json_encode($this->Ordencompra_model->onComprobarMaquilas($this->input->get('Clave')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -111,7 +111,7 @@ class OrdenCompra extends CI_Controller {
 
     public function getFolio() {
         try {
-            print json_encode($this->ordencompra_model->getFolio($this->input->get('tp')));
+            print json_encode($this->Ordencompra_model->getFolio($this->input->get('tp')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -136,7 +136,7 @@ class OrdenCompra extends CI_Controller {
                 'Estatus' => 'ACTIVO',
                 'Usuario' => $this->session->userdata('ID')
             );
-            $ID = $this->ordencompra_model->onAgregar($datos);
+            $ID = $this->Ordencompra_model->onAgregar($datos);
             print $ID;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -162,7 +162,7 @@ class OrdenCompra extends CI_Controller {
                 'Estatus' => $x->post('Estatus'),
                 'Usuario' => $this->session->userdata('ID')
             );
-            $ID = $this->ordencompra_model->onAgregar($datos);
+            $ID = $this->Ordencompra_model->onAgregar($datos);
             print $ID;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -175,7 +175,7 @@ class OrdenCompra extends CI_Controller {
             $datos = array(
                 'Estatus' => 'CERRADA',
             );
-            $this->ordencompra_model->onModificar($x->post('ID'), $datos);
+            $this->Ordencompra_model->onModificar($x->post('ID'), $datos);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -188,7 +188,7 @@ class OrdenCompra extends CI_Controller {
                 'Tp' => '1',
                 'Estatus' => 'CERRADA',
             );
-            $this->ordencompra_model->onModificar($x->post('ID'), $datos);
+            $this->Ordencompra_model->onModificar($x->post('ID'), $datos);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -196,7 +196,7 @@ class OrdenCompra extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->ordencompra_model->onEliminar($this->input->post('ID'));
+            $this->Ordencompra_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -206,7 +206,7 @@ class OrdenCompra extends CI_Controller {
 
     public function getDetalleParaSepararByID() {
         try {
-            print json_encode($this->ordencompra_model->getDetalleParaSepararByID($this->input->get('ID')));
+            print json_encode($this->Ordencompra_model->getDetalleParaSepararByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -214,7 +214,7 @@ class OrdenCompra extends CI_Controller {
 
     public function getDetalleByID() {
         try {
-            print json_encode($this->ordencompra_model->getDetalleByID($this->input->post('ID')));
+            print json_encode($this->Ordencompra_model->getDetalleByID($this->input->post('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -237,7 +237,7 @@ class OrdenCompra extends CI_Controller {
 
     public function onEliminarDetalleByID() {
         try {
-            $this->ordencompra_model->onEliminarDetalleByID($this->input->post('ID'));
+            $this->Ordencompra_model->onEliminarDetalleByID($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -251,7 +251,7 @@ class OrdenCompra extends CI_Controller {
                 'Cantidad' => $e->post('Cantidad'),
                 'Subtotal' => $e->post('SubTotal')
             );
-            $this->ordencompra_model->onModificarDetalle($e->post('ID'), $datos);
+            $this->Ordencompra_model->onModificarDetalle($e->post('ID'), $datos);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -261,7 +261,7 @@ class OrdenCompra extends CI_Controller {
 
     public function onImprimirOrdenCompra() {
         $Movs = json_decode($this->input->post('movs'));
-        $cm = $this->ordencompra_model;
+        $cm = $this->Ordencompra_model;
         if (!empty($Movs)) {
             $pdf = new PDF('L', 'mm', array(215.9, 279.4));
             foreach ($Movs as $k => $v) {

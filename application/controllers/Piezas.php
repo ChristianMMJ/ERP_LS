@@ -8,7 +8,7 @@ class Piezas extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('piezas_model');
+        $this->load->library('session')->model('Piezas_model');
     }
 
     public function index() {
@@ -42,7 +42,7 @@ class Piezas extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->piezas_model->getRecords());
+            print json_encode($this->Piezas_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -50,7 +50,7 @@ class Piezas extends CI_Controller {
 
     public function getDepartamentos() {
         try {
-            print json_encode($this->piezas_model->getDepartamentos());
+            print json_encode($this->Piezas_model->getDepartamentos());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -58,7 +58,7 @@ class Piezas extends CI_Controller {
 
     public function getRangos() {
         try {
-            print json_encode($this->piezas_model->getRangos());
+            print json_encode($this->Piezas_model->getRangos());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -66,7 +66,7 @@ class Piezas extends CI_Controller {
 
     public function getID() {
         try {
-            print json_encode($this->piezas_model->getID());
+            print json_encode($this->Piezas_model->getID());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -74,7 +74,7 @@ class Piezas extends CI_Controller {
 
     public function getPiezaByID() {
         try {
-            print json_encode($this->piezas_model->getPiezaByID($this->input->get('ID')));
+            print json_encode($this->Piezas_model->getPiezaByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -90,7 +90,7 @@ class Piezas extends CI_Controller {
                     $data[$key] = ($v !== '') ? strtoupper($v) : NULL;
                 }
             }
-            $this->piezas_model->onAgregar($data);
+            $this->Piezas_model->onAgregar($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -106,7 +106,7 @@ class Piezas extends CI_Controller {
                 }
             }
             unset($data["ID"]);
-            $this->piezas_model->onModificar($x->post('ID'), $data);
+            $this->Piezas_model->onModificar($x->post('ID'), $data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -114,7 +114,7 @@ class Piezas extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->piezas_model->onEliminar($this->input->post('ID'));
+            $this->Piezas_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

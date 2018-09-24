@@ -7,7 +7,7 @@ class Grupos extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('grupos_model');
+        $this->load->library('session')->model('Grupos_model');
     }
 
     public function index() {
@@ -51,7 +51,7 @@ class Grupos extends CI_Controller {
 
     public function getUltimoRegistro() {
         try {
-            print json_encode($this->grupos_model->getUltimoRegistro());
+            print json_encode($this->Grupos_model->getUltimoRegistro());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -59,7 +59,7 @@ class Grupos extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->grupos_model->getRecords());
+            print json_encode($this->Grupos_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -67,7 +67,7 @@ class Grupos extends CI_Controller {
 
     public function getGrupoByID() {
         try {
-            print json_encode($this->grupos_model->getGrupoByID($this->input->post('ID')));
+            print json_encode($this->Grupos_model->getGrupoByID($this->input->post('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -83,7 +83,7 @@ class Grupos extends CI_Controller {
                 'Tipo' => ($Tipo !== NULL) ? $Tipo : NULL,
                 'Estatus' => 'ACTIVO'
             );
-            $this->grupos_model->onAgregar($DATA);
+            $this->Grupos_model->onAgregar($DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -96,7 +96,7 @@ class Grupos extends CI_Controller {
                 'Nombre' => ($Nombre !== NULL) ? $Nombre : NULL,
                 'Tipo' => ($Tipo !== NULL) ? $Tipo : NULL
             );
-            $this->grupos_model->onModificar($ID, $DATA);
+            $this->Grupos_model->onModificar($ID, $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -105,7 +105,7 @@ class Grupos extends CI_Controller {
     public function onEliminar() {
         try {
             extract($this->input->post());
-            $this->grupos_model->onEliminar($ID);
+            $this->Grupos_model->onEliminar($ID);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

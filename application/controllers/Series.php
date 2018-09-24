@@ -6,7 +6,7 @@ class Series extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session')->model('series_model');
+        $this->load->library('session')->model('Series_model');
     }
 
     public function index() {
@@ -44,7 +44,7 @@ class Series extends CI_Controller {
 
     public function getUltimoRegistro() {
         try {
-            print json_encode($this->series_model->getUltimoRegistro());
+            print json_encode($this->Series_model->getUltimoRegistro());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -52,7 +52,7 @@ class Series extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->series_model->getRecords());
+            print json_encode($this->Series_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -60,7 +60,7 @@ class Series extends CI_Controller {
 
     public function getSerieByID() {
         try {
-            print json_encode($this->series_model->getSerieByID($this->input->get('ID')));
+            print json_encode($this->Series_model->getSerieByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -97,7 +97,7 @@ class Series extends CI_Controller {
                 'T21' => ($x->post('T21') !== NULL) ? $x->post('T21') : 0,
                 'T22' => ($x->post('T22') !== NULL) ? $x->post('T22') : 0
             );
-            $ID = $this->series_model->onAgregar($data);
+            $ID = $this->Series_model->onAgregar($data);
             echo $ID;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -112,7 +112,7 @@ class Series extends CI_Controller {
                 'PuntoInicial' => ($this->input->post('PuntoInicial') !== NULL) ? $this->input->post('PuntoInicial') : NULL,
                 'PuntoFinal' => ($this->input->post('PuntoFinal') !== NULL) ? $this->input->post('PuntoFinal') : NULL
             );
-            $this->series_model->onModificar($ID, $DATA);
+            $this->Series_model->onModificar($ID, $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -121,7 +121,7 @@ class Series extends CI_Controller {
     public function onEliminar() {
         try {
             extract($this->input->post());
-            $this->series_model->onEliminar($ID);
+            $this->Series_model->onEliminar($ID);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

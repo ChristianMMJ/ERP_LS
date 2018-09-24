@@ -9,7 +9,7 @@ class Clientes extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('clientes_model');
+        $this->load->library('session')->model('Clientes_model');
     }
 
     public function index() {
@@ -33,7 +33,7 @@ class Clientes extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->clientes_model->getRecords());
+            print json_encode($this->Clientes_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -41,7 +41,7 @@ class Clientes extends CI_Controller {
 
     public function getClienteByID() {
         try {
-            print json_encode($this->clientes_model->getClienteByID($this->input->get('ID')));
+            print json_encode($this->Clientes_model->getClienteByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -49,7 +49,7 @@ class Clientes extends CI_Controller {
 
     public function getID() {
         try {
-            print json_encode($this->clientes_model->getID());
+            print json_encode($this->Clientes_model->getID());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -57,7 +57,7 @@ class Clientes extends CI_Controller {
 
     public function onComprobarClave() {
         try {
-            print json_encode($this->clientes_model->onComprobarClave($this->input->get('Clave')));
+            print json_encode($this->Clientes_model->onComprobarClave($this->input->get('Clave')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -65,7 +65,7 @@ class Clientes extends CI_Controller {
 
     public function getEstados() {
         try {
-            print json_encode($this->clientes_model->getEstados());
+            print json_encode($this->Clientes_model->getEstados());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -73,7 +73,7 @@ class Clientes extends CI_Controller {
 
     public function getFormasDePago() {
         try {
-            print json_encode($this->clientes_model->getFormasDePago());
+            print json_encode($this->Clientes_model->getFormasDePago());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -81,7 +81,7 @@ class Clientes extends CI_Controller {
 
     public function getMetodosDePago() {
         try {
-            print json_encode($this->clientes_model->getMetodosDePago());
+            print json_encode($this->Clientes_model->getMetodosDePago());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -89,7 +89,7 @@ class Clientes extends CI_Controller {
 
     public function getPaises() {
         try {
-            print json_encode($this->clientes_model->getPaises());
+            print json_encode($this->Clientes_model->getPaises());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -97,7 +97,7 @@ class Clientes extends CI_Controller {
 
     public function getAgentes() {
         try {
-            print json_encode($this->clientes_model->getAgentes());
+            print json_encode($this->Clientes_model->getAgentes());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -105,7 +105,7 @@ class Clientes extends CI_Controller {
 
     public function getTransportes() {
         try {
-            print json_encode($this->clientes_model->getTransportes());
+            print json_encode($this->Clientes_model->getTransportes());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -113,7 +113,7 @@ class Clientes extends CI_Controller {
 
     public function getZonas() {
         try {
-            print json_encode($this->clientes_model->getZonas());
+            print json_encode($this->Clientes_model->getZonas());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -121,7 +121,7 @@ class Clientes extends CI_Controller {
 
     public function getGrupos() {
         try {
-            print json_encode($this->clientes_model->getGrupos());
+            print json_encode($this->Clientes_model->getGrupos());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -129,7 +129,7 @@ class Clientes extends CI_Controller {
 
     public function getListasDePrecios() {
         try {
-            print json_encode($this->clientes_model->getListasDePrecios());
+            print json_encode($this->Clientes_model->getListasDePrecios());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -146,7 +146,7 @@ class Clientes extends CI_Controller {
             }
             $data["Estatus"] = 'ACTIVO';
             $data["Registro"] = Date('d/m/Y h:i:s');
-            $this->clientes_model->onAgregar($data);
+            $this->Clientes_model->onAgregar($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -162,7 +162,7 @@ class Clientes extends CI_Controller {
                 }
             }
             unset($data["ID"]);
-            $this->clientes_model->onModificar($x->post('ID'), $data);
+            $this->Clientes_model->onModificar($x->post('ID'), $data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

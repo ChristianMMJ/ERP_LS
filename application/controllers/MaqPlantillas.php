@@ -8,7 +8,7 @@ class MaqPlantillas extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('maqplantillas_model');
+        $this->load->library('session')->model('Maqplantillas_model');
     }
 
     public function index() {
@@ -46,7 +46,7 @@ class MaqPlantillas extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->maqplantillas_model->getRecords());
+            print json_encode($this->Maqplantillas_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -54,7 +54,7 @@ class MaqPlantillas extends CI_Controller {
 
     public function getMaqPlantillas() {
         try {
-            print json_encode($this->maqplantillas_model->getMaqPlantillas());
+            print json_encode($this->Maqplantillas_model->getMaqPlantillas());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -62,7 +62,7 @@ class MaqPlantillas extends CI_Controller {
 
     public function getID() {
         try {
-            print json_encode($this->maqplantillas_model->getID());
+            print json_encode($this->Maqplantillas_model->getID());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -70,7 +70,7 @@ class MaqPlantillas extends CI_Controller {
 
     public function getMaquilaPlantillaByID() {
         try {
-            print json_encode($this->maqplantillas_model->getMaquilaPlantillaByID($this->input->get('ID')));
+            print json_encode($this->Maqplantillas_model->getMaquilaPlantillaByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -79,7 +79,7 @@ class MaqPlantillas extends CI_Controller {
     public function onAgregar() {
         try {
             $x = $this->input;
-            $this->maqplantillas_model->onAgregar(array(
+            $this->Maqplantillas_model->onAgregar(array(
                 'Clave' => ($x->post('Clave') !== NULL) ? $x->post('Clave') : NULL,
                 'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL,
                 'Estatus' => 'ACTIVO'
@@ -92,7 +92,7 @@ class MaqPlantillas extends CI_Controller {
     public function onModificar() {
         try {
             $x = $this->input;
-            $this->maqplantillas_model->onModificar($x->post('ID'), array(
+            $this->Maqplantillas_model->onModificar($x->post('ID'), array(
                 'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL
             ));
         } catch (Exception $exc) {
@@ -102,7 +102,7 @@ class MaqPlantillas extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->maqplantillas_model->onEliminar($this->input->post('ID'));
+            $this->Maqplantillas_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

@@ -8,7 +8,7 @@ class Maquilas extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('maquilas_model')->model('departamentos_model');
+        $this->load->library('session')->model('Maquilas_model')->model('Departamentos_model');
     }
 
     public function index() {
@@ -52,7 +52,7 @@ class Maquilas extends CI_Controller {
     public function getDepartamentos() {
         try {
             extract($this->input->post());
-            $data = $this->departamentos_model->getDepartamentos();
+            $data = $this->Departamentos_model->getDepartamentos();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -61,7 +61,7 @@ class Maquilas extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->maquilas_model->getRecords());
+            print json_encode($this->Maquilas_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -69,7 +69,7 @@ class Maquilas extends CI_Controller {
 
     public function getID() {
         try {
-            print json_encode($this->maquilas_model->getID());
+            print json_encode($this->Maquilas_model->getID());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -77,7 +77,7 @@ class Maquilas extends CI_Controller {
 
     public function getMaquilaByID() {
         try {
-            print json_encode($this->maquilas_model->getMaquilaByID($this->input->get('ID')));
+            print json_encode($this->Maquilas_model->getMaquilaByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -85,7 +85,7 @@ class Maquilas extends CI_Controller {
 
     public function getMaquilaByClave() {
         try {
-            print json_encode($this->maquilas_model->getMaquilaByClave($this->input->get('Clave')));
+            print json_encode($this->Maquilas_model->getMaquilaByClave($this->input->get('Clave')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -94,7 +94,7 @@ class Maquilas extends CI_Controller {
     public function onAgregar() {
         try {
             $x = $this->input;
-            $this->maquilas_model->onAgregar(array(
+            $this->Maquilas_model->onAgregar(array(
                 'Clave' => ($x->post('Clave') !== NULL) ? $x->post('Clave') : NULL,
                 'Nombre' => ($x->post('Nombre') !== NULL) ? $x->post('Nombre') : NULL,
                 'DepartamentoInicial' => ($x->post('DepartamentoInicial') !== NULL) ? $x->post('DepartamentoInicial') : NULL,
@@ -126,7 +126,7 @@ class Maquilas extends CI_Controller {
     public function onModificar() {
         try {
             $x = $this->input;
-            $this->maquilas_model->onModificar($x->post('ID'), array(
+            $this->Maquilas_model->onModificar($x->post('ID'), array(
                 'Nombre' => ($x->post('Nombre') !== NULL) ? $x->post('Nombre') : NULL,
                 'DepartamentoInicial' => ($x->post('DepartamentoInicial') !== NULL) ? $x->post('DepartamentoInicial') : NULL,
                 'DepartamentoFinal' => ($x->post('DepartamentoFinal') !== NULL) ? $x->post('DepartamentoFinal') : NULL,
@@ -156,7 +156,7 @@ class Maquilas extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->maquilas_model->onEliminar($this->input->post('ID'));
+            $this->Maquilas_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

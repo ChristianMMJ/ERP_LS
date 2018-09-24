@@ -8,7 +8,7 @@ class Estados extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('estados_model');
+        $this->load->library('session')->model('Estados_model');
     }
 
     public function index() {
@@ -40,7 +40,7 @@ class Estados extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->estados_model->getRecords());
+            print json_encode($this->Estados_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -48,7 +48,7 @@ class Estados extends CI_Controller {
 
     public function getID() {
         try {
-            print json_encode($this->estados_model->getID());
+            print json_encode($this->Estados_model->getID());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -56,7 +56,7 @@ class Estados extends CI_Controller {
 
     public function getEstadoByID() {
         try {
-            print json_encode($this->estados_model->getEstadoByID($this->input->get('ID')));
+            print json_encode($this->Estados_model->getEstadoByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -65,7 +65,7 @@ class Estados extends CI_Controller {
     public function onAgregar() {
         try {
             $x = $this->input;
-            $this->estados_model->onAgregar(array(
+            $this->Estados_model->onAgregar(array(
                 'Clave' => ($x->post('Clave') !== NULL) ? $x->post('Clave') : NULL,
                 'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL,
                 'Estatus' => 'ACTIVO'
@@ -78,7 +78,7 @@ class Estados extends CI_Controller {
     public function onModificar() {
         try {
             $x = $this->input;
-            $this->estados_model->onModificar($x->post('ID'), array(
+            $this->Estados_model->onModificar($x->post('ID'), array(
                 'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL
             ));
         } catch (Exception $exc) {
@@ -88,7 +88,7 @@ class Estados extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->estados_model->onEliminar($this->input->post('ID'));
+            $this->Estados_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

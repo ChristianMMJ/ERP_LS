@@ -8,7 +8,7 @@ class Departamentos extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('departamentos_model');
+        $this->load->library('session')->model('Departamentos_model');
     }
 
     public function index() {
@@ -50,7 +50,7 @@ class Departamentos extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->departamentos_model->getRecords());
+            print json_encode($this->Departamentos_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -58,7 +58,7 @@ class Departamentos extends CI_Controller {
 
     public function getFracciones() {
         try {
-            print json_encode($this->departamentos_model->getFracciones());
+            print json_encode($this->Departamentos_model->getFracciones());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -66,7 +66,7 @@ class Departamentos extends CI_Controller {
 
     public function onComprobarClave() {
         try {
-            print json_encode($this->departamentos_model->onComprobarClave($this->input->get('Clave')));
+            print json_encode($this->Departamentos_model->onComprobarClave($this->input->get('Clave')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -74,7 +74,7 @@ class Departamentos extends CI_Controller {
 
     public function getID() {
         try {
-            print json_encode($this->departamentos_model->getID());
+            print json_encode($this->Departamentos_model->getID());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -82,7 +82,7 @@ class Departamentos extends CI_Controller {
 
     public function getDepartamentoByID() {
         try {
-            print json_encode($this->departamentos_model->getDepartamentoByID($this->input->get('ID')));
+            print json_encode($this->Departamentos_model->getDepartamentoByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -91,7 +91,7 @@ class Departamentos extends CI_Controller {
     public function onAgregar() {
         try {
             $x = $this->input;
-            $this->departamentos_model->onAgregar(array(
+            $this->Departamentos_model->onAgregar(array(
                 'Clave' => ($x->post('Clave') !== NULL) ? $x->post('Clave') : NULL,
                 'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL,
                 'Tipo' => ($x->post('Tipo') !== NULL) ? $x->post('Tipo') : NULL,
@@ -107,7 +107,7 @@ class Departamentos extends CI_Controller {
     public function onModificar() {
         try {
             $x = $this->input;
-            $this->departamentos_model->onModificar($x->post('ID'), array(
+            $this->Departamentos_model->onModificar($x->post('ID'), array(
                 'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL,
                 'Tipo' => ($x->post('Tipo') !== NULL) ? $x->post('Tipo') : NULL,
                 'Avance' => ($x->post('Avance') !== NULL) ? $x->post('Avance') : NULL,
@@ -121,7 +121,7 @@ class Departamentos extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->departamentos_model->onEliminar($this->input->post('ID'));
+            $this->Departamentos_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

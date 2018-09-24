@@ -7,7 +7,7 @@ class Proveedores extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('proveedores_model');
+        $this->load->library('session')->model('Proveedores_model');
     }
 
     public function index() {
@@ -56,7 +56,7 @@ class Proveedores extends CI_Controller {
 
     public function getUltimoRegistro() {
         try {
-            print json_encode($this->proveedores_model->getUltimoRegistro());
+            print json_encode($this->Proveedores_model->getUltimoRegistro());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -64,7 +64,7 @@ class Proveedores extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->proveedores_model->getRecords());
+            print json_encode($this->Proveedores_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -72,7 +72,7 @@ class Proveedores extends CI_Controller {
 
     public function getProveedorByID() {
         try {
-            print json_encode($this->proveedores_model->getProveedorByID($this->input->post('ID')));
+            print json_encode($this->Proveedores_model->getProveedorByID($this->input->post('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -105,7 +105,7 @@ class Proveedores extends CI_Controller {
                 'PorcentajeComprasPorPedidoR' => ($PorcentajeComprasPorPedidoR !== NULL) ? $PorcentajeComprasPorPedidoR : NULL,
                 'Estatus' => 'ACTIVO'
             );
-            $this->proveedores_model->onAgregar($DATA);
+            $this->Proveedores_model->onAgregar($DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -135,7 +135,7 @@ class Proveedores extends CI_Controller {
                 'PorcentajeComprasPorPedidoF' => ($PorcentajeComprasPorPedidoF !== NULL) ? $PorcentajeComprasPorPedidoF : NULL,
                 'PorcentajeComprasPorPedidoR' => ($PorcentajeComprasPorPedidoR !== NULL) ? $PorcentajeComprasPorPedidoR : NULL,
             );
-            $this->proveedores_model->onModificar($ID, $DATA);
+            $this->Proveedores_model->onModificar($ID, $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -144,7 +144,7 @@ class Proveedores extends CI_Controller {
     public function onEliminar() {
         try {
             extract($this->input->post());
-            $this->proveedores_model->onEliminar($ID);
+            $this->Proveedores_model->onEliminar($ID);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

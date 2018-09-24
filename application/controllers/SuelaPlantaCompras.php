@@ -11,8 +11,8 @@ class SuelaPlantaCompras extends CI_Controller {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
         $this->load->library('session')
-                ->model('suelaplantacompras_model')
-                ->model('series_model')
+                ->model('Suelaplantacompras_model')
+                ->model('Series_model')
                 ->helper('reportesCompras_helper')
                 ->helper('file');
     }
@@ -43,7 +43,7 @@ class SuelaPlantaCompras extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->suelaplantacompras_model->getRecords());
+            print json_encode($this->Suelaplantacompras_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -51,7 +51,7 @@ class SuelaPlantaCompras extends CI_Controller {
 
     public function getSeries() {
         try {
-            $data = $this->series_model->getSeries();
+            $data = $this->Series_model->getSeries();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -60,7 +60,7 @@ class SuelaPlantaCompras extends CI_Controller {
 
     public function onComprobarArticulo() {
         try {
-            print json_encode($this->suelaplantacompras_model->onComprobarArticulo($this->input->get('ArticuloCBZ')));
+            print json_encode($this->Suelaplantacompras_model->onComprobarArticulo($this->input->get('ArticuloCBZ')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -68,7 +68,7 @@ class SuelaPlantaCompras extends CI_Controller {
 
     public function getSerieXClave() {
         try {
-            print json_encode($this->series_model->getSerieXClave($this->input->post('Clave')));
+            print json_encode($this->Series_model->getSerieXClave($this->input->post('Clave')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -76,7 +76,7 @@ class SuelaPlantaCompras extends CI_Controller {
 
     public function getArticulosByGrupo() {
         try {
-            print json_encode($this->suelaplantacompras_model->getArticulosByGrupo($this->input->get('Grupo')));
+            print json_encode($this->Suelaplantacompras_model->getArticulosByGrupo($this->input->get('Grupo')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -84,7 +84,7 @@ class SuelaPlantaCompras extends CI_Controller {
 
     public function getSuelaPlantabyID() {
         try {
-            print json_encode($this->suelaplantacompras_model->getSuelaPlantabyID($this->input->get('ID')));
+            print json_encode($this->Suelaplantacompras_model->getSuelaPlantabyID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -93,7 +93,7 @@ class SuelaPlantaCompras extends CI_Controller {
     public function onAgregar() {
         try {
             $x = $this->input;
-            $this->suelaplantacompras_model->onAgregar(array(
+            $this->Suelaplantacompras_model->onAgregar(array(
                 'ArticuloCBZ' => ($x->post('ArticuloCBZ') !== NULL) ? $x->post('ArticuloCBZ') : NULL,
                 'Serie' => ($x->post('Serie') !== NULL) ? $x->post('Serie') : NULL,
                 'Registro' => Date('d/m/Y'),
@@ -156,7 +156,7 @@ class SuelaPlantaCompras extends CI_Controller {
             );
 
 
-            $this->suelaplantacompras_model->onModificar($x->post('ID'), $datos);
+            $this->Suelaplantacompras_model->onModificar($x->post('ID'), $datos);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

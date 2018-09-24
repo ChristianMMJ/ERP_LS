@@ -9,7 +9,7 @@ class Articulos extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('articulos_model')->model('articulos10_model');
+        $this->load->library('session')->model('Articulos_model')->model('Articulos10_model');
     }
 
     public function index() {
@@ -52,7 +52,7 @@ class Articulos extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->articulos_model->getRecords());
+            print json_encode($this->Articulos_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -60,7 +60,7 @@ class Articulos extends CI_Controller {
 
     public function getArticuloByID() {
         try {
-            print json_encode($this->articulos_model->getArticuloByID($this->input->get('ID')));
+            print json_encode($this->Articulos_model->getArticuloByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -68,7 +68,7 @@ class Articulos extends CI_Controller {
 
     public function getDetalleByID() {
         try {
-            print json_encode($this->articulos_model->getDetalleByID($this->input->get('ID')));
+            print json_encode($this->Articulos_model->getDetalleByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -76,7 +76,7 @@ class Articulos extends CI_Controller {
 
     public function getMaquilas() {
         try {
-            print json_encode($this->articulos_model->getMaquilas($this->input->get('ID')));
+            print json_encode($this->Articulos_model->getMaquilas($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -84,7 +84,7 @@ class Articulos extends CI_Controller {
 
     public function getProveedores() {
         try {
-            print json_encode($this->articulos_model->getProveedores());
+            print json_encode($this->Articulos_model->getProveedores());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -92,7 +92,7 @@ class Articulos extends CI_Controller {
 
     public function getGrupos() {
         try {
-            print json_encode($this->articulos_model->getGrupos());
+            print json_encode($this->Articulos_model->getGrupos());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -100,7 +100,7 @@ class Articulos extends CI_Controller {
 
     public function getUnidades() {
         try {
-            print json_encode($this->articulos_model->getUnidades());
+            print json_encode($this->Articulos_model->getUnidades());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -108,7 +108,7 @@ class Articulos extends CI_Controller {
 
     public function getID() {
         try {
-            print json_encode($this->articulos_model->getID());
+            print json_encode($this->Articulos_model->getID());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -116,7 +116,7 @@ class Articulos extends CI_Controller {
 
     public function getUnidadByID() {
         try {
-            print json_encode($this->articulos_model->getUnidadByID($this->input->get('ID')));
+            print json_encode($this->Articulos_model->getUnidadByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -148,8 +148,8 @@ class Articulos extends CI_Controller {
                 'PrecioDos' => $x->post('PrecioDos'),
                 'PrecioTres' => $x->post('PrecioTres')
             );
-            $ID = $this->articulos_model->onAgregar($datos);
-            $this->articulos10_model->onAgregar($datos);
+            $ID = $this->Articulos_model->onAgregar($datos);
+            $this->Articulos10_model->onAgregar($datos);
 
             $precios = json_decode($this->input->post('Precios'));
             foreach ($precios as $k => $v) {
@@ -181,8 +181,8 @@ class Articulos extends CI_Controller {
                 'UbicacionCuatro' => $x->post('UbicacionCuatro'),
                 'TipoArticulo' => $x->post('TipoArticulo')
             );
-            $this->articulos_model->onModificar($x->post('ID'), $datos);
-            $this->articulos10_model->onModificar($x->post('ID'), $datos);
+            $this->Articulos_model->onModificar($x->post('ID'), $datos);
+            $this->Articulos10_model->onModificar($x->post('ID'), $datos);
 
             $precios = json_decode($this->input->post('Precios'));
             foreach ($precios as $k => $v) {
@@ -199,7 +199,7 @@ class Articulos extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->articulos_model->onEliminar($this->input->post('ID'));
+            $this->Articulos_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -216,8 +216,8 @@ class Articulos extends CI_Controller {
     function onIgualarPrecios() {
         try {
             $Articulo = $this->input->post('Clave');
-            $precio = $this->articulos_model->getPrimerMaquilaPrecio($this->input->post('Clave'))[0]->PRECIO;
-            $maquilas = $this->articulos_model->getMaquilasXArticulo($Articulo);
+            $precio = $this->Articulos_model->getPrimerMaquilaPrecio($this->input->post('Clave'))[0]->PRECIO;
+            $maquilas = $this->Articulos_model->getMaquilasXArticulo($Articulo);
             foreach ($maquilas as $k => $v) {
                 $p = array(
                     'Precio' => $precio);

@@ -8,7 +8,7 @@ class FichaTecnicaFija extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('fichatecnicafija_model');
+        $this->load->library('session')->model('Fichatecnicafija_model');
     }
 
     public function index() {
@@ -37,7 +37,7 @@ class FichaTecnicaFija extends CI_Controller {
 
     public function getGrupos() {
         try {
-            print json_encode($this->fichatecnicafija_model->getGrupos());
+            print json_encode($this->Fichatecnicafija_model->getGrupos());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -45,7 +45,7 @@ class FichaTecnicaFija extends CI_Controller {
 
     public function getArticulos() {
         try {
-            print json_encode($this->fichatecnicafija_model->getArticulos($this->input->post('Grupo')));
+            print json_encode($this->Fichatecnicafija_model->getArticulos($this->input->post('Grupo')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -53,7 +53,7 @@ class FichaTecnicaFija extends CI_Controller {
 
     public function getPiezas() {
         try {
-            print json_encode($this->fichatecnicafija_model->getPiezas());
+            print json_encode($this->Fichatecnicafija_model->getPiezas());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -61,7 +61,7 @@ class FichaTecnicaFija extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->fichatecnicafija_model->getRecords());
+            print json_encode($this->Fichatecnicafija_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -70,7 +70,7 @@ class FichaTecnicaFija extends CI_Controller {
     public function onAgregar() {
         try {
             $x = $this->input;
-            $this->fichatecnicafija_model->onAgregar(array(
+            $this->Fichatecnicafija_model->onAgregar(array(
                 'Pieza' => ($x->post('Pieza') !== NULL) ? $x->post('Pieza') : NULL,
                 'Articulo' => ($x->post('Articulo') !== NULL) ? $x->post('Articulo') : NULL,
                 'Consumo' => ($x->post('Consumo') !== NULL) ? $x->post('Consumo') : NULL
@@ -82,7 +82,7 @@ class FichaTecnicaFija extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->fichatecnicafija_model->onEliminar($this->input->post('IDP'), $this->input->post('IDM'));
+            $this->Fichatecnicafija_model->onEliminar($this->input->post('IDP'), $this->input->post('IDM'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

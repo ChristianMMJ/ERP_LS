@@ -8,7 +8,7 @@ class Paises extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('paises_model');
+        $this->load->library('session')->model('Paises_model');
     }
 
     public function index() {
@@ -37,7 +37,7 @@ class Paises extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->paises_model->getRecords());
+            print json_encode($this->Paises_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -45,7 +45,7 @@ class Paises extends CI_Controller {
 
     public function onComprobarClave() {
         try {
-            print json_encode($this->paises_model->onComprobarClave($this->input->get('Clave')));
+            print json_encode($this->Paises_model->onComprobarClave($this->input->get('Clave')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -53,7 +53,7 @@ class Paises extends CI_Controller {
 
     public function getPaisByID() {
         try {
-            print json_encode($this->paises_model->getPaisByID($this->input->get('ID')));
+            print json_encode($this->Paises_model->getPaisByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -62,7 +62,7 @@ class Paises extends CI_Controller {
     public function onAgregar() {
         try {
             $x = $this->input;
-            $this->paises_model->onAgregar(array(
+            $this->Paises_model->onAgregar(array(
                 'Clave' => ($x->post('Clave') !== NULL) ? $x->post('Clave') : NULL,
                 'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL,
                 'Estatus' => 'ACTIVO'
@@ -75,7 +75,7 @@ class Paises extends CI_Controller {
     public function onModificar() {
         try {
             $x = $this->input;
-            $this->paises_model->onModificar($x->post('ID'), array(
+            $this->Paises_model->onModificar($x->post('ID'), array(
                 'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL
             ));
         } catch (Exception $exc) {
@@ -85,7 +85,7 @@ class Paises extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->paises_model->onEliminar($this->input->post('ID'));
+            $this->Paises_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

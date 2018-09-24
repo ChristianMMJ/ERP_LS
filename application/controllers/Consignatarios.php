@@ -9,7 +9,7 @@ class Consignatarios extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('consignatarios_model');
+        $this->load->library('session')->model('Consignatarios_model');
     }
 
     public function index() {
@@ -33,7 +33,7 @@ class Consignatarios extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->consignatarios_model->getRecords());
+            print json_encode($this->Consignatarios_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -41,7 +41,7 @@ class Consignatarios extends CI_Controller {
 
     public function getConsignatarioByID() {
         try {
-            print json_encode($this->consignatarios_model->getConsignatarioByID($this->input->get('ID')));
+            print json_encode($this->Consignatarios_model->getConsignatarioByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -49,7 +49,7 @@ class Consignatarios extends CI_Controller {
 
     public function getID() {
         try {
-            print json_encode($this->consignatarios_model->getID($this->input->get('ID')));
+            print json_encode($this->Consignatarios_model->getID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -57,7 +57,7 @@ class Consignatarios extends CI_Controller {
 
     public function onComprobarClave() {
         try {
-            print json_encode($this->consignatarios_model->onComprobarClave($this->input->get('Clave')));
+            print json_encode($this->Consignatarios_model->onComprobarClave($this->input->get('Clave')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -65,7 +65,7 @@ class Consignatarios extends CI_Controller {
 
     public function getEstados() {
         try {
-            print json_encode($this->consignatarios_model->getEstados());
+            print json_encode($this->Consignatarios_model->getEstados());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -73,7 +73,7 @@ class Consignatarios extends CI_Controller {
 
     public function getTransportes() {
         try {
-            print json_encode($this->consignatarios_model->getTransportes());
+            print json_encode($this->Consignatarios_model->getTransportes());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -81,7 +81,7 @@ class Consignatarios extends CI_Controller {
 
     public function getClientes() {
         try {
-            print json_encode($this->consignatarios_model->getClientes());
+            print json_encode($this->Consignatarios_model->getClientes());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -98,7 +98,7 @@ class Consignatarios extends CI_Controller {
             }
             $data["Estatus"] = 'ACTIVO';
             $data["Registro"] = Date('d/m/Y h:i:s');
-            $this->consignatarios_model->onAgregar($data);
+            $this->Consignatarios_model->onAgregar($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -114,7 +114,7 @@ class Consignatarios extends CI_Controller {
                 }
             }
             unset($data["ID"]);
-            $this->consignatarios_model->onModificar($x->post('ID'), $data);
+            $this->Consignatarios_model->onModificar($x->post('ID'), $data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

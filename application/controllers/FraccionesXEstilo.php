@@ -7,7 +7,7 @@ class FraccionesXEstilo extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('session')->model('fraccionesXEstilo_model')
+        $this->load->library('session')->model('FraccionesXEstilo_model')
                 ->helper('reportesFracciones_helper')->helper('file')->helper('array');
     }
 
@@ -59,9 +59,9 @@ class FraccionesXEstilo extends CI_Controller {
 
     public function getRecords() {
         try {
-            //$this->fraccionesXEstilo_model->onLimpiarTabla();
-            //$this->fraccionesXEstilo_model->onGenerarRecords();
-            print json_encode($this->fraccionesXEstilo_model->getRecords());
+            //$this->FraccionesXEstilo_model->onLimpiarTabla();
+            //$this->FraccionesXEstilo_model->onGenerarRecords();
+            print json_encode($this->FraccionesXEstilo_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -69,7 +69,7 @@ class FraccionesXEstilo extends CI_Controller {
 
     public function getFraccionesXDepartamento() {
         try {
-            print json_encode($this->fraccionesXEstilo_model->getFraccionesXDepartamento($this->input->get('Departamento')));
+            print json_encode($this->FraccionesXEstilo_model->getFraccionesXDepartamento($this->input->get('Departamento')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -77,7 +77,7 @@ class FraccionesXEstilo extends CI_Controller {
 
     public function getDepartamentos() {
         try {
-            print json_encode($this->fraccionesXEstilo_model->getDepartamentos());
+            print json_encode($this->FraccionesXEstilo_model->getDepartamentos());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -85,7 +85,7 @@ class FraccionesXEstilo extends CI_Controller {
 
     public function onComprobarExisteEstilo() {
         try {
-            print json_encode($this->fraccionesXEstilo_model->onComprobarExisteEstilo($this->input->get('Estilo')));
+            print json_encode($this->FraccionesXEstilo_model->onComprobarExisteEstilo($this->input->get('Estilo')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -93,7 +93,7 @@ class FraccionesXEstilo extends CI_Controller {
 
     public function getEstilos() {
         try {
-            print json_encode($this->fraccionesXEstilo_model->getEstilos());
+            print json_encode($this->FraccionesXEstilo_model->getEstilos());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -101,7 +101,7 @@ class FraccionesXEstilo extends CI_Controller {
 
     public function getEstiloByID() {
         try {
-            print json_encode($this->fraccionesXEstilo_model->getEstiloByID($this->input->get('Estilo')));
+            print json_encode($this->FraccionesXEstilo_model->getEstiloByID($this->input->get('Estilo')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -109,7 +109,7 @@ class FraccionesXEstilo extends CI_Controller {
 
     public function getFraccionesXEstiloDetalleByID() {
         try {
-            print json_encode($this->fraccionesXEstilo_model->getFraccionesXEstiloDetalleByID($this->input->get('Estilo')));
+            print json_encode($this->FraccionesXEstilo_model->getFraccionesXEstiloDetalleByID($this->input->get('Estilo')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -117,7 +117,7 @@ class FraccionesXEstilo extends CI_Controller {
 
     public function getFraccionXEstiloByEstilo() {
         try {
-            print json_encode($this->fraccionesXEstilo_model->getFraccionXEstiloByEstilo($this->input->get('Estilo')));
+            print json_encode($this->FraccionesXEstilo_model->getFraccionXEstiloByEstilo($this->input->get('Estilo')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -135,7 +135,7 @@ class FraccionesXEstilo extends CI_Controller {
                 'AfectaCostoVTA' => ($x->post('AfectaCostoVTA') !== NULL) ? $x->post('AfectaCostoVTA') : 0,
                 'Estatus' => 'ACTIVO'
             );
-            $ID = $this->fraccionesXEstilo_model->onAgregar($data);
+            $ID = $this->FraccionesXEstilo_model->onAgregar($data);
             print $ID;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -144,7 +144,7 @@ class FraccionesXEstilo extends CI_Controller {
 
     public function onEliminarFraccion() {
         try {
-            $this->fraccionesXEstilo_model->onEliminarFraccion($this->input->post('ID'));
+            $this->FraccionesXEstilo_model->onEliminarFraccion($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -159,7 +159,7 @@ class FraccionesXEstilo extends CI_Controller {
     }
 
     public function onImprimirFraccionesXEstilo() {
-        $cm = $this->fraccionesXEstilo_model;
+        $cm = $this->FraccionesXEstilo_model;
 
         $DatosEmpresa = $cm->getDatosEmpresa();
         $Encabezado = $cm->getEncabezadoFXE($this->input->get('Estilo'));

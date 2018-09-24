@@ -8,7 +8,7 @@ class Fracciones extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('fracciones_model');
+        $this->load->library('session')->model('Fracciones_model');
     }
 
     public function index() {
@@ -47,7 +47,7 @@ class Fracciones extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->fracciones_model->getRecords());
+            print json_encode($this->Fracciones_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -55,7 +55,7 @@ class Fracciones extends CI_Controller {
 
     public function getDepartamentos() {
         try {
-            print json_encode($this->fracciones_model->getDepartamentos());
+            print json_encode($this->Fracciones_model->getDepartamentos());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -63,7 +63,7 @@ class Fracciones extends CI_Controller {
 
     public function getID() {
         try {
-            print json_encode($this->fracciones_model->getID());
+            print json_encode($this->Fracciones_model->getID());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -71,7 +71,7 @@ class Fracciones extends CI_Controller {
 
     public function getFraccionByID() {
         try {
-            print json_encode($this->fracciones_model->getFraccionByID($this->input->get('ID')));
+            print json_encode($this->Fracciones_model->getFraccionByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -87,7 +87,7 @@ class Fracciones extends CI_Controller {
                     $data[$key] = ($v !== '') ? strtoupper($v) : NULL;
                 }
             }
-            $this->fracciones_model->onAgregar($data);
+            $this->Fracciones_model->onAgregar($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -103,7 +103,7 @@ class Fracciones extends CI_Controller {
                 }
             }
             unset($data["ID"]);
-            $this->fracciones_model->onModificar($x->post('ID'), $data);
+            $this->Fracciones_model->onModificar($x->post('ID'), $data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -111,7 +111,7 @@ class Fracciones extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->fracciones_model->onEliminar($this->input->post('ID'));
+            $this->Fracciones_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

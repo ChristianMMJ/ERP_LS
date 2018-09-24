@@ -9,7 +9,7 @@ class OrdenDeProduccion extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('ordendeproduccion_model');
+        $this->load->library('session')->model('Ordendeproduccion_model');
     }
 
     public function index() {
@@ -44,7 +44,7 @@ class OrdenDeProduccion extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->ordendeproduccion_model->getRecords());
+            print json_encode($this->Ordendeproduccion_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -52,7 +52,7 @@ class OrdenDeProduccion extends CI_Controller {
 
     public function onChecarMaquilaValida() {
         try {
-            print json_encode($this->ordendeproduccion_model->onChecarMaquilaValida($this->input->get('ID')));
+            print json_encode($this->Ordendeproduccion_model->onChecarMaquilaValida($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -60,7 +60,7 @@ class OrdenDeProduccion extends CI_Controller {
 
     public function onChecarSemanaValida() {
         try {
-            print json_encode($this->ordendeproduccion_model->onChecarSemanaValida($this->input->get('ID')));
+            print json_encode($this->Ordendeproduccion_model->onChecarSemanaValida($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -71,7 +71,7 @@ class OrdenDeProduccion extends CI_Controller {
     public function onAgregarAOrdenDeProduccion() {
         try {
             $x = $this->input;
-            $PEDIDO_DETALLE = $this->ordendeproduccion_model->getPedidosByMaquilaSemana($x->post('MAQUILA'), $x->post('SEMANA'), $x->post('ANO'));
+            $PEDIDO_DETALLE = $this->Ordendeproduccion_model->getPedidosByMaquilaSemana($x->post('MAQUILA'), $x->post('SEMANA'), $x->post('ANO'));
             foreach ($PEDIDO_DETALLE as $k => $v) {
                 $op = array();
                 $op["Clave"] = $v->CLAVE_CLIENTE;
@@ -95,7 +95,7 @@ class OrdenDeProduccion extends CI_Controller {
                 $op["Maquila"] = $x->post('MAQUILA');
                 $op["Ano"] = $x->post('ANO');
 
-                $P_F_S_S = $this->ordendeproduccion_model->getPIEL_FORRO_SINTETICO_SUELA($v->Estilo, $v->Color, $v->Pares);
+                $P_F_S_S = $this->Ordendeproduccion_model->getPIEL_FORRO_SINTETICO_SUELA($v->Estilo, $v->Color, $v->Pares);
                 $total_piel = 0;
                 $total_forro = 0;
                 $total_sintetico = 0;
@@ -157,7 +157,7 @@ class OrdenDeProduccion extends CI_Controller {
                 $ID = $row['LAST_INSERT_ID()'];
 
                 /* DETALLE */
-                $ORDENDEPRODUCCIOND = $this->ordendeproduccion_model->getFichaTecnicaParaOrdenDeProduccion($v->Estilo, $v->Color, $v->Pares);
+                $ORDENDEPRODUCCIOND = $this->Ordendeproduccion_model->getFichaTecnicaParaOrdenDeProduccion($v->Estilo, $v->Color, $v->Pares);
                 foreach ($ORDENDEPRODUCCIOND as $kkk => $vvv) {
                     $opd = array();
                     $opd["OrdenDeProduccion"] = $ID;

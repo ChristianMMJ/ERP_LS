@@ -7,7 +7,7 @@ class Empresas extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library('session');
-        $this->load->model('empresas_model');
+        $this->load->model('Empresas_model');
     }
 
     public function index() {
@@ -54,7 +54,7 @@ class Empresas extends CI_Controller {
 
     public function getEstados() {
         try {
-            $data = $this->empresas_model->getEstados();
+            $data = $this->Empresas_model->getEstados();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -63,7 +63,7 @@ class Empresas extends CI_Controller {
 
     public function getRecords() {
         try {
-            $data = $this->empresas_model->getRecords();
+            $data = $this->Empresas_model->getRecords();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -72,7 +72,7 @@ class Empresas extends CI_Controller {
 
     public function getID() {
         try {
-            print json_encode($this->empresas_model->getID());
+            print json_encode($this->Empresas_model->getID());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -80,7 +80,7 @@ class Empresas extends CI_Controller {
 
     public function getEmpresaByID() {
         try {
-            $data = $this->empresas_model->getEmpresaByID($this->input->get('ID'));
+            $data = $this->Empresas_model->getEmpresaByID($this->input->get('ID'));
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -103,7 +103,7 @@ class Empresas extends CI_Controller {
                 'Telefono' => ($this->input->post('Telefono') !== NULL) ? $this->input->post('Telefono') : NULL,
                 'Estatus' => 'ACTIVO'
             );
-            $ID = $this->empresas_model->onAgregar($data);
+            $ID = $this->Empresas_model->onAgregar($data);
             /* MODIFICAR FOTO */
             $Foto = $this->input->post('Foto');
             if (empty($Foto)) {
@@ -131,12 +131,12 @@ class Empresas extends CI_Controller {
                             $DATA = array(
                                 'Foto' => ($img),
                             );
-                            $this->empresas_model->onModificar($ID, $DATA);
+                            $this->Empresas_model->onModificar($ID, $DATA);
                         } else {
                             $DATA = array(
                                 'Foto' => (null),
                             );
-                            $this->empresas_model->onModificar($ID, $DATA);
+                            $this->Empresas_model->onModificar($ID, $DATA);
                         }
                     }
                 }
@@ -144,7 +144,7 @@ class Empresas extends CI_Controller {
                 $DATA = array(
                     'Foto' => (null),
                 );
-                $this->empresas_model->onModificar($ID, $DATA);
+                $this->Empresas_model->onModificar($ID, $DATA);
             }
             /* FIN MODIFICAR FOTO */
 
@@ -170,7 +170,7 @@ class Empresas extends CI_Controller {
                 'CP' => ($this->input->post('CP') !== NULL) ? $this->input->post('CP') : NULL,
                 'Telefono' => ($this->input->post('Telefono') !== NULL) ? $this->input->post('Telefono') : NULL
             );
-            $this->empresas_model->onModificar($ID, $DATA);
+            $this->Empresas_model->onModificar($ID, $DATA);
 
             /* MODIFICAR FOTO */
             $Foto = $this->input->post('Foto');
@@ -199,12 +199,12 @@ class Empresas extends CI_Controller {
                             $DATA = array(
                                 'Foto' => ($img),
                             );
-                            $this->empresas_model->onModificar($ID, $DATA);
+                            $this->Empresas_model->onModificar($ID, $DATA);
                         } else {
                             $DATA = array(
                                 'Foto' => (null),
                             );
-                            $this->empresas_model->onModificar($ID, $DATA);
+                            $this->Empresas_model->onModificar($ID, $DATA);
                         }
                     }
                 }
@@ -212,7 +212,7 @@ class Empresas extends CI_Controller {
                 $DATA = array(
                     'Foto' => (null),
                 );
-                $this->empresas_model->onModificar($ID, $DATA);
+                $this->Empresas_model->onModificar($ID, $DATA);
             }
             /* FIN MODIFICAR FOTO */
         } catch (Exception $exc) {

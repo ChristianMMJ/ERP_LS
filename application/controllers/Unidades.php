@@ -8,7 +8,7 @@ class Unidades extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('unidad_model');
+        $this->load->library('session')->model('Unidad_model');
     }
 
     public function index() {
@@ -37,7 +37,7 @@ class Unidades extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->unidad_model->getRecords());
+            print json_encode($this->Unidad_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -45,7 +45,7 @@ class Unidades extends CI_Controller {
 
     public function getID() {
         try {
-            print json_encode($this->unidad_model->getID());
+            print json_encode($this->Unidad_model->getID());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -53,7 +53,7 @@ class Unidades extends CI_Controller {
 
     public function getUnidadByID() {
         try {
-            print json_encode($this->unidad_model->getUnidadByID($this->input->get('ID')));
+            print json_encode($this->Unidad_model->getUnidadByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -62,7 +62,7 @@ class Unidades extends CI_Controller {
     public function onAgregar() {
         try {
             $x = $this->input;
-            $this->unidad_model->onAgregar(array(
+            $this->Unidad_model->onAgregar(array(
                 'Clave' => ($x->post('Clave') !== NULL) ? $x->post('Clave') : NULL,
                 'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL,
                 'Estatus' => 'ACTIVO'
@@ -75,7 +75,7 @@ class Unidades extends CI_Controller {
     public function onModificar() {
         try {
             $x = $this->input;
-            $this->unidad_model->onModificar($x->post('ID'), array(
+            $this->Unidad_model->onModificar($x->post('ID'), array(
                 'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL
             ));
         } catch (Exception $exc) {
@@ -85,7 +85,7 @@ class Unidades extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->unidad_model->onEliminar($this->input->post('ID'));
+            $this->Unidad_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

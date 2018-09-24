@@ -291,7 +291,6 @@
                 $.each(data[0], function (k, v) {
                     var Can = k.replace("T", "A");
                     if (parseInt(v) <= 0) {
-                        console.log("[name='" + Can + "']");
                         pnlDatos.find('#rCantidades').find("[name='" + Can + "']").prop('disabled', true);
                     } else if (parseInt(v) > 0) {
                         pnlDatos.find('#rCantidades').find("[name='" + Can + "']").prop('disabled', false);
@@ -438,5 +437,10 @@
     }
     .form-control {
         border: 1px solid #9E9E9E;
+    }
+
+    #tblTallas tbody tr:hover {
+        background-color: #FFF;
+        color: #000 !important;
     }
 </style>

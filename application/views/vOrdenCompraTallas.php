@@ -1281,7 +1281,7 @@
         font-size: 100% !important;
     }
 
-    table tbody tr:hover {
+    #tblTallas tbody tr:hover {
         background-color: #FFF;
         color: #000 !important;
     }

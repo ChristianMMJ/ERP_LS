@@ -9,7 +9,7 @@ class Pedidos extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->helper('pedido_helper')->model('pedidos_model');
+        $this->load->library('session')->helper('pedido_helper')->model('Pedidos_model');
     }
 
     public function index() {
@@ -50,7 +50,7 @@ class Pedidos extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->pedidos_model->getRecords());
+            print json_encode($this->Pedidos_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -58,7 +58,7 @@ class Pedidos extends CI_Controller {
 
     public function getPedidosByID() {
         try {
-            print json_encode($this->pedidos_model->getPedidosByID($this->input->get('ID')));
+            print json_encode($this->Pedidos_model->getPedidosByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -66,7 +66,7 @@ class Pedidos extends CI_Controller {
 
     public function getID() {
         try {
-            print json_encode($this->pedidos_model->getID());
+            print json_encode($this->Pedidos_model->getID());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -74,7 +74,7 @@ class Pedidos extends CI_Controller {
 
     public function onComprobarClave() {
         try {
-            print json_encode($this->pedidos_model->onComprobarClave($this->input->get('Clave')));
+            print json_encode($this->Pedidos_model->onComprobarClave($this->input->get('Clave')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -82,7 +82,7 @@ class Pedidos extends CI_Controller {
 
     public function onVerificarByID() {
         try {
-            print json_encode($this->pedidos_model->onVerificarByID($this->input->get('ID')));
+            print json_encode($this->Pedidos_model->onVerificarByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -90,7 +90,7 @@ class Pedidos extends CI_Controller {
 
     public function getClientes() {
         try {
-            print json_encode($this->pedidos_model->getClientes());
+            print json_encode($this->Pedidos_model->getClientes());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -98,7 +98,7 @@ class Pedidos extends CI_Controller {
 
     public function getAgentes() {
         try {
-            print json_encode($this->pedidos_model->getAgentes());
+            print json_encode($this->Pedidos_model->getAgentes());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -106,7 +106,7 @@ class Pedidos extends CI_Controller {
 
     public function getEstilos() {
         try {
-            print json_encode($this->pedidos_model->getEstilos());
+            print json_encode($this->Pedidos_model->getEstilos());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -114,7 +114,7 @@ class Pedidos extends CI_Controller {
 
     public function getColoresXEstilo() {
         try {
-            print json_encode($this->pedidos_model->getColoresXEstilo($this->input->get('Estilo')));
+            print json_encode($this->Pedidos_model->getColoresXEstilo($this->input->get('Estilo')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -122,7 +122,7 @@ class Pedidos extends CI_Controller {
 
     public function getMaquilas() {
         try {
-            print json_encode($this->pedidos_model->getMaquilas());
+            print json_encode($this->Pedidos_model->getMaquilas());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -130,7 +130,7 @@ class Pedidos extends CI_Controller {
 
     public function getAnosValidos() {
         try {
-            print json_encode($this->pedidos_model->getAnosValidos());
+            print json_encode($this->Pedidos_model->getAnosValidos());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -138,7 +138,7 @@ class Pedidos extends CI_Controller {
 
     public function getMaquilaSerieXEstilo() {
         try {
-            print json_encode($this->pedidos_model->getMaquilaSerieXEstilo($this->input->get('Estilo')));
+            print json_encode($this->Pedidos_model->getMaquilaSerieXEstilo($this->input->get('Estilo')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -146,7 +146,7 @@ class Pedidos extends CI_Controller {
 
     public function getProduccionMaquilaSemana() {
         try {
-            print json_encode($this->pedidos_model->getProduccionMaquilaSemana($this->input->get('Maquila'), $this->input->get('Semana')));
+            print json_encode($this->Pedidos_model->getProduccionMaquilaSemana($this->input->get('Maquila'), $this->input->get('Semana')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -154,7 +154,7 @@ class Pedidos extends CI_Controller {
 
     public function getAgenteXCliente() {
         try {
-            print json_encode($this->pedidos_model->getAgenteXCliente($this->input->get('Cliente')));
+            print json_encode($this->Pedidos_model->getAgenteXCliente($this->input->get('Cliente')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -162,7 +162,7 @@ class Pedidos extends CI_Controller {
 
     public function getSemanaXFechaDeEntrega() {
         try {
-            print json_encode($this->pedidos_model->getSemanaXFechaDeEntrega($this->input->get('Fecha')));
+            print json_encode($this->Pedidos_model->getSemanaXFechaDeEntrega($this->input->get('Fecha')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -183,7 +183,7 @@ class Pedidos extends CI_Controller {
             $data["Estatus"] = 'A';
             $data["Registro"] = Date('d/m/Y h:i:s');
             unset($data["Detalle"]);
-            $ID = $this->pedidos_model->onAgregar($data);
+            $ID = $this->Pedidos_model->onAgregar($data);
             $Detalle = json_decode($this->input->post("Detalle"));
             foreach ($Detalle as $key => $v) {
                 $dt = date_parse($v->FechaEntrega);
@@ -289,8 +289,8 @@ class Pedidos extends CI_Controller {
         try {
             $pdf = new PDF('L', 'mm', array(215.9, 279.4));
             $IDX = $this->input->post('ID'); 
-            $Pedido = $this->pedidos_model->getPedidoByID($IDX);
-            $Series = $this->pedidos_model->getSerieXPedido($IDX);
+            $Pedido = $this->Pedidos_model->getPedidoByID($IDX);
+            $Series = $this->Pedidos_model->getSerieXPedido($IDX);
 
             $pdf->SetFont('Arial', '', 7.5);
             $E = $Pedido[0];
@@ -405,7 +405,7 @@ class Pedidos extends CI_Controller {
 
                         /* SEGUNDO DETALLE (SUELA) */
                         $suela = array();
-                        $suelin = $this->pedidos_model->getSuelaByArticulo($v->Estilo);
+                        $suelin = $this->Pedidos_model->getSuelaByArticulo($v->Estilo);
                         $pdf->SetAligns(array('L', 'L', 'L', 'L'));
                         $pdf->SetWidths(array(198.5, 72.5));
                         $pdf->SetX($posi[0]);

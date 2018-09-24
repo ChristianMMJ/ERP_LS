@@ -10,7 +10,7 @@ class ConfirmarOrdenCompra extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('confirmarOrdenCompra_model')->helper('reportesCompras_helper')->helper('file');
+        $this->load->library('session')->model('ConfirmarOrdencompra_model')->helper('reportesCompras_helper')->helper('file');
     }
 
     public function index() {
@@ -39,7 +39,7 @@ class ConfirmarOrdenCompra extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->confirmarOrdenCompra_model->getRecords());
+            print json_encode($this->ConfirmarOrdencompra_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -52,7 +52,7 @@ class ConfirmarOrdenCompra extends CI_Controller {
                 'ObservacionesConf' => $x->post('ObservacionesConf'),
                 'FechaConf' => Date('d/m/Y')
             );
-            $this->confirmarOrdenCompra_model->onModificar($x->post('ID'), $datos);
+            $this->ConfirmarOrdencompra_model->onModificar($x->post('ID'), $datos);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -61,7 +61,7 @@ class ConfirmarOrdenCompra extends CI_Controller {
     /* REPORTES */
 
     public function onImprimirReporteConfirmacion() {
-        $cm = $this->confirmarOrdenCompra_model;
+        $cm = $this->ConfirmarOrdencompra_model;
         $Ano = $this->input->post('Ano');
         $Sem = $this->input->post('Sem');
         $Maq = $this->input->post('Maq');

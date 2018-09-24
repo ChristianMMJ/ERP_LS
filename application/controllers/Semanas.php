@@ -7,7 +7,7 @@ class Semanas extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library('session');
-        $this->load->model('semanasnomina_model');
+        $this->load->model('SemanasNomina_model');
     }
 
     public function index() {
@@ -36,7 +36,7 @@ class Semanas extends CI_Controller {
 
     public function getRecords() {
         try {
-            $data = $this->semanasnomina_model->getRecords();
+            $data = $this->SemanasNomina_model->getRecords();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -45,7 +45,7 @@ class Semanas extends CI_Controller {
 
     public function onValidarExisteAno() {
         try {
-            print json_encode($this->semanasnomina_model->onValidarExisteAno($this->input->post('Ano')));
+            print json_encode($this->SemanasNomina_model->onValidarExisteAno($this->input->post('Ano')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -54,7 +54,7 @@ class Semanas extends CI_Controller {
     public function getSemanaNominaByAno() {
         try {
             extract($this->input->post());
-            $data = $this->semanasnomina_model->getSemanaNominaByAno($this->input->post('Ano'));
+            $data = $this->SemanasNomina_model->getSemanaNominaByAno($this->input->post('Ano'));
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -63,7 +63,7 @@ class Semanas extends CI_Controller {
 
     public function getSemanasNominaByAno() {
         try {
-            print json_encode($this->semanasnomina_model->getSemanasNominaByAno($this->input->post('Ano')));
+            print json_encode($this->SemanasNomina_model->getSemanasNominaByAno($this->input->post('Ano')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -80,7 +80,7 @@ class Semanas extends CI_Controller {
                     'FechaFin' => $v->FechaFin,
                     'Estatus' => 'ACTIVO'
                 );
-                $this->semanasnomina_model->onAgregar($data);
+                $this->SemanasNomina_model->onAgregar($data);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -96,7 +96,7 @@ class Semanas extends CI_Controller {
                 'FechaFin' => $this->input->post('FechaFin'),
                 'Estatus' => 'ACTIVO'
             );
-            $this->semanasnomina_model->onAgregar($data);
+            $this->SemanasNomina_model->onAgregar($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -106,7 +106,7 @@ class Semanas extends CI_Controller {
         try {
             extract($this->input->post());
             unset($_POST['ID']);
-            $this->semanasnomina_model->onModificar($ID, $this->input->post());
+            $this->SemanasNomina_model->onModificar($ID, $this->input->post());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -114,7 +114,7 @@ class Semanas extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->semanasnomina_model->onEliminar($this->input->post('Ano'));
+            $this->SemanasNomina_model->onEliminar($this->input->post('Ano'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

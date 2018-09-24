@@ -8,7 +8,7 @@ class Generos extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('generos_model')->model('series_model');
+        $this->load->library('session')->model('Generos_model')->model('Series_model');
     }
 
     public function index() {
@@ -47,7 +47,7 @@ class Generos extends CI_Controller {
     public function getSeries() {
         try {
             extract($this->input->post());
-            $data = $this->series_model->getSeries();
+            $data = $this->Series_model->getSeries();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -56,7 +56,7 @@ class Generos extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->generos_model->getRecords());
+            print json_encode($this->Generos_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -64,7 +64,7 @@ class Generos extends CI_Controller {
 
     public function getID() {
         try {
-            print json_encode($this->generos_model->getID());
+            print json_encode($this->Generos_model->getID());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -72,7 +72,7 @@ class Generos extends CI_Controller {
 
     public function getGeneroByID() {
         try {
-            print json_encode($this->generos_model->getGeneroByID($this->input->get('ID')));
+            print json_encode($this->Generos_model->getGeneroByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -80,7 +80,7 @@ class Generos extends CI_Controller {
 
     public function onComprobarClave() {
         try {
-            print json_encode($this->generos_model->onComprobarClave($this->input->get('Clave')));
+            print json_encode($this->Generos_model->onComprobarClave($this->input->get('Clave')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -89,7 +89,7 @@ class Generos extends CI_Controller {
     public function onAgregar() {
         try {
             $x = $this->input;
-            $this->generos_model->onAgregar(array(
+            $this->Generos_model->onAgregar(array(
                 'Clave' => ($x->post('Clave') !== NULL) ? $x->post('Clave') : NULL,
                 'Nombre' => ($x->post('Nombre') !== NULL) ? $x->post('Nombre') : NULL,
                 'Serie' => ($x->post('Serie') !== NULL) ? $x->post('Serie') : NULL,
@@ -107,7 +107,7 @@ class Generos extends CI_Controller {
     public function onModificar() {
         try {
             $x = $this->input;
-            $this->generos_model->onModificar($x->post('ID'), array(
+            $this->Generos_model->onModificar($x->post('ID'), array(
                 'Nombre' => ($x->post('Nombre') !== NULL) ? $x->post('Nombre') : NULL,
                 'Serie' => ($x->post('Serie') !== NULL) ? $x->post('Serie') : NULL,
                 'Descripcion1' => ($x->post('Descripcion1') !== NULL) ? $x->post('Descripcion1') : NULL,
@@ -122,7 +122,7 @@ class Generos extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->generos_model->onEliminar($this->input->post('ID'));
+            $this->Generos_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

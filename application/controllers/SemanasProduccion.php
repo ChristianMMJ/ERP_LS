@@ -7,7 +7,7 @@ class SemanasProduccion extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library('session');
-        $this->load->model('semanasproduccion_model');
+        $this->load->model('Semanasproduccion_model');
     }
 
     public function index() {
@@ -55,7 +55,7 @@ class SemanasProduccion extends CI_Controller {
     public function getRecords() {
         try {
             extract($this->input->post());
-            $data = $this->semanasproduccion_model->getRecords();
+            $data = $this->Semanasproduccion_model->getRecords();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -64,7 +64,7 @@ class SemanasProduccion extends CI_Controller {
 
     public function onValidarExisteAno() {
         try {
-            print json_encode($this->semanasproduccion_model->onValidarExisteAno($this->input->post('Ano')));
+            print json_encode($this->Semanasproduccion_model->onValidarExisteAno($this->input->post('Ano')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -73,7 +73,7 @@ class SemanasProduccion extends CI_Controller {
     public function getSemanaProduccionByAno() {
         try {
             extract($this->input->post());
-            $data = $this->semanasproduccion_model->getSemanaProduccionByAno($this->input->post('Ano'));
+            $data = $this->Semanasproduccion_model->getSemanaProduccionByAno($this->input->post('Ano'));
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -82,7 +82,7 @@ class SemanasProduccion extends CI_Controller {
 
     public function getSemanasProduccionByAno() {
         try {
-            print json_encode($this->semanasproduccion_model->getSemanasProduccionByAno($this->input->post('Ano')));
+            print json_encode($this->Semanasproduccion_model->getSemanasProduccionByAno($this->input->post('Ano')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -99,7 +99,7 @@ class SemanasProduccion extends CI_Controller {
                     'FechaFin' => $v->FechaFin,
                     'Estatus' => 'ACTIVO'
                 );
-                $this->semanasproduccion_model->onAgregar($data);
+                $this->Semanasproduccion_model->onAgregar($data);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -115,7 +115,7 @@ class SemanasProduccion extends CI_Controller {
                 'FechaFin' => $this->input->post('FechaFin'),
                 'Estatus' => 'ACTIVO'
             );
-            $this->semanasproduccion_model->onAgregar($data);
+            $this->Semanasproduccion_model->onAgregar($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -125,7 +125,7 @@ class SemanasProduccion extends CI_Controller {
         try {
             extract($this->input->post());
             unset($_POST['ID']);
-            $this->semanasproduccion_model->onModificar($ID, $this->input->post());
+            $this->Semanasproduccion_model->onModificar($ID, $this->input->post());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -133,7 +133,7 @@ class SemanasProduccion extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->semanasproduccion_model->onEliminar($this->input->post('Ano'));
+            $this->Semanasproduccion_model->onEliminar($this->input->post('Ano'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

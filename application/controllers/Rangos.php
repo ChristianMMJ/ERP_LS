@@ -8,7 +8,7 @@ class Rangos extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('rangos_model');
+        $this->load->library('session')->model('Rangos_model');
     }
 
     public function index() {
@@ -42,7 +42,7 @@ class Rangos extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->rangos_model->getRecords());
+            print json_encode($this->Rangos_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -50,7 +50,7 @@ class Rangos extends CI_Controller {
 
     public function onComprobarClave() {
         try {
-            print json_encode($this->rangos_model->onComprobarClave($this->input->get('Clave')));
+            print json_encode($this->Rangos_model->onComprobarClave($this->input->get('Clave')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -58,7 +58,7 @@ class Rangos extends CI_Controller {
 
     public function getSeries() {
         try {
-            print json_encode($this->rangos_model->getSeries());
+            print json_encode($this->Rangos_model->getSeries());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -66,7 +66,7 @@ class Rangos extends CI_Controller {
 
     public function getSerieXClave() {
         try {
-            print json_encode($this->rangos_model->getSerieXClave($this->input->post('Clave')));
+            print json_encode($this->Rangos_model->getSerieXClave($this->input->post('Clave')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -74,7 +74,7 @@ class Rangos extends CI_Controller {
 
     public function getID() {
         try {
-            print json_encode($this->rangos_model->getID());
+            print json_encode($this->Rangos_model->getID());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -82,7 +82,7 @@ class Rangos extends CI_Controller {
 
     public function getRangoByID() {
         try {
-            print json_encode($this->rangos_model->getRangoByID($this->input->get('ID')));
+            print json_encode($this->Rangos_model->getRangoByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -97,7 +97,7 @@ class Rangos extends CI_Controller {
                     $data[$key] = ($v !== '') ? strtoupper($v) : NULL;
                 }
             }
-            $this->rangos_model->onAgregar($data);
+            $this->Rangos_model->onAgregar($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -113,7 +113,7 @@ class Rangos extends CI_Controller {
                 }
             }
             unset($data["ID"]);
-            $this->rangos_model->onModificar($x->post('ID'), $data);
+            $this->Rangos_model->onModificar($x->post('ID'), $data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -121,7 +121,7 @@ class Rangos extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->rangos_model->onEliminar($this->input->post('ID'));
+            $this->Rangos_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

@@ -7,7 +7,7 @@ class ReasignarControles extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('reasignarcontroles_model');
+        $this->load->library('session')->model('Reasignarcontroles_model');
     }
 
     public function index() {
@@ -47,7 +47,7 @@ class ReasignarControles extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->reasignarcontroles_model->getRecords());
+            print json_encode($this->Reasignarcontroles_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -55,7 +55,7 @@ class ReasignarControles extends CI_Controller {
 
     public function getMaquilas() {
         try {
-            print json_encode($this->reasignarcontroles_model->getMaquilas());
+            print json_encode($this->Reasignarcontroles_model->getMaquilas());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -63,7 +63,7 @@ class ReasignarControles extends CI_Controller {
 
     public function onChecarMaquilaValida() {
         try {
-            print json_encode($this->reasignarcontroles_model->onChecarMaquilaValida($this->input->get('ID')));
+            print json_encode($this->Reasignarcontroles_model->onChecarMaquilaValida($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -71,7 +71,7 @@ class ReasignarControles extends CI_Controller {
 
     public function onChecarSemanaValida() {
         try {
-            print json_encode($this->reasignarcontroles_model->onChecarSemanaValida($this->input->get('ID')));
+            print json_encode($this->Reasignarcontroles_model->onChecarSemanaValida($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -79,7 +79,7 @@ class ReasignarControles extends CI_Controller {
 
     public function getHistorialDeControles() {
         try {
-            print json_encode($this->reasignarcontroles_model->getHistorialDeControles());
+            print json_encode($this->Reasignarcontroles_model->getHistorialDeControles());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -92,7 +92,7 @@ class ReasignarControles extends CI_Controller {
                 $Y = substr(Date('Y'), 2);
                 $M = str_pad($v->Maquila, 2, '0', STR_PAD_LEFT);
                 $S = str_pad($v->Semana, 2, '0', STR_PAD_LEFT);
-                $IDN = $this->reasignarcontroles_model->getMaximoConsecutivo($M, $S, 0);
+                $IDN = $this->Reasignarcontroles_model->getMaximoConsecutivo($M, $S, 0);
                 if (count($IDN) > 0) {
                     $C = str_pad($IDN[0]->MAXIMO, 3, '0', STR_PAD_LEFT);
                     /* CAMBIAR EN CONTROLES; LA SEMANA, LA MAQUILA Y EL CONSECUTIVO EN 'N' */

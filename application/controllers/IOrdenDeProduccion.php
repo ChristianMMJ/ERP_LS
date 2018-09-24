@@ -8,7 +8,7 @@ class IOrdenDeProduccion extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('iordendeproduccion_model')->helper('ordendeproduccion_helper');
+        $this->load->library('session')->model('IOrdendeproduccion_model')->helper('ordendeproduccion_helper');
     }
 
     public function index() {
@@ -43,7 +43,7 @@ class IOrdenDeProduccion extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->hormas_model->getRecords());
+            print json_encode($this->Hormas_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -59,10 +59,10 @@ class IOrdenDeProduccion extends CI_Controller {
             $SEMANA = $this->input->post('SEMANA');
             $ANO = $this->input->post('ANIO');
 
-            $CONTROLES = $this->iordendeproduccion_model->getControlesXOrdenDeProduccionEntreControles($INICIO, $FIN, $SEMANA, $ANO);
+            $CONTROLES = $this->IOrdendeproduccion_model->getControlesXOrdenDeProduccionEntreControles($INICIO, $FIN, $SEMANA, $ANO);
             foreach ($CONTROLES as $kc => $vc) {
-                $OP = $this->iordendeproduccion_model->getOrdenDeProduccionEntreControles($vc->ControlT, $vc->ControlT, $SEMANA, $ANO);
-                $DEPARTAMENTOS = $this->iordendeproduccion_model->getDepartamentosXOrdenDeProduccionEntreControles($vc->ControlT, $vc->ControlT, $SEMANA, $ANO);
+                $OP = $this->IOrdendeproduccion_model->getOrdenDeProduccionEntreControles($vc->ControlT, $vc->ControlT, $SEMANA, $ANO);
+                $DEPARTAMENTOS = $this->IOrdendeproduccion_model->getDepartamentosXOrdenDeProduccionEntreControles($vc->ControlT, $vc->ControlT, $SEMANA, $ANO);
                 $pdf->SetFont('Arial', '', 7);
                 $P = $OP[0];
                 $pdf->setCliente($P->Clave . " " . $P->Cliente);

@@ -8,7 +8,7 @@ class FormasPago extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('formasPago_model');
+        $this->load->library('session')->model('FormasPago_model');
     }
 
     public function index() {
@@ -37,7 +37,7 @@ class FormasPago extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->formasPago_model->getRecords());
+            print json_encode($this->FormasPago_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -45,7 +45,7 @@ class FormasPago extends CI_Controller {
 
     public function onComprobarClave() {
         try {
-            print json_encode($this->formasPago_model->onComprobarClave($this->input->get('Clave')));
+            print json_encode($this->FormasPago_model->onComprobarClave($this->input->get('Clave')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -53,7 +53,7 @@ class FormasPago extends CI_Controller {
 
     public function getID() {
         try {
-            print json_encode($this->formasPago_model->getID());
+            print json_encode($this->FormasPago_model->getID());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -61,7 +61,7 @@ class FormasPago extends CI_Controller {
 
     public function getFormaPagoByID() {
         try {
-            print json_encode($this->formasPago_model->getFormaPagoByID($this->input->get('ID')));
+            print json_encode($this->FormasPago_model->getFormaPagoByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -71,7 +71,7 @@ class FormasPago extends CI_Controller {
         try {
             $x = $this->input;
 
-            $this->formasPago_model->onAgregar(array(
+            $this->FormasPago_model->onAgregar(array(
                 'Clave' => ($x->post('Clave') !== NULL) ? $x->post('Clave') : NULL,
                 'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL,
                 'Estatus' => 'ACTIVO'
@@ -85,7 +85,7 @@ class FormasPago extends CI_Controller {
         try {
             var_dump($this->input->post());
             $x = $this->input;
-            $this->formasPago_model->onModificar($x->post('ID'), array(
+            $this->FormasPago_model->onModificar($x->post('ID'), array(
                 'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL
             ));
         } catch (Exception $exc) {
@@ -95,7 +95,7 @@ class FormasPago extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->formasPago_model->onEliminar($this->input->post('ID'));
+            $this->FormasPago_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

@@ -9,7 +9,7 @@ class ListaDePrecios extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('listadeprecios_model');
+        $this->load->library('session')->model('Listadeprecios_model');
     }
 
     public function index() {
@@ -35,7 +35,7 @@ class ListaDePrecios extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->listadeprecios_model->getRecords());
+            print json_encode($this->Listadeprecios_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -43,7 +43,7 @@ class ListaDePrecios extends CI_Controller {
 
     public function getID() {
         try {
-            print json_encode($this->listadeprecios_model->getID());
+            print json_encode($this->Listadeprecios_model->getID());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -51,7 +51,7 @@ class ListaDePrecios extends CI_Controller {
 
     public function getListaDePreciosByID() {
         try {
-            print json_encode($this->listadeprecios_model->getListaDePreciosByID($this->input->get('ID')));
+            print json_encode($this->Listadeprecios_model->getListaDePreciosByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -59,7 +59,7 @@ class ListaDePrecios extends CI_Controller {
 
     public function onComprobarClave() {
         try {
-            print json_encode($this->listadeprecios_model->onComprobarClave($this->input->get('Clave')));
+            print json_encode($this->Listadeprecios_model->onComprobarClave($this->input->get('Clave')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -74,7 +74,7 @@ class ListaDePrecios extends CI_Controller {
                     $data[$key] = ($v !== '') ? strtoupper($v) : NULL;
                 }
             }
-            $this->listadeprecios_model->onAgregar($data);
+            $this->Listadeprecios_model->onAgregar($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -90,7 +90,7 @@ class ListaDePrecios extends CI_Controller {
                 }
             }
             unset($data["ID"]);
-            $this->listadeprecios_model->onModificar($x->post('ID'), $data);
+            $this->Listadeprecios_model->onModificar($x->post('ID'), $data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

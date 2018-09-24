@@ -8,7 +8,7 @@ class Hormas extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('hormas_model')->model('series_model')->model('maquilas_model');
+        $this->load->library('session')->model('Hormas_model')->model('Series_model')->model('Maquilas_model');
     }
 
     public function index() {
@@ -46,7 +46,7 @@ class Hormas extends CI_Controller {
 
     public function getSeries() {
         try {
-            print json_encode($this->series_model->getSeries());
+            print json_encode($this->Series_model->getSeries());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -54,7 +54,7 @@ class Hormas extends CI_Controller {
 
     public function getMaquilas() {
         try {
-            print json_encode($this->maquilas_model->getMaquilas());
+            print json_encode($this->Maquilas_model->getMaquilas());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -62,7 +62,7 @@ class Hormas extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->hormas_model->getRecords());
+            print json_encode($this->Hormas_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -70,7 +70,7 @@ class Hormas extends CI_Controller {
 
     public function getID() {
         try {
-            print json_encode($this->hormas_model->getID());
+            print json_encode($this->Hormas_model->getID());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -78,7 +78,7 @@ class Hormas extends CI_Controller {
 
     public function getHormaByID() {
         try {
-            print json_encode($this->hormas_model->getHormaByID($this->input->get('ID')));
+            print json_encode($this->Hormas_model->getHormaByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -86,7 +86,7 @@ class Hormas extends CI_Controller {
 
     public function getSerieXClave() {
         try {
-            print json_encode($this->series_model->getSerieXClave($this->input->post('Clave')));
+            print json_encode($this->Series_model->getSerieXClave($this->input->post('Clave')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -95,7 +95,7 @@ class Hormas extends CI_Controller {
     public function onAgregar() {
         try {
             $x = $this->input;
-            $this->hormas_model->onAgregar(array(
+            $this->Hormas_model->onAgregar(array(
                 'Clave' => ($x->post('Clave') !== NULL) ? $x->post('Clave') : NULL,
                 'Descripcion' => ($x->post('Descripcion') !== NULL) ? $x->post('Descripcion') : NULL,
                 'Serie' => ($x->post('Serie') !== NULL) ? $x->post('Serie') : NULL,
@@ -138,11 +138,11 @@ class Hormas extends CI_Controller {
                 'Serie' => ($x->post('Serie') !== NULL) ? $x->post('Serie') : NULL,
                 'Maquila' => ($x->post('Maquila') !== NULL) ? $x->post('Maquila') : NULL
             );
-            $this->hormas_model->onModificar($x->post('ID'), $horma);
+            $this->Hormas_model->onModificar($x->post('ID'), $horma);
             for ($i = 1; $i <= 22; $i++) {
                 if ($x->post("C$i") > 0) {
                     $ne = $x->post("Ex$i") + $x->post("C$i");
-                    $this->hormas_model->onModificar($x->post('ID'), array("Ex$i" => $ne));
+                    $this->Hormas_model->onModificar($x->post('ID'), array("Ex$i" => $ne));
                 }
             }
         } catch (Exception $exc) {
@@ -152,7 +152,7 @@ class Hormas extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->hormas_model->onEliminar($this->input->post('ID'));
+            $this->Hormas_model->onEliminar($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

@@ -7,7 +7,7 @@ class ControlesCancelados extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('controlescancelados_model');
+        $this->load->library('session')->model('Controlescancelados_model');
     }
 
     public function index() {
@@ -47,7 +47,7 @@ class ControlesCancelados extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->controlescancelados_model->getRecords());
+            print json_encode($this->Controlescancelados_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -55,7 +55,7 @@ class ControlesCancelados extends CI_Controller {
 
     public function getSemanasDeProduccion() {
         try {
-            print json_encode($this->controlescancelados_model->getSemanasDeProduccion());
+            print json_encode($this->Controlescancelados_model->getSemanasDeProduccion());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -63,7 +63,7 @@ class ControlesCancelados extends CI_Controller {
 
     public function onChecarMaquilaValida() {
         try {
-            print json_encode($this->controlescancelados_model->onChecarMaquilaValida($this->input->get('ID')));
+            print json_encode($this->Controlescancelados_model->onChecarMaquilaValida($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -98,7 +98,7 @@ class ControlesCancelados extends CI_Controller {
 
     public function onChecarSemanaValida() {
         try {
-            print json_encode($this->controlescancelados_model->onChecarSemanaValida($this->input->get('ID')));
+            print json_encode($this->Controlescancelados_model->onChecarSemanaValida($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

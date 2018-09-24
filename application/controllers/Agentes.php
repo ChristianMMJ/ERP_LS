@@ -9,7 +9,7 @@ class Agentes extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('agentes_model');
+        $this->load->library('session')->model('Agentes_model');
     }
 
     public function index() {
@@ -45,7 +45,7 @@ class Agentes extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->agentes_model->getRecords());
+            print json_encode($this->Agentes_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -53,7 +53,7 @@ class Agentes extends CI_Controller {
 
     public function getID() {
         try {
-            print json_encode($this->agentes_model->getID());
+            print json_encode($this->Agentes_model->getID());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -61,7 +61,7 @@ class Agentes extends CI_Controller {
 
     public function getAgenteByID() {
         try {
-            print json_encode($this->agentes_model->getAgenteByID($this->input->get('ID')));
+            print json_encode($this->Agentes_model->getAgenteByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -69,7 +69,7 @@ class Agentes extends CI_Controller {
 
     public function getDetalleByID() {
         try {
-            print json_encode($this->agentes_model->getDetalleByID($this->input->get('ID')));
+            print json_encode($this->Agentes_model->getDetalleByID($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -85,7 +85,7 @@ class Agentes extends CI_Controller {
                 }
             }
             unset($data["Rangos"]);
-            $this->agentes_model->onAgregar($data);
+            $this->Agentes_model->onAgregar($data);
             $rangos = json_decode($this->input->post('Rangos'));
             foreach ($rangos as $k => $v) {
                 $this->db->insert('agentesporcentajes', array('Agente' => $this->input->post('Clave'), 'Dias' => $v->Dias, 'A' => $v->A, 'Porcentaje' => $v->Porcentaje));
@@ -106,7 +106,7 @@ class Agentes extends CI_Controller {
             }
             unset($data["ID"]);
             unset($data["Rangos"]);
-            $this->agentes_model->onModificar($x->post('ID'), $data);
+            $this->Agentes_model->onModificar($x->post('ID'), $data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
