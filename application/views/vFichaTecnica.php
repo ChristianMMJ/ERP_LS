@@ -201,7 +201,6 @@
 
                 if (query.length >= 2) {
                     //HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
-                    console.log(query);
                     $.ajax({
                         url: this.settings.remoteUrl,
                         type: "POST",
@@ -210,7 +209,6 @@
                             Articulo: query
                         }
                     }).done(function (data, x, jq) {
-                        console.log(data);
                         callback(data);
                         //HoldOn.close();
                     }).fail(function (x, y, z) {

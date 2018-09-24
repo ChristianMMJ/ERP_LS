@@ -2,7 +2,7 @@
     <div class="card-body ">
         <div class="row">
             <div class="col-sm-6 float-left">
-                <legend class="float-left">Gestión de Pedidos</legend>
+                <legend class="float-left">Pedidos</legend>
             </div>
             <div class="col-sm-6 float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar">
@@ -159,7 +159,7 @@
                                         <tr>
                                             <?php
                                             for ($index = 1; $index < 23; $index++) {
-                                                print '<td><input type="text" style="width: 45px;" maxlength="4" class="numbersOnly" name="T' . $index . '" disabled></td>';
+                                                print '<td><input type="text" style="width: 37px;" maxlength="4" class="numbersOnly" name="T' . $index . '" disabled></td>';
                                             }
                                             ?>
                                             <td class="font-weight-bold">Pares</td>
@@ -167,10 +167,10 @@
                                         <tr>
                                             <?php
                                             for ($index = 1; $index < 23; $index++) {
-                                                print '<td><input type="text" style="width: 45px;" maxlength="4" class="form-control form-control-sm numbersOnly" name="C' . $index . '" onfocus="onCalcularPares(this);" on change="onCalcularPares(this);" keyup="onCalcularPares(this);" onfocusout="onCalcularPares(this);"></td>';
+                                                print '<td><input type="text" style="width: 37px;" maxlength="4" class=" numbersOnly" name="C' . $index . '" onfocus="onCalcularPares(this);" on change="onCalcularPares(this);" keyup="onCalcularPares(this);" onfocusout="onCalcularPares(this);"></td>';
                                             }
                                             ?>
-                                            <td><input type="text" style="width: 55px;" maxlength="4" class="form-control form-control-sm numbersOnly font-weight-bold" disabled=""  id="TPares"></td>
+                                            <td><input type="text" style="width: 40px;" maxlength="4" class=" numbersOnly font-weight-bold" disabled=""  id="TPares"></td>
                                         </tr>
                                     </tbody>
                                 </table>

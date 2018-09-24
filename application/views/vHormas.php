@@ -331,7 +331,6 @@
                 $.each(data[0], function (k, v) {
                     var Can = k.replace("T", "C");
                     if (parseInt(v) <= 0) {
-                        console.log("[name='" + Can + "']");
                         pnlDatos.find('#rCantidades').find("[name='" + Can + "']").prop('disabled', true);
                     } else if (parseInt(v) > 0) {
                         pnlDatos.find('#rCantidades').find("[name='" + Can + "']").prop('disabled', false);
@@ -431,6 +430,7 @@
                         pnlDatos.find("[name='" + k + "']")[0].selectize.addItem(v, true);
                     }
                 });
+                getSerieXClave(data[0].Serie);
                 pnlTablero.addClass("d-none");
                 pnlDatos.removeClass('d-none');
                 btnEliminar.removeClass("d-none");

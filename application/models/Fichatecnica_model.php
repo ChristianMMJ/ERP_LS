@@ -209,7 +209,7 @@ class Fichatecnica_model extends CI_Model {
 
     public function getEstiloByID($ID) {
         try {
-            return $this->db->select('E.*', false)->from('Estilos AS E')->where('E.Clave', $ID)->where_in('E.Estatus', 'ACTIVO')->get()->result();
+            return $this->db->select('E.*', false)->from('estilos AS E')->where('E.Clave', $ID)->where_in('E.Estatus', 'ACTIVO')->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

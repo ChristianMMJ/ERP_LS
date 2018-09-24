@@ -39,7 +39,7 @@ class Reasignarcontroles_model extends CI_Model {
                                     . "ELSE PD.Control END AS Marca, "
                                     . "CONCAT(CT.Ano, CT.Semana, CT.Maquila, CT.Consecutivo) AS Control,"
                                     . "S.ID AS SerieID,"
-                                    . "PE.ID AS ID_PEDIDO", false)->from('PedidoDetalle AS PD')
+                                    . "PE.ID AS ID_PEDIDO", false)->from('pedidodetalle AS PD')
                             ->join('pedidos AS PE', 'PD.Pedido = PE.Clave')
                             ->join('clientes AS CL', 'CL.Clave = PE.Cliente')
                             ->join('estilos AS E', 'PD.Estilo = E.Clave')

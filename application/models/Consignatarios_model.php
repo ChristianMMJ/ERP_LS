@@ -15,7 +15,7 @@ class Consignatarios_model extends CI_Model {
             return $this->db->select("C.ID, C.Clave, CONCAT(CL.Clave,' - ',CL.RazonS) AS Cliente, CONCAT(C.Clave,' - ',C.Consignatario) AS Consignatario , C.Direccion, "
                                     . "C.Colonia, C.Ciudad, C.Estado, C.CodigoPostal, C.RFC, "
                                     . "C.TelOficina, C.TelParticular, C.Transporte, C.Estatus, C.Registro", false)
-                            ->from('consignatarios AS C')->join('Clientes AS CL', 'C.Cliente = CL.Clave')->where_in('C.Estatus', 'ACTIVO')->get()->result();
+                            ->from('consignatarios AS C')->join('clientes AS CL', 'C.Cliente = CL.Clave')->where_in('C.Estatus', 'ACTIVO')->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

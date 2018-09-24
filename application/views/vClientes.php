@@ -2,7 +2,7 @@
     <div class="card-body">
         <div class="row">
             <div class="col-sm-6 float-left">
-                <legend class="float-left">Gestión de Clientes</legend>
+                <legend class="float-left">Clientes</legend>
             </div>
             <div class="col-sm-6 float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
@@ -32,7 +32,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12 col-sm-6 col-md-4 float-left">
-                            <legend >Clientes</legend>
+                            <legend >Cliente</legend>
                         </div>
                         <div class="col-12 col-sm-6 col-md-8" align="right">
                             <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
@@ -230,7 +230,7 @@
                             <label for="Observaciones" >Observaciones</label>
                             <input type="text" class="form-control form-control-sm" id="Observaciones" name="Observaciones" maxlength="99"  placeholder="" >
                         </div>
-                    </div> 
+                    </div>
                 </div>
             </div>
             <!--            TERCERA SECCION-->
@@ -247,7 +247,7 @@
                             <select class="form-control form-control-sm" id="FormaDePagoElectronico" name="FormaDePagoElectronico" placeholder="" required="">
                                 <option></option>
                             </select>
-                        </div>  
+                        </div>
                         <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <label for="MetodoDePagosElectronicos" >Metodos de pagos electrónicos*</label>
                             <select class="form-control form-control-sm" id="MetodoDePagosElectronicos" name="MetodoDePagosElectronicos" placeholder="" required="">
@@ -258,7 +258,7 @@
                             <label for="CorreoPagos" >Correo (pagos)*</label>
                             <input type="text" class="form-control form-control-sm" id="CorreoPagos" name="CorreoPagos" maxlength="45"  placeholder="" required="">
                         </div>
-                    </div>                      
+                    </div>
                     <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
                         <i class="fa fa-save"></i>
                     </button>

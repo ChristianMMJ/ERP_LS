@@ -12,7 +12,8 @@ class Colores_model extends CI_Model {
 
     public function getRecords() {
         try {
-            return $this->db->select("C.ID, C.Estilo, C.Clave, C.Descripcion AS Color")->from("colores AS C")->join('Estilos AS E', 'C.Estilo = E.Clave', 'left')->where("C.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("C.ID, C.Estilo, C.Clave, C.Descripcion AS Color")->from("colores AS C")
+                            ->join('estilos AS E', 'C.Estilo = E.Clave', 'left')->where("C.Estatus", "ACTIVO")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -20,7 +21,7 @@ class Colores_model extends CI_Model {
 
     public function getEstilos() {
         try {
-            return $this->db->select("E.Clave AS ID,CONCAT(E.Clave,'-',IFNULL(E.Descripcion,'')) AS Estilo")->from("Estilos AS E")->where("E.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("E.Clave AS ID,CONCAT(E.Clave,'-',IFNULL(E.Descripcion,'')) AS Estilo")->from("estilos AS E")->where("E.Estatus", "ACTIVO")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

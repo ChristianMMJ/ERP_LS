@@ -115,28 +115,28 @@ S.T19,
 S.T20,
 S.T21,
 S.T22,
-SC.A1	,
-SC.A2	,
-SC.A3	,
-SC.A4	,
-SC.A5	,
-SC.A6	,
-SC.A7	,
-SC.A8	,
-SC.A9	,
-SC.A10	,
-SC.A11	,
-SC.A12	,
-SC.A13	,
-SC.A14	,
-SC.A15	,
-SC.A16	,
-SC.A17	,
-SC.A18	,
-SC.A19	,
-SC.A20	,
-SC.A21	,
-SC.A22	,
+sc.A1	,
+sc.A2	,
+sc.A3	,
+sc.A4	,
+sc.A5	,
+sc.A6	,
+sc.A7	,
+sc.A8	,
+sc.A9	,
+sc.A10	,
+sc.A11	,
+sc.A12	,
+sc.A13	,
+sc.A14	,
+sc.A15	,
+sc.A16	,
+sc.A17	,
+sc.A18	,
+sc.A19	,
+sc.A20	,
+sc.A21	,
+sc.A22	,
 CASE WHEN A1.ProveedorUno ='$Proveedor'  THEN A1.PrecioUno  WHEN A1.ProveedorDos ='$Proveedor'  THEN A1.PrecioDos  WHEN A1.ProveedorTres ='$Proveedor'  THEN A1.PrecioTres END AS P1,
 CASE WHEN A2.ProveedorUno ='$Proveedor'  THEN A2.PrecioUno  WHEN A2.ProveedorDos ='$Proveedor'  THEN A2.PrecioDos  WHEN A2.ProveedorTres ='$Proveedor'  THEN A2.PrecioTres END AS P2,
 CASE WHEN A3.ProveedorUno ='$Proveedor'  THEN A3.PrecioUno  WHEN A3.ProveedorDos ='$Proveedor'  THEN A3.PrecioDos  WHEN A3.ProveedorTres ='$Proveedor'  THEN A3.PrecioTres END AS P3,
@@ -183,7 +183,7 @@ LEFT JOIN articulos A19	ON A19.Clave =	sc.A19
 LEFT JOIN articulos A20	ON A20.Clave =	sc.A20
 LEFT JOIN articulos A21	ON A21.Clave =	sc.A21
 LEFT JOIN articulos A22	ON A22.Clave =	sc.A22
-JOIN series S ON SC.Serie = S.Clave
+JOIN series S ON sc.Serie = S.Clave
 where sc.ArticuloCBZ= '$Articulo' ", false);
             $query = $this->db->get();
             /*
@@ -268,7 +268,7 @@ where sc.ArticuloCBZ= '$Articulo' ", false);
 
     public function onComprobarMaquilas($Clave) {
         try {
-            return $this->db->select("G.Clave, G.Direccion")->from("Maquilas AS G")->where("G.Clave", $Clave)->where("G.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("G.Clave, G.Direccion")->from("maquilas AS G")->where("G.Clave", $Clave)->where("G.Estatus", "ACTIVO")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

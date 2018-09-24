@@ -21,7 +21,7 @@ class Departamentos extends CI_Controller {
                     //Validamos que no venga vacia y asignamos un valor por defecto
                     $Origen = isset($_GET['origen']) ? $_GET['origen'] : "";
                     if ($Origen === 'NOMINAS') {
-                        $this->load->view('vMenuFichasTecnicas');
+                        $this->load->view('vMenuNominas');
                     } else if ($Origen === 'FICHASTECNICAS') {
                         $this->load->view('vMenuFichasTecnicas');
                     }

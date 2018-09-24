@@ -326,7 +326,7 @@
     var Archivo = $("#Foto");
     var btnArchivo = $("#btnArchivo");
     var VistaPrevia = $("#VistaPrevia");
-
+    var foto;
 
 
     $(document).ready(function () {
@@ -391,6 +391,7 @@
                         VistaPrevia.html(preview);
                     };
                     reader.readAsDataURL(Archivo[0].files[0]);
+                    foto = true;
                 } else {
                     if (Archivo[0].files[0] !== undefined && Archivo[0].files[0].type.match('application/pdf')) {
 
@@ -412,9 +413,7 @@
         /*FUNCIONES X BOTON*/
         btnGuardar.click(function () {
 
-
-            var foto = $('#Foto').val();
-            if (foto !== "" && foto !== "N") {
+            if (foto) {
                 isValid('pnlDatos');
                 if (valido) {
                     var frm = new FormData(pnlDatos.find("#frmNuevo")[0]);
@@ -524,6 +523,7 @@
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
+            foto = false;
 
         });
 
@@ -617,6 +617,8 @@
                 });
                 if (dtm.Foto !== null && dtm.Foto !== undefined && dtm.Foto !== '') {
                     var ext = getExt(dtm.Foto);
+                    foto = true;
+
                     if (ext === "gif" || ext === "jpg" || ext === "png" || ext === "jpeg") {
                         pnlDatos.find("#VistaPrevia").html('<button type="button" class="btn btn-danger btn-sm" id="btnQuitarVP" name="btnQuitarVP" onclick="onRemovePreview(this)"><span class="fa fa-times fa-2x danger-icon"></span></button><br><img id="trtImagen" src="' + base_url + dtm.Foto + '" class ="img-thumbnail img-fluid rounded mx-auto"  onclick="printImg(\' ' + base_url + dtm.Foto + ' \')"  />');
                     }
@@ -758,6 +760,7 @@
         $(e).parent("#VistaPrevia").html("");
         Archivo.attr("type", "text");
         Archivo.val('N');
+        foto = false;
     }
     function printImg(url) {
         var win = window.open('');

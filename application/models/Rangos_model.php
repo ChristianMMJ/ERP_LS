@@ -13,7 +13,7 @@ class Rangos_model extends CI_Model {
     public function getRecords() {
         try {
             return $this->db->select("R.ID,R.Clave, CONCAT(S.Clave,' - DEL ',S.PuntoInicial,' AL ',S.PuntoFinal) Serie")
-                            ->from("rangos AS R")->join('Series AS S', 'R.Serie = S.Clave')->where("R.Estatus", "ACTIVO")->get()->result();
+                            ->from("rangos AS R")->join('series AS S', 'R.Serie = S.Clave')->where("R.Estatus", "ACTIVO")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -22,7 +22,7 @@ class Rangos_model extends CI_Model {
     public function getSeries() {
         try {
             return $this->db->select("S.Clave, CONCAT(S.Clave,' - DEL ',S.PuntoInicial,' AL ',S.PuntoFinal) AS 'Serie' ", false)
-                            ->from('Series AS S')->where_in('S.Estatus', 'ACTIVO')->get()->result();
+                            ->from('series AS S')->where_in('S.Estatus', 'ACTIVO')->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -38,7 +38,7 @@ class Rangos_model extends CI_Model {
 
     public function getSerieXClave($Clave) {
         try {
-            return $this->db->select("S.*", false)->from('Series AS S')->where('S.Clave', $Clave)->get()->result();
+            return $this->db->select("S.*", false)->from('series AS S')->where('S.Clave', $Clave)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

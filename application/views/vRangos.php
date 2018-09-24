@@ -522,10 +522,6 @@
                         text: "LA CLAVE " + pnlDatos.find("#Clave").val() + " YA EXISTE",
                         icon: "warning",
                         buttons: {
-                            cancelar: {
-                                text: "Cancelar",
-                                value: "cancelar"
-                            },
                             eliminar: {
                                 text: "Aceptar",
                                 value: "aceptar"
@@ -534,14 +530,14 @@
                     }).then((value) => {
                         switch (value) {
                             case "aceptar":
-                                pnlDatos.find("#Clave").val('').focus();
-                                break;
-                            case "cancelar":
                                 swal.close();
                                 pnlDatos.find("#Clave").val('').focus();
                                 break;
+
                         }
                     });
+                } else {
+                    pnlDatos.find("#Serie")[0].selectize.focus();
                 }
             }).fail(function (x, y, z) {
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');

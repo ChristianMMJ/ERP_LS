@@ -961,7 +961,7 @@
     }
     function getPrecioSerieArticulosCabecero(Articulo) {
         $.getJSON(master_url + 'getPrecioCompraByArticuloByProveedor', {Articulo: Articulo, Proveedor: Proveedor}).done(function (data) {
-            console.log(data);
+
             if (data.length > 0) {
                 pnlDatosDetalle.find("#Precio").val(data[0].Precio);
             } else {
