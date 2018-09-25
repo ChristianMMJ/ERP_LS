@@ -16,7 +16,10 @@ class Iordendeproduccion_model extends CI_Model {
                             . "OP.FechaPedido, OP.Control, OP.ControlT, OP.Pedido, OP.Linea, "
                             . "OP.LineaT, OP.Recio, OP.Estilo, OP.EstiloT, OP.Color, "
                             . "OP.ColorT, OP.Agente, OP.Transporte, OP.Piel1, OP.CantidadPiel1, "
-                            . "OP.Piel2, OP.CantidadPiel2, OP.Piel3, OP.CantidadPiel3, OP.Piel4, "
+                            . "OP.Piel2, "
+                            . "IFNULL(OP.CantidadPiel2,'') AS CantidadPiel2, "
+                            . "CASE WHEN OP.Piel3 IS NULL THEN '' ELSE OP.Piel3 END AS Piel3,  "
+                            . "IFNULL(OP.CantidadPiel3,'') AS CantidadPiel3, OP.Piel4, "
                             . "OP.CantidadPiel4, OP.Piel5, OP.CantidadPiel5, OP.Piel6, OP.CantidadPiel6, "
                             . "OP.TotalPiel, OP.Forro1, OP.CantidadForro1, OP.Forro2, OP.CantidadForro2, "
                             . "OP.Forro3, OP.CantidadForro3, OP.TotalForro, OP.Sintetico1, OP.CantidadSintetico1, "
@@ -50,6 +53,7 @@ class Iordendeproduccion_model extends CI_Model {
             if ($ANO !== '') {
                 $this->db->where("OP.Ano", $ANO);
             }
+            $this->db->where("OP.Ano", $ANO);
             $this->db->order_by('ABS(OPD.Departamento)', 'ASC');
             return $this->db->get()->result();
         } catch (Exception $exc) {

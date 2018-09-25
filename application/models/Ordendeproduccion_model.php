@@ -196,6 +196,7 @@ class Ordendeproduccion_model extends CI_Model {
                             ->join('unidades AS U', 'A.UnidadMedida = U.Clave')
                             ->where('FT.Estilo', $ESTILO)
                             ->where('FT.Color', $COLOR)
+                            ->where_not_in('A.Grupo', 3)
                             ->group_by('P.Clave')
                             ->order_by('ABS(D.Clave)', 'ASC')
                             ->order_by('CANTIDAD_CONSUMO', 'ASC')

@@ -53,9 +53,9 @@
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlExplosionSemanal"> Explosión Semanal</a>
                         </div>
                     </li>
-                    <a class="dropdown-item" href="<?php print base_url('OrdenDeProduccion.shoes'); ?>"><span class="fa fa-exclamation-circle fade-infinite"></span> 1 Genera ordenes de producción semana maquila </a>
-                    <a class="dropdown-item" href="<?php print base_url('EliminaOrdenDeProduccion.shoes'); ?>"><span class="fa fa-exclamation-circle fade-infinite"></span> 2 Elimina orden de producción </a>
-                    <a class="dropdown-item" href="<?php print base_url('IOrdenDeProduccion.shoes'); ?>"><span class="fa fa-exclamation-circle fade-infinite"></span> 3 Imprime orden de producción </a>
+                    <a class="dropdown-item" href="<?php print base_url('OrdenDeProduccion.shoes'); ?>"><span class="fa fa-exclamation-circle fade-infinite"></span> Genera ordenes de producción semana maquila </a>
+                    <a class="dropdown-item" href="<?php print base_url('EliminaOrdenDeProduccion.shoes'); ?>"><span class="fa fa-exclamation-circle fade-infinite"></span> Elimina orden de producción </a>
+                    <a class="dropdown-item" href="<?php print base_url('IOrdenDeProduccion.shoes'); ?>"><span class="fa fa-exclamation-circle fade-infinite"></span> Imprime orden de producción </a>
 
                 </ul>
             </li>

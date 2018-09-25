@@ -1100,10 +1100,12 @@ class PDF extends FPDF {
         /* FIN FORRO SECCION UNO */
 
         /* SUELA */
-        $this->SetX(70);
-        $this->Cell(10, $alto_celda, utf8_decode("Suela"), 0/* BORDE */, 0, 'L', 0);
-        $this->SetX(80);
-        $this->Cell(70, $alto_celda, utf8_decode($this->getSuela()), 1/* BORDE */, 0, 'L', 0);
+        $this->SetX(25.5);
+        $this->Cell(10, $alto_celda, utf8_decode("Suela"), 1/* BORDE */, 0, 'C', 0);
+        $this->SetFont('Arial', '', 6);
+        $this->SetX(35.5);
+        $this->Cell(90, $alto_celda, utf8_decode($this->getSuela()), 1/* BORDE */, 0, 'C', 0);
+        $this->SetFont('Arial', 'B', 5.5);
         $this->SetX(150);
         $this->Cell(30, $alto_celda, utf8_decode("Suaje"), 0/* BORDE */, 0, 'C', 0);
         $this->SetX(180.1);

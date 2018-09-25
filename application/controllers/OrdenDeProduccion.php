@@ -133,7 +133,7 @@ class OrdenDeProduccion extends CI_Controller {
                 $op["TotalForro"] = $total_forro;
                 $op["TotalSintetico"] = $total_sintetico;
 
-                $op["Suaje"] = '';
+                $op["Suaje"] = ''; 
 
                 $op["SerieCorrida"] = $v->SERIE;
                 $op["EstatusProduccion"] = 'PROGRAMADO';

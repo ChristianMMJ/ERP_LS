@@ -115,9 +115,12 @@
             $("#ControlInicial, #ControlFinal").keyup(function () {
                 Controles.draw();
             });
+
             btnReload.click(function () {
+                $("#ControlInicial, #ControlFinal").val('');
                 Controles.ajax.reload();
             });
+
             $("#ControlInicial").focus();
 
             btnEliminar.click(function () {
@@ -127,29 +130,31 @@
                     icon: "warning",
                     buttons: true
                 }).then((willDelete) => {
-                    var nc = 0;
-                    $.each(tblControles.find("tbody tr"), function () {
-                        console.log(Controles.row($(this)).data());
-                        nc += 1;
-                    });
-                    $.post(master_url + 'onEliminarEntreControles', {
-                        INICIO: $("#ControlInicial").val(),
-                        FIN: $("#ControlFinal").val()
-                    }).done(function (data, x, jq) {
-                        Controles.ajax.reload();
-                        swal({
-                            title: "ATENCIÓN",
-                            text: "SE HAN ELIMINADO " + nc + " CONTROLES",
-                            icon: "success",
-                            closeOnClickOutside: false,
-                            closeOnEsc: false,
-                            buttons: true
+                    if (willDelete) {
+                        var nc = 0;
+                        $.each(tblControles.find("tbody tr"), function () {
+                            console.log(Controles.row($(this)).data());
+                            nc += 1;
                         });
-                    }).fail(function (x, y, z) {
-                        console.log(x.responseText, y, z);
-                    }).always(function () {
-                        HoldOn.close();
-                    });
+                        $.post(master_url + 'onEliminarEntreControles', {
+                            INICIO: $("#ControlInicial").val(),
+                            FIN: $("#ControlFinal").val()
+                        }).done(function (data, x, jq) {
+                            Controles.ajax.reload();
+                            swal({
+                                title: "ATENCIÓN",
+                                text: "SE HAN ELIMINADO " + nc + " CONTROLES",
+                                icon: "success",
+                                closeOnClickOutside: false,
+                                closeOnEsc: false,
+                                buttons: true
+                            });
+                        }).fail(function (x, y, z) {
+                            console.log(x.responseText, y, z);
+                        }).always(function () {
+                            HoldOn.close();
+                        });
+                    }
                 });
             });
 

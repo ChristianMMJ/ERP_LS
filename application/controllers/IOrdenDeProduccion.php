@@ -73,6 +73,7 @@ class IOrdenDeProduccion extends CI_Controller {
                 $pdf->setEstilo($P->Estilo . "       " . $P->Color . "  " . $P->ColorT);
                 $pdf->setAgente($P->Agente);
                 $pdf->setTrasp($P->Transporte);
+                $pdf->setSuela($P->SuelaT);
                 /* PIELES */
                 $pdf->setPiel1($P->Piel1);
                 $pdf->setPiel2($P->Piel2);
