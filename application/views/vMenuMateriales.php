@@ -43,6 +43,8 @@
                         <a class="dropdown-item dropdown-toggle" href="#">Herr. Ordenes de Compra</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="<?php print base_url('ConfirmarOrdenCompra.shoes'); ?>" >Confirmación de Ordenes de Compra</a>
+                            <a class="dropdown-item" href="<?php print base_url('MaterialNoRecibido.shoes'); ?>" >Material No Recibido</a>
+                            <a class="dropdown-item" href="<?php print base_url('MaterialRecibido.shoes'); ?>" >Material Recibido</a>
                         </div>
                     </li>
                     <a class="dropdown-item" href="#">Documentos Directos</a>
