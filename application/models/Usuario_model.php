@@ -115,6 +115,12 @@ class Usuario_model extends CI_Model {
 
     public function getUsuarioByID($ID) {
         try {
+            /*PARA LINUX */
+//            $this->db->select('U.ID, U.Usuario, U.Estatus, U.Nombre, U.Apellidos, '
+//                    . 'U.TipoAcceso, U.UltimoAcceso, U.Registro, U.UltimaModificacion, '
+//                    . 'CONVERT(AES_DECRYPT(U.AES,\'System32\') USING latin1) AS Contrasena, '
+//                    . 'U.Seguridad AS SEG, U.Empresa', false);
+            /*WINDOWS*/
             $this->db->select('U.ID, U.Usuario, U.Estatus, U.Nombre, U.Apellidos, '
                     . 'U.TipoAcceso, U.UltimoAcceso, U.Registro, U.UltimaModificacion, '
                     . 'CONVERT(AES_DECRYPT(CAST(U.AES AS CHAR(10000) CHARACTER SET utf8),\'System32\') USING latin1) AS Contrasena, '

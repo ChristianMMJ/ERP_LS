@@ -46,7 +46,51 @@ class Ordendeproduccion_model extends CI_Model {
                             ->join('colores AS C', 'PD.color = C.Clave AND C.Estilo = E.Clave')
                             ->join('series AS S', 'E.Serie = S.Clave')
                             ->join('controles AS CT', 'CT.PedidoDetalle = PD.ID')
-                            ->where('PD.Control != 0', null, false)
+                            ->join('ordendeproduccion AS OP', 'OP.Pedido = PE.ID  AND OP.PedidoDetalle = PD.ID', 'left')
+                            ->where('PD.Control != 0 AND OP.ID IS NULL', null, false)
+                            ->where('CT.Estatus', 'A')->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    public function getRecordsGenerados() {
+        try {
+            return $this->db->select('PD.ID AS ID, '
+                                    . 'PD.Estilo AS IdEstilo, '
+                                    . 'PD.Color AS IdColor, '
+                                    . "E.Clave AS Estilo, "
+                                    . "E.Descripcion AS \"Descripcion Estilo\", "
+                                    . "C.Clave AS Color, "
+                                    . "C.Descripcion AS \"Descripcion Color\", "
+                                    . "PE.Clave AS Pedido,"
+                                    . "PE.FechaPedido AS \"Fecha Pedido\","
+                                    . "PE.FechaRecepcion AS \"Fecha Entrega\","
+                                    . "PE.Registro AS \"Fecha Captura\","
+                                    . "PD.Semana AS Semana,"
+                                    . "PD.Maquila AS Maq,"
+                                    . "CL.Clave AS Cliente,"
+                                    . "CL.RazonS AS \"Cliente Razon\","
+                                    . "PD.Pares AS Pares,"
+                                    . "CONCAT('$',PD.Precio) AS Precio , "
+                                    . "CONCAT('$',(PD.Precio * PD.Pares)) AS Importe, "
+                                    . "CONCAT('$',(PD.Precio * PD.Pares)) AS Descuento,"
+                                    . "PD.FechaEntrega AS Entrega,"
+                                    . "CONCAT(S.PuntoInicial ,'/',S.PuntoFinal) AS Serie, "
+                                    . "PD.Ano AS Anio,"
+                                    . " CASE "
+                                    . "WHEN PD.Control IS NULL THEN '' "
+                                    . "ELSE PD.Control END AS Marca, "
+                                    . "CONCAT(CT.Ano, CT.Semana, CT.Maquila, CT.Consecutivo) AS Control,"
+                                    . "S.ID AS SerieID,"
+                                    . "PE.ID AS ID_PEDIDO", false)->from('pedidodetalle AS PD')
+                            ->join('pedidos AS PE', 'PD.Pedido = PE.Clave')
+                            ->join('clientes AS CL', 'CL.Clave = PE.Cliente')
+                            ->join('estilos AS E', 'PD.Estilo = E.Clave')
+                            ->join('colores AS C', 'PD.color = C.Clave AND C.Estilo = E.Clave')
+                            ->join('series AS S', 'E.Serie = S.Clave')
+                            ->join('controles AS CT', 'CT.PedidoDetalle = PD.ID')
+                            ->join('ordendeproduccion AS OP', 'OP.Pedido = PE.ID  AND OP.PedidoDetalle = PD.ID', 'left')
+                            ->where('PD.Control != 0 AND OP.ID IS NOT NULL', null, false)
                             ->where('CT.Estatus', 'A')->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -76,10 +120,11 @@ class Ordendeproduccion_model extends CI_Model {
                     ->join('Series AS S', 'PD.Serie = S.Clave')
                     ->join('lineas AS L', 'E.Linea = L.Clave')
                     ->join('controles AS CT', 'CT.Pedido = P.ID')
+                    ->join('ordendeproduccion AS OP', 'OP.Pedido = P.ID  AND OP.PedidoDetalle = PD.ID', 'left')
                     ->where('PD.Maquila', $MAQUILA)
                     ->where('PD.Semana', $SEMANA)
                     ->where('PD.Ano', $ANO)
-                    ->where('E.Clave = CO.Estilo AND CT.PedidoDetalle = PD.ID AND CT.Estilo = E.Clave AND CT.Color = CO.Clave', null, false);
+                    ->where('E.Clave = CO.Estilo AND CT.PedidoDetalle = PD.ID AND CT.Estilo = E.Clave AND CT.Color = CO.Clave AND OP.ID IS NULL', null, false);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY

@@ -8,7 +8,7 @@ class IOrdenDeProduccion extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('IOrdendeproduccion_model')->helper('ordendeproduccion_helper');
+        $this->load->library('session')->model('Iordendeproduccion_model')->helper('ordendeproduccion_helper');
     }
 
     public function index() {
@@ -59,10 +59,10 @@ class IOrdenDeProduccion extends CI_Controller {
             $SEMANA = $this->input->post('SEMANA');
             $ANO = $this->input->post('ANIO');
 
-            $CONTROLES = $this->IOrdendeproduccion_model->getControlesXOrdenDeProduccionEntreControles($INICIO, $FIN, $SEMANA, $ANO);
+            $CONTROLES = $this->Iordendeproduccion_model->getControlesXOrdenDeProduccionEntreControles($INICIO, $FIN, $SEMANA, $ANO);
             foreach ($CONTROLES as $kc => $vc) {
-                $OP = $this->IOrdendeproduccion_model->getOrdenDeProduccionEntreControles($vc->ControlT, $vc->ControlT, $SEMANA, $ANO);
-                $DEPARTAMENTOS = $this->IOrdendeproduccion_model->getDepartamentosXOrdenDeProduccionEntreControles($vc->ControlT, $vc->ControlT, $SEMANA, $ANO);
+                $OP = $this->Iordendeproduccion_model->getOrdenDeProduccionEntreControles($vc->ControlT, $vc->ControlT, $SEMANA, $ANO);
+                $DEPARTAMENTOS = $this->Iordendeproduccion_model->getDepartamentosXOrdenDeProduccionEntreControles($vc->ControlT, $vc->ControlT, $SEMANA, $ANO);
                 $pdf->SetFont('Arial', '', 7);
                 $P = $OP[0];
                 $pdf->setCliente($P->Clave . " " . $P->Cliente);
@@ -243,10 +243,12 @@ class IOrdenDeProduccion extends CI_Controller {
                 $pdf->Line(210, $Y, 210, $pdf->GetY());
                 $pdf->SetFont('Arial', 'B', 14);
                 $pdf->SetX(5);
-                $pdf->Cell(53, 6, $vc->ControlT, 1/* BORDE */, 0/* SALTO SI */, 'C', 0);
+                $pdf->Cell(53, 10, "", 0/* BORDE */, 0/* SALTO SI */, 'C', 0);
+                                
+                $pdf->Code128(5/* X */, $pdf->GetY()/* Y */, $vc->ControlT/* TEXT */, 53/* ANCHO */, 6/* ALTURA */);
                 $pdf->SetFont('Arial', 'B', 8);
                 $pdf->SetX(58);
-                $pdf->Cell(152, 6, utf8_decode("* LEA CUIDADOSAMENTE LAS INSTRUCCIONES, CUALQUIER ERROR LE SERÁ CARGADO *"), 1/* BORDE */, 1/* SALTO SI */, 'C', 0);
+                $pdf->Cell(152, 6, utf8_decode("* LEA CUIDADOSAMENTE LAS INSTRUCCIONES, CUALQUIER ERROR LE SERÁ CARGADO *"), 0/* BORDE */, 1/* SALTO SI */, 'C', 0);
                 /* END FOREACH PIEZAS */
 
                 /* TOTALES */

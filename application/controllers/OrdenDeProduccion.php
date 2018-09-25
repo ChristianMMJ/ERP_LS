@@ -185,5 +185,4 @@ class OrdenDeProduccion extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
-
 }

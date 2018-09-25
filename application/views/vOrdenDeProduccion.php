@@ -271,6 +271,7 @@
                 btnGenerar.prop("disabled", false);
             });
         }).always(function () {
+            Controles.ajax.reload();
             btnGenerar.prop("disabled", false);
         });
     }
