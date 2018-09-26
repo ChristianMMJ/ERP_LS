@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class MaterialNoRecibido_model extends CI_Model {
+class MaterialRecibido_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
@@ -36,7 +36,7 @@ class MaterialNoRecibido_model extends CI_Model {
                             ->join("articulos A", 'ON A.Clave = OCD.Articulo')
                             ->join("grupos G", 'ON G.Clave =  A.Grupo')
                             ->join("unidades U", 'ON U.Clave =  A.UnidadMedida')
-                            ->where_in('OC.Estatus', array('ACTIVO', 'CERRADA'))
+                            ->where_in('OC.Estatus', array('PENDIENTE', 'CONCLUIDA'))
                             ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

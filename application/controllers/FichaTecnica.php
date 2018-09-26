@@ -187,7 +187,7 @@ class FichaTecnica extends CI_Controller {
 
     public function onEliminarArticuloID() {
         try {
-            $this->db->where('ID', $this->input->post('ID'))->delete('FichaTecnica');
+            $this->db->where('ID', $this->input->post('ID'))->delete('fichatecnica');
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

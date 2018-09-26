@@ -2,7 +2,7 @@
     <div class="card-body ">
         <div class="row">
             <div class="col-sm-8 float-left">
-                <legend class="float-left">Material No Recibido</legend>
+                <legend class="float-left">Material Recibido</legend>
             </div>
             <div class="col-sm-4" align="right">
                 <button type="button" class="btn btn-warning" id="btnLimpiarFiltros" data-toggle="tooltip" data-placement="right" title="Limpiar Filtros">
@@ -73,9 +73,8 @@
     </div>
 </div>
 
-
 <script>
-    var master_url = base_url + 'index.php/MaterialNoRecibido/';
+    var master_url = base_url + 'index.php/MaterialRecibido/';
     var tblCompras = $('#tblCompras');
     var Compras;
     var pnlTablero = $("#pnlTablero");

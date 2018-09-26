@@ -5,13 +5,13 @@ header('Access-Control-Allow-Origin: *');
 defined('BASEPATH') OR exit('No direct script access allowed');
 require_once APPPATH . "/third_party/fpdf17/fpdf.php";
 
-class MaterialNoRecibido extends CI_Controller {
+class MaterialRecibido extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
         $this->load->library('session')->model('Ordencompra_model')
-                ->model('MaterialNoRecibido_model')
+                ->model('MaterialRecibido_model')
                 ->helper('ReportesCompras_helper')->helper('file');
     }
 
@@ -30,7 +30,7 @@ class MaterialNoRecibido extends CI_Controller {
             }
 
             $this->load->view('vFondo');
-            $this->load->view('vMaterialNoRecibido');
+            $this->load->view('vMaterialRecibido');
             $this->load->view('vFooter');
         } else {
             $this->load->view('vEncabezado');
@@ -41,7 +41,7 @@ class MaterialNoRecibido extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->MaterialNoRecibido_model->getRecords());
+            print json_encode($this->MaterialRecibido_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

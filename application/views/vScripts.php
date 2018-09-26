@@ -85,8 +85,34 @@
 
     }
 
+    /**
+     * Convert an image
+     * to a base64 url
+     * @param  {String}   url
+     * @param  {Function} callback
+     * @param  {String}   [outputFormat=image/png]
+     */
+    function convertImgToBase64URL(url, callback, outputFormat) {
+        var img = new Image();
+        img.crossOrigin = 'Anonymous';
+        img.onload = function () {
+            var canvas = document.createElement('CANVAS'),
+                    ctx = canvas.getContext('2d'), dataURL;
+            canvas.height = img.height;
+            canvas.width = img.width;
+            ctx.drawImage(img, 0, 0);
+            dataURL = canvas.toDataURL(outputFormat);
+            callback(dataURL);
+            canvas = null;
+        };
+        img.src = url;
+    }
+
 
     $(function () {
+
+
+
         mobilecheck();
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-toggle="popover"]').popover();
@@ -252,11 +278,19 @@
         }
     };
 
+
+
+    var logo = '';
+    convertImgToBase64URL(base_url + '/img/lsbck.png', function (base64Img) {
+        logo = base64Img;
+    });
+
     var buttons = [
         {
             extend: 'excelHtml5',
             text: ' <i class="fa fa-file-excel"></i>',
             titleAttr: 'Excel',
+            className: 'selectNotEnter',
             exportOptions: {
                 columns: ':visible'
             }
@@ -266,11 +300,126 @@
             extend: 'colvis',
             text: '<i class="fa fa-columns"></i>',
             titleAttr: 'Seleccionar Columnas',
+            className: 'selectNotEnter',
             exportOptions: {
                 modifier: {
                     page: 'current'
                 },
                 columns: ':visible'
+            }
+        },
+        {
+
+            exportOptions: {
+                columns: ':visible',
+                search: 'applied',
+                order: 'applied'
+            },
+            className: 'selectNotEnter',
+            extend: 'pdfHtml5',
+            filename: 'Reporte del sistema',
+            orientation: 'landscape', //portrait
+            pageSize: 'letter', //A3 , A5 , A6 , legal , letter
+            text: '<i class="fa fa-file-pdf"></i>',
+            titleAttr: 'PDF',
+            customize: function (doc) {
+
+                var now = new Date();
+                var jsDate = now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear();
+                //Remove the title created by datatTables
+                doc.content.splice(0, 1);
+                // Set page margins [left,top,right,bottom] or [horizontal,vertical]
+                // Dejar espacio para el header y el footer !!!
+                //Margenes para el contenido (solo tabla)
+                doc.pageMargins = [15, 50, 15, 30];
+                // Set the font size fot the entire document
+                doc.defaultStyle.fontSize = 6.5;
+                // Set the fontsize for the table header
+                doc.styles.tableHeader.fontSize = 7.5;
+                doc['header'] = (function () {
+                    return {
+                        columns: [
+                            {
+                                image: logo,
+                                width: 74
+                            },
+                            {
+                                alignment: 'left',
+                                bold: true,
+                                //italics: true,
+                                text: "CALZADO LOBO SA DE CV " + "\nReporte generado desde el sistema ",
+                                fontSize: 9,
+                                //Margen para esta columna solamente
+                                margin: [10, 0]
+                            },
+                            {
+                                alignment: 'right',
+                                fontSize: 7.5,
+                                text: ['Fecha: ', {text: jsDate.toString()}]
+                            }
+                        ],
+                        //Margen general del header
+                        margin: 10
+                    }
+                });
+                // Create a footer object with 2 columns
+                // Left side: report creation date
+                // Right side: current page and total pages
+                doc['footer'] = (function (page, pages) {
+                    return {
+                        columns: [
+                            {
+                                fontSize: 7.5,
+                                alignment: 'right',
+                                text: ['Página ', {text: page.toString()}, ' de ', {text: pages.toString()}]
+                            }
+                        ],
+                        margin: 10
+                    }
+                });
+                // Change dataTable layout (Table styling)
+                // To use predefined layouts uncomment the line below and comment the custom lines below
+                // doc.content[0].layout = 'lightHorizontalLines'; // noBorders , headerLineOnly
+
+                doc['styles'] = {
+                    header: {
+                        fontSize: 7,
+                        bold: true,
+                        margin: [0, 0, 0, 10]
+                    },
+                    tableHeader: {
+                        bold: true,
+                        fontSize: 7,
+                        color: 'black'
+                    }
+                };
+
+
+                var objLayout = {};
+                objLayout['hLineWidth'] = function (i, node) {
+                    if (i === 0 || i === node.table.body.length) {
+                        return 0;
+                    }
+                    return (i === node.table.headerRows) ? 1 : 0.5;
+                };
+                objLayout['vLineWidth'] = function (i, node) {
+                    return 0;
+                };
+                objLayout['hLineColor'] = function (i, node) {
+                    return i === 1 ? 'black' : 'black';
+                };
+                objLayout['vLineColor'] = function (i, node) {
+                    return 'black';
+                };
+                objLayout['paddingLeft'] = function (i, node) {
+                    return i === 0 ? 0 : 8;
+                };
+                objLayout['paddingRight'] = function (i, node) {
+                    return (i === node.table.widths.length - 1) ? 0 : 8;
+                };
+                doc.content[0].layout = objLayout;
+//                doc.content[0].layout = 'lightHorizontalLines';
+
             }
         }
 
