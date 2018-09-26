@@ -89,7 +89,7 @@ class Ordendeproduccion_model extends CI_Model {
                             ->join('colores AS C', 'PD.color = C.Clave AND C.Estilo = E.Clave')
                             ->join('series AS S', 'E.Serie = S.Clave')
                             ->join('controles AS CT', 'CT.PedidoDetalle = PD.ID')
-                            ->join('ordendeproduccion AS OP', 'OP.Pedido = PE.ID  AND OP.PedidoDetalle = PD.ID', 'left')
+                            ->join('ordendeproduccion AS OP', 'OP.Pedido = PE.Clave  AND OP.PedidoDetalle = PD.ID', 'left')
                             ->where('PD.Control != 0 AND OP.ID IS NOT NULL', null, false)
                             ->where('CT.Estatus', 'A')->get()->result();
         } catch (Exception $exc) {
@@ -111,13 +111,13 @@ class Ordendeproduccion_model extends CI_Model {
                             . "E.Horma AS HORMA, E.Descripcion AS OESTILOT, CO.Descripcion AS OCOLORT, PD.ID AS PEDIDO_DETALLE,"
                             . "PD.*", false)
                     ->from('pedidos AS P')
-                    ->join('pedidodetalle AS PD', 'P.ID = PD.Pedido')
+                    ->join('pedidodetalle AS PD', 'P.Clave = PD.Pedido')
                     ->join('clientes AS C', 'P.Cliente = C.Clave')
                     ->join('estilos AS E', 'PD.Estilo = E.Clave')
                     ->join('colores AS CO', 'PD.Color = CO.Clave')
                     ->join('agentes AS A', 'P.Agente = A.Clave')
                     ->join('transportes AS T', 'C.Transporte = T.Clave', 'left')
-                    ->join('Series AS S', 'PD.Serie = S.Clave')
+                    ->join('series AS S', 'PD.Serie = S.Clave')
                     ->join('lineas AS L', 'E.Linea = L.Clave')
                     ->join('controles AS CT', 'CT.Pedido = P.ID')
                     ->join('ordendeproduccion AS OP', 'OP.Pedido = P.ID  AND OP.PedidoDetalle = PD.ID', 'left')
@@ -166,6 +166,7 @@ class Ordendeproduccion_model extends CI_Model {
              * FOR DEBUG ONLY
              */
             $str = $this->db->last_query();
+//            PRINT $str;
             $data = $query->result();
             return $data;
         } catch (Exception $exc) {
