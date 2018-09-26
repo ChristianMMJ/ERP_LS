@@ -56,7 +56,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-md-4 col-lg-2 col-xl-1">
                             <label for="Pedido" >Pedido*</label>
-                            <input type="text" class="form-control form-control-sm numbersOnly" id="Clave" required="" placeholder="">
+                            <input type="text" class="form-control form-control-sm numbersOnly selectNotEnter" id="Clave" required="" placeholder="">
                         </div>
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3">
                             <label for="Cliente" >Cliente*</label>
@@ -282,6 +282,14 @@
         handleEnter();
 
         validacionSelectPorContenedor(pnlDatos);
+
+        pnlDatos.find("#Clave").keyup(function (e) {
+            if (e.keyCode === 13) {
+                onComprobarClavePedido(this);
+            }
+        }).focusout(function () {
+            onComprobarClavePedido(this);
+        });
 
         btnImprimir.click(function () {
             if (temp > 0) {
@@ -1131,6 +1139,7 @@
     function getPedidoByID(temp) {
         PedidoDetalle.clear().draw();
         $.getJSON(master_url + 'getPedidosByID', {ID: temp}).done(function (data) {
+            console.log(data);
             pnlDatos.find("input").val("");
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
@@ -1234,6 +1243,30 @@
                 (navigator.userAgent.toLowerCase().indexOf("iphone") > -1) ||
                 (navigator.userAgent.toLowerCase().indexOf("ipod") > -1)
                 );
+    }
+
+    function onComprobarClavePedido(e) {
+        $.getJSON(master_url + 'onComprobarClavePedido', {CLAVE: $(e).val()}).done(function (data) {
+            console.log(data);
+            if (parseInt(data[0].EXISTE) > 0) {
+                swal({
+                    title: "ATENCIÓN",
+                    text: "ESTE FOLIO YA EXISTE, INGRESE UNO DIFERENTE.",
+                    icon: "warning",
+                    focusConfirm: true,
+                    closeOnClickOutside: false,
+                    closeOnEsc: false,
+                    buttons: false,
+                    timer: 1200
+                }).then((value) => {
+                    pnlDatos.find("#Clave").focus().select();
+                });
+            } else {
+                pnlDatos.find("#Cliente")[0].selectize.focus();
+            }
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        });
     }
 </script>
 <style>

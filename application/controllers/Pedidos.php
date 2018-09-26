@@ -168,6 +168,15 @@ class Pedidos extends CI_Controller {
         }
     }
 
+
+    public function onComprobarClavePedido() {
+        try {
+            print json_encode($this->Pedidos_model->onComprobarClavePedido($this->input->get('CLAVE')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onAgregar() {
         try {
             $x = $this->input;
@@ -188,7 +197,7 @@ class Pedidos extends CI_Controller {
             foreach ($Detalle as $key => $v) {
                 $dt = date_parse($v->FechaEntrega);
                 $data = array(
-                    "Pedido" => $ID,
+                    "Pedido" => $data["Clave"],
                     "Estilo" => ($v->Estilo !== '') ? $v->Estilo : NULL,
                     "EstiloT" => ($v->EstiloT !== '') ? $v->EstiloT : NULL,
                     "Color" => ($v->Color !== '') ? $v->Color : NULL,

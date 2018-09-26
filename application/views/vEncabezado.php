@@ -107,6 +107,10 @@
         <link rel="stylesheet" href="<?php echo base_url("js/fancybox/jquery.fancybox.min.css"); ?>" />
         <script src="<?php echo base_url("js/fancybox/jquery.fancybox.min.js"); ?>"></script>
 
+        <!--VegasJS-->
+        <link rel="stylesheet" href="<?php echo base_url("js/vegas/vegas.min.css"); ?>" >
+        <script src="<?php echo base_url("js/vegas/vegas.min.js"); ?>"></script>
+
         <!--EasyAutocompleteJS-->
         <!-- JS file -->
         <script src="<?php echo base_url("js/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.min.js"); ?>"></script>

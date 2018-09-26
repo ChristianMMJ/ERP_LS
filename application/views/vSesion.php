@@ -48,14 +48,20 @@
         </div>
     </div>
 </div>
-<form id="frmIngresar" class="card div-login text-center">
-    <h4 class="mb-3">Control de Acceso</h4>
-    <input type="email" id="Usuario" name="Usuario" class="form-control" placeholder="Usuario" required autofocus>
-    <input type="password" id="Contrasena" name="Contrasena" class="form-control mt-3" placeholder="Contraseña" required>
-    <button class="btn btn-primary btn-block mt-3" id="btnIngresar" type="button">Ingresar</button>
-    <button class="btn btn-warning btn-block mt-2" id="btnOlvidasteContrasena" type="button">Olvidaste tu contraseña?</button>
-    <p class="mt-3 mb-3 text-muted">&copy; <?php echo date("Y") . ' All Rights Reserved for <br> CALZADO LOBO SA de CV'; ?></p>
-</form>
+<div class="row div-login" aling="center">
+    <div class="col-12 text-center">
+        <h4 class="mb-3 text-white">Control de Acceso</h4>
+    </div>
+    <div class="col-12">
+        <form id="frmIngresar" class="card div-login text-center">
+            <input type="email" id="Usuario" name="Usuario" class="form-control" placeholder="Usuario" required autofocus>
+            <input type="password" id="Contrasena" name="Contrasena" class="form-control mt-3" placeholder="Contraseña" required>
+            <button class="btn btn-primary btn-block mt-3" id="btnIngresar" type="button">Ingresar</button>
+            <button class="btn btn-warning btn-block mt-2" id="btnOlvidasteContrasena" type="button">Olvidaste tu contraseña?</button>
+            <p class="mt-3 mb-3 text-muted">&copy; <?php echo date("Y") . ' All Rights Reserved for <br> CALZADO LOBO SA de CV'; ?></p>
+        </form>
+    </div>
+</div>
 <script>
     var master_url = base_url + "Sesion/";
     var btnResetear = $("#btnResetear");
@@ -99,6 +105,25 @@
     }
 
     $(document).ready(function () {
+
+        $("body").vegas({
+            delay: 9000,
+            slides: [
+                {src: "<?php print base_url('img/vg/1.jpg'); ?>"},
+                {src: "<?php print base_url('img/vg/2.jpg'); ?>"},
+                {src: "<?php print base_url('img/vg/3.jpg'); ?>"},
+                {src: "<?php print base_url('img/vg/4.jpg'); ?>"},
+                {src: "<?php print base_url('img/vg/5.jpg'); ?>"},
+                {src: "<?php print base_url('img/vg/6.jpg'); ?>"},
+                {src: "<?php print base_url('img/vg/7.jpg'); ?>"},
+                {src: "<?php print base_url('img/vg/8.jpg'); ?>"},
+                {src: "<?php print base_url('img/vg/9.jpg'); ?>"}
+            ],
+            animation: ['fade', 'kenburnsUp', 'kenburnsDown', 'kenburnsLeft', 'kenburnsRight'],
+            transitionDuration: 1500,
+            overlay: '<?php print base_url('/js/vegas/overlays/08.png'); ?>'
+        });
+
         handleEnter();
         Usuario.val("");
         Contrasena.val("");
@@ -145,5 +170,5 @@
             });
         });
     });
-</script>
+</script> 
 

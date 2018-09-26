@@ -13,7 +13,8 @@ class Pedidos_model extends CI_Model {
     public function getRecords() {
         try {
             $this->db->query("set sql_mode=''");
-            return $this->db->select("P.ID, P.Clave, CONCAT(IFNULL(P.Cliente,''),' ', IFNULL(C.RazonS,'')) AS Cliente, A.Nombre Agente,P.FechaPedido, SUM(PD.Pares) AS Pares", false)
+            return $this->db->select("P.ID, P.Clave, CONCAT(IFNULL(P.Cliente,''),' ', IFNULL(C.RazonS,'')) AS Cliente, "
+                                    . "A.Nombre Agente,P.FechaPedido, SUM(PD.Pares) AS Pares", false)
                             ->from('pedidos AS P')
                             ->join('pedidodetalle AS PD', 'P.Clave = PD.Pedido')
                             ->join('agentes AS A', 'P.Agente = A.Clave')
@@ -82,6 +83,17 @@ class Pedidos_model extends CI_Model {
                             ->join('transportes AS T', 'C.Transporte = T.Clave', 'left')
                             ->order_by('PD.ID', 'DESC')
                             ->where('P.ID', $ID)->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onComprobarClavePedido($ID) {
+        try {
+            return $this->db->select("COUNT(*) AS EXISTE", false)
+                            ->from('pedidos AS P')
+                            ->where('P.Clave', $ID)
+                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
