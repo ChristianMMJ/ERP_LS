@@ -6,19 +6,19 @@
             </div> 
         </div>
         <div class="row">
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                 <label>Del control</label>
                 <input type="text" class="form-control form-control-sm numbersOnly" id="ControlInicial" autofocus maxlength="10" onkeyup="onVerificarFormValido()" onkeypress="onVerificarFormValido()">
             </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                 <label>Al control</label>     
                 <input type="text" class="form-control form-control-sm numbersOnly" id="ControlFinal" maxlength="10"  min="1" max="10" onkeyup="onVerificarFormValido()" onkeypress="onVerificarFormValido()">
             </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3" data-column="13">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 d-none" data-column="13">
                 <label>Semana</label>
                 <input type="text" class="form-control form-control-sm column_filter numbersOnly" id="col13_filter" maxlength="2" minlength="1" onkeypress="" onkeyup="onVerificarFormValido()" onfocus="">
             </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3" data-column="14">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 d-none" data-column="14">
                 <label>Año</label>
                 <input type="text" class="form-control form-control-sm column_filter numbersOnly" id="col14_filter" maxlength="4" minlength="1" onkeypress="" onkeyup="onVerificarFormValido()" onfocus="">
             </div>
@@ -120,7 +120,7 @@
             });
 
             btnGenerar.click(function () {
-                var params = {INICIO: controlinicial.val(), FIN: controlfinal.val(), SEMANA: semana.val(), ANIO: Anio.val()};
+                var params = {INICIO: controlinicial.val(), FIN: controlfinal.val(), SEMANA: '', ANIO: ''};
                 $.post(master_url + 'getOrdenDeProduccion', params).done(function (data) {
                     //check Apple device
                     console.log(data);

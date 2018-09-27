@@ -107,6 +107,8 @@
         } else {
             $('#btnRegresar').addClass('d-none');
         }
+ 
+
     });
     handleEnter();
 </script>

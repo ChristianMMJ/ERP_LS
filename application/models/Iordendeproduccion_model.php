@@ -46,7 +46,7 @@ class Iordendeproduccion_model extends CI_Model {
                             ->join('colores AS C', 'PD.color = C.Clave AND C.Estilo = E.Clave')
                             ->join('series AS S', 'E.Serie = S.Clave')
                             ->join('controles AS CT', 'CT.PedidoDetalle = PD.ID')
-                            ->join('ordendeproduccion AS OP', 'OP.Pedido = PE.ID  AND OP.PedidoDetalle = PD.ID', 'left')
+                            ->join('ordendeproduccion AS OP', 'OP.Pedido = PE.Clave  AND OP.PedidoDetalle = PD.ID', 'left')
                             ->where('PD.Control != 0 AND OP.ID IS NOT NULL', null, false)
                             ->where('CT.Estatus', 'A')->get()->result();
         } catch (Exception $exc) {
@@ -91,13 +91,12 @@ class Iordendeproduccion_model extends CI_Model {
             if ($CONTROL_INICIAL !== '' && $CONTROL_FINAL !== '') {
                 $this->db->where("OP.ControlT BETWEEN $CONTROL_INICIAL AND $CONTROL_FINAL", null, false);
             }
-            if ($SEMANA !== '') {
-                $this->db->where("OP.Semana", $SEMANA);
-            }
-            if ($ANO !== '') {
-                $this->db->where("OP.Ano", $ANO);
-            }
-            $this->db->where("OP.Ano", $ANO);
+//            if ($SEMANA !== '') {
+//                $this->db->where("OP.Semana", $SEMANA);
+//            }
+//            if ($ANO !== '') {
+//                $this->db->where("OP.Ano", $ANO);
+//            } 
             $this->db->order_by('ABS(OPD.Departamento)', 'ASC');
             return $this->db->get()->result();
         } catch (Exception $exc) {
@@ -112,12 +111,12 @@ class Iordendeproduccion_model extends CI_Model {
             if ($CONTROL_INICIAL !== '' && $CONTROL_FINAL !== '') {
                 $this->db->where("OP.ControlT BETWEEN $CONTROL_INICIAL AND $CONTROL_FINAL", null, false);
             }
-            if ($SEMANA !== '') {
-                $this->db->where("OP.Semana", $SEMANA);
-            }
-            if ($ANO !== '') {
-                $this->db->where("OP.Ano", $ANO);
-            }
+//            if ($SEMANA !== '') {
+//                $this->db->where("OP.Semana", $SEMANA);
+//            }
+//            if ($ANO !== '') {
+//                $this->db->where("OP.Ano", $ANO);
+//            }
             $this->db->group_by(array('OP.ControlT'));
             $this->db->order_by('ABS(OPD.Departamento)', 'ASC');
             return $this->db->get()->result();
@@ -134,12 +133,12 @@ class Iordendeproduccion_model extends CI_Model {
             if ($CONTROL_INICIAL !== '' && $CONTROL_FINAL !== '') {
                 $this->db->where("OP.ControlT BETWEEN $CONTROL_INICIAL AND $CONTROL_FINAL", null, false);
             }
-            if ($SEMANA !== '') {
-                $this->db->where("OP.Semana", $SEMANA);
-            }
-            if ($ANO !== '') {
-                $this->db->where("OP.Ano", $ANO);
-            }
+//            if ($SEMANA !== '') {
+//                $this->db->where("OP.Semana", $SEMANA);
+//            }
+//            if ($ANO !== '') {
+//                $this->db->where("OP.Ano", $ANO);
+//            }
             $this->db->group_by(array('Departamento'));
             $this->db->order_by('ABS(OPD.Departamento)', 'ASC');
             return $this->db->get()->result();

@@ -108,7 +108,7 @@ class PDF extends FPDF {
     function setSuela($Suela) {
         $this->Suela = $Suela;
     }
-    
+
     function getLineaT() {
         return $this->LineaT;
     }
@@ -910,8 +910,13 @@ class PDF extends FPDF {
 
         /* ESTILO */
         $this->SetX($pos[0]);
-        $this->Cell(70, $alto_celda, utf8_decode("Estilo  " . $this->getEstilo()), 0/* BORDE */, 0, 'L', 0);
-
+        if (strlen($this->getEstilo()) < 30) {
+            $this->Cell(70, $alto_celda, utf8_decode("Estilo  " . $this->getEstilo()), 0/* BORDE */, 0, 'L', 0);
+        } else {
+        $this->SetFont('Arial', 'B', 5.5);
+            $this->Cell(70, $alto_celda, utf8_decode("Estilo  " . $this->getEstilo()), 0/* BORDE */, 0, 'L', 0);
+        }
+        $this->SetFont('Arial', 'B', 6);
         /* AGENTE */
         $this->SetX($pos[1]);
         $this->Cell(5, $alto_celda, utf8_decode("Agt."), 0/* BORDE */, 0, 'L', 0);
