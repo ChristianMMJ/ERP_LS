@@ -25,12 +25,22 @@
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navCapturas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="fas fa-pencil-alt"></span> Capturas
                 </a>
-                <div class="dropdown-menu dropdown-menu" aria-labelledby="navCapturas">
+                <ul class="dropdown-menu" aria-labelledby="navCaptura">
                     <a class="dropdown-item" href="<?php print base_url('Pedidos.shoes'); ?>"><span class="fa fa-check"></span> Pedidos</a>
                     <a class="dropdown-item" href="<?php print base_url('CerrarProg'); ?>"><span class="fa fa-hand-pointer"></span> Marcar pedidos para control</a>
                     <a class="dropdown-item" href="<?php print base_url('ReasignarControles'); ?>"><span class="fa fa-retweet"></span> Reasignar controles</a>
                     <a class="dropdown-item" href="<?php print base_url('ControlesCancelados'); ?>"><span class="fa fa-ban"></span> Control pedidos cancelados</a>
-                </div>
+                    <div class="dropdown-divider"></div>
+
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#">Cerrar Semanas Producción.</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="<?php print base_url('CerrarSemanasProd.shoes'); ?>">Cerrar Semanas</a>
+                            <a class="dropdown-item" href="<?php print base_url('CerrarSemanasProdXGrupos.shoes'); ?>">Cerrar Semanas por Grupos/Artículos</a>
+                        </div>
+
+                    </li>
+                </ul>
             </li>
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navConsultas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -107,8 +117,6 @@
         } else {
             $('#btnRegresar').addClass('d-none');
         }
- 
-
     });
     handleEnter();
 </script>

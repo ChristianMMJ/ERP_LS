@@ -103,8 +103,8 @@
                     buttons: false,
                     timer: 1000
                 }).then((action) => {
-                    pnlTablero.find("#Ano").val("");
-                    pnlTablero.find("#Ano").focus();
+                    pnlTablero.find("#col1_filter").val("");
+                    pnlTablero.find("#col1_filter").focus();
                 });
             }
         });
