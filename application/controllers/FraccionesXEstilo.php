@@ -14,41 +14,61 @@ class FraccionesXEstilo extends CI_Controller {
     public function index() {
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             $this->load->view('vEncabezado');
-
+            $Seguridad = isset($_SESSION["SEG"]) ? $_SESSION["SEG"] : '0';
             switch ($this->session->userdata["TipoAcceso"]) {
                 case 'SUPER ADMINISTRADOR':
                     $this->load->view('vNavGeneral');
+                    $this->load->view('vFondo');
 
                     //Validamos que no venga vacia y asignamos un valor por defecto
                     $Origen = isset($_GET['origen']) ? $_GET['origen'] : "";
 
                     if ($Origen === 'FICHASTECNICAS') {
                         $this->load->view('vMenuFichasTecnicas');
+                        $this->load->view('vFraccionesXEstiloConsulta');
                     } else if ($Origen === 'NOMINAS') {
                         $this->load->view('vMenuNominas');
+                        $this->load->view('vFraccionesXEstiloConsulta');
                     } else if ($Origen === 'MATERIALES') {
                         $this->load->view('vMenuMateriales');
+                        $this->load->view('vFraccionesXEstiloConsulta');
+                    } else if ($Origen === 'PRODUCCION') {
+                        $this->load->view('vMenuProduccion');
+                        if ($Seguridad === '1') {
+                            $this->load->view('vFraccionesXEstilo');
+                        } else {
+                            $this->load->view('vFraccionesXEstiloConsulta');
+                        }
                     } else {
                         $this->load->view('vMenuPrincipal');
+                        $this->load->view('vFraccionesXEstiloConsulta');
                     }
 
                     break;
                 case 'DISEÑO Y DESARROLLO':
                     $this->load->view('vMenuFichasTecnicas');
+                    $this->load->view('vFraccionesXEstiloConsulta');
                     break;
                 case 'RECURSOS HUMANOS':
                     $this->load->view('vMenuNominas');
+                    $this->load->view('vFraccionesXEstiloConsulta');
                     break;
                 case 'PRODUCCION':
                     $this->load->view('vMenuProduccion');
+                    if ($Seguridad === '1') {
+                        $this->load->view('vFraccionesXEstilo');
+                    } else {
+                        $this->load->view('vFraccionesXEstiloConsulta');
+                    }
                     break;
                 case 'ALMACEN':
                     $this->load->view('vMenuMateriales');
+                    $this->load->view('vFraccionesXEstiloConsulta');
                     break;
             }
 
-            $this->load->view('vFondo');
-            $this->load->view('vFraccionesXEstilo');
+
+
             $this->load->view('vFooter');
         } else {
             $this->load->view('vEncabezado');
@@ -99,6 +119,14 @@ class FraccionesXEstilo extends CI_Controller {
         }
     }
 
+    public function getFracciones() {
+        try {
+            print json_encode($this->FraccionesXEstilo_model->getFracciones());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getEstiloByID() {
         try {
             print json_encode($this->FraccionesXEstilo_model->getEstiloByID($this->input->get('Estilo')));
@@ -137,6 +165,21 @@ class FraccionesXEstilo extends CI_Controller {
             );
             $ID = $this->FraccionesXEstilo_model->onAgregar($data);
             print $ID;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onModificarDetalle() {
+        try {
+            $x = $this->input;
+            $data = array(
+                'Fraccion' => ($x->post('Fraccion') !== NULL) ? $x->post('Fraccion') : NULL,
+                'CostoMO' => ($x->post('CostoMO') !== NULL) ? $x->post('CostoMO') : 0,
+                'CostoVTA' => ($x->post('CostoVTA') !== NULL) ? $x->post('CostoVTA') : 0,
+                'AfectaCostoVTA' => ($x->post('AfectaCostoVTA') !== NULL) ? $x->post('AfectaCostoVTA') : 0,
+            );
+            $this->FraccionesXEstilo_model->onModificar($this->input->post('ID'), $data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

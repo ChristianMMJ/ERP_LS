@@ -5,7 +5,6 @@
                 <legend class="float-left">Fracciones por Estilo</legend>
             </div>
             <div class="col-sm-6 float-right" align="right">
-                <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
             </div>
         </div>
         <div class="card-block">
@@ -53,43 +52,6 @@
                 </div>
             </div>
         </form>
-        <!--AGREGAR DETALLE-->
-        <div class="d-none" id="pnlControlesDetalle">
-            <div class="row">
-                <div class="col-12 col-sm-12 col-md-4 col-lg-3">
-                    <label for="Departamento">Departamento</label>
-                    <select class="form-control form-control-sm " id="Departamento"  name="Departamento">
-                    </select>
-                </div>
-                <div class="col-12 col-sm-12 col-md-4 col-lg-3">
-                    <label for="Fraccion">Fraccion</label>
-                    <select class="form-control form-control-sm " id="Fraccion"  name="Fraccion">
-                    </select>
-                </div>
-                <div class="col-12 col-sm-12 col-md-4 col-lg-1">
-                    <label for="PrecioMO">Costo M.O.</label>
-                    <input type="text"  id="CostoMO" name="CostoMO" class="form-control form-control-sm numbersOnly" maxlength="7">
-                </div>
-                <div class="col-12 col-sm-12 col-md-4 col-lg-1">
-                    <label for="CostoVTA">Costo VTA</label>
-                    <input type="text"  id="CostoVTA" name="CostoVTA" class="form-control form-control-sm numbersOnly" maxlength="7">
-                </div>
-                <div class="col-12 col-sm-12 col-md-12 col-lg-4">
-                    <div class="row">
-                        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                            <label for="">Afecta Costo VTA</label>
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="AfectaCostoVTA" name="AfectaCostoVTA" >
-                                <label class="custom-control-label" for="AfectaCostoVTA"></label>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-12 col-md-4 col-lg-1 col-xl-1">
-                            <button type="button" id="btnAgregar" class="btn btn-primary mt-4"><span class="fa fa-plus"></span></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 <!--DETALLE-->
@@ -142,59 +104,11 @@
         <!--FIN DETALLE-->
     </div>
 </div>
-<!--EDITAR RENGLON-->
-<div class="modal " id="mdlEditarRenglon"  role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Edición</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="frmEditarRenglon">
-                    <div class="d-none">
-                        <input type="text"  name="ID" class="form-control form-control-sm" >
-                    </div>
-                    <div class="row">
-                        <div class="col-12 col-sm-12 col-md-4 col-lg-5">
-                            <label for="Fraccion">Fraccion</label>
-                            <select class="form-control form-control-sm disabledForms" id="eFraccion"  name="Fraccion">
-                            </select>
-                        </div>
-                        <div class="col-12 col-sm-12 col-md-4 col-lg-2">
-                            <label for="PrecioMO">Costo M.O.</label>
-                            <input type="text"  id="eCostoMO" name="CostoMO" class="form-control form-control-sm numbersOnly" maxlength="7">
-                        </div>
-                        <div class="col-12 col-sm-12 col-md-4 col-lg-2">
-                            <label for="CostoVTA">Costo VTA</label>
-                            <input type="text"  id="eCostoVTA" name="CostoVTA" class="form-control form-control-sm numbersOnly" maxlength="7">
-                        </div>
-                        <div class="col-12 col-sm-12 col-md-4 col-lg-3">
-                            <label for="">Afecta Costo VTA</label>
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="eAfectaCostoVTA" name="AfectaCostoVTA" >
-                                <label class="custom-control-label" for="eAfectaCostoVTA"></label>
-                            </div>
-                        </div>
-                    </div>
-
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btnEditarRenglon">ACEPTAR</button>
-                <button type="button" class="btn btn-secondary" id="btnSalir" data-dismiss="modal">CANCELAR</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!--SCRIPT-->
 <script>
     var master_url = base_url + 'index.php/FraccionesXEstilo/';
     var pnlDatos = $("#pnlDatos");
-    var pnlControlesDetalle = $('#pnlControlesDetalle');
     var pnlTablero = $("#pnlTablero");
     var pnlDetalle = $("#pnlDetalle");
     var btnNuevo = $("#btnNuevo");
@@ -203,9 +117,6 @@
     var Estilo = pnlDatos.find("#Estilo");
     var IdMovimiento = 0;
     var nuevo = true;
-    var btnAgregar = pnlControlesDetalle.find("#btnAgregar");
-    var mdlEditarRenglon = $('#mdlEditarRenglon');
-    var btnEditarRenglon = mdlEditarRenglon.find('#btnEditarRenglon');
 
     $(document).ready(function () {
 
@@ -218,7 +129,6 @@
             if (temp.length > 0) {
                 //HoldOn.open({  message: 'Espere...', theme: 'sk-cube'});
                 $.get(master_url + 'onImprimirFraccionesXEstilo', {Estilo: temp}).done(function (data) {
-                    console.log(data);
 
                     $.fancybox.open({
                         src: data,
@@ -254,46 +164,11 @@
             }
         });
 
-        btnAgregar.click(function () {
-            isValid('pnlDatos');
-            if (valido) {
-                onAgregarFila();
-            }
-        });
-
         pnlDatos.find("[name='Estilo']").change(function () {
             if (nuevo) {
                 temp = $(this).val();
                 getFotoXEstilo($(this).val());
             }
-        });
-
-        pnlDatos.find("[name='Departamento']").change(function () {
-            console.log($(this).val());
-            pnlControlesDetalle.find("[name='Fraccion']")[0].selectize.clear(true);
-            pnlControlesDetalle.find("[name='Fraccion']")[0].selectize.clearOptions();
-            getFraccionesXDepartamento($(this).val());
-        });
-
-        btnNuevo.click(function () {
-            pnlTablero.addClass("d-none");
-            pnlDatos.removeClass('d-none');
-            pnlDatos.find("input").val("");
-            pnlControlesDetalle.find("input").val("");
-            pnlControlesDetalle.removeClass('d-none');
-            pnlDetalle.find("#tblFraccionesXEstiloDetalle tbody").html('');
-            Estilo[0].selectize.enable();
-            pnlDatos.find("#FechaAlta").removeClass('disabledForms');
-            $.each(pnlDatos.find("select"), function (k, v) {
-                pnlDatos.find("select")[k].selectize.clear(true);
-            });
-            $(':input:text:enabled:visible:first').focus();
-            nuevo = true;
-            if ($.fn.DataTable.isDataTable('#tblFraccionesXEstiloDetalle')) {
-                FraccionesXEstiloDetalle.clear().draw();
-            }
-            pnlDatos.find("#Estilo")[0].selectize.focus();
-            btnImprimirFraccionesXEstilo.addClass('d-none');
         });
 
         btnCancelar.click(function () {
@@ -302,31 +177,8 @@
             pnlDetalle.addClass('d-none');
         });
 
-        btnEditarRenglon.click(function () {
-            isValid('mdlEditarRenglon');
-            if (valido) {
-                var frm = new FormData(mdlEditarRenglon.find("#frmEditarRenglon")[0]);
-                frm.append('AfectaCostoVTA', mdlEditarRenglon.find("#eAfectaCostoVTA")[0].checked ? 1 : 0);
-                $.ajax({
-                    url: master_url + 'onModificarDetalle',
-                    type: "POST",
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    data: frm
-                }).done(function (data, x, jq) {
-                    FraccionesXEstiloDetalle.ajax.reload();
-                    mdlEditarRenglon.modal('hide');
-                }).fail(function (x, y, z) {
-                    console.log(x, y, z);
-                });
-            }
-        });
-
         getRecords();
         getEstilos();
-        getDepartamentos();
-        getFracciones();
         handleEnter();
     });
 
@@ -353,6 +205,11 @@
                     "searchable": false
                 },
                 {
+                    "targets": [5],
+                    "visible": false,
+                    "searchable": false
+                },
+                {
                     "targets": [6],
                     "visible": false,
                     "searchable": false
@@ -362,6 +219,7 @@
                     "visible": false,
                     "searchable": false
                 }
+
             ],
             "columns": [
                 {"data": "ID"}, /*0*/
@@ -450,27 +308,9 @@
         });
 
         tblFraccionesXEstiloDetalle.find('tbody').on('click', 'tr', function () {
-            HoldOn.open({theme: 'sk-bounce', message: 'CARGANDO DATOS...'});
             tblFraccionesXEstiloDetalle.find("tbody tr").removeClass("success");
             $(this).addClass("success");
             var tr = $(this);
-
-            var dtm = FraccionesXEstiloDetalle.row(this).data();
-
-            HoldOn.close();
-            mdlEditarRenglon.find("input").val("");
-            $.each(mdlEditarRenglon.find("select"), function (k, v) {
-                mdlEditarRenglon.find("select")[k].selectize.clear(true);
-            });
-            mdlEditarRenglon.modal('show');
-            $.each(dtm, function (k, v) {
-                mdlEditarRenglon.find("[name='" + k + "']").val(v);
-            });
-            (dtm.AfectaCostoVTA === '1') ? mdlEditarRenglon.find("#eAfectaCostoVTA").prop('checked', true) : mdlEditarRenglon.find("#eAfectaCostoVTA").prop('checked', false);
-
-            mdlEditarRenglon.find("[name='Fraccion']")[0].selectize.addItem(dtm.Fraccion_ID, true);
-            mdlEditarRenglon.find('#eCostoMO').focus().select();
-
         });
 
     }
@@ -535,10 +375,9 @@
                 getFraccionesXEstiloDetalleByID(dtm.EstiloId);
                 pnlTablero.addClass("d-none");
                 pnlDetalle.removeClass('d-none');
-                pnlControlesDetalle.removeClass('d-none');
                 pnlDatos.removeClass('d-none');
                 btnImprimirFraccionesXEstilo.removeClass('d-none');
-                pnlControlesDetalle.find("[name='Departamento']")[0].selectize.focus();
+                $('#tblFraccionesXEstiloDetalle_filter input[type=search]').focus();
             }).fail(function (x, y, z) {
                 console.log(x, y, z);
             }).always(function () {
@@ -553,44 +392,9 @@
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
         });
-    }
-
-    function getFracciones() {
-        $.getJSON(master_url + 'getFracciones').done(function (data, x, jq) {
-            $.each(data, function (k, v) {
-                mdlEditarRenglon.find("[name='Fraccion']")[0].selectize.addOption({text: v.Fraccion, value: v.ID});
-            });
-        }).fail(function (x, y, z) {
-            console.log(x, y, z);
-        });
-    }
-
-    function getDepartamentos() {
-        $.getJSON(master_url + 'getDepartamentos').done(function (data, x, jq) {
-            $.each(data, function (k, v) {
-                pnlDatos.find("[name='Departamento']")[0].selectize.addOption({text: v.Departamento, value: v.Clave});
-            });
-        }).fail(function (x, y, z) {
-            console.log(x, y, z);
-        });
-    }
-
-    function getFraccionesXDepartamento(Departamento) {
-        if (Departamento !== '' && Departamento !== undefined && Departamento !== null) {
-            HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
-            $.getJSON(master_url + 'getFraccionesXDepartamento', {Departamento: Departamento}).done(function (data, x, jq) {
-                $.each(data, function (k, v) {
-                    pnlDatos.find("#Fraccion")[0].selectize.addOption({text: v.Fraccion, value: v.ID});
-                });
-                pnlDatos.find("#Fraccion")[0].selectize.focus();
-                pnlDatos.find("#Fraccion")[0].selectize.open();
-            }).fail(function (x, y, z) {
-                console.log(x, y, z);
-            }).always(function () {
-                HoldOn.close();
-            });
-        }
     }
 
     function getFotoXEstilo(Estilo) {
@@ -617,117 +421,6 @@
         });
     }
 
-    function onAgregarFila() {
-        var Fraccion = pnlControlesDetalle.find("[name='Fraccion']");
-        var CostoMO = pnlControlesDetalle.find("[name='CostoMO']");
-        var CostoVTA = pnlControlesDetalle.find("[name='CostoVTA']");
-        var Estilo = pnlDatos.find("[name='Estilo']");
-        var FechaAlta = pnlDatos.find("[name='FechaAlta']");
-        /*COMPROBAR SI YA SE AGREGÓ*/
-        var registro_existe = false;
-        /*VALIDAR QUE ESTEN TODOS LOS CAMPOS LLENOS PARA AGREGARLO*/
-        if (Estilo.val() !== "" && Fraccion.val() !== "" && CostoMO.val() !== "" && CostoVTA.val() !== "")
-        {
-            console.log(pnlDetalle.find("#tblFraccionesXEstiloDetalle tbody tr").length);
-            if (pnlDetalle.find("#tblFraccionesXEstiloDetalle tbody tr").length > 0) {
-                FraccionesXEstiloDetalle.rows().eq(0).each(function (index) {
-                    var row = FraccionesXEstiloDetalle.row(index);
-                    var data = row.data();
-                    if (parseFloat(data.Fraccion_ID) === parseFloat(Fraccion.val())) {
-                        registro_existe = true;
-                        return false;
-                    }
-                });
-            }
-
-            /*VALIDAR QUE EXISTA*/
-            if (!registro_existe) {
-                var frm = new FormData();
-                frm.append('Estilo', Estilo.val());
-                frm.append('Fraccion', Fraccion.val());
-                frm.append('CostoMO', CostoMO.val());
-                frm.append('CostoVTA', CostoVTA.val());
-                frm.append('FechaAlta', FechaAlta.val());
-                frm.append('AfectaCostoVTA', pnlControlesDetalle.find("#AfectaCostoVTA")[0].checked ? 1 : 0);
-                $.ajax({
-                    url: master_url + 'onAgregar',
-                    type: "POST",
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    data: frm
-                }).done(function (data, x, jq) {
-                    if (nuevo) {
-                        Estilo[0].selectize.disable();
-                        FechaAlta.addClass('disabledForms');
-                        pnlDetalle.removeClass('d-none');
-                        nuevo = false;
-                        FraccionesXEstilo.ajax.reload();
-                        getFraccionesXEstiloDetalleByID(Estilo.val());
-                    } else {
-                        FraccionesXEstiloDetalle.ajax.reload();
-                    }
-                    onReset();
-                }).fail(function (x, y, z) {
-                    console.log(x, y, z);
-                }).always(function () {
-                    HoldOn.close();
-                });
-            } else {
-                swal({
-                    title: 'INFO',
-                    text: "YA HAS AGREGADO ESTA PIEZA",
-                    icon: "warning",
-                    closeOnEsc: false,
-                    closeOnClickOutside: false
-                }).then((action) => {
-                    if (action) {
-                        onReset();
-                    }
-                });
-            }
-        } else {
-            swal('INFO', 'DEBES COMPLETAR TODOS LOS CAMPOS', 'warning');
-        }
-    }
-
-    function onReset() {
-        pnlControlesDetalle.find("[name='Fraccion']")[0].selectize.clear(true);
-        pnlControlesDetalle.find("[name='Departamento']")[0].selectize.focus();
-        pnlControlesDetalle.find("[name='Departamento']")[0].selectize.clear(true);
-        pnlControlesDetalle.find("[name='Precio']").val('');
-    }
-
-    function onEliminarFraccion(IDX) {
-        swal({
-            title: "¿Deseas eliminar el registro? ", text: "*El registro se eliminará de forma permanente*", icon: "warning", buttons: ["Cancelar", "Aceptar"]
-        }).then((willDelete) => {
-            if (willDelete) {
-                $.post(master_url + 'onEliminarFraccion', {ID: IDX}).done(function () {
-                    $.notify({
-                        // options
-                        message: 'SE HA ELIMINADO EL REGISTRO'
-                    }, {
-                        // settings
-                        type: 'success',
-                        delay: 500,
-                        animate: {
-                            enter: 'animated flipInX',
-                            exit: 'animated flipOutX'
-                        },
-                        placement: {
-                            from: "top",
-                            align: "right"
-                        }
-                    });
-                }).fail(function (x, y, z) {
-                    console.log(x, y, z);
-                }).always(function () {
-                    FraccionesXEstiloDetalle.ajax.reload();
-                });
-            }
-        });
-    }
 
 </script>
 <style>
@@ -747,3 +440,4 @@
         transition: all .2s ease-in-out;
     }
 </style>
+

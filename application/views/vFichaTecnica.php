@@ -155,7 +155,7 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <label for="">Foto del Artículo</label>
+                <label for="">Fotografía</label>
                 <div id="VistaPrevia" >
                     <img src="<?php echo base_url(); ?>img/camera.png" class="img-thumbnail img-fluid"/>
                 </div>
@@ -164,7 +164,7 @@
         <!--FIN DETALLE-->
     </div>
 </div>
-
+<!--EDITAR RENGLON-->
 <div class="modal " id="mdlEditarArticulo"  role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">

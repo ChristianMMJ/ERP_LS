@@ -145,7 +145,7 @@ class FraccionesXEstilo_model extends CI_Model {
             END AS ACV,
             CONCAT(\'<span class="fa fa-trash fa-lg " onclick="onEliminarFraccion(\', FE.ID, \')">\', \'</span>\') AS Eliminar,
             CONCAT(D.Clave, \' - \', D.Descripcion) AS DeptoCat,
-            FE.Fraccion AS Fraccion_ID,
+            FE.Fraccion AS Fraccion_ID, FE.AfectaCostoVTA
             ', false)
                     ->from('fraccionesxestilo AS FE')
                     ->join('`fracciones` AS `F`', '`FE`.`Fraccion` = `F`.`Clave`')
@@ -230,6 +230,17 @@ class FraccionesXEstilo_model extends CI_Model {
                             ->from("fracciones AS D")
                             ->where("D.Estatus", "ACTIVO")
                             ->where("D.Departamento", $Depto)
+                            ->order_by('ID', 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getFracciones() {
+        try {
+            return $this->db->select("CAST(D.Clave AS SIGNED ) AS ID,CONCAT(D.Clave,'-',D.Descripcion) AS Fraccion ")
+                            ->from("fracciones AS D")
                             ->order_by('ID', 'ASC')
                             ->get()->result();
         } catch (Exception $exc) {
