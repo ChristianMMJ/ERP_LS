@@ -70,15 +70,7 @@
                     <select class="form-control form-control-sm" id="Pieza"  name="Pieza">
                     </select>
                 </div>
-                <!--                <div class="col-12 col-sm-12 col-md-4 col-lg-2">
-                                    <label for="Grupo">Grupo</label>
-                                    <select class="form-control form-control-sm " id="Grupo"  name="Grupo">
-                                    </select>
-                                </div>-->
                 <div class="col-12 col-sm-12 col-md-4 col-lg-2">
-                    <!--                    <label for="Articulo">Articulo</label>
-                                        <select class="form-control form-control-sm " id="Articulo"  name="Articulo">
-                                        </select>-->
                     <label for="Articulo">Articulo</label>
                     <select class="form-control form-control-sm NotSelectize" id="Articulo"   name="Articulo">
                         <option value=""></option>
@@ -173,6 +165,62 @@
     </div>
 </div>
 
+<div class="modal " id="mdlEditarArticulo"  role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edición</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="frmEditarRenglon">
+                    <div class="d-none">
+                        <input type="text"  name="ID" class="form-control form-control-sm" >
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-sm-6">
+                            <label>Pieza</label>
+                            <select class="form-control form-control-sm required disabledForms" id="ePieza" name="Pieza" >
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <label>Articulo</label>
+                            <select class="form-control form-control-sm required" id="eArticulo"   name="Articulo">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-3">
+                            <label for="Consumo">PzXPar</label>
+                            <input type="text" id="ePzXPar" name="PzXPar" class="form-control form-control-sm numbersOnly"  maxlength="4">
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-3">
+                            <label for="Consumo">Consumo</label>
+                            <input type="text"  id="eConsumo" name="Consumo" class="form-control form-control-sm numbersOnly" required="" maxlength="7">
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                            <label for="Consumo">Afecta PV</label>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="eAfectaPV" name="AfectaPV" >
+                                <label class="custom-control-label" for="eAfectaPV"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnEditarRenglon">ACEPTAR</button>
+                <button type="button" class="btn btn-secondary" id="btnSalir" data-dismiss="modal">CANCELAR</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!--SCRIPT-->
 <script>
     var master_url = base_url + 'index.php/FichaTecnica/';
@@ -193,6 +241,8 @@
     var FichaTecnicaDetalle;
     var tblFichaTecnica = $('#tblFichaTecnica');
     var FichaTecnica;
+    var mdlEditarArticulo = $('#mdlEditarArticulo');
+    var btnEditarRenglon = mdlEditarArticulo.find('#btnEditarRenglon');
 
 
     var Selectizer = function () {
@@ -235,7 +285,7 @@
     }();
 
     $(document).ready(function () {
-        $('#Articulo').selectize({
+        pnlControlesDetalle.find('#Articulo').selectize({
             valueField: 'Clave',
             labelField: 'Articulo',
             searchField: ['Articulo', 'Clave'],
@@ -282,13 +332,6 @@
                 onComprobarExisteEstiloColor(pnlDatos.find("[name='Estilo']").val(), $(this).val());
             }
         });
-
-//        pnlDatos.find("[name='Grupo']").change(function () {
-//            console.log($(this).val());
-//            pnlControlesDetalle.find("[name='Articulo']")[0].selectize.clear(true);
-//            pnlControlesDetalle.find("[name='Articulo']")[0].selectize.clearOptions();
-//            getArticulosRequeridos($(this).val());
-//        });
 
         btnEliminar.click(function () {
             if (temp !== 0 && temp !== undefined && temp > 0) {
@@ -344,10 +387,31 @@
             validaSelect = false;
         });
 
+        btnEditarRenglon.click(function () {
+            isValid('mdlEditarArticulo');
+            if (valido) {
+                var frm = new FormData(mdlEditarArticulo.find("#frmEditarRenglon")[0]);
+                frm.append('AfectaPV', mdlEditarArticulo.find("#eAfectaPV")[0].checked ? 1 : 0);
+                $.ajax({
+                    url: master_url + 'onModificarDetalle',
+                    type: "POST",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: frm
+                }).done(function (data, x, jq) {
+                    FichaTecnicaDetalle.ajax.reload();
+                    mdlEditarArticulo.modal('hide');
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                });
+            }
+        });
+
         getRecords();
         getEstilos();
         getPiezas();
-        // getGrupos();
+        getArticulos();
         handleEnter();
     });
 
@@ -357,9 +421,6 @@
         if ($.fn.DataTable.isDataTable('#tblFichaTecnicaDetalle')) {
             tblFichaTecnicaDetalle.DataTable().destroy();
         }
-//        $.getJSON(master_url + 'getFichaTecnicaDetalleByID', {"Estilo": Estilo, "Color": Color}).done(function (data) {
-//            console.log(data);
-//        });
         FichaTecnicaDetalle = tblFichaTecnicaDetalle.DataTable({
             "ajax": {
                 "url": master_url + 'getFichaTecnicaDetalleByID',
@@ -476,9 +537,26 @@
         });
 
         tblFichaTecnicaDetalle.find('tbody').on('click', 'tr', function () {
+            HoldOn.open({theme: 'sk-bounce', message: 'CARGANDO DATOS...'});
             tblFichaTecnicaDetalle.find("tbody tr").removeClass("success");
             $(this).addClass("success");
-            var tr = $(this);
+            var dtm = FichaTecnicaDetalle.row(this).data();
+
+            HoldOn.close();
+            mdlEditarArticulo.find("input").val("");
+            $.each(mdlEditarArticulo.find("select"), function (k, v) {
+                mdlEditarArticulo.find("select")[k].selectize.clear(true);
+            });
+            mdlEditarArticulo.modal('show');
+            $.each(dtm, function (k, v) {
+                mdlEditarArticulo.find("[name='" + k + "']").val(v);
+            });
+            (dtm.AfectaPV === '1') ? mdlEditarArticulo.find("#eAfectaPV").prop('checked', true) : mdlEditarArticulo.find("#eAfectaPV").prop('checked', false);
+
+            mdlEditarArticulo.find("[name='Pieza']")[0].selectize.addItem(dtm.Pieza_ID, true);
+            mdlEditarArticulo.find("[name='Articulo']")[0].selectize.addItem(dtm.Articulo_ID, true);
+            mdlEditarArticulo.find('#eArticulo')[0].selectize.focus();
+
         });
 
     }
@@ -585,8 +663,6 @@
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);
-        }).always(function () {
-            HoldOn.close();
         });
     }
 
@@ -594,22 +670,20 @@
         $.getJSON(master_url + 'getPiezas').done(function (data, x, jq) {
             $.each(data, function (k, v) {
                 pnlDatos.find("[name='Pieza']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
+                mdlEditarArticulo.find("[name='Pieza']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);
-        }).always(function () {
-            HoldOn.close();
         });
     }
 
-    function getGrupos() {
-        $.getJSON(master_url + 'getGrupos').done(function (data, x, jq) {
+    function getArticulos() {
+        $.getJSON(master_url + 'getArticulos').done(function (data, x, jq) {
             $.each(data, function (k, v) {
-                pnlDatos.find("[name='Grupo']")[0].selectize.addOption({text: v.Grupo, value: v.ID});
+                mdlEditarArticulo.find("[name='Articulo']")[0].selectize.addOption({text: v.Descripcion, value: v.ID});
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);
-        }).always(function () {
         });
     }
 
@@ -628,7 +702,6 @@
 
     function getFotoXEstilo(Estilo) {
         $.getJSON(master_url + 'getEstiloByID', {Estilo: Estilo}).done(function (data, x, jq) {
-
             if (data.length > 0) {
                 var dtm = data[0];
                 var vp = pnlDetalle.find("#VistaPrevia");
@@ -665,22 +738,6 @@
         });
     }
 
-    function getArticulosRequeridos(Grupo) {
-        if (Grupo !== '' && Grupo !== undefined && Grupo !== null) {
-            HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
-            $.getJSON(master_url + 'getArticulosRequeridos', {Grupo: Grupo}).done(function (data, x, jq) {
-                $.each(data, function (k, v) {
-                    pnlDatos.find("#Articulo")[0].selectize.addOption({text: v.Articulo, value: v.ID});
-                });
-                pnlDatos.find("#Articulo")[0].selectize.focus();
-            }).fail(function (x, y, z) {
-                console.log(x, y, z);
-            }).always(function () {
-                HoldOn.close();
-            });
-        }
-    }
-
     function onAgregarFila() {
         var Pieza = pnlControlesDetalle.find("[name='Pieza']"), Articulo = pnlControlesDetalle.find("[name='Articulo']");
         var PzXPar = pnlControlesDetalle.find("[name='PzXPar']");
@@ -691,7 +748,7 @@
         /*VALIDAR QUE ESTEN TODOS LOS CAMPOS LLENOS PARA AGREGARLO*/
         if (Estilo.val() !== "" && Color.val() !== "" && Pieza.val() !== "" && Articulo.val() !== "" && Consumo.val() !== "")
         {
-            console.log(pnlDetalle.find("#tblFichaTecnicaDetalle tbody tr").length);
+
             if (pnlDetalle.find("#tblFichaTecnicaDetalle tbody tr").length > 0) {
                 FichaTecnicaDetalle.rows().eq(0).each(function (index) {
                     var row = FichaTecnicaDetalle.row(index);

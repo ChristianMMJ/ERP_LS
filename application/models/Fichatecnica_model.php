@@ -66,7 +66,7 @@ class Fichatecnica_model extends CI_Model {
             FT.ID AS ID,
             CONCAT(\'<span class="fa fa-trash fa-lg " onclick="onEliminarArticuloID(\', FT.ID, \')">\', \'</span>\') AS Eliminar,
             CONCAT(D.Clave, \' - \', D.Descripcion) AS DeptoCat,
-            D.Clave AS DEPTO', false)
+            D.Clave AS DEPTO,FT.AfectaPV ', false)
                     ->from('fichatecnica AS FT')
                     ->join('`articulos` AS `M`', '`FT`.`Articulo` = `M`.`Clave`')
                     ->join('`piezas` AS `P`', '`FT`.`Pieza` = `P`.`Clave`')
@@ -108,6 +108,14 @@ class Fichatecnica_model extends CI_Model {
     }
 
     public function onModificar($ID, $DATA) {
+        try {
+            $this->db->where('ID', $ID)->update("fichatecnica", $DATA);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onModificarDetalle($ID, $DATA) {
         try {
             $this->db->where('ID', $ID)->update("fichatecnica", $DATA);
         } catch (Exception $exc) {
@@ -176,6 +184,18 @@ class Fichatecnica_model extends CI_Model {
             return $this->db->select("CAST(P.Clave AS SIGNED ) AS ID, CONCAT(P.Clave,' - ',IFNULL(P.Descripcion,'')) AS Descripcion ", false)
                             ->from('piezas AS P')
                             ->where_in('P.Estatus', 'ACTIVO')
+                            ->order_by('ID', 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getArticulos() {
+        try {
+            return $this->db->select("CAST(A.Clave AS SIGNED ) AS ID, CONCAT(A.Clave,' - ',IFNULL(A.Descripcion,'')) AS Descripcion ", false)
+                            ->from('articulos AS A')
+                            ->where_in('A.Estatus', 'ACTIVO')
                             ->order_by('ID', 'ASC')
                             ->get()->result();
         } catch (Exception $exc) {

@@ -12,6 +12,7 @@ class FichaTecnica extends CI_Controller {
     public function index() {
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             $this->load->view('vEncabezado');
+            $this->load->view('vFondo');
 
             switch ($this->session->userdata["TipoAcceso"]) {
                 case 'SUPER ADMINISTRADOR':
@@ -21,22 +22,25 @@ class FichaTecnica extends CI_Controller {
 
                     if ($Origen === 'FICHASTECNICAS') {
                         $this->load->view('vMenuFichasTecnicas');
+                        $this->load->view('vFichaTecnica');
                     } else if ($Origen === 'MATERIALES') {
                         $this->load->view('vMenuMateriales');
+                        $this->load->view('vFichaTecnicaConsulta');
                     } else {
                         $this->load->view('vMenuPrincipal');
+                        $this->load->view('vFichaTecnica');
                     }
                     break;
                 case 'DISEÑO Y DESARROLLO':
                     $this->load->view('vMenuFichasTecnicas');
+                    $this->load->view('vFichaTecnica');
                     break;
                 case 'ALMACEN':
                     $this->load->view('vMenuMateriales');
+                    $this->load->view('vFichaTecnicaConsulta');
                     break;
             }
 
-            $this->load->view('vFondo');
-            $this->load->view('vFichaTecnica');
             $this->load->view('vFooter');
         } else {
             $this->load->view('vEncabezado');
@@ -74,6 +78,14 @@ class FichaTecnica extends CI_Controller {
     public function getPiezas() {
         try {
             print json_encode($this->Fichatecnica_model->getPiezas());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getArticulos() {
+        try {
+            print json_encode($this->Fichatecnica_model->getArticulos());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -146,6 +158,7 @@ class FichaTecnica extends CI_Controller {
                 'Articulo' => ($x->post('Articulo') !== NULL) ? $x->post('Articulo') : NULL,
                 'Consumo' => ($x->post('Consumo') !== NULL) ? $x->post('Consumo') : 0,
                 'PzXPar' => ($x->post('PzXPar') !== NULL) ? $x->post('PzXPar') : NULL,
+                'AfectaPV' => ($x->post('AfectaPV') !== NULL) ? $x->post('AfectaPV') : 0,
                 'Estatus' => 'ACTIVO'
             );
             if (isset($PRECIO[0])) {
@@ -162,8 +175,15 @@ class FichaTecnica extends CI_Controller {
 
     public function onModificarDetalle() {
         try {
-            unset($_POST['ID']);
-            $this->Fichatecnica_model->onModificar($this->input->post('ID'), $this->input->post());
+            $x = $this->input;
+            $data = array(
+                'Pieza' => ($x->post('Pieza') !== NULL) ? $x->post('Pieza') : NULL,
+                'Articulo' => ($x->post('Articulo') !== NULL) ? $x->post('Articulo') : NULL,
+                'Consumo' => ($x->post('Consumo') !== NULL) ? $x->post('Consumo') : 0,
+                'PzXPar' => ($x->post('PzXPar') !== NULL) ? $x->post('PzXPar') : NULL,
+                'AfectaPV' => ($x->post('AfectaPV') !== NULL) ? $x->post('AfectaPV') : 0,
+            );
+            $this->Fichatecnica_model->onModificar($this->input->post('ID'), $data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -188,27 +208,6 @@ class FichaTecnica extends CI_Controller {
     public function onEliminarArticuloID() {
         try {
             $this->db->where('ID', $this->input->post('ID'))->delete('fichatecnica');
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function onEditarFichaTecnicaDetalle() {
-        try {
-            $x = $this->input;
-            $d = $this->db;
-            switch ($x->post('CELDA')) {
-                case 'CONSUMO':
-                    $d->set('Consumo', $x->post('VALOR'));
-                    break;
-                case 'PRECIO':
-                    $d->set('Precio', $x->post('VALOR'));
-                    break;
-                case 'PZAXPAR':
-                    $d->set('PzXPar', $x->post('VALOR'));
-                    break;
-            }
-            $d->where('ID', $x->post('ID'))->update('FichaTecnica');
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
