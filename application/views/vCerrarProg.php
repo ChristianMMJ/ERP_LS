@@ -23,7 +23,7 @@
             </div>
             <div class="col-12 col-sm-6 col-lg-2 mt-3">
                 <button type="button" class="btn btn-primary mx-5" id="btnAsignar" data-toggle="tooltip" data-placement="top" title="Asignar"><span class="fa fa-check"></span><br></button>
-                <button type="button" class="btn btn-danger" id="btnDeshacer" data-toggle="tooltip" data-placement="top" title="Deshacer"><span class="fa fa-undo"></span><br></button>
+                <button type="button" class="btn btn-danger d-none" id="btnDeshacer" data-toggle="tooltip" data-placement="top" title="Deshacer"><span class="fa fa-undo"></span><br></button>
                 <button type="button" class="btn btn-info" id="btnReload" data-toggle="tooltip" data-placement="top" title="Refrescar"><span class="fa fa-exchange-alt"></span><br></button>
             </div>
         </div>
@@ -88,7 +88,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Historial de controles eliminados</h5>
+                <h5 class="modal-title">Historial de controles generados</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -98,26 +98,53 @@
                     <table id="tblHistorial" class="table table-sm display hover" style="width:100%">
                         <thead>
                             <tr>
-                                <th>ID</th><!--0--> 
+                                <th>ID</th>
+                                <th>IdEstilo</th>
+                                <th>IdColor</th>
                                 <th>Pedido</th>
-                                <th>Cliente</th><!--5-->
+                                <th>Cliente</th>
 
-                                <th>Estilo</th><!--6-->
+                                <th>Estilo</th>
                                 <th>Color</th>
                                 <th>Serie</th>
                                 <th>Fecha</th>
-                                <th>Fe - Pe</th><!--10-->
+                                <th>Fe - Pe</th>
 
-                                <th>Fe - En</th><!--11-->
+                                <th>Fe - En</th>
                                 <th>Pars</th>
                                 <th>Maq</th>
                                 <th>Sem</th>
-                                <th>Año</th><!--15-->
+                                <th>Año</th>
 
                                 <th>Control</th>
+                                <th>SerieID</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
+                        <tfoot>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+
+                                <th style="text-align:right">Pares</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -338,7 +365,12 @@
         getRecords();
         $("#col12_filter").focus();
         handleEnter();
-        pnlTablero.find("#col14_filter").val((new Date()).getFullYear());
+        pnlTablero.find("#col14_filter").val((new Date()).getFullYear()); 
+        
+        $.fn.dataTable.ext.errMode = 'throw';
+        if ($.fn.DataTable.isDataTable('#tblHistorial')) {
+            tblHistorial.DataTable().destroy();
+        }
         Historial = tblHistorial.DataTable({
             dom: 'Brt',
             buttons: [
@@ -376,9 +408,21 @@
                     "targets": [2],
                     "visible": false,
                     "searchable": false
+                },
+                {
+                    "targets": [16],
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    "targets": [17],
+                    "visible": false,
+                    "searchable": false
                 }],
             "columns": [
                 {"data": "ID"}, /*0*/
+                {"data": "IdEstilo"}, /*1*/
+                {"data": "IdColor"}, /*2*/
                 {"data": "Pedido"}, /*3*/
                 {"data": "Cliente"}, /*4*/
                 {"data": "Estilo"}, /*5*/
@@ -388,10 +432,12 @@
                 {"data": "Fecha Pedido"}, /*9*/
                 {"data": "Fecha Entrega"}, /*10*/
                 {"data": "Pares"}, /*11*/
-                {"data": "Maquila"}, /*12*/
+                {"data": "Maq"}, /*12*/
                 {"data": "Semana"}, /*13*/
                 {"data": "Anio"}, /*14*/
-                {"data": "Control"} /*15*/
+                {"data": "Control"}, /*15*/
+                {"data": "SerieID"}/*16*/,
+                {"data": "ID_PEDIDO"}/*17*/
             ],
             language: lang,
             select: true,
@@ -423,7 +469,7 @@
                     }
                 });
                 $.each($(row), function (k, v) {
-                    if (data["Control"] !== '') {
+                    if (data["Marca"] === '0' && data["Control"] !== null) {
                         $(v).addClass('HasMca');
                     }
                 });
@@ -558,38 +604,6 @@
                 }, 0));
             }
         });
-        var tcv = '';
-        CerrarProg.on('key', function (e, datatable, key, cell, originalEvent) {
-            var t = $('#tblCerrarProg > tbody');
-            var a = t.find("#EditingField");
-            if (key === 13) {
-                tcv = cell.data();
-                if (a.val() !== 'undefined' && a.val() !== undefined) {
-                    var b = CerrarProg.cell(a.parent()).index();
-                    var c = a.val();
-                    var d = a.parent();
-                    d.html(c);
-                    CerrarProg.cell(d, b).data(c).draw();
-                }
-                var td = $(this).find("td.focus");
-                var g = '<input id="EditingField" type="text" class="form-control form-control-sm">';
-
-                var g = '<input id="EditingField" type="text" class="form-control form-control-sm" value="' + cell.data() + '" autofocus>';
-                td.html(g);
-                td.find("#EditingField").focus();
-                td.find("#EditingField").select();
-            }
-        }).on('key-blur', function (e, datatable, cell) {
-            var t = $('#tblCerrarProg > tbody');
-            var a = t.find("#EditingField");
-            if (a.val() !== 'undefined' && a.val() !== undefined) {
-                var b = CerrarProg.cell(a.parent()).index();
-                var c = a.val() !== '' ? a.val() : tcv;
-                var d = a.parent();
-                d.html(c);
-                CerrarProg.cell(d, b).data(c).draw();
-            }
-        });
         HoldOn.close();
     }
 
@@ -657,10 +671,6 @@
     }
 
     function getHistorialDeControles() {
-        $.fn.dataTable.ext.errMode = 'throw';
-        if ($.fn.DataTable.isDataTable('#tblHistorial')) {
-            tblHistorial.DataTable().destroy();
-        }
         Historial.ajax.reload();
     }
 </script>
