@@ -138,6 +138,24 @@ class Pedidos_model extends CI_Model {
         }
     }
 
+    public function getCapacidadMaquila($CLAVE, $SEMANA) {
+        try {
+            return $this->db->select("`M`.`CapacidadPares` AS `CAPACIDAD`,"
+                                    . "(SELECT SUM(PD.Pares) FROM pedidodetalle AS PD WHERE PD.Maquila = M.Clave AND PD.Semana = '$SEMANA') AS PARES")
+                            ->from('maquilas AS M')
+                            ->where('M.Clave', $CLAVE)
+                            ->limit(1)
+                            ->get()->result();
+//            return $this->db->select("P.CapacidadPares AS CLAVE")
+//                            ->from('pedidos AS P')
+//                            ->join('pedidodetalle AS PD', 'P.Clave = PD.Pedido')
+//                            ->join('maquilas AS M', 'P.Clave = PD.Pedido')
+//                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onAgregar($array) {
         try {
             $this->db->insert("pedidos", $array);

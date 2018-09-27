@@ -37,10 +37,15 @@
             <div class="card  m-3 ">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-12 col-sm-6 col-md-4 float-left">
+                        <div class="col-12 col-sm-12 col-md-3 col-lg-3 float-left">
                             <legend >Pedido</legend>
                         </div>
-                        <div class="col-12 col-sm-3 col-md-8" align="right">
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6" align="center">
+                            <button type="button" class="btn btn-primary btn-sm" id="btnCapacidad" onclick="onComprobarCapacidades('#Maquila')" >
+                                <span class="fa fa-eye" ></span>
+                            </button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-3  col-lg-3" align="right">
                             <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
                                 <span class="fa fa-arrow-left" ></span> REGRESAR
                             </button>
@@ -148,7 +153,7 @@
                                     <input type="text" id="ObservacionDetalle" name="ObservacionDetalle" class="form-control form-control-sm" placeholder="Descripción" maxlength="99">
                                 </div>
                             </div>
-                        </div>
+                        </div> 
                         <!--TALLAS-->
                         <div class="col-12">
                             <div class="table-responsive" style="overflow-x:auto; white-space: nowrap;">
@@ -265,6 +270,23 @@
     </form>
 </div>
 
+<div id="mdlAviso" class="modal fade">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header"> 
+                <h5 class="modal-title">AVISO</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="comment">
+                    /* load ide ui */
+                </div>
+            </div> 
+        </div> 
+    </div> 
+</div> 
 
 <script>
     var master_url = base_url + 'index.php/Pedidos/';
@@ -276,10 +298,17 @@
     var nuevo = false;
     var _animate_ = {enter: 'animated fadeInLeft', exit: 'animated fadeOutDown'}, _placement_ = {from: "bottom", align: "left"};
     var Cliente = '';
+    var mdlAviso = $("#mdlAviso");
 
     $(document).ready(function () {
         init();
         handleEnter();
+        mdlAviso.draggable({
+            handle: ".modal-header"
+        });
+        pnlDatos.find("#Maquila").change(function () {
+            onComprobarCapacidades("#Maquila");
+        });
 
         validacionSelectPorContenedor(pnlDatos);
 
@@ -1203,6 +1232,7 @@
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
         }).always(function () {
             HoldOn.close();
+            onComprobarCapacidades("#Maquila");
         });
     }
     function onReload() {
@@ -1266,6 +1296,40 @@
             }
         }).fail(function (x, y, z) {
             console.log(x, y, z);
+        });
+    }
+
+    function onComprobarCapacidades(e) {
+        var Semana = $("#Semana").val();
+        $.getJSON(master_url + 'getCapacidadMaquila', {CLAVE: $(e).val(), SEMANA: Semana}).done(function (data) {
+            var dx = data[0];
+            if (data.length > 0) {
+                var x = '<ul class="list-group">';
+                var ligr = '<li class="list-group-item d-flex justify-content-between">', ligrpclose = '</li>';
+                x += ligr + '<span class="text-info font-weight-bold">CAPACIDAD</span>';
+                x += '<span class="badge badge-primary badge-pill font-weight-bold">' + (dx.CAPACIDAD === null ? 0 : dx.CAPACIDAD) + '</span>' + ligrpclose;
+                x += ligr + '<span class="text-info font-weight-bold">PARES EN LA SEMANA </span><span class="text-danger font-weight-bold">' + Semana + '</span>';
+                x += '<span class="badge badge-primary badge-pill font-weight-bold">' + (dx.PARES === null ? 0 : dx.PARES) + '</span>' + ligrpclose;
+                x += ligr + '<span class="text-info font-weight-bold">ESPACIO</span>';
+                x += '<span class="badge badge-primary badge-pill font-weight-bold">' + (dx.CAPACIDAD === null ? 0 : (dx.CAPACIDAD - dx.PARES)) + '</span>' + ligrpclose;
+                x += '</ul>';
+                mdlAviso.find(".modal-body").html(x);
+                console.log(dx, ' * ', dx.CAPACIDAD, ' - ', dx.PARES);
+                if (dx.CAPACIDAD !== null && dx.PARES !== null) {
+                    var CAPACIDAD = parseFloat(dx.CAPACIDAD), PARES = parseFloat(dx.PARES);
+                    console.log(PARES, ' - ', CAPACIDAD);
+                    if (PARES > CAPACIDAD) {
+                        mdlAviso.modal({backdrop: false});
+                        $('.modal-backdrop').remove();
+                        setTimeout(function () {
+                            mdlAviso.modal('hide');
+                        }, 5000);
+                    }
+                }
+            }
+        }).fail(function (x, y, z) {
+            console.log(x.responseText);
+            swal('ATENCION', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLES', 'warning');
         });
     }
 </script>

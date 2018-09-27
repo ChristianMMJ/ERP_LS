@@ -64,6 +64,14 @@ class Pedidos extends CI_Controller {
         }
     }
 
+    public function getCapacidadMaquila() {
+        try {
+            print json_encode($this->Pedidos_model->getCapacidadMaquila($this->input->get('CLAVE'),$this->input->get('SEMANA')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getID() {
         try {
             print json_encode($this->Pedidos_model->getID());

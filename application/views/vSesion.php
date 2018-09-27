@@ -49,12 +49,15 @@
     </div>
 </div>
 <div class="row div-login" aling="center">
-    <div class="col-12 text-center">
-        <h4 class="mb-3 text-white text-shadown">CONTROL DE ACCESO</h4>
+    <div id="overlay">
+        <img src="<?php print base_url('img/svg/svg-loaders/ball-triangle.svg'); ?>" />
     </div>
-    <div class="col-12">
+    <div id="frmtitulo" class="col-12 text-center d-none">
+        <h4 class="mb-3 text-white text-shadow">CONTROL DE ACCESO</h4>
+    </div>
+    <div class="col-12 d-none">
         <form id="frmIngresar" class="card div-login text-center box-helper">
-            <input type="email" id="Usuario" name="Usuario" class="form-control" placeholder="Usuario" required autofocus>
+            <input type="email" id="Usuario" name="Usuario" class="form-control" placeholder="Usuario" required autofocus=""> 
             <input type="password" id="Contrasena" name="Contrasena" class="form-control mt-3" placeholder="Contraseña" required>
             <button class="btn btn-primary btn-block mt-3" id="btnIngresar" type="button">Ingresar</button>
             <button class="btn btn-warning btn-block mt-2" id="btnOlvidasteContrasena" type="button">Olvidaste tu contraseña?</button>
@@ -103,9 +106,15 @@
         } else {
         }
     }
-
+    document.getElementById("overlay").style.display = "block";
     $(document).ready(function () {
+        document.getElementById("overlay").style.display = "none";
+        $("#frmtitulo").removeClass('d-none');
+        $("#frmIngresar").parent().removeClass('d-none');
 
+        $("#frmIngresar").addClass("card-transparent");
+
+        $("body").css("background","none");
         $("body").vegas({
             delay: 9000,
             slides: [
@@ -172,12 +181,49 @@
     });
 </script> 
 <style> 
-    .text-shadown{ 
+    body{
+        background-color: #222222;
+    }
+    .form-control:focus {
+        -webkit-box-shadow: 0 0 0 0.2rem rgba(44, 62, 80, 0.25);
+        box-shadow: 0 0 0 0.2rem #3F51B5;
+    }
+    .card-transparent{
+        background-color: transparent !important;
+        color: #fff !important;
+        border: none !important; 
+        box-shadow:none !important;
+    }
+
+    .text-shadow{ 
         text-shadow: 3px 4px 5px #000000;
     }
-    .box-helper{
-        box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22) !important;
-        box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+
+    .text-muted{
+        color:#fff !important;
+        text-shadow: 3px 4px 5px #000000;
+    } 
+    #overlay {
+        position: fixed;
+        display: none;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #222222;
+        z-index: 2;
+        cursor: pointer;
+    }
+    #overlay > img{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-size: 50px;
+        color: white;
+        transform: translate(-50%,-50%);
+        -ms-transform: translate(-50%,-50%);
     }
 </style>
 
