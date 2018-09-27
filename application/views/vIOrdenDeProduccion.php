@@ -8,33 +8,86 @@
         <div class="row">
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3">
                 <label>Del control</label>
-                <input type="text" class="form-control form-control-sm column_filter numbersOnly" id="ControlInicial" autofocus maxlength="10" onkeyup="">
+                <input type="text" class="form-control form-control-sm numbersOnly" id="ControlInicial" autofocus maxlength="10" onkeyup="onVerificarFormValido()" onkeypress="onVerificarFormValido()">
             </div>
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3">
                 <label>Al control</label>     
-                <input type="text" class="form-control form-control-sm column_filter numbersOnly" id="ControlFinal" maxlength="10"  min="1" max="10" onkeyup="">
+                <input type="text" class="form-control form-control-sm numbersOnly" id="ControlFinal" maxlength="10"  min="1" max="10" onkeyup="onVerificarFormValido()" onkeypress="onVerificarFormValido()">
             </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3" data-column="13">
                 <label>Semana</label>
-                <input type="text" class="form-control form-control-sm column_filter numbersOnly" id="Semana" maxlength="2" minlength="1" onkeypress="" onkeyup="" onfocus="">
+                <input type="text" class="form-control form-control-sm column_filter numbersOnly" id="col13_filter" maxlength="2" minlength="1" onkeypress="" onkeyup="onVerificarFormValido()" onfocus="">
             </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3" data-column="14">
                 <label>Año</label>
-                <input type="text" class="form-control form-control-sm column_filter numbersOnly" id="Anio" maxlength="4" minlength="1" onkeypress="" onkeyup="" onfocus="">
+                <input type="text" class="form-control form-control-sm column_filter numbersOnly" id="col14_filter" maxlength="4" minlength="1" onkeypress="" onkeyup="onVerificarFormValido()" onfocus="">
             </div>
             <div class="col-12 col-sm-6 col-md-4 col-lg-12 col-xl-12 mt-4" align="right">
                 <button type="button" class="btn btn-primary" id="btnGenerar">Aceptar</button>
             </div>
-            <div id="Resultado" class="col-12">
+            <div id="Controles" class="table-responsive">
+                <table id="tblControles" class="table table-sm display hover" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>ID</th><!--0-->
+                            <th>IdEstilo</th><!--1-->
+                            <th>IdColor</th><!--2-->
+                            <th>Pedido</th><!--3-->
+                            <th>Cliente</th><!--4-->
 
+                            <th>Estilo</th><!--5-->
+                            <th>Color</th><!--6-->
+                            <th>Serie</th><!--7-->
+                            <th>Fecha</th><!--8-->
+                            <th>Fe - Pe</th><!--9-->
+
+                            <th>Fe - En</th><!--10-->
+                            <th>Pars</th><!--11-->
+                            <th>Maq</th><!--12-->
+                            <th>Sem</th><!--13-->
+                            <th>Año</th><!--14-->
+
+                            <th>Control</th><!--15-->
+                            <th>SerieID</th><!--16-->
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+
+                            <th style="text-align:right">Pares</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
         </div>
     </div>
 </div>
 <script>
-    var master_url =  base_url + 'index.php/IOrdenDeProduccion/';
+    var master_url = base_url + 'index.php/IOrdenDeProduccion/';
     var btnGenerar = $("#btnGenerar");
-    var controlinicial = $("#ControlInicial"), controlfinal = $("#ControlFinal"), semana = $("#Semana"), Anio = $("#Anio");
+    var controlinicial = $("#ControlInicial"), controlfinal = $("#ControlFinal"), semana = $("#col13_filter"), Anio = $("#col14_filter");
+    var Controles;
+    var tblControles = $('#tblControles');
+
     // IIFE - Immediately Invoked Function Expression
     (function (yc) {
         // The global jQuery object is passed as a parameter
@@ -44,11 +97,33 @@
         // Listen for the jQuery ready event on the document
         $(function () {
             handleEnter();
+            getRecords();
+
+            $.fn.dataTable.ext.search.push(
+                    function (settings, data, dataIndex) {
+                        var min = $('#ControlInicial').val() !== '' ? parseInt($('#ControlInicial').val()) : 0;
+                        var max = $('#ControlFinal').val() !== '' ? parseInt($('#ControlFinal').val()) : 9999999999;
+                        var age = parseInt(data[15]) || 0; // use data for the age column 
+                        if ((isNaN(min) && isNaN(max)) || (isNaN(min) && age <= max) || (min <= age && isNaN(max)) || (min <= age && age <= max))
+                        {
+                            return true;
+                        }
+                        return false;
+                    }
+            );
+
+            $("#ControlInicial, #ControlFinal").keyup(function () {
+                onVerificarFormValido();
+                Controles.draw();
+            }).change(function () {
+                onVerificarFormValido();
+            });
+
             btnGenerar.click(function () {
                 var params = {INICIO: controlinicial.val(), FIN: controlfinal.val(), SEMANA: semana.val(), ANIO: Anio.val()};
                 $.post(master_url + 'getOrdenDeProduccion', params).done(function (data) {
                     //check Apple device
-                    console.log(data)
+                    console.log(data);
                     if (isAppleDevice() || isMobile) {
                         window.open(data, '_blank');
                     } else {
@@ -83,6 +158,12 @@
                     HoldOn.close();
                 });
             });
+
+            $('input.column_filter').on('keyup', function () {
+                var i = $(this).parents('div').attr('data-column');
+                tblControles.DataTable().column(i).search($('#col' + i + '_filter').val()).draw();
+            });
+
         });
     }));
 
@@ -92,5 +173,138 @@
                 (navigator.userAgent.toLowerCase().indexOf("iphone") > -1) ||
                 (navigator.userAgent.toLowerCase().indexOf("ipod") > -1)
                 );
+    }
+
+
+    function getRecords() {
+        HoldOn.open({
+            theme: 'sk-cube',
+            message: 'CARGANDO...'
+        });
+        $.fn.dataTable.ext.errMode = 'throw';
+        if ($.fn.DataTable.isDataTable('#tblControles')) {
+            tblControles.DataTable().destroy();
+        }
+        Controles = tblControles.DataTable({
+            dom: 'irt',
+            buttons: [
+                {
+                    text: "Todos",
+                    className: 'btn btn-info btn-sm',
+                    titleAttr: 'Todos',
+                    action: function (dt) {
+                        Controles.rows({page: 'current'}).select();
+                    }
+                },
+                {
+                    extend: 'selectNone',
+                    className: 'btn btn-info btn-sm',
+                    text: 'Ninguno',
+                    titleAttr: 'Deseleccionar Todos'
+                }
+            ],
+            "ajax": {
+                "url": master_url + 'getRecords',
+                "dataSrc": ""
+            },
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    "targets": [1],
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    "targets": [2],
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    "targets": [16],
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    "targets": [17],
+                    "visible": false,
+                    "searchable": false
+                }],
+            "columns": [
+                {"data": "ID"}, /*0*/
+                {"data": "IdEstilo"}, /*1*/
+                {"data": "IdColor"}, /*2*/
+                {"data": "Pedido"}, /*3*/
+                {"data": "Cliente"}, /*4*/
+                {"data": "Estilo"}, /*5*/
+                {"data": "Color"}, /*6*/
+                {"data": "Serie"}, /*7*/
+                {"data": "Fecha Captura"}, /*8*/
+                {"data": "Fecha Pedido"}, /*9*/
+                {"data": "Fecha Entrega"}, /*10*/
+                {"data": "Pares"}, /*11*/
+                {"data": "Maq"}, /*12*/
+                {"data": "Semana"}, /*13*/
+                {"data": "Anio"}, /*14*/
+                {"data": "Control"}, /*15*/
+                {"data": "SerieID"}/*16*/,
+                {"data": "ID_PEDIDO"}/*17*/
+            ],
+            language: lang,
+            select: true,
+            keys: true,
+            "autoWidth": true,
+            "colReorder": true,
+            "displayLength": 9999999999,
+            "scrollY": 380,
+            "scrollX": true,
+            "bLengthChange": false,
+            "deferRender": true,
+            "scrollCollapse": false,
+            "bSort": true,
+            "aaSorting": [
+                [0, 'desc']/*ID*/
+            ],
+            "createdRow": function (row, data, dataIndex, cells) {
+                $.each($(row).find("td"), function (k, v) {
+                    switch (parseInt(k)) {
+                        case 1:
+                            $(v).attr('title', data["Cliente Razon"]);
+                            break;
+                        case 2:
+                            $(v).attr('title', data["Descripcion Estilo"]);
+                            break;
+                        case 3:
+                            $(v).attr('title', data["Descripcion Color"]);
+                            break;
+                    }
+                });
+                $.each($(row), function (k, v) {
+                    if (data["Marca"] === '0' && data["Control"] !== null) {
+                        $(v).addClass('HasMca');
+                    }
+                });
+            },
+            "footerCallback": function (row, data, start, end, display) {
+                var api = this.api(); //Get access to Datatable API
+                // Update footer
+                $(api.column(11).footer()).html(api.column(11, {page: 'current'}).data().reduce(function (a, b) {
+                    return parseFloat(a) + parseFloat(b);
+                }, 0));
+            }
+        });
+        HoldOn.close();
+    }
+
+    function onVerificarFormValido() {
+        var row_count = Controles.page.info().recordsDisplay;
+        if (row_count > 0) {
+            btnGenerar.prop("disabled", false);
+        } else {
+            btnGenerar.prop("disabled", true);
+        }
     }
 </script>
