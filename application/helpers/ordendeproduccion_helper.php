@@ -1,7 +1,5 @@
 <?php
 
-require_once APPPATH . "/third_party/fpdf17/fpdf.php";
-
 class PDF extends FPDF {
 
     private $Pedido = '';

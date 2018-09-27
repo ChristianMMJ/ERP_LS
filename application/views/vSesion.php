@@ -50,10 +50,10 @@
 </div>
 <div class="row div-login" aling="center">
     <div class="col-12 text-center">
-        <h4 class="mb-3 text-white">Control de Acceso</h4>
+        <h4 class="mb-3 text-white text-shadown">CONTROL DE ACCESO</h4>
     </div>
     <div class="col-12">
-        <form id="frmIngresar" class="card div-login text-center">
+        <form id="frmIngresar" class="card div-login text-center box-helper">
             <input type="email" id="Usuario" name="Usuario" class="form-control" placeholder="Usuario" required autofocus>
             <input type="password" id="Contrasena" name="Contrasena" class="form-control mt-3" placeholder="Contraseña" required>
             <button class="btn btn-primary btn-block mt-3" id="btnIngresar" type="button">Ingresar</button>
@@ -121,7 +121,7 @@
             ],
             animation: ['fade', 'kenburnsUp', 'kenburnsDown', 'kenburnsLeft', 'kenburnsRight'],
             transitionDuration: 1500,
-            overlay: '<?php print base_url('/js/vegas/overlays/08.png'); ?>'
+            overlay: '<?php print base_url('/js/vegas/overlays/07.png'); ?>'
         });
 
         handleEnter();
@@ -171,4 +171,13 @@
         });
     });
 </script> 
+<style> 
+    .text-shadown{ 
+        text-shadow: 3px 4px 5px #000000;
+    }
+    .box-helper{
+        box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22) !important;
+        box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+    }
+</style>
 

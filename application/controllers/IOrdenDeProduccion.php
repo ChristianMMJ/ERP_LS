@@ -2,6 +2,7 @@
 
 header('Access-Control-Allow-Origin: *');
 defined('BASEPATH') OR exit('No direct script access allowed');
+require_once APPPATH . "/third_party/fpdf17/fpdf.php";
 
 class IOrdenDeProduccion extends CI_Controller {
 
@@ -43,7 +44,7 @@ class IOrdenDeProduccion extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->Hormas_model->getRecords());
+            print json_encode($this->Iordendeproduccion_model->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
