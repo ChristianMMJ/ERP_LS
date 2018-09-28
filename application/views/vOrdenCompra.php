@@ -260,7 +260,8 @@
 
         pnlDatos.find("#Sem").change(function () {
             var ano = pnlDatos.find("#Ano");
-            onComprobarSemanasProduccion($(this), ano.val());
+            var maq = pnlDatos.find("#Maq");
+            onComprobarSemanasProduccion($(this), ano.val(), maq.val());
         });
 
         pnlDatos.find("#Proveedor").change(function () {
@@ -953,9 +954,45 @@
             console.log(x.responseText);
         });
     }
-    function onComprobarSemanasProduccion(v, ano) {
+    function onComprobarSemanasProduccion(v, ano, maq) {
         $.getJSON(master_url + 'onComprobarSemanasProduccion', {Clave: $(v).val(), Ano: ano}).done(function (data) {
             if (data.length > 0) {
+
+                $.getJSON(master_url + 'onVerificarSemanaProdCerrada', {
+                    Ano: ano,
+                    Maq: maq,
+                    Sem: $(v).val()
+                }).done(function (data) {
+                    if (data.length > 0) {
+                        if (data[0].Estatus === 'CERRADA') {//CERRADA
+                            swal({
+                                title: "ATENCIÓN",
+                                text: "LA SEMANA YA ESTA CERRADA",
+                                icon: "warning",
+                                buttons: {
+                                    eliminar: {
+                                        text: "Aceptar",
+                                        value: "aceptar"
+                                    }
+                                }
+                            }).then((value) => {
+                                switch (value) {
+                                    case "aceptar":
+                                        swal.close();
+                                        $(v).val('');
+                                        $(v).focus();
+                                        break;
+                                }
+                            });
+                        } else {//ABIERTA
+
+                        }
+                    } else {//ABIERTA
+
+                    }
+                });
+
+
 
             } else {
                 swal({

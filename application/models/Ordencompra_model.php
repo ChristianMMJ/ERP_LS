@@ -282,6 +282,25 @@ where sc.ArticuloCBZ= '$Articulo' ", false);
         }
     }
 
+    public function onVerificarSemanaProdCerrada($Ano, $Maq, $Sem) {
+        try {
+            $this->db->select("G.Estatus")->from("semanasproduccioncerradas AS G")
+                    ->where("G.Ano", $Ano)
+                    ->where("G.Maq", $Maq)
+                    ->where("G.Sem", $Sem);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getProveedores() {
         try {
             return $this->db->select("P.Clave AS ID, "

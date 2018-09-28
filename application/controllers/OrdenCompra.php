@@ -10,7 +10,8 @@ class OrdenCompra extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('Ordencompra_model')->helper('ReportesCompras_helper')->helper('file');
+        $this->load->library('session')->model('Ordencompra_model')
+                ->helper('ReportesCompras_helper')->helper('file');
     }
 
     public function index() {
@@ -96,6 +97,16 @@ class OrdenCompra extends CI_Controller {
     public function onComprobarSemanasProduccion() {
         try {
             print json_encode($this->Ordencompra_model->onComprobarSemanasProduccion($this->input->get('Clave'), $this->input->get('Ano')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onVerificarSemanaProdCerrada() {
+        try {
+            print json_encode($this->Ordencompra_model->onVerificarSemanaProdCerrada(
+                                    $this->input->get('Ano'), $this->input->get('Maq'), $this->input->get('Sem')
+            ));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
