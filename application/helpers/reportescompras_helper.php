@@ -1,9 +1,7 @@
 <?php
 
 class PDFConfirmaciones extends FPDF {
-
-    public $Logo;
-    public $Empresa;
+ 
     public $Ano;
     public $Sem;
     public $Maq;
@@ -39,31 +37,15 @@ class PDFConfirmaciones extends FPDF {
 
     function setSem($Sem) {
         $this->Sem = $Sem;
-    }
-
-    function getLogo() {
-        return $this->Logo;
-    }
-
-    function getEmpresa() {
-        return $this->Empresa;
-    }
-
-    function setLogo($Logo) {
-        $this->Logo = $Logo;
-    }
-
-    function setEmpresa($Empresa) {
-        $this->Empresa = $Empresa;
-    }
+    } 
 
     function Header() {
 
-        $this->Image($this->getLogo(), /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30);
+        $this->Image($_SESSION["LOGO"], /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30);
         $this->SetFont('Arial', 'B', 10);
         $this->SetY(5);
         $this->SetX(36);
-        $this->Cell(60, 4, utf8_decode($this->getEmpresa()), 0/* BORDE */, 1, 'L');
+        $this->Cell(60, 4, utf8_decode($_SESSION["EMPRESA_RAZON"]), 0/* BORDE */, 1, 'L');
         $this->SetFont('Arial', 'B', 8);
         $this->SetX(36);
         $this->Cell(60, 4, utf8_decode("Órdenes de Compra fincadas del año: "), 0/* BORDE */, 1, 'L');
@@ -319,31 +301,15 @@ class PDF extends FPDF {
 
     function setDireccion($Direccion) {
         $this->Direccion = $Direccion;
-    }
-
-    function getLogo() {
-        return $this->Logo;
-    }
-
-    function getEmpresa() {
-        return $this->Empresa;
-    }
-
-    function setLogo($Logo) {
-        $this->Logo = $Logo;
-    }
-
-    function setEmpresa($Empresa) {
-        $this->Empresa = $Empresa;
-    }
-
+    }  
+    
     function Header() {
 
-        $this->Image($this->getLogo(), /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30);
+        $this->Image($_SESSION["LOGO"], /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30);
         $this->SetFont('Arial', 'B', 10);
         $this->SetY(5);
         $this->SetX(40);
-        $this->Cell(110, 4, utf8_decode($this->getEmpresa()), 0/* BORDE */, 1, 'L');
+        $this->Cell(110, 4, utf8_decode($_SESSION["EMPRESA_RAZON"]), 0/* BORDE */, 1, 'L');
         $this->SetY(9);
         $this->SetX(40);
         $this->SetFont('Arial', 'B', 9);

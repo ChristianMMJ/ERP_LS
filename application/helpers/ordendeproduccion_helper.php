@@ -854,7 +854,7 @@ class PDF extends FPDF {
     }
 
     function Header() {
-        $this->Image('img/lsbck.png', /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30);
+        $this->Image($_SESSION["LOGO"], /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 28, 14);
         $this->SetFont('Arial', 'B', 6);
 
         $pos = array(37.5/* 0 */, 107.5/* 1 */, 137.5/* 2 */, 167.5/* 3 */, 40/* 4 */, 200/* 5 */, 215/* 6 */);
@@ -913,7 +913,7 @@ class PDF extends FPDF {
         if (strlen($this->getEstilo()) < 30) {
             $this->Cell(70, $alto_celda, utf8_decode("Estilo  " . $this->getEstilo()), 0/* BORDE */, 0, 'L', 0);
         } else {
-        $this->SetFont('Arial', 'B', 5.5);
+            $this->SetFont('Arial', 'B', 5.5);
             $this->Cell(70, $alto_celda, utf8_decode("Estilo  " . $this->getEstilo()), 0/* BORDE */, 0, 'L', 0);
         }
         $this->SetFont('Arial', 'B', 6);
@@ -952,17 +952,17 @@ class PDF extends FPDF {
         /* PIEL UNO CANTIDAD */
         $this->SetFont('Arial', 'B', 6);
         $this->SetX($cols[1]);
-        $this->Cell(12.6, $alto_celda, number_format($this->getCantidadPiel1(), 2, ".", ","), 0/* BORDE */, 0, 'R', 0);
+        $this->Cell(12.6, $alto_celda, ($this->getCantidadPiel1() > 0) ? number_format($this->getCantidadPiel1(), 2, ".", ",") : '', 0/* BORDE */, 0, 'R', 0);
 
         /* PIEL DOS */
         $this->SetFont('Arial', '', 6);
         $this->SetX($cols[2]);
-        $this->Cell(49, $alto_celda, utf8_decode($this->getPiel2() . " " . $cols[2]), 0/* BORDE */, 0, 'L', 0);
+        $this->Cell(49, $alto_celda, utf8_decode($this->getPiel2()), 0/* BORDE */, 0, 'L', 0);
 
         /* PIEL DOS CANTIDAD */
         $this->SetFont('Arial', 'B', 6);
         $this->SetX($cols[3]);
-        $this->Cell(12.6, $alto_celda, number_format($this->getCantidadPiel2(), 2, ".", ","), 0/* BORDE */, 0, 'R', 0);
+        $this->Cell(12.6, $alto_celda, ($this->getCantidadPiel2() > 0) ? number_format($this->getCantidadPiel2(), 2, ".", ",") : '', 0/* BORDE */, 0, 'R', 0);
 
         /* PIEL TRES */
         $this->SetFont('Arial', '', 6);
@@ -1030,7 +1030,7 @@ class PDF extends FPDF {
         /* FORRO UNO CANTIDAD */
         $this->SetFont('Arial', 'B', 6);
         $this->SetX($cols[1]);
-        $this->Cell(12.6, $alto_celda, number_format($this->getCantidadForro1(), 2, ".", ","), 0/* BORDE */, 0, 'R', 0);
+        $this->Cell(12.6, $alto_celda, ($this->getCantidadForro1() > 0) ? number_format($this->getCantidadForro1(), 2, ".", ",") : '', 0/* BORDE */, 0, 'R', 0);
 
         /* FORRO DOS */
         $this->SetFont('Arial', '', 6);
@@ -1040,7 +1040,7 @@ class PDF extends FPDF {
         /* FORRO DOS CANTIDAD */
         $this->SetFont('Arial', 'B', 6);
         $this->SetX($cols[3]);
-        $this->Cell(12.6, $alto_celda, number_format($this->getCantidadForro2(), 2, ".", ","), 0/* BORDE */, 0, 'R', 0);
+        $this->Cell(12.6, $alto_celda, ($this->getCantidadForro2() > 0) ? number_format($this->getCantidadForro2(), 2, ".", ",") : '', 0/* BORDE */, 0, 'R', 0);
 
         /* FORRO TRES */
         $this->SetFont('Arial', '', 6);
@@ -1050,7 +1050,7 @@ class PDF extends FPDF {
         /* FORRO TRES CANTIDAD */
         $this->SetFont('Arial', 'B', 6);
         $this->SetX($cols[5]);
-        $this->Cell(12.5, $alto_celda, number_format($this->getCantidadForro3(), 2, ".", ","), 0/* BORDE */, 0, 'R', 0);
+        $this->Cell(12.5, $alto_celda, ($this->getCantidadForro3() > 0) ? number_format($this->getCantidadForro3(), 2, ".", ",") : '', 0/* BORDE */, 0, 'R', 0);
 
         /* FORRO TOTAL */
         $this->SetX($cols[6]);
@@ -1066,14 +1066,18 @@ class PDF extends FPDF {
 
         /* SINTETICO SECCION UNO */
         /* SINTETICO UNO */
-        $this->SetFont('Arial', '', 6);
+        if (strlen($this->getSintetico1()) > 40) {
+            $this->SetFont('Arial', '', 5);
+        } else {
+            $this->SetFont('Arial', '', 6);
+        }
         $this->SetX($cols[0]);
         $this->Cell(49, $alto_celda, utf8_decode($this->getSintetico1()), 0/* BORDE */, 0, 'L', 0);
 
         /* SINTETICO UNO CANTIDAD */
         $this->SetFont('Arial', 'B', 6);
         $this->SetX($cols[1]);
-        $this->Cell(12.6, $alto_celda, utf8_decode($this->getCantidadSintetico1()), 0/* BORDE */, 0, 'R', 0);
+        $this->Cell(12.6, $alto_celda, ($this->getCantidadSintetico1() > 0) ? number_format($this->getCantidadSintetico1(), 2, ".", ",") : '', 0/* BORDE */, 0, 'R', 0);
 
         /* SINTETICO DOS */
         $this->SetFont('Arial', '', 6);
@@ -1083,7 +1087,7 @@ class PDF extends FPDF {
         /* SINTETICO DOS CANTIDAD */
         $this->SetFont('Arial', 'B', 6);
         $this->SetX($cols[3]);
-        $this->Cell(12.6, $alto_celda, utf8_decode($this->getCantidadSintetico2()), 0/* BORDE */, 0, 'R', 0);
+        $this->Cell(12.6, $alto_celda, ($this->getCantidadSintetico2() > 0) ? number_format($this->getCantidadSintetico2(), 2, ".", ",") : '', 0/* BORDE */, 0, 'R', 0);
 
         /* SINTETICO TRES */
         $this->SetFont('Arial', '', 6);
@@ -1093,7 +1097,7 @@ class PDF extends FPDF {
         /* SINTETICO TRES CANTIDAD */
         $this->SetFont('Arial', 'B', 6);
         $this->SetX($cols[5]);
-        $this->Cell(12.5, $alto_celda, utf8_decode($this->getCantidadSintetico3()), 0/* BORDE */, 0, 'R', 0);
+        $this->Cell(12.5, $alto_celda, ($this->getCantidadSintetico3() > 0) ? number_format($this->getCantidadSintetico3(), 2, ".", ",") : '', 0/* BORDE */, 0, 'R', 0);
 
         /* SINTETICO TOTAL */
         $this->SetFont('Arial', 'B', 6);

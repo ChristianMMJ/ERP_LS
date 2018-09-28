@@ -177,7 +177,7 @@ class PDF extends FPDF {
     }
 
     function Header() {
-        $this->Image('img/lsbck.png', /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30);
+        $this->Image($_SESSION["LOGO"], /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30, 12.5);
         $this->SetFont('Arial', 'B', 8.25);
 
         $pos = array(65/* 0 */, 80/* 1 */, 145/* 2 */, 160/* 3 */, 40/* 4 */, 200/* 5 */, 215/* 6 */);
@@ -187,9 +187,9 @@ class PDF extends FPDF {
         $alto_celda = 4;
         $this->SetY($base);
         $this->SetX(40);
-        $this->Cell(110, $alto_celda, utf8_decode("CALZADO LOBO, S.A. DE C.V."), 0/* BORDE */, 0, 'L');
+        $this->Cell(110, $alto_celda, utf8_decode($_SESSION["EMPRESA_RAZON"]), 0/* BORDE */, 0, 'L');
         $this->SetX(85);
-        $this->Cell(110, $alto_celda, utf8_decode("Rio Santiago No. 245 Col. San Miguel"), 0/* BORDE */, 1, 'L');
+        $this->Cell(110, $alto_celda, utf8_decode($_SESSION["EMPRESA_DIRECCION"]), 0/* BORDE */, 1, 'L');
 
         $base = $base + 4;
         $this->SetY($base);

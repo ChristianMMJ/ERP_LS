@@ -46,8 +46,8 @@ class Ordendeproduccion_model extends CI_Model {
                             ->join('colores AS C', 'PD.color = C.Clave AND C.Estilo = E.Clave')
                             ->join('series AS S', 'E.Serie = S.Clave')
                             ->join('controles AS CT', 'CT.PedidoDetalle = PD.ID')
-                            ->join('ordendeproduccion AS OP', 'OP.Pedido = PE.ID  AND OP.PedidoDetalle = PD.ID', 'left')
-                            ->where('PD.Control != 0 AND OP.ID IS NULL', null, false)
+                            ->join('ordendeproduccion AS OP', 'OP.Pedido = PE.Clave  AND OP.PedidoDetalle = PD.ID', 'left')
+                            ->where('PD.Control <> 0 AND OP.ID IS NULL', null, false)
                             ->where('CT.Estatus', 'A')->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -120,7 +120,7 @@ class Ordendeproduccion_model extends CI_Model {
                     ->join('series AS S', 'PD.Serie = S.Clave')
                     ->join('lineas AS L', 'E.Linea = L.Clave')
                     ->join('controles AS CT', 'CT.Pedido = P.ID')
-                    ->join('ordendeproduccion AS OP', 'OP.Pedido = P.ID  AND OP.PedidoDetalle = PD.ID', 'left')
+                    ->join('ordendeproduccion AS OP', 'OP.Pedido = P.Clave  AND OP.PedidoDetalle = PD.ID', 'left')
                     ->where('PD.Maquila', $MAQUILA)
                     ->where('PD.Semana', $SEMANA)
                     ->where('PD.Ano', $ANO)

@@ -237,9 +237,9 @@
                 },
                 onRedirectError: function (tour) {}
             });
-// Initialize the tour
+            // Initialize the tour
             tour.init();
-// Start the tour
+            // Start the tour
             tour.start();
 
             init();
@@ -331,6 +331,8 @@
                                     });
                                 });
                                 var f = new FormData();
+                                f.append('INICIO', pnlTablero.find("#ControlInicial").val() !== '' ? pnlTablero.find("#ControlInicial").val() : pnlTablero.find("#ControlInicial").val());
+                                f.append('FIN', pnlTablero.find("#ControlFinal").val() !== '' ? pnlTablero.find("#ControlFinal").val() : pnlTablero.find("#ControlInicial").val());
                                 f.append('Controles', JSON.stringify(controles));
                                 $.ajax({
                                     url: master_url + 'onReAsignarControles',

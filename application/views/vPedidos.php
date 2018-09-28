@@ -156,29 +156,36 @@
                         </div> 
                         <!--TALLAS-->
                         <div class="col-12">
-                            <div class="table-responsive" style="overflow-x:auto; white-space: nowrap;">
-                                <label class="font-weight-bold" for="Tallas">Tallas</label>
-                                <table id="tblTallas" class="Tallas" >
-                                    <thead></thead>
-                                    <tbody>
-                                        <tr>
-                                            <?php
-                                            for ($index = 1; $index < 23; $index++) {
-                                                print '<td><input type="text" style="width: 37px;" maxlength="4" class="numbersOnly" name="T' . $index . '" disabled></td>';
-                                            }
-                                            ?>
-                                            <td class="font-weight-bold">Pares</td>
-                                        </tr>
-                                        <tr>
-                                            <?php
-                                            for ($index = 1; $index < 23; $index++) {
-                                                print '<td><input type="text" style="width: 37px;" maxlength="4" class=" numbersOnly" name="C' . $index . '" onfocus="onCalcularPares(this);" on change="onCalcularPares(this);" keyup="onCalcularPares(this);" onfocusout="onCalcularPares(this);"></td>';
-                                            }
-                                            ?>
-                                            <td><input type="text" style="width: 40px;" maxlength="4" class=" numbersOnly font-weight-bold" disabled=""  id="TPares"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="row">
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" >
+                                    <div class="table-responsive" style="overflow-x:auto; white-space: nowrap;">
+                                        <label class="font-weight-bold" for="Tallas">Tallas</label>
+                                        <table id="tblTallas" class="Tallas" >
+                                            <thead></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <?php
+                                                    for ($index = 1; $index < 23; $index++) {
+                                                        print '<td><input type="text" style="width: 37px;" maxlength="4" class="numbersOnly" name="T' . $index . '" disabled></td>';
+                                                    }
+                                                    ?>
+                                                    <td class="font-weight-bold">Pares</td>
+                                                </tr>
+                                                <tr>
+                                                    <?php
+                                                    for ($index = 1; $index < 23; $index++) {
+                                                        print '<td><input type="text" style="width: 37px;" maxlength="4" class=" numbersOnly" name="C' . $index . '" onfocus="onCalcularPares(this);" on change="onCalcularPares(this);" keyup="onCalcularPares(this);" onfocusout="onCalcularPares(this);"></td>';
+                                                    }
+                                                    ?>
+                                                    <td><input type="text" style="width: 40px;" maxlength="4" class=" numbersOnly font-weight-bold" disabled=""  id="TPares"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-2 col-xl-2 mt-5">
+                                    <button type="button" class="btn btn-primary" id="btnAgregarDetalle"><span class="fa fa-check"></span></button> 
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -18,10 +18,8 @@ class Pedidos extends CI_Controller {
             switch ($this->session->userdata["TipoAcceso"]) {
                 case 'SUPER ADMINISTRADOR':
                     $this->load->view('vNavGeneral');
-
                     //Validamos que no venga vacia y asignamos un valor por defecto
                     $Origen = isset($_GET['origen']) ? $_GET['origen'] : "";
-
                     if ($Origen === 'PRODUCCION') {
                         $this->load->view('vMenuProduccion');
                     } else if ($Origen === 'CLIENTES') {
