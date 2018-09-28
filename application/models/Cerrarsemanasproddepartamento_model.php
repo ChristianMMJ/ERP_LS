@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class Cerrarsemanasprod_model extends CI_Model {
+class Cerrarsemanasproddepartamento_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
@@ -13,16 +13,17 @@ class Cerrarsemanasprod_model extends CI_Model {
     public function getRecords() {
         try {
             $this->db->select("SPC.Ano AS Ano ,"
-                    . "SPC.Maq AS Maq, "
-                    . "SPC.Sem AS Sem, "
-                    . "CASE WHEN SPC.Estatus = 'ABIERTA' THEN "
-                    . "CONCAT('<span class=''badge badge-success''>','ABIERTA','</span>') "
-                    . "ELSE "
-                    . "CONCAT('<span class=''badge badge-danger''>','CERRADA','</span>') "
-                    . "END AS Estatus "
-                    . "", false);
-            $this->db->from("semanasproduccioncerradas AS SPC");
-            $this->db->join("semanasproduccion SP", "ON SP.Sem = SPC.Sem AND SP.Ano = SPC.Ano AND SP.Estatus = 'ACTIVO' ");
+                            . "SPC.Maq AS Maq, "
+                            . "SPC.Sem AS Sem, "
+                            . "SPC.Departamento AS Depto, "
+                            . "CASE WHEN SPC.Estatus = 'ABIERTA' THEN "
+                            . "CONCAT('<span class=''badge badge-success''>','ABIERTA','</span>') "
+                            . "ELSE "
+                            . "CONCAT('<span class=''badge badge-danger''>','CERRADA','</span>') "
+                            . "END AS Estatus "
+                            . "", false)
+                    ->from("semanasproduccioncerradasdepartamento AS SPC")
+                    ->join("semanasproduccion SP", "ON SP.Sem = SPC.Sem AND SP.Ano = SPC.Ano AND SP.Estatus = 'ACTIVO' ");
             $this->db->where_in('SPC.Estatus', array('ABIERTA', 'CERRADA'));
             $query = $this->db->get();
             /*
@@ -53,12 +54,13 @@ class Cerrarsemanasprod_model extends CI_Model {
         }
     }
 
-    public function onVerificarSemanaProdCerrada($Ano, $Maq, $Sem) {
+    public function onVerificarSemanaProdCerrada($Ano, $Maq, $Sem, $Depto) {
         try {
-            $this->db->select("G.Sem")->from("semanasproduccioncerradas AS G")
+            $this->db->select("G.Sem")->from("semanasproduccioncerradasdepartamento AS G")
                     ->where("G.Ano", $Ano)
                     ->where("G.Maq", $Maq)
                     ->where("G.Sem", $Sem)
+                    ->where("G.Departamento", $Depto)
                     ->where_in("G.Estatus", array("ABIERTA", "CERRADA"));
             $query = $this->db->get();
             /*
@@ -75,7 +77,7 @@ class Cerrarsemanasprod_model extends CI_Model {
 
     public function onAgregar($array) {
         try {
-            $this->db->insert("semanasproduccioncerradas", $array);
+            $this->db->insert("semanasproduccioncerradasdepartamento", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID() AS IDL');
             $row = $query->row_array();
 //            PRINT "\n ID IN MODEL: $LastIdInserted \n";
@@ -85,12 +87,13 @@ class Cerrarsemanasprod_model extends CI_Model {
         }
     }
 
-    public function onModificar($Ano, $Maq, $Sem, $DATA) {
+    public function onModificar($Ano, $Maq, $Sem, $Depto, $DATA) {
         try {
             $this->db->where('Ano', $Ano)
                     ->where('Maq', $Maq)
                     ->where('Sem', $Sem)
-                    ->update("semanasproduccioncerradas", $DATA);
+                    ->where('Departamento', $Depto)
+                    ->update("semanasproduccioncerradasdepartamento", $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

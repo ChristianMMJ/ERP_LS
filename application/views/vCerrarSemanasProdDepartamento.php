@@ -2,7 +2,7 @@
     <div class="card-body ">
         <div class="row">
             <div class="col-sm-8 float-left">
-                <legend class="float-left">Semanas Producción Cerradas</legend>
+                <legend class="float-left">Semanas Producción Cerradas Por Departamento</legend>
             </div>
             <div class="col-sm-4" align="right">
                 <button type="button" class="btn btn-warning" id="btnLimpiarFiltros" data-toggle="tooltip" data-placement="right" title="Limpiar Filtros">
@@ -24,8 +24,12 @@
                 <label>Semana</label>
                 <input type="text" id="Semana" class="form-control form-control-sm  numbersOnly" maxlength="2" >
             </div>
+            <div class="col-6 col-sm-5 col-md-5 col-lg-3 col-xl-3">
+                <label>Departamento</label>
+                <input type="text" placeholder="10 PIEL/FORRO, 80 SUELA, 90 INDIR." class="form-control form-control-sm  numbersOnly" id="Depto" maxlength="2" >
+            </div>
             <div class="col-6 col-sm-5 col-md-5 col-lg-2 col-xl-1 mt-4">
-                <button type="button" class="btn btn-danger" id="btnCerrarSemana" data-toggle="tooltip" data-placement="right" title="Cerrar Semana">
+                <button type="button" class="btn btn-danger" id="btnCerrarSemana" data-toggle="tooltip" data-placement="right" title="Cerrar Departamento Semana">
                     <i class="fa fa-lock"></i>
                 </button>
             </div>
@@ -39,6 +43,7 @@
                             <th>Año</th>
                             <th>Maquila</th>
                             <th>Semana</th>
+                            <th>Departamento</th>
                             <th>Estatus</th>
                         </tr>
                     </thead>
@@ -51,7 +56,7 @@
 
 
 <script>
-    var master_url = base_url + 'index.php/CerrarSemanasProd/';
+    var master_url = base_url + 'index.php/CerrarSemanasProdDepartamento/';
     var tblSemanas = $('#tblSemanas');
     var Semanas;
     var pnlTablero = $("#pnlTablero");
@@ -68,13 +73,13 @@
             var ano = pnlTablero.find('#col0_filter').val();
             var sem = pnlTablero.find('#Semana').val();
             var maq = pnlTablero.find('#col1_filter').val();
-
+            var depto = pnlTablero.find('#Depto').val();
             $.getJSON(master_url + 'onVerificarSemanaProdCerrada', {
                 Ano: ano,
                 Maq: maq,
-                Sem: sem
+                Sem: sem,
+                Departamento: depto
             }).done(function (data) {
-
                 if (data.length > 0) {
                     accion = 'onModificar';
                 } else {
@@ -94,6 +99,7 @@
                             Ano: ano,
                             Maq: maq,
                             Sem: sem,
+                            Departamento: depto,
                             Estatus: 'CERRADA'
                         }).done(function (data) {
                             Semanas.ajax.reload();
@@ -143,6 +149,17 @@
             onComprobarSemanasProduccion($(this), ano.val());
         });
 
+        pnlTablero.find("#Depto").blur(function () {
+            var tp = parseInt($(this).val());
+            if (tp === 80 || tp === 90 || tp === 10) {
+
+            } else if (isNaN(tp)) {
+                $(this).val('').focus();
+            } else {
+                $(this).val('').focus();
+            }
+        });
+
         $('input.column_filter').on('keyup', function () {
             var i = $(this).parents('div').attr('data-column');
             tblSemanas.DataTable().column(i).search($('#col' + i + '_filter').val()).draw();
@@ -176,6 +193,7 @@
                 {"data": "Ano"},
                 {"data": "Maq"},
                 {"data": "Sem"},
+                {"data": "Depto"},
                 {"data": "Estatus"}
 
             ],
@@ -234,6 +252,7 @@
                             Ano: dtm.Ano,
                             Maq: dtm.Maq,
                             Sem: dtm.Sem,
+                            Departamento: dtm.Depto,
                             Estatus: 'ABIERTA'
                         }).done(function (data) {
                             onNotifyOld('fa fa-check', 'SE HA ABIERTO LA SEMANA SELECCIONADA', 'success');
@@ -252,6 +271,7 @@
                             Ano: dtm.Ano,
                             Maq: dtm.Maq,
                             Sem: dtm.Sem,
+                            Departamento: dtm.Depto,
                             Estatus: 'CERRADA'
                         }).done(function (data) {
                             onNotifyOld('fa fa-check', 'SE HA CERRADO LA SEMANA SELECCIONADA', 'success');

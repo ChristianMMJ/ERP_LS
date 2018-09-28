@@ -33,10 +33,10 @@
                     <div class="dropdown-divider"></div>
 
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" href="#">Cerrar Semanas Producción.</a>
+                        <a class="dropdown-item dropdown-toggle" href="#">Cerrar Semanas Producción</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="<?php print base_url('CerrarSemanasProd.shoes'); ?>">Cerrar Semanas</a>
-                            <a class="dropdown-item" href="<?php print base_url('CerrarSemanasProdXGrupos.shoes'); ?>">Cerrar Semanas por Grupos/Artículos</a>
+                            <a class="dropdown-item" href="<?php print base_url('CerrarSemanasProdDepartamento.shoes'); ?>">Cerrar Semanas por Departamento/Artículos</a>
                         </div>
 
                     </li>
