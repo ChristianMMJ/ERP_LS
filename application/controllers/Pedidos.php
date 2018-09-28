@@ -17,9 +17,20 @@ class Pedidos extends CI_Controller {
             $this->load->view('vEncabezado');
             switch ($this->session->userdata["TipoAcceso"]) {
                 case 'SUPER ADMINISTRADOR':
-                    $this->load->view('vNavGeneral')->view('vMenuClientes');
+                    $this->load->view('vNavGeneral');
+
+                    //Validamos que no venga vacia y asignamos un valor por defecto
+                    $Origen = isset($_GET['origen']) ? $_GET['origen'] : "";
+
+                    if ($Origen === 'PRODUCCION') {
+                        $this->load->view('vMenuProduccion');
+                    } else if ($Origen === 'CLIENTES') {
+                        $this->load->view('vMenuClientes');
+                    } else {
+                        $this->load->view('vMenuPrincipal');
+                    }
                     break;
-                case 'ADMINISTRACION':
+                case 'CLIENTES':
                     $this->load->view('vMenuAdministracion');
                     break;
                 case 'CONTABILIDAD':
@@ -30,12 +41,6 @@ class Pedidos extends CI_Controller {
                     break;
                 case 'INGENIERIA':
                     $this->load->view('vMenuIngenieria');
-                    break;
-                case 'DISEÑO Y DESARROLLO':
-                    $this->load->view('vMenuDisDes');
-                    break;
-                case 'ALMACEN':
-                    $this->load->view('vMenuAlmacen');
                     break;
                 case 'PRODUCCION':
                     $this->load->view('vMenuProduccion');
@@ -66,7 +71,7 @@ class Pedidos extends CI_Controller {
 
     public function getCapacidadMaquila() {
         try {
-            print json_encode($this->Pedidos_model->getCapacidadMaquila($this->input->get('CLAVE'),$this->input->get('SEMANA')));
+            print json_encode($this->Pedidos_model->getCapacidadMaquila($this->input->get('CLAVE'), $this->input->get('SEMANA')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -175,7 +180,6 @@ class Pedidos extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
-
 
     public function onComprobarClavePedido() {
         try {
@@ -305,7 +309,7 @@ class Pedidos extends CI_Controller {
     function onImprimirPedidoReducido() {
         try {
             $pdf = new PDF('L', 'mm', array(215.9, 279.4));
-            $IDX = $this->input->post('ID'); 
+            $IDX = $this->input->post('ID');
             $Pedido = $this->Pedidos_model->getPedidoByID($IDX);
             $Series = $this->Pedidos_model->getSerieXPedido($IDX);
 
@@ -427,9 +431,9 @@ class Pedidos extends CI_Controller {
                         $pdf->SetWidths(array(198.5, 72.5));
                         $pdf->SetX($posi[0]);
                         if (count($suelin) > 0) {
-                            array_push($suela, 'OBS. ' . $v->OBSTITULO . " | " . $v->OBSCONTENIDO, 'SUELA: ' . $suelin[0]->Suela); //3 
+                            array_push($suela, 'OBS. ' . $v->OBSTITULO . " | " . $v->OBSCONTENIDO, 'SUELA: ' . $suelin[0]->Suela); //3
                         } else {
-                            array_push($suela, 'OBS. ' . $v->OBSTITULO . " | " . $v->OBSCONTENIDO, 'SUELA NO DISPONIBLE'); //3 
+                            array_push($suela, 'OBS. ' . $v->OBSTITULO . " | " . $v->OBSCONTENIDO, 'SUELA NO DISPONIBLE'); //3
                         }
                         $pdf->SetFont('Arial', 'BI', 6);
                         $pdf->Row($suela);

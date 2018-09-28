@@ -34,7 +34,7 @@
 
         <meta name="theme-color" content="#ffffff">
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-        <title>SHOESOFT ERP</title>
+        <title>ShoeSystem ERP</title>
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="<?php print base_url(); ?>js/jquery-3.2.1.min.js"></script>
         <!--Estilo principal-->

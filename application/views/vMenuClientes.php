@@ -38,7 +38,7 @@
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" href="#">Pedidos</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="<?php print base_url('Pedidos.shoes'); ?>">Autorizados</a>
+                            <a class="dropdown-item" href="<?php print base_url('Pedidos/?origen=CLIENTES'); ?>">Autorizados</a>
                             <a class="dropdown-item" href="#">Pendientes por Anticipo</a>
                             <a class="dropdown-item" href="#">Elimina pedido c/ Control</a>
                             <a class="dropdown-item" href="#">Elimina pedido s/ Control</a>
