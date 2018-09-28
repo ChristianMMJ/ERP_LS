@@ -119,6 +119,16 @@ class OrdenCompraTallas extends CI_Controller {
         }
     }
 
+    public function onVerificarSemanaProdCerrada() {
+        try {
+            print json_encode($this->Ordencompra_model->onVerificarSemanaProdCerrada(
+                                    $this->input->get('Ano'), $this->input->get('Maq'), $this->input->get('Sem')
+            ));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onComprobarMaquilas() {
         try {
             print json_encode($this->Ordencompra_model->onComprobarMaquilas($this->input->get('Clave')));
