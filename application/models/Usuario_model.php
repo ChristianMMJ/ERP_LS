@@ -31,8 +31,9 @@ class Usuario_model extends CI_Model {
 
     public function getAcceso($USUARIO, $CONTRASENA) {
         try {
-            $this->db->select('U.*', false);
+            $this->db->select('U.*, E.RazonSocial AS EMPRESA_RAZON,E.Direccion AS EMPRESA_DIRECCION, E.Foto AS LOGO', false);
             $this->db->from('usuarios AS U');
+            $this->db->join('empresas AS E', 'U.Empresa = E.ID');
             $this->db->where('U.Usuario', $USUARIO);
             $this->db->where(' \'' . $CONTRASENA . '\'  = AES_DECRYPT(U.AES, \'System32\')', NULL, FALSE);
             $this->db->where_in('U.Estatus', 'ACTIVO');
@@ -115,12 +116,12 @@ class Usuario_model extends CI_Model {
 
     public function getUsuarioByID($ID) {
         try {
-            /*PARA LINUX */
+            /* PARA LINUX */
 //            $this->db->select('U.ID, U.Usuario, U.Estatus, U.Nombre, U.Apellidos, '
 //                    . 'U.TipoAcceso, U.UltimoAcceso, U.Registro, U.UltimaModificacion, '
 //                    . 'CONVERT(AES_DECRYPT(U.AES,\'System32\') USING latin1) AS Contrasena, '
 //                    . 'U.Seguridad AS SEG, U.Empresa', false);
-            /*WINDOWS*/
+            /* WINDOWS */
             $this->db->select('U.ID, U.Usuario, U.Estatus, U.Nombre, U.Apellidos, '
                     . 'U.TipoAcceso, U.UltimoAcceso, U.Registro, U.UltimaModificacion, '
                     . 'CONVERT(AES_DECRYPT(CAST(U.AES AS CHAR(10000) CHARACTER SET utf8),\'System32\') USING latin1) AS Contrasena, '

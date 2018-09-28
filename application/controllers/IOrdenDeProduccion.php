@@ -112,54 +112,54 @@ class IOrdenDeProduccion extends CI_Controller {
                 $pdf->setTotalSintetico($P->TotalSintetico);
 
                 $pdf->setSerie($P->SerieCorrida);
-                $pdf->setT1(($P->S1!=='0'? $P->S1:'-'));
-                $pdf->setT2(($P->S2!=='0'? $P->S2:'-'));
-                $pdf->setT3(($P->S3!=='0'? $P->S3:'-'));
-                $pdf->setT4(($P->S4!=='0'? $P->S4:'-'));
-                $pdf->setT5(($P->S5!=='0'? $P->S5:'-'));
-                $pdf->setT6(($P->S6!=='0'? $P->S6:'-'));
-                $pdf->setT7(($P->S7!=='0'? $P->S7:'-'));
-                $pdf->setT8(($P->S8!=='0'? $P->S8:'-'));
-                $pdf->setT9(($P->S9!=='0'? $P->S9:'-'));
-                $pdf->setT10(($P->S10!=='0'? $P->S10:'-'));
-                $pdf->setT11(($P->S11!=='0'? $P->S11:'-'));
-                $pdf->setT12(($P->S12!=='0'? $P->S12:'-'));
-                $pdf->setT13(($P->S13!=='0'? $P->S13:'-'));
-                $pdf->setT14(($P->S14!=='0'? $P->S14:'-'));
-                $pdf->setT15(($P->S15!=='0'? $P->S15:'-'));
-                $pdf->setT16(($P->S16!=='0'? $P->S16:'-'));
-                $pdf->setT17(($P->S17!=='0'? $P->S17:'-'));
-                $pdf->setT18(($P->S18!=='0'? $P->S18:'-'));
-                $pdf->setT19(($P->S19!=='0'? $P->S19:'-'));
-                $pdf->setT20(($P->S20!=='0'? $P->S20:'-'));
-                $pdf->setT21(($P->S21!=='0'? $P->S21:'-'));
-                $pdf->setT22(($P->S22!=='0'? $P->S22:'-'));
+                $pdf->setT1(($P->S1 !== '0' ? $P->S1 : '-'));
+                $pdf->setT2(($P->S2 !== '0' ? $P->S2 : '-'));
+                $pdf->setT3(($P->S3 !== '0' ? $P->S3 : '-'));
+                $pdf->setT4(($P->S4 !== '0' ? $P->S4 : '-'));
+                $pdf->setT5(($P->S5 !== '0' ? $P->S5 : '-'));
+                $pdf->setT6(($P->S6 !== '0' ? $P->S6 : '-'));
+                $pdf->setT7(($P->S7 !== '0' ? $P->S7 : '-'));
+                $pdf->setT8(($P->S8 !== '0' ? $P->S8 : '-'));
+                $pdf->setT9(($P->S9 !== '0' ? $P->S9 : '-'));
+                $pdf->setT10(($P->S10 !== '0' ? $P->S10 : '-'));
+                $pdf->setT11(($P->S11 !== '0' ? $P->S11 : '-'));
+                $pdf->setT12(($P->S12 !== '0' ? $P->S12 : '-'));
+                $pdf->setT13(($P->S13 !== '0' ? $P->S13 : '-'));
+                $pdf->setT14(($P->S14 !== '0' ? $P->S14 : '-'));
+                $pdf->setT15(($P->S15 !== '0' ? $P->S15 : '-'));
+                $pdf->setT16(($P->S16 !== '0' ? $P->S16 : '-'));
+                $pdf->setT17(($P->S17 !== '0' ? $P->S17 : '-'));
+                $pdf->setT18(($P->S18 !== '0' ? $P->S18 : '-'));
+                $pdf->setT19(($P->S19 !== '0' ? $P->S19 : '-'));
+                $pdf->setT20(($P->S20 !== '0' ? $P->S20 : '-'));
+                $pdf->setT21(($P->S21 !== '0' ? $P->S21 : '-'));
+                $pdf->setT22(($P->S22 !== '0' ? $P->S22 : '-'));
                 $pdf->setEstatusProduccion($P->EstatusProduccion);
                 $pdf->setLinea($P->Linea);
                 $pdf->setLineaT($P->LineaT);
                 $pdf->setPares($P->Pares);
-                $pdf->setC1(($P->C1!=='0'? $P->C1:'-'));
-                $pdf->setC2(($P->C2!=='0'? $P->C2:'-'));
-                $pdf->setC3(($P->C3!=='0'? $P->C3:'-'));
-                $pdf->setC4(($P->C4!=='0'? $P->C4:'-'));
-                $pdf->setC5(($P->C5!=='0'? $P->C5:'-'));
-                $pdf->setC6(($P->C6!=='0'? $P->C6:'-'));
-                $pdf->setC7(($P->C7!=='0'? $P->C7:'-'));
-                $pdf->setC8(($P->C8!=='0'? $P->C8:'-'));
-                $pdf->setC9(($P->C9!=='0'? $P->C9:'-'));
-                $pdf->setC10(($P->C10!=='0'? $P->C10:'-'));
-                $pdf->setC11(($P->C11!=='0'? $P->C11:'-'));
-                $pdf->setC12(($P->C12!=='0'? $P->C12:'-'));
-                $pdf->setC13(($P->C13!=='0'? $P->C13:'-'));
-                $pdf->setC14(($P->C14!=='0'? $P->C14:'-'));
-                $pdf->setC15(($P->C15!=='0'? $P->C15:'-'));
-                $pdf->setC16(($P->C16!=='0'? $P->C16:'-'));
-                $pdf->setC17(($P->C17!=='0'? $P->C17:'-'));
-                $pdf->setC18(($P->C18!=='0'? $P->C18:'-'));
-                $pdf->setC19(($P->C19!=='0'? $P->C19:'-'));
-                $pdf->setC20(($P->C20!=='0'? $P->C20:'-'));
-                $pdf->setC21(($P->C21!=='0'? $P->C21:'-'));
-                $pdf->setC22(($P->C22!=='0'? $P->C22:'-'));
+                $pdf->setC1(($P->C1 !== '0' ? $P->C1 : '-'));
+                $pdf->setC2(($P->C2 !== '0' ? $P->C2 : '-'));
+                $pdf->setC3(($P->C3 !== '0' ? $P->C3 : '-'));
+                $pdf->setC4(($P->C4 !== '0' ? $P->C4 : '-'));
+                $pdf->setC5(($P->C5 !== '0' ? $P->C5 : '-'));
+                $pdf->setC6(($P->C6 !== '0' ? $P->C6 : '-'));
+                $pdf->setC7(($P->C7 !== '0' ? $P->C7 : '-'));
+                $pdf->setC8(($P->C8 !== '0' ? $P->C8 : '-'));
+                $pdf->setC9(($P->C9 !== '0' ? $P->C9 : '-'));
+                $pdf->setC10(($P->C10 !== '0' ? $P->C10 : '-'));
+                $pdf->setC11(($P->C11 !== '0' ? $P->C11 : '-'));
+                $pdf->setC12(($P->C12 !== '0' ? $P->C12 : '-'));
+                $pdf->setC13(($P->C13 !== '0' ? $P->C13 : '-'));
+                $pdf->setC14(($P->C14 !== '0' ? $P->C14 : '-'));
+                $pdf->setC15(($P->C15 !== '0' ? $P->C15 : '-'));
+                $pdf->setC16(($P->C16 !== '0' ? $P->C16 : '-'));
+                $pdf->setC17(($P->C17 !== '0' ? $P->C17 : '-'));
+                $pdf->setC18(($P->C18 !== '0' ? $P->C18 : '-'));
+                $pdf->setC19(($P->C19 !== '0' ? $P->C19 : '-'));
+                $pdf->setC20(($P->C20 !== '0' ? $P->C20 : '-'));
+                $pdf->setC21(($P->C21 !== '0' ? $P->C21 : '-'));
+                $pdf->setC22(($P->C22 !== '0' ? $P->C22 : '-'));
 
                 $pdf->AddPage();
                 $pdf->SetAutoPageBreak(true, 10);
@@ -189,7 +189,7 @@ class IOrdenDeProduccion extends CI_Controller {
                     $pdf->Cell(25, 3.5, $dv->DEPARTAMENTOT, 1/* BORDE */, 1, 'C', 0);
                     /* FIN TALLAS */
                     $pdf->setAlto(3.5);
-                    $col = array(5/* 0 */, 30/* 1 */, 80/* 2 */, 88/* 3 */, 98/* 4 */, 108/* 5 */, 133/* 6 */, 183/* 7 */, 191/* 8 */, 201/* 9 */);
+                    $col = array(5/* 0 */, 30/* 1 */, 80/* 2 */, 88/* 3 */, 98/* 4 */, 108/* 5 */, 133/* 6 */, 183/* 7 */, 191/* 8 */, 200/* 9 */);
                     $anc = array(25, 50, 8, 10, 10);
                     $alto_celda = 3.5;
                     $COLUMN = 1;
@@ -207,7 +207,7 @@ class IOrdenDeProduccion extends CI_Controller {
                                     $pdf->Cell($anc[1], $alto_celda, utf8_decode($v->ARTICULOT) . " " . $v->CLASIFICACION, 0/* BORDE */, 0, 'L', 0);
 
                                     $pdf->SetX($col[2]);
-                                    $pdf->Cell($anc[2], $alto_celda, $v->PZXPAR, 0/* BORDE */, 0, 'C', 0);
+                                    $pdf->Cell($anc[2], $alto_celda, ($v->PZXPAR > 0) ? $v->PZXPAR : '', 0/* BORDE */, 0, 'C', 0);
 
                                     $pdf->SetX($col[3]);
                                     $pdf->Cell($anc[3], $alto_celda, $v->UNIDAD, 0/* BORDE */, 0, 'C', 0);
@@ -225,7 +225,7 @@ class IOrdenDeProduccion extends CI_Controller {
                                     $pdf->Cell($anc[1], $alto_celda, utf8_decode($v->ARTICULOT) . " " . $v->CLASIFICACION, 0/* BORDE */, 0, 'L', 0);
 
                                     $pdf->SetX($col[7]);
-                                    $pdf->Cell($anc[2], $alto_celda, $v->PZXPAR, 0/* BORDE */, 0, 'C', 0);
+                                    $pdf->Cell($anc[2], $alto_celda, ($v->PZXPAR > 0) ? $v->PZXPAR : '', 0/* BORDE */, 0, 'C', 0);
 
                                     $pdf->SetX($col[8]);
                                     $pdf->Cell($anc[3], $alto_celda, $v->UNIDAD, 0/* BORDE */, 0, 'C', 0);
@@ -240,18 +240,21 @@ class IOrdenDeProduccion extends CI_Controller {
                     }
 //                    $pdf->Rect(5, $PUNTO_INICIAL, 104/* DER-X */, $pdf->GetY()/* DER-Y */);
                 }
+                list($width, $height, $type, $attr) = getimagesize(base_url($vc->FOTO));
                 $pdf->Line(5, $Y, 5, $pdf->GetY());
                 $pdf->Line(108, $Y, 108, $pdf->GetY());
                 $pdf->Line(210, $Y, 210, $pdf->GetY());
                 $pdf->SetFont('Arial', 'B', 14);
                 $pdf->SetX(5);
                 $pdf->Cell(53, 10, "", 0/* BORDE */, 0/* SALTO SI */, 'C', 0);
-                                
+
                 $pdf->Code128(5/* X */, $pdf->GetY()/* Y */, $vc->ControlT/* TEXT */, 53/* ANCHO */, 6/* ALTURA */);
                 $pdf->SetFont('Arial', 'B', 8);
                 $pdf->SetX(58);
                 $pdf->Cell(152, 6, utf8_decode("* LEA CUIDADOSAMENTE LAS INSTRUCCIONES, CUALQUIER ERROR LE SERÁ CARGADO *"), 0/* BORDE */, 1/* SALTO SI */, 'C', 0);
-                /* END FOREACH PIEZAS */
+                /* END FOREACH PIEZAS */ 
+                
+                $pdf->Image(base_url($vc->FOTO), /* LEFT */ 80, $pdf->GetY()/* TOP */, /* ANCHO */ 48);
 
                 /* TOTALES */
                 $Y = $pdf->GetY();
@@ -267,7 +270,6 @@ class IOrdenDeProduccion extends CI_Controller {
                 $pdf->SetX(231);
                 $pdf->SetAligns($aligns);
                 $pdf->SetWidths(array(15, 30));
-                $pdf->Row(array("TOTAL", "" . number_format(0, 3, ".", ",")));
             }
 
             /* FIN RESUMEN */

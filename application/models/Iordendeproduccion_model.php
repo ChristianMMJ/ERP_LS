@@ -61,9 +61,9 @@ class Iordendeproduccion_model extends CI_Model {
                             . "OP.LineaT, OP.Recio, OP.Estilo, OP.EstiloT, OP.Color, "
                             . "OP.ColorT, OP.Agente, OP.Transporte, OP.Piel1, OP.CantidadPiel1, "
                             . "OP.Piel2, "
-                            . "IFNULL(OP.CantidadPiel2,'') AS CantidadPiel2, "
+                            . "IFNULL(OP.CantidadPiel2,0) AS CantidadPiel2, "
                             . "CASE WHEN OP.Piel3 IS NULL THEN '' ELSE OP.Piel3 END AS Piel3,  "
-                            . "IFNULL(OP.CantidadPiel3,'') AS CantidadPiel3, OP.Piel4, "
+                            . "IFNULL(OP.CantidadPiel3,0) AS CantidadPiel3, OP.Piel4, "
                             . "OP.CantidadPiel4, OP.Piel5, OP.CantidadPiel5, OP.Piel6, OP.CantidadPiel6, "
                             . "OP.TotalPiel, OP.Forro1, OP.CantidadForro1, OP.Forro2, OP.CantidadForro2, "
                             . "OP.Forro3, OP.CantidadForro3, OP.TotalForro, OP.Sintetico1, OP.CantidadSintetico1, "
@@ -97,7 +97,7 @@ class Iordendeproduccion_model extends CI_Model {
 //            if ($ANO !== '') {
 //                $this->db->where("OP.Ano", $ANO);
 //            } 
-            $this->db->order_by('ABS(OPD.Departamento)', 'ASC');
+            $this->db->order_by('ABS(OPD.Departamento)', 'ASC')->order_by('OPD.ArticuloT', 'ASC');
             return $this->db->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -106,8 +106,9 @@ class Iordendeproduccion_model extends CI_Model {
 
     public function getControlesXOrdenDeProduccionEntreControles($CONTROL_INICIAL, $CONTROL_FINAL, $SEMANA, $ANO) {
         try {
-            $this->db->select("OP.Control, OP.ControlT", false)->from('ordendeproduccion AS OP')
-                    ->join('ordendeproducciond AS OPD', 'OP.ID = OPD.OrdenDeProduccion');
+            $this->db->select("OP.Control, OP.ControlT, E.Foto AS FOTO", false)->from('ordendeproduccion AS OP')
+                    ->join('ordendeproducciond AS OPD', 'OP.ID = OPD.OrdenDeProduccion')
+                    ->join('Estilos AS E', 'OP.Estilo = E.Clave','left');
             if ($CONTROL_INICIAL !== '' && $CONTROL_FINAL !== '') {
                 $this->db->where("OP.ControlT BETWEEN $CONTROL_INICIAL AND $CONTROL_FINAL", null, false);
             }

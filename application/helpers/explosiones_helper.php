@@ -1,9 +1,7 @@
 <?php
 
 class PDFExpTallas extends FPDF {
-
-    public $Logo;
-    public $Empresa;
+ 
     public $Sem;
     public $aSem;
     public $Maq;
@@ -68,29 +66,13 @@ class PDFExpTallas extends FPDF {
         $this->Pares = $Pares;
     }
 
-    function getLogo() {
-        return $this->Logo;
-    }
-
-    function getEmpresa() {
-        return $this->Empresa;
-    }
-
-    function setLogo($Logo) {
-        $this->Logo = $Logo;
-    }
-
-    function setEmpresa($Empresa) {
-        $this->Empresa = $Empresa;
-    }
-
     function Header() {
 
-        $this->Image($this->getLogo(), /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30);
+        $this->Image($_SESSION["LOGO"], /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30);
         $this->SetFont('Arial', 'B', 10);
         $this->SetY(5);
         $this->SetX(36);
-        $this->Cell(60, 4, utf8_decode($this->getEmpresa()), 0/* BORDE */, 1, 'L');
+        $this->Cell(60, 4, utf8_decode($_SESSION["EMPRESA_RAZON"]), 0/* BORDE */, 1, 'L');
         $this->SetFont('Arial', 'B', 8);
         $this->SetX(36);
         $this->Cell(60, 4, utf8_decode("Explosion de materiales de la semana: "), 0/* BORDE */, 1, 'L');
@@ -344,9 +326,7 @@ class PDFExpTallas extends FPDF {
 }
 
 class PDF extends FPDF {
-
-    public $Logo;
-    public $Empresa;
+ 
     public $Sem;
     public $aSem;
     public $Maq;
@@ -409,31 +389,15 @@ class PDF extends FPDF {
 
     function setPares($Pares) {
         $this->Pares = $Pares;
-    }
-
-    function getLogo() {
-        return $this->Logo;
-    }
-
-    function getEmpresa() {
-        return $this->Empresa;
-    }
-
-    function setLogo($Logo) {
-        $this->Logo = $Logo;
-    }
-
-    function setEmpresa($Empresa) {
-        $this->Empresa = $Empresa;
-    }
+    } 
 
     function Header() {
 
-        $this->Image($this->getLogo(), /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30);
+        $this->Image($_SESSION["LOGO"], /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30);
         $this->SetFont('Arial', 'B', 10);
         $this->SetY(5);
         $this->SetX(36);
-        $this->Cell(60, 4, utf8_decode($this->getEmpresa()), 0/* BORDE */, 1, 'L');
+        $this->Cell(60, 4, utf8_decode($_SESSION["EMPRESA_RAZON"]), 0/* BORDE */, 1, 'L');
         $this->SetFont('Arial', 'B', 8);
         $this->SetX(36);
         $this->Cell(60, 4, utf8_decode("Explosion de materiales de la semana: "), 0/* BORDE */, 1, 'L');

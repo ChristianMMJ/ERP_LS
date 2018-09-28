@@ -68,5 +68,4 @@ class EliminaOrdenDeProduccion extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
-
 }

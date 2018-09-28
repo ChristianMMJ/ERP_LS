@@ -1,9 +1,7 @@
 <?php
 
 class PDF extends FPDF {
-
-    public $Logo;
-    public $Empresa;
+ 
     public $Estilo;
     public $Clinea;
     public $Dlinea;
@@ -44,22 +42,6 @@ class PDF extends FPDF {
         $this->Dcolor = $Dcolor;
     }
 
-    function getLogo() {
-        return $this->Logo;
-    }
-
-    function getEmpresa() {
-        return $this->Empresa;
-    }
-
-    function setLogo($Logo) {
-        $this->Logo = $Logo;
-    }
-
-    function setEmpresa($Empresa) {
-        $this->Empresa = $Empresa;
-    }
-
     function getEstilo() {
         return $this->Estilo;
     }
@@ -88,11 +70,11 @@ class PDF extends FPDF {
 
         $this->SetLineWidth(0.4);
 
-        $this->Image($this->getLogo(), /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30);
+        $this->Image($_SESSION["LOGO"], /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30, 20);
         $this->SetFont('Arial', 'B', 9);
         $this->SetY(4);
         $this->SetX(40);
-        $this->Cell(110, 4, utf8_decode($this->getEmpresa()), 0/* BORDE */, 1, 'L');
+        $this->Cell(110, 4, utf8_decode($_SESSION["EMPRESA_RAZON"]), 0/* BORDE */, 1, 'L');
         $this->SetY(8);
         $this->SetX(170);
         $this->SetFont('Arial', 'B', 8);

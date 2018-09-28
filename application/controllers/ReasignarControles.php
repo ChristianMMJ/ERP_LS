@@ -88,6 +88,22 @@ class ReasignarControles extends CI_Controller {
     public function onReAsignarControles() {
         try {
             $controles = json_decode($this->input->post('Controles'));
+
+            /* ELIMINAR CUALQUIER ORDEN DE PRODUCCION */
+            $CONTROL_INICIAL = $this->input->post('INICIO');
+            $CONTROL_FINAL = $this->input->post('FIN');
+            $this->db->trans_begin();
+            $this->db->query("DELETE OPD.* FROM ordendeproducciond AS OPD 
+                INNER JOIN OrdenDeProduccion AS OP 
+                ON OPD.OrdenDeProduccion = OP.ID 
+                WHERE OPD.ID > 0 AND OP.ControlT BETWEEN $CONTROL_INICIAL AND $CONTROL_FINAL");
+            $this->db->query("DELETE FROM ordendeproduccion WHERE ID > 0 AND ControlT BETWEEN $CONTROL_INICIAL AND $CONTROL_FINAL");
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+            } else {
+                $this->db->trans_commit();
+            }
+
             foreach ($controles as $k => $v) {
                 $Y = substr(Date('Y'), 2);
                 $M = str_pad($v->Maquila, 2, '0', STR_PAD_LEFT);
@@ -102,6 +118,8 @@ class ReasignarControles extends CI_Controller {
                             ->where('PedidoDetalle', $v->PedidoDetalle)->update('controles');
                     /* MODIFICAR EN EL PEDIDO (DETALLE), EL CONTROL */
                     $this->db->set('Control', $Y . $S . $M . $C)
+                            ->set('Semana', $S)
+                            ->set('Maquila', $M)
                             ->set('Observacion', $v->Observacion)
                             ->set('ObservacionDetalle', $v->Adicionales)
                             ->where('ID', $v->PedidoDetalle)->update('pedidodetalle');
@@ -116,6 +134,8 @@ class ReasignarControles extends CI_Controller {
                             ->where('PedidoDetalle', $v->PedidoDetalle)->update('controles');
                     /* MODIFICAR EN EL PEDIDO (DETALLE), EL CONTROL */
                     $this->db->set('Control', $Y . $S . $M . $C)
+                            ->set('Semana', $S)
+                            ->set('Maquila', $M)
                             ->set('Observacion', $v->Observacion)
                             ->set('ObservacionDetalle', $v->Adicionales)
                             ->where('ID', $v->PedidoDetalle)->update('pedidodetalle');
@@ -125,5 +145,4 @@ class ReasignarControles extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
-
 }
