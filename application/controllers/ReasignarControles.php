@@ -85,6 +85,14 @@ class ReasignarControles extends CI_Controller {
         }
     }
 
+    public function onObtenerElUltimoControl() {
+        try {
+            print json_encode($this->Reasignarcontroles_model->onObtenerElUltimoControl($this->input->get('SEMANA'), $this->input->get('MAQUILA')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    
     public function onReAsignarControles() {
         try {
             $controles = json_decode($this->input->post('Controles'));

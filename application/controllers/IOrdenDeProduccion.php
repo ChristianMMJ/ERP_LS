@@ -50,6 +50,14 @@ class IOrdenDeProduccion extends CI_Controller {
         }
     }
 
+    public function onObtenerElUltimoControl() {
+        try {
+            print json_encode($this->Iordendeproduccion_model->onObtenerElUltimoControl($this->input->get('SEMANA'), $this->input->get('MAQUILA')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     /* REPORTE DE ORDENDEPRODUCCION */
 
     public function getOrdenDeProduccion() {
@@ -252,8 +260,8 @@ class IOrdenDeProduccion extends CI_Controller {
                 $pdf->SetFont('Arial', 'B', 8);
                 $pdf->SetX(58);
                 $pdf->Cell(152, 6, utf8_decode("* LEA CUIDADOSAMENTE LAS INSTRUCCIONES, CUALQUIER ERROR LE SERÁ CARGADO *"), 0/* BORDE */, 1/* SALTO SI */, 'C', 0);
-                /* END FOREACH PIEZAS */ 
-                
+                /* END FOREACH PIEZAS */
+
                 $pdf->Image(base_url($vc->FOTO), /* LEFT */ 80, $pdf->GetY()/* TOP */, /* ANCHO */ 48);
 
                 /* TOTALES */

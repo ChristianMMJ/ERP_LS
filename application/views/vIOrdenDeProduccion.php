@@ -111,6 +111,9 @@
                         return false;
                     }
             );
+            $("#ControlInicial").focusout(function () {
+                onObtenerElUltimoControl(this);
+            });
 
             $("#ControlInicial, #ControlFinal").keyup(function () {
                 onVerificarFormValido();
@@ -306,5 +309,21 @@
         } else {
             btnGenerar.prop("disabled", true);
         }
+    }
+
+    function onObtenerElUltimoControl(e) {
+        var control = $(e).val();
+        var semana = parseInt(control.slice(2, 4));
+        var maquila = parseInt(control.slice(4, 6));
+        $.getJSON(master_url + 'onObtenerElUltimoControl', {SEMANA: semana, MAQUILA: maquila}).done(function (data) {
+            var dt = data[0];
+            var ControlFinal = $("#ControlFinal");
+            if (data.length > 0 && ControlFinal.val() === '' && ControlFinal.val().length <= 0) {
+                ControlFinal.val(dt.ULTIMO_CONTROL);
+                onBeep(1);
+            }
+        }).fail(function (x, y, z) {
+            console.log(x.responseText);
+        });
     }
 </script>

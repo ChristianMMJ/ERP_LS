@@ -120,7 +120,7 @@
                         </div>
                         <div class="col-12 col-sm-4 col-md-4 col-lg-1 col-xl-1">
                             <label for="Semana" >Sem*</label>
-                            <input type="text" id="Semana" name="Semana" class="form-control form-control-sm" placeholder="">
+                            <input type="text" id="Semana" name="Semana" class="form-control form-control-sm" placeholder="" onkeyup="onChecarSemanaValida(this)">
                         </div>
                         <!--BREAK-->
                         <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1">
@@ -306,15 +306,29 @@
     var _animate_ = {enter: 'animated fadeInLeft', exit: 'animated fadeOutDown'}, _placement_ = {from: "bottom", align: "left"};
     var Cliente = '';
     var mdlAviso = $("#mdlAviso");
+    var btnAgregarDetalle = pnlDatos.find("#btnAgregarDetalle");
 
     $(document).ready(function () {
         init();
         handleEnter();
+
+        btnAgregarDetalle.click(function () {
+        });
+
         mdlAviso.draggable({
             handle: ".modal-header"
         });
+
+        pnlDatos.find("#Semana").focusout(function () {
+            onValidarAnioDeEntrega();
+            onChecarSemanaValida('#Semana');
+            onComprobarSemanaMaquila(pnlDatos.find("#Maquila").val(), pnlDatos.find("#Semana").val());
+        });
+
         pnlDatos.find("#Maquila").change(function () {
             onComprobarCapacidades("#Maquila");
+            onChecarSemanaValida('#Semana');
+            onComprobarSemanaMaquila(pnlDatos.find("#Maquila").val(), pnlDatos.find("#Semana").val());
         });
 
         validacionSelectPorContenedor(pnlDatos);
@@ -375,52 +389,24 @@
             if (Precio.length <= 0) {
                 swal({
                     title: "ATENCIÓN",
-                    text: "Debe de establecer un precio",
+                    text: "ES NECESARIO ESCRIBIR UN PRECIO",
                     icon: "warning",
                     focusConfirm: true,
                     closeOnClickOutside: false,
                     closeOnEsc: false
                 }).then((value) => {
-                    pnlDatos.find("#Precio").val('');
-                    pnlDatos.find("#Precio").focus();
+                    var p = pnlDatos.find("#Precio");
+                    p.prop('readonly', false);
+                    p.prop('disabled', false);
+                    p.val('');
+                    p.focus().select();
                 });
             }
         });
 
         pnlDatos.find("#FechaEntrega").focusout(function () {
             //OBTENER ANOS DE ENTREGA
-            $.getJSON(master_url + 'getAnosValidos').done(function (data) {
-                var anos = data[0];
-                var fecha_valida = false;
-                var fe = pnlDatos.find("#FechaEntrega").val();
-                if (fe !== '') {
-                    $.each(data, function (k, v) {
-                        if (fe.includes(v.Anos)) {
-                            fecha_valida = true;
-                            return false;
-                        }
-                    });
-                    if (!fecha_valida) {
-                        swal({
-                            title: "ATENCIÓN",
-                            text: "NO EXISTEN SEMANAS DE PRODUCCIÓN PARA ESTA FECHA ",
-                            icon: "warning",
-                            closeOnClickOutside: false,
-                            closeOnEsc: false,
-                            buttons: false,
-                            timer: 1200
-                        }).then((value) => {
-                            pnlDatos.find("#FechaEntrega").val('');
-                            pnlDatos.find("#Semana").val('');
-                            pnlDatos.find("#FechaEntrega").focus();
-                        });
-                    }
-                }
-            }).fail(function (x, y, z) {
-                console.log(x.responseText);
-            }).always(function () {
-
-            });
+            onValidarAnioDeEntrega();
             //OBTENER AGENTE POR CLIENTE
             $.getJSON(master_url + 'getSemanaXFechaDeEntrega', {Fecha: $(this).val()}).done(function (data) {
                 if (data.length > 0) {
@@ -430,6 +416,7 @@
             }).fail(function (x, y, z) {
                 console.log(x, y, z);
             }).always(function () {
+
             });
         });
 
@@ -662,6 +649,7 @@
                         pnlDatos.find("#Serie").val(data[0].Serie);
                         pnlDatos.find("#Maquila")[0].selectize.clear(true);
                         pnlDatos.find("#Maquila")[0].selectize.setValue(data[0].Maquila);
+                        onComprobarSemanaMaquila(data[0].Maquila, pnlDatos.find("#Semana").val());
                         //SET TALLAS
                         var indice = 0;
                         $.each(data[0], function (k, v) {
@@ -978,116 +966,120 @@
         });
     }
 
-    var added = false, agregado = 0;
+    var added = false, agregado = 0, pedido_valido = false;
+    ;
     function onCalcularPares(e) {
-        pnlDatos.find("#Recibido")[0].selectize.enable();
-        var Estilo = pnlDatos.find("#Estilo");
-        var Color = pnlDatos.find("#Color");
-        var Semana = pnlDatos.find("#Semana");
-        var Maquila = pnlDatos.find("#Maquila");
-        var Precio = pnlDatos.find("#Precio");
-        var FechaDeEntrega = pnlDatos.find("#FechaEntrega");
-        var Recibido = pnlDatos.find("#Recibido");
-        var Recio = pnlDatos.find("#Recio");
-        var Titulo = pnlDatos.find("#Observacion");
-        var Observaciones = pnlDatos.find("#ObservacionDetalle");
-        var total_pares = 0;
-        $.each(pnlDatos.find("#tblTallas input[name*='C']"), function (k, v) {
-            total_pares += (parseInt($(v).val()) > 0) ? parseInt($(v).val()) : 0;
-            pnlDatos.find("#TPares").val(total_pares);
-        });
+        if (pedido_valido) {
+            pnlDatos.find("#Recibido")[0].selectize.enable();
+            var Estilo = pnlDatos.find("#Estilo");
+            var Color = pnlDatos.find("#Color");
+            var Semana = pnlDatos.find("#Semana");
+            var Maquila = pnlDatos.find("#Maquila");
+            var Precio = pnlDatos.find("#Precio");
+            var FechaDeEntrega = pnlDatos.find("#FechaEntrega");
+            var Recibido = pnlDatos.find("#Recibido");
+            var Recio = pnlDatos.find("#Recio");
+            var Titulo = pnlDatos.find("#Observacion");
+            var Observaciones = pnlDatos.find("#ObservacionDetalle");
+            var total_pares = 0;
+            $.each(pnlDatos.find("#tblTallas input[name*='C']"), function (k, v) {
+                total_pares += (parseInt($(v).val()) > 0) ? parseInt($(v).val()) : 0;
+                pnlDatos.find("#TPares").val(total_pares);
+            });
 
-        var encabezados = pnlDatos.find("#tblTallas tbody tr:eq(0)");
-        var input = $(e);
-        var padre = input.parent().index();
-        var indice_valor = encabezados.find("td").eq(padre).find("input").val();
-        //VALIDACIONES
-        if (Estilo.val() !== '' && Color.val() !== '' && Semana.val() !== '' && Maquila.val() !== '' && parseInt(pnlDatos.find("#TPares").val()) > 0
-                && Estilo.text() !== '' && Precio.val() !== '') {
-            if (Precio.val() !== '' && Precio.val().length > 0) {
-                if (indice_valor === '') {
-                    if (total_pares > 0) {
-                        //REVISAR SI ESE ESTILO/COLOR NO HA SIDO AGREGADO CON ANTERIORIDAD
-                        onRevisarRegistro(Estilo.val(), Color.val());
-                        if (!added) {
-                            //AÑADIR FILA
-                            var tal = '<div class="row"><div class="col-12 text-danger text-nowrap talla" align="center">';
-                            var cnt = '</div><div class="col-12 cantidad" align="center">';
-                            var dtm = [
-                                0, //ID
-                                Recibido.val(), //Recibido
-                                Estilo.val(), //EstiloID
-                                Estilo.text(), //Estilo
-                                Color.val(), //ColorID
-                                Color.text(),
-                                Semana.val(),
-                                Maquila.val(),
-                                tal + getTalla('T1') + cnt + getCantidad('C1') + '</div></div>',
-                                tal + getTalla('T2') + cnt + getCantidad('C2') + '</div></div>',
-                                tal + getTalla('T3') + cnt + getCantidad('C3') + '</div></div>',
-                                tal + getTalla('T4') + cnt + getCantidad('C4') + '</div></div>',
-                                tal + getTalla('T5') + cnt + getCantidad('C5') + '</div></div>',
-                                tal + getTalla('T6') + cnt + getCantidad('C6') + '</div></div>',
-                                tal + getTalla('T7') + cnt + getCantidad('C7') + '</div></div>',
-                                tal + getTalla('T8') + cnt + getCantidad('C8') + '</div></div>',
-                                tal + getTalla('T9') + cnt + getCantidad('C9') + '</div></div>',
-                                tal + getTalla('T10') + cnt + getCantidad('C10') + '</div></div>',
-                                tal + getTalla('T11') + cnt + getCantidad('C11') + '</div></div>',
-                                tal + getTalla('T12') + cnt + getCantidad('C12') + '</div></div>',
-                                tal + getTalla('T13') + cnt + getCantidad('C13') + '</div></div>',
-                                tal + getTalla('T14') + cnt + getCantidad('C14') + '</div></div>',
-                                tal + getTalla('T15') + cnt + getCantidad('C15') + '</div></div>',
-                                tal + getTalla('T16') + cnt + getCantidad('C16') + '</div></div>',
-                                tal + getTalla('T17') + cnt + getCantidad('C17') + '</div></div>',
-                                tal + getTalla('T18') + cnt + getCantidad('C18') + '</div></div>',
-                                tal + getTalla('T19') + cnt + getCantidad('C19') + '</div></div>',
-                                tal + getTalla('T20') + cnt + getCantidad('C20') + '</div></div>',
-                                tal + getTalla('T21') + cnt + getCantidad('C21') + '</div></div>',
-                                tal + getTalla('T22') + cnt + getCantidad('C22') + '</div></div>',
-                                Precio.val(),
-                                total_pares,
-                                FechaDeEntrega.val(),
-                                '<button type="button" class="btn btn-danger" onclick="onEliminar(this,1)"><span class="fa fa-trash"></span></button>',
-                                Recio.val(),
-                                Titulo.val(),
-                                Observaciones.val(),
-                                pnlDatos.find("#Serie").val(),
-                                'N', (total_pares * Precio.val())
-                            ];
-                            PedidoDetalle.row.add(dtm).draw(false);
-                            //CLEAR
-                            total_pares = 0;
-                            pnlDatos.find("#TPares").val(0);
-                            pnlDatos.find("[name*='C']").val('');
-                            //Estilo[0].selectize.clear(true);
-                            //Estilo[0].selectize.open();
-                            //Estilo[0].selectize.focus();
-                            FechaDeEntrega.prop('readonly', true);
-                            Semana.prop('readonly', true);
-                            Recibido[0].selectize.disable();
-                            Maquila[0].selectize.clear(true);
-                            Recio.val('');
-                            Precio.val('');
-                            Estilo[0].selectize.clear(true);
-                            agregado = 1;
-                            btnGuardar.trigger('click');
+            var encabezados = pnlDatos.find("#tblTallas tbody tr:eq(0)");
+            var input = $(e);
+            var padre = input.parent().index();
+            var indice_valor = encabezados.find("td").eq(padre).find("input").val();
+            //VALIDACIONES
+            if (Estilo.val() !== '' && Color.val() !== '' && Semana.val() !== '' && Maquila.val() !== '' && parseInt(pnlDatos.find("#TPares").val()) > 0
+                    && Estilo.text() !== '' && Precio.val() !== '') {
+                if (Precio.val() !== '' && Precio.val().length > 0) {
+                    if (indice_valor === '') {
+                        if (total_pares > 0) {
+                            //REVISAR SI ESE ESTILO/COLOR NO HA SIDO AGREGADO CON ANTERIORIDAD
+                            onRevisarRegistro(Estilo.val(), Color.val());
+                            if (!added) {
+                                //AÑADIR FILA
+                                var tal = '<div class="row"><div class="col-12 text-danger text-nowrap talla" align="center">';
+                                var cnt = '</div><div class="col-12 cantidad" align="center">';
+                                var dtm = [
+                                    0, //ID
+                                    Recibido.val(), //Recibido
+                                    Estilo.val(), //EstiloID
+                                    Estilo.text(), //Estilo
+                                    Color.val(), //ColorID
+                                    Color.text(),
+                                    Semana.val(),
+                                    Maquila.val(),
+                                    tal + getTalla('T1') + cnt + getCantidad('C1') + '</div></div>',
+                                    tal + getTalla('T2') + cnt + getCantidad('C2') + '</div></div>',
+                                    tal + getTalla('T3') + cnt + getCantidad('C3') + '</div></div>',
+                                    tal + getTalla('T4') + cnt + getCantidad('C4') + '</div></div>',
+                                    tal + getTalla('T5') + cnt + getCantidad('C5') + '</div></div>',
+                                    tal + getTalla('T6') + cnt + getCantidad('C6') + '</div></div>',
+                                    tal + getTalla('T7') + cnt + getCantidad('C7') + '</div></div>',
+                                    tal + getTalla('T8') + cnt + getCantidad('C8') + '</div></div>',
+                                    tal + getTalla('T9') + cnt + getCantidad('C9') + '</div></div>',
+                                    tal + getTalla('T10') + cnt + getCantidad('C10') + '</div></div>',
+                                    tal + getTalla('T11') + cnt + getCantidad('C11') + '</div></div>',
+                                    tal + getTalla('T12') + cnt + getCantidad('C12') + '</div></div>',
+                                    tal + getTalla('T13') + cnt + getCantidad('C13') + '</div></div>',
+                                    tal + getTalla('T14') + cnt + getCantidad('C14') + '</div></div>',
+                                    tal + getTalla('T15') + cnt + getCantidad('C15') + '</div></div>',
+                                    tal + getTalla('T16') + cnt + getCantidad('C16') + '</div></div>',
+                                    tal + getTalla('T17') + cnt + getCantidad('C17') + '</div></div>',
+                                    tal + getTalla('T18') + cnt + getCantidad('C18') + '</div></div>',
+                                    tal + getTalla('T19') + cnt + getCantidad('C19') + '</div></div>',
+                                    tal + getTalla('T20') + cnt + getCantidad('C20') + '</div></div>',
+                                    tal + getTalla('T21') + cnt + getCantidad('C21') + '</div></div>',
+                                    tal + getTalla('T22') + cnt + getCantidad('C22') + '</div></div>',
+                                    Precio.val(),
+                                    total_pares,
+                                    FechaDeEntrega.val(),
+                                    '<button type="button" class="btn btn-danger" onclick="onEliminar(this,1)"><span class="fa fa-trash"></span></button>',
+                                    Recio.val(),
+                                    Titulo.val(),
+                                    Observaciones.val(),
+                                    pnlDatos.find("#Serie").val(),
+                                    'N', (total_pares * Precio.val())
+                                ];
+                                PedidoDetalle.row.add(dtm).draw(false);
+                                //CLEAR
+                                total_pares = 0;
+                                pnlDatos.find("#TPares").val(0);
+                                pnlDatos.find("[name*='C']").val('');
+                                //Estilo[0].selectize.clear(true);
+                                //Estilo[0].selectize.open();
+                                //Estilo[0].selectize.focus();
+                                FechaDeEntrega.prop('readonly', true);
+                                Semana.prop('readonly', true);
+                                Recibido[0].selectize.disable();
+                                Maquila[0].selectize.clear(true);
+                                Recio.val('');
+                                Precio.val('');
+                                Estilo[0].selectize.clear(true);
+                                agregado = 1;
+                                btnAgregarDetalle.focus();
+                            } else {
+                                swal({
+                                    title: "ATENCIÓN",
+                                    text: "ESTA COMBINACION DE ESTILO/COLOR YA HA SIDO AGREGADA",
+                                    icon: "warning",
+                                    closeOnClickOutside: false,
+                                    closeOnEsc: false,
+                                    buttons: false,
+                                    timer: 2000
+                                });
+                            }
                         } else {
-                            swal({
-                                title: "ATENCIÓN",
-                                text: "ESTA COMBINACION DE ESTILO/COLOR YA HA SIDO AGREGADA",
-                                icon: "warning",
-                                closeOnClickOutside: false,
-                                closeOnEsc: false,
-                                buttons: false,
-                                timer: 2000
-                            });
+                            //ZERO PARES
+                            console.log('zero');
                         }
-                    } else {
-                        //ZERO PARES
                     }
+                } else {
+                    swal('ATENCIÓN', 'EL PRECIO NO ES VÁLIDO', 'warning');
                 }
-            } else {
-                swal('ATENCIÓN', 'EL PRECIO NO ES VÁLIDO', 'warning');
             }
         }
 //FIN VALIDACIONES
@@ -1338,6 +1330,89 @@
             console.log(x.responseText);
             swal('ATENCION', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLES', 'warning');
         });
+    }
+
+    function onComprobarSemanaMaquila(m, s) {
+        /*COMPROBAR FECHA POR SEMANA(ABIERTA,CERRADA) Y MAQUILA*/
+        $.getJSON(master_url + 'onComprobarSemanaMaquila', {MAQUILA: parseInt(m), SEMANA: s}).done(function (data) {
+            console.log(data);
+            var cerrada = data[0].EXISTE;
+            if (parseInt(cerrada) < 0) {
+                console.log('SEMANA , MAQUILA (FECHA) : OK');
+                pedido_valido = true;
+            } else {
+                console.log('LA SEMANA , MAQUILA (FECHA) ESTA CERRADA');
+                swal('ATENCIÓN', 'LA SEMANA, MAQUILA POR FECHA DE ENTREGA, ESTA CERRADA', 'warning');
+                onBeep(2);
+                pedido_valido = false;
+            }
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+        });
+    }
+
+    function onValidarAnioDeEntrega() {
+//OBTENER ANOS DE ENTREGA
+        $.getJSON(master_url + 'getAnosValidos').done(function (data) {
+            var anos = data[0];
+            var fecha_valida = false;
+            var fe = pnlDatos.find("#FechaEntrega").val();
+            if (fe !== '') {
+                $.each(data, function (k, v) {
+                    if (fe.includes(v.Anos)) {
+                        fecha_valida = true;
+                        return false;
+                    }
+                });
+                if (!fecha_valida) {
+                    swal({
+                        title: "ATENCIÓN",
+                        text: "NO EXISTEN SEMANAS DE PRODUCCIÓN PARA ESTA FECHA ",
+                        icon: "warning",
+                        closeOnClickOutside: false,
+                        closeOnEsc: false,
+                        buttons: false,
+                        timer: 1200
+                    }).then((value) => {
+                        pnlDatos.find("#FechaEntrega").val('');
+                        pnlDatos.find("#Semana").val('');
+                        pnlDatos.find("#FechaEntrega").focus();
+                    });
+                }
+            }
+        }).fail(function (x, y, z) {
+            console.log(x.responseText);
+        }).always(function () {
+
+        });
+    }
+
+    function onChecarSemanaValida(e) {
+        var n = $(e);
+        if (n.val() !== '') {
+            $.getJSON(master_url + 'onChecarSemanaValida', {ID: $(e).val()}).done(function (data) {
+                if (parseInt(data[0].Semana) <= 0) {
+                    var options = {
+                        title: "Indique una semana de producción válida",
+                        text: "La semana " + $(e).val() + " no existe o no ha sido generada.",
+                        icon: "warning",
+                        focusConfirm: true,
+                        closeOnClickOutside: false,
+                        closeOnEsc: false
+                    };
+                    swal(options).then((value) => {
+//                        onVerificarFormValido();
+                        $(e).val('').focus().select();
+                    });
+                }
+            }).fail(function (x) {
+                swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+                console.log(x.responseText);
+            }).always(function () {
+//                onVerificarFormValido();
+            });
+        }
     }
 </script>
 <style>

@@ -158,4 +158,13 @@ class Reasignarcontroles_model extends CI_Model {
         }
     }
 
+    public function onObtenerElUltimoControl($S, $M) {
+        try {
+            return $this->db->select("C.Control AS ULTIMO_CONTROL")->from("controles AS C")
+                            ->where("C.Semana = $S AND C.Maquila = $M", null, false)->order_by('C.Control', 'DESC')
+                            ->limit(1)->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 }

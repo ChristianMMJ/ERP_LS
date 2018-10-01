@@ -67,6 +67,22 @@ class Pedidos extends CI_Controller {
         }
     }
 
+    public function onComprobarSemanaMaquila() {
+        try {
+            print json_encode($this->Pedidos_model->onComprobarSemanaMaquila($this->input->get('MAQUILA'), $this->input->get('SEMANA')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onChecarSemanaValida() {
+        try {
+            print json_encode($this->Pedidos_model->onChecarSemanaValida($this->input->get('ID')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getCapacidadMaquila() {
         try {
             print json_encode($this->Pedidos_model->getCapacidadMaquila($this->input->get('CLAVE'), $this->input->get('SEMANA')));

@@ -108,7 +108,7 @@ class Iordendeproduccion_model extends CI_Model {
         try {
             $this->db->select("OP.Control, OP.ControlT, E.Foto AS FOTO", false)->from('ordendeproduccion AS OP')
                     ->join('ordendeproducciond AS OPD', 'OP.ID = OPD.OrdenDeProduccion')
-                    ->join('Estilos AS E', 'OP.Estilo = E.Clave','left');
+                    ->join('Estilos AS E', 'OP.Estilo = E.Clave', 'left');
             if ($CONTROL_INICIAL !== '' && $CONTROL_FINAL !== '') {
                 $this->db->where("OP.ControlT BETWEEN $CONTROL_INICIAL AND $CONTROL_FINAL", null, false);
             }
@@ -129,17 +129,10 @@ class Iordendeproduccion_model extends CI_Model {
     public function getDepartamentosXOrdenDeProduccionEntreControles($CONTROL_INICIAL, $CONTROL_FINAL, $SEMANA, $ANO) {
         try {
             $this->db->select("OPD.Departamento AS DEPARTAMENTO, OPD.DepartamentoT AS DEPARTAMENTOT", false)->from('ordendeproduccion AS OP')
-                    ->join('ordendeproducciond AS OPD', 'OP.ID = OPD.OrdenDeProduccion')
-                    ->join('pedidodetalle AS PD', 'OP.ID = OPD.OrdenDeProduccion');
+                    ->join('ordendeproducciond AS OPD', 'OP.ID = OPD.OrdenDeProduccion');
             if ($CONTROL_INICIAL !== '' && $CONTROL_FINAL !== '') {
                 $this->db->where("OP.ControlT BETWEEN $CONTROL_INICIAL AND $CONTROL_FINAL", null, false);
             }
-//            if ($SEMANA !== '') {
-//                $this->db->where("OP.Semana", $SEMANA);
-//            }
-//            if ($ANO !== '') {
-//                $this->db->where("OP.Ano", $ANO);
-//            }
             $this->db->group_by(array('Departamento'));
             $this->db->order_by('ABS(OPD.Departamento)', 'ASC');
             return $this->db->get()->result();
@@ -164,4 +157,13 @@ class Iordendeproduccion_model extends CI_Model {
         }
     }
 
+    public function onObtenerElUltimoControl($S, $M) {
+        try {
+            return $this->db->select("OP.ControlT AS ULTIMO_CONTROL")->from("ordendeproduccion AS OP")
+                            ->where("OP.Semana", $S)->where("OP.Maquila", $M)->order_by('OP.ControlT', 'DESC')
+                            ->limit(1)->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 }

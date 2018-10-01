@@ -98,6 +98,18 @@ class Pedidos_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
+    public function onComprobarSemanaMaquila($M,$S) {
+        try {
+            return $this->db->select("COUNT(*) AS EXISTE", false)
+                            ->from('semanasproduccioncerradas AS SPC')
+                            ->where('SPC.Maq', $M)
+                            ->where('SPC.Sem', $S)
+                            ->where('SPC.Estatus', 'CERRADA')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 
     public function getSerieXPedido($ID) {
         try {
@@ -302,6 +314,14 @@ class Pedidos_model extends CI_Model {
         }
     }
 
+    public function onChecarSemanaValida($S) {
+        try {
+            return $this->db->select(" COUNT(*) AS Semana")->from("semanasproduccion AS S")->where("S.Sem", $S)->where("S.Estatus", "ACTIVO")->order_by('S.Sem', 'ASC')->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    
     public function getColoresXEstilo($Estilo) {
         try {
             return $this->db->select("CAST(C.Clave AS SIGNED) AS Clave, CONCAT(C.Clave,'-', C.Descripcion) AS Color", false)

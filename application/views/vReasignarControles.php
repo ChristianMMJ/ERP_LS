@@ -145,6 +145,10 @@
                     }
             );
 
+            pnlTablero.find("#ControlInicial").focusout(function () {
+                onObtenerElUltimoControl(this);
+            });
+
             $("#ControlInicial,#ControlFinal").keyup(function () {
                 ReasignarControles.draw();
             });
@@ -583,6 +587,21 @@
         HoldOn.close();
     }
 
+    function onObtenerElUltimoControl(e) {
+        var control = $(e).val();
+        var semana = parseInt(control.slice(2, 4));
+        var maquila = parseInt(control.slice(4, 6));
+        $.getJSON(master_url + 'onObtenerElUltimoControl', {SEMANA: semana, MAQUILA: maquila}).done(function (data) {
+            var dt = data[0]; 
+            var ControlFinal = pnlTablero.find("#ControlFinal");
+            if (data.length > 0 && ControlFinal.val() === '' && ControlFinal.val().length <= 0) {
+                ControlFinal.val(dt.ULTIMO_CONTROL);
+                onBeep(1);
+            }
+        }).fail(function (x, y, z) {
+            console.log(x.responseText);
+        });
+    }
 </script>
 <style>
     .dropdown-item.active, .dropdown-item:active{
