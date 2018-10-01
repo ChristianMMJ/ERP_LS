@@ -967,7 +967,7 @@
     }
 
     var added = false, agregado = 0, pedido_valido = false;
-    ;
+
     function onCalcularPares(e) {
         if (pedido_valido) {
             pnlDatos.find("#Recibido")[0].selectize.enable();
@@ -1342,7 +1342,9 @@
                 pedido_valido = true;
             } else {
                 console.log('LA SEMANA , MAQUILA (FECHA) ESTA CERRADA');
-                swal('ATENCIÓN', 'LA SEMANA, MAQUILA POR FECHA DE ENTREGA, ESTA CERRADA', 'warning');
+                swal('ATENCIÓN', 'LA SEMANA, MAQUILA POR FECHA DE ENTREGA, ESTA CERRADA', 'warning').then((value) => {
+                    pnlDatos.find("#FechaPedido").focus();
+                });
                 onBeep(2);
                 pedido_valido = false;
             }

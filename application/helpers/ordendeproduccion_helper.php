@@ -927,7 +927,7 @@ class PDF extends FPDF {
         /* TRANSPORTE */
         $this->SetFont('Arial', 'B', 6);
         $this->SetX($pos[2] + 20);
-        $this->Cell(5, $alto_celda, utf8_decode("Tras.  "), 0/* BORDE */, 0, 'L', 0);
+        $this->Cell(5, $alto_celda, utf8_decode("Trans.  "), 0/* BORDE */, 0, 'L', 0);
         $this->SetFont('Arial', '', 6);
         $this->SetX($pos[2] + 25);
         $this->Cell(47.5, $alto_celda, utf8_decode(" " . $this->getTrasp()), 0/* BORDE */, 1, 'L', 0);
@@ -1112,7 +1112,7 @@ class PDF extends FPDF {
         $this->SetFont('Arial', '', 6);
         $this->SetX(35.5);
         $this->Cell(90, $alto_celda, utf8_decode($this->getSuela()), 1/* BORDE */, 0, 'C', 0);
-        $this->SetFont('Arial', 'B', 5.5);
+        $this->SetFont('Arial', 'B', 6);
         $this->SetX(150);
         $this->Cell(30, $alto_celda, utf8_decode("Suaje"), 0/* BORDE */, 0, 'C', 0);
         $this->SetX(180.1);
@@ -1122,6 +1122,7 @@ class PDF extends FPDF {
 
         /* SERIE/CORRIDA */
 //        $this->Rect(25.5, $this->GetY(), 154/* DER-X */, 7/* DER-Y */);
+        $this->SetFont('Arial', 'B', 6);
         $this->SetX(5);
         $this->Cell(10, $alto_celda, utf8_decode("Corrida"), 0/* BORDE */, 0, 'L', 0);
         $this->SetX(15);
@@ -1327,8 +1328,8 @@ class PDF extends FPDF {
 
         $this->AliasNbPages('{totalPages}');
         // Go to 1.5 cm from bottom
-        $this->SetY(3);
-        $this->SetX(250);
+        $this->SetY(2);
+        $this->SetX(188);
         // Select Arial italic 8
         $this->SetFont('Arial', 'I', 7);
         // Print centered page number

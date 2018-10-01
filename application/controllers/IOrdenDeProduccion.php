@@ -257,13 +257,20 @@ class IOrdenDeProduccion extends CI_Controller {
                 $pdf->Cell(53, 10, "", 0/* BORDE */, 0/* SALTO SI */, 'C', 0);
 
                 $pdf->Code128(5/* X */, $pdf->GetY()/* Y */, $vc->ControlT/* TEXT */, 53/* ANCHO */, 6/* ALTURA */);
+                $width_final = $this->getSize($width, 96);
+                $height_final = $this->getSize($height, 96);
+                $altura_final = $height_final + $pdf->getY();
                 $pdf->SetFont('Arial', 'B', 8);
                 $pdf->SetX(58);
-                $pdf->Cell(152, 6, utf8_decode("* LEA CUIDADOSAMENTE LAS INSTRUCCIONES, CUALQUIER ERROR LE SERÁ CARGADO *"), 0/* BORDE */, 1/* SALTO SI */, 'C', 0);
+                $pdf->Cell(152, 6, utf8_decode("* LEA CUIDADOSAMENTE LAS INSTRUCCIONES, CUALQUIER ERROR LE SERÁ CARGADO *" . $pdf->GetY()), 0/* BORDE */, 1/* SALTO SI */, 'C', 0);
                 /* END FOREACH PIEZAS */
-
-                $pdf->Image(base_url($vc->FOTO), /* LEFT */ 80, $pdf->GetY()/* TOP */, /* ANCHO */ 48);
-
+                if ($altura_final > 260) {
+                    $pdf->AddPage();
+                    $pdf->SetAutoPageBreak(true, 10);
+                    $pdf->Image(base_url($vc->FOTO), /* LEFT */ 80, $pdf->GetY() + 5/* TOP */, /* ANCHO */ $width_final);
+                } else {
+                    $pdf->Image(base_url($vc->FOTO), /* LEFT */ 80, $pdf->GetY()/* TOP */, /* ANCHO */ $width_final);
+                }
                 /* TOTALES */
                 $Y = $pdf->GetY();
                 $pdf->SetX(46);
@@ -344,4 +351,11 @@ class IOrdenDeProduccion extends CI_Controller {
         }
     }
 
+    function getSize($i, $limit) {
+        $h = $i;
+        for ($index = 0; $h > $limit; $index++) {
+            $h = $h / 2;
+        }
+        return $h;
+    }
 }
