@@ -20,9 +20,9 @@
                 <input type="text" class="form-control form-control-sm  numbersOnly column_filter" id="col0_filter" maxlength="4" >
             </div>
 
-            <div class="col-6 col-sm-5 col-md-5 col-lg-2 col-xl-1">
+            <div class="col-6 col-sm-5 col-md-5 col-lg-2 col-xl-1" data-column="2">
                 <label>Semana</label>
-                <input type="text" id="Semana" class="form-control form-control-sm  numbersOnly" maxlength="2" >
+                <input type="text" class="form-control form-control-sm  numbersOnly column_filter" id="col2_filter" maxlength="2" >
             </div>
             <div class="col-6 col-sm-5 col-md-5 col-lg-3 col-xl-3">
                 <label>Departamento</label>
@@ -71,7 +71,7 @@
         var accion = "";
         btnCerrarSemana.click(function () {
             var ano = pnlTablero.find('#col0_filter').val();
-            var sem = pnlTablero.find('#Semana').val();
+            var sem = pnlTablero.find('#col2_filter').val();
             var maq = pnlTablero.find('#col1_filter').val();
             var depto = pnlTablero.find('#Depto').val();
             $.getJSON(master_url + 'onVerificarSemanaProdCerrada', {
@@ -144,7 +144,7 @@
             onComprobarMaquilas($(this));
         });
 
-        pnlTablero.find("#Semana").change(function () {
+        pnlTablero.find("#col2_filter").change(function () {
             var ano = pnlTablero.find("#col0_filter");
             onComprobarSemanasProduccion($(this), ano.val());
         });

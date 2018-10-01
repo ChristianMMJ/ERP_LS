@@ -252,16 +252,19 @@
                     pnlDatos.find("#Ano").focus();
                 });
             }
+            pnlDatos.find("#Sem").trigger('change');
         });
 
         pnlDatos.find("#Maq").change(function () {
             onComprobarMaquilas($(this));
+            pnlDatos.find("#Sem").trigger('change');
         });
 
         pnlDatos.find("#Sem").change(function () {
             var ano = pnlDatos.find("#Ano");
             var maq = pnlDatos.find("#Maq");
-            onComprobarSemanasProduccion($(this), ano.val(), maq.val());
+            var tipo = pnlDatos.find("#Tipo");
+            onComprobarSemanasProduccion($(this), ano.val(), maq.val(), tipo.val());
         });
 
         pnlDatos.find("#Proveedor").change(function () {
@@ -289,6 +292,8 @@
         pnlDatos.find("#Tipo").change(function () {
             var prov = pnlDatos.find("#Proveedor").val();
             getArticuloByDeptoByProveedor($(this).val(), prov);
+            pnlDatos.find("#Sem").trigger('change');
+
         });
 
         pnlDatosDetalle.find("#Articulo").change(function () {
@@ -839,7 +844,7 @@
 
     function getPorcentajesCompraByProveedor(proveedor) {
         $.getJSON(master_url + 'getPorcentajesCompraByProveedor', {Proveedor: proveedor}).done(function (data) {
-            console.log(data);
+
             if (data.length > 0) {
                 PorRemision = parseFloat(data[0].PorRemision);
                 PorFactura = parseFloat(data[0].PorFactura);
@@ -858,7 +863,6 @@
             } else {
                 seParte = false;
             }
-            console.log(seParte);
         }).fail(function (x) {
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
             console.log(x.responseText);
@@ -954,73 +958,67 @@
             console.log(x.responseText);
         });
     }
-    function onComprobarSemanasProduccion(v, ano, maq) {
-        $.getJSON(master_url + 'onComprobarSemanasProduccion', {Clave: $(v).val(), Ano: ano}).done(function (data) {
-            if (data.length > 0) {
+    function onComprobarSemanasProduccion(v, ano, maq, tipo) {
+        if ($(v).val() !== '') {
+            $.getJSON(master_url + 'onComprobarSemanasProduccion', {Clave: $(v).val(), Ano: ano}).done(function (data) {
+                if (data.length > 0) {
 
-                $.getJSON(master_url + 'onVerificarSemanaProdCerrada', {
-                    Ano: ano,
-                    Maq: maq,
-                    Sem: $(v).val()
-                }).done(function (data) {
-                    if (data.length > 0) {
-                        if (data[0].Estatus === 'CERRADA') {//CERRADA
-                            swal({
-                                title: "ATENCIÓN",
-                                text: "LA SEMANA YA ESTA CERRADA",
-                                icon: "warning",
-                                buttons: {
-                                    eliminar: {
-                                        text: "Aceptar",
-                                        value: "aceptar"
-                                    }
-                                }
-                            }).then((value) => {
-                                switch (value) {
-                                    case "aceptar":
-                                        swal.close();
-                                        $(v).val('');
-                                        $(v).focus();
-                                        break;
-                                }
-                            });
+                    $.getJSON(master_url + 'onVerificarSemanaProdCerrada', {
+                        Ano: ano,
+                        Maq: maq,
+                        Sem: $(v).val()
+                    }).done(function (data) {
+                        if (data.length > 0) {
+                            if (data[0].Estatus === 'CERRADA') {//CERRADA
+                                swal({
+                                    title: "ATENCIÓN",
+                                    text: "LA SEMANA YA ESTA CERRADA",
+                                    icon: "warning"
+                                }).then((value) => {
+                                    $(v).val('').focus();
+                                });
+                            } else {//ABIERTA
+                                onComprobarSemanaProdCerradaXDepartamento(ano, maq, v, tipo);
+                            }
                         } else {//ABIERTA
-
+                            onComprobarSemanaProdCerradaXDepartamento(ano, maq, v, tipo);
                         }
-                    } else {//ABIERTA
-
-                    }
-                });
-
-
-
-            } else {
-                swal({
-                    title: "ATENCIÓN",
-                    text: "LA SEMANA " + $(v).val() + " DEL " + ano + " " + "NO EXISTE",
-                    icon: "warning",
-                    buttons: {
-                        eliminar: {
-                            text: "Aceptar",
-                            value: "aceptar"
-                        }
-                    }
-                }).then((value) => {
-                    switch (value) {
-                        case "aceptar":
-                            swal.close();
-                            $(v).val('');
-                            $(v).focus();
-                            break;
-                    }
-                });
+                    });
+                } else {
+                    swal({
+                        title: "ATENCIÓN",
+                        text: "LA SEMANA " + $(v).val() + " DEL " + ano + " " + "NO EXISTE",
+                        icon: "warning"
+                    }).then((value) => {
+                        $(v).val('').focus();
+                    });
+                }
+            }).fail(function (x, y, z) {
+                swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+                console.log(x.responseText);
+            });
+        }
+    }
+    function onComprobarSemanaProdCerradaXDepartamento(ano, maq, v, tipo) {
+        $.getJSON(master_url + 'onVerificarSemanaProdDepartamentoCerrada', {
+            Ano: ano,
+            Maq: maq,
+            Sem: $(v).val(),
+            Departamento: tipo
+        }).done(function (data) {
+            if (data.length > 0) {
+                if (data[0].Estatus === 'CERRADA') {//CERRADA X DEPTO
+                    swal({
+                        title: "ATENCIÓN",
+                        text: "EL DEPARTAMENTO " + tipo + " DE ESTA SEMANA YA ESTA CERRADO",
+                        icon: "warning"
+                    }).then((value) => {
+                        $(v).val('').focus();
+                    });
+                }
             }
-        }).fail(function (x, y, z) {
-            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-            console.log(x.responseText);
         });
     }
-
     /*Detalle*/
     function getDetalleByID(IDX) {
         if ($.fn.DataTable.isDataTable('#tblComprasDetalle')) {
