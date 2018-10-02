@@ -177,14 +177,51 @@ class IOrdenDeProduccion extends CI_Controller {
                 $pdf->SetTextColor(0, 0, 0);
                 /* RESUMEN */
                 $pdf->SetFont('Arial', 'B', 7);
-                $pdf->setY(52); //DISTANCIA ENTRE EL ENCABEZADO Y EL DETALLE
+                $pdf->setY(48.5); //DISTANCIA ENTRE EL ENCABEZADO Y EL DETALLE
 
                 /* FOREACH PIEZAS | ARTICULOS | PZXPAR | UNIDAD | CANTIDAD */
                 $PUNTO_INICIAL = $pdf->GetY();
                 $COLUMN = 1;
                 $X = 108;
-                $Y = $pdf->GetY();
 
+                /* COLUMNA UNO */
+                $col = array(5/* 0 */, 40/* 1 */, 80/* 2 */, 88/* 3 */, 98/* 4 */, 108/* 5 */, 143/* 6 */, 183/* 7 */, 191/* 8 */, 201/* 9 */);
+                $anc = array(35, 40, 8, 10, 10);
+                $alto_celda = 3.5;
+                $pdf->SetX($col[0]);
+                $pdf->Cell($anc[0], $alto_celda, "Pieza", 0/* BORDE */, 0, 'L', 0);
+
+                $pdf->SetX($col[1]);
+                $pdf->Cell($anc[1], $alto_celda, "Articulos", 0/* BORDE */, 0, 'L', 0);
+
+                $pdf->SetX($col[2]);
+                $pdf->Cell($anc[2], $alto_celda, "PzXP", 0/* BORDE */, 0, 'C', 0);
+
+                $pdf->SetX($col[3]);
+                $pdf->Cell($anc[3], $alto_celda, "Um-Me", 0/* BORDE */, 0, 'C', 0);
+
+                $pdf->SetX($col[4]);
+                $pdf->Cell($anc[4], $alto_celda, "Cant", 0/* BORDE */, 0, 'C', 0);
+
+                /* COLUMNA DOS */
+                $pdf->SetX($col[5]);
+                $pdf->Cell($anc[0], $alto_celda, "Pieza", 0/* BORDE */, 0, 'L', 0);
+
+                $pdf->SetX($col[6]);
+                $pdf->Cell($anc[1], $alto_celda, "Articulos", 0/* BORDE */, 0, 'L', 0);
+
+                $pdf->SetX($col[7]);
+                $pdf->Cell($anc[2], $alto_celda, "PzXP", 0/* BORDE */, 0, 'C', 0);
+
+                $pdf->SetX($col[8]);
+                $pdf->Cell($anc[3], $alto_celda, "Um-Me", 0/* BORDE */, 0, 'C', 0);
+
+                $pdf->SetX($col[9]);
+                $pdf->Cell($anc[4], $alto_celda, "Cant", 0/* BORDE */, 1, 'C', 0);
+                /* COLUMNA UNO */
+                $pdf->Line(5, $pdf->GetY(), 210, $pdf->GetY());
+
+                $Y = $pdf->GetY();
                 foreach ($DEPARTAMENTOS as $dk => $dv) {
                     if ($COLUMN === 2) {
                         $pdf->Cell(200, 3.5, "", 0/* BORDE */, 1/* SALTO NO */, 'C', 0);
@@ -262,12 +299,12 @@ class IOrdenDeProduccion extends CI_Controller {
                 $altura_final = $height_final + $pdf->getY();
                 $pdf->SetFont('Arial', 'B', 8);
                 $pdf->SetX(58);
-                $pdf->Cell(152, 6, utf8_decode("* LEA CUIDADOSAMENTE LAS INSTRUCCIONES, CUALQUIER ERROR LE SERÁ CARGADO *" . $pdf->GetY()), 0/* BORDE */, 1/* SALTO SI */, 'C', 0);
+                $pdf->Cell(152, 6, utf8_decode("* LEA CUIDADOSAMENTE LAS INSTRUCCIONES, CUALQUIER ERROR LE SERÁ CARGADO *"), 0/* BORDE */, 1/* SALTO SI */, 'C', 0);
                 /* END FOREACH PIEZAS */
                 if ($altura_final > 260) {
                     $pdf->AddPage();
                     $pdf->SetAutoPageBreak(true, 10);
-                    $pdf->Image(base_url($vc->FOTO), /* LEFT */ 80, $pdf->GetY() + 5/* TOP */, /* ANCHO */ $width_final);
+                    $pdf->Image(base_url($vc->FOTO), /* LEFT */ 80, $pdf->GetY() /* TOP */, /* ANCHO */ $width_final);
                 } else {
                     $pdf->Image(base_url($vc->FOTO), /* LEFT */ 80, $pdf->GetY()/* TOP */, /* ANCHO */ $width_final);
                 }
@@ -358,4 +395,5 @@ class IOrdenDeProduccion extends CI_Controller {
         }
         return $h;
     }
+
 }

@@ -73,11 +73,11 @@
                             <select class="form-control form-control-sm" id="Agente" name="Agente" required="" placeholder="">
                             </select>
                         </div>
-                        <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-1">
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-2">
                             <label for="FechaPedido" >Fec-Pedido*</label>
                             <input type="text" id="FechaPedido" name="FechaPedido" class="form-control form-control-sm date notEnter" required="">
                         </div>
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-1">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
                             <label for="FechaEntrega" >Fec-Entrega*</label>
                             <input type="text" id="FechaEntrega" name="FechaEntrega" class="form-control form-control-sm date notEnter">
                         </div>
@@ -157,7 +157,7 @@
                         <!--TALLAS-->
                         <div class="col-12">
                             <div class="row">
-                                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" >
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9" >
                                     <div class="table-responsive" style="overflow-x:auto; white-space: nowrap;">
                                         <label class="font-weight-bold" for="Tallas">Tallas</label>
                                         <table id="tblTallas" class="Tallas" >
@@ -313,6 +313,9 @@
         handleEnter();
 
         btnAgregarDetalle.click(function () {
+            if (pedido_valido) {
+                btnGuardar.trigger('click');
+            }
         });
 
         mdlAviso.draggable({
@@ -1082,7 +1085,6 @@
                 }
             }
         }
-//FIN VALIDACIONES
     }
 
     function onEliminar(r, index) {
@@ -1337,7 +1339,7 @@
         $.getJSON(master_url + 'onComprobarSemanaMaquila', {MAQUILA: parseInt(m), SEMANA: s}).done(function (data) {
             console.log(data);
             var cerrada = data[0].EXISTE;
-            if (parseInt(cerrada) < 0) {
+            if (parseInt(cerrada) === 0) {
                 console.log('SEMANA , MAQUILA (FECHA) : OK');
                 pedido_valido = true;
             } else {

@@ -1289,40 +1289,6 @@ class PDF extends FPDF {
         $this->Cell(200, $alto_celda, $this->getObs(), 0/* BORDE */, 1, 'L', 0);
         $this->Line(5, $this->GetY(), 210, $this->GetY());
 
-        /* COLUMNA UNO */
-        $col = array(5/* 0 */, 40/* 1 */, 80/* 2 */, 88/* 3 */, 98/* 4 */, 108/* 5 */, 143/* 6 */, 183/* 7 */, 191/* 8 */, 201/* 9 */);
-        $anc = array(35, 40, 8, 10, 10);
-        $this->SetX($col[0]);
-        $this->Cell($anc[0], $alto_celda, "Pieza", 0/* BORDE */, 0, 'L', 0);
-
-        $this->SetX($col[1]);
-        $this->Cell($anc[1], $alto_celda, "Articulos", 0/* BORDE */, 0, 'L', 0);
-
-        $this->SetX($col[2]);
-        $this->Cell($anc[2], $alto_celda, "PzXP", 0/* BORDE */, 0, 'C', 0);
-
-        $this->SetX($col[3]);
-        $this->Cell($anc[3], $alto_celda, "Um-Me", 0/* BORDE */, 0, 'C', 0);
-
-        $this->SetX($col[4]);
-        $this->Cell($anc[4], $alto_celda, "Cant", 0/* BORDE */, 0, 'C', 0);
-
-        /* COLUMNA DOS */
-        $this->SetX($col[5]);
-        $this->Cell($anc[0], $alto_celda, "Pieza", 0/* BORDE */, 0, 'L', 0);
-
-        $this->SetX($col[6]);
-        $this->Cell($anc[1], $alto_celda, "Articulos", 0/* BORDE */, 0, 'L', 0);
-
-        $this->SetX($col[7]);
-        $this->Cell($anc[2], $alto_celda, "PzXP", 0/* BORDE */, 0, 'C', 0);
-
-        $this->SetX($col[8]);
-        $this->Cell($anc[3], $alto_celda, "Um-Me", 0/* BORDE */, 0, 'C', 0);
-
-        $this->SetX($col[9]);
-        $this->Cell($anc[4], $alto_celda, "Cant", 0/* BORDE */, 1, 'C', 0);
-        $this->Line(5, $this->GetY(), 210, $this->GetY());
 
         /* FIN SERIE/CORRIDA */
 
