@@ -67,8 +67,24 @@ class RecibeOrdenCompra extends CI_Controller {
             $x = $this->input;
             $datos = array(
                 'CantidadRecibida' => $x->post('CantidadRecibida'),
+                'Factura' => $x->post('Factura'),
+                'FechaFactura' => $x->post('FechaFactura')
             );
             $this->Recibeordencompra_model->onModificar($x->post('ID'), $datos);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onModificarCantidadRecibidaByArtByOCByTp() {
+        try {
+            $x = $this->input;
+            $datos = array(
+                'CantidadRecibida' => $x->post('CantidadRecibida'),
+                'Factura' => $x->post('Factura'),
+                'FechaFactura' => $x->post('FechaFactura')
+            );
+            $this->Recibeordencompra_model->onModificarCantidadRecibidaByArtByOCByTp($x->post('Articulo'), $x->post('OC'), $x->post('Tp'), $datos);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

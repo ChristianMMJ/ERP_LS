@@ -98,4 +98,36 @@ class Recibeordencompra_model extends CI_Model {
         }
     }
 
+    public function onModificar($ID, $DATA) {
+        try {
+
+            $can_rec = $DATA{'CantidadRecibida'};
+            $Fac = $DATA{'Factura'};
+            $FechaFac = $DATA{'FechaFactura'};
+            $sql = "UPDATE ordencompradetalle OCD "
+                    . "SET OCD.CantidadRecibida = $can_rec + ifnull(OCD.CantidadRecibida,0), OCD.Factura = '$Fac', OCD.FechaFactura = '$FechaFac' "
+                    . "WHERE OCD.ID = '$ID'";
+            $this->db->query($sql);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onModificarCantidadRecibidaByArtByOCByTp($Art, $OC, $Tp, $DATA) {
+        try {
+            $can_rec = $DATA{'CantidadRecibida'};
+            $Fac = $DATA{'Factura'};
+            $FechaFac = $DATA{'FechaFactura'};
+            $sql = "UPDATE ordencompradetalle OCD "
+                    . "JOIN ordencompra OC ON OC.ID =  OCD.OrdenCompra "
+                    . "SET OCD.CantidadRecibida = $can_rec + ifnull(OCD.CantidadRecibida,0), OCD.Factura = '$Fac', OCD.FechaFactura = '$FechaFac' "
+                    . "WHERE OC.Tp = '$Tp'"
+                    . "AND OC.Folio = '$OC' "
+                    . "AND OCD.Articulo = '$Art'";
+            $this->db->query($sql);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
 }

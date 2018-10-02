@@ -5,17 +5,19 @@
                 <legend class="float-left">Recepción de Órdenes de Compra</legend>
             </div>
             <div class="col-sm-4" align="right">
+                <button type="button" class="btn btn-success btn-float" id="btnCerrarCompra" data-toggle="tooltip" data-placement="top" title="Cerrar Compra">
+                    <i class="fa fa-check"></i>
+                </button>
             </div>
         </div>
-        <div class="row">
-
+        <div class="row" id="Encabezado">
             <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1" data-column="1">
                 <label>Tp</label>
-                <input type="text" class="form-control form-control-sm  numbersOnly column_filter" id="col1_filter" maxlength="2" >
+                <input type="text" class="form-control form-control-sm  numbersOnly column_filter captura" id="col1_filter" maxlength="2" >
             </div>
             <div class="col-6 col-sm-3 col-md-2 col-lg-2 col-xl-1" data-column="2">
                 <label>O. Compra</label>
-                <input type="text" class="form-control form-control-sm  numbersOnly column_filter" id="col2_filter" maxlength="10" >
+                <input type="text" class="form-control form-control-sm numbersOnly column_filter captura"  id="col2_filter" maxlength="10" required>
             </div>
             <div class="col-6 col-sm-3 col-md-2 col-lg-2 col-xl-2" >
                 <label for="" >Fecha O.C.</label>
@@ -30,21 +32,21 @@
             </div>
             <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1" >
                 <label>Tp Doc.</label>
-                <input type="text" class="form-control form-control-sm  numbersOnly" id="Tp" name="Tp" maxlength="2" >
+                <input type="text" class="form-control form-control-sm numbersOnly captura" id="Tp" name="Tp" maxlength="2" required>
             </div>
             <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1" >
                 <label>Doc.</label>
-                <input type="text" class="form-control form-control-sm " id="Factura" name="Factura" maxlength="15" >
+                <input type="text" class="form-control form-control-sm captura" id="Factura" name="Factura" maxlength="15" required>
             </div>
             <div class="col-6 col-sm-3 col-md-2 col-lg-2 col-xl-2" >
                 <label>Fecha Doc.</label>
-                <input type="text" class="form-control form-control-sm  numbersOnly date notEnter" id="FechaFactura" name="FechaFactura" maxlength="12" >
+                <input type="text" class="form-control form-control-sm  numbersOnly date notEnter captura" id="FechaFactura" name="FechaFactura" maxlength="12" required>
             </div>
         </div>
-        <div class="row">
+        <div class="row" id="Detalle">
             <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1" >
                 <label for="" >Artículo</label>
-                <input type="text" class="form-control form-control-sm" id="Articulo" name="Articulo">
+                <input type="text" class="form-control form-control-sm captura disabledForms" id="Articulo" name="Articulo">
             </div>
             <div class="col-12 col-sm-4 col-md-3 col-xl-3" >
                 <label for="" >Descripción</label>
@@ -52,10 +54,10 @@
             </div>
             <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1" >
                 <label>Cant</label>
-                <input type="text" class="form-control form-control-sm numbersOnly" id="CantidadRecibida" name="CantidadRecibida" maxlength="9" >
+                <input type="text" class="form-control form-control-sm numbersOnly captura disabledForms" id="CantidadRecibida" name="CantidadRecibida" maxlength="9" >
             </div>
             <div class="col-6 col-sm-5 col-md-5 col-lg-2 col-xl-1 mt-4">
-                <button type="button" class="btn btn-primary" id="btnActualizaCantidad" data-toggle="tooltip" data-placement="right" title="Actualizar Cantidad">
+                <button type="button" class="btn btn-primary captura disabledForms" id="btnActualizaCantidad" data-toggle="tooltip" data-placement="right" title="Actualizar Cantidad">
                     <i class="fa fa-plus"></i>
                 </button>
             </div>
@@ -95,6 +97,15 @@
         handleEnter();
         pnlTablero.find("input").val("");
         pnlTablero.find("#FechaFactura").val(getToday());
+        pnlTablero.find("#FechaFactura").blur(function () {
+            isValid('pnlTablero');
+            if (valido) {
+                pnlTablero.find('#Detalle').find('.captura').removeClass('disabledForms');
+            } else {
+                swal('ATENCION', 'Completa los campos requeridos', 'warning');
+                pnlTablero.find('#Detalle').find('.captura').addClass('disabledForms');
+            }
+        });
         pnlTablero.find("#col1_filter").change(function () {
             var tp = parseInt($(this).val());
             if (tp === 1 || tp === 2) {
@@ -121,12 +132,37 @@
             var oc = pnlTablero.find("#col2_filter").val();
             getArticuloByTpByOC($(this), tp, oc);
         });
+        btnActualizaCantidad.click(function () {
+            var fact = pnlTablero.find('#Factura').val();
+            var fecFact = pnlTablero.find('#FechaFactura').val();
+            var tp = pnlTablero.find("#col1_filter").val();
+            var oc = pnlTablero.find("#col2_filter").val();
+            var art = pnlTablero.find("#Articulo").val();
+            var cant_rec = pnlTablero.find("#CantidadRecibida").val();
+            $.post(master_url + 'onModificarCantidadRecibidaByArtByOCByTp', {
+                Articulo: art,
+                Tp: tp,
+                OC: oc,
+                CantidadRecibida: cant_rec,
+                Factura: fact,
+                FechaFactura: fecFact
+            }).done(function (data) {
+                onNotifyOld('fa fa-check', 'CANTIDAD ACTUALIZADA', 'success');
+                OrdenesCompra.ajax.reload();
+                pnlTablero.find("#NombreArtículo").val('');
+                pnlTablero.find("#CantidadRecibida").val('');
+                pnlTablero.find("#Articulo").val('').focus();
+                pnlTablero.find('#Encabezado').find('.captura').addClass('disabledForms');
+
+            }).fail(function (x, y, z) {
+                console.log(x, y, z);
+            });
+        });
         $('input.column_filter').on('keyup', function () {
             var i = $(this).parents('div').attr('data-column');
             tblOrdenesCompra.DataTable().column(i).search($('#col' + i + '_filter').val()).draw();
         });
-    }
-    );
+    });
 
     function init() {
         getRecords();
@@ -227,28 +263,39 @@
         tblOrdenesCompra.find('tbody').on('click', 'tr', function () {
             tblOrdenesCompra.find("tbody tr").removeClass("success");
             $(this).addClass("success");
-            var dtm = OrdenesCompra.row(this).data();
-            temp = parseInt(dtm.ID);
+            isValid('pnlTablero');
+            if (valido) {
+                var dtm = OrdenesCompra.row(this).data();
+                temp = parseInt(dtm.ID);
+                var fact = pnlTablero.find('#Factura').val();
+                var fecFact = pnlTablero.find('#FechaFactura').val();
+                swal({
+                    title: dtm.Articulo,
+                    text: "CANTIDAD RECIBIDA: ",
+                    content: 'input'
+                }).then((value) => {
+                    if (value) {
+                        $.post(master_url + 'onModificarCantidadRecibidaByID', {
+                            ID: temp,
+                            CantidadRecibida: value,
+                            Factura: fact,
+                            FechaFactura: fecFact
+                        }).done(function (data) {
+                            onNotifyOld('fa fa-check', 'CANTIDAD ACTUALIZADA', 'success');
+                            OrdenesCompra.ajax.reload();
+                        }).fail(function (x, y, z) {
+                            console.log(x, y, z);
+                        });
+                    }
+                });
+                var can_pen = dtm.Cantidad - dtm.Recibida;
+                $('.swal-modal').find('input.swal-content__input').val(can_pen).focus().select();
+            } else {
+                swal('ATENCION', 'Completa los campos requeridos', 'warning');
+                pnlTablero.find('#Detalle').find('.captura').addClass('disabledForms');
+            }
 
-            swal({
-                title: dtm.Articulo,
-                text: "CANTIDAD RECIBIDA: ",
-                content: 'input'
-            }).then((value) => {
-                if (value) {
-                    $.post(master_url + 'onModificarCantidadRecibidaByID', {
-                        ID: temp,
-                        CantidadRecibida: value
-                    }).done(function (data) {
-                        onNotifyOld('fa fa-check', 'CANTIDAD ACTUALIZADA', 'success');
-                        OrdenesCompra.ajax.reload();
-                    }).fail(function (x, y, z) {
-                        console.log(x, y, z);
-                    });
-                }
-            });
-            var can_pen = dtm.Cantidad - dtm.Recibida;
-            $('.swal-modal').find('input.swal-content__input').val(can_pen).focus().select();
+
 
         });
     }

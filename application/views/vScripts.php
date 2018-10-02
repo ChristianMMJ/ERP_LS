@@ -23,6 +23,12 @@
         return isMobile;
     }
 
+
+
+    shortcut.add("F5", function () {
+        location.reload();
+    });
+
     //Para desactivar la validacion del selectize
     $('html').not(':focus').click(function () {
         validaSelect = false;
@@ -32,6 +38,9 @@
         validaSelect = false;
         $('body').blur();
     });
+
+
+
 
     var validaSelect = false;
     //Verifica que el select tenga un valor valido
@@ -904,7 +913,7 @@
         else
             return Millones(data.enteros) + " " + data.letrasMonedaPlural + " " + data.letrasCentavos;
     }
-    
+
     function onBeep(index) {
         var audio = new Audio('<?php print base_url(); ?>/media/' + index + '.mp3');
         audio.play();
