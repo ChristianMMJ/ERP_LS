@@ -47,6 +47,7 @@
                             <a class="dropdown-item" href="<?php print base_url('MaterialRecibido.shoes'); ?>" >Material Recibido</a>
                         </div>
                     </li>
+                    <a class="dropdown-item" href="<?php print base_url('RecibeOrdenCompra.shoes'); ?>">Recibe Órdenes de Compras</a>
                     <a class="dropdown-item" href="#">Documentos Directos</a>
                 </ul>
             </li>

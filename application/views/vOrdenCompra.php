@@ -905,9 +905,22 @@
     }
     function getPrecioCompraByArticuloByProveedor(Articulo, Proveedor) {
         $.getJSON(master_url + 'getPrecioCompraByArticuloByProveedor', {Articulo: Articulo, Proveedor: Proveedor}).done(function (data) {
-            console.log(data);
             if (data.length > 0) {
-                pnlDatosDetalle.find("#Precio").val(data[0].Precio);
+                if (parseFloat(data[0].Precio) > 0) {
+                    pnlDatosDetalle.find("#Precio").val(data[0].Precio);
+                } else {
+
+                    swal({
+                        title: "ATENCIÓN",
+                        text: "EL PRECIO DEL ARTÍOCULO ES DE 0.00",
+                        icon: "warning"
+                    }).then((value) => {
+                        pnlDatosDetalle.find("#Precio").val('0');
+                        pnlDatosDetalle.find("#Articulo")[0].selectize.clear(true);
+                        pnlDatosDetalle.find("#Articulo")[0].selectize.focus();
+                    });
+
+                }
             } else {
 
             }
@@ -936,21 +949,9 @@
                 swal({
                     title: "ATENCIÓN",
                     text: "LA MAQUILA " + $(v).val() + " NO ES VALIDA",
-                    icon: "warning",
-                    buttons: {
-                        eliminar: {
-                            text: "Aceptar",
-                            value: "aceptar"
-                        }
-                    }
+                    icon: "warning"
                 }).then((value) => {
-                    switch (value) {
-                        case "aceptar":
-                            swal.close();
-                            $(v).val('');
-                            $(v).focus();
-                            break;
-                    }
+                    $(v).val('').focus();
                 });
             }
         }).fail(function (x, y, z) {

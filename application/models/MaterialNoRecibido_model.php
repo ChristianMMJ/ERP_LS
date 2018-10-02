@@ -25,7 +25,7 @@ class MaterialNoRecibido_model extends CI_Model {
                                     . "END AS GruposT, "
                                     . "OC.FechaOrden, "
                                     . "CONCAT(A.Clave,' ',A.Descripcion) AS Articulo, "
-                                    . "OCD.Cantidad, OCD.Precio, OCD.SubTotal, OC.Sem, OC.Maq, "
+                                    . "OCD.CantidadRecibida, OCD.Precio, OCD.SubTotal, OC.Sem, OC.Maq, "
                                     . "CONCAT(G.Clave,'-',G.Nombre) AS Grupo,"
                                     . "OC.Ano,"
                                     . "OC.Tipo  "

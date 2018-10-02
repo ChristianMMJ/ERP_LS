@@ -218,6 +218,29 @@ where sc.ArticuloCBZ= '$Articulo' ", false);
         }
     }
 
+    public function getPrecioCompraByArticuloByProveedor($Articulo, $Proveedor) {
+        try {
+            $this->db->select(" "
+                            . "CASE WHEN  A.ProveedorUno = '" . $Proveedor . "' THEN A.PrecioUno "
+                            . "WHEN  A.ProveedorDos = '" . $Proveedor . "' THEN A.PrecioDos "
+                            . "WHEN  A.ProveedorTres = '" . $Proveedor . "' THEN A.PrecioTres "
+                            . "END AS Precio "
+                            . " ", false)
+                    ->from("articulos AS A")
+                    ->where('A.Clave', $Articulo);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getArticuloByDeptoByProveedor($Depto, $Proveedor) {
         try {
             $this->db->select(" CONVERT(A.Clave, UNSIGNED INTEGER) AS CLAVE , CONCAT(A.Clave,'-',A.Descripcion) AS Articulo"

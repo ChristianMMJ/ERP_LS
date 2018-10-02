@@ -61,7 +61,7 @@
     /*Formularios*/
     label {
         margin-top: 0.596rem;
-        margin-bottom: 0rem;
+        margin-bottom: 0.18rem;
     }
 
     label.labelCheck {
