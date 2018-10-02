@@ -94,6 +94,21 @@
                 </button>
             </div>
             <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4" data-column="12">
+                        <strong>Maquila</strong>
+                        <input type="text" class="form-control form-control-sm column_filter" id="col12_filter_history" autofocus>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4" data-column="13">
+                        <strong>Semana</strong>
+                        <input type="text" class="form-control form-control-sm column_filter" id="col13_filter_history">
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4" data-column="14">
+                        <strong>Año</strong>
+                        <input type="text" class="form-control form-control-sm column_filter" id="col14_filter_history">
+                    </div>
+                </div>
+                <div class="w-100 m-3"></div>
                 <div id="Historial" class="table-responsive">
                     <table id="tblHistorial" class="table table-sm display hover" style="width:100%">
                         <thead>
@@ -356,6 +371,7 @@
             $('input.column_filter').on('keyup click', function () {
                 var i = $(this).parents('div').attr('data-column');
                 tblCerrarProg.DataTable().column(i).search($('#col' + i + '_filter').val()).draw();
+                tblHistorial.DataTable().column(i).search($('#col' + i + '_filter_history').val()).draw();
             });
         }
         );
@@ -363,10 +379,10 @@
 
     function init() {
         getRecords();
-        $("#col12_filter").focus();
+        pnlTablero.find("#col12_filter").focus();
         handleEnter();
-        pnlTablero.find("#col14_filter").val((new Date()).getFullYear()); 
-        
+        pnlTablero.find("#col14_filter").val((new Date()).getFullYear());
+
         $.fn.dataTable.ext.errMode = 'throw';
         if ($.fn.DataTable.isDataTable('#tblHistorial')) {
             tblHistorial.DataTable().destroy();
@@ -662,7 +678,7 @@
                 timer: 1100
             });
             CerrarProg.ajax.reload();
-            $("#col12_filter").focus().select();
+            pnlTablero.find("#col12_filter").focus().select();
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         }).always(function () {
