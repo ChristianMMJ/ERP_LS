@@ -49,7 +49,7 @@
                             <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
                                 <span class="fa fa-arrow-left" ></span> REGRESAR
                             </button>
-                            <button type="button" class="btn btn-info btn-sm d-none" id="btnImprimir" >
+                            <button type="button" class="btn btn-info btn-sm" id="btnImprimir" >
                                 <span class="fa fa-print" ></span> IMPRIMIR
                             </button>
                         </div>
@@ -299,8 +299,8 @@
     var master_url = base_url + 'index.php/Pedidos/';
     var tblPedidos = $('#tblPedidos');
     var Pedidos;
-    var btnNuevo = $("#btnNuevo"), btnCancelar = $("#btnCancelar"), btnEliminar = $("#btnEliminar"), btnGuardar = $("#btnGuardar"), btnImprimir = $("#btnImprimir");
     var pnlTablero = $("#pnlTablero"), pnlDatos = $("#pnlDatos"), pnlDatosDetalle = $("#pnlDatosDetalle");
+    var btnNuevo = $("#btnNuevo"), btnCancelar = $("#btnCancelar"), btnEliminar = $("#btnEliminar"), btnGuardar = $("#btnGuardar"), btnImprimir = pnlDatos.find("#btnImprimir");
     var PedidoDetalle, tblPedidoDetalle = pnlDatos.find("#tblPedidoDetalle");
     var nuevo = false;
     var _animate_ = {enter: 'animated fadeInLeft', exit: 'animated fadeOutDown'}, _placement_ = {from: "bottom", align: "left"};
@@ -314,7 +314,102 @@
 
         btnAgregarDetalle.click(function () {
             if (pedido_valido) {
-                btnGuardar.trigger('click');
+                pnlDatos.find("#Recibido")[0].selectize.enable();
+                var Estilo = pnlDatos.find("#Estilo");
+                var Color = pnlDatos.find("#Color");
+                var Semana = pnlDatos.find("#Semana");
+                var Maquila = pnlDatos.find("#Maquila");
+                var Precio = pnlDatos.find("#Precio");
+                var FechaDeEntrega = pnlDatos.find("#FechaEntrega");
+                var Recibido = pnlDatos.find("#Recibido");
+                var Recio = pnlDatos.find("#Recio");
+                var Titulo = pnlDatos.find("#Observacion");
+                var Observaciones = pnlDatos.find("#ObservacionDetalle");
+                var total_pares = 0;
+                $.each(pnlDatos.find("#tblTallas input[name*='C']"), function (k, v) {
+                    total_pares += (parseInt($(v).val()) > 0) ? parseInt($(v).val()) : 0;
+                    pnlDatos.find("#TPares").val(total_pares);
+                });
+                if (total_pares > 0) {
+                    //REVISAR SI ESE ESTILO/COLOR NO HA SIDO AGREGADO CON ANTERIORIDAD
+                    onRevisarRegistro(Estilo.val(), Color.val());
+                    if (!added) {
+                        //AÑADIR FILA
+                        var tal = '<div class="row"><div class="col-12 text-danger text-nowrap talla" align="center">';
+                        var cnt = '</div><div class="col-12 cantidad" align="center">';
+                        var dtm = [
+                            0, //ID
+                            Recibido.val(), //Recibido
+                            Estilo.val(), //EstiloID
+                            Estilo.text(), //Estilo
+                            Color.val(), //ColorID
+                            Color.text(),
+                            Semana.val(),
+                            Maquila.val(),
+                            tal + getTalla('T1') + cnt + getCantidad('C1') + '</div></div>',
+                            tal + getTalla('T2') + cnt + getCantidad('C2') + '</div></div>',
+                            tal + getTalla('T3') + cnt + getCantidad('C3') + '</div></div>',
+                            tal + getTalla('T4') + cnt + getCantidad('C4') + '</div></div>',
+                            tal + getTalla('T5') + cnt + getCantidad('C5') + '</div></div>',
+                            tal + getTalla('T6') + cnt + getCantidad('C6') + '</div></div>',
+                            tal + getTalla('T7') + cnt + getCantidad('C7') + '</div></div>',
+                            tal + getTalla('T8') + cnt + getCantidad('C8') + '</div></div>',
+                            tal + getTalla('T9') + cnt + getCantidad('C9') + '</div></div>',
+                            tal + getTalla('T10') + cnt + getCantidad('C10') + '</div></div>',
+                            tal + getTalla('T11') + cnt + getCantidad('C11') + '</div></div>',
+                            tal + getTalla('T12') + cnt + getCantidad('C12') + '</div></div>',
+                            tal + getTalla('T13') + cnt + getCantidad('C13') + '</div></div>',
+                            tal + getTalla('T14') + cnt + getCantidad('C14') + '</div></div>',
+                            tal + getTalla('T15') + cnt + getCantidad('C15') + '</div></div>',
+                            tal + getTalla('T16') + cnt + getCantidad('C16') + '</div></div>',
+                            tal + getTalla('T17') + cnt + getCantidad('C17') + '</div></div>',
+                            tal + getTalla('T18') + cnt + getCantidad('C18') + '</div></div>',
+                            tal + getTalla('T19') + cnt + getCantidad('C19') + '</div></div>',
+                            tal + getTalla('T20') + cnt + getCantidad('C20') + '</div></div>',
+                            tal + getTalla('T21') + cnt + getCantidad('C21') + '</div></div>',
+                            tal + getTalla('T22') + cnt + getCantidad('C22') + '</div></div>',
+                            Precio.val(),
+                            total_pares,
+                            FechaDeEntrega.val(),
+                            '<button type="button" class="btn btn-danger" onclick="onEliminar(this,1)"><span class="fa fa-trash"></span></button>',
+                            Recio.val(),
+                            Titulo.val(),
+                            Observaciones.val(),
+                            pnlDatos.find("#Serie").val(),
+                            'N', (total_pares * Precio.val())
+                        ];
+                        PedidoDetalle.row.add(dtm).draw(false);
+                        //CLEAR
+                        total_pares = 0;
+                        pnlDatos.find("#TPares").val(0);
+                        pnlDatos.find("[name*='C']").val('');
+                        //Estilo[0].selectize.clear(true);
+                        //Estilo[0].selectize.open();
+                        //Estilo[0].selectize.focus();
+                        FechaDeEntrega.prop('readonly', true);
+                        Semana.prop('readonly', true);
+                        Recibido[0].selectize.disable();
+                        Maquila[0].selectize.clear(true);
+                        Recio.val('');
+                        Precio.val('');
+                        Estilo[0].selectize.clear(true);
+                        agregado = 1;
+                        btnGuardar.trigger('click');
+                    } else {
+                        swal({
+                            title: "ATENCIÓN",
+                            text: "ESTA COMBINACION DE ESTILO/COLOR YA HA SIDO AGREGADA",
+                            icon: "warning",
+                            closeOnClickOutside: false,
+                            closeOnEsc: false,
+                            buttons: false,
+                            timer: 2000
+                        });
+                    }
+                } else {
+                    //ZERO PARES
+                    console.log('zero');
+                }
             }
         });
 
@@ -345,6 +440,7 @@
         });
 
         btnImprimir.click(function () {
+            console.log(temp);
             if (temp > 0) {
                 //HoldOn.open({  message: 'Espere...', theme: 'sk-cube'});
                 $.post(master_url + 'onImprimirPedidoReducido', {ID: temp}).done(function (data) {
@@ -1000,81 +1096,7 @@
                 if (Precio.val() !== '' && Precio.val().length > 0) {
                     if (indice_valor === '') {
                         if (total_pares > 0) {
-                            //REVISAR SI ESE ESTILO/COLOR NO HA SIDO AGREGADO CON ANTERIORIDAD
-                            onRevisarRegistro(Estilo.val(), Color.val());
-                            if (!added) {
-                                //AÑADIR FILA
-                                var tal = '<div class="row"><div class="col-12 text-danger text-nowrap talla" align="center">';
-                                var cnt = '</div><div class="col-12 cantidad" align="center">';
-                                var dtm = [
-                                    0, //ID
-                                    Recibido.val(), //Recibido
-                                    Estilo.val(), //EstiloID
-                                    Estilo.text(), //Estilo
-                                    Color.val(), //ColorID
-                                    Color.text(),
-                                    Semana.val(),
-                                    Maquila.val(),
-                                    tal + getTalla('T1') + cnt + getCantidad('C1') + '</div></div>',
-                                    tal + getTalla('T2') + cnt + getCantidad('C2') + '</div></div>',
-                                    tal + getTalla('T3') + cnt + getCantidad('C3') + '</div></div>',
-                                    tal + getTalla('T4') + cnt + getCantidad('C4') + '</div></div>',
-                                    tal + getTalla('T5') + cnt + getCantidad('C5') + '</div></div>',
-                                    tal + getTalla('T6') + cnt + getCantidad('C6') + '</div></div>',
-                                    tal + getTalla('T7') + cnt + getCantidad('C7') + '</div></div>',
-                                    tal + getTalla('T8') + cnt + getCantidad('C8') + '</div></div>',
-                                    tal + getTalla('T9') + cnt + getCantidad('C9') + '</div></div>',
-                                    tal + getTalla('T10') + cnt + getCantidad('C10') + '</div></div>',
-                                    tal + getTalla('T11') + cnt + getCantidad('C11') + '</div></div>',
-                                    tal + getTalla('T12') + cnt + getCantidad('C12') + '</div></div>',
-                                    tal + getTalla('T13') + cnt + getCantidad('C13') + '</div></div>',
-                                    tal + getTalla('T14') + cnt + getCantidad('C14') + '</div></div>',
-                                    tal + getTalla('T15') + cnt + getCantidad('C15') + '</div></div>',
-                                    tal + getTalla('T16') + cnt + getCantidad('C16') + '</div></div>',
-                                    tal + getTalla('T17') + cnt + getCantidad('C17') + '</div></div>',
-                                    tal + getTalla('T18') + cnt + getCantidad('C18') + '</div></div>',
-                                    tal + getTalla('T19') + cnt + getCantidad('C19') + '</div></div>',
-                                    tal + getTalla('T20') + cnt + getCantidad('C20') + '</div></div>',
-                                    tal + getTalla('T21') + cnt + getCantidad('C21') + '</div></div>',
-                                    tal + getTalla('T22') + cnt + getCantidad('C22') + '</div></div>',
-                                    Precio.val(),
-                                    total_pares,
-                                    FechaDeEntrega.val(),
-                                    '<button type="button" class="btn btn-danger" onclick="onEliminar(this,1)"><span class="fa fa-trash"></span></button>',
-                                    Recio.val(),
-                                    Titulo.val(),
-                                    Observaciones.val(),
-                                    pnlDatos.find("#Serie").val(),
-                                    'N', (total_pares * Precio.val())
-                                ];
-                                PedidoDetalle.row.add(dtm).draw(false);
-                                //CLEAR
-                                total_pares = 0;
-                                pnlDatos.find("#TPares").val(0);
-                                pnlDatos.find("[name*='C']").val('');
-                                //Estilo[0].selectize.clear(true);
-                                //Estilo[0].selectize.open();
-                                //Estilo[0].selectize.focus();
-                                FechaDeEntrega.prop('readonly', true);
-                                Semana.prop('readonly', true);
-                                Recibido[0].selectize.disable();
-                                Maquila[0].selectize.clear(true);
-                                Recio.val('');
-                                Precio.val('');
-                                Estilo[0].selectize.clear(true);
-                                agregado = 1;
-                                btnAgregarDetalle.focus();
-                            } else {
-                                swal({
-                                    title: "ATENCIÓN",
-                                    text: "ESTA COMBINACION DE ESTILO/COLOR YA HA SIDO AGREGADA",
-                                    icon: "warning",
-                                    closeOnClickOutside: false,
-                                    closeOnEsc: false,
-                                    buttons: false,
-                                    timer: 2000
-                                });
-                            }
+                            btnAgregarDetalle.focus();
                         } else {
                             //ZERO PARES
                             console.log('zero');
