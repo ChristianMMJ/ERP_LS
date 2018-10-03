@@ -61,8 +61,8 @@ class FichaTecnicaCompra extends CI_Controller {
                             if ($F->CDEPTO === $D->CDEPTO && $F->CGRUPO === $G->CGRUPO) {
                                 $pdf->SetLineWidth(0.25);
                                 $pdf->SetX(5);
-                                $pdf->SetFont('Arial', 'B', 6.7);
-                                $anchos = array(7.5/* cpie */, 40/* pie */, 9/* c art */, 64.5/* d art */, 12/* un */, 15/* pre */, 14/* 6 */, 18/* 7 */, 16/* 8 */, 9/* 9 */);
+                                $pdf->SetFont('Calibri', 'B', 8);
+                                $anchos = array(8/* cpie */, 39.5/* pie */, 9.5/* c art */, 64/* d art */, 12/* un */, 15/* pre */, 14/* 6 */, 18/* 7 */, 16/* 8 */, 9/* 9 */);
                                 $aligns = array('R', 'L', 'R', 'L', 'L', 'L', 'L', 'L', 'L', 'R');
                                 $pdf->SetAligns($aligns);
                                 $pdf->SetWidths($anchos);
@@ -91,7 +91,7 @@ class FichaTecnicaCompra extends CI_Controller {
                         }
 
                         /* TOTALES POR GRUPOS */
-                        $pdf->SetFont('Arial', 'B', 7);
+                        $pdf->SetFont('Calibri', 'B', 8);
                         $anchos = array(7.5/* cpie */, 30/* pie */, 56/* c art */, 44.5/* d art */, 10/* un */, 0/* pre */, 14/* 6 */, 18/* 7 */, 15/* 8 */, 10/* 9 */);
                         $aligns = array('L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'R');
                         $pdf->SetAligns($aligns);
@@ -115,7 +115,7 @@ class FichaTecnicaCompra extends CI_Controller {
                 /* TOTALES POR DEPARTAMENTOS */
                 $pdf->SetLineWidth(0.5);
                 $pdf->SetX(75);
-                $pdf->SetFont('Arial', 'BI', 7);
+                $pdf->SetFont('Calibri', 'BI', 8);
                 $pdf->Cell(75, 4, 'Total del Departamento: ' . utf8_decode($D->DDEPTO), 'BTL'/* BORDE */, 0, 'L');
                 $pdf->SetX(150);
                 $pdf->Cell(14, 4, number_format($TOTAL_CONSUMO_DEPTOS, 3, ".", ","), 'BT'/* BORDE */, 0, 'C');
@@ -129,7 +129,7 @@ class FichaTecnicaCompra extends CI_Controller {
 
             /* TOTALES POR DEPARTAMENTOS */
             $pdf->SetX(75);
-            $pdf->SetFont('Arial', 'BI', 9);
+            $pdf->SetFont('Calibri', 'BI', 9.5);
             $pdf->Cell(75, 4, 'Total de Materiales del Estilo Color: ', 'BTL'/* BORDE */, 0, 'L');
             $pdf->SetX(150);
             $pdf->Cell(14, 4, number_format($TOTAL_CONSUMO_GEN, 2, ".", ","), 'BT'/* BORDE */, 0, 'C');
@@ -210,8 +210,8 @@ class FichaTecnicaCompra extends CI_Controller {
                             if ($F->CDEPTO === $D->CDEPTO && $F->CGRUPO === $G->CGRUPO) {
                                 $pdf->SetLineWidth(0.25);
                                 $pdf->SetX(5);
-                                $pdf->SetFont('Arial', 'B', 6.7);
-                                $anchos = array(7.5/* cpie */, 40/* pie */, 9/* c art */, 64.5/* d art */, 12/* un */, 15/* pre */, 14/* 6 */, 18/* 7 */, 16/* 8 */, 9/* 9 */);
+                                $pdf->SetFont('Calibri', 'B', 8);
+                                $anchos = array(8/* cpie */, 39.5/* pie */, 9.5/* c art */, 64/* d art */, 12/* un */, 15/* pre */, 14/* 6 */, 18/* 7 */, 16/* 8 */, 9/* 9 */);
                                 $aligns = array('R', 'L', 'R', 'L', 'L', 'L', 'L', 'L', 'L', 'R');
                                 $pdf->SetAligns($aligns);
                                 $pdf->SetWidths($anchos);
@@ -247,7 +247,7 @@ class FichaTecnicaCompra extends CI_Controller {
                         }
 
                         /* TOTALES POR GRUPOS */
-                        $pdf->SetFont('Arial', 'B', 7);
+                        $pdf->SetFont('Calibri', 'B', 8);
                         $anchos = array(7.5/* cpie */, 30/* pie */, 56/* c art */, 44.5/* d art */, 10/* un */, 0/* pre */, 14/* 6 */, 18/* 7 */, 15/* 8 */, 10/* 9 */);
                         $aligns = array('L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'R');
                         $pdf->SetAligns($aligns);
@@ -271,7 +271,7 @@ class FichaTecnicaCompra extends CI_Controller {
                 /* TOTALES POR DEPARTAMENTOS */
                 $pdf->SetLineWidth(0.5);
                 $pdf->SetX(75);
-                $pdf->SetFont('Arial', 'BI', 7);
+                $pdf->SetFont('Calibri', 'BI', 8);
                 $pdf->Cell(75, 4, 'Total del Departamento: ' . utf8_decode($D->DDEPTO), 'BTL'/* BORDE */, 0, 'L');
                 $pdf->SetX(150);
                 $pdf->Cell(14, 4, number_format($TOTAL_CONSUMO_DEPTOS, 3, ".", ","), 'BT'/* BORDE */, 0, 'C');
@@ -285,7 +285,7 @@ class FichaTecnicaCompra extends CI_Controller {
 
             /* TOTALES POR DEPARTAMENTOS */
             $pdf->SetX(75);
-            $pdf->SetFont('Arial', 'BI', 9);
+            $pdf->SetFont('Calibri', 'BI', 9.5);
             $pdf->Cell(75, 4, 'Total de Materiales del Estilo Color: ', 'BTL'/* BORDE */, 0, 'L');
             $pdf->SetX(150);
             $pdf->Cell(14, 4, '', 'BT'/* BORDE */, 0, 'C');
@@ -297,7 +297,7 @@ class FichaTecnicaCompra extends CI_Controller {
             $pdf->Cell(10, 4, number_format($TOTAL_DESPERDICIO_GEN, 2, ".", ","), 'BTR'/* BORDE */, 1, 'R');
 
             /* DATOS FINALES */
-            $pdf->SetFont('Arial', 'B', 7.5);
+
             $pdf->SetLineWidth(0.3);
             /* Resumen */
             $TOTAL_MO = 0;
@@ -305,8 +305,9 @@ class FichaTecnicaCompra extends CI_Controller {
             /* Datos Mano Obra */
             $pdf->SetY($Y + 10);
             $pdf->SetX(5);
+            $pdf->SetFont('Calibri', 'B', 8.5);
             $pdf->Cell(30, 4, 'Mano de Obra', 'B'/* BORDE */, 1, 'L');
-            $pdf->SetFont('Arial', '', 6.5);
+            $pdf->SetFont('Calibri', '', 7);
             foreach ($ManoObra as $key => $MO) {
                 $pdf->SetX(5);
                 $pdf->Cell(50, 4, utf8_decode($MO->CDEPTO . ' ' . $MO->DDEPTO), 'B'/* BORDE */, 0, 'L');
@@ -314,7 +315,7 @@ class FichaTecnicaCompra extends CI_Controller {
                 $pdf->Cell(10, 4, '$' . number_format($MO->COSTOMO, 2, ".", ","), 'B'/* BORDE */, 1, 'R');
                 $TOTAL_MO += $MO->COSTOMO;
             }
-            $pdf->SetFont('Arial', 'BI', 8);
+            $pdf->SetFont('Calibri', 'BI', 8.5);
             $pdf->SetX(5);
             $pdf->Cell(30, 4, 'Total M.O.', ''/* BORDE */, 0, 'L');
             $pdf->SetX(55);
@@ -322,7 +323,7 @@ class FichaTecnicaCompra extends CI_Controller {
 
 
             /* Datos Resumen Generales */
-            $pdf->SetFont('Arial', 'B', 8);
+            $pdf->SetFont('Calibri', 'B', 8.5);
             $pdf->SetY($Y + 10);
             $pdf->SetX(70);
             /* Titulo */
@@ -330,7 +331,7 @@ class FichaTecnicaCompra extends CI_Controller {
             $pdf->SetY($Y + 15);
             $pdf->SetX(70);
             /* total materiales */
-            $pdf->SetFont('Arial', '', 6.5);
+            $pdf->SetFont('Calibri', '', 7);
             $pdf->Cell(30, 4, 'MATERIALES', 'B'/* BORDE */, 0, 'L');
             $pdf->SetX(100);
             $pdf->Cell(10, 4, '$' . number_format($TOTAL_CONSUMO_COSTO_GEN, 2, ".", ","), 'B'/* BORDE */, 1, 'R');
@@ -360,7 +361,7 @@ class FichaTecnicaCompra extends CI_Controller {
 
             $pdf->SetY($Y + 35);
             $pdf->SetX(70);
-            $pdf->SetFont('Arial', 'BI', 8);
+            $pdf->SetFont('Calibri', 'BI', 8.5);
             $pdf->Cell(30, 4, 'Total', ''/* BORDE */, 0, 'L');
             $pdf->SetX(100);
             $pdf->Cell(10, 4, '$' . number_format($TOTAL_CONSUMO_COSTO_GEN, 2, ".", ","), ''/* BORDE */, 1, 'R');
@@ -368,7 +369,7 @@ class FichaTecnicaCompra extends CI_Controller {
             /* TOTAL GENERAL */
 
             /* Datos Resumen Generales */
-            $pdf->SetFont('Arial', 'B', 8);
+            $pdf->SetFont('Calibri', 'B', 8.5);
             $pdf->SetY($Y + 10);
             $pdf->SetX(170);
             /* Titulo */
@@ -376,7 +377,7 @@ class FichaTecnicaCompra extends CI_Controller {
             $pdf->SetY($Y + 15);
             $pdf->SetX(170);
             /* total materiales */
-            $pdf->SetFont('Arial', '', 6.5);
+            $pdf->SetFont('Calibri', '', 7);
             $pdf->Cell(30, 4, 'MATERIALES', 'B'/* BORDE */, 0, 'L');
             $pdf->SetX(200);
             $pdf->Cell(10, 4, '$' . number_format($TOTAL_DESPERDICIO_GEN, 2, ".", ","), 'B'/* BORDE */, 1, 'R');
@@ -384,7 +385,7 @@ class FichaTecnicaCompra extends CI_Controller {
             $pdf->Cell(30, 4, 'MANO OBRA', 'B'/* BORDE */, 0, 'L');
             $pdf->SetX(200);
             $pdf->Cell(10, 4, '$' . number_format($TOTAL_MO, 2, ".", ","), 'B'/* BORDE */, 1, 'R');
-            $pdf->SetFont('Arial', 'BI', 10);
+            $pdf->SetFont('Calibri', 'BI', 10);
             $pdf->SetX(170);
             $pdf->Cell(30, 4, 'Total', ''/* BORDE */, 0, 'L');
             $pdf->SetX(200);
