@@ -171,7 +171,7 @@ class OrdenCompraTallas extends CI_Controller {
                 'Maq' => $x->post('Maq'),
                 'Ano' => $x->post('Ano'),
                 'Observaciones' => $x->post('Observaciones'),
-                'Estatus' => 'ACTIVO',
+                'Estatus' => 'BORRADOR',
                 'Usuario' => $this->session->userdata('ID')
             );
             $ID = $this->Ordencompra_model->onAgregar($datos);
@@ -211,7 +211,7 @@ class OrdenCompraTallas extends CI_Controller {
         try {
             $x = $this->input;
             $datos = array(
-                'Estatus' => 'CERRADA',
+                'Estatus' => 'ACTIVA',
             );
             $this->Ordencompra_model->onModificar($x->post('ID'), $datos);
         } catch (Exception $exc) {
@@ -224,7 +224,7 @@ class OrdenCompraTallas extends CI_Controller {
             $x = $this->input;
             $datos = array(
                 'Tp' => '1',
-                'Estatus' => 'CERRADA',
+                'Estatus' => 'ACTIVA',
             );
             $this->Ordencompra_model->onModificar($x->post('ID'), $datos);
         } catch (Exception $exc) {

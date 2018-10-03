@@ -29,7 +29,7 @@ class Recibeordencompra_model extends CI_Model {
             $this->db->from("ordencompradetalle OCD");
             $this->db->join("ordencompra OC", "OC.ID = OCD.OrdenCompra ");
             $this->db->join("articulos A", "A.Clave = OCD.Articulo ");
-            $this->db->where_in('OC.Estatus', array('PENDIENTE', 'CERRADA'));
+            $this->db->where_in('OC.Estatus', array('PENDIENTE', 'ACTIVA'));
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -53,7 +53,7 @@ class Recibeordencompra_model extends CI_Model {
                     ->join("proveedores AS P", 'ON P.Clave = G.Proveedor')
                     ->where("G.Folio", $Folio)
                     ->where("G.Tp", $Tp)
-                    ->where_in("G.Estatus", array("PENDIENTE", "CERRADA"));
+                    ->where_in("G.Estatus", array("PENDIENTE", "ACTIVA"));
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY

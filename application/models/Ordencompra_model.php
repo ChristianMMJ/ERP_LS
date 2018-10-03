@@ -23,15 +23,15 @@ class Ordencompra_model extends CI_Model {
                                     . "CASE WHEN OC.Tp ='1' THEN  CONCAT(P.Clave,'-',P.NombreF) ELSE "
                                     . "CONCAT(P.Clave,'-',P.NombreI) END AS Proveedor, "
                                     . "OC.FechaOrden AS Fecha, "
-                                    . "CASE WHEN OC.Estatus = 'ACTIVO' THEN "
-                                    . "CONCAT('<span class=''badge badge-info''>','ACTIVA','</span>') "
+                                    . "CASE WHEN OC.Estatus = 'BORRADOR' THEN "
+                                    . "CONCAT('<span class=''badge badge-info''>','EN CAPTURA','</span>') "
                                     . "ELSE "
-                                    . "CONCAT('<span class=''badge badge-success''>','CERRADA','</span>') "
+                                    . "CONCAT('<span class=''badge badge-success''>','ACTIVA','</span>') "
                                     . "END AS Estatus "
                                     . "", false)
                             ->from("ordencompra AS OC")
                             ->join("proveedores AS P", 'P.Clave =  OC.Proveedor')
-                            ->where_in('OC.Estatus', array('ACTIVO', 'CERRADA'))
+                            ->where_in('OC.Estatus', array('ACTIVA', 'BORRADOR'))
                             ->where_in('OC.Tipo', array('90', '10'))
                             ->get()->result();
         } catch (Exception $exc) {
@@ -52,15 +52,15 @@ class Ordencompra_model extends CI_Model {
                                     . "CASE WHEN OC.Tp ='1' THEN  CONCAT(P.Clave,'-',P.NombreF) ELSE "
                                     . "CONCAT(P.Clave,'-',P.NombreI) END AS Proveedor, "
                                     . "OC.FechaOrden AS Fecha, "
-                                    . "CASE WHEN OC.Estatus = 'ACTIVO' THEN "
-                                    . "CONCAT('<span class=''badge badge-info''>','ACTIVA','</span>') "
+                                    . "CASE WHEN OC.Estatus = 'BORRADOR' THEN "
+                                    . "CONCAT('<span class=''badge badge-info''>','EN CAPTURA','</span>') "
                                     . "ELSE "
-                                    . "CONCAT('<span class=''badge badge-success''>','CERRADA','</span>') "
+                                    . "CONCAT('<span class=''badge badge-success''>','ACTIVA','</span>') "
                                     . "END AS Estatus "
                                     . "", false)
                             ->from("ordencompra AS OC")
                             ->join("proveedores AS P", 'P.Clave =  OC.Proveedor')
-                            ->where_in('OC.Estatus', array('ACTIVO', 'CERRADA'))
+                            ->where_in('OC.Estatus', array('ACTIVA', 'BORRADOR'))
                             ->where_in('OC.Tipo', array('80'))
                             ->get()->result();
         } catch (Exception $exc) {
@@ -506,7 +506,9 @@ where sc.ArticuloCBZ= '$Articulo' ", false);
                     . "OCD.SubTotal,"
                     . "OC.Sem,"
                     . "OC.Maq,"
-                    . "OC.FechaEntrega"
+                    . "OC.FechaEntrega, "
+                    . "OCD.Factura,"
+                    . "OCD.CantidadRecibida "
                     . '', false);
             $this->db->from('ordencompra AS OC')
                     ->join('ordencompradetalle AS OCD', 'OCD.OrdenCompra = OC.ID')

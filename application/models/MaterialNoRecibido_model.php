@@ -25,7 +25,7 @@ class MaterialNoRecibido_model extends CI_Model {
                                     . "END AS GruposT, "
                                     . "OC.FechaOrden, "
                                     . "CONCAT(A.Clave,' ',A.Descripcion) AS Articulo, "
-                                    . "OCD.CantidadRecibida, OCD.Precio, OCD.SubTotal, OC.Sem, OC.Maq, "
+                                    . "OCD.Cantidad, OCD.Precio, OCD.SubTotal, OC.Sem, OC.Maq, "
                                     . "CONCAT(G.Clave,'-',G.Nombre) AS Grupo,"
                                     . "OC.Ano,"
                                     . "OC.Tipo  "
@@ -36,7 +36,7 @@ class MaterialNoRecibido_model extends CI_Model {
                             ->join("articulos A", 'ON A.Clave = OCD.Articulo')
                             ->join("grupos G", 'ON G.Clave =  A.Grupo')
                             ->join("unidades U", 'ON U.Clave =  A.UnidadMedida')
-                            ->where_in('OC.Estatus', array('ACTIVO', 'CERRADA'))
+                            ->where_in('OC.Estatus', array('ACTIVA'))
                             ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -70,42 +70,6 @@ class MaterialNoRecibido_model extends CI_Model {
                     ->from('empresas AS E')
                     ->join('estados AS EDOS', 'EDOS.Clave = E.Estado');
 
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-            //print $str;
-            $data = $query->result();
-            return $data;
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function getReporteConfirmacionOrdenCompra($Año, $Sem, $Maq, $Tipo) {
-        try {
-            $this->db->select(''
-                    . 'OC.Folio,'
-                    . 'OC.FechaOrden,'
-                    . 'OC.FechaEntrega,'
-                    . "IFNULL(OC.FechaConf,'') AS FechaConf,"
-                    . "OC.Proveedor,"
-                    . "CASE WHEN OC.Tp ='1' THEN  P.NombreF ELSE "
-                    . "P.NombreI END AS NombreProveedor, "
-                    . "IFNULL(OC.ObservacionesConf,'') AS ObservacionesConf,"
-                    . 'IFNULL(DATEDIFF(STR_TO_DATE( OC.FechaConf , "%d/%m/%Y" ), STR_TO_DATE( OC.FechaOrden , "%d/%m/%Y" )),\'\') AS Dias,'
-                    . 'IFNULL(DATEDIFF(STR_TO_DATE( OC.FechaConf , "%d/%m/%Y" ), STR_TO_DATE( OC.FechaEntrega , "%d/%m/%Y" )),\'\') AS Dias2,'
-                    . '', false);
-            $this->db->from('ordencompra AS OC')
-                    ->join('proveedores AS P', 'OC.Proveedor = P.Clave')
-                    ->where('OC.Ano', $Año)
-                    ->where('OC.Sem', $Sem)
-                    ->where('OC.Maq', $Maq)
-                    ->where('OC.Tipo', $Tipo)
-                    ->where_in('OC.Estatus', array('ACTIVO'))
-                    ->order_by('OC.Folio', 'ASC');
-//                    ->where('OC.Tp', $TP);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
