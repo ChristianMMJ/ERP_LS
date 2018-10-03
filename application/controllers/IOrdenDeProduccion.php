@@ -63,16 +63,20 @@ class IOrdenDeProduccion extends CI_Controller {
     public function getOrdenDeProduccion() {
         try {
             $pdf = new PDF('P', 'mm', array(215.9, 279.4));
+//            $pdf = new PDF('P', 'mm', array(269.875, 349.25));
             $INICIO = $this->input->post('INICIO');
             $FIN = $this->input->post('FIN');
             $SEMANA = $this->input->post('SEMANA');
             $ANO = $this->input->post('ANIO');
+            $pdf->AddFont('Calibri', '');
+            $pdf->AddFont('Calibri', 'I');
+            $pdf->AddFont('Calibri', 'B');
+            $pdf->AddFont('Calibri', 'BI');
 
             $CONTROLES = $this->Iordendeproduccion_model->getControlesXOrdenDeProduccionEntreControles($INICIO, $FIN, $SEMANA, $ANO);
             foreach ($CONTROLES as $kc => $vc) {
                 $OP = $this->Iordendeproduccion_model->getOrdenDeProduccionEntreControles($vc->ControlT, $vc->ControlT, $SEMANA, $ANO);
                 $DEPARTAMENTOS = $this->Iordendeproduccion_model->getDepartamentosXOrdenDeProduccionEntreControles($vc->ControlT, $vc->ControlT, $SEMANA, $ANO);
-                $pdf->SetFont('Arial', '', 7);
                 $P = $OP[0];
                 $pdf->setCliente($P->Clave . " " . $P->Cliente);
                 $pdf->setFechaEntrega($P->FechaEntrega);
@@ -176,7 +180,6 @@ class IOrdenDeProduccion extends CI_Controller {
                 $aligns = array('L', 'L', 'L', 'L', 'L');
                 $pdf->SetTextColor(0, 0, 0);
                 /* RESUMEN */
-                $pdf->SetFont('Arial', 'B', 7);
                 $pdf->setY(48.5); //DISTANCIA ENTRE EL ENCABEZADO Y EL DETALLE
 
                 /* FOREACH PIEZAS | ARTICULOS | PZXPAR | UNIDAD | CANTIDAD */
@@ -185,6 +188,7 @@ class IOrdenDeProduccion extends CI_Controller {
                 $X = 108;
 
                 /* COLUMNA UNO */
+                $pdf->SetFont('Calibri', 'B', 7);
                 $col = array(5/* 0 */, 40/* 1 */, 80/* 2 */, 88/* 3 */, 98/* 4 */, 108/* 5 */, 143/* 6 */, 183/* 7 */, 191/* 8 */, 201/* 9 */);
                 $anc = array(35, 40, 8, 10, 10);
                 $alto_celda = 3.5;
@@ -228,7 +232,7 @@ class IOrdenDeProduccion extends CI_Controller {
                     }
                     $pdf->setFilled(false);
                     $pdf->setBorders(0);
-                    $pdf->SetFont('Arial', 'B', 7);
+                    $pdf->SetFont('Calibri', 'B', 7);
 
                     $pdf->SetX(5);
                     $pdf->Cell(25, 3.5, $dv->DEPARTAMENTOT, 1/* BORDE */, 1, 'C', 0);
@@ -241,7 +245,7 @@ class IOrdenDeProduccion extends CI_Controller {
                     foreach ($OP as $k => $v) {
                         /* PRIMER DETALLE */
                         if ($vc->ControlT === $v->ControlT && $v->DEPARTAMENTO === $dv->DEPARTAMENTO) {
-                            $pdf->SetFont('Arial', '', 5);
+                            $pdf->SetFont('Calibri', '', 6.5);
                             switch ($COLUMN) {
                                 case 1:
                                     $COLUMN += 1;
@@ -249,7 +253,7 @@ class IOrdenDeProduccion extends CI_Controller {
                                     $pdf->Cell($anc[0], $alto_celda, utf8_decode($v->PIEZA), 0/* BORDE */, 0, 'L', 0);
 
                                     $pdf->SetX($col[1]);
-                                    $pdf->Cell($anc[1], $alto_celda, utf8_decode($v->ARTICULOT) . " " . $v->CLASIFICACION, 0/* BORDE */, 0, 'L', 0);
+                                    $pdf->Cell($anc[1], $alto_celda, utf8_decode(mb_strimwidth($v->ARTICULOT, 0, 47)) . " " . $v->CLASIFICACION, 0/* BORDE */, 0, 'L', 0);
 
                                     $pdf->SetX($col[2]);
                                     $pdf->Cell($anc[2], $alto_celda, ($v->PZXPAR > 0) ? $v->PZXPAR : '', 0/* BORDE */, 0, 'C', 0);
@@ -267,7 +271,7 @@ class IOrdenDeProduccion extends CI_Controller {
                                     $pdf->Cell($anc[0], $alto_celda, utf8_decode($v->PIEZA), 0/* BORDE */, 0, 'L', 0);
 
                                     $pdf->SetX($col[6]);
-                                    $pdf->Cell($anc[1], $alto_celda, utf8_decode($v->ARTICULOT) . " " . $v->CLASIFICACION, 0/* BORDE */, 0, 'L', 0);
+                                    $pdf->Cell($anc[1], $alto_celda, utf8_decode(mb_strimwidth($v->ARTICULOT, 0, 47)) . " " . $v->CLASIFICACION, 0/* BORDE */, 0, 'L', 0);
 
                                     $pdf->SetX($col[7]);
                                     $pdf->Cell($anc[2], $alto_celda, ($v->PZXPAR > 0) ? $v->PZXPAR : '', 0/* BORDE */, 0, 'C', 0);
@@ -289,7 +293,7 @@ class IOrdenDeProduccion extends CI_Controller {
                 $pdf->Line(5, $Y, 5, $pdf->GetY());
                 $pdf->Line(108, $Y, 108, $pdf->GetY());
                 $pdf->Line(210, $Y, 210, $pdf->GetY());
-                $pdf->SetFont('Arial', 'B', 14);
+                $pdf->SetFont('Calibri', 'B', 14);
                 $pdf->SetX(5);
                 $pdf->Cell(53, 10, "", 0/* BORDE */, 0/* SALTO SI */, 'C', 0);
 
@@ -297,7 +301,7 @@ class IOrdenDeProduccion extends CI_Controller {
                 $width_final = $this->getSize($width, 96);
                 $height_final = $this->getSize($height, 96);
                 $altura_final = $height_final + $pdf->getY();
-                $pdf->SetFont('Arial', 'B', 8);
+                $pdf->SetFont('Calibri', 'B', 8);
                 $pdf->SetX(58);
                 $pdf->Cell(152, 6, utf8_decode("* LEA CUIDADOSAMENTE LAS INSTRUCCIONES, CUALQUIER ERROR LE SERÁ CARGADO *"), 0/* BORDE */, 1/* SALTO SI */, 'C', 0);
                 /* END FOREACH PIEZAS */
@@ -311,7 +315,7 @@ class IOrdenDeProduccion extends CI_Controller {
                 /* TOTALES */
                 $Y = $pdf->GetY();
                 $pdf->SetX(46);
-                $pdf->SetFont('Arial', 'BI', 7);
+                $pdf->SetFont('Calibri', 'BI', 7);
                 $aligns = array('C', 'C');
                 $pdf->SetAligns($aligns);
                 $pdf->SetWidths(array(15, 32));

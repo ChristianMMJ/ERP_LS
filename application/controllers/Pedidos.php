@@ -323,11 +323,16 @@ class Pedidos extends CI_Controller {
     function onImprimirPedidoReducido() {
         try {
             $pdf = new PDF('L', 'mm', array(215.9, 279.4));
+            $pdf->AddFont('Calibri', '');
+            $pdf->AddFont('Calibri', 'I');
+            $pdf->AddFont('Calibri', 'B');
+            $pdf->AddFont('Calibri', 'BI');
+
             $IDX = $this->input->post('ID');
             $Pedido = $this->Pedidos_model->getPedidoByID($IDX);
             $Series = $this->Pedidos_model->getSerieXPedido($IDX);
 
-            $pdf->SetFont('Arial', '', 7.5);
+            $pdf->SetFont('Calibri', '', 7.5);
             $E = $Pedido[0];
             $pdf->setPedido($E->Clave);
             $pdf->setCliente($E->ClienteT);
@@ -361,7 +366,7 @@ class Pedidos extends CI_Controller {
             $total_final = 0;
 
             /* RESUMEN */
-            $pdf->SetFont('Arial', 'B', 7);
+            $pdf->SetFont('Calibri', 'B', 7);
             $anchos = array(55/* 0 */, 7/* 1 */, 7/* 2 */, 9/* 3 */, 10/* 4 */, 6.5/* 5 */);
             for ($index = 1; $index < 22; $index++) {
                 array_push($anchos, 6.5);
@@ -382,7 +387,7 @@ class Pedidos extends CI_Controller {
             foreach ($Series as $sk => $sv) {
                 /* TALLAS */
                 $aligns[0] = 'C';
-                $pdf->SetFont('Arial', 'B', 6);
+                $pdf->SetFont('Calibri', 'B', 7);
                 $pdf->SetX($posi[0]);
                 $pdf->SetAligns($aligns);
                 $pdf->SetWidths(array(55, 7, 7, 9, 10, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 10, 15, 15));
@@ -412,27 +417,28 @@ class Pedidos extends CI_Controller {
                         $pdf->SetAligns($aligns);
                         $pdf->SetWidths($anchos);
                         $pdf->SetX($posi[0]);
-                        $pdf->SetFont('Arial', '', 6);
+                        $pdf->SetFont('Calibri', '', 7);
                         $row = array();
                         $estilo_color = $v->EstiloT . "/" . $v->ColorT;
-                        array_push($row, $estilo_color, $v->Maquila, $v->Semana, $v->Recio, $v->Pares); //4
+                        array_push($row, $estilo_color, $v->Maquila, $v->Semana, $v->Recio, $v->Pares); //4 
                         for ($index = 1; $index <= 22; $index++) {
                             array_push($row, ( $v->{"C$index"} !== '0') ? $v->{"C$index"} : '-'); //5
                         }
-                        array_push($row, number_format($v->Precio, 3, ".", ",")); //PRECIO 6
+                        array_push($row, number_format($v->Precio, 2, ".", ",")); //PRECIO 6
                         $precio = ($v->Pares * $v->Precio);
                         if (strlen($precio) >= 12) {
-                            $pdf->SetFont('Arial', '', 3.5);
+                            $pdf->SetFont('Calibri', '', 6);
                         } else {
-                            $pdf->SetFont('Arial', '', 6);
+                            $pdf->SetFont('Calibri', '', 7);
                         }
-                        array_push($row, number_format($precio, 3, ".", ",")); //TOTAL 7
+                        array_push($row, number_format($precio, 2, ".", ",")); //TOTAL 7
                         array_push($row, $v->FechaEntrega); //ENTREGA 8
                         if (strlen($estilo_color) >= 40) {
                             $pdf->setAlto(3.5);
                         } else {
                             $pdf->setAlto(4.5);
                         }
+                        $pdf->SetFont('Calibri', '', 7);
                         $pdf->Row($row);
                         $pares_totales += $v->Pares;
                         $total_final += ($v->Pares * $v->Precio);
@@ -444,12 +450,13 @@ class Pedidos extends CI_Controller {
                         $pdf->SetAligns(array('L', 'L', 'L', 'L'));
                         $pdf->SetWidths(array(198.5, 72.5));
                         $pdf->SetX($posi[0]);
+                        $pdf->SetFont('Calibri', '', 7);
                         if (count($suelin) > 0) {
                             array_push($suela, 'OBS. ' . $v->OBSTITULO . " | " . $v->OBSCONTENIDO, 'SUELA: ' . $suelin[0]->Suela); //3
                         } else {
                             array_push($suela, 'OBS. ' . $v->OBSTITULO . " | " . $v->OBSCONTENIDO, 'SUELA NO DISPONIBLE'); //3
                         }
-                        $pdf->SetFont('Arial', 'BI', 6);
+                        $pdf->SetFont('Calibri', 'BI', 7);
                         $pdf->Row($suela);
                         /* SEGUNDO DETALLE (SUELA) */
                     }
@@ -458,7 +465,7 @@ class Pedidos extends CI_Controller {
             /* TOTALES */
             $Y = $pdf->GetY();
             $pdf->SetX(46);
-            $pdf->SetFont('Arial', 'BI', 7);
+            $pdf->SetFont('Calibri', 'BI', 7);
             $aligns = array('C', 'C');
             $pdf->SetAligns($aligns);
             $pdf->SetWidths(array(15, 32));

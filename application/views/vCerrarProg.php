@@ -688,6 +688,7 @@
 
     function getHistorialDeControles() {
         Historial.ajax.reload();
+        mdlHistorial.find("#col12_filter_history").focus();
     }
 </script>
 <style>

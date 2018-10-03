@@ -176,9 +176,9 @@ class PDF extends FPDF {
         $this->Observaciones = $Observaciones;
     }
 
-    function Header() {
+    function Header() { 
         $this->Image($_SESSION["LOGO"], /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30, 12.5);
-        $this->SetFont('Arial', 'B', 8.25);
+        $this->SetFont('Calibri', 'B', 9.25);
 
         $pos = array(65/* 0 */, 80/* 1 */, 145/* 2 */, 160/* 3 */, 40/* 4 */, 200/* 5 */, 215/* 6 */);
         $anc = array(15/* 0 */, 65/* 1 */, 40/* 2 */, 120/* 3 */, 55/* 4 */);
@@ -217,7 +217,7 @@ class PDF extends FPDF {
         $this->SetX($pos[4]);
         $this->Cell(25, $alto_celda, utf8_decode($this->getFecha()), 1/* BORDE */, 0, 'C');
 
-        $this->SetFont('Arial', 'B', 7);
+        $this->SetFont('Calibri', 'B', 8);
         $this->SetFillColor(225, 225, 234);
         $this->SetY($base);
         $this->SetX($pos[0]);
@@ -255,11 +255,11 @@ class PDF extends FPDF {
         $this->SetX($pos[3]);
         $this->Cell($anc[2], $alto_celda, utf8_decode($this->getTel()), 1/* BORDE */, 1, 'L');
 
-        $this->SetFont('Arial', 'B', 7);
+        $this->SetFont('Calibri', 'B', 8);
         $this->SetFillColor(225, 225, 234);
         $this->SetX($pos[0]);
         $this->Cell($anc[0], $alto_celda, utf8_decode("Obs."), 1/* BORDE */, 0, 'L', 1);
-        $this->SetFont('Arial', 'B', 6.5);
+        $this->SetFont('Calibri', 'B', 7.5);
         $this->SetFillColor(250, 250, 250);
         $this->SetX($pos[1]);
         $this->Cell($anc[3], $alto_celda, utf8_decode($this->getObs()), 1/* BORDE */, 0, 'L');
@@ -272,7 +272,7 @@ class PDF extends FPDF {
         $this->Cell($anc[4], $alto_celda, utf8_decode($this->getTrasp()), 1/* BORDE */, 1, 'L');
 
         $this->SetY($base);
-        $this->SetFont('Arial', 'B', 7);
+        $this->SetFont('Calibri', 'B', 8);
         $this->SetFillColor(225, 225, 234);
         $this->SetX($pos[5]);
         $this->Cell($anc[0], $alto_celda, utf8_decode("Dirección"), 1/* BORDE */, 0, 'L', 1);
@@ -299,8 +299,8 @@ class PDF extends FPDF {
         // Go to 1.5 cm from bottom
         $this->SetY(3);
         $this->SetX(250);
-        // Select Arial italic 8
-        $this->SetFont('Arial', 'I', 7);
+        // Select Calibri italic 8
+        $this->SetFont('Calibri', 'I', 8);
         // Print centered page number
         $this->SetTextColor(0, 0, 0);
         $this->Cell(35, 3, utf8_decode('Pag. ' . $this->PageNo() . ' de {totalPages}'), 0, 0, 'R');
@@ -311,8 +311,8 @@ class PDF extends FPDF {
 //        // Go to 1.5 cm from bottom
 //        $this->SetY(-32.5);
 //        $this->SetX(5);
-//        // Select Arial italic 8
-//        $this->SetFont('Arial', 'B', 6.5);
+//        // Select Calibri italic 8
+//        $this->SetFont('Calibri', 'B', 6.5);
 //        // Print centered page number
 //        $this->Cell(130, 3.5, 'IMPORTANTE', 1, 1, 'C');
 //        $this->SetX(5);
