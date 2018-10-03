@@ -70,10 +70,10 @@ class PDF extends FPDF {
 
         $this->SetLineWidth(0.4);
 
-        $this->AddFont('calibri', '');
-        $this->AddFont('calibri', 'I');
-        $this->AddFont('calibri', 'B');
-        $this->AddFont('calibri', 'BI');
+        $this->AddFont('Calibri', '');
+        $this->AddFont('Calibri', 'I');
+        $this->AddFont('Calibri', 'B');
+        $this->AddFont('Calibri', 'BI');
         $this->Image($_SESSION["LOGO"], /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30);
         $this->SetFont('Calibri', 'B', 9);
         $this->SetY(4);
@@ -82,7 +82,7 @@ class PDF extends FPDF {
         $this->SetY(8);
         $this->SetX(170);
         $this->SetFont('Calibri', 'B', 8);
-        $this->Cell(100, 3, utf8_decode("Fecha. " . Date('d/m/Y')), 0/* BORDE */, 1, 'L');
+        $this->Cell(100, 3, utf8_decode("Fecha. " . date("d-m-Y     h:i:s a")), 0/* BORDE */, 1, 'L');
         $this->SetY(9);
         $this->SetX(40);
         $this->SetFont('Calibri', 'B', 8);
@@ -156,6 +156,7 @@ class PDF extends FPDF {
     }
 
     function Footer() {
+
         $margen_firmas = 10;
         $this->SetFont('Calibri', 'B', 8.5);
         $this->SetY(260);

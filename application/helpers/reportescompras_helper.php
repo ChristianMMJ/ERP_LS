@@ -1,7 +1,7 @@
 <?php
 
 class PDFConfirmaciones extends FPDF {
- 
+
     public $Ano;
     public $Sem;
     public $Maq;
@@ -37,19 +37,23 @@ class PDFConfirmaciones extends FPDF {
 
     function setSem($Sem) {
         $this->Sem = $Sem;
-    } 
+    }
 
     function Header() {
 
+        $this->AddFont('Calibri', '');
+        $this->AddFont('Calibri', 'I');
+        $this->AddFont('Calibri', 'B');
+        $this->AddFont('Calibri', 'BI');
         $this->Image($_SESSION["LOGO"], /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30);
-        $this->SetFont('Arial', 'B', 10);
+        $this->SetFont('Calibri', 'B', 10);
         $this->SetY(5);
         $this->SetX(36);
         $this->Cell(60, 4, utf8_decode($_SESSION["EMPRESA_RAZON"]), 0/* BORDE */, 1, 'L');
-        $this->SetFont('Arial', 'B', 8);
+        $this->SetFont('Calibri', 'B', 9);
         $this->SetX(36);
         $this->Cell(60, 4, utf8_decode("Órdenes de Compra fincadas del año: "), 0/* BORDE */, 1, 'L');
-        $this->SetX(64);
+        $this->SetX(62.3);
         $this->Cell(25, 4, utf8_decode("Tipo:"), 0/* BORDE */, 1, 'R');
 
         $this->SetY(9);
@@ -57,12 +61,12 @@ class PDFConfirmaciones extends FPDF {
         $this->Cell(25, 4, utf8_decode("de la semana:"), 0/* BORDE */, 0, 'R');
         $this->SetX(126);
         $this->Cell(20, 4, utf8_decode("de la maquila:"), 0/* BORDE */, 1, 'L');
-        $this->SetFont('Arial', 'B', 8);
+        $this->SetFont('Calibri', 'B', 9);
         $this->SetY(13);
         $this->SetX(90);
         $this->Cell(40, 4, $this->getTipo(), 0/* BORDE */, 1, 'C');
 
-        $this->SetFont('Arial', '', 8);
+        $this->SetFont('Calibri', '', 9);
         $this->SetY(9);
         $this->SetX(90);
         $this->Cell(11, 4, $this->getAno(), 0/* BORDE */, 1, 'L');
@@ -76,34 +80,39 @@ class PDFConfirmaciones extends FPDF {
         //Paginador
         $this->SetY(3);
         $this->SetX(200);
-        // Select Arial italic 8
-        $this->SetFont('Arial', 'I', 7);
+        // Select Calibri italic 8
+        $this->SetFont('Calibri', 'I', 8);
         // Print centered page number
         $this->Cell(20, 4, utf8_decode('Pag. ' . $this->PageNo() . ' de {totalPages}'), 0/* BORDE */, 1, 'C');
 
         $this->SetY(7);
         $this->SetX(180);
-        $this->SetFont('Arial', 'B', 8);
-        $this->Cell(30, 4, utf8_decode("Fecha: " . Date('d/m/Y')), 0/* BORDE */, 1, 'R');
+        $this->SetFont('Calibri', 'B', 9);
+        $this->Cell(30, 4, utf8_decode("Fecha: " . date("d-m-Y     h:i:s a")), 0/* BORDE */, 1, 'R');
         $this->AliasNbPages(' {totalPages}');
 
 
         $this->SetY(21);
         $this->SetX(72);
-        $this->SetFont('Arial', 'B', 7);
-        $this->Cell(39, 4, 'Fechas', 0/* BORDE */, 1, 'C');
-        $this->Rect(72, 21, 39, 8);
-        $this->Rect(111, 21, 14, 8);
+        $this->SetFont('Calibri', 'B', 8.5);
+        $this->Cell(48, 4, 'Fechas', 0/* BORDE */, 1, 'C');
+        $this->Rect(72, 21, 48, 8);
+        $this->Rect(120, 21, 14, 8);
 
         /* ENCABEZADO DETALLE TITULOS */
-        $anchos = array(0/* 0 */, 55/* 1 */, 13/* 2 */, 13/* 3 */, 13/* 4 */, 13/* 5 */, 13/* 6 */, 0/* 7 */, 85/* 8 */);
-        $aligns = array('L', 'L', 'L', 'L', 'L', 'L', 'C', 'L', 'L');
+        $anchos = array(0/* 0 */, 55/* 1 */, 13/* 2 */, 16/* 3 */, 16/* 4 */, 16/* 5 */, 13/* 6 */, 0/* 7 */, 76/* 8 */);
+        $aligns = array('L', 'L', 'L', 'C', 'C', 'C', 'C', 'L', 'L');
 
         $this->SetY(25);
         $this->SetX(5);
         $this->SetWidths($anchos);
         $this->SetAligns($aligns);
         $this->Row(array('', utf8_decode('Proveedor'), 'O.C.', 'Captura', 'Entrega', 'Conf.', utf8_decode('Días'), '', 'Observaciones'));
+
+        $anchos = array(8/* 0 */, 47/* 1 */, 13/* 2 */, 16/* 3 */, 16/* 4 */, 16/* 5 */, 6.5/* 6 */, 6.5/* 7 */, 76/* 8 */);
+        $aligns = array('R', 'L', 'L', 'L', 'L', 'L', 'C', 'L', 'L');
+        $this->SetAligns($aligns);
+        $this->SetWidths($anchos);
     }
 
     var $widths;
@@ -301,18 +310,22 @@ class PDF extends FPDF {
 
     function setDireccion($Direccion) {
         $this->Direccion = $Direccion;
-    }  
-    
+    }
+
     function Header() {
 
+        $this->AddFont('Calibri', '');
+        $this->AddFont('Calibri', 'I');
+        $this->AddFont('Calibri', 'B');
+        $this->AddFont('Calibri', 'BI');
         $this->Image($_SESSION["LOGO"], /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30);
-        $this->SetFont('Arial', 'B', 10);
+        $this->SetFont('Calibri', 'B', 10.5);
         $this->SetY(5);
         $this->SetX(40);
         $this->Cell(110, 4, utf8_decode($_SESSION["EMPRESA_RAZON"]), 0/* BORDE */, 1, 'L');
         $this->SetY(9);
         $this->SetX(40);
-        $this->SetFont('Arial', 'B', 9);
+        $this->SetFont('Calibri', 'B', 9.5);
         $this->Cell(110, 4, utf8_decode($this->getDireccion()), 0/* BORDE */, 1, 'L');
         $this->SetY(13);
         $this->SetX(40);
@@ -342,26 +355,26 @@ class PDF extends FPDF {
 
         $this->SetY(24);
         $this->SetX(5);
-        $this->SetFont('Arial', 'B', 8);
+        $this->SetFont('Calibri', 'B', 9);
         $this->Cell(30, 4, utf8_decode("PROVEEDOR:"), 'B'/* BORDE */, 0, 'L');
         $this->SetX(35);
-        $this->SetFont('Arial', '', 8);
+        $this->SetFont('Calibri', '', 9);
         $this->Cell(85, 4, utf8_decode($this->getClaveProveedor() . ' ' . $this->getProveedor()), 'B'/* BORDE */, 1, 'L');
 
         $this->SetY(24);
         $this->SetX(170);
-        $this->SetFont('Arial', 'B', 8);
+        $this->SetFont('Calibri', 'B', 9);
         $this->Cell(30, 4, utf8_decode("CONSIGNAR A: "), 'B'/* BORDE */, 0, 'L');
         $this->SetX(200);
-        $this->SetFont('Arial', '', 8);
+        $this->SetFont('Calibri', '', 9);
         $this->Cell(75, 4, utf8_decode($this->getConsignarA()), 'B'/* BORDE */, 1, 'L');
 
         $this->SetY(28);
         $this->SetX(5);
-        $this->SetFont('Arial', 'B', 8);
+        $this->SetFont('Calibri', 'B', 9);
         $this->Cell(30, 4, utf8_decode("OBSERVACIONES:"), 'B'/* BORDE */, 0, 'L');
         $this->SetX(35);
-        $this->SetFont('Arial', '', 8);
+        $this->SetFont('Calibri', '', 9);
         $this->Cell(240, 4, utf8_decode($this->getObservaciones()), 'B'/* BORDE */, 1, 'L');
 
 
@@ -370,9 +383,9 @@ class PDF extends FPDF {
         }');
         // Go to 1.5 cm from bottom
         $this->SetY(-5);
-        $this->SetX(250);
-        // Select Arial italic 8
-        $this->SetFont('Arial', 'I', 8);
+        $this->SetX(270);
+        // Select Calibri italic 8
+        $this->SetFont('Calibri', 'I', 8);
         // Print centered page number
         $this->SetTextColor(0, 0, 0);
         $this->Cell(35, 3, utf8_decode('Pag. ' . $this->PageNo() . ' de {
@@ -382,7 +395,7 @@ class PDF extends FPDF {
 
         $this->SetY(38);
         $this->SetX(213);
-        $this->SetFont('Arial', 'B', 8);
+        $this->SetFont('Calibri', 'B', 9.5);
         $this->Cell(15, 4, 'Mercancia Recibida', 0/* BORDE */, 1, 'C');
         $this->Rect(195, 37, 53, 9);
 
@@ -396,10 +409,15 @@ class PDF extends FPDF {
         $this->SetWidths($anchos);
         $this->SetAligns($aligns);
         $this->Row(array('', utf8_decode('Artículo'), 'Cant.', 'U.M.', 'Precio', 'Subtotal', 'Sem', 'Maq', 'Recibido', 'Docto.', 'Fecha Ent.'));
+
+        $anchos = array(10/* 0 */, 90/* 1 */, 15/* 2 */, 10/* 3 */, 20/* 4 */, 20/* 5 */, 10/* 6 */, 15/* 7 */, 30/* 8 */, 30/* 9 */, 20/* 10 */);
+        $aligns = array('L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L');
+        $this->SetAligns($aligns);
+        $this->SetWidths($anchos);
     }
 
     function Footer() {
-        $this->SetFont('Arial', 'B', 7);
+        $this->SetFont('Calibri', 'B', 8);
         /* Primer bloque */
         $this->SetY(189);
         $this->SetX(5);

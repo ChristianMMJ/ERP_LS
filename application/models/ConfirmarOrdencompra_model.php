@@ -27,7 +27,7 @@ class ConfirmarOrdencompra_model extends CI_Model {
                                     . "", false)
                             ->from("ordencompra AS OC")
                             ->join("proveedores AS P", 'P.Clave =  OC.Proveedor')
-                            ->where_in('OC.Estatus', array('ACTIVO'))
+                            ->where_in('OC.Estatus', array('CERRADA'))
                             ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -94,7 +94,7 @@ class ConfirmarOrdencompra_model extends CI_Model {
                     ->where('OC.Sem', $Sem)
                     ->where('OC.Maq', $Maq)
                     ->where('OC.Tipo', $Tipo)
-                    ->where_in('OC.Estatus', array('ACTIVO'))
+                    ->where_in('OC.Estatus', array('CERRADA'))
                     ->order_by('OC.Folio', 'ASC');
 //                    ->where('OC.Tp', $TP);
             $query = $this->db->get();

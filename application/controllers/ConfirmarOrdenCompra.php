@@ -96,11 +96,7 @@ class ConfirmarOrdenCompra extends CI_Controller {
             foreach ($OrdenCompra as $keyFT => $F) {
                 $pdf->SetLineWidth(0.25);
                 $pdf->SetX(5);
-                $pdf->SetFont('Arial', '', 6);
-                $anchos = array(8/* 0 */, 47/* 1 */, 13/* 2 */, 13/* 3 */, 13/* 4 */, 13/* 5 */, 6.5/* 6 */, 6.5/* 7 */, 85/* 8 */);
-                $aligns = array('R', 'L', 'L', 'L', 'L', 'L', 'C', 'L', 'L');
-                $pdf->SetAligns($aligns);
-                $pdf->SetWidths($anchos);
+                $pdf->SetFont('Calibri', '', 8);
 
                 $pdf->Row(array(
                     utf8_decode($F->Proveedor),

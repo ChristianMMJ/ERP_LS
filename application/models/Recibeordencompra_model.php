@@ -20,7 +20,11 @@ class Recibeordencompra_model extends CI_Model {
                     . "OCD.Cantidad, "
                     . "ifnull(OCD.CantidadRecibida,'') AS Recibida, "
                     . "OCD.Precio, "
-                    . "OCD.SubTotal"
+                    . "OCD.Subtotal,"
+                    . "OC.Maq, "
+                    . "OC.Sem, "
+                    . "OC.Tipo, "
+                    . "OCD.Articulo AS ClaveArticulo "
                     . "", false);
             $this->db->from("ordencompradetalle OCD");
             $this->db->join("ordencompra OC", "OC.ID = OCD.OrdenCompra ");
@@ -65,7 +69,7 @@ class Recibeordencompra_model extends CI_Model {
 
     public function getArticuloByTpByOC($Articulo, $Tp, $Oc) {
         try {
-            $this->db->select("A.Clave, A.Descripcion  "
+            $this->db->select("A.Clave, A.Descripcion, OCD.Precio, OCD.Subtotal, OC.Maq, OC.Sem, OC.Tipo, OC.Tp  "
                             . "")
                     ->from("ordencompradetalle OCD")
                     ->join("ordencompra OC", 'ON OC.ID =  OCD.OrdenCompra')
@@ -86,13 +90,44 @@ class Recibeordencompra_model extends CI_Model {
         }
     }
 
-    public function getProveedores() {
+    public function getSumatoriasCantidadesParaEstatus($Tp, $Oc) {
         try {
-            return $this->db->select("P.Clave AS ID, "
-                                    . "CONCAT(P.Clave,' ',IFNULL(P.NombreI,'')) AS ProveedorI, "
-                                    . "CONCAT(P.Clave,' ',IFNULL(P.NombreF,'')) AS ProveedorF "
-                                    . "", false)
-                            ->from("proveedores AS P")->get()->result();
+            $this->db->select("sum(OCD.Cantidad) AS Cantidad, sum(OCD.CantidadRecibida) AS Cantidad_Rec "
+                            . "")
+                    ->from("ordencompradetalle OCD")
+                    ->join("ordencompra OC", 'ON OC.ID =  OCD.OrdenCompra')
+                    ->where("OC.Tp", $Tp)
+                    ->where("OC.Folio", $Oc);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onModificarEstatusOrdenCompra($Tp, $Folio, $DATA) {
+        try {
+            $this->db->where('Tp', $Tp)
+                    ->where('Folio', $Folio)
+                    ->update("ordencompra", $DATA);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onAgregar($array) {
+        try {
+            $this->db->insert("compras", $array);
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
+            $row = $query->row_array();
+            $LastIdInserted = $row['LAST_INSERT_ID()'];
+            return $LastIdInserted;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

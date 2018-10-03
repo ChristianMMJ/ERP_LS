@@ -75,6 +75,10 @@
                             <th>Recibida</th>
                             <th>Precio</th>
                             <th>SubTotal</th>
+                            <th>Maq</th>
+                            <th>Sem</th>
+                            <th>Tipo</th>
+                            <th>C-Articulo</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -90,7 +94,8 @@
     var tblOrdenesCompra = $('#tblOrdenesCompra');
     var OrdenesCompra;
     var pnlTablero = $("#pnlTablero");
-    var btnActualizaCantidad = $('#btnActualizaCantidad');
+    var btnActualizaCantidad = pnlTablero.find('#btnActualizaCantidad');
+    var btnCerrarCompra = pnlTablero.find('#btnCerrarCompra');
     $(document).ready(function () {
         /*FUNCIONES INICIALES*/
         init();
@@ -107,21 +112,10 @@
             }
         });
         pnlTablero.find("#col1_filter").change(function () {
-            var tp = parseInt($(this).val());
-            if (tp === 1 || tp === 2) {
-            } else {
-                swal({
-                    title: "ATENCIÓN",
-                    text: "EL TP SÓLO PUEDE SER 1 Ó 2",
-                    icon: "error",
-                    closeOnClickOutside: false,
-                    closeOnEsc: false,
-                    buttons: false,
-                    timer: 1000
-                }).then((action) => {
-                    $(this).val('').focus();
-                });
-            }
+            onVerificarTp($(this));
+        });
+        pnlTablero.find("#Tp").change(function () {
+            onVerificarTp($(this));
         });
         pnlTablero.find("#col2_filter").change(function () {
             var tp = pnlTablero.find("#col1_filter").val();
@@ -138,26 +132,56 @@
             var tp = pnlTablero.find("#col1_filter").val();
             var oc = pnlTablero.find("#col2_filter").val();
             var art = pnlTablero.find("#Articulo").val();
+            var prov = pnlTablero.find("#Proveedor").val();
             var cant_rec = pnlTablero.find("#CantidadRecibida").val();
             $.post(master_url + 'onModificarCantidadRecibidaByArtByOCByTp', {
-                Articulo: art,
-                Tp: tp,
-                OC: oc,
-                CantidadRecibida: cant_rec,
+
                 Factura: fact,
-                FechaFactura: fecFact
+                FechaFactura: fecFact,
+                Articulo: art,
+                Proveedor: prov,
+                OC: oc,
+                Tp: tp,
+                CantidadRecibida: cant_rec,
+                Precio: Precio,
+                Subtotal: cant_rec * Precio,
+                Maq: Maq,
+                Sem: Sem,
+                Departamento: Departamento,
+                TpOrdenCompra: TpOC
             }).done(function (data) {
                 onNotifyOld('fa fa-check', 'CANTIDAD ACTUALIZADA', 'success');
                 OrdenesCompra.ajax.reload();
                 pnlTablero.find("#NombreArtículo").val('');
                 pnlTablero.find("#CantidadRecibida").val('');
-                pnlTablero.find("#Articulo").val('').focus();
+                pnlTablero.find("#Detalle").find('input').val('');
+                pnlTablero.find("#Articulo").focus();
+                Precio = 0;
+                Subtotal = 0;
+                Maq = 0;
+                Sem = 0;
+                Departamento = 0;
                 pnlTablero.find('#Encabezado').find('.captura').addClass('disabledForms');
-
             }).fail(function (x, y, z) {
                 console.log(x, y, z);
             });
         });
+
+
+        btnCerrarCompra.click(function () {
+            var tp = pnlTablero.find("#col1_filter").val();
+            var oc = pnlTablero.find("#col2_filter").val();
+            $.post(master_url + 'onCerrarCompra', {
+                Tp: tp,
+                Folio: oc
+            }).done(function (data) {
+                console.log(data);
+            }).fail(function (x, y, z) {
+                swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+                console.log(x.responseText);
+            });
+        });
+
         $('input.column_filter').on('keyup', function () {
             var i = $(this).parents('div').attr('data-column');
             tblOrdenesCompra.DataTable().column(i).search($('#col' + i + '_filter').val()).draw();
@@ -194,7 +218,11 @@
                 {"data": "Cantidad"},
                 {"data": "Recibida"},
                 {"data": "Precio"},
-                {"data": "SubTotal"}
+                {"data": "Subtotal"},
+                {"data": "Maq"},
+                {"data": "Sem"},
+                {"data": "Tipo"},
+                {"data": "ClaveArticulo"}
             ],
             "columnDefs": [
                 {
@@ -213,6 +241,26 @@
                     "render": function (data, type, row) {
                         return '$' + $.number(parseFloat(data), 2, '.', ',');
                     }
+                },
+                {
+                    "targets": [8],
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    "targets": [9],
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    "targets": [10],
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    "targets": [11],
+                    "visible": false,
+                    "searchable": false
                 }
             ],
             language: lang,
@@ -269,6 +317,9 @@
                 temp = parseInt(dtm.ID);
                 var fact = pnlTablero.find('#Factura').val();
                 var fecFact = pnlTablero.find('#FechaFactura').val();
+                var tp = pnlTablero.find("#col1_filter").val();
+                var oc = pnlTablero.find("#col2_filter").val();
+                var prov = pnlTablero.find("#Proveedor").val();
                 swal({
                     title: dtm.Articulo,
                     text: "CANTIDAD RECIBIDA: ",
@@ -279,7 +330,18 @@
                             ID: temp,
                             CantidadRecibida: value,
                             Factura: fact,
-                            FechaFactura: fecFact
+                            FechaFactura: fecFact,
+
+                            Articulo: dtm.ClaveArticulo,
+                            Proveedor: prov,
+                            OC: oc,
+                            Tp: tp,
+                            Precio: dtm.Precio,
+                            Subtotal: dtm.Precio * value,
+                            Maq: dtm.Maq,
+                            Sem: dtm.Sem,
+                            Departamento: dtm.Tipo,
+                            TpOrdenCompra: dtm.Tp
                         }).done(function (data) {
                             onNotifyOld('fa fa-check', 'CANTIDAD ACTUALIZADA', 'success');
                             OrdenesCompra.ajax.reload();
@@ -320,11 +382,17 @@
             console.log(x.responseText);
         });
     }
+    var TpOC, Precio, Maq, Sem, Departamento;
     function getArticuloByTpByOC(v, Tp, Oc) {
         $.getJSON(master_url + 'getArticuloByTpByOC', {Articulo: $(v).val(), Tp: Tp, Oc: Oc}).done(function (data) {
             if (data.length > 0) {
                 pnlTablero.find('#NombreArtículo').val(data[0].Descripcion);
                 pnlTablero.find('#CantidadRecibida').focus().select();
+                Precio = data[0].Precio;
+                Maq = data[0].Maq;
+                Sem = data[0].Sem;
+                Departamento = data[0].Tipo;
+                TpOC = data[0].Tp;
             } else {
                 swal({
                     title: "ATENCIÓN",
@@ -338,6 +406,23 @@
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
             console.log(x.responseText);
         });
+    }
+    function onVerificarTp(v) {
+        var tp = parseInt(v.val());
+        if (tp === 1 || tp === 2) {
+        } else {
+            swal({
+                title: "ATENCIÓN",
+                text: "EL TP SÓLO PUEDE SER 1 Ó 2",
+                icon: "error",
+                closeOnClickOutside: false,
+                closeOnEsc: false,
+                buttons: false,
+                timer: 1000
+            }).then((action) => {
+                $(v).val('').focus();
+            });
+        }
     }
 </script>
 <style>

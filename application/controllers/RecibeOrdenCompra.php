@@ -62,6 +62,27 @@ class RecibeOrdenCompra extends CI_Controller {
         }
     }
 
+    public function onCerrarCompra() {
+        try {
+            $Cantidades = $this->Recibeordencompra_model->getSumatoriasCantidadesParaEstatus($this->input->post('Tp'), $this->input->post('Folio'));
+            $can = $Cantidades[0]->Cantidad;
+            $Can_rec = $Cantidades[0]->Cantidad_Rec;
+            if ($can > $Can_rec) {
+                $datos = array(
+                    'Estatus' => 'PENDIENTE'
+                );
+                $this->Recibeordencompra_model->onModificarEstatusOrdenCompra($this->input->post('Tp'), $this->input->post('Folio'), $datos);
+            } else {
+                $datos = array(
+                    'Estatus' => 'RECIBIDA'
+                );
+                $this->Recibeordencompra_model->onModificarEstatusOrdenCompra($this->input->post('Tp'), $this->input->post('Folio'), $datos);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onModificarCantidadRecibidaByID() {
         try {
             $x = $this->input;
@@ -71,6 +92,24 @@ class RecibeOrdenCompra extends CI_Controller {
                 'FechaFactura' => $x->post('FechaFactura')
             );
             $this->Recibeordencompra_model->onModificar($x->post('ID'), $datos);
+            $datosCompra = array(
+                'Doc' => $x->post('Factura'),
+                'FechaDoc' => $x->post('FechaFactura'),
+                'Articulo' => $x->post('Articulo'),
+                'Proveedor' => $x->post('Proveedor'),
+                'OrdenCompra' => $x->post('OC'),
+                'TpOrdenCompra' => $x->post('TpOrdenCompra'),
+                'Tp' => $x->post('Tp'),
+                'Cantidad' => $x->post('CantidadRecibida'),
+                'Precio' => $x->post('Precio'),
+                'Subtotal' => $x->post('Subtotal'),
+                'Maq' => $x->post('Maq'),
+                'Sem' => $x->post('Sem'),
+                'Departamento' => $x->post('Departamento'),
+                'Estatus' => 'BORRADOR',
+                'Registro' => date("d/m/Y")
+            );
+            $this->Recibeordencompra_model->onAgregar($datosCompra);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -85,6 +124,25 @@ class RecibeOrdenCompra extends CI_Controller {
                 'FechaFactura' => $x->post('FechaFactura')
             );
             $this->Recibeordencompra_model->onModificarCantidadRecibidaByArtByOCByTp($x->post('Articulo'), $x->post('OC'), $x->post('Tp'), $datos);
+
+            $datosCompra = array(
+                'Doc' => $x->post('Factura'),
+                'FechaDoc' => $x->post('FechaFactura'),
+                'Articulo' => $x->post('Articulo'),
+                'Proveedor' => $x->post('Proveedor'),
+                'OrdenCompra' => $x->post('OC'),
+                'TpOrdenCompra' => $x->post('TpOrdenCompra'),
+                'Tp' => $x->post('Tp'),
+                'Cantidad' => $x->post('CantidadRecibida'),
+                'Precio' => $x->post('Precio'),
+                'Subtotal' => $x->post('Subtotal'),
+                'Maq' => $x->post('Maq'),
+                'Sem' => $x->post('Sem'),
+                'Departamento' => $x->post('Departamento'),
+                'Estatus' => 'BORRADOR',
+                'Registro' => date("d/m/Y")
+            );
+            $this->Recibeordencompra_model->onAgregar($datosCompra);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

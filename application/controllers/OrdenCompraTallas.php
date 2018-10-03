@@ -345,7 +345,7 @@ class OrdenCompraTallas extends CI_Controller {
                     foreach ($OrdenCompra as $keyFT => $F) {
                         $pdf->SetLineWidth(0.25);
                         $pdf->SetX(5);
-                        $pdf->SetFont('Arial', '', 7);
+                        $pdf->SetFont('Calibri', '', 8.5);
                         $anchos = array(10/* 0 */, 90/* 1 */, 15/* 2 */, 10/* 3 */, 20/* 4 */, 20/* 5 */, 10/* 6 */, 15/* 7 */, 30/* 8 */, 30/* 9 */, 20/* 10 */);
                         $aligns = array('L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L');
                         $pdf->SetAligns($aligns);
@@ -368,7 +368,7 @@ class OrdenCompraTallas extends CI_Controller {
                         $SubTotal += $F->SubTotal;
                         $TotalCantidad += $F->Cantidad;
                     }
-                    $pdf->SetFont('Arial', 'B', 8);
+                    $pdf->SetFont('Calibri', 'B', 9.5);
                     $pdf->RowNoBorder(array('', '', number_format($TotalCantidad, 2, ".", ","), '',
                         'Subtotal:', '$' . number_format($SubTotal, 2, ".", ","), '', '', '', '', ''
                     ));

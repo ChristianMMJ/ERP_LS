@@ -1,7 +1,7 @@
 <?php
 
 class PDFExpTallas extends FPDF {
- 
+
     public $Sem;
     public $aSem;
     public $Maq;
@@ -67,13 +67,16 @@ class PDFExpTallas extends FPDF {
     }
 
     function Header() {
-
+        $this->AddFont('Calibri', '');
+        $this->AddFont('Calibri', 'I');
+        $this->AddFont('Calibri', 'B');
+        $this->AddFont('Calibri', 'BI');
         $this->Image($_SESSION["LOGO"], /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30);
-        $this->SetFont('Arial', 'B', 10);
+        $this->SetFont('Calibri', 'B', 10);
         $this->SetY(5);
         $this->SetX(36);
         $this->Cell(60, 4, utf8_decode($_SESSION["EMPRESA_RAZON"]), 0/* BORDE */, 1, 'L');
-        $this->SetFont('Arial', 'B', 8);
+        $this->SetFont('Calibri', 'B', 9);
         $this->SetX(36);
         $this->Cell(60, 4, utf8_decode("Explosion de materiales de la semana: "), 0/* BORDE */, 1, 'L');
         $this->SetX(64.5);
@@ -92,7 +95,7 @@ class PDFExpTallas extends FPDF {
         $this->SetX(175);
         $this->Cell(20, 4, utf8_decode("Pares: "), 0/* BORDE */, 0, 'R');
         $this->SetX(195);
-        $this->SetFont('Arial', '', 8);
+        $this->SetFont('Calibri', '', 9);
         $this->Cell(20, 4, $this->getPares(), 0/* BORDE */, 1, 'L');
 
 
@@ -110,7 +113,7 @@ class PDFExpTallas extends FPDF {
         $this->SetX(120);
         $this->Cell(11, 4, $this->getAMaq(), 0/* BORDE */, 1, 'C');
 
-        $this->SetFont('Arial', 'B', 8);
+        $this->SetFont('Calibri', 'B', 9);
         $this->SetY(17);
         $this->SetX(90);
         $this->Cell(40, 4, $this->getTipo(), 0/* BORDE */, 1, 'C');
@@ -120,15 +123,15 @@ class PDFExpTallas extends FPDF {
         //Paginador
         $this->SetY(3);
         $this->SetX(200);
-        // Select Arial italic 8
-        $this->SetFont('Arial', 'I', 7);
+        // Select Calibri italic 8
+        $this->SetFont('Calibri', 'I', 8);
         // Print centered page number
         $this->Cell(20, 4, utf8_decode('Pag. ' . $this->PageNo() . ' de {totalPages}'), 0/* BORDE */, 1, 'C');
 
         $this->SetY(7);
         $this->SetX(180);
-        $this->SetFont('Arial', 'B', 8);
-        $this->Cell(30, 4, utf8_decode("Fecha: " . Date('d/m/Y')), 0/* BORDE */, 1, 'R');
+        $this->SetFont('Calibri', 'B', 9);
+        $this->Cell(30, 4, utf8_decode("Fecha: " . Date("d-m-Y     h:i:s a")), 0/* BORDE */, 1, 'R');
         $this->AliasNbPages('{totalPages}');
 
 
@@ -149,7 +152,7 @@ class PDFExpTallas extends FPDF {
 
         $this->SetY(25);
         $this->SetX(5);
-        $this->SetFont('Arial', 'B', 7.5);
+        $this->SetFont('Calibri', 'B', 8.5);
         $this->SetWidths($anchos);
         $this->SetAligns($aligns);
         $this->Row(array('',
@@ -159,6 +162,12 @@ class PDFExpTallas extends FPDF {
             utf8_decode('Explosión'),
             'Precio', 'Subtotal', 'Requerido',
             '1ra Entrega', '2da Entrega'));
+
+        $anchos = array(10/* ClaveArt */, 65/* Articulo */, 7/* UM */, 13/* Tallas */, 12/* Explosion */,
+            15/* Precio */, 15/* Subtotal */, 22/* Requerido */, 23/* 1raEnt */, 23/* 2daEnt */);
+        $aligns = array('R', 'L', 'L', 'C', 'R', 'R', 'R', 'C', 'L', 'L');
+        $this->SetAligns($aligns);
+        $this->SetWidths($anchos);
     }
 
     var $widths;
@@ -326,7 +335,7 @@ class PDFExpTallas extends FPDF {
 }
 
 class PDF extends FPDF {
- 
+
     public $Sem;
     public $aSem;
     public $Maq;
@@ -389,16 +398,19 @@ class PDF extends FPDF {
 
     function setPares($Pares) {
         $this->Pares = $Pares;
-    } 
+    }
 
     function Header() {
-
+        $this->AddFont('Calibri', '');
+        $this->AddFont('Calibri', 'I');
+        $this->AddFont('Calibri', 'B');
+        $this->AddFont('Calibri', 'BI');
         $this->Image($_SESSION["LOGO"], /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30);
-        $this->SetFont('Arial', 'B', 10);
+        $this->SetFont('Calibri', 'B', 10);
         $this->SetY(5);
         $this->SetX(36);
         $this->Cell(60, 4, utf8_decode($_SESSION["EMPRESA_RAZON"]), 0/* BORDE */, 1, 'L');
-        $this->SetFont('Arial', 'B', 8);
+        $this->SetFont('Calibri', 'B', 9);
         $this->SetX(36);
         $this->Cell(60, 4, utf8_decode("Explosion de materiales de la semana: "), 0/* BORDE */, 1, 'L');
         $this->SetX(64.5);
@@ -417,7 +429,7 @@ class PDF extends FPDF {
         $this->SetX(175);
         $this->Cell(20, 4, utf8_decode("Pares: "), 0/* BORDE */, 0, 'R');
         $this->SetX(195);
-        $this->SetFont('Arial', '', 8);
+        $this->SetFont('Calibri', '', 9);
         $this->Cell(20, 4, $this->getPares(), 0/* BORDE */, 1, 'L');
 
 
@@ -435,7 +447,7 @@ class PDF extends FPDF {
         $this->SetX(120);
         $this->Cell(11, 4, $this->getAMaq(), 0/* BORDE */, 1, 'C');
 
-        $this->SetFont('Arial', 'B', 8);
+        $this->SetFont('Calibri', 'B', 9);
         $this->SetY(17);
         $this->SetX(90);
         $this->Cell(40, 4, $this->getTipo(), 0/* BORDE */, 1, 'C');
@@ -445,15 +457,15 @@ class PDF extends FPDF {
         //Paginador
         $this->SetY(3);
         $this->SetX(200);
-        // Select Arial italic 8
-        $this->SetFont('Arial', 'I', 7);
+        // Select Calibri italic 8
+        $this->SetFont('Calibri', 'I', 8);
         // Print centered page number
         $this->Cell(20, 4, utf8_decode('Pag. ' . $this->PageNo() . ' de {totalPages}'), 0/* BORDE */, 1, 'C');
 
         $this->SetY(7);
         $this->SetX(180);
-        $this->SetFont('Arial', 'B', 8);
-        $this->Cell(30, 4, utf8_decode("Fecha: " . Date('d/m/Y')), 0/* BORDE */, 1, 'R');
+        $this->SetFont('Calibri', 'B', 9);
+        $this->Cell(30, 4, utf8_decode("Fecha: " . date("d-m-Y     h:i:s a")), 0/* BORDE */, 1, 'R');
         $this->AliasNbPages('{totalPages}');
 
 
@@ -474,7 +486,7 @@ class PDF extends FPDF {
 
         $this->SetY(25);
         $this->SetX(5);
-        $this->SetFont('Arial', 'B', 7.5);
+        $this->SetFont('Calibri', 'B', 8.5);
         $this->SetWidths($anchos);
         $this->SetAligns($aligns);
         if ($this->getTipoE() === '80') {
@@ -494,6 +506,20 @@ class PDF extends FPDF {
                 'Precio', 'Subtotal', 'Requerido',
                 '1ra Entrega', '2da Entrega'));
         }
+        $anchos = array(
+            10/* ClaveArt */,
+            63/* Articulo */,
+            7/* Clasif */,
+            15/* UM */,
+            12/* Explosion */,
+            15/* Precio */,
+            15/* Subtotal */,
+            22/* Requerido */,
+            23/* 1raEnt */,
+            23/* 2daEnt */);
+        $aligns = array('R', 'L', 'L', 'L', 'R', 'R', 'R', 'C', 'L', 'L');
+        $this->SetAligns($aligns);
+        $this->SetWidths($anchos);
     }
 
     var $widths;

@@ -1,11 +1,10 @@
 <?php
 
 class PDF extends FPDF {
-  
+
     public $Estilo;
     public $Clinea;
     public $Dlinea;
-  
 
     function getEstilo() {
         return $this->Estilo;
@@ -32,34 +31,38 @@ class PDF extends FPDF {
     }
 
     function Header() {
-
+        $this->AddFont('Calibri', '');
+        $this->AddFont('Calibri', 'I');
+        $this->AddFont('Calibri', 'B');
+        $this->AddFont('Calibri', 'BI');
         $this->Image($_SESSION["LOGO"], /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30);
-        $this->SetFont('Arial', 'B', 10);
+        $this->SetFont('Calibri', 'B', 10);
         $this->SetY(5);
         $this->SetX(40);
         $this->Cell(110, 4, utf8_decode($_SESSION["EMPRESA_RAZON"]), 0/* BORDE */, 1, 'L');
         $this->SetY(7);
         $this->SetX(170);
-        $this->SetFont('Arial', 'B', 9);
-        $this->Cell(100, 4, utf8_decode("Fecha. " . Date('d/m/Y')), 0/* BORDE */, 1, 'L');
+        $this->SetFont('Calibri', 'B', 8);
+        $this->Cell(100, 4, utf8_decode("Fecha. " . date("d-m-Y     h:i:s a")), 0/* BORDE */, 1, 'L');
         $this->SetY(9);
         $this->SetX(40);
+        $this->SetFont('Calibri', 'B', 9);
         $this->Cell(110, 4, utf8_decode("Fracciones por estilo: "), 0/* BORDE */, 1, 'L');
         $this->SetY(15);
         $this->SetX(40);
-        $this->SetFont('Arial', 'B', 8);
+        $this->SetFont('Calibri', 'B', 8.5);
         $this->Cell(15, 4, utf8_decode("LINEA: "), 0/* BORDE */, 1, 'L');
         $this->SetY(15);
         $this->SetX(55);
-        $this->SetFont('Arial', '', 8);
+        $this->SetFont('Calibri', '', 8.5);
         $this->Cell(30, 4, utf8_decode($this->getClinea() . ' ' . $this->getDlinea()), 0/* BORDE */, 1, 'L');
-        $this->SetFont('Arial', 'B', 8);
+        $this->SetFont('Calibri', 'B', 8.5);
         $this->SetY(15);
         $this->SetX(100);
         $this->Cell(15, 4, utf8_decode("ESTILO: "), 0/* BORDE */, 1, 'L');
         $this->SetY(15);
         $this->SetX(115);
-        $this->SetFont('Arial', '', 8);
+        $this->SetFont('Calibri', '', 8.5);
         $this->Cell(15, 4, utf8_decode($this->getEstilo()), 0/* BORDE */, 1, 'L');
 
 
@@ -68,8 +71,8 @@ class PDF extends FPDF {
         // Go to 1.5 cm from bottom
         $this->SetY(3);
         $this->SetX(190);
-        // Select Arial italic 8
-        $this->SetFont('Arial', 'I', 8);
+        // Select Calibri italic 8
+        $this->SetFont('Calibri', 'I', 8);
         // Print centered page number
         $this->SetTextColor(0, 0, 0);
         $this->Cell(35, 3, utf8_decode('Pag. ' . $this->PageNo() . ' de {totalPages}'), 0, 0, 'R');
@@ -77,7 +80,7 @@ class PDF extends FPDF {
 
         $this->SetY(21);
         $this->SetX(171);
-        $this->SetFont('Arial', 'B', 8.5);
+        $this->SetFont('Calibri', 'B', 8.5);
         $this->Cell(15, 4, 'Precio', 0/* BORDE */, 1, 'C');
         $this->Rect(155, 20, 50, 9);
 
@@ -87,10 +90,16 @@ class PDF extends FPDF {
 
         $this->SetY(25);
         $this->SetX(5);
-        $this->SetFont('Arial', 'B', 8.5);
+        $this->SetFont('Calibri', 'B', 8.5);
         $this->SetWidths($anchos);
         $this->SetAligns($aligns);
         $this->Row(array('Departamento', utf8_decode('Fracción'), 'Ma.Obra', 'Venta'));
+
+
+        $anchos = array(10/* 0 */, 80/* 0 */, 30/* 1 */, 15/* 2 */);
+        $aligns = array('L', 'L', 'L', 'L');
+        $this->SetAligns($aligns);
+        $this->SetWidths($anchos);
     }
 
     var $widths;

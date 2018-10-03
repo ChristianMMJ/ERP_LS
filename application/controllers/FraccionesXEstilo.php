@@ -226,7 +226,7 @@ class FraccionesXEstilo extends CI_Controller {
             $GTotalD_CMO = 0;
             foreach ($Departamentos as $key => $D) {
                 $pdf->SetX(5);
-                $pdf->SetFont('Arial', 'BI', 8.5);
+                $pdf->SetFont('Calibri', 'BI', 9);
                 $pdf->Cell(10, 5, utf8_decode($D->CDEPTO) . ' ' . utf8_decode($D->DDEPTO), 0/* BORDE */, 1, 'L');
 
                 $TotalD_CVTA = 0;
@@ -234,7 +234,7 @@ class FraccionesXEstilo extends CI_Controller {
                 foreach ($Fracciones as $key => $F) {
                     if ($F->CDEPTO === $D->CDEPTO) {
 
-                        $pdf->SetFont('Arial', '', 7.5);
+                        $pdf->SetFont('Calibri', '', 8.5);
                         $anchos = array(10/* 0 */, 80/* 0 */, 30/* 1 */, 15/* 2 */);
                         $aligns = array('L', 'L', 'L', 'L');
                         $pdf->SetAligns($aligns);
@@ -255,7 +255,7 @@ class FraccionesXEstilo extends CI_Controller {
                     }
                 }
                 $pdf->SetX(110);
-                $pdf->SetFont('Arial', 'BI', 8.5);
+                $pdf->SetFont('Calibri', 'BI', 9);
                 $anchos = array(10/* 0 */, 80/* 0 */, 30/* 1 */, 15/* 2 */);
                 $aligns = array('L', 'C', 'L', 'L');
                 $pdf->SetAligns($aligns);
@@ -269,7 +269,7 @@ class FraccionesXEstilo extends CI_Controller {
                 ));
             }
             $pdf->SetX(110);
-            $pdf->SetFont('Arial', 'BI', 9.5);
+            $pdf->SetFont('Calibri', 'BI', 9);
             $anchos = array(10/* 0 */, 80/* 0 */, 30/* 1 */, 15/* 2 */);
             $aligns = array('L', 'C', 'L', 'L');
             $pdf->SetAligns($aligns);
@@ -281,11 +281,6 @@ class FraccionesXEstilo extends CI_Controller {
                 $GTotalD_CMO,
                 $GTotalD_CVTA
             ));
-
-
-
-
-
 
             /* FIN RESUMEN */
             $path = 'uploads/Reportes/Nomina';
