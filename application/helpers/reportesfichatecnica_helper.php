@@ -70,10 +70,10 @@ class PDF extends FPDF {
 
         $this->SetLineWidth(0.4);
 
-        $this->AddFont('Calibri', '');
-        $this->AddFont('Calibri', 'I');
-        $this->AddFont('Calibri', 'B');
-        $this->AddFont('Calibri', 'BI');
+        $this->AddFont('calibri', '');
+        $this->AddFont('calibri', 'I');
+        $this->AddFont('calibri', 'B');
+        $this->AddFont('calibri', 'BI');
         $this->Image($_SESSION["LOGO"], /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30);
         $this->SetFont('Calibri', 'B', 9);
         $this->SetY(4);
