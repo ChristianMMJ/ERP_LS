@@ -1,10 +1,8 @@
 <div class="card m-3 animated fadeIn" id="pnlTablero">
+    <div class="card-header" align="center">
+        <h3 class="font-weight-bold">Imprime orden de producción</h3>
+    </div>
     <div class="card-body">
-        <div class="row">
-            <div class="col-12 col-sm-12 col-md-12 col-lg-11 col-xl-11 text-center text-danger font-italic">
-                <legend class="float-left font-weight-bold">Imprime orden de producción</legend>
-            </div> 
-        </div>
         <div class="row">
             <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                 <label>Del control</label>

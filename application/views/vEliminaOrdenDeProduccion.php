@@ -1,10 +1,8 @@
 <div class="card m-3 animated fadeIn" id="pnlTablero">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-12 col-sm-12 col-md-12 col-lg-11 col-xl-11 text-center text-danger font-italic">
-                <legend class="float-left font-weight-bold">Elimina orden de producción semana / maquila</legend>
-            </div> 
-        </div>
+    <div class="card-header" align="center">
+        <h3 class="font-weight-bold">Elimina orden de producción semana / maquila</h3>
+    </div>
+    <div class="card-body"> 
         <div class="row" aling="center">
             <div class="col-12 col-sm-6 col-md-6 col-lg-1 col-xl-1 mt-4">
                 <button type="button" class="btn btn-warning" id="btnReload"><span class="fa fa-retweet"></span></button>

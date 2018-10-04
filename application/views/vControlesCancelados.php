@@ -1,13 +1,16 @@
 <div class="card m-3 animated fadeIn" id="pnlTablero">
-    <div class="card-body">
+    <div class="card-header" align="center">
+
         <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1 text-danger font-italic ">
                 <p class="font-weight-bold badge badge-dark" style="cursor: pointer;" onclick="onTourStart()"> TOUR </p>
             </div>
-            <div class="col-12 col-sm-12 col-md-12 col-lg-11 col-xl-11 text-center text-danger font-italic">
-                <legend class="float-left  font-weight-bold">Consulta y reactiva controles cancelados</legend>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-11 col-xl-11 text-center">
+                <h3 class="font-weight-bold">Consulta y reactiva controles cancelados</h3>
             </div>
         </div>
+    </div>
+    <div class="card-body">
         <div class="row" style="padding-left: 15px">
             <div class="col-12 col-sm-6 col-md-4 col-lg-1 col-xl-1 mt-3" align="center">
                 <button type="button" class="btn btn-warning" id="btnReload" data-toggle="tooltip" data-placement="top" title="Refrescar"><span class="fa fa-exchange-alt"></span><br></button>

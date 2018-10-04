@@ -1,10 +1,8 @@
-<div class="card m-3 animated fadeIn" id="pnlTablero">
+<div class="card m-3 animated fadeIn" id="pnlTablero">    
+    <div class="card-header" align="center">
+        <h3 class="font-weight-bold">Genera orden de producción semana / maquila</h3>
+    </div>
     <div class="card-body">
-        <div class="row">
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center text-danger font-italic">
-                <legend class="float-left font-weight-bold">Genera orden de producción semana / maquila</legend>
-            </div> 
-        </div>
         <div class="row">
             <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-1">
                 <button type="button" class="btn btn-warning" id="btnReload" data-toggle="tooltip" data-placement="top" title="Refrescar">

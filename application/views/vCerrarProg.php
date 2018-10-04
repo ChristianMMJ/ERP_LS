@@ -1,10 +1,8 @@
 <div class="card m-3 animated fadeIn" id="pnlTablero">
+    <div class="card-header" align="center">
+        <h3 class="font-weight-bold">Seleccionar pedidos por maquilador/semana/año para generar control</h3>
+    </div>
     <div class="card-body">
-        <div class="row">
-            <div class="col-sm-12 text-center text-danger font-italic">
-                <legend class="float-left  font-weight-bold">Seleccionar pedidos por maquilador/semana/año para generar control</legend>
-            </div>
-        </div>
         <div class="row" style="padding-left: 15px">
             <div class="col-12 col-sm-6 col-lg-1 mt-3" align="center">
                 <button type="button" class="btn btn-warning" id="btnHistorialDeControles" data-toggle="tooltip" data-placement="top" title="Historial"><span class="fa fa-history"></span><br></button>

@@ -27,19 +27,19 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navCaptura">
                     <a class="dropdown-item" href="<?php print base_url('Pedidos/?origen=PRODUCCION'); ?>"><span class="fa fa-check"></span> Pedidos</a>
-                    <a class="dropdown-item" href="<?php print base_url('CerrarProg'); ?>"><span class="fa fa-hand-pointer"></span> Marcar pedidos para control</a>
+                    <a class="dropdown-item" href="<?php print base_url('CerrarProg'); ?>"><span class="fa fa-highlighter"></span> Marcar pedidos para control</a>
                     <a class="dropdown-item" href="<?php print base_url('ReasignarControles'); ?>"><span class="fa fa-retweet"></span> Reasignar controles</a>
                     <a class="dropdown-item" href="<?php print base_url('ControlesCancelados'); ?>"><span class="fa fa-ban"></span> Control pedidos cancelados</a>
                     <div class="dropdown-divider"></div>
-
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" href="#">Cerrar Semanas Producción</a>
+                        <a class="dropdown-item dropdown-toggle" href="#"><span class="fa fa-circle"></span> Cerrar Semanas Producción</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="<?php print base_url('CerrarSemanasProd.shoes'); ?>">Cerrar Semanas</a>
-                            <a class="dropdown-item" href="<?php print base_url('CerrarSemanasProdDepartamento.shoes'); ?>">Cerrar Semanas por Departamento/Artículos</a>
+                            <a class="dropdown-item" href="<?php print base_url('CerrarSemanasProd.shoes'); ?>"><span class="fa fa-dot-circle"></span> Cerrar Semanas</a>
+                            <a class="dropdown-item" href="<?php print base_url('CerrarSemanasProdDepartamento.shoes'); ?>"><span class="fa fa-dot-circle"></span> Cerrar Semanas por Departamento/Artículos</a>
                         </div>
-
                     </li>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?php print base_url('AsignaPFSACXC/?origen=PRODUCCION'); ?>"><span class="fa fa-hand-pointer"></span> Asigna piel, forro, textiles y sintéticos a corte por control</a>                    
                 </ul>
             </li>
             <li class="nav-item dropdown">

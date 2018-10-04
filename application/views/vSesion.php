@@ -28,7 +28,7 @@
 </style>
 <div id="mdlOlvideContrasena" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog  modal-content ">
-        <div class="modal-header">
+        <div class="modal-header">  
             <h5 class="modal-title">Confirmar</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -48,10 +48,15 @@
         </div>
     </div>
 </div>
-<div class="row div-login" aling="center">
-    <div id="overlay">
-        <img src="<?php print base_url('img/svg/svg-loaders/ball-triangle.svg'); ?>" />
+<div class="w-s content-hidden">
+    <div class="content-wrap">
+        <ul class="fly-in-text">
+            <li><img src="<?php print base_url('img/lobo.png');?>"</li>
+            <li><img src="<?php print base_url('img/solo.png');?>"</li>
+        </ul> 
     </div>
+</div>
+<div id="frmLogin" class="row div-login d-none" aling="center"> 
     <div id="frmtitulo" class="col-12 text-center d-none">
         <h4 class="mb-3 text-white text-shadow">CONTROL DE ACCESO</h4>
     </div>
@@ -106,15 +111,24 @@
         } else {
         }
     }
-    document.getElementById("overlay").style.display = "block";
     $(document).ready(function () {
-        document.getElementById("overlay").style.display = "none";
+
+        var welcomeSection = $('.w-s');
+        setTimeout(function () {
+            welcomeSection.removeClass('content-hidden');
+        }, 500);
+        
+        setTimeout(function () {
+            welcomeSection.addClass('content-hidden').fadeOut();
+            $("#frmLogin").removeClass("d-none");
+        }, 2500);
+        
         $("#frmtitulo").removeClass('d-none');
         $("#frmIngresar").parent().removeClass('d-none');
 
         $("#frmIngresar").addClass("card-transparent");
 
-        $("body").css("background","none");
+        $("body").css("background", "none");
         $("body").vegas({
             delay: 9000,
             slides: [
@@ -224,6 +238,58 @@
         color: white;
         transform: translate(-50%,-50%);
         -ms-transform: translate(-50%,-50%);
+    } 
+    * {
+        margin: 0;
+        padding: 0;
+    } 
+    .w-s {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: #645625;
+        overflow: hidden;
+    }
+    .w-s .content-wrap {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate3d(-50%, -50%, 0);
+    }
+    .w-s .content-wrap .fly-in-text {
+        list-style: none;
+    }
+    .w-s .content-wrap .fly-in-text li {
+        display: inline-block;
+        margin-right: 30px;
+        font-size: 5em;
+        color: #fff;
+        opacity: 1;
+        transition: all 2s ease;
+    }
+    .w-s .content-wrap .fly-in-text li:last-child {
+        margin-right: 0;
+    }
+    .w-s .content-wrap .enter-button {
+        display: block;
+        text-align: center;
+        font-size: 1em;
+        text-decoration: none;
+        text-transform: uppercase;
+        color: #ffffff;
+        opacity: 1;
+        transition: all 1s ease .75s;
+    }
+
+    .w-s.content-hidden .content-wrap .fly-in-text li { opacity: 0; }
+    .w-s.content-hidden .content-wrap .fly-in-text li:nth-child(1) { transform: translate3d(-100px, 0, 0); }
+    .w-s.content-hidden .content-wrap .fly-in-text li:nth-child(2) { transform: translate3d(100px, 0, 0); }
+    .w-s.content-hidden .content-wrap .enter-button { opacity: 0; transform: translate3d(0, -30px, 0); }
+
+    @media (min-width: 800px) {
+        .w-s .content-wrap .fly-in-text li { font-size: 10em; }
+        .w-s .content-wrap .enter-button { font-size: 1.5em; }
     }
 </style>
-

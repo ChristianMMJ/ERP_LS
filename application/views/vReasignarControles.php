@@ -1,10 +1,8 @@
 <div class="card m-3 animated fadeIn" id="pnlTablero">
+    <div class="card-header" align="center">
+        <h3 class="font-weight-bold">Reasignar controles (Maquila/Semana)</h3>
+    </div>
     <div class="card-body">
-        <div class="row">
-            <div class="col-sm-12 text-center text-danger font-italic">
-                <legend class="float-left font-weight-bold">Reasignar controles (Maquila/Semana)</legend>
-            </div>
-        </div>
         <div class="row" style="padding-left: 15px">
             <div class="col-12 col-sm-1 col-lg-1 col-md-1 col-xl-1" align="center">
                 <button type="button" class="btn btn-warning" id="btnReload" data-toggle="tooltip" data-placement="top" title="Refrescar">
