@@ -167,6 +167,7 @@ class OrdenDeProduccion extends CI_Controller {
                     $opd["DepartamentoT"] = $vvv->DEPARTAMENTOT;
                     $opd["Articulo"] = $vvv->ARTICULO;
                     $opd["ArticuloT"] = $vvv->ARTICULOT;
+                    $opd["Grupo"] = $vvv->GRUPO;
                     $opd["Precio"] = $vvv->PRECIO;
                     $opd["Consumo"] = $vvv->CONSUMO;
                     $opd["PzXPar"] = $vvv->PZXPAR;

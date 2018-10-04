@@ -33,4 +33,8 @@ class AsignaPFSACXC extends CI_Controller {
             $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
         }
     }
+    
+    public function onComprobarSemana() {
+        
+    }
 }
