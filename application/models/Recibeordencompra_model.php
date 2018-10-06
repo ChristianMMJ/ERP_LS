@@ -69,7 +69,12 @@ class Recibeordencompra_model extends CI_Model {
 
     public function getArticuloByTpByOC($Articulo, $Tp, $Oc) {
         try {
-            $this->db->select("A.Clave, A.Descripcion, OCD.Precio, OCD.Subtotal, OC.Maq, OC.Sem, OC.Tipo, OC.Tp  "
+            $this->db->select("A.Clave, A.Descripcion, OCD.Precio, "
+                            . "OCD.Subtotal, "
+                            . "OC.Maq, "
+                            . "OC.Sem,"
+                            . "OC.Tipo, "
+                            . "OC.Tp  "
                             . "")
                     ->from("ordencompradetalle OCD")
                     ->join("ordencompra OC", 'ON OC.ID =  OCD.OrdenCompra')
@@ -111,6 +116,69 @@ class Recibeordencompra_model extends CI_Model {
         }
     }
 
+    public function getCompraParaMovArt($Factura, $Tp) {
+        try {
+            $this->db->query("set sql_mode=''");
+            $this->db->select("C.Articulo, "
+                            . "A.Descripcion AS DescArticulo,"
+                            . "U.Descripcion AS Unidad,"
+                            . "C.Precio, "
+                            . "sum(C.Cantidad) AS Cantidad,"
+                            . "C.FechaDoc,"
+                            . "C.Doc,"
+                            . "C.Tp,"
+                            . "C.OrdenCompra,"
+                            . "CASE WHEN C.Tp ='1' THEN  CONCAT(P.Clave,' ',P.NombreF) ELSE "
+                            . "CONCAT(P.Clave,' ',P.NombreI) END AS Proveedor, "
+                            . "sum(C.Cantidad) * Precio AS Subtotal "
+                            . "")
+                    ->from("compras C")
+                    ->join("proveedores P", 'ON P.Clave = C.Proveedor')
+                    ->join("articulos A", 'ON A.Clave = C.Articulo')
+                    ->join("unidades U", 'ON U.Clave = A.UnidadMedida')
+                    ->where("C.Tp", $Tp)
+                    ->where("C.Doc", $Factura)
+                    ->group_by("C.Articulo");
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getCompraParaCartProv($Factura, $Tp) {
+        try {
+            $this->db->query("set sql_mode=''");
+            $this->db->select("C.Proveedor, "
+                            . "C.Doc,"
+                            . "C.FechaDoc, "
+                            . "SUM(C.Subtotal) AS Importe, "
+                            . "C.Tp, "
+                            . "C.Departamento "
+                            . "")
+                    ->from("compras C")
+                    ->where("C.Tp", $Tp)
+                    ->where("C.Doc", $Factura)
+                    ->group_by("C.Doc");
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onModificarEstatusOrdenCompra($Tp, $Folio, $DATA) {
         try {
             $this->db->where('Tp', $Tp)
@@ -121,9 +189,44 @@ class Recibeordencompra_model extends CI_Model {
         }
     }
 
+    public function onModificarEstatusCompra($Doc, $Tp) {
+        try {
+            $this->db->set('Estatus', 'CONCLUIDA')
+                    ->where('Tp', $Tp)
+                    ->where('Doc', $Doc)
+                    ->update("compras");
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onAgregar($array) {
         try {
             $this->db->insert("compras", $array);
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
+            $row = $query->row_array();
+            $LastIdInserted = $row['LAST_INSERT_ID()'];
+            return $LastIdInserted;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onAgregarMovArt($array) {
+        try {
+            $this->db->insert("movarticulos", $array);
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
+            $row = $query->row_array();
+            $LastIdInserted = $row['LAST_INSERT_ID()'];
+            return $LastIdInserted;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onAgregarCartProv($array) {
+        try {
+            $this->db->insert("cartera_proveedores", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             $LastIdInserted = $row['LAST_INSERT_ID()'];
@@ -155,11 +258,37 @@ class Recibeordencompra_model extends CI_Model {
             $FechaFac = $DATA{'FechaFactura'};
             $sql = "UPDATE ordencompradetalle OCD "
                     . "JOIN ordencompra OC ON OC.ID =  OCD.OrdenCompra "
-                    . "SET OCD.CantidadRecibida = $can_rec + ifnull(OCD.CantidadRecibida,0), OCD.Factura = '$Fac', OCD.FechaFactura = '$FechaFac' "
-                    . "WHERE OC.Tp = '$Tp'"
+                    . "SET OCD.CantidadRecibida = $can_rec + ifnull(OCD.CantidadRecibida,0), "
+                    . "OCD.Factura = '$Fac', "
+                    . "OCD.FechaFactura = '$FechaFac' "
+                    . "WHERE OC.Tp = '$Tp' "
                     . "AND OC.Folio = '$OC' "
                     . "AND OCD.Articulo = '$Art'";
+            //print ($sql);
             $this->db->query($sql);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onVerificarExisteCompra($Doc, $Tp, $Proveedor) {
+        try {
+            $this->db->select("C.Doc, C.FechaDoc, C.Estatus "
+                            . "")
+                    ->from("compras AS C")
+                    ->where("C.Doc", $Doc)
+                    ->where("C.Tp", $Tp)
+                    ->where("C.Proveedor", $Proveedor)
+                    ->where_in("C.Estatus", array("BORRADOR", "CONCLUIDA"))
+                    ->group_by("C.Doc");
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

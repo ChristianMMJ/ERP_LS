@@ -13,34 +13,34 @@
         <div class="row" id="Encabezado">
             <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1" data-column="1">
                 <label>Tp</label>
-                <input type="text" class="form-control form-control-sm  numbersOnly column_filter captura" id="col1_filter" maxlength="2" >
+                <input type="text" class="form-control form-control-sm  numbersOnly column_filter captura " id="col1_filter" maxlength="2" >
             </div>
             <div class="col-6 col-sm-3 col-md-2 col-lg-2 col-xl-1" data-column="2">
                 <label>O. Compra</label>
-                <input type="text" class="form-control form-control-sm numbersOnly column_filter captura"  id="col2_filter" maxlength="10" required>
+                <input type="text" class="form-control form-control-sm numbersOnly column_filter captura "  id="col2_filter" maxlength="10" required>
             </div>
             <div class="col-6 col-sm-3 col-md-2 col-lg-2 col-xl-2" >
                 <label for="" >Fecha O.C.</label>
-                <input type="text" class="form-control form-control-sm disabledForms" id="FechaOrden">
+                <input type="text" class="form-control form-control-sm disabledForms noCaptura" id="FechaOrden">
             </div>
             <div class="d-none" >
                 <input type="text" class="form-control form-control-sm disabledForms" id="Proveedor" name="Proveedor">
             </div>
             <div class="col-12 col-sm-4 col-md-3 col-xl-3" >
                 <label for="" >Proveedor</label>
-                <input type="text" class="form-control form-control-sm disabledForms" id="NombreProveedor">
+                <input type="text" class="form-control form-control-sm disabledForms noCaptura" id="NombreProveedor">
             </div>
             <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1" >
                 <label>Tp Doc.</label>
-                <input type="text" class="form-control form-control-sm numbersOnly captura" id="Tp" name="Tp" maxlength="2" required>
+                <input type="text" class="form-control form-control-sm numbersOnly captura " id="Tp" name="Tp" maxlength="2" required>
             </div>
             <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1" >
                 <label>Doc.</label>
-                <input type="text" class="form-control form-control-sm captura" id="Factura" name="Factura" maxlength="15" required>
+                <input type="text" class="form-control form-control-sm captura " id="Factura" name="Factura" maxlength="15" required>
             </div>
             <div class="col-6 col-sm-3 col-md-2 col-lg-2 col-xl-2" >
                 <label>Fecha Doc.</label>
-                <input type="text" class="form-control form-control-sm  numbersOnly date notEnter captura" id="FechaFactura" name="FechaFactura" maxlength="12" required>
+                <input type="text" class="form-control form-control-sm  numbersOnly date notEnter captura captura2" id="FechaFactura" name="FechaFactura" maxlength="12" required>
             </div>
         </div>
         <div class="row" id="Detalle">
@@ -88,7 +88,6 @@
     </div>
 </div>
 
-
 <script>
     var master_url = base_url + 'index.php/RecibeOrdenCompra/';
     var tblOrdenesCompra = $('#tblOrdenesCompra');
@@ -96,7 +95,11 @@
     var pnlTablero = $("#pnlTablero");
     var btnActualizaCantidad = pnlTablero.find('#btnActualizaCantidad');
     var btnCerrarCompra = pnlTablero.find('#btnCerrarCompra');
+
+
+
     $(document).ready(function () {
+
         /*FUNCIONES INICIALES*/
         init();
         handleEnter();
@@ -121,6 +124,12 @@
             var tp = pnlTablero.find("#col1_filter").val();
             getOrdenCompra($(this), tp);
         });
+        pnlTablero.find("#Factura").change(function () {
+            var tp = pnlTablero.find("#Tp").val();
+            var prov = pnlTablero.find("#Proveedor").val();
+            var fact = pnlTablero.find("#Factura").val();
+            onVerificarExisteCompra($(this), tp, prov, fact);
+        });
         pnlTablero.find("#Articulo").change(function () {
             var tp = pnlTablero.find("#col1_filter").val();
             var oc = pnlTablero.find("#col2_filter").val();
@@ -129,7 +138,7 @@
         btnActualizaCantidad.click(function () {
             var fact = pnlTablero.find('#Factura').val();
             var fecFact = pnlTablero.find('#FechaFactura').val();
-            var tp = pnlTablero.find("#col1_filter").val();
+            var tp = pnlTablero.find("#Tp").val();
             var oc = pnlTablero.find("#col2_filter").val();
             var art = pnlTablero.find("#Articulo").val();
             var prov = pnlTablero.find("#Proveedor").val();
@@ -150,7 +159,7 @@
                 Departamento: Departamento,
                 TpOrdenCompra: TpOC
             }).done(function (data) {
-                onNotifyOld('fa fa-check', 'CANTIDAD ACTUALIZADA', 'success');
+                onNotifyOld('fa fa-check', 'CANTIDAD ACTUALIZADA', 'info');
                 OrdenesCompra.ajax.reload();
                 pnlTablero.find("#NombreArtículo").val('');
                 pnlTablero.find("#CantidadRecibida").val('');
@@ -166,30 +175,81 @@
                 console.log(x, y, z);
             });
         });
-
-
         btnCerrarCompra.click(function () {
-            var tp = pnlTablero.find("#col1_filter").val();
-            var oc = pnlTablero.find("#col2_filter").val();
-            $.post(master_url + 'onCerrarCompra', {
-                Tp: tp,
-                Folio: oc
-            }).done(function (data) {
-                console.log(data);
-            }).fail(function (x, y, z) {
-                swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-                console.log(x.responseText);
+            swal({
+                buttons: ["Cancelar", "Aceptar"],
+                title: 'Estas Seguro de Cerrar la Compra?',
+                text: "Esta acción no se puede revertir",
+                icon: "warning",
+                closeOnEsc: false,
+                closeOnClickOutside: false
+            }).then((action) => {
+                if (action) {
+                    HoldOn.open({theme: 'sk-cube', message: 'CARGANDO...'});
+                    var tp = pnlTablero.find("#col1_filter").val();
+                    var oc = pnlTablero.find("#col2_filter").val();
+                    var Fact = pnlTablero.find("#Factura").val();
+                    var tpDoc = pnlTablero.find("#Tp").val();
+                    $.post(master_url + 'onCerrarCompra', {
+                        Tp: tp,
+                        Folio: oc,
+                        Factura: Fact,
+                        TpDoc: tpDoc
+                    }).done(function (data) {
+                        Precio = 0;
+                        Maq = 0;
+                        Sem = 0;
+                        Departamento = 0;
+                        TpOC = 0;
+                        pnlTablero.find("input").val("");
+                        pnlTablero.find('#Detalle').find('.captura').addClass('disabledForms');
+                        pnlTablero.find('#Encabezado').find('input:not(.noCaptura)').removeClass('disabledForms');
+                        pnlTablero.find("#FechaFactura").val(getToday());
+                        tblOrdenesCompra.DataTable().columns().search('').draw();
+                        pnlTablero.find('#col1_filter').focus().select();
+                        onImprimirValeEntrada(Fact, tpDoc);
+                    }).fail(function (x, y, z) {
+                        swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+                        console.log(x.responseText);
+                    });
+                }
             });
+
         });
 
         $('input.column_filter').on('keyup', function () {
             var i = $(this).parents('div').attr('data-column');
-            tblOrdenesCompra.DataTable().column(i).search($('#col' + i + '_filter').val()).draw();
+            OrdenesCompra.column(i).search('^' + $('#col' + i + '_filter').val() + '$', true, false).draw();
         });
     });
 
     function init() {
         getRecords();
+    }
+    function onVerificarExisteCompra(v, tp, prov) {
+        $.getJSON(master_url + 'onVerificarExisteCompra', {
+            Doc: $(v).val(),
+            TpDoc: tp,
+            Proveedor: prov
+        }).done(function (data) {
+            if (data.length > 0) {
+                //SI LA ORDEN DE COMPRA YA EXISTE Y ESTATUS CONCLUIDA
+                if (data[0].Estatus === 'CONCLUIDA') {
+                    swal({
+                        title: "ATENCIÓN",
+                        text: "EL DOCUMENTO YA FUE CAPTRUADO",
+                        icon: "warning"
+                    }).then((value) => {
+                        $(v).val('').focus();
+                    });
+                }
+            } else {
+                //NOS TRAEMOS LOS DATOS DE LA ORDEN DE COMPRA YA CAPTURADA Y BRINCAMOS EL FOCO A LOS ARTICULOS
+            }
+        }).fail(function (x, y, z) {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        });
     }
     function getRecords() {
         temp = 0;
@@ -317,40 +377,43 @@
                 temp = parseInt(dtm.ID);
                 var fact = pnlTablero.find('#Factura').val();
                 var fecFact = pnlTablero.find('#FechaFactura').val();
-                var tp = pnlTablero.find("#col1_filter").val();
+                var tp = pnlTablero.find("#Tp").val();
                 var oc = pnlTablero.find("#col2_filter").val();
                 var prov = pnlTablero.find("#Proveedor").val();
+                var can_pen = dtm.Cantidad - dtm.Recibida;
                 swal({
                     title: dtm.Articulo,
                     text: "CANTIDAD RECIBIDA: ",
                     content: 'input'
                 }).then((value) => {
-                    if (value) {
-                        $.post(master_url + 'onModificarCantidadRecibidaByID', {
-                            ID: temp,
-                            CantidadRecibida: value,
-                            Factura: fact,
-                            FechaFactura: fecFact,
-
-                            Articulo: dtm.ClaveArticulo,
-                            Proveedor: prov,
-                            OC: oc,
-                            Tp: tp,
-                            Precio: dtm.Precio,
-                            Subtotal: dtm.Precio * value,
-                            Maq: dtm.Maq,
-                            Sem: dtm.Sem,
-                            Departamento: dtm.Tipo,
-                            TpOrdenCompra: dtm.Tp
-                        }).done(function (data) {
-                            onNotifyOld('fa fa-check', 'CANTIDAD ACTUALIZADA', 'success');
-                            OrdenesCompra.ajax.reload();
-                        }).fail(function (x, y, z) {
-                            console.log(x, y, z);
-                        });
+                    if (value === '') {
+                        value = can_pen;
                     }
+                    $.post(master_url + 'onModificarCantidadRecibidaByID', {
+                        ID: temp,
+                        CantidadRecibida: value,
+                        Factura: fact,
+                        FechaFactura: fecFact,
+
+                        Articulo: dtm.ClaveArticulo,
+                        Proveedor: prov,
+                        OC: oc,
+                        Tp: tp,
+                        Precio: dtm.Precio,
+                        Subtotal: dtm.Precio * value,
+                        Maq: dtm.Maq,
+                        Sem: dtm.Sem,
+                        Departamento: dtm.Tipo,
+                        TpOrdenCompra: dtm.Tp
+                    }).done(function (data) {
+                        onNotifyOld('fa fa-check', 'CANTIDAD ACTUALIZADA', 'info');
+                        OrdenesCompra.ajax.reload();
+                    }).fail(function (x, y, z) {
+                        console.log(x, y, z);
+                    });
+
                 });
-                var can_pen = dtm.Cantidad - dtm.Recibida;
+
                 $('.swal-modal').find('input.swal-content__input').val(can_pen).focus().select();
             } else {
                 swal('ATENCION', 'Completa los campos requeridos', 'warning');
@@ -423,6 +486,56 @@
                 $(v).val('').focus();
             });
         }
+    }
+    function onImprimirValeEntrada(Doc, TpDoc) {
+        $.ajax({
+            url: master_url + 'onImprimirValeEntrada',
+            type: "POST",
+            data: {
+                Doc: Doc,
+                TpDoc: TpDoc
+            }
+        }).done(function (data, x, jq) {
+            if (data.length > 0) {
+
+                $.fancybox.open({
+                    src: data,
+                    type: 'iframe',
+                    opts: {
+                        afterShow: function (instance, current) {
+
+                        },
+                        iframe: {
+                            // Iframe template
+                            tpl: '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen allowtransparency="true" src=""></iframe>',
+                            preload: true,
+                            // Custom CSS styling for iframe wrapping element
+                            // You can use this to set custom iframe dimensions
+                            css: {
+                                width: "85%",
+                                height: "85%"
+                            },
+                            // Iframe tag attributes
+                            attr: {
+                                scrolling: "auto"
+                            }
+                        }
+                    }
+                });
+
+
+            } else {
+                swal({
+                    title: "ATENCIÓN",
+                    text: "NO ES POSIBLE IMPRIMIR EL REPORTE",
+                    icon: "error"
+                });
+            }
+            HoldOn.close();
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+            HoldOn.close();
+        });
     }
 </script>
 <style>

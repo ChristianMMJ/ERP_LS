@@ -193,7 +193,7 @@
             delay: 2000,
             placement: {
                 from: "bottom",
-                align: "right"
+                align: "left"
             },
             animate: {
                 enter: 'animated flipInX',
