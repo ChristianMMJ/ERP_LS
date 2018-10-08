@@ -127,6 +127,7 @@ class Recibeordencompra_model extends CI_Model {
                             . "C.FechaDoc,"
                             . "C.Doc,"
                             . "C.Tp,"
+                            . "C.Maq,"
                             . "C.OrdenCompra,"
                             . "CASE WHEN C.Tp ='1' THEN  CONCAT(P.Clave,' ',P.NombreF) ELSE "
                             . "CONCAT(P.Clave,' ',P.NombreI) END AS Proveedor, "
@@ -218,6 +219,18 @@ class Recibeordencompra_model extends CI_Model {
     public function onAgregarMovArt($array) {
         try {
             $this->db->insert("movarticulos", $array);
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
+            $row = $query->row_array();
+            $LastIdInserted = $row['LAST_INSERT_ID()'];
+            return $LastIdInserted;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onAgregarMovArtFabrica($array) {
+        try {
+            $this->db->insert("movarticulos_fabrica", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             $LastIdInserted = $row['LAST_INSERT_ID()'];
