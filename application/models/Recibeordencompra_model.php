@@ -116,7 +116,7 @@ class Recibeordencompra_model extends CI_Model {
         }
     }
 
-    public function getCompraParaMovArt($Factura, $Tp) {
+    public function getCompraParaMovArt($Factura, $Tp, $Proveedor) {
         try {
             $this->db->query("set sql_mode=''");
             $this->db->select("C.Articulo, "
@@ -138,6 +138,7 @@ class Recibeordencompra_model extends CI_Model {
                     ->join("unidades U", 'ON U.Clave = A.UnidadMedida')
                     ->where("C.Tp", $Tp)
                     ->where("C.Doc", $Factura)
+                    ->where("C.Proveedor", $Proveedor)
                     ->group_by("C.Articulo");
             $query = $this->db->get();
             /*
@@ -152,7 +153,7 @@ class Recibeordencompra_model extends CI_Model {
         }
     }
 
-    public function getCompraParaCartProv($Factura, $Tp) {
+    public function getCompraParaCartProv($Factura, $Tp, $Proveedor) {
         try {
             $this->db->query("set sql_mode=''");
             $this->db->select("C.Proveedor, "
@@ -165,6 +166,7 @@ class Recibeordencompra_model extends CI_Model {
                     ->from("compras C")
                     ->where("C.Tp", $Tp)
                     ->where("C.Doc", $Factura)
+                    ->where("C.Proveedor", $Proveedor)
                     ->group_by("C.Doc");
             $query = $this->db->get();
             /*
@@ -189,11 +191,12 @@ class Recibeordencompra_model extends CI_Model {
         }
     }
 
-    public function onModificarEstatusCompra($Doc, $Tp) {
+    public function onModificarEstatusCompra($Doc, $Tp, $Proveedor) {
         try {
             $this->db->set('Estatus', 'CONCLUIDA')
                     ->where('Tp', $Tp)
                     ->where('Doc', $Doc)
+                    ->where("Proveedor", $Proveedor)
                     ->update("compras");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

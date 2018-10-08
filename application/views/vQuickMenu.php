@@ -7,7 +7,7 @@
                         <span class="fa fa-user-secret fa-2x  mt-5"></span>
                     </div>
                     <div class="card-footer">
-                        <h4>PROVEEDORES</h4>
+                        <h5>PROVEEDORES</h5>
                     </div>
                 </div>
             </div>
@@ -17,7 +17,7 @@
                         <span class="fa fa-cube fa-2x  mt-5"></span>
                     </div>
                     <div class="card-footer">
-                        <h4>MATERIALES</h4>
+                        <h5>MATERIALES</h5>
                     </div>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                         <span class="fa fa-users fa-2x  mt-5"></span>
                     </div>
                     <div class="card-footer">
-                        <h4>CLIENTES</h4>
+                        <h5>CLIENTES</h5>
                     </div>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                         <span class="fa fa-file-invoice fa-2x  mt-5"></span>
                     </div>
                     <div class="card-footer">
-                        <h4>FICHAS TÉCNICAS</h4>
+                        <h5>FICHAS TÉCNICAS</h5>
                     </div>
                 </div>
             </div>
@@ -47,37 +47,37 @@
                         <span class="fa fa-industry fa-2x  mt-5"></span>
                     </div>
                     <div class="card-footer">
-                        <h4>PRODUCCIÓN</h4>
+                        <h5>PRODUCCIÓN</h5>
                     </div>
                 </div>
-            </div>  
+            </div>
             <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated fadeInDown" onclick="onMenuDisplay('MenuContabilidad');">
                 <div class="card text-center">
                     <div class="card-body">
                         <span class="fa fa-calculator fa-2x  mt-5"></span>
                     </div>
                     <div class="card-footer">
-                        <h4>CONTABILIDAD</h4>
+                        <h5>CONTABILIDAD</h5>
                     </div>
                 </div>
-            </div>  
+            </div>
             <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated fadeInUp" onclick="onMenuDisplay('MenuNomina');">
                 <div class="card text-center">
                     <div class="card-body">
                         <span class="fa fa-hand-holding-usd fa-2x  mt-5"></span>
                     </div>
                     <div class="card-footer">
-                        <h4>NOMINAS</h4>
+                        <h5>NOMINAS</h5>
                     </div>
                 </div>
-            </div>  
+            </div>
             <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated fadeInDown" onclick="onMenuDisplay('MenuParametros');">
                 <div class="card text-center">
                     <div class="card-body">
                         <span class="fa fa-cogs fa-2x  mt-5"></span>
                     </div>
                     <div class="card-footer">
-                        <h4>PARÁMETROS</h4>
+                        <h5>PARÁMETROS</h5>
                     </div>
                 </div>
             </div>

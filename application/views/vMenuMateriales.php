@@ -45,6 +45,7 @@
                             <a class="dropdown-item" href="<?php print base_url('ConfirmarOrdenCompra.shoes'); ?>" >Confirmación de Ordenes de Compra</a>
                             <a class="dropdown-item" href="<?php print base_url('MaterialNoRecibido.shoes'); ?>" >Material No Recibido</a>
                             <a class="dropdown-item" href="<?php print base_url('MaterialRecibido.shoes'); ?>" >Material Recibido</a>
+                            <a class="dropdown-item" href="<?php print base_url('ActualizaPrecioOrdenCompra.shoes'); ?>" >Actualizar Precios a Orden de Compra</a>
                         </div>
                     </li>
                     <a class="dropdown-item" href="<?php print base_url('RecibeOrdenCompra.shoes'); ?>">Recibe Órdenes de Compras</a>
