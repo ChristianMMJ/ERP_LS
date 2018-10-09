@@ -250,6 +250,10 @@
     }
 
     function onAgregarAOrdenDeProduccion() {
+        HoldOn.open({
+            theme: 'sk-bounce',
+            message: 'GENERANDO...'
+        });
         $.post(master_url + 'onAgregarAOrdenDeProduccion', {MAQUILA: Maquila.val(), SEMANA: Semana.val(), ANO: Anio.val()}).done(function (data) {
             console.log(data);
             var nordenes = parseInt(data);
@@ -271,6 +275,7 @@
         }).always(function () {
             Controles.ajax.reload();
             btnGenerar.prop("disabled", false);
+            HoldOn.close();
         });
     }
 
