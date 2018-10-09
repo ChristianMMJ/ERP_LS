@@ -73,27 +73,39 @@ class RecibeOrdenCompra extends CI_Controller {
 
     public function onCerrarCompra() {
         try {
-            //Actualiza estatus orden de compra dependiendo de lo que se recibe
-            $Cantidades = $this->Recibeordencompra_model->getSumatoriasCantidadesParaEstatus($this->input->post('Tp'), $this->input->post('Folio'));
-            $can = $Cantidades[0]->Cantidad;
-            $Can_rec = $Cantidades[0]->Cantidad_Rec;
-            if ($can > $Can_rec) {
-                $datos = array(
-                    'Estatus' => 'PENDIENTE'
-                );
-                $this->Recibeordencompra_model->onModificarEstatusOrdenCompra($this->input->post('Tp'), $this->input->post('Folio'), $datos);
-            } else {
-                $datos = array(
-                    'Estatus' => 'RECIBIDA'
-                );
-                $this->Recibeordencompra_model->onModificarEstatusOrdenCompra($this->input->post('Tp'), $this->input->post('Folio'), $datos);
+            $Ordenes_Capturadas = json_decode($this->input->post('OCS'));
+            $oc_s = array(); //Convertir el array de objetos en array asociativo
+            foreach ($Ordenes_Capturadas as $k => $v) {
+                array_push($oc_s, array(
+                    'Tp' => $v->Tp,
+                    'OC' => $v->OC,
+                ));
+            }
+            //Quitar repetivos
+            $resultado = array_unique($oc_s, SORT_REGULAR);
+            //Cambiar estatus a las ordenes de compra en base a sus Tp y Folio OC
+            foreach ($resultado as $k => $v) {
+                //Actualiza estatus orden de compra dependiendo de lo que se recibe
+                $Cantidades = $this->Recibeordencompra_model->getSumatoriasCantidadesParaEstatus($v['Tp'], $v['OC']);
+                $can = $Cantidades[0]->Cantidad;
+                $Can_rec = $Cantidades[0]->Cantidad_Rec;
+                if ($can > $Can_rec) {
+                    $datos = array(
+                        'Estatus' => 'PENDIENTE'
+                    );
+                    $this->Recibeordencompra_model->onModificarEstatusOrdenCompra($v['Tp'], $v['OC'], $datos);
+                } else {
+                    $datos = array(
+                        'Estatus' => 'RECIBIDA'
+                    );
+                    $this->Recibeordencompra_model->onModificarEstatusOrdenCompra($v['Tp'], $v['OC'], $datos);
+                }
             }
 
             //Actualiza estatus compra a CONCLUIDA
-            $this->Recibeordencompra_model->onModificarEstatusCompra($this->input->post('Factura'), $this->input->post('TpDoc'));
-
+            $this->Recibeordencompra_model->onModificarEstatusCompra($this->input->post('Factura'), $this->input->post('TpDoc'), $this->input->post('Proveedor'));
             //Inserta en mov articulos
-            $Compra = $this->Recibeordencompra_model->getCompraParaMovArt($this->input->post('Factura'), $this->input->post('TpDoc'));
+            $Compra = $this->Recibeordencompra_model->getCompraParaMovArt($this->input->post('Factura'), $this->input->post('TpDoc'), $this->input->post('Proveedor'));
             foreach ($Compra as $key => $v) {
                 $datos = array(
                     'Articulo' => $v->Articulo,
@@ -104,13 +116,18 @@ class RecibeOrdenCompra extends CI_Controller {
                     'TipoMov' => 'EXC',
                     'DocMov' => $v->Doc,
                     'Tp' => $v->Tp,
+                    'Maq' => $v->Maq,
                     'OrdenCompra' => $v->OrdenCompra,
                     'Subtotal' => $v->Subtotal
                 );
                 $this->Recibeordencompra_model->onAgregarMovArt($datos);
+                //Graba en movarticulos_fabrica
+                if ($v->Maq === '98' || $v->Maq === '97') {
+                    $this->Recibeordencompra_model->onAgregarMovArtFabrica($datos);
+                }
             }
             //Inserta doc en cartera de proveedores
-            $CompraCarProv = $this->Recibeordencompra_model->getCompraParaCartProv($this->input->post('Factura'), $this->input->post('TpDoc'));
+            $CompraCarProv = $this->Recibeordencompra_model->getCompraParaCartProv($this->input->post('Factura'), $this->input->post('TpDoc'), $this->input->post('Proveedor'));
             $c_cart_p = $CompraCarProv[0];
             $datosCartProv = array(
                 'Proveedor' => $c_cart_p->Proveedor,
@@ -201,7 +218,7 @@ class RecibeOrdenCompra extends CI_Controller {
     }
 
     public function onImprimirValeEntrada() {
-        $Compra = $this->Recibeordencompra_model->getCompraParaMovArt($this->input->post('Doc'), $this->input->post('TpDoc'));
+        $Compra = $this->Recibeordencompra_model->getCompraParaMovArt($this->input->post('Doc'), $this->input->post('TpDoc'), $this->input->post('Proveedor'));
         if (!empty($Compra)) {
             $pdf = new PDF('P', 'mm', array(215.9, 279.4));
 

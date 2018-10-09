@@ -5,6 +5,15 @@
                 <legend class="float-left">Recepción de Órdenes de Compra</legend>
             </div>
             <div class="col-sm-4" align="right">
+                <button type="button" class="btn btn-secondary btn-sm " id="btnActualizaPreciosOrdenCompra" >
+                    <span class="fa fa-dollar-sign" ></span> ACTUALIZAR PRECIOS O.C.
+                </button>
+                <button type="button" class="btn btn-warning btn-sm " id="btnVerArticulos" >
+                    <span class="fa fa-cube" ></span> ARTÍCULOS
+                </button>
+                <button type="button" class="btn btn-info btn-sm d-none" id="btnAgregarOC">
+                    <i class="fa fa-plus"></i> AGREGAR O. DE COMPRA
+                </button>
                 <button type="button" class="btn btn-success btn-float" id="btnCerrarCompra" data-toggle="tooltip" data-placement="top" title="Cerrar Compra">
                     <i class="fa fa-check"></i>
                 </button>
@@ -95,8 +104,11 @@
     var pnlTablero = $("#pnlTablero");
     var btnActualizaCantidad = pnlTablero.find('#btnActualizaCantidad');
     var btnCerrarCompra = pnlTablero.find('#btnCerrarCompra');
-
-
+    var btnAgregarOC = pnlTablero.find('#btnAgregarOC');
+    var btnVerArticulos = pnlTablero.find('#btnVerArticulos');
+    var btnActualizaPreciosOrdenCompra = pnlTablero.find('#btnActualizaPreciosOrdenCompra');
+    var agregaOC = false;
+    var o_cs = [];
 
     $(document).ready(function () {
 
@@ -105,6 +117,7 @@
         handleEnter();
         pnlTablero.find("input").val("");
         pnlTablero.find("#FechaFactura").val(getToday());
+        btnAgregarOC.addClass('d-none');
         pnlTablero.find("#FechaFactura").blur(function () {
             isValid('pnlTablero');
             if (valido) {
@@ -122,7 +135,8 @@
         });
         pnlTablero.find("#col2_filter").change(function () {
             var tp = pnlTablero.find("#col1_filter").val();
-            getOrdenCompra($(this), tp);
+            var prov = pnlTablero.find("#Proveedor").val();
+            getOrdenCompra($(this), tp, prov);
         });
         pnlTablero.find("#Factura").change(function () {
             var tp = pnlTablero.find("#Tp").val();
@@ -143,6 +157,12 @@
             var art = pnlTablero.find("#Articulo").val();
             var prov = pnlTablero.find("#Proveedor").val();
             var cant_rec = pnlTablero.find("#CantidadRecibida").val();
+
+            o_cs.push({
+                Tp: tp,
+                OC: oc
+            });
+
             $.post(master_url + 'onModificarCantidadRecibidaByArtByOCByTp', {
 
                 Factura: fact,
@@ -171,6 +191,7 @@
                 Sem = 0;
                 Departamento = 0;
                 pnlTablero.find('#Encabezado').find('.captura').addClass('disabledForms');
+                btnAgregarOC.removeClass('d-none');
             }).fail(function (x, y, z) {
                 console.log(x, y, z);
             });
@@ -178,36 +199,51 @@
         btnCerrarCompra.click(function () {
             swal({
                 buttons: ["Cancelar", "Aceptar"],
-                title: 'Estas Seguro de Cerrar la Compra?',
+                title: 'Estás Seguro de Cerrar la Compra?',
                 text: "Esta acción no se puede revertir",
                 icon: "warning",
                 closeOnEsc: false,
                 closeOnClickOutside: false
             }).then((action) => {
                 if (action) {
-                    HoldOn.open({theme: 'sk-cube', message: 'CARGANDO...'});
+
+
+                    //HoldOn.open({theme: 'sk-cube', message: 'CARGANDO...'});
+                    var frm = new FormData();
+
                     var tp = pnlTablero.find("#col1_filter").val();
                     var oc = pnlTablero.find("#col2_filter").val();
                     var Fact = pnlTablero.find("#Factura").val();
                     var tpDoc = pnlTablero.find("#Tp").val();
-                    $.post(master_url + 'onCerrarCompra', {
-                        Tp: tp,
-                        Folio: oc,
-                        Factura: Fact,
-                        TpDoc: tpDoc
+                    var prov = pnlTablero.find("#Proveedor").val();
+                    frm.append('OCS', JSON.stringify(o_cs));
+                    frm.append('Tp', tp);
+                    frm.append('Folio', oc);
+                    frm.append('Factura', Fact);
+                    frm.append('TpDoc', tpDoc);
+                    frm.append('Proveedor', prov);
+                    $.ajax({
+                        url: master_url + 'onCerrarCompra',
+                        type: "POST",
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        data: frm
                     }).done(function (data) {
                         Precio = 0;
                         Maq = 0;
                         Sem = 0;
                         Departamento = 0;
                         TpOC = 0;
+                        agregaOC = false;
                         pnlTablero.find("input").val("");
+                        btnAgregarOC.addClass('d-none');
                         pnlTablero.find('#Detalle').find('.captura').addClass('disabledForms');
                         pnlTablero.find('#Encabezado').find('input:not(.noCaptura)').removeClass('disabledForms');
                         pnlTablero.find("#FechaFactura").val(getToday());
                         tblOrdenesCompra.DataTable().columns().search('').draw();
                         pnlTablero.find('#col1_filter').focus().select();
-                        onImprimirValeEntrada(Fact, tpDoc);
+                        onImprimirValeEntrada(Fact, tpDoc, prov);
                     }).fail(function (x, y, z) {
                         swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
                         console.log(x.responseText);
@@ -216,7 +252,68 @@
             });
 
         });
-
+        btnAgregarOC.click(function () {
+            agregaOC = true;
+            pnlTablero.find('#col1_filter').removeClass('disabledForms').val("");
+            pnlTablero.find('#col2_filter').removeClass('disabledForms').val("");
+            OrdenesCompra.columns().search('').draw();
+            pnlTablero.find('#col1_filter').focus();
+        });
+        btnVerArticulos.click(function () {
+            $.fancybox.open({
+                src: base_url + '/Articulos/?origen=MATERIALES',
+                type: 'iframe',
+                opts: {
+                    afterShow: function (instance, current) {
+                    },
+                    iframe: {
+                        // Iframe template
+                        tpl: '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen allowtransparency="true" src=""></iframe>',
+                        preload: true,
+                        // Custom CSS styling for iframe wrapping element
+                        // You can use this to set custom iframe dimensions
+                        css: {
+                            width: "85%",
+                            height: "85%"
+                        },
+                        // Iframe tag attributes
+                        attr: {
+                            scrolling: "auto"
+                        }
+                    }
+                }
+            });
+        });
+        btnActualizaPreciosOrdenCompra.click(function () {
+            $.fancybox.open({
+                src: base_url + '/ActualizaPrecioOrdenCompra',
+                type: 'iframe',
+                opts: {
+                    afterShow: function (instance, current) {
+                    },
+                    afterClose: function () {
+                        getRecords();
+                        pnlTablero.find("input").val("");
+                        tblOrdenesCompra.DataTable().columns().search('').draw();
+                    },
+                    iframe: {
+                        // Iframe template
+                        tpl: '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen allowtransparency="true" src=""></iframe>',
+                        preload: true,
+                        // Custom CSS styling for iframe wrapping element
+                        // You can use this to set custom iframe dimensions
+                        css: {
+                            width: "85%",
+                            height: "85%"
+                        },
+                        // Iframe tag attributes
+                        attr: {
+                            scrolling: "auto"
+                        }
+                    }
+                }
+            });
+        });
         $('input.column_filter').on('keyup', function () {
             var i = $(this).parents('div').attr('data-column');
             OrdenesCompra.column(i).search('^' + $('#col' + i + '_filter').val() + '$', true, false).draw();
@@ -237,14 +334,18 @@
                 if (data[0].Estatus === 'CONCLUIDA') {
                     swal({
                         title: "ATENCIÓN",
-                        text: "EL DOCUMENTO YA FUE CAPTRUADO",
+                        text: "ESTE DOCUMENTO YA FUE CAPTRUADO",
                         icon: "warning"
                     }).then((value) => {
                         $(v).val('').focus();
                     });
+                } else {//NOS TRAEMOS LOS DATOS DE LA ORDEN DE COMPRA YA CAPTURADA Y BRINCAMOS EL FOCO A LOS ARTICULOS
+                    pnlTablero.find('#Encabezado').find('.captura').addClass('disabledForms');
+                    pnlTablero.find('#FechaDoc').val(data[0].FechaDoc);
+                    pnlTablero.find('#Articulo').focus();
                 }
-            } else {
-                //NOS TRAEMOS LOS DATOS DE LA ORDEN DE COMPRA YA CAPTURADA Y BRINCAMOS EL FOCO A LOS ARTICULOS
+            } else {//EL DOCUMENTO NO EXISTE
+
             }
         }).fail(function (x, y, z) {
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
@@ -424,13 +525,27 @@
 
         });
     }
-    function getOrdenCompra(v, Tp) {
+    function getOrdenCompra(v, Tp, prov) {
         $.getJSON(master_url + 'getOrdenCompra', {Folio: $(v).val(), Tp: Tp}).done(function (data) {
             if (data.length > 0) {
-                //TRAER DATOS DE LA ORDEN
-                pnlTablero.find('#FechaOrden').val(data[0].FechaOrden);
-                pnlTablero.find('#Proveedor').val(data[0].Proveedor);
-                pnlTablero.find('#NombreProveedor').val((Tp === 1) ? data[0].ProveedorF : data[0].ProveedorI);
+                if (!agregaOC) {
+
+                    //TRAER DATOS DE LA ORDEN
+                    pnlTablero.find('#FechaOrden').val(data[0].FechaOrden);
+                    pnlTablero.find('#Proveedor').val(data[0].Proveedor);
+                    pnlTablero.find('#NombreProveedor').val((Tp === 1) ? data[0].ProveedorF : data[0].ProveedorI);
+                } else {
+                    //Verificar que la orden de compra sea del mismo proveedor
+                    if (prov !== data[0].Proveedor) {
+                        swal({
+                            title: "ATENCIÓN",
+                            text: "LA ORDEN DE COMPRA PERTENECE A OTRO PROVEEDOR",
+                            icon: "warning"
+                        }).then((value) => {
+                            $(v).val('').focus();
+                        });
+                    }
+                }
             } else {
                 swal({
                     title: "ATENCIÓN",
@@ -487,13 +602,14 @@
             });
         }
     }
-    function onImprimirValeEntrada(Doc, TpDoc) {
+    function onImprimirValeEntrada(Doc, TpDoc, Prov) {
         $.ajax({
             url: master_url + 'onImprimirValeEntrada',
             type: "POST",
             data: {
                 Doc: Doc,
-                TpDoc: TpDoc
+                TpDoc: TpDoc,
+                Proveedor: Prov
             }
         }).done(function (data, x, jq) {
             if (data.length > 0) {
