@@ -22,7 +22,7 @@
         <div class="row" id="Encabezado">
             <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1" data-column="1">
                 <label>Tp</label>
-                <input type="text" class="form-control form-control-sm  numbersOnly column_filter captura " id="col1_filter" maxlength="2" >
+                <input type="text" class="form-control form-control-sm  numbersOnly column_filter captura " id="col1_filter" maxlength="1" >
             </div>
             <div class="col-6 col-sm-3 col-md-2 col-lg-2 col-xl-1" data-column="2">
                 <label>O. Compra</label>
@@ -41,7 +41,7 @@
             </div>
             <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1" >
                 <label>Tp Doc.</label>
-                <input type="text" class="form-control form-control-sm numbersOnly captura " id="Tp" name="Tp" maxlength="2" required>
+                <input type="text" class="form-control form-control-sm numbersOnly captura " id="Tp" name="Tp" maxlength="1" required>
             </div>
             <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1" >
                 <label>Doc.</label>
@@ -115,6 +115,7 @@
         /*FUNCIONES INICIALES*/
         init();
         handleEnter();
+        validacionSelectPorContenedor(pnlTablero);
         pnlTablero.find("input").val("");
         pnlTablero.find("#FechaFactura").val(getToday());
         btnAgregarOC.addClass('d-none');

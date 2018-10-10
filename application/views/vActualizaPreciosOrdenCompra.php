@@ -8,7 +8,7 @@
         <div class="row" id="Encabezado">
             <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1">
                 <label>Tp</label>
-                <input type="text" class="form-control form-control-sm  numbersOnly" id="Tp" maxlength="2" >
+                <input type="text" class="form-control form-control-sm  numbersOnly" id="Tp" maxlength="1" >
             </div>
             <div class="col-6 col-sm-3 col-md-2 col-lg-2 col-xl-1">
                 <label>O. Compra</label>

@@ -128,6 +128,7 @@ class Recibeordencompra_model extends CI_Model {
                             . "C.Doc,"
                             . "C.Tp,"
                             . "C.Maq,"
+                            . "C.Sem,"
                             . "C.OrdenCompra,"
                             . "CASE WHEN C.Tp ='1' THEN  CONCAT(P.Clave,' ',P.NombreF) ELSE "
                             . "CONCAT(P.Clave,' ',P.NombreI) END AS Proveedor, "

@@ -117,6 +117,7 @@ class RecibeOrdenCompra extends CI_Controller {
                     'DocMov' => $v->Doc,
                     'Tp' => $v->Tp,
                     'Maq' => $v->Maq,
+                    'Sem' => $v->Sem,
                     'OrdenCompra' => $v->OrdenCompra,
                     'Subtotal' => $v->Subtotal
                 );
@@ -129,13 +130,14 @@ class RecibeOrdenCompra extends CI_Controller {
             //Inserta doc en cartera de proveedores
             $CompraCarProv = $this->Recibeordencompra_model->getCompraParaCartProv($this->input->post('Factura'), $this->input->post('TpDoc'), $this->input->post('Proveedor'));
             $c_cart_p = $CompraCarProv[0];
+            $Importe = $c_cart_p->Importe;
             $datosCartProv = array(
                 'Proveedor' => $c_cart_p->Proveedor,
                 'Doc' => $c_cart_p->Doc,
                 'FechaDoc' => $c_cart_p->FechaDoc,
-                'ImporteDoc' => $c_cart_p->Importe,
+                'ImporteDoc' => ($c_cart_p->Tp === '1') ? $Importe * 1.16 : $Importe,
                 'Pagos_Doc' => 0,
-                'Saldo_Doc' => $c_cart_p->Importe,
+                'Saldo_Doc' => ($c_cart_p->Tp === '1') ? $Importe * 1.16 : $Importe,
                 'Estatus' => 'SIN PAGAR',
                 'Tp' => $c_cart_p->Tp,
                 'Moneda' => 'MXN',

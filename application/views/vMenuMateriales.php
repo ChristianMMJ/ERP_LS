@@ -23,10 +23,7 @@
                     <a class="dropdown-item" href="<?php print base_url('FraccionesXEstilo/?origen=MATERIALES'); ?>"> Fichas Tecnicas Proceso</a>
                     <a class="dropdown-item" href="<?php print base_url('SuelaPlantaCompras.shoes'); ?>">Suelas, Plantas para Compras</a>
                 </div>
-
-
             </li>
-
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navCaptura" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="fas fa-pencil-alt"></span> Capturas
@@ -34,27 +31,72 @@
                 <ul class="dropdown-menu" aria-labelledby="navCaptura">
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" href="#">Orden de Compra</a>
-                        <div class="dropdown-menu">
+                        <ul class="dropdown-menu">
                             <a class="dropdown-item" href="<?php print base_url('OrdenCompra.shoes'); ?>">Orden Compra de Piel, Forro, Peletería</a>
                             <a class="dropdown-item" href="<?php print base_url('OrdenCompraTallas.shoes'); ?>">Orden de Compra Planta, Suela, Entresuela</a>
-                        </div>
+                            <a class="dropdown-item" href="<?php print base_url('RecibeOrdenCompra.shoes'); ?>">Recibe Órdenes de Compras</a>
+                            <div class="dropdown-divider"></div>
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item dropdown-toggle" href="#">Herr. Ordenes de Compra</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="<?php print base_url('ConfirmarOrdenCompra.shoes'); ?>" >Confirmación de Ordenes de Compra</a>
+                                    <a class="dropdown-item" href="<?php print base_url('MaterialNoRecibido.shoes'); ?>" >Material No Recibido</a>
+                                    <a class="dropdown-item" href="<?php print base_url('MaterialRecibido.shoes'); ?>" >Material Recibido</a>
+                                    <a class="dropdown-item" href="<?php print base_url('ActualizaPrecioOrdenCompra.shoes'); ?>" >Actualizar Precios a Orden de Compra</a>
+                                    <a class="dropdown-item" href="#">Copiar O.C. a O.C ***</a>
+                                    <a class="dropdown-item" href="#">Marca Material No Recibido ***</a>
+                                    <a class="dropdown-item" href="#">Modifica Orden Compra No Recibida ***</a>
+                                    <a class="dropdown-item" href="#">Ordenes de Compra Por Semana***</a>
+                                    <a class="dropdown-item" href="#">Ordenes de Compra por Tipo/Grupo***</a>
+                                    <a class="dropdown-item" href="#">Recibe Mat. Orden de Compra Completa ***</a>
+                                    <a class="dropdown-item" href="#">Consulta Material y Orden de Compra***</a>
+                                    <a class="dropdown-item" href="#">Marca Orden de Compra Inservible***</a>
+                                </div>
+                            </li>
+                        </ul>
                     </li>
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" href="#">Herr. Ordenes de Compra</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="<?php print base_url('ConfirmarOrdenCompra.shoes'); ?>" >Confirmación de Ordenes de Compra</a>
-                            <a class="dropdown-item" href="<?php print base_url('MaterialNoRecibido.shoes'); ?>" >Material No Recibido</a>
-                            <a class="dropdown-item" href="<?php print base_url('MaterialRecibido.shoes'); ?>" >Material Recibido</a>
-                            <a class="dropdown-item" href="<?php print base_url('ActualizaPrecioOrdenCompra.shoes'); ?>" >Actualizar Precios a Orden de Compra</a>
-                        </div>
+                        <a class="dropdown-item dropdown-toggle" href="#">Documentos Directos</a>
+                        <ul class="dropdown-menu">
+                            <a class="dropdown-item" href="<?php print base_url('DocDirecSinAfectacion.shoes'); ?>">Sin Afectación a Maquilas</a>
+                            <a class="dropdown-item" href="<?php print base_url('DocDirecConAfectacion.shoes'); ?>">Con Afectación a Maquilas</a>
+                        </ul>
                     </li>
-                    <a class="dropdown-item" href="<?php print base_url('RecibeOrdenCompra.shoes'); ?>">Recibe Órdenes de Compras</a>
-                    <a class="dropdown-item" href="#">Documentos Directos</a>
+                    <a class="dropdown-item" href="<?php print base_url('InicialMaterialPrima.shoes'); ?>">Inicial Materia Prima</a>
+                    <a class="dropdown-item" href="#">Explosión de Fábrica ***</a>
+                    <a class="dropdown-item" href="#">Entrega material a Maquilas ***</a>
+                    <a class="dropdown-item" href="#">Entrega material a Fábrica ***</a>
+                    <a class="dropdown-item" href="#">Entrega Suela/Planta a Fábrica ***</a>
+                    <a class="dropdown-item" href="#">Entrega Suela/Planta por Control ***</a>
+                    <a class="dropdown-item" href="#">Entrega Suela/Planta a Maquila 1 ***</a>
+                    <a class="dropdown-item" href="#">Cancela Entradas/Salidas ***</a>
+                    <a class="dropdown-item" href="#">Modifica Fecha Doc. Entradas ***</a>
+                    <a class="dropdown-item" href="#">Elimina Entrada por Compra ***</a>
+                    <a class="dropdown-item" href="#">Abonos a Proveedores ***</a>
+                    <a class="dropdown-item" href="#">Notas de Cargo ***</a>
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#">Pólizas</a>
+                        <ul class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Genera Póliza ***</a>
+                            <a class="dropdown-item" href="#">Pólizas Generadas No Aplicadas ***</a>
+                            <a class="dropdown-item" href="#">Cancela Polizas Generadas ***</a>
+                        </ul>
+                    </li>
+                    <a class="dropdown-item" href="#">Cargos diferentes a Maquilas ***</a>
+                    <a class="dropdown-item" href="#">Cargos a Empleados ***</a>
+                    <a class="dropdown-item" href="#">Material Control Fecha ***</a>
+                    <a class="dropdown-item" href="#">Correo interno Acción Correctiva ***</a>
+                    <a class="dropdown-item" href="#">Asigna Día/Semana a Controles ***</a>
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#">Inspeccion Mat. Piel/Forro</a>
+                        <ul class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Captura Inspección ***</a>
+                            <a class="dropdown-item" href="#">Reporte de Inspección ***</a>
+                            <a class="dropdown-item" href="#">Captura revisión 10% ***</a>
+                        </ul>
+                    </li>
                 </ul>
             </li>
-
-
-
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navReportes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="fa fa-file-pdf"></span>  Reportes
@@ -68,13 +110,11 @@
                     </li>
                 </ul>
             </li>
-
             <li class="nav-item mx-1 d-none" id="btnRegresar">
                 <a class="btn btn-danger " href="<?php print base_url(isset($_GET['parentMenu']) ? $_GET['parentMenu'] : ""); ?>">
                     <i class="fa fa-arrow-left"></i> Regresar
                 </a>
             </li>
-
             <li class="nav-item dropdown ml-auto">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <?php echo $this->session->userdata('Nombre') . ' ' . $this->session->userdata('Apellidos'); ?>

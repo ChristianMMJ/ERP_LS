@@ -722,7 +722,6 @@
     }
     function getGrupos() {
         $.getJSON(master_url + 'getGrupos').done(function (data) {
-            pnlDatos.find("#Grupo")[0].selectize.addOption({text: '--', value: ''});
             $.each(data, function (k, v) {
                 pnlDatos.find("#Grupo")[0].selectize.addOption({text: v.Grupo, value: v.ID});
             });
@@ -735,7 +734,6 @@
     }
     function getUnidades() {
         $.getJSON(master_url + 'getUnidades').done(function (data) {
-            pnlDatos.find("#UnidadMedida")[0].selectize.addOption({text: '--', value: ''});
             $.each(data, function (k, v) {
                 pnlDatos.find("#UnidadMedida")[0].selectize.addOption({text: v.Unidad, value: v.ID});
             });
@@ -748,7 +746,6 @@
     }
     function getProveedores() {
         $.getJSON(master_url + 'getProveedores').done(function (data) {
-            pnlDatos.find("#ProveedorUno")[0].selectize.addOption({text: '--', value: ''});
             $.each(data, function (k, v) {
                 pnlDatos.find("#ProveedorUno")[0].selectize.addOption({text: v.Proveedor, value: v.ID});
                 pnlDatos.find("#ProveedorDos")[0].selectize.addOption({text: v.Proveedor, value: v.ID});

@@ -155,8 +155,6 @@
             }
         });
 
-
-
         $('.modal').on('shown.bs.modal', function (e) {
             $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
         });
@@ -217,7 +215,7 @@
                 valido = false;
             } else {
                 if ($(this).val() !== '') {
-                    $(this).css("border", "1px solid #ccc");
+                    $(this).css("border", "1px solid #9E9E9E");
                     $(this).parent().find("small.text-danger").remove();
                     valid_inputs += 1;
                 }
@@ -231,7 +229,7 @@
                 valido = false;
             } else {
                 if ($(this).val() !== '') {
-                    $(this).css("border", "1px solid #ccc");
+                    $(this).css("border", "1px solid #9E9E9E");
                     $(this).parent().find("small.text-danger").remove();
                     valid_inputs_textarea += 1;
                 }
@@ -245,7 +243,7 @@
                 valido = false;
             } else {
                 if ($(this).val() !== '') {
-                    $(this).parent().find(".selectize-input").css("border", "1px solid #ccc");
+                    $(this).parent().find(".selectize-input").css("border", "1px solid #9E9E9E");
                     $(this).parent().find("small.text-danger").remove();
                     valid_selects += 1;
                 }
