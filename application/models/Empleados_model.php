@@ -48,7 +48,7 @@ class Empleados_model extends CI_Model {
                             . "E.Sueldo, E.IMSS, E.Fierabono, E.Infonavit, E.Ahorro, E.PressAcum, E.AbonoPres, "
                             . "E.SaldoPres, E.Comida, E.Celula, E.CelulaPorcentaje, E.Funeral, E.SueldoFijo, "
                             . "E.SalarioDiarioIMSS, E.ZapatosTDA, E.AbonoZap, E.Fonacot, E.EntregaDeMaterialYPrecio, "
-                            . "E.Foto AS FOTOEMPLEADO, E.Registro, E.Estatus", false)
+                            . "E.Foto AS FOTOEMPLEADO, E.Registro, E.Estatus, E.Incapacitado", false)
                     ->from('empleados AS E')->where('E.ID', $ID);
             $query = $this->db->get();
             /*
@@ -72,4 +72,25 @@ class Empleados_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
+
+    public function getEstados() {
+        try {
+            return $this->db->select("CAST(P.Clave AS SIGNED ) AS ID, CONCAT(P.Clave,' - ',IFNULL(P.Descripcion,'')) AS Estado ", false)
+                            ->from('estados AS P')->where_in('P.Estatus', 'ACTIVO')->order_by('ID', 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getDepartamentos() {
+        try {
+            return $this->db->select("CAST(D.Clave AS SIGNED ) AS Clave, CONCAT(D.Clave,' - ',D.Descripcion) AS Departamento")
+                            ->from("departamentos AS D")->where("D.Estatus", "ACTIVO")->order_by('Clave', 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
 }

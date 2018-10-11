@@ -109,28 +109,22 @@
                                         <label for="Materno" >Materno*</label>
                                         <input type="text" id="Materno" name="Materno" class="form-control form-control-sm" placeholder="" required="">
                                     </div>
-                                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                        <label for="Buscar">Buscar*</label>                                
-                                        <select id="Buscar" name="Buscar" class="form-control form-control-sm" >
-                                            <option value=""></option>
-                                        </select>
-                                    </div>
                                     <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8">
-                                        <label for="Dirección" >Dirección*</label>
-                                        <input type="text" id="Dirección" name="Dirección"  class="form-control form-control-sm" placeholder="" >
+                                        <label for="Direccion" >Dirección*</label>
+                                        <input type="text" id="Direccion" name="Direccion"  class="form-control form-control-sm" placeholder="" required="">
                                     </div>
                                     <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
                                         <label for="Colonia" >Colonia*</label>
-                                        <input type="text" id="Colonia" name="Colonia" class="form-control form-control-sm" placeholder="" >
+                                        <input type="text" id="Colonia" name="Colonia" class="form-control form-control-sm" placeholder="" required="">
                                     </div>
                                     <div class="w-100"></div>
                                     <div class="col-12 col-sm-5 col-md-5 col-lg-5 col-xl-5">
                                         <label for="Ciudad" >Ciudad*</label>
-                                        <input type="text" id="Ciudad" name="Ciudad"  class="form-control form-control-sm" placeholder="" >
+                                        <input type="text" id="Ciudad" name="Ciudad"  class="form-control form-control-sm" placeholder="" required="">
                                     </div>
                                     <div class="col-12 col-sm-5 col-md-5 col-lg-5 col-xl-5">
                                         <label for="Estado" >Estado*</label>
-                                        <select id="EstadoT" name="EstadoT" class="form-control form-control-sm">
+                                        <select id="Estado" name="Estado" class="form-control form-control-sm">
                                             <option value=""></option>
                                         </select>
                                     </div>
@@ -151,28 +145,32 @@
                                     <div class="w-100"></div>                     
                                     <div class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-3">
                                         <label for="NoIMSS" >No.IMSS*</label>
-                                        <input type="text" id="NoIMSS" name="NoIMSS"  class="form-control form-control-sm" placeholder="" >  
+                                        <input type="text" id="NoIMSS" name="NoIMSS"  class="form-control form-control-sm" placeholder="" required="">  
                                         <div class="custom-control custom-checkbox mt-2"  align="center" style="cursor: pointer !important;">
-                                            <input type="checkbox" class="custom-control-input selectNotEnter" id="Incapacitado" name="Activos" style="cursor: pointer !important;">
+                                            <input type="checkbox" class="custom-control-input selectNotEnter" id="Incapacitado" name="Incapacitado" style="cursor: pointer !important;">
                                             <label class="custom-control-label text-danger labelCheck" for="Incapacitado" style="cursor: pointer !important;">Incapacitado</label>
                                         </div>
                                     </div>                 
                                     <div class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-3">
                                         <label for="FechaIngreso" >Fecha Ingreso*</label>
-                                        <input type="text" id="FechaIngreso" name="FechaIngreso"  class="form-control form-control-sm" placeholder="" >
+                                        <input type="text" id="FechaIngreso" name="FechaIngreso"  class="form-control form-control-sm date notEnter" placeholder="" >
                                     </div>                 
                                     <div class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-3">
                                         <label for="Nacimiento" >Nacimiento*</label>
-                                        <input type="text" id="Nacimiento" name="Nacimiento"  class="form-control form-control-sm" placeholder="" >
+                                        <input type="text" id="Nacimiento" name="Nacimiento"  class="form-control form-control-sm date notEnter" placeholder="" >
                                     </div>                 
                                     <div class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-3">
                                         <label for="FechaIMSS" >Fecha IMSS*</label>
-                                        <input type="text" id="FechaIMSS" name="FechaIMSS"  class="form-control form-control-sm" placeholder="" >
+                                        <input type="text" id="FechaIMSS" name="FechaIMSS"  class="form-control form-control-sm date notEnter" placeholder="" >
                                     </div>           
                                     <div class="w-100"></div>     
                                     <div class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-3">
                                         <label for="Sexo" >Sexo*</label>
-                                        <input type="text" id="Sexo" name="Sexo"  class="form-control form-control-sm" placeholder="" >
+                                        <select id="Sexo" name="Sexo"  class="form-control form-control-sm" placeholder="" >
+                                            <option></option>
+                                            <option value="M">M</option>
+                                            <option value="F">F</option>
+                                        </select>
                                     </div>
                                     <div class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-3">
                                         <label for="EstadoCivil" >Edo.Civil*</label>
@@ -192,24 +190,11 @@
                             <!--PERFIL-->
                             <div class="tab-pane fade" id="perfil">
                                 <div class="row">
-                                    <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-                                        <label>Departamentos*</label>
-                                    </div>
-                                    <div class="col-12 col-sm-10 col-md-10 col-lg-10 col-xl-10">
-                                        <div class="row">
-                                            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                                <label for="DepartamentoFisico" >Fisico*</label>
-                                                <select id="DepartamentoFisico" name="DepartamentoFisico" class="form-control form-control-sm">
-                                                    <option value=""></option>
-                                                </select>
-                                            </div>
-                                            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                                <label for="DepartamentoFisico" >Efecto de costos*</label>
-                                                <select id="DepartamentoCostos" name="DepartamentoCostos" class="form-control form-control-sm">
-                                                    <option value=""></option>
-                                                </select>
-                                            </div>
-                                        </div>
+                                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                        <label>Departamento*</label>  
+                                        <select id="DepartamentoFisico" name="DepartamentoFisico" class="form-control form-control-sm" required="">
+                                            <option value=""></option>
+                                        </select>
                                     </div>
                                     <div class="w-100"></div>
                                     <div class="col-12 col-sm-4col-md-4 col-lg-4 col-xl-4">
@@ -292,7 +277,7 @@
                                     </div>
                                     <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
                                         <label for="Fierabono" >Fierabono*</label>
-                                        <input type="text" id="Fierabono" name="Fierabono" class="form-control form-control-sm numbersOnly" required="">
+                                        <input type="text" id="Fierabono" name="Fierabono" class="form-control form-control-sm numbersOnly">
                                     </div>
                                     <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
                                         <label for="Infonavit" >Infonavit*</label>
@@ -300,7 +285,7 @@
                                     </div>
                                     <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
                                         <label for="Ahorro" >Ahorro*</label>
-                                        <input type="text" id="Ahorro" name="Ahorro" class="form-control form-control-sm numbersOnly" required="">
+                                        <input type="text" id="Ahorro" name="Ahorro" class="form-control form-control-sm numbersOnly">
                                     </div>
                                     <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
                                         <label for="PressAcum" >Saldo Pres.*</label>
@@ -320,7 +305,7 @@
                                     </div>
                                     <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
                                         <label for="Funeral" >Funeral*</label>
-                                        <input type="text" id="Funeral" name="Funeral" class="form-control form-control-sm numbersOnly" required="">
+                                        <input type="text" id="Funeral" name="Funeral" class="form-control form-control-sm numbersOnly" >
                                     </div>
                                     <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
                                         <label for="SueldoFijo" >Sueldo Fijo*</label>
@@ -332,17 +317,17 @@
                                     </div>
                                     <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
                                         <label for="ZapatosTDA" >Zapatos tda*</label>
-                                        <input type="text" id="ZapatosTDA" name="ZapatosTDA" class="form-control form-control-sm numbersOnly" required="">
+                                        <input type="text" id="ZapatosTDA" name="ZapatosTDA" class="form-control form-control-sm numbersOnly">
                                     </div>
                                     <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
                                         <label for="AbonoZap" >Abono zap*</label>
-                                        <input type="text" id="AbonoZap" name="AbonoZap" class="form-control form-control-sm numbersOnly" required="">
+                                        <input type="text" id="AbonoZap" name="AbonoZap" class="form-control form-control-sm numbersOnly">
                                     </div>
                                     <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
                                         <label for="Fonacot" >Fonacot*</label>
-                                        <input type="text" id="Fonacot" name="Fonacot" class="form-control form-control-sm numbersOnly" required="">
+                                        <input type="text" id="Fonacot" name="Fonacot" class="form-control form-control-sm numbersOnly">
                                     </div>
-                                    <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                                    <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
                                         <label for="EntregaDeMaterialYPrecio" >Entrega de material y precio*</label>
                                         <input type="text" id="EntregaDeMaterialYPrecio" name="EntregaDeMaterialYPrecio" class="form-control form-control-sm numbersOnly" required="">
                                     </div>
@@ -377,6 +362,8 @@
     $(document).ready(function () {
         handleEnter();
         getRecords();
+        getEstados();
+        getDepartamentos();
 
         pnlDatos.find("#Cel").keydown(function (e) {
             if (e.keyCode === 13) {
@@ -423,6 +410,9 @@
             isValid('pnlDatos');
             if (valido) {
                 var frm = new FormData(pnlDatos.find("#frmNuevo")[0]);
+                frm.append('Incapacitado', pnlDatos.find("#Incapacitado")[0].checked ? 1 : 0);
+                frm.append('Egresos', pnlDatos.find("#Egresos")[0].checked ? 1 : 0);
+                frm.append('Activos', pnlDatos.find("#Activos")[0].checked ? 1 : 0);
                 if (!nuevo) {
                     $.ajax({
                         url: master_url + 'onModificar',
@@ -432,6 +422,7 @@
                         processData: false,
                         data: frm
                     }).done(function (data, x, jq) {
+                        console.log(data);
                         onBeep(1);
                         swal('ATENCIÓN', 'SE HAN GUARDADO LOS CAMBIOS', 'info');
                         nuevo = false;
@@ -452,9 +443,9 @@
                         processData: false,
                         data: frm
                     }).done(function (data, x, jq) {
-                        console.log(data)
+                        console.log(data);
                         pnlDatos.find("[name='ID']").val(data);
-                        nuevo = true;
+                        nuevo = false;
                         Empleados.ajax.reload();
                         swal({
                             title: "ATENCIÓN",
@@ -491,9 +482,11 @@
             FotoPerfil[0].src = '<?php print base_url('img/empleado_sin_foto.png'); ?>';
             nuevo = true;
             pnlDatos.find("input").val("");
-            pnlDatos.find("[name='RazonSocial']").focus();
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
+            });
+            $.each(pnlDatos.find("input[type='checkbox']"), function (k, v) {
+                $(v)[0].checked = false;
             });
             pnlTablero.addClass('d-none');
             pnlDatos.removeClass('d-none');
@@ -521,8 +514,8 @@
             },
             "columns": [
                 {"data": "ID"}, {"data": "No"}, {"data": "Nombre"}, {"data": "Dire"}, {"data": "Col"},
-                {"data": "Ciu"}, {"data": "RFC"}, {"data": "Seg"}, {"data": "Tarjeta"}, {"data": "FechaIngreso"},
-                {"data": "FijoDestajoAmbos"}, {"data": "SaldoPres"}, {"data": "DepartamentoFisico"}, {"data": "Celula"}, {"data": "CelulaPorcentaje"}
+                {"data": "Ciu"}, {"data": "RFC"}, {"data": "Seg"}, {"data": "FijoDestajoAmbos"}, {"data": "FechaIngreso"},
+                {"data": "FijoDestajoAmbos"}, {"data": "DepartamentoFisico"}, {"data": "SaldoPres"}, {"data": "Celula"}, {"data": "CelulaPorcentaje"}
             ],
             "columnDefs": [
                 {
@@ -558,6 +551,14 @@
             $(this).addClass("success");
             var dtm = Empleados.row(this).data();
             temp = parseInt(dtm.ID);
+            FotoPerfil[0].src = '<?php print base_url('img/empleado_sin_foto.png'); ?>';
+            pnlDatos.find("input").val("");
+            $.each(pnlDatos.find("select"), function (k, v) {
+                pnlDatos.find("select")[k].selectize.clear(true);
+            });
+            $.each(pnlDatos.find("input[type='checkbox']"), function (k, v) {
+                $(v)[0].checked = false;
+            });
             $.getJSON(master_url + 'getEmpleadoByID', {ID: temp}).done(function (data) {
                 console.log(data);
                 pnlDatos.find("input").val("");
@@ -569,12 +570,17 @@
                     if (pnlDatos.find("[name='" + k + "']").is('select')) {
                         pnlDatos.find("[name='" + k + "']")[0].selectize.addItem(v, true);
                     }
+                    if (pnlDatos.find("[name='" + k + "']").is(':checkbox')) {
+                        if (v !== null && v !== 'null') {
+                            pnlDatos.find("[name='" + k + "']")[0].checked = parseInt(v);
+                        }
+                    }
                 });
                 if (data[0].FOTOEMPLEADO !== null) {
                     FotoPerfil[0].src = data[0].FOTOEMPLEADO;
                 }
                 pnlTablero.addClass("d-none");
-                pnlDatos.removeClass('d-none');
+                pnlDatos.removeClass('d-none'); 
             }).fail(function (x, y, z) {
                 onBeep(2);
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
@@ -585,8 +591,31 @@
         });
 
     }
+
     function onCambiarImagen(e) {
         Foto.trigger('click');
+    }
+
+    function getEstados() {
+        $.getJSON(master_url + 'getEstados').done(function (data) {
+            $.each(data, function (k, v) {
+                pnlDatos.find("#Estado")[0].selectize.addOption({text: v.Estado, value: v.ID});
+            });
+        }).fail(function (x, y, z) {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        });
+    }
+
+    function getDepartamentos() {
+        $.getJSON(master_url + 'getDepartamentos').done(function (data) {
+            $.each(data, function (k, v) {
+                pnlDatos.find("#DepartamentoFisico")[0].selectize.addOption({text: v.Departamento, value: v.Clave});
+            });
+        }).fail(function (x, y, z) {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        });
     }
 </script>
 <style>
