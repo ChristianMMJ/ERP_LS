@@ -121,6 +121,10 @@
             });
 
             btnGenerar.click(function () {
+                HoldOn.open({
+                    theme: 'sk-bounce',
+                    message: 'GENERANDO...'
+                });
                 var params = {INICIO: controlinicial.val(), FIN: controlfinal.val(), SEMANA: '', ANIO: ''};
                 $.post(master_url + 'getOrdenDeProduccion', params).done(function (data) {
                     //check Apple device

@@ -304,28 +304,26 @@ class IOrdenDeProduccion extends CI_Controller {
                 $pdf->SetFont('Calibri', 'B', 8);
                 $pdf->SetX(58);
                 $pdf->Cell(152, 6, utf8_decode("* LEA CUIDADOSAMENTE LAS INSTRUCCIONES, CUALQUIER ERROR LE SERÁ CARGADO *"), 0/* BORDE */, 1/* SALTO SI */, 'C', 0);
+                $OE = strlen($vc->OBSERVACIONES_ESTILO);
+                if ($OE > 1) {
+                    $pdf->SetX(5);
+                    $pdf->Cell(205, 5, (strlen($vc->OBSERVACIONES_ESTILO) > 0) ? utf8_decode($vc->OBSERVACIONES_ESTILO) : '', 0/* BORDE */, 1/* SALTO SI */, 'C', 0);
+                }
+                $OC = strlen($vc->OBSERVACIONES_COLOR);
+                if ($OC > 1) {
+                    $pdf->SetX(5);
+                    $pdf->Cell(205, 5, utf8_decode($vc->OBSERVACIONES_COLOR), 0/* BORDE */, 1/* SALTO SI */, 'C', 0);
+                }
                 /* END FOREACH PIEZAS */
                 if ($altura_final > 260) {
                     $pdf->AddPage();
                     $pdf->SetAutoPageBreak(true, 10);
-                    $pdf->Image(base_url($vc->FOTO), /* LEFT */ 80, $pdf->GetY() /* TOP */, /* ANCHO */ $width_final);
+                    $pdf->Image(base_url($vc->FOTO), /* LEFT */ 80, $pdf->GetY() + ($OE > 1 ? ($OC > 1) ? 2 : 0 : 0) /* TOP */, /* ANCHO */ $width_final);
                 } else {
-                    $pdf->Image(base_url($vc->FOTO), /* LEFT */ 80, $pdf->GetY()/* TOP */, /* ANCHO */ $width_final);
+                    $pdf->Image(base_url($vc->FOTO), /* LEFT */ 80, $pdf->GetY() + ($OE > 1 ? ($OC > 1) ? 2 : 0 : 0)/* TOP */, /* ANCHO */ $width_final);
                 }
                 /* TOTALES */
                 $Y = $pdf->GetY();
-                $pdf->SetX(46);
-                $pdf->SetFont('Calibri', 'BI', 7);
-                $aligns = array('C', 'C');
-                $pdf->SetAligns($aligns);
-                $pdf->SetWidths(array(15, 32));
-                $pdf->setFilled(FALSE);
-                $pdf->setBorders(0);
-//            $pdf->Row(array("PARES", $pares_totales));
-                $pdf->SetY($Y);
-                $pdf->SetX(231);
-                $pdf->SetAligns($aligns);
-                $pdf->SetWidths(array(15, 30));
             }
 
             /* FIN RESUMEN */

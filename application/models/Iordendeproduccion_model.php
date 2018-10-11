@@ -106,9 +106,11 @@ class Iordendeproduccion_model extends CI_Model {
 
     public function getControlesXOrdenDeProduccionEntreControles($CONTROL_INICIAL, $CONTROL_FINAL, $SEMANA, $ANO) {
         try {
-            $this->db->select("OP.Control, OP.ControlT, E.Foto AS FOTO", false)->from('ordendeproduccion AS OP')
+            $this->db->select("OP.Control, OP.ControlT, E.Foto AS FOTO, "
+                    . "E.Observaciones AS OBSERVACIONES_ESTILO, C.ObservacionesOrdenProduccion AS OBSERVACIONES_COLOR", false)->from('ordendeproduccion AS OP')
                     ->join('ordendeproducciond AS OPD', 'OP.ID = OPD.OrdenDeProduccion')
-                    ->join('estilos AS E', 'OP.Estilo = E.Clave', 'left');
+                    ->join('estilos AS E', 'OP.Estilo = E.Clave', 'left')
+                    ->join('colores AS C', 'OP.Color = C.Clave', 'left');
             if ($CONTROL_INICIAL !== '' && $CONTROL_FINAL !== '') {
                 $this->db->where("OP.ControlT BETWEEN $CONTROL_INICIAL AND $CONTROL_FINAL", null, false);
             }
@@ -118,6 +120,7 @@ class Iordendeproduccion_model extends CI_Model {
 //            if ($ANO !== '') {
 //                $this->db->where("OP.Ano", $ANO);
 //            }
+            $this->db->where('E.Clave = C.Estilo',null,false);
             $this->db->group_by(array('OP.ControlT'));
             $this->db->order_by('ABS(OPD.Departamento)', 'ASC');
             return $this->db->get()->result();
