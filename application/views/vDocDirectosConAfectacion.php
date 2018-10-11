@@ -169,47 +169,57 @@
         btnGuardar.click(function () {
             isValid('pnlTablero');
             if (valido) {
+                swal({
+                    buttons: ["Cancelar", "Aceptar"],
+                    title: 'Estás Seguro?',
+                    text: "Esta acción no se puede revertir",
+                    icon: "warning",
+                    closeOnEsc: false,
+                    closeOnClickOutside: false
+                }).then((action) => {
+                    if (action) {
+                        var tp = pnlTablero.find("#Tp").val();
+                        var prov = pnlTablero.find("#Proveedor").val();
+                        var doc = pnlTablero.find('#Doc').val();
+                        var fecDoc = pnlTablero.find('#FechaDoc').val();
+                        var importe = pnlTablero.find("#Importe").val();
+                        var TipoCont = pnlTablero.find("#TipoCont").val();
+                        var Grupo = pnlTablero.find("#Grupo").val();
+                        var Flete = pnlTablero.find("#Flete").val();
+                        var Moneda = pnlTablero.find("#Moneda").val();
+                        var TipoCambio = pnlTablero.find("#TipoCambio").val();
 
-                var tp = pnlTablero.find("#Tp").val();
-                var prov = pnlTablero.find("#Proveedor").val();
-                var doc = pnlTablero.find('#Doc').val();
-                var fecDoc = pnlTablero.find('#FechaDoc').val();
-                var importe = pnlTablero.find("#Importe").val();
-                var TipoCont = pnlTablero.find("#TipoCont").val();
-                var Grupo = pnlTablero.find("#Grupo").val();
-                var Flete = pnlTablero.find("#Flete").val();
-                var Moneda = pnlTablero.find("#Moneda").val();
-                var TipoCambio = pnlTablero.find("#TipoCambio").val();
+                        var Maq = pnlTablero.find("#Maq").val();
+                        var Sem = pnlTablero.find("#Sem").val();
+                        $.post(master_url + 'onAgregar', {
 
-                var Maq = pnlTablero.find("#Maq").val();
-                var Sem = pnlTablero.find("#Sem").val();
-                $.post(master_url + 'onAgregar', {
-
-                    Tp: tp,
-                    Proveedor: prov,
-                    Doc: doc,
-                    FechaDoc: fecDoc,
-                    Importe: importe,
-                    TipoCont: TipoCont,
-                    Flete: Flete,
-                    Moneda: Moneda,
-                    TipoCambio: TipoCambio,
-                    Grupo: Grupo,
-                    Maq: Maq,
-                    Sem: Sem
-                }).done(function (data) {
-                    onNotifyOld('fa fa-check', 'DOCUMENTO GUARDADO', 'info');
-                    DocumentosDirectos.ajax.reload();
-                    pnlTablero.find("input").val("");
-                    $.each(pnlTablero.find("select"), function (k, v) {
-                        pnlTablero.find("select")[k].selectize.clear(true);
-                    });
-                    pnlTablero.find("#FechaDoc").val(getToday());
-                    pnlTablero.find("#Moneda")[0].selectize.addItem('MXN', true);
-                    pnlTablero.find("#TipoCambio").val('1');
-                    pnlTablero.find("#Tp").focus();
-                }).fail(function (x, y, z) {
-                    console.log(x, y, z);
+                            Tp: tp,
+                            Proveedor: prov,
+                            Doc: doc,
+                            FechaDoc: fecDoc,
+                            Importe: importe,
+                            TipoCont: TipoCont,
+                            Flete: Flete,
+                            Moneda: Moneda,
+                            TipoCambio: TipoCambio,
+                            Grupo: Grupo,
+                            Maq: Maq,
+                            Sem: Sem
+                        }).done(function (data) {
+                            onNotifyOld('fa fa-check', 'DOCUMENTO GUARDADO', 'info');
+                            DocumentosDirectos.ajax.reload();
+                            pnlTablero.find("input").val("");
+                            $.each(pnlTablero.find("select"), function (k, v) {
+                                pnlTablero.find("select")[k].selectize.clear(true);
+                            });
+                            pnlTablero.find("#FechaDoc").val(getToday());
+                            pnlTablero.find("#Moneda")[0].selectize.addItem('MXN', true);
+                            pnlTablero.find("#TipoCambio").val('1');
+                            pnlTablero.find("#Tp").focus();
+                        }).fail(function (x, y, z) {
+                            console.log(x, y, z);
+                        });
+                    }
                 });
             } else {
                 swal('ATENCION', 'Completa los campos requeridos', 'warning');

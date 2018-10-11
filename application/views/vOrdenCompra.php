@@ -303,7 +303,7 @@
 
         /*FUNCIONES X BOTON*/
         btnImprimir.click(function () {
-            //HoldOn.open({theme: 'sk-bounce', message: 'GENERANDO REPORTE...'});
+            HoldOn.open({theme: 'sk-bounce', message: 'GENERANDO REPORTE...'});
             var movs = [];
             movs.push({
                 ID: temp
