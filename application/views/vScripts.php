@@ -911,7 +911,7 @@
         else
             return Millones(data.enteros) + " " + data.letrasMonedaPlural + " " + data.letrasCentavos;
     }
-
+    /* 1 = OK, 2 = ERROR*/
     function onBeep(index) {
         var audio = new Audio('<?php print base_url(); ?>/media/' + index + '.mp3');
         audio.play();

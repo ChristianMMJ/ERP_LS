@@ -35,7 +35,7 @@
                     <span class="fas fa-users"></span>  Empleados
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navEmpleados">
-                    <a class="dropdown-item" href="#"> Pruebas</a>
+                    <a class="dropdown-item" href="<?php print base_url('Empleados.shoes'); ?>"><span class="fa fa-address-book"></span> Empleados</a>
                 </div>
 
 
