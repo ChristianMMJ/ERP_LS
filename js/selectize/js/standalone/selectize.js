@@ -1362,8 +1362,13 @@
 	
 			// store original children and tab index so that they can be
 			// restored when the destroy() method is called.
+                        		var inputPlaceholder = $('<div></div>');
+		$input.replaceWith(inputPlaceholder);
+		var inputChildren = $input.children().detach();
+		inputPlaceholder.replaceWith($input);
 			this.revertSettings = {
-				$children : $input.children().detach(),
+				//$children : $input.children().detach(),
+                                $children : inputChildren,
 				tabindex  : $input.attr('tabindex')
 			};
 	

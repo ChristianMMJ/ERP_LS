@@ -6,7 +6,7 @@
             </div>
             <div class="col-sm-3" align="right">
 
-                <button type="button" class="btn btn-warning btn-sm " id="btnVerArticulos" >
+                <button type="button" class="btn btn-warning btn-sm " id="btnImprimirInv" >
                     <span class="fa fa-file-pdf" ></span> IMPRIMIR INV.
                 </button>
                 <button type="button" class="btn btn-success btn-float" id="btnCerrarInv" data-toggle="tooltip" data-placement="top" title="Cerrar Inventario">
@@ -67,7 +67,12 @@
     var pnlTablero = $("#pnlTablero");
     var btnGuardar = pnlTablero.find('#btnGuardar');
     var btnCerrarInv = pnlTablero.find('#btnCerrarInv');
+    var btnImprimirInv = pnlTablero.find('#btnImprimirInv');
     $(document).ready(function () {
+
+
+
+
         /*FUNCIONES INICIALES*/
         validacionSelectPorContenedor(pnlTablero);
         setFocusSelectToInputOnChange('#Clave', '#Precio', pnlTablero);
@@ -145,6 +150,43 @@
                     pnlTablero.find("#Mes")[0].selectize.focus();
                 });
             }
+        });
+
+        btnImprimirInv.click(function () {
+            //HoldOn.open({theme: 'sk-bounce', message: 'CARGANDO DATOS...'});
+            $.get(master_url + 'onImprimirInvIni').done(function (data) {
+                console.log(data);
+
+                $.fancybox.open({
+                    src: data,
+                    type: 'iframe',
+                    opts: {
+                        afterShow: function (instance, current) {
+                            console.info('done!');
+                        },
+                        iframe: {
+                            // Iframe template
+                            tpl: '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen allowtransparency="true" src=""></iframe>',
+                            preload: true,
+                            // Custom CSS styling for iframe wrapping element
+                            // You can use this to set custom iframe dimensions
+                            css: {
+                                width: "85%",
+                                height: "85%"
+                            },
+                            // Iframe tag attributes
+                            attr: {
+                                scrolling: "auto"
+                            }
+                        }
+                    }
+                });
+                HoldOn.close();
+            }).fail(function (x, y, z) {
+                console.log(x, y, z);
+                HoldOn.close();
+            });
+
         });
     });
     function getDatosByMaterial(mat) {

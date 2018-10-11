@@ -137,7 +137,7 @@
         });
 
         $("select").not('.NotSelectize').selectize({
-            hideSelected: true,
+            hideSelected: false,
             openOnFocus: false,
             score: function (search)
             {
