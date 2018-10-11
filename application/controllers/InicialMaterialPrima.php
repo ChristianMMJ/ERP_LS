@@ -11,7 +11,7 @@ class InicialMaterialPrima extends CI_Controller {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
         $this->load->library('session')->model('InicialMateriaPrima_model')
-                ->helper('invIni_helper')->helper('file');
+                ->helper('InvIni_helper')->helper('file');
     }
 
     public function index() {
