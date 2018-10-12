@@ -22,6 +22,7 @@
                     <a class="dropdown-item" href="<?php print base_url('FichaTecnica/?origen=MATERIALES'); ?>"> Fichas Tecnicas</a>
                     <a class="dropdown-item" href="<?php print base_url('FraccionesXEstilo/?origen=MATERIALES'); ?>"> Fichas Tecnicas Proceso</a>
                     <a class="dropdown-item" href="<?php print base_url('SuelaPlantaCompras.shoes'); ?>">Suelas, Plantas para Compras</a>
+                    <a class="dropdown-item" href="<?php print base_url('ExistenciasSuelasPlantas.shoes'); ?>">Existencias Suelas, Plantas</a>
                 </div>
             </li>
             <li class="nav-item dropdown">

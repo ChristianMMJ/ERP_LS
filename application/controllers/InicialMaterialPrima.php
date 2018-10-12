@@ -85,6 +85,7 @@ class InicialMaterialPrima extends CI_Controller {
         $Grupos = $cm->getGrupos();
         $Articulos = $cm->getArticulos();
 
+
         if (!empty($Grupos)) {
 
             $pdf = new PDF('P', 'mm', array(215.9, 279.4));
