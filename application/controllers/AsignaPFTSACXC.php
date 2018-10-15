@@ -49,6 +49,30 @@ class AsignaPFTSACXC extends CI_Controller {
         }
     }
 
+    public function getRegresos() {
+        try {
+            print json_encode($this->AsignaPFTSACXC_model->getRegresos());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getEmpleados() {
+        try {
+            print json_encode($this->AsignaPFTSACXC_model->getEmpleados());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getParesXControl() {
+        try {
+            print json_encode($this->AsignaPFTSACXC_model->getParesXControl($this->input->get('CONTROL')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getPieles() {
         try {
             print json_encode($this->AsignaPFTSACXC_model->getPieles($this->input->get('SEMANA'), $this->input->get('CONTROL')));
@@ -113,10 +137,84 @@ class AsignaPFTSACXC extends CI_Controller {
                     'Abono' => $x->post('ENTREGA'),
                     'Devolucion' => 0,
                     'Estatus' => 'A',
+                    'TipoMov' => $x->post('TIPO')/* 1 = PIEL, 2 = FORRO, 34 = TEXTIL , 40 = SINTETICO */,
                     'Extra' => $x->post('MATERIAL_EXTRA'),
                     'ExtraT' => ($x->post('MATERIAL_EXTRA') > 0 && $x->post('EXPLOSION') < $x->post('ENTREGA')) ? $x->post('ENTREGA') - $x->post('EXPLOSION') : 0
                 );
                 $this->db->insert('asignapftsacxc', $data);
+                $this->db->query("UPDATE asignapftsacxc AS A INNER JOIN ordendeproduccion AS O ON A.OrdenProduccion = O.ID 
+                    SET A.Estilo = O.Estilo, A.Color = O.Color 
+                    WHERE A.Control LIKE '" . $x->post('CONTROL') . "' 
+                    AND A.OrdenProduccion = " . $x->post('ORDENDEPRODUCCION')
+                        . " AND A.Articulo = " . $x->post('ARTICULO')
+                        . " AND A.Pares = " . $x->post('PARES')
+                        . " AND A.Semana = " . $x->post('SEMANA')
+                        . " AND A.Fraccion = " . $x->post('FRACCION'));
+                if ($this->db->trans_status() === FALSE) {
+                    $this->db->trans_rollback();
+                } else {
+                    $this->db->trans_commit();
+                }
+                /* AGREGAR MOVIMIENTO DE ARTICULO */
+                $datos = array(
+                    'Articulo' => $x->post('ARTICULO'),
+                    'PrecioMov' => 0,
+                    'CantidadMov' => $x->post('EXPLOSION'),
+                    'FechaMov' => Date('d/m/Y'),
+                    'EntradaSalida' => '2'/* 1= ENTRADA, 2 = SALIDA */,
+                    'TipoMov' => 'SXP', /* SXP = SALIDA A PRODUCCION */
+                    'DocMov' => $x->post('ORDENDEPRODUCCION'),
+                    'Tp' => 1,
+                    'Maq' => substr($x->post('CONTROL'), 4, 2),
+                    'Sem' => $x->post('SEMANA'),
+                    'OrdenCompra' => NULL,
+                    'Subtotal' => 0
+                );
+                $this->AsignaPFTSACXC_model->onAgregarMovArt($datos);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onDevolverPielForro() {
+        try {
+            /* AGREGAR MOVIMIENTO DE ARTICULO */
+            $x = $this->input;
+            if ($x->post('REGRESO') > 0) {
+                $datos = array(
+                    'Articulo' => $x->post('ARTICULO'),
+                    'PrecioMov' => 0,
+                    'CantidadMov' => $x->post('REGRESO'),
+                    'FechaMov' => Date('d/m/Y'),
+                    'EntradaSalida' => '1'/* 1= ENTRADA, 2 = SALIDA */,
+                    'TipoMov' => 'EXP', /* EXP = ENTRADA POR PRODUCCION */
+                    'DocMov' => $x->post('ID'),
+                    'Tp' => 3,
+                    'Maq' => 10,
+                    'Sem' => substr($x->post('CONTROL'), 2, 2),
+                    'OrdenCompra' => NULL,
+                    'Subtotal' => 0
+                );
+                $this->AsignaPFTSACXC_model->onAgregarMovArt($datos);
+
+                /* OBTENER ULTIMO REGRESO */
+                $REGRESO = $this->AsignaPFTSACXC_model->onObtenerUltimoRegreso($x->post('ID'));
+                if (isset($REGRESO[0]->REGRESO)) {
+                    $this->db->set('Empleado', $x->post('EMPLEADO'))
+                            ->set('Devolucion', $x->post('REGRESO') + $REGRESO[0]->REGRESO)
+                            ->where('ID', $x->post('ID'))->update('asignapftsacxc');
+                } else {
+                    $this->db->set('Empleado', $x->post('EMPLEADO'))
+                            ->set('Devolucion', $x->post('REGRESO'))
+                            ->where('ID', $x->post('ID'))->update('asignapftsacxc');
+                }
+            } else {
+                if ($x->post("MATERIALMALO") > 0) {
+                    
+                } else {
+                    print "LA CANTIDAD DEVUELTA O DEFECTUOSA HA SIDO ZERO 0";
+                }
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

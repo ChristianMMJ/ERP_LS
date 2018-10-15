@@ -44,6 +44,35 @@ class AsignaPFTSACXC_model extends CI_Model {
         }
     }
 
+    public function getRegresos() {
+        try {
+            return $this->db->select("A.ID, A.Empleado AS Cortador, A.Control, A.Fraccion AS PiFoFraccion, "
+                                    . "A.Estilo, A.Color, A.Pares, A.Articulo, A.Descripcion AS ArticuloT, "
+                                    . "A.Cargo AS Entregado, A.Devolucion AS  Regreso, A.TipoMov AS Tipo")
+                            ->from("asignapftsacxc AS A")->where_in('A.TipoMov', array(1, 2))->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getParesXControl($CONTROL) {
+        try {
+            return $this->db->select("OP.Pares AS PARES")
+                            ->from("ordendeproduccion AS OP")->like('OP.ControlT', $CONTROL)->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getEmpleados() {
+        try {
+            return $this->db->select("E.Numero AS CLAVE, CONCAT(E.Numero,' ', E.PrimerNombre,' ',E.SegundoNombre,' ',E.Paterno,' ', E.Materno) AS EMPLEADO")
+                            ->from("empleados AS E")->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getForros($SEMANA, $CONTROL) {
         try {
             $this->db->select("OP.ID, OP.ControlT AS CONTROL, OPD.Articulo AS ARTICULO_CLAVE, "
@@ -153,6 +182,26 @@ FORMAT(OPD.Cantidad, 3) AS CANTIDAD, `OP`.`Semana` AS `SEMANA`, GROUP_CONCAT(F.C
                             ->where('A.Empleado', 0)
                             ->where('A.Articulo LIKE \'' . $ARTICULO . '\' AND A.Semana LIKE  \'' . $SEMANA . '\' AND A.Control LIKE \'' . $CONTROL . '\' AND A.Fraccion LIKE \'' . $FRACCION . '\' ', null, false)
                             ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onObtenerUltimoRegreso($ID) {
+        try {
+            return $this->db->select("A.Devolucion AS REGRESO")->from("asignapftsacxc AS A")->where('A.ID', $ID)->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onAgregarMovArt($array) {
+        try {
+            $this->db->insert("movarticulos", $array);
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
+            $row = $query->row_array();
+            $LastIdInserted = $row['LAST_INSERT_ID()'];
+            return $LastIdInserted;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
