@@ -122,7 +122,10 @@ class AsignaPFTSACXC extends CI_Controller {
             if (count($DT) > 0) {
                 $this->db->set('Cargo', ( $DT[0]->Cargo + $x->post('ENTREGA')))->where('ID', $DT[0]->ID)->update('asignapftsacxc');
             } else {
+                $PRECIO = $this->AsignaPFTSACXC_model->onObtenerPrecioMaquila($x->post('ARTICULO'));
                 $data = array(
+                    'PrecioProgramado' => $PRECIO[0]->PRECIO_MAQUILA_UNO,
+                    'PrecioActual' => $PRECIO[0]->PRECIO_MAQUILA_UNO,
                     'OrdenProduccion' => $x->post('ORDENDEPRODUCCION'),
                     'Pares' => $x->post('PARES'),
                     'Semana' => $x->post('SEMANA'),
@@ -181,7 +184,7 @@ class AsignaPFTSACXC extends CI_Controller {
         try {
             /* AGREGAR MOVIMIENTO DE ARTICULO */
             $x = $this->input;
-            if ($x->post('REGRESO') > 0) {
+            if ($x->post('REGRESO') >= 0 && $x->post("MATERIALMALO") <= 0) {
                 $datos = array(
                     'Articulo' => $x->post('ARTICULO'),
                     'PrecioMov' => 0,
@@ -211,7 +214,21 @@ class AsignaPFTSACXC extends CI_Controller {
                 }
             } else {
                 if ($x->post("MATERIALMALO") > 0) {
-                    
+                    $datos = array(
+                        'Articulo' => $x->post('ARTICULO'),
+                        'PrecioMov' => 0,
+                        'CantidadMov' => $x->post('REGRESO'),
+                        'FechaMov' => Date('d/m/Y'),
+                        'EntradaSalida' => '2'/* 1= ENTRADA, 2 = SALIDA */,
+                        'TipoMov' => 'EXP', /* EXP = ENTRADA POR PRODUCCION */
+                        'DocMov' => $x->post('ID'),
+                        'Tp' => 3,
+                        'Maq' => 10,
+                        'Sem' => substr($x->post('CONTROL'), 2, 2),
+                        'OrdenCompra' => NULL,
+                        'Subtotal' => 0
+                    );
+                    $this->AsignaPFTSACXC_model->onAgregarMovArt($datos);
                 } else {
                     print "LA CANTIDAD DEVUELTA O DEFECTUOSA HA SIDO ZERO 0";
                 }

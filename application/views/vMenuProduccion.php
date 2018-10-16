@@ -54,8 +54,6 @@
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navReportes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="fa fa-file-pdf"></span> Reportes
                 </a>
-
-
                 <ul class="dropdown-menu" aria-labelledby="navReportes">
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" href="#">Explosiones</a>
@@ -66,12 +64,15 @@
                     <a class="dropdown-item" href="<?php print base_url('OrdenDeProduccion.shoes'); ?>"><span class="fa fa-exclamation-circle fade-infinite"></span> Genera ordenes de producción semana maquila </a>
                     <a class="dropdown-item" href="<?php print base_url('EliminaOrdenDeProduccion.shoes'); ?>"><span class="fa fa-exclamation-circle fade-infinite"></span> Elimina orden de producción </a>
                     <a class="dropdown-item" href="<?php print base_url('IOrdenDeProduccion.shoes'); ?>"><span class="fa fa-exclamation-circle fade-infinite"></span> Imprime orden de producción </a>
-
+                    <div class="dropdown-divider"></div>
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#"><span class="fa fa-cut"></span> Control cortadores</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlConsumosPielForro"><span class="fa fa-puzzle-piece"></span> Consumo piel y forro por cortador</a>
+                        </div>
+                    </li>
                 </ul>
             </li>
-
-
-
             <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navUtilerias" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="fa fa-atlas"></span> Utilerías
@@ -123,3 +124,4 @@
 
 <?php
 $this->load->view('vExplosionSemanal');
+$this->load->view('vConsumoPielForroXCortador');

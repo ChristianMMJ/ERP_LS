@@ -318,6 +318,7 @@
                             </div>
                             <div class="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8">
                                 <input type="text" id="ArticuloT" name="Articulo" class="form-control form-control-sm notEnter" readonly="">
+                                <input type="text" id="Precio" name="Precio" class="form-control form-control-sm d-none" readonly="">
                             </div>
                         </div>
                     </div>
@@ -607,6 +608,7 @@
             if (Semana.val() !== '' && Control.val() !== '' && Fraccion.val() !== '') {
                 var data = Forros.row(this).data();
                 console.log('FORROS', data);
+                OrdenDeProduccion.val(data[0]);
                 ClaveArticulo.val(data[2]);
                 Articulo.val(data[3]);
                 Pares.val(data[11]);
@@ -622,6 +624,7 @@
             if (Semana.val() !== '' && Control.val() !== '' && Fraccion.val() !== '') {
                 var data = Textiles.row(this).data();
                 console.log('TEXTILES', data);
+                OrdenDeProduccion.val(data[0]);
                 ClaveArticulo.val(data[2]);
                 Articulo.val(data[3]);
                 Pares.val(data[11]);
@@ -637,6 +640,7 @@
             if (Semana.val() !== '' && Control.val() !== '' && Fraccion.val() !== '') {
                 var data = Sinteticos.row(this).data();
                 console.log('SINTETICOS', data);
+                OrdenDeProduccion.val(data[0]);
                 ClaveArticulo.val(data[2]);
                 Articulo.val(data[3]);
                 Pares.val(data[11]);
@@ -860,6 +864,7 @@
             mdlRetornaMaterial.find("#IDA").val(data.ID);
             mdlRetornaMaterial.find("#Estilo").val(data.Estilo);
             mdlRetornaMaterial.find("#Color").val(data.Color);
+            mdlRetornaMaterial.find("#AnteriormenteRetorno").val(data.Regreso);
             mdlRetornaMaterial.find("#Regreso").focus();
         });
     }
@@ -1069,7 +1074,6 @@
 
     function onDevolverPielForro() {
         var fields = ["Cortador", "PielForro", "Control"];
-
         var valid = false, ftv = "";
         for (var i = 0; i < fields.length; i++) {
             if (mdlRetornaMaterial.find("#" + fields[i]).val() === '') {
@@ -1079,50 +1083,27 @@
                 valid = true;
             }
         }
-
         if (valid) {
             var entrego = mdlRetornaMaterial.find("#Entrego").val(),
                     retorno = parseFloat(mdlRetornaMaterial.find("#AnteriormenteRetorno").val()) + parseFloat(mdlRetornaMaterial.find("#Regreso").val());
+            console.log(entrego, '|', entrego + ' >=' + retorno, ' ', entrego >= retorno);
+
             if (entrego >= retorno) {
                 if (mdlRetornaMaterial.find("#ID").val() !== '') {
-                    HoldOn.open({
-                        theme: 'sk-bounce',
-                        message: 'DEVOLVIENDO...'
-                    });
-                    $.post(master_url + 'onDevolverPielForro', {
-                        ID: mdlRetornaMaterial.find("#IDA").val(),
-                        EMPLEADO: mdlRetornaMaterial.find("#Cortador").val(),
-                        ARTICULO: mdlRetornaMaterial.find("#Articulo").val(),
-                        PIELFORRO: mdlRetornaMaterial.find("#PielForro").val(),
-                        CONTROL: mdlRetornaMaterial.find("#Control").val(),
-                        ENTREGO: mdlRetornaMaterial.find("#Entrego").val(),
-                        REGRESO: mdlRetornaMaterial.find("#Regreso").val(),
-                        MATERIALMALO: mdlRetornaMaterial.find("#MatMalo").val(),
-                        EXTRA: mdlRetornaMaterial.find("#MaterialExtraRetorna")[0].checked ? 1 : 0
-                    }).done(function (data) {
-                        console.log(data);
-                        swal('ATENCIÓN', 'SE HA RETORNADO MATERIAL', 'success');
-                        Regresos.ajax.reload();
-                        ControlesAsignados.ajax.reload();
-                        mdlRetornaMaterial.find("#Cortador")[0].selectize.open();
-                        mdlRetornaMaterial.find("#Cortador")[0].selectize.focus();
-                    }).fail(function (x, y, z) {
-                        console.log(x.responseText, y, z);
-                        swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO ' + x.responseText, 'warning');
-                    }).always(function () {
-                        HoldOn.close();
-                        mdlRetornaMaterial.find('input').val('');
-                        mdlRetornaMaterial.find("#Cortador")[0].selectize.clear(true);
-                    });
+                    onRetornar();
                 } else {
                     onBeep(2);
                     swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO', 'warning');
                 }
             } else {
-                onBeep(2);
-                swal('ATENCIÓN', 'NO SE PUEDE DEVOLVER MÁS PRODUCTO DEL QUE SE ENTREGO', 'warning').then((value) => {
-                    mdlRetornaMaterial.find("#Regreso").fcous().select();
-                });
+                if (mdlRetornaMaterial.find("#MaterialExtraRetorna")[0].checked) {
+                    onRetornar();
+                } else {
+                    onBeep(2);
+                    swal('ATENCIÓN', 'NO SE PUEDE DEVOLVER MÁS PRODUCTO DEL QUE SE ENTREGO', 'warning').then((value) => {
+                        mdlRetornaMaterial.find("#Regreso").focus().select();
+                    });
+                }
             }
         } else {
             swal('ATENCIÓN', 'DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS', 'warning').then((value) => {
@@ -1136,6 +1117,40 @@
             });
         }
     }
+
+    function onRetornar() {
+        HoldOn.open({
+            theme: 'sk-bounce',
+            message: 'DEVOLVIENDO...'
+        });
+        $.post(master_url + 'onDevolverPielForro', {
+            ID: mdlRetornaMaterial.find("#IDA").val(),
+            EMPLEADO: mdlRetornaMaterial.find("#Cortador").val(),
+            ARTICULO: mdlRetornaMaterial.find("#Articulo").val(),
+            PIELFORRO: mdlRetornaMaterial.find("#PielForro").val(),
+            CONTROL: mdlRetornaMaterial.find("#Control").val(),
+            ENTREGO: mdlRetornaMaterial.find("#Entrego").val(),
+            REGRESO: mdlRetornaMaterial.find("#Regreso").val(),
+            MATERIALMALO: mdlRetornaMaterial.find("#MatMalo").val(),
+            EXTRA: mdlRetornaMaterial.find("#MaterialExtraRetorna")[0].checked ? 1 : 0,
+            PRECIO: mdlRetornaMaterial.find("#Precio").val()
+        }).done(function (data) {
+            console.log(data);
+            Regresos.ajax.reload();
+            ControlesAsignados.ajax.reload();
+            swal('ATENCIÓN', 'SE HA RETORNADO MATERIAL', 'success').then((value) => {
+                mdlRetornaMaterial.find("#Cortador")[0].selectize.open();
+                mdlRetornaMaterial.find("#Cortador")[0].selectize.focus();
+            });
+        }).fail(function (x, y, z) {
+            console.log(x.responseText, y, z);
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO ' + x.responseText, 'warning');
+        }).always(function () {
+            HoldOn.close();
+            mdlRetornaMaterial.find('input').val('');
+            mdlRetornaMaterial.find("#Cortador")[0].selectize.clear(true);
+        });
+    }
 </script> 
 <style>
     td {
@@ -1146,11 +1161,5 @@
     tr:hover td{
         background-color: #3276b1 !important;
         color: #fff;
-    }
-    .mdl-shadow--6dp {
-        box-shadow: 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12), 0 3px 5px -1px rgba(0,0,0,.2);
-    }
-    .mdl-shadow--2dp {
-        box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
     }
 </style>

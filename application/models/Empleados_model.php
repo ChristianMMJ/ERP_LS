@@ -62,6 +62,24 @@ class Empleados_model extends CI_Model {
         }
     }
 
+    public function getEmpleadoByNumero($ID) {
+        try {
+            $this->db->select("E.ID, E.Numero, "
+                            . "CONCAT(E.PrimerNombre,' ',E.SegundoNombre,' ',E.Paterno,' ', E.Materno) AS NOMBRE_COMPLETO, "
+                            . "D.Descripcion AS DEPARTAMENTO", false)
+                    ->from('empleados AS E')->join('Departamentos AS D', 'D.Clave = E.DepartamentoFisico', 'left')->where('E.Numero', $ID);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onAgregar($array) {
         try {
             $this->db->insert("empleados", $array);

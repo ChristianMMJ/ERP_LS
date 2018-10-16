@@ -48,7 +48,7 @@ class AsignaPFTSACXC_model extends CI_Model {
         try {
             return $this->db->select("A.ID, A.Empleado AS Cortador, A.Control, A.Fraccion AS PiFoFraccion, "
                                     . "A.Estilo, A.Color, A.Pares, A.Articulo, A.Descripcion AS ArticuloT, "
-                                    . "A.Cargo AS Entregado, A.Devolucion AS  Regreso, A.TipoMov AS Tipo")
+                                    . "A.Abono AS Entregado, A.Devolucion AS  Regreso, A.TipoMov AS Tipo")
                             ->from("asignapftsacxc AS A")->where_in('A.TipoMov', array(1, 2))->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -170,6 +170,15 @@ FORMAT(OPD.Cantidad, 3) AS CANTIDAD, `OP`.`Semana` AS `SEMANA`, GROUP_CONCAT(F.C
     public function onChecarSemanaValida($S) {
         try {
             return $this->db->select("COUNT(*) AS Semana")->from("semanasproduccion AS S")->where("S.Sem", $S)->where("S.Estatus", "ACTIVO")->order_by('S.Sem', 'ASC')->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onObtenerPrecioMaquila($ARTICULO) {
+        try {
+            return $this->db->select("PM.Precio AS PRECIO_MAQUILA_UNO")->from("preciosmaquilas AS PM")->where("PM.Articulo LIKE '$ARTICULO'",null,false)
+                    ->where("PM.Maquila",1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

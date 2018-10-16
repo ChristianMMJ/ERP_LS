@@ -45,6 +45,9 @@
                         <legend >Empleado</legend>
                     </div>
                     <div class="col-12 col-sm-6 col-md-8" align="right">
+                        <button type="button" class="btn btn-lobo btn-sm" id="btnCredencial" >
+                            <span class="fa fa-id-card" ></span> CREDENCIAL
+                        </button>
                         <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
                             <span class="fa fa-arrow-left" ></span> REGRESAR
                         </button>
@@ -358,12 +361,17 @@
     var pnlTablero = $("#pnlTablero"), pnlDatos = $("#pnlDatos");
     var tblEmpleados = $("#tblEmpleados"), Empleados;
     var Foto = $("#Foto"), FotoPerfil = $("#FotoPerfil");
+    var btnCredencial = $("#btnCredencial");
 
     $(document).ready(function () {
         handleEnter();
         getRecords();
         getEstados();
         getDepartamentos();
+
+        btnCredencial.click(function () {
+            getCredencial();
+        });
 
         pnlDatos.find("#Cel").keydown(function (e) {
             if (e.keyCode === 13) {
@@ -476,9 +484,11 @@
             $('.nav-tabs li:eq(0) a').tab('show');
             pnlTablero.toggleClass('d-none');
             pnlDatos.toggleClass('d-none');
+            btnCredencial.addClass("d-none");
         });
 
         btnNuevo.click(function () {
+            btnCredencial.addClass("d-none");
             FotoPerfil[0].src = '<?php print base_url('img/empleado_sin_foto.png'); ?>';
             nuevo = true;
             pnlDatos.find("input").val("");
@@ -580,13 +590,15 @@
                     FotoPerfil[0].src = data[0].FOTOEMPLEADO;
                 }
                 pnlTablero.addClass("d-none");
-                pnlDatos.removeClass('d-none'); 
+                pnlDatos.removeClass('d-none');
+                btnCredencial.removeClass("d-none");
             }).fail(function (x, y, z) {
                 onBeep(2);
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
                 console.log(x.responseText);
             }).always(function () {
                 HoldOn.close();
+                $('.nav-tabs li:eq(0) a').tab('show');
             });
         });
 
@@ -617,6 +629,39 @@
             console.log(x.responseText);
         });
     }
+
+    function getCredencial() {
+        $.getJSON(master_url + 'getCredencial', {ID: $("#Numero").val()}).done(function (data, x, jq) {
+            $.fancybox.open({
+                src: data.URL,
+                type: 'iframe',
+                opts: {
+                    afterShow: function (instance, current) {
+                        console.info('done!');
+                    },
+                    iframe: {
+                        // Iframe template
+                        tpl: '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen allowtransparency="true" src=""></iframe>',
+                        preload: true,
+                        // Custom CSS styling for iframe wrapping element
+                        // You can use this to set custom iframe dimensions
+                        css: {
+                            width: "100%",
+                            height: "100%"
+                        },
+                        // Iframe tag attributes
+                        attr: {
+                            scrolling: "auto"
+                        }
+                    }
+                }
+            });
+        }
+        ).fail(function (x, y, z) {
+            console.log(x.responseText);
+            swal('ATENCIÓN', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'error');
+        });
+    }
 </script>
 <style>
     .nav-tabs {
@@ -629,5 +674,10 @@
     }
     .nav-tabs .nav-link.active, .nav-tabs .nav-link.active:focus, .nav-tabs .nav-link.active:hover, .nav-tabs .nav-item.open .nav-link, .nav-tabs .nav-item.open .nav-link:focus, .nav-tabs .nav-item.open .nav-link:hover {
         color: #2196F3;
+    }
+    .btn-lobo{
+        color: #fff;
+        background-color: #795548;
+        border-color: #4E342E;
     }
 </style>
