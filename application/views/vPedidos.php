@@ -207,7 +207,7 @@
             <div class="card  m-3 ">
                 <div class="card-body">
                     <div class="row">
-                        <table id="tblPedidoDetalle" class="table table-hover">
+                        <table id="tblPedidoDetalle" class="table table-hover"  style="width: 100% !important;">
                             <thead>
                                 <tr>
                                     <th scope="col">ID</th><!--0-->
@@ -260,8 +260,8 @@
                                 </tr>
                             </thead>
                             <tbody></tbody>
-                        </table>
-                    </div>
+                        </table> 
+                    </div><!--ROW-->
                     <div class="row mt-3">
                         <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 font-weight-bold "></div>
 
@@ -310,8 +310,8 @@
 
     var Selectizer = function () {
         return {
-              loadOptions: function (query, callback) {
-                  console.log(query);
+            loadOptions: function (query, callback) {
+                console.log(query);
                 if (query.length >= 2) {
                     $.getJSON(this.settings.remoteUrl, {
                         Estilo: query
@@ -330,14 +330,14 @@
             renderOptions: function (data, escape) {
                 return '<div class="list-group" style="border-bottom: 0.5px solid #000;">' +
                         '<div class="d-flex w-100 justify-content-between">' +
-                        '<span class="text-dark" style="font-size: 14px;"><strong>' + data.Clave + '</strong></span>' + 
+                        '<span class="text-dark" style="font-size: 14px;"><strong>' + data.Clave + '</strong></span>' +
                         '</div>' +
                         '<span class="text-info" style="font-size: 13px;"><strong>' + data.Estilo + '</strong></span>' +
                         '</div>';
             }
         };
     }();
-    
+
     $(document).ready(function () {
         init();
         handleEnter();
@@ -359,7 +359,7 @@
             remoteUrl: master_url + 'getEstilos',
             load: Selectizer.loadOptions
         });
-        
+
         btnAgregarDetalle.click(function () {
             if (pedido_valido) {
                 pnlDatos.find("#Recibido")[0].selectize.enable();
@@ -1015,14 +1015,16 @@
                 }
             ],
             language: lang,
+            select: true,
             "autoWidth": true,
             "colReorder": true,
-            "displayLength": 50,
-            "scrollY": 300,
-            "scrollX": false,
+            "displayLength": 99,
             "bLengthChange": false,
             "deferRender": true,
+            "scrollCollapse": false,
             "bSort": true,
+            "scrollY": "500px",
+            "scrollX": true,
             "createdRow": function (row, data, index) {
                 $.each($(row).find("td"), function (k, v) {
                     var c = $(v);
