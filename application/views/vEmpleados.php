@@ -1,11 +1,14 @@
 <div class="card m-3 animated fadeIn" id="pnlTablero">
     <div class="card-body ">
         <div class="row">
-            <div class="col-sm-6 float-left">
+            <div class="col-sm-2 float-left">
                 <legend class="float-left">Empleados</legend>
             </div>
-            <div class="col-sm-6 float-right" align="right">
-                <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
+            <div class="col-sm-9">
+                <input type="text" id="NumeroEmpleado" name="NumeroEmpleado" class="form-control form-control-sm noBorders notEnter numbersOnly" autofocus="" placeholder="####">
+            </div>
+            <div class="col-sm-1 float-right" align="right">
+                <button type="button" class="btn btn-primary selectNotEnter" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
             </div>
         </div>
         <div class="card-block mt-4">
@@ -102,7 +105,7 @@
                                     </div>
                                     <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                                         <label for="SegundoNombre" >2do Nombre*</label>
-                                        <input type="text" id="SegundoNombre" name="SegundoNombre" class="form-control form-control-sm" placeholder="" required="">
+                                        <input type="text" id="SegundoNombre" name="SegundoNombre" class="form-control form-control-sm" placeholder="" >
                                     </div>
                                     <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                                         <label for="Paterno" >Paterno*</label>
@@ -284,7 +287,7 @@
                                     </div>
                                     <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
                                         <label for="Infonavit" >Infonavit*</label>
-                                        <input type="text" id="Infonavit" name="Sueldo" class="form-control form-control-sm numbersOnly" required="">
+                                        <input type="text" id="Infonavit" name="Infonavit" class="form-control form-control-sm numbersOnly" required="">
                                     </div>
                                     <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
                                         <label for="Ahorro" >Ahorro*</label>
@@ -362,12 +365,40 @@
     var tblEmpleados = $("#tblEmpleados"), Empleados;
     var Foto = $("#Foto"), FotoPerfil = $("#FotoPerfil");
     var btnCredencial = $("#btnCredencial");
+    var NumeroEmpleado = pnlTablero.find("#NumeroEmpleado");
 
     $(document).ready(function () {
+
+
         handleEnter();
         getRecords();
         getEstados();
         getDepartamentos();
+        pnlTablero.find("#tblEmpleados_filter").find('input[type="search"]').addClass('selectNotEnter');
+        NumeroEmpleado.unbind();
+        NumeroEmpleado.on('keydown keyup', function (e) {
+            tblEmpleados.DataTable().column(1).search($(this).val()).draw();
+            if (e.keyCode === 13) {
+                tblEmpleados.DataTable().column(1).search("^" + $(this).val() + "$", true, false, true).draw();
+                var row_count = Empleados.page.info().recordsDisplay;
+                if (row_count > 0) {
+                    var EX = 0;
+                    $.each(tblEmpleados.find("tbody > tr"), function (k, v) {
+                        var row = Empleados.row($(this)).data();
+                        EX = row.ID;
+
+                        return false;
+                    });
+                    getEmpleadoByID(EX);
+                } else {
+                    NumeroEmpleado.focus().select();
+                }
+            } else {
+                if ($(this).val().length <= 0) {
+                    tblEmpleados.DataTable().column(1).search("").draw();
+                }
+            }
+        });
 
         btnCredencial.click(function () {
             getCredencial();
@@ -485,6 +516,8 @@
             pnlTablero.toggleClass('d-none');
             pnlDatos.toggleClass('d-none');
             btnCredencial.addClass("d-none");
+            NumeroEmpleado.focus().select();
+
         });
 
         btnNuevo.click(function () {
@@ -569,39 +602,47 @@
             $.each(pnlDatos.find("input[type='checkbox']"), function (k, v) {
                 $(v)[0].checked = false;
             });
-            $.getJSON(master_url + 'getEmpleadoByID', {ID: temp}).done(function (data) {
-                console.log(data);
-                pnlDatos.find("input").val("");
-                $.each(pnlDatos.find("select"), function (k, v) {
-                    pnlDatos.find("select")[k].selectize.clear(true);
-                });
-                $.each(data[0], function (k, v) {
-                    pnlDatos.find("[name='" + k + "']").val(v);
-                    if (pnlDatos.find("[name='" + k + "']").is('select')) {
-                        pnlDatos.find("[name='" + k + "']")[0].selectize.addItem(v, true);
-                    }
-                    if (pnlDatos.find("[name='" + k + "']").is(':checkbox')) {
-                        if (v !== null && v !== 'null') {
-                            pnlDatos.find("[name='" + k + "']")[0].checked = parseInt(v);
-                        }
-                    }
-                });
-                if (data[0].FOTOEMPLEADO !== null) {
-                    FotoPerfil[0].src = data[0].FOTOEMPLEADO;
-                }
-                pnlTablero.addClass("d-none");
-                pnlDatos.removeClass('d-none');
-                btnCredencial.removeClass("d-none");
-            }).fail(function (x, y, z) {
-                onBeep(2);
-                swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-                console.log(x.responseText);
-            }).always(function () {
-                HoldOn.close();
-                $('.nav-tabs li:eq(0) a').tab('show');
-            });
+            getEmpleadoByID(temp);
         });
 
+    }
+
+    function getEmpleadoByID(XXX) {
+        $.getJSON(master_url + 'getEmpleadoByID', {ID: XXX}).done(function (data) {
+            console.log(data);
+            var dtm = data[0];
+            pnlDatos.find("input").val("");
+            $.each(pnlDatos.find("select"), function (k, v) {
+                pnlDatos.find("select")[k].selectize.clear(true);
+            });
+            $.each(data[0], function (k, v) {
+                pnlDatos.find("[name='" + k + "']").val(v);
+                if (pnlDatos.find("[name='" + k + "']").is('select')) {
+                    pnlDatos.find("[name='" + k + "']")[0].selectize.addItem(v, true);
+                }
+                if (pnlDatos.find("[name='" + k + "']").is(':checkbox')) {
+                    if (v !== null && v !== 'null') {
+                        pnlDatos.find("[name='" + k + "']")[0].checked = parseInt(v);
+                    }
+                }
+            });
+            var ext = getExt(dtm.FOTOEMPLEADO);
+            if (ext === "gif" || ext === "jpg" || ext === "png" || ext === "jpeg" || ext === "GIF") {
+                FotoPerfil[0].src = base_url + dtm.FOTOEMPLEADO;
+            } else {
+                FotoPerfil[0].src = '<?php print base_url('img/empleado_sin_foto.png'); ?>';
+            }
+            pnlTablero.addClass("d-none");
+            pnlDatos.removeClass('d-none');
+            btnCredencial.removeClass("d-none");
+        }).fail(function (x, y, z) {
+            onBeep(2);
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        }).always(function () {
+            HoldOn.close();
+            $('.nav-tabs li:eq(0) a').tab('show');
+        });
     }
 
     function onCambiarImagen(e) {
@@ -646,8 +687,8 @@
                         // Custom CSS styling for iframe wrapping element
                         // You can use this to set custom iframe dimensions
                         css: {
-                            width: "100%",
-                            height: "100%"
+                            width: "50%",
+                            height: "50%"
                         },
                         // Iframe tag attributes
                         attr: {
@@ -679,5 +720,15 @@
         color: #fff;
         background-color: #795548;
         border-color: #4E342E;
+    }
+    .noBorders{
+        border: 1px solid #ffffff; 
+        font-size: 14px;
+        font-weight: bold;
+    }
+    .noBorders:focus{
+        box-shadow: none;
+        -webkit-box-shadow: none;
+        border-color: #ffffff;
     }
 </style>

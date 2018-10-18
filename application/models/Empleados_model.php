@@ -67,7 +67,7 @@ class Empleados_model extends CI_Model {
             $this->db->select("E.ID, E.Numero, "
                             . "CONCAT(E.PrimerNombre,' ',E.SegundoNombre,' ',E.Paterno,' ', E.Materno) AS NOMBRE_COMPLETO, "
                             . "D.Descripcion AS DEPARTAMENTO", false)
-                    ->from('empleados AS E')->join('Departamentos AS D', 'D.Clave = E.DepartamentoFisico', 'left')->where('E.Numero', $ID);
+                    ->from('empleados AS E')->join('departamentos AS D', 'D.Clave = E.DepartamentoFisico', 'left')->where('E.Numero', $ID);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY

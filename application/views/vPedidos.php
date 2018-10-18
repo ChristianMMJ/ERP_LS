@@ -104,7 +104,7 @@
                     <div class="row">
                         <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
                             <label for="Estilo" >Estilo*</label>
-                            <select class="form-control form-control-sm" id="Estilo" name="Estilo" required placeholder="">
+                            <select class="form-control form-control-sm NotSelectize" id="Estilo" name="Estilo" required placeholder="">
                             </select>
                         </div>
                         <div class="col-12 col-sm-4 col-md-4 col-lg-2 col-xl-2">
@@ -308,10 +308,58 @@
     var mdlAviso = $("#mdlAviso");
     var btnAgregarDetalle = pnlDatos.find("#btnAgregarDetalle");
 
+    var Selectizer = function () {
+        return {
+              loadOptions: function (query, callback) {
+                  console.log(query);
+                if (query.length >= 2) {
+                    $.getJSON(this.settings.remoteUrl, {
+                        Estilo: query
+                    }).done(function (data, x, jq) {
+                        console.log(data);
+                        callback(data);
+                    }).fail(function (x, y, z) {
+                        callback();
+                        console.log(x, y, z);
+                    }).always(function () {
+                    });
+                } else {
+                    return callback();
+                }
+            },
+            renderOptions: function (data, escape) {
+                return '<div class="list-group" style="border-bottom: 0.5px solid #000;">' +
+                        '<div class="d-flex w-100 justify-content-between">' +
+                        '<span class="text-dark" style="font-size: 14px;"><strong>' + data.Clave + '</strong></span>' + 
+                        '</div>' +
+                        '<span class="text-info" style="font-size: 13px;"><strong>' + data.Estilo + '</strong></span>' +
+                        '</div>';
+            }
+        };
+    }();
+    
     $(document).ready(function () {
         init();
         handleEnter();
 
+        pnlDatos.find('#Estilo').selectize({
+            valueField: 'Clave',
+            labelField: 'Estilo',
+            searchField: ['Estilo', 'Clave'],
+            create: false,
+            maxItems: 1,
+            sortField: [
+                {
+                    field: 'Clave',
+                    direction: 'asc'
+                }
+            ],
+            loadingClass: 'loading',
+            render: {option: Selectizer.renderOptions},
+            remoteUrl: master_url + 'getEstilos',
+            load: Selectizer.loadOptions
+        });
+        
         btnAgregarDetalle.click(function () {
             if (pedido_valido) {
                 pnlDatos.find("#Recibido")[0].selectize.enable();
@@ -824,12 +872,11 @@
         });
     });
 
-
     function init() {
         getRecords();
         getOptions("getClientes", "Cliente", "Clave", "Cliente"); //Clientes
         getOptions("getAgentes", "Agente", "Clave", "Agente"); //Agentes
-        getOptions("getEstilos", "Estilo", "Clave", "Estilo"); //Estilos
+        //getOptions("getEstilos", "Estilo", "Clave", "Estilo"); //Estilos
         getOptions("getMaquilas", "Maquila", "Clave", "Maquila"); //Maquilas
     }
 

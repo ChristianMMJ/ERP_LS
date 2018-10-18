@@ -72,7 +72,6 @@ class IOrdenDeProduccion extends CI_Controller {
             $pdf->AddFont('Calibri', 'I');
             $pdf->AddFont('Calibri', 'B');
             $pdf->AddFont('Calibri', 'BI');
-
             $CONTROLES = $this->Iordendeproduccion_model->getControlesXOrdenDeProduccionEntreControles($INICIO, $FIN, $SEMANA, $ANO);
             foreach ($CONTROLES as $kc => $vc) {
                 $OP = $this->Iordendeproduccion_model->getOrdenDeProduccionEntreControles($vc->ControlT, $vc->ControlT, $SEMANA, $ANO);
@@ -314,13 +313,17 @@ class IOrdenDeProduccion extends CI_Controller {
                     $pdf->SetX(5);
                     $pdf->Cell(205, 5, utf8_decode($vc->OBSERVACIONES_COLOR), 0/* BORDE */, 1/* SALTO SI */, 'C', 0);
                 }
-                /* END FOREACH PIEZAS */
+                /* END FOREACH PIEZAS */ 
                 if ($altura_final > 260) {
-                    $pdf->AddPage();
-                    $pdf->SetAutoPageBreak(true, 10);
-                    $pdf->Image(base_url($vc->FOTO), /* LEFT */ 80, $pdf->GetY() + ($OE > 1 ? ($OC > 1) ? 2 : 0 : 0) /* TOP */, /* ANCHO */ $width_final);
+                    if ($vc->FOTO !== NULL && $vc->FOTO !== null && $vc->FOTO !== 'NULL') {
+                        $pdf->AddPage();
+                        $pdf->SetAutoPageBreak(true, 10);
+                        $pdf->Image(base_url($vc->FOTO), /* LEFT */ 80, $pdf->GetY() + ($OE > 1 ? ($OC > 1) ? 2 : 0 : 0) /* TOP */, /* ANCHO */ $width_final);
+                    }
                 } else {
-                    $pdf->Image(base_url($vc->FOTO), /* LEFT */ 80, $pdf->GetY() + ($OE > 1 ? ($OC > 1) ? 2 : 0 : 0)/* TOP */, /* ANCHO */ $width_final);
+                    if ($vc->FOTO !== NULL && $vc->FOTO !== null && $vc->FOTO !== 'NULL') {
+                        $pdf->Image(base_url($vc->FOTO), /* LEFT */ 80, $pdf->GetY() + ($OE > 1 ? ($OC > 1) ? 2 : 0 : 0)/* TOP */, /* ANCHO */ $width_final);
+                    }
                 }
                 /* TOTALES */
                 $Y = $pdf->GetY();

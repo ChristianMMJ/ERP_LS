@@ -98,7 +98,8 @@ class Pedidos_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-    public function onComprobarSemanaMaquila($M,$S) {
+
+    public function onComprobarSemanaMaquila($M, $S) {
         try {
             return $this->db->select("COUNT(*) AS EXISTE", false)
                             ->from('semanasproduccioncerradas AS SPC')
@@ -270,15 +271,16 @@ class Pedidos_model extends CI_Model {
         }
     }
 
-    public function getEstilos() {
+    public function getEstilos($CLAVE) {
         try {
             $this->db->query("set sql_mode=''"); //FULL GROUP
             return $this->db->select("E.Clave AS Clave,CONCAT(E.Clave,'-',IFNULL(E.Descripcion,'')) AS Estilo")
                             ->from("estilos AS E")
                             ->join('fichatecnica AS FT', 'FT.Estilo = E.Clave')
+                            ->join('fraccionesxestilo AS FE', 'FE.Estilo = E.Clave')
+                            ->where("E.Clave", $CLAVE)
                             ->where("E.Estatus", "ACTIVO")
-                            ->group_by('FT.Estilo')
-                            ->order_by('ABS(E.Clave)', 'ASC')
+                            ->group_by('FT.Estilo') 
                             ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -321,7 +323,7 @@ class Pedidos_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-    
+
     public function getColoresXEstilo($Estilo) {
         try {
             return $this->db->select("CAST(C.Clave AS SIGNED) AS Clave, CONCAT(C.Clave,'-', C.Descripcion) AS Color", false)

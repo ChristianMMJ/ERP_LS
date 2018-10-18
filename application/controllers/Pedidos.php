@@ -133,7 +133,7 @@ class Pedidos extends CI_Controller {
 
     public function getEstilos() {
         try {
-            print json_encode($this->Pedidos_model->getEstilos());
+            print json_encode($this->Pedidos_model->getEstilos($this->input->get('Estilo')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
