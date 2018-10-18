@@ -10,59 +10,29 @@ class EntradasAlmacenMP_model extends CI_Model {
         parent::__construct();
     }
 
-    public function getRecords() {
+    public function getRecords($doc) {
         try {
-            return $this->db->select("OC.ID AS ID, "
-                                    . "OC.Tp AS Tp, "
-                                    . "CASE WHEN OC.Tipo = '10' THEN '10 PIEL Y FORRO' "
-                                    . "ELSE '90 PELETERIA' END AS Tipo,"
-                                    . "OC.Folio AS Folio, "
-                                    . "OC.Ano AS Ano, "
-                                    . "OC.Sem AS Sem, "
-                                    . "OC.Maq AS Maq, "
-                                    . "CASE WHEN OC.Tp ='1' THEN  CONCAT(P.Clave,'-',P.NombreF) ELSE "
-                                    . "CONCAT(P.Clave,'-',P.NombreI) END AS Proveedor, "
-                                    . "OC.FechaOrden AS Fecha, "
-                                    . "CASE WHEN OC.Estatus = 'BORRADOR' THEN "
-                                    . "CONCAT('<span class=''badge badge-info''>','EN CAPTURA','</span>') "
-                                    . "ELSE "
-                                    . "CONCAT('<span class=''badge badge-success''>','ACTIVA','</span>') "
-                                    . "END AS Estatus "
+            return $this->db->select("MA.ID, A.Clave, A.Descripcion, MA.CantidadMov, MA.Maq, MA.TipoMov, "
+                                    . 'CONCAT(\'<span class="fa fa-trash fa-lg" onclick="onEliminarDetalleByID(\',MA.ID,\')">\',\'</span>\') AS Eliminar'
                                     . "", false)
-                            ->from("ordencompra AS OC")
-                            ->join("proveedores AS P", 'P.Clave =  OC.Proveedor')
-                            ->where_in('OC.Estatus', array('ACTIVA', 'BORRADOR'))
-                            ->where_in('OC.Tipo', array('90', '10'))
+                            ->from("movarticulos MA")
+                            ->join("articulos A", 'ON A.Clave = MA.Articulo')
+                            ->where('MA.DocMov', $doc)
                             ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getFolio($tp) {
+    public function getDatosByArticulo($Mat, $Maq) {
         try {
-            return $this->db->select("CONVERT(A.Folio, UNSIGNED INTEGER) AS Folio")->from("ordencompra AS A")
-//                            ->where_in("A.Estatus", array("ACTIVO", "CERRADA"))
-                            ->where("A.Tp", $tp)
-                            ->order_by("Folio", "DESC")
-                            ->limit(1)
-                            ->get()
-                            ->result();
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function getPrecioCompraByArticuloByProveedor($Articulo, $Proveedor) {
-        try {
-            $this->db->select(" "
-                            . "CASE WHEN  A.ProveedorUno = '" . $Proveedor . "' THEN A.PrecioUno "
-                            . "WHEN  A.ProveedorDos = '" . $Proveedor . "' THEN A.PrecioDos "
-                            . "WHEN  A.ProveedorTres = '" . $Proveedor . "' THEN A.PrecioTres "
-                            . "END AS Precio "
-                            . " ", false)
-                    ->from("articulos AS A")
-                    ->where('A.Clave', $Articulo);
+            $this->db->select("PM.Precio, U.Descripcion AS Unidad "
+                            . "")
+                    ->from("articulos AS M")
+                    ->join("unidades AS U", 'ON U.Clave = M.UnidadMedida')
+                    ->join("preciosmaquilas AS PM", 'ON M.Clave = PM.Articulo')
+                    ->where("M.Clave", $Mat)
+                    ->where("PM.Maquila", $Maq);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -76,25 +46,12 @@ class EntradasAlmacenMP_model extends CI_Model {
         }
     }
 
-    public function getArticuloByDeptoByProveedor($Depto, $Proveedor) {
+    public function getArticulos() {
         try {
-            $this->db->select(" CONVERT(A.Clave, UNSIGNED INTEGER) AS CLAVE , CONCAT(A.Clave,'-',A.Descripcion) AS Articulo"
-                            . " ", false)
-                    ->from("articulos AS A")
-                    ->where('A.Departamento', $Depto)
-                    ->where('A.ProveedorUno', $Proveedor)
-                    ->or_where('A.ProveedorDos', $Proveedor)
-                    ->or_where('A.ProveedorTres', $Proveedor)
-                    ->where('A.Estatus', 'ACTIVO')
-                    ->order_by('CLAVE', 'ASC');
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-//            print $str;
-            $data = $query->result();
-            return $data;
+            return $this->db->select(" CAST(D.Clave AS SIGNED ) AS ID ,CONCAT(D.Clave,'-',D.Descripcion) AS Articulo")
+                            ->from("articulos AS D")
+                            ->order_by('ID', 'ASC')
+                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -116,48 +73,9 @@ class EntradasAlmacenMP_model extends CI_Model {
         }
     }
 
-    public function onVerificarSemanaProdCerrada($Ano, $Maq, $Sem) {
-        try {
-            $this->db->select("G.Estatus")->from("semanasproduccioncerradas AS G")
-                    ->where("G.Ano", $Ano)
-                    ->where("G.Maq", $Maq)
-                    ->where("G.Sem", $Sem);
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-            //print $str;
-            $data = $query->result();
-            return $data;
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function onVerificarSemanaProdDepartamentoCerrada($Ano, $Maq, $Sem, $Depto) {
-        try {
-            $this->db->select("G.Estatus")->from("semanasproduccioncerradasdepartamento AS G")
-                    ->where("G.Departamento", $Depto)
-                    ->where("G.Ano", $Ano)
-                    ->where("G.Maq", $Maq)
-                    ->where("G.Sem", $Sem);
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-            //print $str;
-            $data = $query->result();
-            return $data;
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
     public function onAgregar($array) {
         try {
-            $this->db->insert("ordencompra", $array);
+            $this->db->insert("movarticulos", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             $LastIdInserted = $row['LAST_INSERT_ID()'];
@@ -167,9 +85,34 @@ class EntradasAlmacenMP_model extends CI_Model {
         }
     }
 
-    public function onEliminar($ID) {
+    public function onEliminarDetalleByID($ID) {
         try {
-            $this->db->set('Estatus', 'CANCELADA')->where('ID', $ID)->update("ordencompra");
+            $this->db->where('ID', $ID);
+            $this->db->delete("movarticulos");
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onImprimirReporte($doc) {
+        try {
+            return $this->db->select("A.Clave, "
+                                    . "A.Descripcion, "
+                                    . "MA.FechaMov, "
+                                    . "MA.CantidadMov, "
+                                    . "MA.Sem , "
+                                    . "MA.Maq, "
+                                    . "MA.PrecioMov, "
+                                    . "MA.Subtotal, "
+                                    . "MA.TipoMov, "
+                                    . "MA.DocMov,"
+                                    . "U.Descripcion AS Unidad "
+                                    . "", false)
+                            ->from("movarticulos MA")
+                            ->join("articulos A", 'ON A.Clave = MA.Articulo')
+                            ->join("unidades U", 'ON U.Clave = A.UnidadMedida')
+                            ->where('MA.DocMov', $doc)
+                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

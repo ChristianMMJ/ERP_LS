@@ -106,7 +106,7 @@
                 </div>
                 <div class="col-12 col-sm-6 col-md-1 col-xl-1">
                     <label for="" >Maq.*</label>
-                    <input type="text" class="form-control form-control-sm" maxlength="3" id="Maq" name="Maq" required="">
+                    <input type="text" class="form-control form-control-sm numbersOnly" maxlength="3" id="Maq" name="Maq" required="">
                 </div>
                 <div class="col-12 col-sm-6 col-md-1 col-xl-1">
                     <label for="" >Año*</label>

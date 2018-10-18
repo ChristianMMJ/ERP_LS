@@ -69,7 +69,7 @@ class Actualizaprecioordencompra_model extends CI_Model {
                         . "and oc.Tp = '$Tp' "
                         . "and oc.Folio = '$OC' "
                         . "and oc.Estatus IN('ACTIVA') "
-                        . "join articulos a on ocd.Articulo = a.Clave "
+                        . "join articulos A on ocd.Articulo = A.Clave "
                         . "set ocd.Precio = CASE  "
                         . "WHEN A.ProveedorUno = '$Prov' THEN A.PrecioUno "
                         . "WHEN A.ProveedorDos = '$Prov' THEN A.PrecioDos "

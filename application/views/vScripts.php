@@ -13,7 +13,32 @@
     var isMobile = false;
     var seg = <?php print (isset($_SESSION["SEG"]) ? $_SESSION["SEG"] : 0); ?>;
 
-
+    function onImprimirReporteFancy(url) {
+        $.fancybox.open({
+            src: url,
+            type: 'iframe',
+            opts: {
+                afterShow: function (instance, current) {
+                    console.info('done!');
+                },
+                iframe: {
+                    // Iframe template
+                    tpl: '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen allowtransparency="true" src=""></iframe>',
+                    preload: true,
+                    // Custom CSS styling for iframe wrapping element
+                    // You can use this to set custom iframe dimensions
+                    css: {
+                        width: "85%",
+                        height: "85%"
+                    },
+                    // Iframe tag attributes
+                    attr: {
+                        scrolling: "auto"
+                    }
+                }
+            }
+        });
+    }
 
     function mobilecheck() {
         (function (a) {
@@ -654,7 +679,9 @@
                     , next
                     ;
             if (e.keyCode === 13) {
-                focusable = form.find('input,a,select,button,textarea').filter(':visible:enabled').not('.disabledForms').not('.selectNotEnter');
+                focusable = form.find('input,a,select,button,textarea')
+                        .filter(':visible:enabled')
+                        .not('.disabledForms').not('.selectNotEnter').not(':input[readonly]');
                 next = focusable.eq(focusable.index(this) + 1);
                 if (next.length) {
                     next.focus();
@@ -663,7 +690,8 @@
                 return false;
             }
             if (e.keyCode === 9) {
-                focusable = form.find('input,a,select,button,textarea').filter(':visible:enabled').not('.disabledForms');
+                focusable = form.find('input,a,select,button,textarea').filter(':visible:enabled')
+                        .not('.disabledForms').not('.selectNotEnter').not(':input[readonly]');
                 next = focusable.eq(focusable.index(this) + 1);
                 if (next.length) {
                     next.focus();

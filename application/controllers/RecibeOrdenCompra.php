@@ -225,7 +225,7 @@ class RecibeOrdenCompra extends CI_Controller {
             $pdf = new PDF('P', 'mm', array(215.9, 279.4));
 
             $pdf->AddPage();
-            $pdf->SetAutoPageBreak(true, 26.9);
+            $pdf->SetAutoPageBreak(true, 8);
 
             $pdf->SetFont('Calibri', 'BI', 10);
             $pdf->SetX(10);

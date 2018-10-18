@@ -16,7 +16,7 @@
                 <input type="text" class="form-control form-control-sm  numbersOnly column_filter" id="col3_filter" autofocus maxlength="2" >
             </div>
             <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1" data-column="1">
-                <label>Ano</label>
+                <label>Año</label>
                 <input type="text" class="form-control form-control-sm  numbersOnly column_filter" id="col1_filter" maxlength="4" >
             </div>
             <div class="col-6 col-sm-5 col-md-5 col-lg-3 col-xl-3" data-column="2">
@@ -284,8 +284,8 @@
             }).then((value) => {
                 if (value) {
                     $.post(master_url + 'onImprimirOrdenCompra', {ID: temp}).done(function (data) {
-                        onNotifyOld('fa fa-check', 'FIN 49, GENERADO', 'success');
-                        window.open(data, '_blank');
+                        onNotifyOld('fa fa-check', 'REPORTE GENERADO', 'success');
+                        onImprimirReporteFancy(data);
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     });

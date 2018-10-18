@@ -9,9 +9,7 @@
                 <button type="button" class="btn btn-warning btn-sm " id="btnImprimirInv" >
                     <span class="fa fa-file-pdf" ></span> IMPRIMIR INV.
                 </button>
-                <button type="button" class="btn btn-success btn-float" id="btnCerrarInv" data-toggle="tooltip" data-placement="top" title="Cerrar Inventario">
-                    <i class="fa fa-check"></i>
-                </button>
+
             </div>
         </div>
         <div class="row" id="Encabezado">
@@ -57,6 +55,12 @@
                     <option value="Nov">11 NOVIEMBRE</option>
                     <option value="Dic">12 DICIEMBRE</option>
                 </select>
+            </div>
+            <div class="col-6 col-sm-5 col-md-5 col-lg-2 col-xl-1">
+                <label for="" >&nbsp;</label>
+                <button type="button" class="btn btn-success btn-sm" id="btnCerrarInv">
+                    <i class="fa fa-check"></i> CERRAR INVENTARIO
+                </button>
             </div>
 
         </div>
