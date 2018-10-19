@@ -2,57 +2,67 @@
     <div class="card-body ">
         <div class="row">
             <div class="col-sm-9 float-left">
-                <legend class="float-left">Entradas Al Almacén de Materia Prima</legend>
+                <legend class="float-left" id="Titulo">Salidas Al Almacén de Materia Prima
+                    <span class="badge badge-danger" >Mat. a entregar</span>
+                    <span class="badge badge-info" id="EntregaMat"></span>
+                </legend>
             </div>
             <div class="col-sm-3" align="right">
                 <button type="button" class="btn btn-info btn-sm " id="btnNuevo" >
                     <span class="fa fa-plus" ></span> NUEVO
                 </button>
-                <!--                <button type="button" class="btn btn-warning btn-sm " id="btnImprimirDoc" >
-                                    <span class="fa fa-file-pdf" ></span> IMPRIMIR
-                                </button>-->
             </div>
         </div>
         <div class="row" id="Encabezado">
-            <div class="col-12 col-sm-6 col-md-1 col-xl-1">
+            <div class="col-2 col-sm-2 col-md-1 col-xl-1">
                 <label for="" >Maq.*</label>
                 <input type="text" class="form-control form-control-sm numbersOnly" maxlength="3" id="Maq" name="Maq" required="">
             </div>
-            <div class="col-12 col-sm-6 col-md-1 col-xl-1">
+            <div class="col-2 col-sm-2 col-md-1 col-xl-1">
                 <label for="" >Año*</label>
                 <input type="text" class="form-control form-control-sm numbersOnly" maxlength="4" id="Ano" name="Ano" required="">
             </div>
-            <div class="col-12 col-sm-6 col-md-1 col-xl-1">
+            <div class="col-2 col-sm-2 col-md-1 col-xl-1">
                 <label for="" >Sem.*</label>
                 <input type="text" class="form-control form-control-sm numbersOnly" maxlength="2" id="Sem" name="Sem" required="">
             </div>
-            <div class="col-6 col-sm-4 col-md-3 col-lg-3 col-xl-2" >
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-2" >
                 <label>Doc.</label>
                 <input type="text" class="form-control form-control-sm " readonly="" id="DocMov" name="DocMov" maxlength="15" required>
             </div>
-            <div class="col-6 col-sm-3 col-md-2 col-lg-2 col-xl-2" >
+            <div class="col-6 col-sm-4 col-md-2 col-lg-2 col-xl-2" >
                 <label>Fecha</label>
                 <input type="text" class="form-control form-control-sm  numbersOnly date notEnter " readonly="" id="FechaMov" name="FechaMov" maxlength="12" >
             </div>
-            <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-2">
+            <div class="col-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">
                 <label for="" >Tipo Mov.*</label>
                 <select id="TipoMov" name="TipoMov" class="form-control form-control-sm required" required="">
                     <option value=""></option>
-                    <option value="EPR">EPR - ENTRADA POR PRODUCCIÓN</option>
-                    <option value="EAJ">EAJ - ENTRADA POR AJUSTE</option>
-                    <option value="EDV">EDV - ENTRADA POR DEVOLUCIÓN</option>
-                    <option value="ETR">ETR - ENTRADA POR TRASPASO</option>
+                    <option value="SPR">SPR - SALIDA A PRODUCCIÓN</option>
+                    <option value="SDV">SDV - SALIDA POR DEVOLUCIÓN A PROV</option>
+                    <option value="SAJ">SAJ - SALIDA POR AJUSTE</option>
+                    <option value="SXP">SXP - SALIDA POR PIOCHA</option>
+                    <option value="SXC">SXC - SALIDA POR CALIDAD</option>
+                    <option value="SXV">SXV - SALIDA POR VENTA OBSOLETA</option>
+                    <option value="STR">STR - SALIDA POR TRASPASO</option>
                 </select>
+            </div>
+            <div class="col-6 col-sm-5 col-md-3 col-lg-2 col-xl-2">
+                <label for="">Mat Ent. de Otra Maq</label>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="MatOtraMaquila" name="MatOtraMaquila" >
+                    <label class="custom-control-label" for="MatOtraMaquila"></label>
+                </div>
             </div>
         </div>
         <div class="row" id="Detalle">
-            <div class="col-12 col-sm-4 col-md-3 col-xl-3" >
+            <div class="col-12 col-sm-5 col-md-3 col-xl-3" >
                 <label for="" >Artículo</label>
                 <select id="Articulo" name="Articulo" class="form-control form-control-sm required" required="" >
                     <option value=""></option>
                 </select>
             </div>
-            <div class="col-12 col-sm-6 col-md-1 col-xl-1">
+            <div class="col-6 col-sm-2 col-md-1 col-xl-1">
                 <label for="" >U.M.</label>
                 <input type="text" class="form-control form-control-sm" readonly="" maxlength="3" id="Unidad" name="Unidad">
             </div>
@@ -64,45 +74,69 @@
                 <label>Cantidad</label>
                 <input type="text" class="form-control form-control-sm numbersOnly disabledForms" id="Cantidad" name="Cantidad" maxlength="15" required>
             </div>
-            <div class="col-6 col-sm-5 col-md-5 col-lg-2 col-xl-1 mt-4">
+            <div class="col-6 col-sm-6 col-md-6 col-lg-3 col-xl-3 mt-4">
                 <button type="button" class="btn btn-primary disabledForms" id="btnGuardar" data-toggle="tooltip" data-placement="right" title="Capturar Entrada">
                     <i class="fa fa-save"></i>
                 </button>
-            </div>
-            <div class="col-6 col-sm-5 col-md-5 col-lg-2 col-xl-1 mt-4">
                 <button type="button" class="btn btn-success disabledForms" id="btnTerminarCaptura" data-toggle="tooltip" data-placement="right" title="Capturar Entrada">
                     <i class="fa fa-check"></i> TERMINAR CAPTURA
                 </button>
             </div>
         </div>
-        <div class="card-block mt-4">
-            <div id="Movimientos" class="table-responsive">
-                <table id="tblMovimientos" class="table table-sm display " style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Clave</th>
-                            <th>Articulo</th>
-                            <th>Cantidad</th>
-                            <th>Maq.</th>
-                            <th>Tipo</th>
-                            <th>Eliminar</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+        <div class="row mt-2">
+            <div id="Movimientos" class="col-12 col-sm-12 col-md-7">
+                <h5>Material a entregar de este documento</h5>
+                <div class="row">
+                    <table id="tblMovimientos" class="table table-sm display " style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Clave</th>
+                                <th>Articulo</th>
+                                <th>Cantidad</th>
+                                <th>Maq.</th>
+                                <th>Tipo</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="MatEntregado" class="col-12 col-sm-12 col-md-5">
+                <h5>Total de Material Entregado Maq-Sem</h5>
+                <div class="row">
+                    <table id="tblMatEntregado" class="table table-sm display " style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Documento</th>
+                                <th>Artículo</th>
+                                <th>Cantidad</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="2">Total Entregado:</th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <script>
-    var master_url = base_url + 'index.php/EntradasAlmacenMP/';
+    var master_url = base_url + 'index.php/SalidasAlmacenMP/';
     var pnlTablero = $("#pnlTablero");
     var btnGuardar = pnlTablero.find('#btnGuardar');
     var btnNuevo = pnlTablero.find('#btnNuevo');
     var btnTerminarCaptura = pnlTablero.find('#btnTerminarCaptura');
     var tblMovimientos = $('#tblMovimientos');
     var Movimientos;
+    var tblMatEntregado = $('#tblMatEntregado');
+    var MatEntregado;
     var nuevo = true;
     $(document).ready(function () {
         /*FUNCIONES INICIALES*/
@@ -112,6 +146,7 @@
         handleEnter();
         getArticulos();
         getRecords('0');
+        getMatEntregado('', '', '', '');
 
         pnlTablero.find("#Ano").change(function () {
             if (parseInt($(this).val()) < 2016 || parseInt($(this).val()) > 2020 || $(this).val() === '') {
@@ -157,8 +192,11 @@
         });
         pnlTablero.find("#Articulo").change(function () {
             var maq = pnlTablero.find("#Maq").val();
+            var ano = pnlTablero.find("#Ano").val();
+            var sem = pnlTablero.find("#Sem").val();
             if (maq !== '') {
                 getDatosByArticulo($(this).val(), maq);
+                getMatEntregado(ano, maq, sem, $(this).val());
             } else {
                 swal({
                     title: "ATENCIÓN",
@@ -183,6 +221,7 @@
                 var Articulo = pnlTablero.find("#Articulo").val();
                 var precio = pnlTablero.find("#Precio").val();
                 var cantidad = pnlTablero.find('#Cantidad').val();
+                var matOtraMaquila = pnlTablero.find("#MatOtraMaquila")[0].checked ? 1 : 0
                 var subtotal = precio * cantidad;
                 $.post(master_url + 'onAgregar', {
                     Articulo: Articulo,
@@ -193,7 +232,8 @@
                     TipoMov: tipoMov,
                     Maq: maq,
                     Sem: sem,
-                    Subtotal: subtotal
+                    Subtotal: subtotal,
+                    MatOtraMaquila: matOtraMaquila
                 }).done(function (data) {
                     onNotifyOld('fa fa-check', 'REGISTRO GUARDADO', 'info');
                     if (nuevo) {
@@ -215,6 +255,7 @@
         btnNuevo.click(function () {
             nuevo = true;
             Movimientos.clear().draw();
+            MatEntregado.clear().draw();
             pnlTablero.find("input").val("");
             $.each(pnlTablero.find("select"), function (k, v) {
                 pnlTablero.find("select")[k].selectize.clear(true);
@@ -261,6 +302,94 @@
             });
         });
     });
+
+    function getMatEntregado(ano, maq, sem, art) {
+        temp = 0;
+        HoldOn.open({
+            theme: 'sk-cube',
+            message: 'CARGANDO...'
+        });
+        $.fn.dataTable.ext.errMode = 'throw';
+        if ($.fn.DataTable.isDataTable('#tblMatEntregado')) {
+            tblMatEntregado.DataTable().destroy();
+        }
+        MatEntregado = tblMatEntregado.DataTable({
+            "dom": 'rt',
+            buttons: buttons,
+            orderCellsTop: true,
+            fixedHeader: true,
+            "ajax": {
+                "url": master_url + 'getMatEntregado',
+                "data": {
+                    Ano: ano,
+                    Maq: maq,
+                    Sem: sem,
+                    Articulo: art
+                },
+                "type": "POST",
+                "dataSrc": ""
+            },
+            "columns": [
+                {"data": "DocMov"},
+                {"data": "Articulo"},
+                {"data": "CantidadMov"}
+            ],
+            language: lang,
+            "autoWidth": true,
+            "colReorder": true,
+            "displayLength": 50,
+            "scrollY": 260,
+            "bLengthChange": false,
+            "deferRender": true,
+            "scrollCollapse": false,
+            "bSort": true,
+            "aaSorting": [
+                [0, 'desc'], [1, 'asc']
+            ],
+            "createdRow": function (row, data, index) {
+                $.each($(row).find("td"), function (k, v) {
+                    var c = $(v);
+                    var index = parseInt(k);
+                    switch (index) {
+                        case 0:
+                            /*FECHA ORDEN*/
+                            c.addClass('text-strong');
+                            break;
+                        case 1:
+                            /*FECHA ENTREGA*/
+                            c.addClass('text-success text-strong');
+                            break;
+                        case 2:
+                            /*fecha conf*/
+                            c.addClass('text-info text-strong');
+                            break;
+                    }
+                });
+            },
+            "footerCallback": function (row, data, start, end, display) {
+                var api = this.api();//Get access to Datatable API
+                // Update footer
+                var total = api.column(2).data().reduce(function (a, b) {
+                    var ax = 0, bx = 0;
+                    ax = $.isNumeric(a) ? parseFloat(a) : 0;
+                    bx = $.isNumeric(getNumberFloat(b)) ? getNumberFloat(b) : 0;
+                    return  (ax + bx);
+                }, 0);
+                $(api.column(2).footer()).html(api.column(2, {page: 'current'}).data().reduce(function (a, b) {
+                    return  '<span class="badge badge-info">' + $.number(parseFloat(total), 3, '.', ',') + '</span>';
+                }, 0));
+            },
+            initComplete: function (a, b) {
+                HoldOn.close();
+            }
+        });
+
+        tblMatEntregado.find('tbody').on('click', 'tr', function () {
+            MatEntregado.find("tbody tr").removeClass("success");
+            $(this).addClass("success");
+
+        });
+    }
     function getRecords(doc) {
         temp = 0;
         HoldOn.open({
@@ -272,7 +401,7 @@
             tblMovimientos.DataTable().destroy();
         }
         Movimientos = tblMovimientos.DataTable({
-            "dom": 'Bfrtip',
+            "dom": 'rt',
             buttons: buttons,
             orderCellsTop: true,
             fixedHeader: true,
@@ -301,7 +430,8 @@
             language: lang,
             "autoWidth": true,
             "colReorder": true,
-            "displayLength": 15,
+            "displayLength": 50,
+            "scrollY": 260,
             "bLengthChange": false,
             "deferRender": true,
             "scrollCollapse": false,
@@ -338,7 +468,6 @@
                 HoldOn.close();
             }
         });
-
         tblMovimientos.find('tbody').on('click', 'tr', function () {
             tblMovimientos.find("tbody tr").removeClass("success");
             $(this).addClass("success");
@@ -386,6 +515,7 @@
     }
     function onComprobarMaquilas(v) {
         $.getJSON(master_url + 'onComprobarMaquilas', {Clave: $(v).val()}).done(function (data) {
+            console.log(data);
             if (data.length > 0) {
                 if (parseInt($(v).val()) > 96) {
                     swal({
@@ -395,6 +525,8 @@
                     }).then((value) => {
                         $(v).val('').focus();
                     });
+                } else {
+                    pnlTablero.find('#EntregaMat').text(data[0].EntregaMat);
                 }
             } else {
                 swal({
@@ -496,7 +628,11 @@
         transition: all .2s ease-in-out;
     }
 
-    td span.badge{
+    span.badge{
         font-size: 100% !important;
+    }
+
+    #Titulo span.badge{
+        font-size: 16px !important;
     }
 </style>

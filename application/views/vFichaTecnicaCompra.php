@@ -81,11 +81,7 @@
 <script>
 
     var mdlFichaTecnicaCompra = $('#mdlFichaTecnicaCompra');
-
-
-
     $(document).ready(function () {
-
         validacionSelectPorContenedor(mdlFichaTecnicaCompra);
         setFocusSelectToSelectOnChange('#Color', '#Maquila', mdlFichaTecnicaCompra);
 
@@ -112,8 +108,6 @@
 
         mdlFichaTecnicaCompra.find('#btnImprimirFichaTecnica').on("click", function () {
             var TipoFicha = mdlFichaTecnicaCompra.find("#FichaSinPrecios")[0].checked ? 'onImprimirFichaTecnicaSinPrecios' : 'onImprimirFichaTecnicaCompra';
-
-
             HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
             var frm = new FormData($('#mdlFichaTecnicaCompra').find("#frmFichaTecnicaCompras")[0]);
             var maq = mdlFichaTecnicaCompra.find("#Maquila").find("option:selected").text();

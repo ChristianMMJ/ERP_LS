@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class EntradasAlmacenMP_model extends CI_Model {
+class SalidasAlmacenMP_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
@@ -19,6 +19,28 @@ class EntradasAlmacenMP_model extends CI_Model {
                             ->join("articulos A", 'ON A.Clave = MA.Articulo')
                             ->where('MA.DocMov', $doc)
                             ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getMatEntregado($Ano, $Maq, $Sem, $Articulo) {
+        try {
+            $this->db->select("MA.DocMov,MA.Articulo, MA.CantidadMov "
+                            . "", false)
+                    ->from("movarticulos MA")
+                    ->where("year(date_format(str_to_date(MA.FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = '$Ano' ", null, false)
+                    ->where('MA.Maq', $Maq)
+                    ->where('MA.Sem', $Sem)
+                    ->where('MA.Articulo', $Articulo);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -59,7 +81,7 @@ class EntradasAlmacenMP_model extends CI_Model {
 
     public function onComprobarMaquilas($Clave) {
         try {
-            return $this->db->select("G.Clave, G.Direccion")->from("maquilas AS G")->where("G.Clave", $Clave)->where("G.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("G.Clave, G.Direccion, CONCAT(ifnull(G.EntregaMat1,''),' - ',ifnull(G.EntregaMat2,''),' - ',ifnull(G.EntregaMat3,'')) AS EntregaMat ")->from("maquilas AS G")->where("G.Clave", $Clave)->where("G.Estatus", "ACTIVO")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

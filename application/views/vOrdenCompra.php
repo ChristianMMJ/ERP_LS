@@ -970,7 +970,7 @@
                         Sem: $(v).val()
                     }).done(function (data) {
                         if (data.length > 0) {
-                            if (data[0].Estatus === 'ACTIVA') {//CERRADA
+                            if (data[0].Estatus === 'CERRADA') {//CERRADA
                                 swal({
                                     title: "ATENCIÓN",
                                     text: "LA SEMANA YA ESTA CERRADA",
@@ -1008,7 +1008,7 @@
             Departamento: tipo
         }).done(function (data) {
             if (data.length > 0) {
-                if (data[0].Estatus === 'ACTIVA') {//CERRADA X DEPTO
+                if (data[0].Estatus === 'CERRADA') {//CERRADA X DEPTO
                     swal({
                         title: "ATENCIÓN",
                         text: "EL DEPARTAMENTO " + tipo + " DE ESTA SEMANA YA ESTA CERRADO",
