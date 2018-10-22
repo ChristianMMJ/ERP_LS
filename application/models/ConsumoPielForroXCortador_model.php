@@ -47,7 +47,10 @@ class ConsumoPielForroXCortador_model extends CI_Model {
 
     function getConsumosPielForroXMaquilaSemanaAnioCortadorArticuloFechaInicialFechaFinal($MAQUILA, $SEMANAINICIAL, $SEMANAFINAL, $ANO, $CORTADOR, $ARTICULO, $FECHAINICIAL, $FECHAFINAL, $CONEMPLEADO) {
         try {
-            
+           return $this->db->select("FT.Consumo AS CONSUMO, A.Pares * FT.Consumo AS CONSUMO_TOTAL, A.*", false)
+                    ->from("asignapftsacxc AS A")
+                   ->join("fichatecnica AS FT","FT.Estilo = A.Estilo")
+                    ->where("substr(A.Control,5,2) LIKE '$MAQUILA' AND A.Color = FT.Color AND A.Articulo = FT.Articulo",null,false)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

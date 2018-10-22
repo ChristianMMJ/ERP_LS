@@ -1,4 +1,4 @@
-<div class="modal" id="mdlConsumosPielForro">
+<div class="modal animated flipInY" id="mdlConsumosPielForro">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
