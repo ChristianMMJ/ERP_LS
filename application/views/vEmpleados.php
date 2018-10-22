@@ -368,8 +368,6 @@
     var NumeroEmpleado = pnlTablero.find("#NumeroEmpleado");
 
     $(document).ready(function () {
-
-
         handleEnter();
         getRecords();
         getEstados();
@@ -377,27 +375,7 @@
         pnlTablero.find("#tblEmpleados_filter").find('input[type="search"]').addClass('selectNotEnter');
         NumeroEmpleado.unbind();
         NumeroEmpleado.on('keydown keyup', function (e) {
-            tblEmpleados.DataTable().column(1).search($(this).val()).draw();
-            if (e.keyCode === 13) {
-                tblEmpleados.DataTable().column(1).search("^" + $(this).val() + "$", true, false, true).draw();
-                var row_count = Empleados.page.info().recordsDisplay;
-                if (row_count > 0) {
-                    var EX = 0;
-                    $.each(tblEmpleados.find("tbody > tr"), function (k, v) {
-                        var row = Empleados.row($(this)).data();
-                        EX = row.ID;
-
-                        return false;
-                    });
-                    getEmpleadoByID(EX);
-                } else {
-                    NumeroEmpleado.focus().select();
-                }
-            } else {
-                if ($(this).val().length <= 0) {
-                    tblEmpleados.DataTable().column(1).search("").draw();
-                }
-            }
+            onBuscar($(this).val(), e, tblEmpleados, Empleados, getEmpleadoByID, $(this), 1);
         });
 
         btnCredencial.click(function () {
@@ -702,6 +680,29 @@
             console.log(x.responseText);
             swal('ATENCIÓN', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'error');
         });
+    }
+
+    function onBuscar(search_value, evt, tbl, objeto, functionX, input, index_column) {
+        tbl.DataTable().column(index_column).search(search_value).draw();
+        if (evt.keyCode === 13) {
+            tbl.DataTable().column(index_column).search("^" + search_value + "$", true, false, true).draw();
+            var row_count = objeto.page.info().recordsDisplay;
+            if (row_count > 0) {
+                var EX = 0;
+                $.each(tbl.find("tbody > tr"), function (k, v) {
+                    var row = objeto.row($(this)).data();
+                    EX = row.ID;
+                    return false;
+                });
+                functionX(EX);
+            } else {
+                input.focus().select();
+            }
+        } else {
+            if (input.val().length <= 0) {
+                tbl.DataTable().column(index_column).search("").draw();
+            }
+        }
     }
 </script>
 <style>

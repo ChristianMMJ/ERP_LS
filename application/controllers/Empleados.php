@@ -22,7 +22,7 @@ class Empleados extends CI_Controller {
                         $this->load->view('vMenuFichasTecnicas');
                     }//Cuando no viene de ningun modulo y lo teclean
                     else {
-                        $this->load->view('vMenuPrincipal');
+                        $this->load->view('vMenuNominas');
                     }
                     break;
                 case 'DISEÑO Y DESARROLLO':

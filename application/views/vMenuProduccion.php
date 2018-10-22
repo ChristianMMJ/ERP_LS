@@ -47,7 +47,7 @@
                     <span class="fas fa-search"></span> Consultas
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navConsultas">
-                    <a class="dropdown-item" href="#"> Prueba.</a>
+                    <a class="dropdown-item" href="#"> En construcción....</a>
                 </div>
             </li>
             <li class="nav-item dropdown">

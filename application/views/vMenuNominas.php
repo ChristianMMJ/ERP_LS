@@ -18,6 +18,7 @@
                     <a class="dropdown-item" href="<?php print base_url('Fracciones/?origen=NOMINAS'); ?>"> Fracciones</a>
                     <a class="dropdown-item" href="<?php print base_url('FraccionesXEstilo/?origen=NOMINAS'); ?>"> Fracciones Por Estilo</a>
                     <a class="dropdown-item" href="<?php print base_url('Semanas'); ?>"> Semanas Nómina</a>
+                    <a class="dropdown-item" href="<?php print base_url('Empleados.shoes'); ?>"><span class="fa fa-address-book"></span> Empleados</a>
                 </div>
 
             </li>
@@ -26,7 +27,7 @@
                     <span class="fas fa-search"></span> Consultas
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navConsultas">
-                    <a class="dropdown-item" href="#"> Prueba.</a>
+                    <a class="dropdown-item" href="#"> En construcción....</a>
                 </div>
             </li>
 
@@ -34,11 +35,6 @@
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navEmpleados" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="fas fa-users"></span>  Empleados
                 </a>
-                <div class="dropdown-menu dropdown-menu" aria-labelledby="navEmpleados">
-                    <a class="dropdown-item" href="<?php print base_url('Empleados.shoes'); ?>"><span class="fa fa-address-book"></span> Empleados</a>
-                </div>
-
-
             </li>
 
             <li class="nav-item dropdown">
@@ -46,7 +42,7 @@
                     <span class="fa fa-file-pdf"></span> Reportes
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navReportes">
-                    <a class="dropdown-item" href="#"> Prueba</a>
+                    <a class="dropdown-item" href="#"> En construcción...</a>
                 </div>
             </li>
             <li class="nav-item mx-1">
