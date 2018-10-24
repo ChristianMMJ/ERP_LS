@@ -15,6 +15,8 @@
 
     function onImprimirReporteFancy(url) {
         $.fancybox.open({
+            toolbar: false,
+            smallBtn: true,
             src: url,
             type: 'iframe',
             opts: {

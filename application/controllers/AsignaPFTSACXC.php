@@ -204,12 +204,14 @@ class AsignaPFTSACXC extends CI_Controller {
                 /* OBTENER ULTIMO REGRESO */
                 $REGRESO = $this->AsignaPFTSACXC_model->onObtenerUltimoRegreso($x->post('ID'));
                 if (isset($REGRESO[0]->REGRESO)) {
-                    $this->db->set('Empleado', $x->post('EMPLEADO'))
+                    $this->db->set('Empleado', $x->post('EMPLEADO'))->set('Empleado', $x->post('EMPLEADO'))
                             ->set('Devolucion', $x->post('REGRESO') + $REGRESO[0]->REGRESO)
+                            ->set('MaterialMalo', 0)
                             ->where('ID', $x->post('ID'))->update('asignapftsacxc');
                 } else {
                     $this->db->set('Empleado', $x->post('EMPLEADO'))
                             ->set('Devolucion', $x->post('REGRESO'))
+                            ->set('MaterialMalo', 0)
                             ->where('ID', $x->post('ID'))->update('asignapftsacxc');
                 }
             } else {
@@ -229,6 +231,11 @@ class AsignaPFTSACXC extends CI_Controller {
                         'Subtotal' => 0
                     );
                     $this->AsignaPFTSACXC_model->onAgregarMovArt($datos);
+                    /**/
+                    $this->db->set('Empleado', $x->post('EMPLEADO'))
+                            ->set('Basura', $x->post('REGRESO'))
+                            ->set('MaterialMalo', 1)
+                            ->where('ID', $x->post('ID'))->update('asignapftsacxc');                    
                 } else {
                     print "LA CANTIDAD DEVUELTA O DEFECTUOSA HA SIDO ZERO 0";
                 }

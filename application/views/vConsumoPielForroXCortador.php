@@ -1,4 +1,4 @@
-<div class="modal animated flipInY" id="mdlConsumosPielForro">
+<div class="modal animated zoomInUp" id="mdlConsumosPielForro">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -59,19 +59,29 @@
                             <strong>Nota!</strong> El resultado de este reporte es lo que se ha entregado de almacen a corte solamente. No tiene que ser el programa completo.
                         </div>
                     </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                        <button type="button" class="btn btn-primary btn-block" id="btnAceptarPiel" name="btnAceptarPiel">CONSUMO DE PIEL</button>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                        <button type="button" class="btn btn-warning  btn-block" id="btnAceptarForro" name="btnAceptarForro">CONSUMO DE FORRO</button>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 mt-3">
+                        <button type="button" class="btn btn-primary  btn-block" id="btnAceptarPielGeneral" name="btnAceptarPielGeneral">CONSUMO DE PIEL GENERAL</button>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 mt-3">
+                        <button type="button" class="btn btn-warning btn-block" id="btnAceptarForroGeneral" name="btnAceptarForroGeneral">CONSUMO DE FORRO GENERAL</button>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer"> 
-                <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                    <button type="button" class="btn btn-primary" id="btnAceptar" name="btnAceptar">Aceptar</button>
-                </div>
                 <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" align="right">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 </div> 
             </div>
         </div>
     </div>
-</div>
+</div> 
+
 <script>
     var master_url_modal = base_url + 'index.php/ConsumoPielForroXCortador/';
     var mdlConsumosPielForro = $("#mdlConsumosPielForro");
@@ -79,12 +89,21 @@
     var Ano = mdlConsumosPielForro.find("#Ano"), Cortador = mdlConsumosPielForro.find("#Cortador"), Articulo = mdlConsumosPielForro.find("#Articulo");
     var FechaInicial = mdlConsumosPielForro.find("#FechaInicial"), FechaFinal = mdlConsumosPielForro.find("#FechaFinal"), ConEmpleado = mdlConsumosPielForro.find("#ConEmpleado");
     var btnAceptar = mdlConsumosPielForro.find("#btnAceptar");
+    var btnAceptarPiel = mdlConsumosPielForro.find("#btnAceptarPiel"),
+            btnAceptarForro = mdlConsumosPielForro.find("#btnAceptarForro"),
+            btnAceptarPielGeneral = mdlConsumosPielForro.find("#btnAceptarPielGeneral"),
+            btnAceptarForroGeneral = mdlConsumosPielForro.find("#btnAceptarForroGeneral");
 
     $(document).ready(function () {
 
-        btnAceptar.click(function () {
-            $.post(master_url_modal + 'getReporte',
+        btnAceptarForroGeneral.click(function () {
+            HoldOn.open({
+                theme: 'sk-cube',
+                message: 'GENERANDO...'
+            });
+            $.post(master_url_modal + 'getReportePielForroGeneral',
                     {
+                        TIPO: 2,
                         MAQUILA: Maquila.val(),
                         SEMANA_INICIAL: SemanaInicial.val(),
                         SEMANA_FINAL: SemanaFinal.val(),
@@ -95,13 +114,101 @@
                         FECHA_FINAL: FechaFinal.val(),
                         CON_EMPLEADO: ConEmpleado[0].checked ? 1 : 0
                     }).done(function (data, x, jq) {
-                console.log(data, data[0]);
-                onImprimirReporteFancy(data);
+                onImprimirReporteFancy(base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data);
             }).fail(function (x, y, z) {
                 console.log(x.responseText);
-                console.log(x, y, z);
+                onBeep(2);
+                swal('ATENCIÓN', 'HA OCURRIDO UN PROBLEMA AL GENERAR LOS REPORTES, REVISE LA CONSOLA PARA MÁS DETALLES', 'warning');
             }).always(function () {
                 console.log('ok');
+                HoldOn.close();
+            });
+        });
+
+        btnAceptarPielGeneral.click(function () {
+            HoldOn.open({
+                theme: 'sk-cube',
+                message: 'GENERANDO...'
+            });
+            $.post(master_url_modal + 'getReportePielForroGeneral',
+                    {
+                        TIPO: 1,
+                        MAQUILA: Maquila.val(),
+                        SEMANA_INICIAL: SemanaInicial.val(),
+                        SEMANA_FINAL: SemanaFinal.val(),
+                        ANIO: Ano.val(),
+                        CORTADOR: Cortador.val(),
+                        ARTICULO: Articulo.val(),
+                        FECHA_INICIAL: FechaInicial.val(),
+                        FECHA_FINAL: FechaFinal.val(),
+                        CON_EMPLEADO: ConEmpleado[0].checked ? 1 : 0
+                    }).done(function (data, x, jq) {
+                onImprimirReporteFancy(base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data);
+            }).fail(function (x, y, z) {
+                console.log(x.responseText);
+                onBeep(2);
+                swal('ATENCIÓN', 'HA OCURRIDO UN PROBLEMA AL GENERAR LOS REPORTES, REVISE LA CONSOLA PARA MÁS DETALLES', 'warning');
+            }).always(function () {
+                console.log('ok');
+                HoldOn.close();
+            });
+        });
+
+        btnAceptarForro.click(function () {
+            HoldOn.open({
+                theme: 'sk-cube',
+                message: 'GENERANDO...'
+            });
+            $.post(master_url_modal + 'getReportePielForro',
+                    {
+                        TIPO: 2,
+                        MAQUILA: Maquila.val(),
+                        SEMANA_INICIAL: SemanaInicial.val(),
+                        SEMANA_FINAL: SemanaFinal.val(),
+                        ANIO: Ano.val(),
+                        CORTADOR: Cortador.val(),
+                        ARTICULO: Articulo.val(),
+                        FECHA_INICIAL: FechaInicial.val(),
+                        FECHA_FINAL: FechaFinal.val(),
+                        CON_EMPLEADO: ConEmpleado[0].checked ? 1 : 0
+                    }).done(function (data, x, jq) {
+                onImprimirReporteFancy(base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data);
+            }).fail(function (x, y, z) {
+                console.log(x.responseText);
+                onBeep(2);
+                swal('ATENCIÓN', 'HA OCURRIDO UN PROBLEMA AL GENERAR LOS REPORTES, REVISE LA CONSOLA PARA MÁS DETALLES', 'warning');
+            }).always(function () {
+                console.log('ok');
+                HoldOn.close();
+            });
+        });
+
+        btnAceptarPiel.click(function () {
+            HoldOn.open({
+                theme: 'sk-cube',
+                message: 'GENERANDO...'
+            });
+            $.post(master_url_modal + 'getReportePielForro',
+                    {
+                        TIPO: 1,
+                        MAQUILA: Maquila.val(),
+                        SEMANA_INICIAL: SemanaInicial.val(),
+                        SEMANA_FINAL: SemanaFinal.val(),
+                        ANIO: Ano.val(),
+                        CORTADOR: Cortador.val(),
+                        ARTICULO: Articulo.val(),
+                        FECHA_INICIAL: FechaInicial.val(),
+                        FECHA_FINAL: FechaFinal.val(),
+                        CON_EMPLEADO: ConEmpleado[0].checked ? 1 : 0
+                    }).done(function (data, x, jq) {
+                onImprimirReporteFancy(base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data);
+            }).fail(function (x, y, z) {
+                console.log(x.responseText);
+                onBeep(2);
+                swal('ATENCIÓN', 'HA OCURRIDO UN PROBLEMA AL GENERAR LOS REPORTES, REVISE LA CONSOLA PARA MÁS DETALLES', 'warning');
+            }).always(function () {
+                console.log('ok');
+                HoldOn.close();
             });
         });
 
@@ -118,6 +225,10 @@
         });
 
         mdlConsumosPielForro.on('shown.bs.modal', function () {
+            mdlConsumosPielForro.find("input").val('');
+            mdlConsumosPielForro.find("#Articulo")[0].selectize.clear(true); 
+            mdlConsumosPielForro.find("#Cortador")[0].selectize.clear(true); 
+            mdlConsumosPielForro.find("#Ano").val(new Date().getFullYear());
             mdlConsumosPielForro.find("#Maquila").focus();
         });
         getCortadores();
