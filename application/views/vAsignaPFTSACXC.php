@@ -398,136 +398,43 @@
     var tblRegresos = mdlRetornaMaterial.find("#tblRegresos"), Regresos = $("#Regresos");
     var btnAceptar = mdlRetornaMaterial.find("#btnAceptar"), MatMalo = mdlRetornaMaterial.find("#MatMalo");
 
-    var tipo_consumo = 0;
-
-    var options = {
-        "dom": 'rt',
-        buttons: buttons,
-        language: lang,
-        select: true,
-        "autoWidth": true,
-        "colReorder": true,
-        "displayLength": 99999999,
-        "bLengthChange": false,
-        "deferRender": true,
-        "scrollCollapse": false,
-        "bSort": true,
-        "scrollY": "125px",
-        "scrollX": true,
-        "aaSorting": [
-            [4, 'asc']/*ID*/
-        ],
-        "columnDefs": [
-            {
-                "targets": [0],
-                "visible": false,
-                "searchable": false
-            },
-            {
-                "targets": [9],
-                "visible": false,
-                "searchable": true
-            },
-            {
-                "targets": [10],
-                "visible": false,
-                "searchable": true
-            },
-            {
-                "targets": [11],
-                "visible": false,
-                "searchable": true
-            }
-        ]
-    };
-    var options_ts = {
-        "dom": 'rt',
-        buttons: buttons,
-        language: lang,
-        select: true,
-        "autoWidth": true,
-        "colReorder": true,
-        "displayLength": 99999999,
-        "bLengthChange": false,
-        "deferRender": true,
-        "scrollCollapse": false,
-        "bSort": true,
-        "scrollY": "125px",
-        "scrollX": true,
-        "aaSorting": [
-            [4, 'asc']/*ID*/
-        ],
-        "columnDefs": [
-            {
-                "targets": [0],
-                "visible": false,
-                "searchable": false
-            },
-            {
-                "targets": [9],
-                "visible": false,
-                "searchable": true
-            },
-            {
-                "targets": [10],
-                "visible": false,
-                "searchable": true
-            },
-            {
-                "targets": [11],
-                "visible": false,
-                "searchable": true
-            }
-        ]
-    };
-    var options_c = {
-        "dom": 'frt',
-        buttons: buttons,
-        language: lang,
-        select: true,
-        "autoWidth": true,
-        "colReorder": true,
-        "displayLength": 99999999,
-        "bLengthChange": false,
-        "deferRender": true,
-        "scrollCollapse": false,
-        "bSort": true,
-        "scrollY": "125px",
-        "scrollX": true,
-        "aaSorting": [
-            [4, 'asc']/*ID*/
-        ],
-        "columnDefs": [
-            {
-                "targets": [0],
-                "visible": false,
-                "searchable": false
-            }
-        ]
-    };
+    var tipo_consumo = 0; 
 
     $(document).ready(function () {
 
         mdlRetornaMaterial.find("#PielForro").change(function () {
             if ($(this).val() !== '') {
+                mdlRetornaMaterial.find("#Control").focus();
                 tblRegresos.DataTable().column(11).search($(this).val()).draw();
             } else {
                 tblRegresos.DataTable().column(11).search('').draw();
             }
         }).blur(function () {
             if (mdlRetornaMaterial.find("#PielForro").val() !== '') {
+                mdlRetornaMaterial.find("#Control").focus();
                 tblRegresos.DataTable().column(11).search(mdlRetornaMaterial.find("#PielForro").val()).draw();
             } else {
                 tblRegresos.DataTable().column(11).search('').draw();
             }
         });
 
-        MatMalo.keydown(function () {
-            btnAceptar.focus();
+        MatMalo.keydown(function (e) {
+            if (e.keyCode === 13) {
+                btnAceptar.focus();
+            }
         });
 
         btnAceptar.click(function () {
-            onDevolverPielForro();
+            if (mdlRetornaMaterial.find("#Entrego").val() !== '' || mdlRetornaMaterial.find("#Regreso").val() !== '') {
+                onDevolverPielForro();
+            } else {
+                swal('ATENCIÓN', 'DEBE DE SELECCIONAR UN REGISTRO', 'warning').then((value) => {
+                    mdlRetornaMaterial.find("#tblRegresos tbody tr").addClass("highlight-rows");
+                    setTimeout(function () {
+                        mdlRetornaMaterial.find("#tblRegresos tbody tr").removeClass("highlight-rows");
+                    }, 2500);
+                });
+            }
         });
 
         mdlRetornaMaterial.find("#Control").change(function () {
@@ -546,15 +453,10 @@
         });
 
         mdlRetornaMaterial.on('webkitAnimationStart', function () {
-            HoldOn.open({
-                theme: 'sk-bounce',
-                message: 'Cargando...'
-            });
             mdlRetornaMaterial.find("#Cortador")[0].selectize.clear(true);
         });
 
         mdlRetornaMaterial.on('webkitAnimationEnd', function () {
-            HoldOn.close();
             mdlRetornaMaterial.find("#Cortador")[0].selectize.open();
             mdlRetornaMaterial.find("#Cortador")[0].selectize.focus();
         });
@@ -586,8 +488,61 @@
         $("div > h4").addClass("animated fadeInDown");
 
         Semana.focus();
-
-        Pieles = tblPieles.DataTable(options);
+        var cols = [
+            {"data": "ID"}/*0*/, {"data": "CONTROL"}/*1*/,
+            {"data": "ARTICULO_CLAVE"}/*2*/, {"data": "ARTICULO_DESCRIPCION"},
+            {"data": "UM"}, {"data": "PIEZA"},
+            {"data": "PIEZA_DESCRIPCION"}, {"data": "GRUPO"},
+            {"data": "CANTIDAD"}, {"data": "SEMANA"},
+            {"data": "FRACCION"}, {"data": "PARES"}
+        ];
+        var coldefs = [
+            {
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            },
+            {
+                "targets": [9],
+                "visible": false,
+                "searchable": true
+            },
+            {
+                "targets": [10],
+                "visible": false,
+                "searchable": true
+            },
+            {
+                "targets": [11],
+                "visible": false,
+                "searchable": true
+            }
+        ];
+        var xoptions = {
+            "dom": 'rt',
+            buttons: buttons,
+            "ajax": {
+                "url": master_url + 'getPieles',
+                "dataSrc": ""
+            },
+            "columns": cols,
+            "columnDefs": coldefs,
+            language: lang,
+            select: true,
+            "autoWidth": true,
+            "colReorder": true,
+            "displayLength": 99999999,
+            "bLengthChange": false,
+            "deferRender": true,
+            "scrollCollapse": false,
+            "bSort": true,
+            "scrollY": "125px",
+            "scrollX": true,
+            initComplete: function (a, b) {
+                onCalcularAlBuscar();
+            }
+        };
+        Pieles = tblPieles.DataTable(xoptions);
         tblPieles.on('click', 'tr', function () {
             if (Semana.val() !== '' && Control.val() !== '' && Fraccion.val() !== '') {
                 var data = Pieles.row(this).data();
@@ -603,7 +558,11 @@
             }
         });
 
-        Forros = tblForros.DataTable(options);
+        xoptions.ajax = {
+            "url": master_url + 'getForros',
+            "dataSrc": ""
+        };
+        Forros = tblForros.DataTable(xoptions);
         tblForros.on('click', 'tr', function () {
             if (Semana.val() !== '' && Control.val() !== '' && Fraccion.val() !== '') {
                 var data = Forros.row(this).data();
@@ -619,7 +578,11 @@
             }
         });
 
-        Textiles = tblTextiles.DataTable(options_ts);
+        xoptions.ajax = {
+            "url": master_url + 'getTextiles',
+            "dataSrc": ""
+        };
+        Textiles = tblTextiles.DataTable(xoptions);
         tblTextiles.on('click', 'tr', function () {
             if (Semana.val() !== '' && Control.val() !== '' && Fraccion.val() !== '') {
                 var data = Textiles.row(this).data();
@@ -634,8 +597,12 @@
                 onUnSelect();
             }
         });
+        xoptions.ajax = {
+            "url": master_url + 'getSinteticos',
+            "dataSrc": ""
+        };
+        Sinteticos = tblSinteticos.DataTable(xoptions);
 
-        Sinteticos = tblSinteticos.DataTable(options_ts);
         tblSinteticos.on('click', 'tr', function () {
             if (Semana.val() !== '' && Control.val() !== '' && Fraccion.val() !== '') {
                 var data = Sinteticos.row(this).data();
@@ -650,6 +617,10 @@
                 onUnSelect();
             }
         });
+        Pieles.order([1, 'desc']).draw();
+        Forros.order([1, 'desc']).draw();
+        Textiles.order([1, 'desc']).draw();
+        Sinteticos.order([1, 'desc']).draw();
 
         Fraccion.on('keyup', function () {
             onBuscarX(10, Fraccion.val());
@@ -661,6 +632,96 @@
 
         Control.on('keyup', function () {
             onBuscarX(1, Control.val());
+        });
+
+        $.fn.dataTable.ext.errMode = 'throw';
+        if ($.fn.DataTable.isDataTable('#tblControlesAsignados')) {
+            tblControlesAsignados.DataTable().destroy();
+        }
+        ControlesAsignados = tblControlesAsignados.DataTable({
+            "dom": 'Bfrtip',
+            buttons: buttons,
+            "ajax": {
+                "url": master_url + 'getControlesAsignados',
+                "dataSrc": ""
+            },
+            "columns": [
+                {"data": "ID"}, {"data": "Empleado"}, {"data": "Articulo"}, {"data": "Descripcion"}, {"data": "Fecha"}, {"data": "Cargo"}, {"data": "Abono"}, {"data": "Dev"}
+            ],
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ],
+            language: lang,
+            select: true,
+            "autoWidth": true,
+            "colReorder": true,
+            "displayLength": 20,
+            "bLengthChange": false,
+            "deferRender": true,
+            "scrollCollapse": false,
+            "bSort": true,
+            "aaSorting": [
+                [1, 'desc']/*ID*/
+            ],
+            initComplete: function (a, b) {
+                $("#tblControlesAsignados_filter").find("input").addClass("selectNotEnter");
+            }
+        });
+
+        $.fn.dataTable.ext.errMode = 'throw';
+        if ($.fn.DataTable.isDataTable('#tblRegresos')) {
+            tblRegresos.DataTable().destroy();
+        }
+
+        Regresos = tblRegresos.DataTable({
+            "dom": 'frtip',
+            buttons: buttons,
+            "ajax": {
+                "url": master_url + 'getRegresos',
+                "dataSrc": ""
+            },
+            "columns": [
+                {"data": "ID"}/*0*/, {"data": "Cortador"}/*1*/, {"data": "Control"}/*2*/, {"data": "PiFoFraccion"},
+                {"data": "Estilo"}, {"data": "Color"}, {"data": "Pares"},
+                {"data": "Articulo"}, {"data": "ArticuloT"}, {"data": "Entregado"},
+                {"data": "Regreso"}, {"data": "Tipo"}
+            ],
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ],
+            language: lang,
+            select: true,
+            "autoWidth": true,
+            "colReorder": true,
+            "displayLength": 20,
+            "bLengthChange": false,
+            "deferRender": true,
+            "scrollCollapse": false,
+            "bSort": true,
+            "aaSorting": [
+                [1, 'desc']/*ID*/
+            ]
+        });
+
+        tblRegresos.on('click', 'tr', function () {
+            var data = Regresos.row(this).data();
+            console.log('Regresos', data);
+            mdlRetornaMaterial.find("#Articulo").val(data.Articulo);
+            mdlRetornaMaterial.find("#ArticuloT").val(data.ArticuloT);
+            mdlRetornaMaterial.find("#Entrego").val(data.Entregado);
+            mdlRetornaMaterial.find("#IDA").val(data.ID);
+            mdlRetornaMaterial.find("#Estilo").val(data.Estilo);
+            mdlRetornaMaterial.find("#Color").val(data.Color);
+            mdlRetornaMaterial.find("#AnteriormenteRetorno").val(data.Regreso);
+            mdlRetornaMaterial.find("#Regreso").focus();
         });
 
         init();
@@ -766,107 +827,18 @@
     }
 
     function init() {
-        getPieles();
-        getForros();
-        getTextiles();
-        getSinteticos();
         getEmpleados();
         Semana.focus();
-
-        $.fn.dataTable.ext.errMode = 'throw';
-        if ($.fn.DataTable.isDataTable('#tblControlesAsignados')) {
-            tblControlesAsignados.DataTable().destroy();
-        }
-        ControlesAsignados = tblControlesAsignados.DataTable({
-            "dom": 'Bfrtip',
-            buttons: buttons,
-            "ajax": {
-                "url": master_url + 'getControlesAsignados',
-                "dataSrc": ""
-            },
-            "columns": [
-                {"data": "ID"}, {"data": "Empleado"}, {"data": "Articulo"}, {"data": "Descripcion"}, {"data": "Fecha"}, {"data": "Cargo"}, {"data": "Abono"}, {"data": "Dev"}
-            ],
-            "columnDefs": [
-                {
-                    "targets": [0],
-                    "visible": false,
-                    "searchable": false
-                }
-            ],
-            language: lang,
-            select: true,
-            "autoWidth": true,
-            "colReorder": true,
-            "displayLength": 20,
-            "bLengthChange": false,
-            "deferRender": true,
-            "scrollCollapse": false,
-            "bSort": true,
-            "aaSorting": [
-                [1, 'desc']/*ID*/
-            ],
-            initComplete: function (a, b) {
-                $("#tblControlesAsignados_filter").find("input").addClass("selectNotEnter");
-            }
-        });
-
-        $.fn.dataTable.ext.errMode = 'throw';
-        if ($.fn.DataTable.isDataTable('#tblRegresos')) {
-            tblRegresos.DataTable().destroy();
-        }
-        $.getJSON(master_url + 'getRegresos').done(function (data) {
-            console.log(data);
-        }).fail(function (x, y, z) {
-            console.log(x, y, z);
-        });
-
-        Regresos = tblRegresos.DataTable({
-            "dom": 'frtip',
-            buttons: buttons,
-            "ajax": {
-                "url": master_url + 'getRegresos',
-                "dataSrc": ""
-            },
-            "columns": [
-                {"data": "ID"}/*0*/, {"data": "Cortador"}/*1*/, {"data": "Control"}/*2*/, {"data": "PiFoFraccion"},
-                {"data": "Estilo"}, {"data": "Color"}, {"data": "Pares"},
-                {"data": "Articulo"}, {"data": "ArticuloT"}, {"data": "Entregado"},
-                {"data": "Regreso"}, {"data": "Tipo"}
-            ],
-            "columnDefs": [
-                {
-                    "targets": [0],
-                    "visible": false,
-                    "searchable": false
-                }
-            ],
-            language: lang,
-            select: true,
-            "autoWidth": true,
-            "colReorder": true,
-            "displayLength": 20,
-            "bLengthChange": false,
-            "deferRender": true,
-            "scrollCollapse": false,
-            "bSort": true,
-            "aaSorting": [
-                [1, 'desc']/*ID*/
-            ]
-        });
-
-        tblRegresos.on('click', 'tr', function () {
-            var data = Regresos.row(this).data();
-            console.log('Regresos', data);
-            mdlRetornaMaterial.find("#Articulo").val(data.Articulo);
-            mdlRetornaMaterial.find("#ArticuloT").val(data.ArticuloT);
-            mdlRetornaMaterial.find("#Entrego").val(data.Entregado);
-            mdlRetornaMaterial.find("#IDA").val(data.ID);
-            mdlRetornaMaterial.find("#Estilo").val(data.Estilo);
-            mdlRetornaMaterial.find("#Color").val(data.Color);
-            mdlRetornaMaterial.find("#AnteriormenteRetorno").val(data.Regreso);
-            mdlRetornaMaterial.find("#Regreso").focus();
-        });
+        Pieles.ajax.reload();
+        Forros.ajax.reload();
+        Textiles.ajax.reload();
+        Sinteticos.ajax.reload();
+        ControlesAsignados.ajax.reload();
+        Regresos.ajax.reload();
+        onBuscarX(1, '');
+        onBuscarX(9, '');
+        onBuscarX(10, '');
+        onCalcularAlBuscar();
     }
 
     function onComprobarSemana(e) {
@@ -876,47 +848,6 @@
             console.log(x, y, z);
         }).always(function () {
 
-        });
-    }
-
-    function getPieles() {
-        Pieles.clear().draw();
-        HoldOn.open({
-            theme: 'sk-bounce',
-            message: 'Obteniendo pieles...'
-        });
-        $.getJSON(master_url + 'getPieles',
-                {SEMANA: (Semana.val() !== '') ? Semana.val() : '', CONTROL: (Control.val() !== '') ? Control.val() : ''})
-                .done(function (data) {
-                    $.each(data, function (k, v) {
-                        Pieles.row.add([v.ID, v.CONTROL, v.ARTICULO_CLAVE, v.ARTICULO_DESCRIPCION, v.UM, v.PIEZA, v.PIEZA_DESCRIPCION, v.GRUPO, v.CANTIDAD, v.SEMANA, v.FRACCION, v.PARES]).draw();
-                    });
-                }).fail(function (x, y, z) {
-            console.log(x, y, z);
-        }).always(function () {
-            onCalcularAlBuscar();
-            HoldOn.close();
-            Pieles.order([1, 'desc']).draw();
-        });
-    }
-
-    function getForros() {
-        Forros.clear().draw();
-        HoldOn.open({
-            theme: 'sk-bounce',
-            message: 'Obteniendo forros...'
-        });
-        $.getJSON(master_url + 'getForros', {SEMANA: (Semana.val() !== '') ? Semana.val() : '', CONTROL: (Control.val() !== '') ? Control.val() : ''})
-                .done(function (data) {
-                    $.each(data, function (k, v) {
-                        Forros.row.add([v.ID, v.CONTROL, v.ARTICULO_CLAVE, v.ARTICULO_DESCRIPCION, v.UM, v.PIEZA, v.PIEZA_DESCRIPCION, v.GRUPO, v.CANTIDAD, v.SEMANA, v.FRACCION, v.PARES]).draw();
-                    });
-                }).fail(function (x, y, z) {
-            console.log(x, y, z);
-        }).always(function () {
-            onCalcularAlBuscar();
-            HoldOn.close();
-            Forros.order([1, 'desc']).draw();
         });
     }
 
@@ -1076,8 +1007,9 @@
         var fields = ["Cortador", "PielForro", "Control"];
         var valid = false, ftv = "";
         for (var i = 0; i < fields.length; i++) {
-            if (mdlRetornaMaterial.find("#" + fields[i]).val() === '') {
+            if (mdlRetornaMaterial.find("#" + fields[i]).val() === '' && mdlRetornaMaterial.find("#" + fields[i]).val().length > 0) {
                 ftv = fields[i];
+                valid = false;
                 break;
             } else {
                 valid = true;
@@ -1088,12 +1020,17 @@
                     retorno = parseFloat(mdlRetornaMaterial.find("#AnteriormenteRetorno").val()) + parseFloat(mdlRetornaMaterial.find("#Regreso").val());
             console.log(entrego, '|', entrego + ' >=' + retorno, ' ', entrego >= retorno);
 
-            if (entrego >= retorno) {
+            if (entrego >= retorno || parseInt(entrego) === 0) {
                 if (mdlRetornaMaterial.find("#ID").val() !== '') {
                     onRetornar();
                 } else {
                     onBeep(2);
-                    swal('ATENCIÓN', 'DEBE DE ELEGIR UN REGISTRO', 'warning');
+                    swal('ATENCIÓN', 'DEBE DE SELECCIONAR UN REGISTRO', 'warning').then((value) => {
+                        mdlRetornaMaterial.find("#tblRegresos tbody tr").addClass("highlight-rows");
+                        setTimeout(function () {
+                            mdlRetornaMaterial.find("#tblRegresos tbody tr").removeClass("highlight-rows");
+                        }, 2500);
+                    });
                 }
             } else {
                 if (mdlRetornaMaterial.find("#MaterialExtraRetorna")[0].checked) {
@@ -1109,9 +1046,17 @@
             swal('ATENCIÓN', 'DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS', 'warning').then((value) => {
                 onBeep(2);
                 if (mdlRetornaMaterial.find("#" + ftv).is('select')) {
+                    mdlRetornaMaterial.find("#" + ftv).parent().addClass("highlight-rows");
+                    setTimeout(function () {
+                        mdlRetornaMaterial.find("#" + ftv).parent().removeClass("highlight-rows");
+                    }, 2500);
                     mdlRetornaMaterial.find("#" + ftv)[0].selectize.open();
                     mdlRetornaMaterial.find("#" + ftv)[0].selectize.focus();
                 } else {
+                    mdlRetornaMaterial.find("#" + ftv).parent().addClass("highlight-rows");
+                    setTimeout(function () {
+                        mdlRetornaMaterial.find("#" + ftv).parent().removeClass("highlight-rows");
+                    }, 2500);
                     mdlRetornaMaterial.find("#" + ftv).focus();
                 }
             });
@@ -1162,4 +1107,27 @@
         background-color: #3276b1 !important;
         color: #fff;
     }
+    .highlight-rows{ 
+        width:100px;
+        height:20px;
+        background:#99cc00;
+        animation: myfirst .4s;
+        -moz-animation:myfirst .4s infinite; /* Firefox */
+        -webkit-animation:myfirst .4s infinite; /* Safari and Chrome */
+    }
+
+    @-moz-keyframes myfirst /* Firefox */
+    {
+        0%   {background:0066cc; color:#fff;}
+        50%  {background:#ffffff;color:#000;}
+        100%   {background:#0066cc;color:#fff;}
+    }
+
+    @-webkit-keyframes myfirst /* Firefox */
+    {
+        0%   {background:#0066cc;color:#fff;}
+        50%  {background:#ffffff;color:#000;}
+        100%   {background:#0066cc;color:#fff;}
+    }
+
 </style>

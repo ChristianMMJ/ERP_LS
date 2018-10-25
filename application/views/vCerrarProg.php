@@ -356,13 +356,14 @@
                         }
                     });
                 } else {
-                    //COMPROBAR CAMPOS DE MAQUILA,SEMANA Y AÑO
-                    /* var maq = pnlTablero.find("#col12_filter"), sem = pnlTablero.find("#col13_filter"), ano = pnlTablero.find("#col14_filter");
-                     if (maq.val() === '' && sem.val() === '' && ano.val() === '') {*/
-                    swal('ATENCIÓN', 'NO HA SELECCIONADO NINGÚN REGISTRO', 'warning');
-                    /*} else {
-                     CerrarProg.rows().select();
-                     }*/
+                    if (tblCerrarProg.find("tbody tr>td").length < 5) {
+                        swal('ATENCIÓN', 'NO HA SELECCIONADO NINGÚN REGISTRO', 'warning');
+                    } else {
+                        $.each(tblCerrarProg.find("tbody tr"), function (k, v) {
+                            $(v).addClass('selected');
+                        });
+                        btnAsignar.trigger('click');
+                    }
                 }
             });
 

@@ -60,7 +60,6 @@ class ConsumoPielForroXCortador extends CI_Controller {
             $ARTICULO = $this->input->post('ARTICULO');
             $FECHAINICIAL = $this->input->post('FECHA_INICIAL');
             $FECHAFINAL = $this->input->post('FECHA_FINAL');
-            $CONEMPLEADO = $this->input->post('CON_EMPLEADO');
 
             $pdf->AddPage();
             $pdf->SetAutoPageBreak(true, 10);
@@ -100,7 +99,7 @@ class ConsumoPielForroXCortador extends CI_Controller {
             $pdf->SetX(120);
             $pdf->Cell(10, $alto_celda, utf8_decode($SEMANA_FINAL), $bordes/* BORDE */, 0/* SALTO */, 'C');
             $pdf->SetX(130);
-            $pdf->Cell(70, $alto_celda, utf8_decode("Fecha " . Date('d/m/Y')), $bordes/* BORDE */, 0/* SALTO */, 'C');
+            $pdf->Cell(70, $alto_celda, utf8_decode("Fecha " . Date('d/m/Y h:i:s a')), $bordes/* BORDE */, 0/* SALTO */, 'C');
             $pdf->SetX(200);
             $pdf->Cell(69, $alto_celda, utf8_decode("Página " . $pdf->PageNo()), $bordes/* BORDE */, 1/* SALTO */, 'C');
 
@@ -205,7 +204,7 @@ class ConsumoPielForroXCortador extends CI_Controller {
                 $pdf->SetFont('Calibri', 'B', 6.5);
                 $ESTILOS = $this->cpfxc->getEstilosPorCortador($ARTICULO, str_pad($MAQUILA, 2, "0", STR_PAD_LEFT), $SEMANA_INICIAL, $SEMANA_FINAL, $ANIO, $v->NUMERO, $TIPO);
                 foreach ($ESTILOS as $kk => $vv) {
-                    $RESUMEN = $this->cpfxc->getConsumosPielForroXMaquilaSemanaAnioCortadorArticuloFechaInicialFechaFinal($MAQUILA, $SEMANA_INICIAL, $SEMANA_FINAL, $ANIO, $CORTADOR, $ARTICULO, $FECHAINICIAL, $FECHAFINAL, $CONEMPLEADO, $v->NUMERO, $vv->Estilo_X_Cortador, $TIPO);
+                    $RESUMEN = $this->cpfxc->getConsumosPielForroXMaquilaSemanaAnioCortadorArticuloFechaInicialFechaFinal($MAQUILA, $SEMANA_INICIAL, $SEMANA_FINAL, $ANIO, $CORTADOR, $ARTICULO, $FECHAINICIAL, $FECHAFINAL, $v->NUMERO, $vv->Estilo_X_Cortador, $TIPO);
                     $Y = $pdf->GetY();
                     foreach ($RESUMEN as $kkk => $vvv) {
                         $alto_celda = 3.5;
@@ -437,7 +436,6 @@ class ConsumoPielForroXCortador extends CI_Controller {
             $ARTICULO = $this->input->post('ARTICULO');
             $FECHAINICIAL = $this->input->post('FECHA_INICIAL');
             $FECHAFINAL = $this->input->post('FECHA_FINAL');
-            $CONEMPLEADO = $this->input->post('CON_EMPLEADO');
 
             $pdf->AddPage();
             $pdf->SetAutoPageBreak(true, 10);
@@ -567,7 +565,7 @@ class ConsumoPielForroXCortador extends CI_Controller {
                 $pdf->SetFont('Calibri', 'B', 6.5);
                 $ESTILOS = $this->cpfxc->getEstilosPorCortador($ARTICULO, str_pad($MAQUILA, 2, "0", STR_PAD_LEFT), $SEMANA_INICIAL, $SEMANA_FINAL, $ANIO, $v->NUMERO, $TIPO);
                 foreach ($ESTILOS as $kk => $vv) {
-                    $RESUMEN = $this->cpfxc->getConsumosPielForroXMaquilaSemanaAnioCortadorArticuloFechaInicialFechaFinal($MAQUILA, $SEMANA_INICIAL, $SEMANA_FINAL, $ANIO, $CORTADOR, $ARTICULO, $FECHAINICIAL, $FECHAFINAL, $CONEMPLEADO, $v->NUMERO, $vv->Estilo_X_Cortador, $TIPO);
+                    $RESUMEN = $this->cpfxc->getConsumosPielForroXMaquilaSemanaAnioCortadorArticuloFechaInicialFechaFinal($MAQUILA, $SEMANA_INICIAL, $SEMANA_FINAL, $ANIO, $CORTADOR, $ARTICULO, $FECHAINICIAL, $FECHAFINAL, $v->NUMERO, $vv->Estilo_X_Cortador, $TIPO);
                     $Y = $pdf->GetY();
                     foreach ($RESUMEN as $kkk => $vvv) {
                         $TOTAL_PARES_X_ESTILO_CORTADOR += $vvv->Pares;

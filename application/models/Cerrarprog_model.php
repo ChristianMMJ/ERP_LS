@@ -105,9 +105,7 @@ class Cerrarprog_model extends CI_Model {
                     ->join('series AS S', 'E.Serie = S.Clave')
                     ->join('controles AS CT', 'CT.pedidodetalle = PD.ID', 'left')
                     ->where_not_in('PD.Control', array(0))->where('PD.Maquila', $M)->where('PD.Semana', $S);
-            return $this->db->order_by('CT.Consecutivo', 'DESC')
-                            ->limit(1)
-                            ->get()->result();
+            return $this->db->order_by('CT.Consecutivo', 'DESC')->limit(1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

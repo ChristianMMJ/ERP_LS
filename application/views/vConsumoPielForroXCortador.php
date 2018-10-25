@@ -42,13 +42,7 @@
                     <div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
                         <label>Fecha Final</label>
                         <input type="text" id="FechaFinal" name="FechaFinal"  class="form-control form-control-sm date notEnter" placeholder="" >
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
-                        <div class="custom-control custom-checkbox"  align="center" style="cursor: pointer !important;">
-                            <input type="checkbox" class="custom-control-input selectNotEnter" id="ConEmpleado" name="ConEmpleado" style="cursor: pointer !important;">
-                            <label class="custom-control-label text-danger labelCheck" for="ConEmpleado" style="cursor: pointer !important;">Con Empleado</label>
-                        </div>
-                    </div>
+                    </div> 
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-2">
                         <div class="alert alert-dismissible alert-danger"> 
                             <strong>Nota!</strong> Si desea información entre fechas solo capture maquila y fechas.
@@ -87,7 +81,7 @@
     var mdlConsumosPielForro = $("#mdlConsumosPielForro");
     var Maquila = mdlConsumosPielForro.find("#Maquila"), SemanaInicial = mdlConsumosPielForro.find("#SemanaInicial"), SemanaFinal = mdlConsumosPielForro.find("#SemanaFinal");
     var Ano = mdlConsumosPielForro.find("#Ano"), Cortador = mdlConsumosPielForro.find("#Cortador"), Articulo = mdlConsumosPielForro.find("#Articulo");
-    var FechaInicial = mdlConsumosPielForro.find("#FechaInicial"), FechaFinal = mdlConsumosPielForro.find("#FechaFinal"), ConEmpleado = mdlConsumosPielForro.find("#ConEmpleado");
+    var FechaInicial = mdlConsumosPielForro.find("#FechaInicial"), FechaFinal = mdlConsumosPielForro.find("#FechaFinal");
     var btnAceptar = mdlConsumosPielForro.find("#btnAceptar");
     var btnAceptarPiel = mdlConsumosPielForro.find("#btnAceptarPiel"),
             btnAceptarForro = mdlConsumosPielForro.find("#btnAceptarForro"),
@@ -111,8 +105,7 @@
                         CORTADOR: Cortador.val(),
                         ARTICULO: Articulo.val(),
                         FECHA_INICIAL: FechaInicial.val(),
-                        FECHA_FINAL: FechaFinal.val(),
-                        CON_EMPLEADO: ConEmpleado[0].checked ? 1 : 0
+                        FECHA_FINAL: FechaFinal.val()
                     }).done(function (data, x, jq) {
                 onImprimirReporteFancy(base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data);
             }).fail(function (x, y, z) {
@@ -140,8 +133,7 @@
                         CORTADOR: Cortador.val(),
                         ARTICULO: Articulo.val(),
                         FECHA_INICIAL: FechaInicial.val(),
-                        FECHA_FINAL: FechaFinal.val(),
-                        CON_EMPLEADO: ConEmpleado[0].checked ? 1 : 0
+                        FECHA_FINAL: FechaFinal.val()
                     }).done(function (data, x, jq) {
                 onImprimirReporteFancy(base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data);
             }).fail(function (x, y, z) {
@@ -169,8 +161,7 @@
                         CORTADOR: Cortador.val(),
                         ARTICULO: Articulo.val(),
                         FECHA_INICIAL: FechaInicial.val(),
-                        FECHA_FINAL: FechaFinal.val(),
-                        CON_EMPLEADO: ConEmpleado[0].checked ? 1 : 0
+                        FECHA_FINAL: FechaFinal.val()
                     }).done(function (data, x, jq) {
                 onImprimirReporteFancy(base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data);
             }).fail(function (x, y, z) {
@@ -198,8 +189,7 @@
                         CORTADOR: Cortador.val(),
                         ARTICULO: Articulo.val(),
                         FECHA_INICIAL: FechaInicial.val(),
-                        FECHA_FINAL: FechaFinal.val(),
-                        CON_EMPLEADO: ConEmpleado[0].checked ? 1 : 0
+                        FECHA_FINAL: FechaFinal.val()
                     }).done(function (data, x, jq) {
                 onImprimirReporteFancy(base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data);
             }).fail(function (x, y, z) {
@@ -212,22 +202,22 @@
             });
         });
 
-        SemanaInicial.on('keydown keyup', function (e) {
+        SemanaInicial.on('keydown', function (e) {
             onVerificarSemana(e, $(this));
         });
 
-        SemanaFinal.on('keydown keyup', function (e) {
+        SemanaFinal.on('keydown', function (e) {
             onVerificarSemana(e, $(this));
         });
 
-        Maquila.on('keydown keyup', function (e) {
+        Maquila.on('keydown', function (e) {
             onComprobarMaquilas(e, $(this));
         });
 
         mdlConsumosPielForro.on('shown.bs.modal', function () {
             mdlConsumosPielForro.find("input").val('');
-            mdlConsumosPielForro.find("#Articulo")[0].selectize.clear(true); 
-            mdlConsumosPielForro.find("#Cortador")[0].selectize.clear(true); 
+            mdlConsumosPielForro.find("#Articulo")[0].selectize.clear(true);
+            mdlConsumosPielForro.find("#Cortador")[0].selectize.clear(true);
             mdlConsumosPielForro.find("#Ano").val(new Date().getFullYear());
             mdlConsumosPielForro.find("#Maquila").focus();
         });
@@ -258,7 +248,11 @@
     function onComprobarMaquilas(e, input) {
         if (e.keyCode === 13 && input.val() !== '') {
             $.getJSON(master_url_modal + 'onComprobarMaquilas', {MAQUILA: input.val()}).done(function (data, x, jq) {
-                console.log(data);
+                if (parseInt(data[0].EXISTE_MAQUILA) <= 0) {
+                    swal('ATENCIÓN', 'LA MAQUILA ESPECIFICADA NO EXISTE', 'warning').then((value) => {
+                        input.focus();
+                    });
+                }
             }).fail(function (x, y, z) {
                 console.log(x, y, z);
             }).always(function () {
@@ -270,7 +264,12 @@
     function onVerificarSemana(e, input) {
         if (e.keyCode === 13 && input.val() !== '') {
             $.getJSON(master_url_modal + 'onChecarSemanaValida', {SEMANA: input.val()}).done(function (data, x, jq) {
-                console.log(data);
+                console.log(data,parseInt(data[0].SEMANA_NO_CERRADA))
+                if (parseInt(data[0].SEMANA_NO_CERRADA) === 1) {
+                    swal('ATENCIÓN', 'LA SEMANA ESPECIFICADA NO EXISTE', 'warning').then((value) => {
+                        input.focus();
+                    });
+                }
             }).fail(function (x, y, z) {
                 console.log(x, y, z);
             }).always(function () {

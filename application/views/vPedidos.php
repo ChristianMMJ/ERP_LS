@@ -41,7 +41,7 @@
                             <legend >Pedido</legend>
                         </div>
                         <div class="col-12 col-sm-12 col-md-6 col-lg-6" align="center">
-                            <button type="button" class="btn btn-primary btn-sm" id="btnCapacidad" onclick="onComprobarCapacidades('#Maquila')" >
+                            <button type="button" class="btn btn-primary btn-sm" id="btnCapacidad" onclick="onComprobarCapacidades('#Maquila')" data-toggle="tooltip" data-placement="bottom" title="Comprobar capacidad de la maquila">
                                 <span class="fa fa-eye" ></span>
                             </button>
                         </div>
@@ -497,7 +497,7 @@
                         window.open(data, '_blank');
                     } else {
                         $.fancybox.open({
-                            src: data,
+                            src: base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data,
                             type: 'iframe',
                             opts: {
                                 afterShow: function (instance, current) {
@@ -1373,7 +1373,9 @@
 
     function onComprobarCapacidades(e) {
         var Semana = $("#Semana").val();
-        $.getJSON(master_url + 'getCapacidadMaquila', {CLAVE: $(e).val(), SEMANA: Semana}).done(function (data) {
+        console.log("\n", e, pnlDatos.find("#Maquila").val(), "\n");
+        $.getJSON(master_url + 'getCapacidadMaquila', {CLAVE: pnlDatos.find("#Maquila").val(), SEMANA: Semana}).done(function (data) {
+            console.log(data);
             var dx = data[0];
             if (data.length > 0) {
                 var x = '<ul class="list-group">';
@@ -1386,13 +1388,10 @@
                 x += '<span class="badge badge-primary badge-pill font-weight-bold">' + (dx.CAPACIDAD === null ? 0 : (dx.CAPACIDAD - dx.PARES)) + '</span>' + ligrpclose;
                 x += '</ul>';
                 mdlAviso.find(".modal-body").html(x);
-                console.log(dx, ' * ', dx.CAPACIDAD, ' - ', dx.PARES);
                 if (dx.CAPACIDAD !== null && dx.PARES !== null) {
                     var CAPACIDAD = parseFloat(dx.CAPACIDAD), PARES = parseFloat(dx.PARES);
-                    console.log(PARES, ' - ', CAPACIDAD);
                     if (PARES > CAPACIDAD) {
                         mdlAviso.modal({backdrop: false});
-                        $('.modal-backdrop').remove();
                         setTimeout(function () {
                             mdlAviso.modal('hide');
                         }, 5000);

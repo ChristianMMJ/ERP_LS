@@ -25,7 +25,8 @@ class AsignaPFTSACXC_model extends CI_Model {
             $this->db->select("OP.ID, OP.ControlT AS CONTROL, OPD.Articulo AS ARTICULO_CLAVE, "
                             . "OPD.ArticuloT AS ARTICULO_DESCRIPCION, OPD.UnidadMedidaT AS UM, OPD.Pieza AS PIEZA, "
                             . "OPD.PiezaT AS PIEZA_DESCRIPCION, OPD.Grupo AS GRUPO, FORMAT(OPD.Cantidad,3) AS CANTIDAD, "
-                            . "OP.ControlT AS CONTROL, OP.Semana AS SEMANA, GROUP_CONCAT(F.Clave ORDER BY F.Clave ASC) AS FRACCION, OP.Pares AS PARES")
+                            . "OP.ControlT AS CONTROL, OP.Semana AS SEMANA, GROUP_CONCAT(F.Clave ORDER BY F.Clave ASC) AS FRACCION, "
+                            . "OP.Pares AS PARES")
                     ->from("ordendeproduccion AS OP")
                     ->join('ordendeproducciond AS OPD', 'OP.ID = OPD.OrdenDeProduccion')
                     ->join('fraccionesxestilo AS FXE', 'OP.Estilo = FXE.Estilo')
@@ -67,7 +68,7 @@ class AsignaPFTSACXC_model extends CI_Model {
     public function getEmpleados() {
         try {
             return $this->db->select("E.Numero AS CLAVE, CONCAT(E.Numero,' ', E.PrimerNombre,' ',E.SegundoNombre,' ',E.Paterno,' ', E.Materno) AS EMPLEADO")
-                            ->from("empleados AS E")->where('E.DepartamentoFisico',10)->get()->result();
+                            ->from("empleados AS E")->where('E.DepartamentoFisico', 10)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -177,8 +178,8 @@ FORMAT(OPD.Cantidad, 3) AS CANTIDAD, `OP`.`Semana` AS `SEMANA`, GROUP_CONCAT(F.C
 
     public function onObtenerPrecioMaquila($ARTICULO) {
         try {
-            return $this->db->select("PM.Precio AS PRECIO_MAQUILA_UNO")->from("preciosmaquilas AS PM")->where("PM.Articulo LIKE '$ARTICULO'",null,false)
-                    ->where("PM.Maquila",1)->get()->result();
+            return $this->db->select("PM.Precio AS PRECIO_MAQUILA_UNO")->from("preciosmaquilas AS PM")->where("PM.Articulo LIKE '$ARTICULO'", null, false)
+                            ->where("PM.Maquila", 1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

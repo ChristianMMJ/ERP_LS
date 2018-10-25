@@ -74,8 +74,8 @@ class AsignaPFTSACXC extends CI_Controller {
     }
 
     public function getPieles() {
-        try {
-            print json_encode($this->AsignaPFTSACXC_model->getPieles($this->input->get('SEMANA'), $this->input->get('CONTROL')));
+        try { 
+            print json_encode($this->AsignaPFTSACXC_model->getPieles(isset($_GET['SEMANA']) ? $this->input->get('SEMANA') : '', isset($_GET['CONTROL']) ? $this->input->get('CONTROL') : ''));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -83,7 +83,7 @@ class AsignaPFTSACXC extends CI_Controller {
 
     public function getForros() {
         try {
-            print json_encode($this->AsignaPFTSACXC_model->getForros($this->input->get('SEMANA'), $this->input->get('CONTROL')));
+            print json_encode($this->AsignaPFTSACXC_model->getForros(isset($_GET['SEMANA']) ? $this->input->get('SEMANA') : '', isset($_GET['CONTROL']) ? $this->input->get('CONTROL') : ''));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -91,7 +91,7 @@ class AsignaPFTSACXC extends CI_Controller {
 
     public function getTextiles() {
         try {
-            print json_encode($this->AsignaPFTSACXC_model->getTextiles($this->input->get('SEMANA'), $this->input->get('CONTROL')));
+            print json_encode($this->AsignaPFTSACXC_model->getTextiles(isset($_GET['SEMANA']) ? $this->input->get('SEMANA') : '', isset($_GET['CONTROL']) ? $this->input->get('CONTROL') : ''));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -99,7 +99,7 @@ class AsignaPFTSACXC extends CI_Controller {
 
     public function getSinteticos() {
         try {
-            print json_encode($this->AsignaPFTSACXC_model->getSinteticos($this->input->get('SEMANA'), $this->input->get('CONTROL')));
+            print json_encode($this->AsignaPFTSACXC_model->getSinteticos(isset($_GET['SEMANA']) ? $this->input->get('SEMANA') : '', isset($_GET['CONTROL']) ? $this->input->get('CONTROL') : ''));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -235,7 +235,7 @@ class AsignaPFTSACXC extends CI_Controller {
                     $this->db->set('Empleado', $x->post('EMPLEADO'))
                             ->set('Basura', $x->post('REGRESO'))
                             ->set('MaterialMalo', 1)
-                            ->where('ID', $x->post('ID'))->update('asignapftsacxc');                    
+                            ->where('ID', $x->post('ID'))->update('asignapftsacxc');
                 } else {
                     print "LA CANTIDAD DEVUELTA O DEFECTUOSA HA SIDO ZERO 0";
                 }

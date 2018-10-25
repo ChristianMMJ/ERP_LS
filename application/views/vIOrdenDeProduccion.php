@@ -128,12 +128,11 @@
                 var params = {INICIO: controlinicial.val(), FIN: controlfinal.val(), SEMANA: '', ANIO: ''};
                 $.post(master_url + 'getOrdenDeProduccion', params).done(function (data) {
                     //check Apple device
-                    console.log(data);
                     if (isAppleDevice() || isMobile) {
                         window.open(data, '_blank');
                     } else {
                         $.fancybox.open({
-                            src: data,
+                            src: base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data,
                             type: 'iframe',
                             opts: {
                                 afterShow: function (instance, current) {
@@ -157,8 +156,9 @@
                             }
                         });
                     }
-                }).fail(function (x, y, z) {
-                    console.log(x, y, z);
+                }).fail(function (x, y, z) { 
+                    console.log(x.responseText);
+                    swal('ATENCION','HA OCURRIDO UN ERROR AL OBTENER EL REPORTE, REVISE LA CONSOLA PARA MÁS DETALLE','warning');
                 }).always(function () {
                     HoldOn.close();
                 });
