@@ -168,7 +168,7 @@ class AsignaPFTSACXC extends CI_Controller {
                     'TipoMov' => 'SXP', /* SXP = SALIDA A PRODUCCION */
                     'DocMov' => $x->post('ORDENDEPRODUCCION'),
                     'Tp' => 1,
-                    'Maq' => substr($x->post('CONTROL'), 4, 2),
+                    'Maq' => intval(substr($x->post('CONTROL'), 4, 2)),
                     'Sem' => $x->post('SEMANA'),
                     'OrdenCompra' => NULL,
                     'Subtotal' => 0

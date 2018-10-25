@@ -1,4 +1,4 @@
-<div class="modal animated zoomInUp" id="mdlConsumosPielForro">
+<div class="modal animated fadeIn" id="mdlConsumosPielForro">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -264,7 +264,6 @@
     function onVerificarSemana(e, input) {
         if (e.keyCode === 13 && input.val() !== '') {
             $.getJSON(master_url_modal + 'onChecarSemanaValida', {SEMANA: input.val()}).done(function (data, x, jq) {
-                console.log(data,parseInt(data[0].SEMANA_NO_CERRADA))
                 if (parseInt(data[0].SEMANA_NO_CERRADA) === 1) {
                     swal('ATENCIÓN', 'LA SEMANA ESPECIFICADA NO EXISTE', 'warning').then((value) => {
                         input.focus();

@@ -240,7 +240,7 @@ class ConsumoPielForroXCortador extends CI_Controller {
 
                         $base += 15;
                         $pdf->SetX($base);
-                        $pdf->Cell(15, $alto_celda, utf8_decode($vvv->Abono), $bordes/* BORDE */, 0/* SALTO */, 'C'); /* ENTREGADO/ABONADO */
+                        $pdf->Cell(15, $alto_celda, number_format($vvv->Abono, 2, '.', ','), $bordes/* BORDE */, 0/* SALTO */, 'C'); /* ENTREGADO/ABONADO */
                         $TOTAL_X_ENTREGADO += $vvv->Abono;
                         $TOTAL_X_ENTREGADO_CORTADOR += $vvv->Abono;
 
@@ -258,7 +258,7 @@ class ConsumoPielForroXCortador extends CI_Controller {
 
                         $base += 15;
                         $pdf->SetX($base);
-                        $pdf->Cell(15, $alto_celda, utf8_decode($vvv->Diferencia), $bordes/* BORDE */, 0/* SALTO */, 'C');
+                        $pdf->Cell(15, $alto_celda, number_format($vvv->Diferencia, 2, '.', ','), $bordes/* BORDE */, 0/* SALTO */, 'C');
                         $TOTAL_X_DIFERENCIAS += $vvv->Diferencia;
                         $TOTAL_X_DIFERENCIAS_CORTADOR += $vvv->Diferencia;
 

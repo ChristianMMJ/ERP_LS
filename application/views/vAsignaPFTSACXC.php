@@ -538,7 +538,7 @@
             "bSort": true,
             "scrollY": "125px",
             "scrollX": true,
-            initComplete: function (a, b) {
+            createdRow: function( row, data, dataIndex ) {
                 onCalcularAlBuscar();
             }
         };

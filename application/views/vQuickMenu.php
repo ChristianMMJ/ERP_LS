@@ -168,7 +168,7 @@
     particlesJS("particle-container", {
         "particles": {
             "number": {
-                "value": 25,
+                "value": 5,
                 "density": {
                     "enable": true,
                     "value_area": 950
@@ -222,7 +222,7 @@
             },
             "move": {
                 "enable": true,
-                "speed": 2,
+                "speed": 1,
                 "direction": "none",
                 "random": false,
                 "straight": false,

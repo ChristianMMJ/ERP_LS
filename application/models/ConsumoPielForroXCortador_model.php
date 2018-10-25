@@ -48,9 +48,9 @@ class ConsumoPielForroXCortador_model extends CI_Model {
     function getCortadoresXMaquilaSemanaArticulo($ARTICULO, $MAQUILA, $SEMANAINICIAL, $SEMANAFINAL, $ANO, $CORTADOR, $TIPO) {
         try {
             $this->db->select("substr(ASI.Control,3,2) AS SEMANA,substr(ASI.Control,5,2) AS MAQUILA, 
-                                    ASI.Control,E.Numero AS NUMERO, CONCAT(E.PrimerNombre, \" \",E.SegundoNombre,\" \", E.Paterno,\" \",E.Materno) AS CORTADOR", false)
+                                   IFNULL(E.Numero,0) AS NUMERO, CONCAT(IFNULL(E.PrimerNombre,\"\"), \" \", IFNULL(E.SegundoNombre,\"\"), \" \", IFNULL(E.Paterno,\"\"), \" \", IFNULL(E.Materno,\"\")) AS CORTADOR", false)
                     ->from("asignapftsacxc AS ASI")
-                    ->join("Empleados AS E", "ASI.Empleado = E.Numero",'left');
+                    ->join("Empleados AS E", "ASI.Empleado = E.Numero", 'left');
             if ($ARTICULO !== '') {
                 $this->db->where("ASI.Articulo LIKE  '$ARTICULO'", null, false);
             }
@@ -78,9 +78,9 @@ class ConsumoPielForroXCortador_model extends CI_Model {
         try {
             $this->db->select("ASI.Estilo AS Estilo_X_Cortador", false)
                     ->from("asignapftsacxc AS ASI")
-                    ->join("Empleados AS E", "ASI.Empleado = E.Numero",'left');
+                    ->join("Empleados AS E", "ASI.Empleado = E.Numero", 'left');
             if ($CORTADOR_CLAVE !== '') {
-                $this->db->where("E.Numero LIKE  '$CORTADOR_CLAVE'", null, false);
+                $this->db->where("ASI.Empleado LIKE  '$CORTADOR_CLAVE'", null, false);
             }
             if ($ARTICULO !== '') {
                 $this->db->where("ASI.Articulo LIKE  '$ARTICULO'", null, false);
@@ -95,7 +95,8 @@ class ConsumoPielForroXCortador_model extends CI_Model {
                 $this->db->where("YEAR(str_to_date(ASI.Fecha, '%d/%m/%Y')) LIKE '$ANO'", null, false);
             }
             $this->db->where("ASI.TipoMov LIKE '$TIPO'", null, false);
-            return $this->db->group_by('ASI.Estilo')->get()->result();
+            $this->db->group_by('ASI.Estilo'); 
+            return $this->db->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -105,9 +106,9 @@ class ConsumoPielForroXCortador_model extends CI_Model {
         try {
             $this->db->select("OP.ControlT AS Control, OP.Estilo, OP.Color, OPD.Articulo, OPD.ArticuloT, "
                             . "ASI.PrecioActual AS Precio, OP.Pares, SUM(OPD.Consumo) AS Consumo, SUM(OPD.Cantidad) AS Cantidad, ASI.Abono, "
-                            . "ASI.Devolucion, ASI.Basura, FORMAT((SUM(OPD.Cantidad) - ASI.Abono)+(IFNULL(ASI.Basura,0)),2) AS Diferencia,"
-                            . "FORMAT((ASI.PrecioActual * SUM(OPD.Cantidad)),3) AS SistemaPesos,(ASI.PrecioActual * ASI.Abono) AS RealPesos, "
-                            . "FORMAT(((ASI.PrecioActual * SUM(OPD.Cantidad)) - (ASI.PrecioActual * ASI.Abono)),3) AS DifPesos,"
+                            . "ASI.Devolucion, ASI.Basura, (SUM(OPD.Cantidad) - ASI.Abono)+(IFNULL(ASI.Basura,0)) AS Diferencia,"
+                            . "(ASI.PrecioActual * SUM(OPD.Cantidad)) AS SistemaPesos,(ASI.PrecioActual * ASI.Abono) AS RealPesos, "
+                            . "((ASI.PrecioActual * SUM(OPD.Cantidad)) - (ASI.PrecioActual * ASI.Abono)) AS DifPesos,"
                             . "(ASI.Abono/OP.Pares) AS DCM2, SUM(OPD.Consumo)/(ASI.Abono/OP.Pares) AS PORCENTAJE", false)
                     ->from("ordendeproduccion AS OP")
                     ->join("ordendeproducciond AS OPD", "OP.ID = OPD.OrdenDeProduccion")
@@ -139,6 +140,7 @@ class ConsumoPielForroXCortador_model extends CI_Model {
             }
             $this->db->where("ASI.TipoMov LIKE '$TIPO'", null, false);
             $this->db->group_by('OP.ControlT');
+            $str = $this->db->last_query();
             return $this->db->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
