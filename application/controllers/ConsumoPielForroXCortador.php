@@ -207,6 +207,7 @@ class ConsumoPielForroXCortador extends CI_Controller {
                     $RESUMEN = $this->cpfxc->getConsumosPielForroXMaquilaSemanaAnioCortadorArticuloFechaInicialFechaFinal($MAQUILA, $SEMANA_INICIAL, $SEMANA_FINAL, $ANIO, $CORTADOR, $ARTICULO, $FECHAINICIAL, $FECHAFINAL, $v->NUMERO, $vv->Estilo_X_Cortador, $TIPO);
                     $Y = $pdf->GetY();
                     foreach ($RESUMEN as $kkk => $vvv) {
+                        $pdf->SetFont('Calibri', 'B', 6.5);
                         $alto_celda = 3.5;
                         $base = 10;
                         $pdf->SetX($base);
@@ -223,12 +224,13 @@ class ConsumoPielForroXCortador extends CI_Controller {
                         $base += 50;
                         $pdf->SetX($base);
                         $pdf->Cell(10, $alto_celda, utf8_decode($vvv->Precio), $bordes/* BORDE */, 0/* SALTO */, 'C');
+                        $pdf->SetFont('Calibri', 'B', 6);
                         $base += 10;
                         $pdf->SetX($base);
                         $pdf->Cell(10, $alto_celda, utf8_decode($vvv->Pares), $bordes/* BORDE */, 0/* SALTO */, 'C');
                         $base += 10;
                         $pdf->SetX($base);
-                        $pdf->Cell(10, $alto_celda, utf8_decode($vvv->Consumo), $bordes/* BORDE */, 0/* SALTO */, 'C'); /* X ESTILO */
+                        $pdf->Cell(10, $alto_celda, number_format($vvv->Consumo, 2, '.', ','), $bordes/* BORDE */, 0/* SALTO */, 'C'); /* X ESTILO */
                         $TOTAL_X_ESTILO += $vvv->Consumo;
                         $TOTAL_X_ESTILO_CORTADOR += $vvv->Consumo;
 
@@ -604,6 +606,7 @@ class ConsumoPielForroXCortador extends CI_Controller {
                         $TOTAL_X_DIFERENCIA_PESOS_CORTADOR += $vvv->DifPesos;
                         $pdf->Line(10, $pdf->GetY(), 269, $pdf->GetY());
                     }
+                    $pdf->SetFont('Calibri', 'B', 6);
                     $base = 100;
 //                    $pdf->SetFillColor(255, 255, 255);
 //                    $pdf->SetFillColor(244, 244, 244);

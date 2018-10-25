@@ -50,7 +50,7 @@ class ConsumoPielForroXCortador_model extends CI_Model {
             $this->db->select("substr(ASI.Control,3,2) AS SEMANA,substr(ASI.Control,5,2) AS MAQUILA, 
                                    IFNULL(E.Numero,0) AS NUMERO, CONCAT(IFNULL(E.PrimerNombre,\"\"), \" \", IFNULL(E.SegundoNombre,\"\"), \" \", IFNULL(E.Paterno,\"\"), \" \", IFNULL(E.Materno,\"\")) AS CORTADOR", false)
                     ->from("asignapftsacxc AS ASI")
-                    ->join("Empleados AS E", "ASI.Empleado = E.Numero", 'left');
+                    ->join("empleados AS E", "ASI.Empleado = IFNULL(E.Numero,0)", 'left');
             if ($ARTICULO !== '') {
                 $this->db->where("ASI.Articulo LIKE  '$ARTICULO'", null, false);
             }
@@ -78,7 +78,7 @@ class ConsumoPielForroXCortador_model extends CI_Model {
         try {
             $this->db->select("ASI.Estilo AS Estilo_X_Cortador", false)
                     ->from("asignapftsacxc AS ASI")
-                    ->join("Empleados AS E", "ASI.Empleado = E.Numero", 'left');
+                    ->join("empleados AS E", "ASI.Empleado = IFNULL(E.Numero,0)", 'left');
             if ($CORTADOR_CLAVE !== '') {
                 $this->db->where("ASI.Empleado LIKE  '$CORTADOR_CLAVE'", null, false);
             }
@@ -95,7 +95,7 @@ class ConsumoPielForroXCortador_model extends CI_Model {
                 $this->db->where("YEAR(str_to_date(ASI.Fecha, '%d/%m/%Y')) LIKE '$ANO'", null, false);
             }
             $this->db->where("ASI.TipoMov LIKE '$TIPO'", null, false);
-            $this->db->group_by('ASI.Estilo'); 
+            $this->db->group_by('ASI.Estilo');
             return $this->db->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
