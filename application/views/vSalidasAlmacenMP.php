@@ -39,7 +39,7 @@
                 <select id="TipoMov" name="TipoMov" class="form-control form-control-sm required" required="">
                     <option value=""></option>
                     <option value="SPR">SPR - SALIDA A PRODUCCIÓN</option>
-                    <option value="SDV">SDV - SALIDA POR DEVOLUCIÓN A PROV</option>
+                    <option value="SDV">SDV - SALIDA POR DEVOLUCIÓN</option>
                     <option value="SAJ">SAJ - SALIDA POR AJUSTE</option>
                     <option value="SXP">SXP - SALIDA POR PIOCHA</option>
                     <option value="SXC">SXC - SALIDA POR CALIDAD</option>
@@ -50,7 +50,7 @@
             <div class="col-6 col-sm-5 col-md-3 col-lg-2 col-xl-2">
                 <label for="">Mat Ent. de Otra Maq</label>
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="MatOtraMaquila" name="MatOtraMaquila" >
+                    <input type="checkbox" class="custom-control-input selectNotEnter" id="MatOtraMaquila" name="MatOtraMaquila" >
                     <label class="custom-control-label" for="MatOtraMaquila"></label>
                 </div>
             </div>
@@ -145,9 +145,8 @@
         setFocusSelectToInputOnChange('#Articulo', '#Cantidad', pnlTablero);
         handleEnter();
         getArticulos();
-        getRecords('0');
+        getRecords('0', '0');
         getMatEntregado('', '', '', '');
-
         pnlTablero.find("#Ano").change(function () {
             if (parseInt($(this).val()) < 2016 || parseInt($(this).val()) > 2020 || $(this).val() === '') {
                 swal({
@@ -175,20 +174,34 @@
             getFolio();
         });
         pnlTablero.find("#TipoMov").change(function () {
-            isValid('Encabezado');
-            if (valido) {
-                pnlTablero.find('#Encabezado').find('input').addClass('disabledForms');
-                pnlTablero.find('#Detalle').find('input, button').removeClass('disabledForms');
-
-                $.when(pnlTablero.find("#Articulo")[0].selectize.enable()).then(function (data, textStatus, jqXHR) {
-                    pnlTablero.find("#TipoMov")[0].selectize.disable()
-                    pnlTablero.find("#Articulo")[0].selectize.focus();
+            var maq = pnlTablero.find("#Maq").val();
+            if (maq !== '1' && $(this).val() === 'SAJ') {
+                swal({
+                    title: "ATENCIÓN",
+                    text: "SALIDA POR AJUSTE SÓLO APLICA PARA MAQUILA 1",
+                    icon: "warning"
+                }).then((value) => {
+                    if (value) {
+                        $(this)[0].selectize.focus();
+                        $(this)[0].selectize.setValue('', true);
+                    }
                 });
             } else {
-                swal('ATENCION', 'Completa los campos requeridos', 'warning');
-                pnlTablero.find('#Detalle').find('input, button').addClass('disabledForms');
-                pnlTablero.find("#Articulo")[0].selectize.disable();
+                isValid('Encabezado');
+                if (valido) {
+                    pnlTablero.find('#Encabezado').find('input').addClass('disabledForms');
+                    pnlTablero.find('#Detalle').find('input, button').removeClass('disabledForms');
+                    $.when(pnlTablero.find("#Articulo")[0].selectize.enable()).then(function (data, textStatus, jqXHR) {
+                        pnlTablero.find("#TipoMov")[0].selectize.disable()
+                        pnlTablero.find("#Articulo")[0].selectize.focus();
+                    });
+                } else {
+                    swal('ATENCION', 'Completa los campos requeridos', 'warning');
+                    pnlTablero.find('#Detalle').find('input, button').addClass('disabledForms');
+                    pnlTablero.find("#Articulo")[0].selectize.disable();
+                }
             }
+
         });
         pnlTablero.find("#Articulo").change(function () {
             var maq = pnlTablero.find("#Maq").val();
@@ -241,7 +254,9 @@
                         nuevo = false;
                     } else {
                         Movimientos.ajax.reload();
+
                     }
+                    MatEntregado.ajax.reload();
                     pnlTablero.find('#Detalle').find("input").val('');
                     pnlTablero.find("#Articulo")[0].selectize.clear(true);
                     pnlTablero.find("#Articulo")[0].selectize.focus();
@@ -390,7 +405,7 @@
 
         });
     }
-    function getRecords(doc) {
+    function getRecords(doc, maq) {
         temp = 0;
         HoldOn.open({
             theme: 'sk-cube',
@@ -407,7 +422,7 @@
             fixedHeader: true,
             "ajax": {
                 "url": master_url + 'getRecords',
-                "data": {DocMov: doc},
+                "data": {DocMov: doc, Maq: maq},
                 "type": "POST",
                 "dataSrc": ""
             },
@@ -515,19 +530,20 @@
     }
     function onComprobarMaquilas(v) {
         $.getJSON(master_url + 'onComprobarMaquilas', {Clave: $(v).val()}).done(function (data) {
-            console.log(data);
+
             if (data.length > 0) {
-                if (parseInt($(v).val()) > 96) {
-                    swal({
-                        title: "ATENCIÓN",
-                        text: "LOS MOVIMIENTOS A SUB ALMACEN (97,98) SE HACEN EN OTRO MÓDULO",
-                        icon: "warning"
-                    }).then((value) => {
-                        $(v).val('').focus();
-                    });
-                } else {
-                    pnlTablero.find('#EntregaMat').text(data[0].EntregaMat);
-                }
+//                if (parseInt($(v).val()) > 96) {
+//                    swal({
+//                        title: "ATENCIÓN",
+//                        text: "LOS MOVIMIENTOS A SUB ALMACEN (97,98) SE HACEN EN OTRO MÓDULO",
+//                        icon: "warning"
+//                    }).then((value) => {
+//                        $(v).val('').focus();
+//                    });
+//                } else {
+//
+//                }
+                pnlTablero.find('#EntregaMat').text(data[0].EntregaMat);
             } else {
                 swal({
                     title: "ATENCIÓN",

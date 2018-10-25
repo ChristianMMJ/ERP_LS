@@ -105,7 +105,9 @@ class RecibeOrdenCompra extends CI_Controller {
             //Actualiza estatus compra a CONCLUIDA
             $this->Recibeordencompra_model->onModificarEstatusCompra($this->input->post('Factura'), $this->input->post('TpDoc'), $this->input->post('Proveedor'));
             //Inserta en mov articulos
+            $SalidaMaquilas = $this->input->post('SalidaMaquilas');
             $Compra = $this->Recibeordencompra_model->getCompraParaMovArt($this->input->post('Factura'), $this->input->post('TpDoc'), $this->input->post('Proveedor'));
+            $Doc_Salida = date('ymdHis');
             foreach ($Compra as $key => $v) {
                 $datos = array(
                     'Articulo' => $v->Articulo,
@@ -122,8 +124,29 @@ class RecibeOrdenCompra extends CI_Controller {
                     'Subtotal' => $v->Subtotal
                 );
                 $this->Recibeordencompra_model->onAgregarMovArt($datos);
+                //Grabar salida si tiene el check de salida maquilas
+
+                if (intval($SalidaMaquilas) === 1) {
+
+                    $datosSalida = array(
+                        'Articulo' => $v->Articulo,
+                        'PrecioMov' => $v->Precio,
+                        'CantidadMov' => $v->Cantidad,
+                        'FechaMov' => $v->FechaDoc,
+                        'EntradaSalida' => '2',
+                        'TipoMov' => 'SXM',
+                        'DocMov' => $Doc_Salida,
+                        'Tp' => $v->Tp,
+                        'Maq' => $v->Maq,
+                        'Sem' => $v->Sem,
+                        'OrdenCompra' => $v->Doc,
+                        'Subtotal' => $v->Subtotal
+                    );
+                    $this->Recibeordencompra_model->onAgregarMovArt($datosSalida);
+                    print $Doc_Salida;
+                }
                 //Graba en movarticulos_fabrica
-                if ($v->Maq === '98' || $v->Maq === '97') {
+                if ($v->Maq === '98') {
                     $this->Recibeordencompra_model->onAgregarMovArtFabrica($datos);
                 }
             }
@@ -297,6 +320,71 @@ class RecibeOrdenCompra extends CI_Controller {
             $url = $path . '/' . $file_name . '.pdf';
             /* Borramos el archivo anterior */
             if (delete_files('uploads/Reportes/EntradasAlmacen/')) {
+                /* ELIMINA LA EXISTENCIA DE CUALQUIER ARCHIVO EN EL DIRECTORIO */
+            }
+            $pdf->Output($url);
+            print base_url() . $url;
+        }
+    }
+
+    public function onImprimirValeSalida() {
+        $ValeSalida = $this->Recibeordencompra_model->getMovArtSalida($this->input->post('Doc'), $this->input->post('TpDoc'));
+        if (!empty($ValeSalida)) {
+            $pdf = new PDFSalida('P', 'mm', array(215.9, 279.4));
+
+            $pdf->setTp($ValeSalida[0]->Tp);
+            $pdf->setDoc($ValeSalida[0]->Doc);
+            $pdf->setMaq($ValeSalida[0]->Maq);
+            $pdf->setSem($ValeSalida[0]->Sem);
+
+            $pdf->AddPage();
+            $pdf->SetAutoPageBreak(true, 8);
+
+            $Subtotal = 0;
+            $Cantidad = 0;
+            foreach ($ValeSalida as $keyFT => $F) {
+                $pdf->SetLineWidth(0.25);
+
+                $pdf->SetX(5);
+                $pdf->SetFont('Calibri', '', 8);
+
+
+                $pdf->Row(array(
+                    utf8_decode($F->Articulo),
+                    mb_strimwidth(utf8_decode($F->DescArticulo), 0, 70, "..."),
+                    number_format($F->Cantidad, 2, ".", ","),
+                    utf8_decode($F->Unidad),
+                    '$' . number_format($F->Precio, 2, ".", ","),
+                    '$' . number_format($F->Subtotal, 2, ".", ","),
+                    utf8_decode($F->FechaDoc),
+                    utf8_decode($F->DocCompra)
+                ));
+                $Subtotal += $F->Subtotal;
+                $Cantidad += $F->Cantidad;
+            }
+            $pdf->SetY($pdf->GetY());
+            $pdf->SetFont('Calibri', 'B', 9);
+            $pdf->SetX(60);
+            $pdf->Cell(15, 5, utf8_decode("Total General: "), 0/* BORDE */, 0, 'L');
+
+            $pdf->SetX(95);
+            $pdf->SetFont('Calibri', '', 9);
+            $pdf->Cell(20, 5, number_format($Cantidad, 2, ".", ","), 0/* BORDE */, 0, 'L');
+
+            $pdf->SetX(140);
+            $pdf->SetFont('Calibri', '', 9);
+            $pdf->Cell(20, 5, '$' . number_format($Subtotal, 2, ".", ","), 0/* BORDE */, 1, 'L');
+
+
+            /* FIN RESUMEN */
+            $path = 'uploads/Reportes/SalidasAlmacen';
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $file_name = "SALIDA AL ALMACEN " . date("d-m-Y his");
+            $url = $path . '/' . $file_name . '.pdf';
+            /* Borramos el archivo anterior */
+            if (delete_files('uploads/Reportes/SalidasAlmacen/')) {
                 /* ELIMINA LA EXISTENCIA DE CUALQUIER ARCHIVO EN EL DIRECTORIO */
             }
             $pdf->Output($url);

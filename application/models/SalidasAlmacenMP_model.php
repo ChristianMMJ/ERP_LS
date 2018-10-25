@@ -24,6 +24,20 @@ class SalidasAlmacenMP_model extends CI_Model {
         }
     }
 
+    public function getRecordsSubAlmacen($doc) {
+        try {
+            return $this->db->select("MA.ID, A.Clave, A.Descripcion, MA.CantidadMov, MA.Maq, MA.TipoMov, "
+                                    . 'CONCAT(\'<span class="fa fa-trash fa-lg" onclick="onEliminarDetalleByID(\',MA.ID,\')">\',\'</span>\') AS Eliminar'
+                                    . "", false)
+                            ->from("movarticulos_fabrica MA")
+                            ->join("articulos A", 'ON A.Clave = MA.Articulo')
+                            ->where('MA.DocMov', $doc)
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getMatEntregado($Ano, $Maq, $Sem, $Articulo) {
         try {
             $this->db->select("MA.DocMov,MA.Articulo, MA.CantidadMov "
@@ -117,6 +131,18 @@ class SalidasAlmacenMP_model extends CI_Model {
     public function onAgregar($array) {
         try {
             $this->db->insert("movarticulos", $array);
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
+            $row = $query->row_array();
+            $LastIdInserted = $row['LAST_INSERT_ID()'];
+            return $LastIdInserted;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onAgregarSubAlmacen($array) {
+        try {
+            $this->db->insert("movarticulos_fabrica", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID()');
             $row = $query->row_array();
             $LastIdInserted = $row['LAST_INSERT_ID()'];

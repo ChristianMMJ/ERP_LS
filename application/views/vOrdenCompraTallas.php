@@ -990,7 +990,18 @@
     function onComprobarMaquilas(v) {
         $.getJSON(master_url + 'onComprobarMaquilas', {Clave: $(v).val()}).done(function (data) {
             if (data.length > 0) {
-                pnlDatos.find('#ConsignarA').val(data[0].Direccion);
+                if (parseInt($(v).val()) > 98) {
+                    swal({
+                        title: "ATENCIÓN",
+                        text: "LA MAQUILA NO ES VALIDA",
+                        icon: "warning"
+                    }).then((value) => {
+                        $(v).val('').focus();
+                    });
+                } else {
+                    pnlDatos.find('#ConsignarA').val(data[0].Direccion);
+                }
+
             } else {
                 swal({
                     title: "ATENCIÓN",

@@ -45,7 +45,7 @@ class Recibeordencompra_model extends CI_Model {
 
     public function getOrdenCompra($Folio, $Tp) {
         try {
-            $this->db->select("G.FechaOrden, G.Proveedor, "
+            $this->db->select("G.FechaOrden, G.Proveedor, G.Maq, "
                             . "CONCAT(P.Clave,' ',IFNULL(P.NombreI,'')) AS ProveedorI, "
                             . "CONCAT(P.Clave,' ',IFNULL(P.NombreF,'')) AS ProveedorF "
                             . "")
@@ -142,6 +142,41 @@ class Recibeordencompra_model extends CI_Model {
                     ->where("C.Doc", $Factura)
                     ->where("C.Proveedor", $Proveedor)
                     ->group_by("C.Articulo");
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getMovArtSalida($Doc_Salida, $Tp) {
+        try {
+            $this->db->query("set sql_mode=''");
+            $this->db->select("C.Articulo, "
+                            . "A.Descripcion AS DescArticulo,"
+                            . "U.Descripcion AS Unidad,"
+                            . "C.PrecioMov AS Precio, "
+                            . "CantidadMov AS Cantidad,"
+                            . "C.FechaMov AS FechaDoc,"
+                            . "C.DocMov AS Doc,"
+                            . "C.OrdenCompra AS DocCompra,"
+                            . "C.Tp,"
+                            . "C.Maq,"
+                            . "C.Sem,"
+                            . "C.Subtotal AS Subtotal "
+                            . "")
+                    ->from("movarticulos C")
+                    ->join("articulos A", 'ON A.Clave = C.Articulo')
+                    ->join("unidades U", 'ON U.Clave = A.UnidadMedida')
+                    ->where("C.Tp", $Tp)
+                    ->where("C.DocMov", $Doc_Salida)
+                    ->where("C.EntradaSalida", '2');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY

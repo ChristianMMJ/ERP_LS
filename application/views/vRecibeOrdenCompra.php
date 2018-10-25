@@ -1,8 +1,18 @@
 <div class="card m-3 animated fadeIn" id="pnlTablero">
     <div class="card-body ">
         <div class="row">
-            <div class="col-sm-8 float-left">
-                <legend class="float-left">Recepción de Órdenes de Compra</legend>
+            <div class="col-sm-5 float-left">
+                <legend class="float-left">Recepción de Órdenes de Compra
+                    <span class="badge badge-danger" >Maquila: </span>
+                    <span class="badge badge-info" id="MaquilaRecibe"></span>
+                </legend>
+
+            </div>
+            <div class="col-sm-3">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input selectNotEnter" id="SalidaMaquilas" name="SalidaMaquilas" >
+                    <label class="custom-control-label labelCheck" for="SalidaMaquilas">Salida automática a maquilas</label>
+                </div>
             </div>
             <div class="col-sm-4" align="right">
                 <button type="button" class="btn btn-secondary btn-sm " id="btnActualizaPreciosOrdenCompra" >
@@ -116,6 +126,14 @@
         init();
         handleEnter();
         validacionSelectPorContenedor(pnlTablero);
+
+        pnlTablero.find('#SalidaMaquilas').change(function () {
+            if (parseInt(MaqOC) > 1) {
+            } else {
+                $(this).prop("checked", false);
+            }
+        });
+
         pnlTablero.find("input").val("");
         pnlTablero.find("#FechaFactura").val(getToday());
         btnAgregarOC.addClass('d-none');
@@ -135,6 +153,7 @@
             onVerificarTp($(this));
         });
         pnlTablero.find("#col2_filter").change(function () {
+            pnlTablero.find('#SalidaMaquilas').prop("checked", false);
             var tp = pnlTablero.find("#col1_filter").val();
             var prov = pnlTablero.find("#Proveedor").val();
             getOrdenCompra($(this), tp, prov);
@@ -207,22 +226,21 @@
                 closeOnClickOutside: false
             }).then((action) => {
                 if (action) {
-
-
                     //HoldOn.open({theme: 'sk-cube', message: 'CARGANDO...'});
                     var frm = new FormData();
-
                     var tp = pnlTablero.find("#col1_filter").val();
                     var oc = pnlTablero.find("#col2_filter").val();
                     var Fact = pnlTablero.find("#Factura").val();
                     var tpDoc = pnlTablero.find("#Tp").val();
                     var prov = pnlTablero.find("#Proveedor").val();
+                    var salidamaquilas = pnlTablero.find("#SalidaMaquilas")[0].checked ? 1 : 0;
                     frm.append('OCS', JSON.stringify(o_cs));
                     frm.append('Tp', tp);
                     frm.append('Folio', oc);
                     frm.append('Factura', Fact);
                     frm.append('TpDoc', tpDoc);
                     frm.append('Proveedor', prov);
+                    frm.append('SalidaMaquilas', salidamaquilas);
                     $.ajax({
                         url: master_url + 'onCerrarCompra',
                         type: "POST",
@@ -231,6 +249,8 @@
                         processData: false,
                         data: frm
                     }).done(function (data) {
+                        var doc_salida = (data.length > 0) ? data : '';
+                        MaqOC = 0;
                         Precio = 0;
                         Maq = 0;
                         Sem = 0;
@@ -242,9 +262,12 @@
                         pnlTablero.find('#Detalle').find('.captura').addClass('disabledForms');
                         pnlTablero.find('#Encabezado').find('input:not(.noCaptura)').removeClass('disabledForms');
                         pnlTablero.find("#FechaFactura").val(getToday());
+                        pnlTablero.find('#MaquilaRecibe').html('');
+                        pnlTablero.find('#SalidaMaquilas').prop("checked", false);
                         tblOrdenesCompra.DataTable().columns().search('').draw();
                         pnlTablero.find('#col1_filter').focus().select();
-                        onImprimirValeEntrada(Fact, tpDoc, prov);
+                        onImprimirValeEntrada(Fact, tpDoc, prov, salidamaquilas, doc_salida);
+
                     }).fail(function (x, y, z) {
                         swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
                         console.log(x.responseText);
@@ -526,12 +549,15 @@
 
         });
     }
+    var MaqOC;
     function getOrdenCompra(v, Tp, prov) {
         $.getJSON(master_url + 'getOrdenCompra', {Folio: $(v).val(), Tp: Tp}).done(function (data) {
             if (data.length > 0) {
                 if (!agregaOC) {
 
                     //TRAER DATOS DE LA ORDEN
+                    MaqOC = parseInt(data[0].Maq);
+                    pnlTablero.find('#MaquilaRecibe').text(data[0].Maq);
                     pnlTablero.find('#FechaOrden').val(data[0].FechaOrden);
                     pnlTablero.find('#Proveedor').val(data[0].Proveedor);
                     pnlTablero.find('#NombreProveedor').val((Tp === 1) ? data[0].ProveedorF : data[0].ProveedorI);
@@ -603,7 +629,7 @@
             });
         }
     }
-    function onImprimirValeEntrada(Doc, TpDoc, Prov) {
+    function onImprimirValeEntrada(Doc, TpDoc, Prov, salidamaquila, doc_salida) {
         $.ajax({
             url: master_url + 'onImprimirValeEntrada',
             type: "POST",
@@ -615,6 +641,60 @@
         }).done(function (data, x, jq) {
             if (data.length > 0) {
 
+                $.fancybox.open({
+                    src: data,
+                    type: 'iframe',
+                    opts: {
+                        afterShow: function (instance, current) {
+
+                        },
+                        afterClose: function () {
+                            if (parseInt(salidamaquila) === 1) {
+                                onImprimirValeSalida(TpDoc, doc_salida);
+                            }
+                        },
+                        iframe: {
+                            // Iframe template
+                            tpl: '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen allowtransparency="true" src=""></iframe>',
+                            preload: true,
+                            // Custom CSS styling for iframe wrapping element
+                            // You can use this to set custom iframe dimensions
+                            css: {
+                                width: "85%",
+                                height: "85%"
+                            },
+                            // Iframe tag attributes
+                            attr: {
+                                scrolling: "auto"
+                            }
+                        }
+                    }
+                });
+
+
+            } else {
+                swal({
+                    title: "ATENCIÓN",
+                    text: "NO ES POSIBLE IMPRIMIR EL REPORTE",
+                    icon: "error"
+                });
+            }
+            HoldOn.close();
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+            HoldOn.close();
+        });
+    }
+    function onImprimirValeSalida(TpDoc, doc_salida) {
+        $.ajax({
+            url: master_url + 'onImprimirValeSalida',
+            type: "POST",
+            data: {
+                Doc: doc_salida,
+                TpDoc: TpDoc
+            }
+        }).done(function (data, x, jq) {
+            if (data.length > 0) {
                 $.fancybox.open({
                     src: data,
                     type: 'iframe',

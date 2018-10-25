@@ -40,7 +40,12 @@ class SalidasAlmacenMP extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->SalidasAlmacenMP_model->getRecords($this->input->post('DocMov')));
+            $maq = $this->input->post('Maq');
+            if ($maq < 96) {
+                print json_encode($this->SalidasAlmacenMP_model->getRecords($this->input->post('DocMov')));
+            } else {
+                print json_encode($this->SalidasAlmacenMP_model->getRecordsSubAlmacen($this->input->post('DocMov')));
+            }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -100,6 +105,9 @@ class SalidasAlmacenMP extends CI_Controller {
     public function onAgregar() {
         try {
             $x = $this->input;
+
+            $maq = $x->post('Maq');
+            $mov = $x->post('TipoMov');
             $datos = array(
                 'Articulo' => $x->post('Articulo'),
                 'PrecioMov' => $x->post('PrecioMov'),
@@ -115,9 +123,45 @@ class SalidasAlmacenMP extends CI_Controller {
                 'Subtotal' => $x->post('Subtotal'),
                 'MatOtraMaquila' => $x->post('MatOtraMaquila')
             );
-
-            $ID = $this->SalidasAlmacenMP_model->onAgregar($datos);
-            print $ID;
+            $datosSalidaMovArtFabrica = array(
+                'Articulo' => $x->post('Articulo'),
+                'PrecioMov' => $x->post('PrecioMov'),
+                'CantidadMov' => $x->post('CantidadMov'),
+                'FechaMov' => $x->post('FechaMov'),
+                'EntradaSalida' => '2',
+                'TipoMov' => $x->post('TipoMov'),
+                'DocMov' => $x->post('DocMov'),
+                'Tp' => '',
+                'Maq' => $x->post('Maq'),
+                'Sem' => $x->post('Sem'),
+                'OrdenCompra' => '',
+                'Subtotal' => $x->post('Subtotal'),
+            );
+            $datosEntradaMovArt = array(
+                'Articulo' => $x->post('Articulo'),
+                'PrecioMov' => $x->post('PrecioMov'),
+                'CantidadMov' => $x->post('CantidadMov'),
+                'FechaMov' => $x->post('FechaMov'),
+                'EntradaSalida' => '1',
+                'TipoMov' => 'EDV',
+                'DocMov' => $x->post('DocMov'),
+                'Tp' => '',
+                'Maq' => '1',
+                'Sem' => $x->post('Sem'),
+                'OrdenCompra' => '',
+                'Subtotal' => $x->post('Subtotal'),
+                'MatOtraMaquila' => $x->post('MatOtraMaquila')
+            );
+            if ($maq < 96) {
+                $this->SalidasAlmacenMP_model->onAgregar($datos);
+            }
+            if ($maq > 96 && $mov === 'SDV') {
+                $this->SalidasAlmacenMP_model->onAgregar($datosEntradaMovArt);
+                $this->SalidasAlmacenMP_model->onAgregarSubAlmacen($datosSalidaMovArtFabrica);
+            }
+            if ($maq > 96 && $mov !== 'SDV') {
+                $this->SalidasAlmacenMP_model->onAgregarSubAlmacen($datosSalidaMovArtFabrica);
+            }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

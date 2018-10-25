@@ -140,19 +140,49 @@
             getFolio();
         });
         pnlTablero.find("#TipoMov").change(function () {
-            isValid('Encabezado');
-            if (valido) {
-                pnlTablero.find('#Encabezado').find('input').addClass('disabledForms');
-                pnlTablero.find('#Detalle').find('input, button').removeClass('disabledForms');
+            var maq = parseInt(pnlTablero.find("#Maq").val());
 
-                $.when(pnlTablero.find("#Articulo")[0].selectize.enable()).then(function (data, textStatus, jqXHR) {
-                    pnlTablero.find("#TipoMov")[0].selectize.disable()
-                    pnlTablero.find("#Articulo")[0].selectize.focus();
+            if (maq === 1 && maq > 96) {
+                isValid('Encabezado');
+                if (valido) {
+                    pnlTablero.find('#Encabezado').find('input').addClass('disabledForms');
+                    pnlTablero.find('#Detalle').find('input, button').removeClass('disabledForms');
+
+                    $.when(pnlTablero.find("#Articulo")[0].selectize.enable()).then(function (data, textStatus, jqXHR) {
+                        pnlTablero.find("#TipoMov")[0].selectize.disable()
+                        pnlTablero.find("#Articulo")[0].selectize.focus();
+                    });
+                } else {
+                    swal('ATENCION', 'Completa los campos requeridos', 'warning');
+                    pnlTablero.find('#Detalle').find('input, button').addClass('disabledForms');
+                    pnlTablero.find("#Articulo")[0].selectize.disable();
+                }
+            } else if (maq > 1 && maq < 96 && $(this).val() === 'EAJ') {
+                swal({
+                    title: "ATENCIÓN",
+                    text: "ENTRADA POR AJUSTE SÓLO APLICA PARA MAQUILAS 1, 97 Y 98 ",
+                    icon: "warning"
+                }).then((value) => {
+                    if (value) {
+                        $(this)[0].selectize.focus();
+                        $(this)[0].selectize.setValue('', true);
+                    }
                 });
             } else {
-                swal('ATENCION', 'Completa los campos requeridos', 'warning');
-                pnlTablero.find('#Detalle').find('input, button').addClass('disabledForms');
-                pnlTablero.find("#Articulo")[0].selectize.disable();
+                isValid('Encabezado');
+                if (valido) {
+                    pnlTablero.find('#Encabezado').find('input').addClass('disabledForms');
+                    pnlTablero.find('#Detalle').find('input, button').removeClass('disabledForms');
+
+                    $.when(pnlTablero.find("#Articulo")[0].selectize.enable()).then(function (data, textStatus, jqXHR) {
+                        pnlTablero.find("#TipoMov")[0].selectize.disable()
+                        pnlTablero.find("#Articulo")[0].selectize.focus();
+                    });
+                } else {
+                    swal('ATENCION', 'Completa los campos requeridos', 'warning');
+                    pnlTablero.find('#Detalle').find('input, button').addClass('disabledForms');
+                    pnlTablero.find("#Articulo")[0].selectize.disable();
+                }
             }
         });
         pnlTablero.find("#Articulo").change(function () {
@@ -272,7 +302,7 @@
             tblMovimientos.DataTable().destroy();
         }
         Movimientos = tblMovimientos.DataTable({
-            "dom": 'Bfrtip',
+            "dom": 'rtip',
             buttons: buttons,
             orderCellsTop: true,
             fixedHeader: true,
@@ -387,15 +417,15 @@
     function onComprobarMaquilas(v) {
         $.getJSON(master_url + 'onComprobarMaquilas', {Clave: $(v).val()}).done(function (data) {
             if (data.length > 0) {
-                if (parseInt($(v).val()) > 96) {
-                    swal({
-                        title: "ATENCIÓN",
-                        text: "LOS MOVIMIENTOS A SUB ALMACEN (97,98) SE HACEN EN OTRO MÓDULO",
-                        icon: "warning"
-                    }).then((value) => {
-                        $(v).val('').focus();
-                    });
-                }
+//                if (parseInt($(v).val()) > 96) {
+//                    swal({
+//                        title: "ATENCIÓN",
+//                        text: "LOS MOVIMIENTOS A SUB ALMACEN (97,98) SE HACEN EN OTRO MÓDULO",
+//                        icon: "warning"
+//                    }).then((value) => {
+//                        $(v).val('').focus();
+//                    });
+//                }
             } else {
                 swal({
                     title: "ATENCIÓN",

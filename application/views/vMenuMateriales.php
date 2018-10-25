@@ -70,13 +70,6 @@
                             <a class="dropdown-item" href="<?php print base_url('SalidasAlmacenMP.shoes'); ?>">Salidas</a>
                         </ul>
                     </li>
-                    <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" href="#">Movimientos al sub-almacén Mat. Prima</a>
-                        <ul class="dropdown-menu">
-                            <a class="dropdown-item" href="<?php print base_url('EntradasSubAlmacenMP.shoes'); ?>">Entradas</a>
-                            <a class="dropdown-item" href="<?php print base_url('SalidasSubAlmacenMP.shoes'); ?>">Salidas</a>
-                        </ul>
-                    </li>
                     <a class="dropdown-item" href="<?php print base_url('InicialMaterialPrima.shoes'); ?>">Inicial Materia Prima</a>
                     <a class="dropdown-item" href="#">Explosión de Fábrica ***</a>
                     <a class="dropdown-item" href="#">Entrega material a Maquilas ***</a>
@@ -120,7 +113,7 @@
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" href="#">Explosiones</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlExplosionSemanal"> Explosión Semanal</a>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlExplosionSemanal" data-backdrop='true'> Explosión Semanal</a>
                         </div>
                     </li>
                 </ul>
