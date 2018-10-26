@@ -153,10 +153,13 @@
         }
     }
     /* Particle container. */
-    #particle-container {
-        position: absolute;
-        width: 100%;
-        height: 100%;
+    #particle-container { 
+        position:fixed;
+        top:0;
+        right:0;
+        bottom:0;
+        left:0;
+        z-index:0; 
     }
 </style>
 <script>
@@ -168,28 +171,21 @@
     particlesJS("particle-container", {
         "particles": {
             "number": {
-                "value": 5,
+                "value": 10,
                 "density": {
                     "enable": true,
-                    "value_area": 950
+                    "value_area": 800
                 }
             },
             "color": {
                 "value": ["#2C3E50", "#2C3E50"]/* "random" = cualquier color*/
             },
             "shape": {
-                "type": "circle",
-                "stroke": {
-                    "width": 0,
-                    "color": "#000000"
-                },
-                "polygon": {
-                    "nb_sides": 5
-                },
+                "type": "image",
                 "image": {
-                    "src": "img/github.svg",
-                    "width": 100,
-                    "height": 100
+                    "src": "<?php print base_url('img/LS.png'); ?>", // Set image path.
+                    "width": 1, // Width and height don't decide size.
+                    "height": 1   // They just decide aspect ratio.
                 }
             },
 
@@ -209,7 +205,7 @@
                 "anim": {
                     "enable": false,
                     "speed": 80,
-                    "size_min": 1,
+                    "size_min": 10,
                     "sync": false
                 }
             },

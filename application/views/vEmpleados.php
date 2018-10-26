@@ -652,7 +652,7 @@
     function getCredencial() {
         $.getJSON(master_url + 'getCredencial', {ID: $("#Numero").val()}).done(function (data, x, jq) {
             $.fancybox.open({
-                src: data.URL,
+                src: base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data.URL,
                 type: 'iframe',
                 opts: {
                     afterShow: function (instance, current) {
