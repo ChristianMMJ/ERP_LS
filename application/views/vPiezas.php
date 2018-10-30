@@ -70,6 +70,15 @@
                         </select>
                     </div>
                     <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                        <label for="" >Tipo Pieza Tallas</label>
+                        <select id="TipoPiezaTallas" name="TipoPiezaTallas" class="form-control form-control-sm">
+                            <option value=""></option>
+                            <option value="1">SUELA</option>
+                            <option value="2">PLANTA</option>
+                            <option value="3">ENTRESUELA</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
                         <label for="" >Rango</label>
                         <select id="Rango" name="Rango" class="form-control form-control-sm">
                             <option value=""></option>

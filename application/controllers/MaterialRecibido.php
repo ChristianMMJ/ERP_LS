@@ -78,9 +78,13 @@ class MaterialRecibido extends CI_Controller {
                 $pdf->SetLineWidth(0.25);
                 $pdf->SetX(5);
                 $pdf->SetFont('Arial', '', 7);
-                $anchos = array(10/* 0 */, 90/* 1 */, 15/* 2 */, 10/* 3 */, 20/* 4 */,
-                    20/* 5 */, 10/* 6 */, 15/* 7 */, 25/* 8 */, 35/* 9 */, 20/* 10 */);
+                //$anchos = array(10/* 0 */, 90/* 1 */, 15/* 2 */, 10/* 3 */, 20/* 4 */, 20/* 5 */, 10/* 6 */, 15/* 7 */, 30/* 8 */, 30/* 9 */, 20/* 10 */);
+                //$aligns = array('L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L');
+
+
+                $anchos = array(10/* 0 */, 90/* 1 */, 15/* 2 */, 10/* 3 */, 20/* 4 */, 20/* 5 */, 10/* 6 */, 15/* 7 */, 25/* 8 */, 35/* 9 */, 20/* 10 */);
                 $aligns = array('L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'C', 'C', 'L');
+
                 $pdf->SetAligns($aligns);
                 $pdf->SetWidths($anchos);
 

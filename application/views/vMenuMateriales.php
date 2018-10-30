@@ -41,17 +41,15 @@
                                 <a class="dropdown-item dropdown-toggle" href="#">Herr. Ordenes de Compra</a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="<?php print base_url('ConfirmarOrdenCompra.shoes'); ?>" >Confirmación de Ordenes de Compra</a>
-                                    <a class="dropdown-item" href="<?php print base_url('MaterialNoRecibido.shoes'); ?>" >Material No Recibido</a>
-                                    <a class="dropdown-item" href="<?php print base_url('MaterialRecibido.shoes'); ?>" >Material Recibido</a>
+                                    <a class="dropdown-item" href="<?php print base_url('MaterialRecibido.shoes'); ?>" >Consulta de Órdenes de Compra</a>
                                     <a class="dropdown-item" href="<?php print base_url('ActualizaPrecioOrdenCompra.shoes'); ?>" >Actualizar Precios a Orden de Compra</a>
                                     <a class="dropdown-item" href="#">Copiar O.C. a O.C ***</a>
                                     <a class="dropdown-item" href="#">Marca Material No Recibido ***</a>
                                     <a class="dropdown-item" href="#">Modifica Orden Compra No Recibida ***</a>
                                     <a class="dropdown-item" href="#">Ordenes de Compra Por Semana***</a>
                                     <a class="dropdown-item" href="#">Ordenes de Compra por Tipo/Grupo***</a>
-                                    <a class="dropdown-item" href="#">Recibe Mat. Orden de Compra Completa ***</a>
                                     <a class="dropdown-item" href="#">Consulta Material y Orden de Compra***</a>
-                                    <a class="dropdown-item" href="#">Marca Orden de Compra Inservible***</a>
+                                    <a class="dropdown-item" href="<?php print base_url('MarcaCompraInservible.shoes'); ?>">Marca Orden de Compra Inservible</a>
                                 </div>
                             </li>
                         </ul>
@@ -71,29 +69,17 @@
                         </ul>
                     </li>
                     <a class="dropdown-item" href="<?php print base_url('InicialMaterialPrima.shoes'); ?>">Inicial Materia Prima</a>
-                    <a class="dropdown-item" href="#">Explosión de Fábrica ***</a>
                     <a class="dropdown-item" href="#">Entrega material a Maquilas ***</a>
-                    <a class="dropdown-item" href="#">Entrega material a Fábrica ***</a>
+                    <a class="dropdown-item" href="#">Entrega material a Sub-Almacén ***</a>
                     <a class="dropdown-item" href="#">Entrega Suela/Planta a Fábrica ***</a>
-                    <a class="dropdown-item" href="#">Entrega Suela/Planta por Control ***</a>
-                    <a class="dropdown-item" href="#">Entrega Suela/Planta a Maquila 1 ***</a>
                     <a class="dropdown-item" href="#">Cancela Entradas/Salidas ***</a>
-                    <a class="dropdown-item" href="#">Modifica Fecha Doc. Entradas ***</a>
                     <a class="dropdown-item" href="#">Elimina Entrada por Compra ***</a>
-                    <a class="dropdown-item" href="#">Abonos a Proveedores ***</a>
+
                     <a class="dropdown-item" href="#">Notas de Cargo ***</a>
-                    <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" href="#">Pólizas</a>
-                        <ul class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Genera Póliza ***</a>
-                            <a class="dropdown-item" href="#">Pólizas Generadas No Aplicadas ***</a>
-                            <a class="dropdown-item" href="#">Cancela Polizas Generadas ***</a>
-                        </ul>
-                    </li>
+
                     <a class="dropdown-item" href="#">Cargos diferentes a Maquilas ***</a>
                     <a class="dropdown-item" href="#">Cargos a Empleados ***</a>
                     <a class="dropdown-item" href="#">Material Control Fecha ***</a>
-                    <a class="dropdown-item" href="#">Correo interno Acción Correctiva ***</a>
                     <a class="dropdown-item" href="#">Asigna Día/Semana a Controles ***</a>
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" href="#">Inspeccion Mat. Piel/Forro</a>

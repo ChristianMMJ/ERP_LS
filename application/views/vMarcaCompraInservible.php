@@ -2,7 +2,7 @@
     <div class="card-body ">
         <div class="row">
             <div class="col-sm-8 float-left">
-                <legend class="float-left">Material No Recibido</legend>
+                <legend class="float-left">Marca O.C. Inservible (Click en cualquier renglon de la orden de compra)</legend>
             </div>
             <div class="col-sm-4" align="right">
                 <button type="button" class="btn btn-warning" id="btnLimpiarFiltros" data-toggle="tooltip" data-placement="right" title="Limpiar Filtros">
@@ -11,19 +11,18 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1" data-column="3">
-                <label>Tp</label>
-                <input type="text" class="form-control form-control-sm  numbersOnly column_filter" id="col3_filter" autofocus maxlength="2" >
-            </div>
             <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1" data-column="1">
                 <label>Año</label>
-                <input type="text" class="form-control form-control-sm  numbersOnly column_filter" id="col1_filter" maxlength="4" >
+                <input type="text" class="form-control form-control-sm  numbersOnly column_filter" id="col1_filter" autofocus maxlength="4" >
             </div>
-            <div class="col-6 col-sm-5 col-md-5 col-lg-3 col-xl-3" data-column="2">
-                <label>Departamento</label>
-                <input type="text" placeholder="10 PIEL/FORRO, 80 SUELA, 90 INDIR." class="form-control form-control-sm  numbersOnly column_filter" id="col2_filter" maxlength="2" >
+            <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1" data-column="3">
+                <label>Tp</label>
+                <input type="text" class="form-control form-control-sm  numbersOnly column_filter" id="col3_filter"  maxlength="2" >
             </div>
-
+            <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1" data-column="4">
+                <label>Folio O.C.</label>
+                <input type="text" class="form-control form-control-sm  numbersOnly column_filter" id="col4_filter" maxlength="10" >
+            </div>
         </div>
         <div class="card-block mt-4">
             <div id="Compras" class="table-responsive">
@@ -39,6 +38,7 @@
                             <th>Fecha</th>
                             <th>Artículo</th>
                             <th>Cantidad</th>
+                            <th>Recibida</th>
                             <th>Precio</th>
                             <th>SubTotal</th>
                             <th>Sem</th>
@@ -48,34 +48,14 @@
                         </tr>
                     </thead>
                     <tbody></tbody>
-                    <tfoot>
-                        <tr>
-                            <th>Group</th>
-                            <th>Ano</th>
-                            <th>Tipo</th>
-                            <th>Tp</th>
-                            <th>O.C.</th>
-                            <th>Proveedor</th>
-                            <th>Fecha Orden</th>
-                            <th>Artículo</th>
-                            <th>Cantidad</th>
-                            <th>Precio</th>
-                            <th>SubTotal</th>
-                            <th>Sem</th>
-                            <th>Maq</th>
-                            <th>Grupo</th>
-                            <th>ID</th>
-                        </tr>
-                    </tfoot>
+
                 </table>
             </div>
         </div>
     </div>
 </div>
-
-
 <script>
-    var master_url = base_url + 'index.php/MaterialNoRecibido/';
+    var master_url = base_url + 'index.php/MarcaCompraInservible/';
     var tblCompras = $('#tblCompras');
     var Compras;
     var pnlTablero = $("#pnlTablero");
@@ -113,19 +93,6 @@
             var tp = parseInt($(this).val());
             if (tp > 2) {
                 $(this).val('').focus();
-            }
-        });
-
-        pnlTablero.find("#col2_filter").change(function () {
-            var tp = parseInt($(this).val());
-            if (tp === 80 || tp === 90 || tp === 10) {
-
-            } else if (isNaN(tp)) {
-                $(this).val('').focus();
-                tblCompras.DataTable().column(2).search("", false, true).draw();
-            } else {
-                $(this).val('').focus();
-                tblCompras.DataTable().column(2).search("", false, true).draw();
             }
         });
 
@@ -167,6 +134,7 @@
                 {"data": "FechaOrden"},
                 {"data": "Articulo"},
                 {"data": "Cantidad"},
+                {"data": "CantidadRecibida"},
                 {"data": "Precio"},
                 {"data": "SubTotal"},
                 {"data": "Sem"},
@@ -198,13 +166,24 @@
                     "searchable": true
                 },
                 {
+                    "targets": [5],
+                    "visible": false,
+                    "searchable": true
+                },
+                {
                     "targets": [10],
                     "render": function (data, type, row) {
                         return '$' + $.number(parseFloat(data), 2, '.', ',');
                     }
                 },
                 {
-                    "targets": [14],
+                    "targets": [11],
+                    "render": function (data, type, row) {
+                        return '$' + $.number(parseFloat(data), 2, '.', ',');
+                    }
+                },
+                {
+                    "targets": [15],
                     "visible": false,
                     "searchable": true
                 }
@@ -214,12 +193,15 @@
                     var stc = $.number(rows.data().pluck('Cantidad').reduce(function (a, b) {
                         return a + parseFloat(b);
                     }, 0), 2, '.', ',');
+                    var stcr = $.number(rows.data().pluck('CantidadRecibida').reduce(function (a, b) {
+                        return a + parseFloat(b);
+                    }, 0), 2, '.', ',');
                     var stp = $.number(rows.data().pluck('SubTotal').reduce(function (a, b) {
                         return a + parseFloat(b);
                     }, 0), 2, '.', ',');
                     return $('<tr>')
-                            .append('<td></td><td></td><td></td><td>Totales: </td>')
-                            .append('<td>' + stc + '</td><td></td><td>$' + stp + '</td><td></td><td></td><td></td></tr>');
+                            .append('<td></td><td></td><td>Totales: </td>')
+                            .append('<td>' + stc + '</td><td>' + stcr + '</td><td></td><td>$' + stp + '</td><td></td><td></td><td></td></tr>');
                 },
                 dataSrc: "GruposT"
             },
@@ -240,17 +222,21 @@
                     var c = $(v);
                     var index = parseInt(k);
                     switch (index) {
-                        case 1:
+                        case 0:
                             /*FECHA ORDEN*/
                             c.addClass('text-strong');
                             break;
-                        case 3:
+                        case 2:
                             /*FECHA ENTREGA*/
                             c.addClass('text-success text-strong');
                             break;
-                        case 4:
+                        case 3:
                             /*fecha conf*/
                             c.addClass('text-info text-strong');
+                            break;
+                        case 5:
+                            /*fecha conf*/
+                            c.addClass('text-warning text-strong');
                             break;
                     }
                 });
@@ -260,18 +246,7 @@
                 $(':input:text:enabled:visible:first').focus();
             }
         });
-        $('#tblCompras tfoot th').each(function () {
-            var title = $(this).text();
-            $(this).html('<input class="form-control form-control-sm" type="text" placeholder="Buscar por ' + title + '" />');
-        });
-        Compras.columns().every(function () {
-            var that = this;
-            $('input', this.footer()).on('keyup change', function () {
-                if (that.search() !== this.value) {
-                    that.search(this.value).draw();
-                }
-            });
-        });
+
         tblCompras.find('tbody').on('click', 'tr', function () {
             tblCompras.find("tbody tr").removeClass("success");
             $(this).addClass("success");
@@ -279,13 +254,14 @@
             temp = parseInt(dtm.ID);
 
 
-            swal("Imprimir", "Orden de Compra: " + dtm.Folio + ' \nProveedor: ' + dtm.NombreProveedor, {
+            swal("Marcar como Inservible", "Orden de Compra: " + dtm.Folio + ' \nProveedor: ' + dtm.NombreProveedor, {
                 buttons: ["Cancelar", true]
             }).then((value) => {
                 if (value) {
-                    $.post(master_url + 'onImprimirOrdenCompra', {ID: temp}).done(function (data) {
-                        onNotifyOld('fa fa-check', 'REPORTE GENERADO', 'success');
-                        onImprimirReporteFancy(data);
+                    $.post(master_url + 'onModificar', {ID: temp}).done(function (data) {
+                        onNotifyOld('fa fa-check', 'OPERACIÓN EXITOSA', 'success');
+                        Compras.ajax.reload();
+                        pnlTablero.find('#btnLimpiarFiltros').trigger('click');
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     });

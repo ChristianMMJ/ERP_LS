@@ -124,7 +124,7 @@ class Usuario_model extends CI_Model {
             /* WINDOWS */
             $this->db->select('U.ID, U.Usuario, U.Estatus, U.Nombre, U.Apellidos, '
                     . 'U.TipoAcceso, U.UltimoAcceso, U.Registro, U.UltimaModificacion, '
-                    . 'CONVERT(AES_DECRYPT(CAST(U.AES AS CHAR(10000) CHARACTER SET utf8),\'System32\') USING latin1) AS Contrasena, '
+                    . 'CAST(AES_DECRYPT(U.AES, \'System32\') AS CHAR(500)) AS Contrasena , '
                     . 'U.Seguridad AS SEG, U.Empresa', false);
             $this->db->from('usuarios AS U');
             $this->db->where('U.ID', $ID);
