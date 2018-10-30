@@ -1,4 +1,4 @@
-<!-- Contenido  -->
+<!-- Contenido  --> 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
     <button class="btn btn-primary text-success btn-sm navbar-brand" id="sidebarCollapse">
         <i class="fa fa-industry"></i> Producción
@@ -61,16 +61,12 @@
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlExplosionSemanal"> Explosión Semanal</a>
                         </div>
                     </li>
-                    <a class="dropdown-item" href="<?php print base_url('OrdenDeProduccion.shoes'); ?>"><span class="fa fa-exclamation-circle fade-infinite"></span> Genera ordenes de producción semana maquila </a>
-                    <a class="dropdown-item" href="<?php print base_url('EliminaOrdenDeProduccion.shoes'); ?>"><span class="fa fa-exclamation-circle fade-infinite"></span> Elimina orden de producción </a>
-                    <a class="dropdown-item" href="<?php print base_url('IOrdenDeProduccion.shoes'); ?>"><span class="fa fa-exclamation-circle fade-infinite"></span> Imprime orden de producción </a>
+                    <a class="dropdown-item" href="<?php print base_url('OrdenDeProduccion.shoes'); ?>"><span class="fa fa-dot-circle fade-infinite"></span> Genera ordenes de producción semana maquila </a>
+                    <a class="dropdown-item" href="<?php print base_url('EliminaOrdenDeProduccion.shoes'); ?>"><span class="fa fa-dot-circle fade-infinite"></span> Elimina orden de producción </a>
+                    <a class="dropdown-item" href="<?php print base_url('IOrdenDeProduccion.shoes'); ?>"><span class="fa fa-dot-circle fade-infinite"></span> Imprime orden de producción </a>
                     <div class="dropdown-divider"></div>
-                    <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" href="#"><span class="fa fa-cut"></span> Control cortadores</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlConsumosPielForro"><span class="fa fa-puzzle-piece"></span> Consumo piel y forro por cortador</a>
-                        </div>
-                    </li>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlConsumosPielForro"><span class="fa fa-puzzle-piece"></span> Consumo piel y forro por cortador</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlParesAsignados"><span class="fa fa-dot-circle"></span> Pares asignados</a>
                 </ul>
             </li>
             <li class="nav-item dropdown">
@@ -125,3 +121,4 @@
 <?php
 $this->load->view('vExplosionSemanal');
 $this->load->view('vConsumoPielForroXCortador');
+$this->load->view('vParesAsignados');

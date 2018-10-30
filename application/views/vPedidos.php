@@ -157,7 +157,7 @@
                         <!--TALLAS-->
                         <div class="col-12">
                             <div class="row">
-                                <div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9" >
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" >
                                     <div class="table-responsive" style="overflow-x:auto; white-space: nowrap;">
                                         <label class="font-weight-bold" for="Tallas">Tallas</label>
                                         <table id="tblTallas" class="Tallas" >
@@ -183,7 +183,7 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="col-12 col-sm-12 col-md-12 col-lg-2 col-xl-2 mt-5">
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-2 col-xl-2 mt-5" align="left">
                                     <button type="button" class="btn btn-primary" id="btnAgregarDetalle"><span class="fa fa-check"></span></button> 
                                 </div>
                             </div>

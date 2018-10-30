@@ -398,9 +398,16 @@
     var tblRegresos = mdlRetornaMaterial.find("#tblRegresos"), Regresos = $("#Regresos");
     var btnAceptar = mdlRetornaMaterial.find("#btnAceptar"), MatMalo = mdlRetornaMaterial.find("#MatMalo");
 
-    var tipo_consumo = 0; 
+    var tipo_consumo = 0;
 
     $(document).ready(function () {
+
+        mdlRetornaMaterial.find("#Control").focusout(function () {
+            mdlRetornaMaterial.find("#tblRegresos tbody tr").addClass("highlight-rows");
+            setTimeout(function () {
+                mdlRetornaMaterial.find("#tblRegresos tbody tr").removeClass("highlight-rows");
+            }, 2500);
+        });
 
         mdlRetornaMaterial.find("#PielForro").change(function () {
             if ($(this).val() !== '') {
@@ -538,7 +545,7 @@
             "bSort": true,
             "scrollY": "125px",
             "scrollX": true,
-            createdRow: function( row, data, dataIndex ) {
+            createdRow: function (row, data, dataIndex) {
                 onCalcularAlBuscar();
             }
         };
@@ -547,11 +554,12 @@
             if (Semana.val() !== '' && Control.val() !== '' && Fraccion.val() !== '') {
                 var data = Pieles.row(this).data();
                 console.log('PIELES', data);
-                OrdenDeProduccion.val(data[0]);
-                ClaveArticulo.val(data[2]);
-                Articulo.val(data[3]);
-                Pares.val(data[11]);
-                getExplosionXSemanaControlFraccionArticulo(Semana, Control, Fraccion, data[2], 1);
+                OrdenDeProduccion.val(data.ID);
+                ClaveArticulo.val(data.ARTICULO_CLAVE);
+                Articulo.val(data.ARTICULO_DESCRIPCION);
+                Pares.val(data.PARES);
+                console.log(data)
+                getExplosionXSemanaControlFraccionArticulo(Semana, Control, Fraccion, data.ARTICULO_CLAVE, 1);
                 tipo_consumo = 1;/*PIEL*/
             } else {
                 onUnSelect();
@@ -567,11 +575,11 @@
             if (Semana.val() !== '' && Control.val() !== '' && Fraccion.val() !== '') {
                 var data = Forros.row(this).data();
                 console.log('FORROS', data);
-                OrdenDeProduccion.val(data[0]);
-                ClaveArticulo.val(data[2]);
-                Articulo.val(data[3]);
-                Pares.val(data[11]);
-                getExplosionXSemanaControlFraccionArticulo(Semana, Control, Fraccion, data[2], 2);
+                OrdenDeProduccion.val(data.ID);
+                ClaveArticulo.val(data.ARTICULO_CLAVE);
+                Articulo.val(data.ARTICULO_DESCRIPCION);
+                Pares.val(data.PARES);
+                getExplosionXSemanaControlFraccionArticulo(Semana, Control, Fraccion, data.ARTICULO_CLAVE, 2);
                 tipo_consumo = 2;/*FORRO*/
             } else {
                 onUnSelect();
@@ -587,11 +595,11 @@
             if (Semana.val() !== '' && Control.val() !== '' && Fraccion.val() !== '') {
                 var data = Textiles.row(this).data();
                 console.log('TEXTILES', data);
-                OrdenDeProduccion.val(data[0]);
-                ClaveArticulo.val(data[2]);
-                Articulo.val(data[3]);
-                Pares.val(data[11]);
-                getExplosionXSemanaControlFraccionArticulo(Semana, Control, Fraccion, data[2], 34);
+                OrdenDeProduccion.val(data.ID);
+                ClaveArticulo.val(data.ARTICULO_CLAVE);
+                Articulo.val(data.ARTICULO_DESCRIPCION);
+                Pares.val(data.PARES);
+                getExplosionXSemanaControlFraccionArticulo(Semana, Control, Fraccion, data.ARTICULO_CLAVE, 34);
                 tipo_consumo = 34;/*TEXTIL*/
             } else {
                 onUnSelect();
@@ -607,11 +615,11 @@
             if (Semana.val() !== '' && Control.val() !== '' && Fraccion.val() !== '') {
                 var data = Sinteticos.row(this).data();
                 console.log('SINTETICOS', data);
-                OrdenDeProduccion.val(data[0]);
-                ClaveArticulo.val(data[2]);
-                Articulo.val(data[3]);
-                Pares.val(data[11]);
-                getExplosionXSemanaControlFraccionArticulo(Semana, Control, Fraccion, data[2], 40);
+                OrdenDeProduccion.val(data.ID);
+                ClaveArticulo.val(data.ARTICULO_CLAVE);
+                Articulo.val(data.ARTICULO_DESCRIPCION);
+                Pares.val(data.PARES);
+                getExplosionXSemanaControlFraccionArticulo(Semana, Control, Fraccion, data.ARTICULO_CLAVE, 40);
                 tipo_consumo = 40;/*SINTETICOS*/
             } else {
                 onUnSelect();
@@ -624,6 +632,19 @@
 
         Fraccion.on('keyup', function () {
             onBuscarX(10, Fraccion.val());
+        }).focusout(function () {
+            if (Explosion.val() === '') {
+                tblPieles.find("tbody tr").addClass("highlight-rows");
+                tblForros.find("tbody tr").addClass("highlight-rows");
+                tblSinteticos.find("tbody tr").addClass("highlight-rows");
+                tblTextiles.find("tbody tr").addClass("highlight-rows");
+                setTimeout(function () {
+                    tblPieles.find("tbody tr").removeClass("highlight-rows");
+                    tblForros.find("tbody tr").removeClass("highlight-rows");
+                    tblSinteticos.find("tbody tr").removeClass("highlight-rows");
+                    tblTextiles.find("tbody tr").removeClass("highlight-rows");
+                }, 2500);
+            }
         });
 
         Semana.on('keyup', function () {

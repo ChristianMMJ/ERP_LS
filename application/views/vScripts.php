@@ -12,7 +12,6 @@
     var base_url = "<?php print base_url(); ?>";
     var isMobile = false;
     var seg = <?php print (isset($_SESSION["SEG"]) ? $_SESSION["SEG"] : 0); ?>;
-
     function onImprimirReporteFancy(url) {
         $.fancybox.open({
             toolbar: false,
