@@ -49,7 +49,7 @@
                             </span>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 " >
+                    <div class="col-12 col-sm-3 col-md-3 col-lg-2 col-xl-2 " id="SeccionSeguridad">
                         <label for="Consumo">Seguridad</label>
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input" id="Seguridad" name="Seguridad" >
@@ -125,14 +125,10 @@
     var nuevo = true, n = 5, counter = false;
 
     $(document).ready(function () {
-
         validacionSelectPorContenedor(pnlDatos);
         setFocusSelectToSelectOnChange('#TipoAcceso', '#Empresa', pnlDatos);
         setFocusSelectToSelectOnChange('#Empresa', '#Estatus', pnlDatos);
         setFocusSelectToInputOnChange('#Estatus', '#btnGuardar', pnlDatos);
-
-
-
         VerContrasena.click(function () {
             if (nuevo) {
                 pnlDatos.find("#Contrasena").attr("type", "text");
@@ -319,6 +315,7 @@
                                 pnlDatos.find("[name='" + k + "']")[0].selectize.addItem(v, true);
                             }
                         });
+                        (data[0].SEG === '1') ? pnlDatos.find('#Seguridad').prop('checked', true) : pnlDatos.find('#Seguridad').prop('checked', false);
                         pnlTablero.addClass("d-none");
                         pnlDatos.removeClass('d-none');
                         onRevisarSeguridad();
@@ -360,10 +357,10 @@
 
     function onRevisarSeguridad() {
         if (seg === 0) {
-            pnlDatos.find("#Seguridad").parent().addClass("d-none");
+            pnlDatos.find("#SeccionSeguridad").addClass("d-none");
             VerContrasena.addClass("d-none");
         } else {
-            pnlDatos.find("#Seguridad").parent().removeClass("d-none");
+            pnlDatos.find("#SeccionSeguridad").removeClass("d-none");
             VerContrasena.removeClass("d-none");
         }
     }

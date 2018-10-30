@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class MaterialNoRecibido_model extends CI_Model {
+class MarcaCompraInservible_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
@@ -25,7 +25,12 @@ class MaterialNoRecibido_model extends CI_Model {
                                     . "END AS GruposT, "
                                     . "OC.FechaOrden, "
                                     . "CONCAT(A.Clave,' ',A.Descripcion) AS Articulo, "
-                                    . "OCD.Cantidad, OCD.Precio, OCD.SubTotal, OC.Sem, OC.Maq, "
+                                    . "OCD.Cantidad, "
+                                    . "OCD.CantidadRecibida, "
+                                    . "OCD.Precio, "
+                                    . "OCD.SubTotal, "
+                                    . "OC.Sem, "
+                                    . "OC.Maq, "
                                     . "CONCAT(G.Clave,'-',G.Nombre) AS Grupo,"
                                     . "OC.Ano,"
                                     . "OC.Tipo  "
@@ -36,48 +41,16 @@ class MaterialNoRecibido_model extends CI_Model {
                             ->join("articulos A", 'ON A.Clave = OCD.Articulo')
                             ->join("grupos G", 'ON G.Clave =  A.Grupo')
                             ->join("unidades U", 'ON U.Clave =  A.UnidadMedida')
-                            ->where_in('OC.Estatus', array('ACTIVA'))
+                            ->where_in('OC.Estatus', array('ACTIVA', 'PENDIENTE', 'RECIBIDA'))
                             ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function onComprobarMaquilas($Clave) {
+    public function onModificar($ID) {
         try {
-            return $this->db->select("G.Clave, G.Direccion")->from("maquilas AS G")->where("G.Clave", $Clave)->where("G.Estatus", "ACTIVO")->get()->result();
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function onModificar($ID, $DATA) {
-        try {
-            $this->db->where('ID', $ID)->update("ordencompra", $DATA);
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    /* REPORTES */
-
-    public function getDatosEmpresa() {
-        try {
-            $this->db->select("E.RazonSocial as Empresa, E.Foto as Logo,"
-                            . "CONCAT(E.Direccion,' ',E.NoExt,' Col. ',E.Colonia) AS Direccion, "
-                            . "CONCAT(E.Ciudad,', ',EDOS.Descripcion,'  Tel. 1464646 AL 49   E-mail: compras@lobosolo.com.mx') AS Direccion2 "
-                            . " ", false)
-                    ->from('empresas AS E')
-                    ->join('estados AS EDOS', 'EDOS.Clave = E.Estado');
-
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-            //print $str;
-            $data = $query->result();
-            return $data;
+            $this->db->set('Estatus', 'CANCELADA')->where('ID', $ID)->update("ordencompra");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

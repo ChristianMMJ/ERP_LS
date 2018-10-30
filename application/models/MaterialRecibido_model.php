@@ -25,9 +25,12 @@ class MaterialRecibido_model extends CI_Model {
                                     . "END AS GruposT, "
                                     . "OC.FechaOrden, "
                                     . "CONCAT(A.Clave,' ',A.Descripcion) AS Articulo, "
-                                    . "OCD.CantidadRecibida AS Cantidad, "
+                                    . "OCD.Cantidad, "
+                                    . "OCD.CantidadRecibida, "
                                     . "OCD.Precio, "
-                                    . "OCD.CantidadRecibida*OCD.Precio AS SubTotal, OC.Sem, OC.Maq, "
+                                    . "OCD.SubTotal, "
+                                    . "OC.Sem, "
+                                    . "OC.Maq, "
                                     . "CONCAT(G.Clave,'-',G.Nombre) AS Grupo,"
                                     . "OC.Ano,"
                                     . "OC.Tipo  "
@@ -38,7 +41,7 @@ class MaterialRecibido_model extends CI_Model {
                             ->join("articulos A", 'ON A.Clave = OCD.Articulo')
                             ->join("grupos G", 'ON G.Clave =  A.Grupo')
                             ->join("unidades U", 'ON U.Clave =  A.UnidadMedida')
-                            ->where_in('OC.Estatus', array('PENDIENTE', 'RECIBIDA'))
+                            ->where_in('OC.Estatus', array('ACTIVA', 'PENDIENTE', 'RECIBIDA'))
                             ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

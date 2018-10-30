@@ -2,7 +2,7 @@
     <div class="card-body ">
         <div class="row">
             <div class="col-sm-8 float-left">
-                <legend class="float-left">Material Recibido</legend>
+                <legend class="float-left">Consulta Ordenes de Compra</legend>
             </div>
             <div class="col-sm-4" align="right">
                 <button type="button" class="btn btn-warning" id="btnLimpiarFiltros" data-toggle="tooltip" data-placement="right" title="Limpiar Filtros">
@@ -39,6 +39,7 @@
                             <th>Fecha</th>
                             <th>Artículo</th>
                             <th>Cantidad</th>
+                            <th>Recibida</th>
                             <th>Precio</th>
                             <th>SubTotal</th>
                             <th>Sem</th>
@@ -59,6 +60,7 @@
                             <th>Fecha Orden</th>
                             <th>Artículo</th>
                             <th>Cantidad</th>
+                            <th>Recibida</th>
                             <th>Precio</th>
                             <th>SubTotal</th>
                             <th>Sem</th>
@@ -72,6 +74,7 @@
         </div>
     </div>
 </div>
+
 
 <script>
     var master_url = base_url + 'index.php/MaterialRecibido/';
@@ -166,6 +169,7 @@
                 {"data": "FechaOrden"},
                 {"data": "Articulo"},
                 {"data": "Cantidad"},
+                {"data": "CantidadRecibida"},
                 {"data": "Precio"},
                 {"data": "SubTotal"},
                 {"data": "Sem"},
@@ -203,7 +207,13 @@
                     }
                 },
                 {
-                    "targets": [14],
+                    "targets": [11],
+                    "render": function (data, type, row) {
+                        return '$' + $.number(parseFloat(data), 2, '.', ',');
+                    }
+                },
+                {
+                    "targets": [15],
                     "visible": false,
                     "searchable": true
                 }
@@ -213,12 +223,15 @@
                     var stc = $.number(rows.data().pluck('Cantidad').reduce(function (a, b) {
                         return a + parseFloat(b);
                     }, 0), 2, '.', ',');
+                    var stcr = $.number(rows.data().pluck('CantidadRecibida').reduce(function (a, b) {
+                        return a + parseFloat(b);
+                    }, 0), 2, '.', ',');
                     var stp = $.number(rows.data().pluck('SubTotal').reduce(function (a, b) {
                         return a + parseFloat(b);
                     }, 0), 2, '.', ',');
                     return $('<tr>')
                             .append('<td></td><td></td><td></td><td>Totales: </td>')
-                            .append('<td>' + stc + '</td><td></td><td>$' + stp + '</td><td></td><td></td><td></td></tr>');
+                            .append('<td>' + stc + '</td><td>' + stcr + '</td><td></td><td>$' + stp + '</td><td></td><td></td><td></td></tr>');
                 },
                 dataSrc: "GruposT"
             },
@@ -250,6 +263,10 @@
                         case 4:
                             /*fecha conf*/
                             c.addClass('text-info text-strong');
+                            break;
+                        case 5:
+                            /*fecha conf*/
+                            c.addClass('text-warning text-strong');
                             break;
                     }
                 });
