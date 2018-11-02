@@ -11,7 +11,7 @@ class ParesPreProgramados extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('ParesPreProgramados_model', 'pam');
+        $this->load->library('session')->model('ParesPreProgramados_model', 'pam')->helper('parespreprogramados_helper');
     }
 
     public function getParesPreProgramadosCliente() {
@@ -21,7 +21,7 @@ class ParesPreProgramados extends CI_Controller {
             $bordes = 0;
             $alto_celda = 4;
             $TIPO = $x->post('TIPO');
-            $pdf = new FPDF('L', 'mm', array(215.9, 279.4));
+            $pdf = new PDF('L', 'mm', array(215.9, 279.4));
             $pdf->AddFont('Calibri', '');
             $pdf->AddFont('Calibri', 'I');
             $pdf->AddFont('Calibri', 'B');
@@ -34,9 +34,11 @@ class ParesPreProgramados extends CI_Controller {
             $pdf->SetY(10);
             $pdf->Image($_SESSION["LOGO"], /* LEFT */ 10, 10/* TOP */, /* ANCHO */ 30, 12.5);
             $pdf->SetX(10);
-            $pdf->Rect(10, 10, 259, 195);
+//            $pdf->Rect(10, 10, 259, 195);/*DELIMITADOR DE MARGENES*/
             $pdf->SetX(40);
             $pdf->Cell(229, $alto_celda, utf8_decode($_SESSION["EMPRESA_RAZON"]), $bordes/* BORDE */, 1/* SALTO */, 'L');
+            $pdf->SetX(40);
+            $pdf->Cell(229, $alto_celda, utf8_decode("Pares preprogramados por cliente"), $bordes/* BORDE */, 1/* SALTO */, 'L');
             $pdf->SetX(160);
             $pdf->Cell(20, $alto_celda, "Fecha ", $bordes/* BORDE */, 0/* SALTO */, 'R');
             $pdf->SetX(180);
@@ -90,69 +92,33 @@ class ParesPreProgramados extends CI_Controller {
             foreach ($CLIENTES as $k => $v) {
                 $Y = $pdf->GetY();
                 $pdf->SetFont('Calibri', 'B', 7);
-
                 $pdf->SetX(10);
-                $pdf->MultiCell(40, $alto_celda, $v->CLAVE_CLIENTE . " " . $v->CLIENTE, $bordes/* BORDE */, 'C');
-                $YY = $pdf->GetY() > $YY ? $pdf->GetY() : $YY;
-
-                $pdf->SetY($Y);
-                $pdf->SetX(50);
-                $pdf->MultiCell(40, $alto_celda, $v->CLAVE_AGENTE . " " . $v->AGENTE, $bordes/* BORDE */, 'C');
-                $YY = $pdf->GetY() > $YY ? $pdf->GetY() : $YY;
-
-                $pdf->SetY($Y);
-                $pdf->SetX(90);
-                $pdf->MultiCell(20, (strlen($v->ESTADO) <= 12) ? $alto_celda : $alto_celda - .5, utf8_decode($v->ESTADO), $bordes/* BORDE */, 'C');
-                $YY = $pdf->GetY() > $YY ? $pdf->GetY() : $YY;
-                $pdf->Line(10, $YY, 110, $YY);
-
-                $pdf->SetY($YY);
-                $pdf->SetFont('Calibri', 'B', 7);
-                $YF = $pdf->GetY();
+                $pdf->setFilled(0);
+                $pdf->setBorders(0);
+                $pdf->SetAligns(array('C', 'C', 'C'));
+                $pdf->SetWidths(array(40/* 0 */, 40/* 1 */, 20/* 2 */));
+                $pdf->RowNoBorder(array(utf8_decode($v->CLAVE_CLIENTE . " " . $v->CLIENTE)/* 0 */,
+                    utf8_decode($v->CLAVE_AGENTE . " " . $v->AGENTE)/* 1 */,
+                    utf8_decode($v->ESTADO)));
+                $pdf->Line(10, $pdf->GetY(), 110, $pdf->GetY());
                 $PARES_PREPROGRAMADOS = $this->pam->getParesPreProgramados($v->CLAVE_CLIENTE);
                 $bordes = 0;
                 foreach ($PARES_PREPROGRAMADOS as $kk => $vv) {
                     $Y = $pdf->GetY();
                     $pdf->SetX($spacex);
-                    $pdf->Cell($anchos[1], $alto_celda, $vv->PEDIDO, $bordes/* BORDE */, 0/* SALTO */, 'C');
-
-                    $spacex += $anchos[1];
-                    $pdf->SetX($spacex);
-                    $pdf->MultiCell($anchos[1], (strlen($vv->CLAVE_LINEA . " " . $vv->LINEA) <= 22) ? $alto_celda : $alto_celda - .5, utf8_decode($vv->CLAVE_LINEA . " " . $vv->LINEA), $bordes/* BORDE */, 'C');
-                    $YY = $pdf->GetY() > $YY ? $pdf->GetY() : $YY;
-
-                    $pdf->SetY($Y);
-                    $spacex += $anchos[1];
-                    $pdf->SetX($spacex);
-                    $pdf->Cell($anchos[1], $alto_celda, $vv->CLAVE_ESTILO, $bordes/* BORDE */, 0/* SALTO */, 'C');
-
-                    $spacex += $anchos[1];
-                    $pdf->SetX($spacex);
-                    $pdf->MultiCell($anchos[2], (strlen($vv->COLOR) <= 22) ? $alto_celda : $alto_celda - .5, utf8_decode($vv->COLOR), $bordes/* BORDE */, 'C');
-                    $YY = $pdf->GetY() > $YY ? $pdf->GetY() : $YY;
-
-                    $pdf->SetY($Y);
-                    $spacex += $anchos[2];
-                    $pdf->SetX($spacex);
-                    $pdf->Cell($anchos[1], $alto_celda, $vv->FECHA_ENTREGA, $bordes/* BORDE */, 0/* SALTO */, 'C');
-
-                    $pdf->SetY($Y);
-                    $spacex += $anchos[1];
-                    $pdf->SetX($spacex);
-                    $pdf->Cell($anchos[5], $alto_celda, $vv->PARES, $bordes/* BORDE */, 0/* SALTO */, 'C');
-
-                    $pdf->SetY($Y);
-                    $spacex += $anchos[5];
-                    $pdf->SetX($spacex);
-                    $pdf->Cell($anchos[4], $alto_celda, $vv->MAQUILA, $bordes/* BORDE */, 0/* SALTO */, 'C');
-
-                    $pdf->SetY($Y);
-                    $spacex += $anchos[4];
-                    $pdf->SetX($spacex);
-                    $pdf->Cell($anchos[4], $alto_celda, $vv->SEMANA, $bordes/* BORDE */, 0/* SALTO */, 'C');
-
-                    $pdf->Line(110, $YY, 269, $YY);
-                    $pdf->SetY($YY);
+                    $pdf->setFilled(0);
+                    $pdf->setBorders(0);
+                    $pdf->SetAligns(array('C'/* 0 */, 'L'/* 1 */, 'C'/* 2 */, 'L'/* 3 */, 'C'/* 4 */, 'C'/* 5 */, 'C'/* 6 */, 'C'/* 7 */));
+                    $pdf->SetWidths(array(20/* 0 */, 20/* 1 */, 20/* 2 */, 33/* 3 */, 20/* 4 */, 16/* 5 */, 15/* 6 */, 15/* 7 */));
+                    $pdf->RowNoBorder(array(utf8_decode($vv->PEDIDO)/* 0 */,
+                        utf8_decode($vv->CLAVE_LINEA . " " . $vv->LINEA)/* 1 */,
+                        utf8_decode($vv->CLAVE_ESTILO)/* 2 */,
+                        utf8_decode($vv->COLOR)/* 3 */,
+                        utf8_decode($vv->FECHA_ENTREGA)/* 4 */,
+                        utf8_decode($vv->PARES)/* 5 */,
+                        utf8_decode($vv->MAQUILA)/* 6 */,
+                        utf8_decode($vv->SEMANA)/* 7 */));
+                    $pdf->Line(110, $pdf->GetY(), 269, $pdf->GetY());
                     $spacex = 110;
                     $PARES += $vv->PARES;
                     $TOTAL_PARES += $vv->PARES;
