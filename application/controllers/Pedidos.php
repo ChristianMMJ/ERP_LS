@@ -360,6 +360,124 @@ class Pedidos extends CI_Controller {
             /* ENCABEZADO DETALLE */
 
             $pdf->setY(15);
+            $pdf->Image($_SESSION["LOGO"], /* LEFT */ 5, 5/* TOP */, /* ANCHO */ 30, 12.5);
+            $pdf->SetFont('Calibri', 'B', 9.25);
+
+            $pos = array(65/* 0 */, 80/* 1 */, 145/* 2 */, 160/* 3 */, 40/* 4 */, 200/* 5 */, 215/* 6 */);
+            $anc = array(15/* 0 */, 65/* 1 */, 40/* 2 */, 120/* 3 */, 55/* 4 */);
+
+            $base = 6;
+            $alto_celda = 4;
+            $pdf->SetY($base);
+            $pdf->SetX(40);
+            $pdf->Cell(110, $alto_celda, utf8_decode($_SESSION["EMPRESA_RAZON"]), 0/* BORDE */, 0, 'L');
+            $pdf->SetX(85);
+            $pdf->Cell(110, $alto_celda, utf8_decode($_SESSION["EMPRESA_DIRECCION"]), 0/* BORDE */, 1, 'L');
+
+            $base = $base + 4;
+            $pdf->SetY($base);
+            $pdf->SetX($pos[4]);
+            $pdf->SetFillColor(225, 225, 234);
+            $pdf->Cell(25, $alto_celda, utf8_decode("Pedido"), 1/* BORDE */, 1, 'C', 1);
+            $pdf->SetFillColor(250, 250, 250);
+            $pdf->SetX($pos[4]);
+            $pdf->Cell(25, $alto_celda, utf8_decode($pdf->getPedido()), 1/* BORDE */, 1, 'C');
+
+            $Y = $pdf->GetY();
+
+            $pdf->SetX($pos[4] - 30);
+            $pdf->SetFillColor(225, 225, 234);
+            $pdf->Cell(30, $alto_celda, utf8_decode("Fe Cap. "), 1/* BORDE */, 1, 'C', 1);
+            $pdf->SetFillColor(250, 250, 250);
+            $pdf->SetX($pos[4] - 30);
+            $pdf->Cell(30, $alto_celda, utf8_decode($pdf->getRegistro()), 1/* BORDE */, 1, 'C');
+
+            $pdf->SetY($Y);
+            $pdf->SetX($pos[4]);
+            $pdf->SetFillColor(225, 225, 234);
+            $pdf->Cell(25, $alto_celda, utf8_decode("Fe Ped. "), 1/* BORDE */, 1, 'C', 1);
+            $pdf->SetFillColor(250, 250, 250);
+            $pdf->SetX($pos[4]);
+            $pdf->Cell(25, $alto_celda, utf8_decode($pdf->getFecha()), 1/* BORDE */, 0, 'C');
+
+            $pdf->SetFont('Calibri', 'B', 8);
+            $pdf->SetFillColor(225, 225, 234);
+            $pdf->SetY($base);
+            $pdf->SetX($pos[0]);
+            $pdf->Cell($anc[0], $alto_celda, utf8_decode("Cliente"), 1/* BORDE */, 0, 'L', 1);
+            $pdf->SetFillColor(250, 250, 250);
+            $pdf->SetY($base);
+            $pdf->SetX($pos[1]);
+            $pdf->Cell($anc[3], $alto_celda, utf8_decode($pdf->getCliente()), 1/* BORDE */, 1, 'L', 1);
+
+            $pdf->SetFillColor(225, 225, 234);
+            $pdf->SetX($pos[0]);
+            $pdf->Cell($anc[0], $alto_celda, utf8_decode("Ciudad"), 1/* BORDE */, 0, 'L', 1);
+            $pdf->SetFillColor(250, 250, 250);
+            $pdf->SetX($pos[1]);
+            $pdf->Cell($anc[1], $alto_celda, utf8_decode($pdf->getCiudad()), 1/* BORDE */, 0, 'L');
+
+            $pdf->SetFillColor(225, 225, 234);
+            $pdf->SetX($pos[2]);
+            $pdf->Cell($anc[0], $alto_celda, utf8_decode("Estado"), 1/* BORDE */, 0, 'L', 1);
+            $pdf->SetFillColor(250, 250, 250);
+            $pdf->SetX($pos[3]);
+            $pdf->Cell($anc[2], $alto_celda, utf8_decode($pdf->getEstado()), 1/* BORDE */, 1, 'L');
+
+            $pdf->SetFillColor(225, 225, 234);
+            $pdf->SetX($pos[0]);
+            $pdf->Cell($anc[0], $alto_celda, utf8_decode("R.F.C"), 1/* BORDE */, 0, 'L', 1);
+            $pdf->SetFillColor(250, 250, 250);
+            $pdf->SetX($pos[1]);
+            $pdf->Cell($anc[1], $alto_celda, utf8_decode($pdf->getRFC()), 1/* BORDE */, 0, 'L');
+
+            $pdf->SetFillColor(225, 225, 234);
+            $pdf->SetX($pos[2]);
+            $pdf->Cell($anc[0], $alto_celda, utf8_decode("Tel."), 1/* BORDE */, 0, 'L', 1);
+            $pdf->SetFillColor(250, 250, 250);
+            $pdf->SetX($pos[3]);
+            $pdf->Cell($anc[2], $alto_celda, utf8_decode($pdf->getTel()), 1/* BORDE */, 1, 'L');
+
+            $pdf->SetFont('Calibri', 'B', 8);
+            $pdf->SetFillColor(225, 225, 234);
+            $pdf->SetX($pos[0]);
+            $pdf->Cell($anc[0], $alto_celda, utf8_decode("Obs."), 1/* BORDE */, 0, 'L', 1);
+            $pdf->SetFont('Calibri', 'B', 7.5);
+            $pdf->SetFillColor(250, 250, 250);
+            $pdf->SetX($pos[1]);
+            $pdf->Cell($anc[3], $alto_celda, utf8_decode($pdf->getObs()), 1/* BORDE */, 0, 'L');
+
+            $pdf->SetFillColor(225, 225, 234);
+            $pdf->SetX($pos[5]);
+            $pdf->Cell($anc[0], $alto_celda, utf8_decode("Trans."), 1/* BORDE */, 0, 'L', 1);
+            $pdf->SetFillColor(250, 250, 250);
+            $pdf->SetX($pos[6]);
+            $pdf->Cell($anc[4], $alto_celda, utf8_decode($pdf->getTrasp()), 1/* BORDE */, 1, 'L');
+
+            $pdf->SetY($base);
+            $pdf->SetFont('Calibri', 'B', 8);
+            $pdf->SetFillColor(225, 225, 234);
+            $pdf->SetX($pos[5]);
+            $pdf->Cell($anc[0], $alto_celda, utf8_decode("Dirección"), 1/* BORDE */, 0, 'L', 1);
+            $pdf->SetY($base);
+            $pdf->SetFillColor(250, 250, 250);
+            $pdf->SetX($pos[6]);
+            $pdf->Cell($anc[4], $alto_celda, utf8_decode($pdf->getDireccion()), 1/* BORDE */, 1, 'L', 1);
+
+            $pdf->SetFillColor(225, 225, 234);
+            $pdf->SetX($pos[5]);
+            $pdf->Cell($anc[0], $alto_celda, utf8_decode("Agente"), 1/* BORDE */, 0, 'L', 1);
+            $pdf->SetFillColor(250, 250, 250);
+            $pdf->SetX($pos[6]);
+            $pdf->Cell($anc[4], $alto_celda, utf8_decode($pdf->getAgente()), 1/* BORDE */, 1, 'L');
+
+            $pdf->SetFillColor(225, 225, 234);
+            $pdf->SetX($pos[5]);
+            $pdf->Cell($anc[0], $alto_celda, utf8_decode("C.P"), 1/* BORDE */, 0, 'L', 1);
+            $pdf->SetFillColor(250, 250, 250);
+            $pdf->SetX($pos[6]);
+            $pdf->Cell($anc[4], $alto_celda, utf8_decode($pdf->getCP()), 1/* BORDE */, 1, 'L');
+
             /* FIN ENCABEZADO DETALLE */
 
             $pares_totales = 0;

@@ -148,6 +148,13 @@
 
 
 
+
+        $("input[type='text']").on('keydown', function (e) {
+            if ($(this).val().length > 0) {
+                onBeep(3);
+            }
+        });
+        
         mobilecheck();
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-toggle="popover"]').popover();
@@ -393,7 +400,7 @@
                         ],
                         //Margen general del header
                         margin: 10
-                    }
+                    };
                 });
                 // Create a footer object with 2 columns
                 // Left side: report creation date
@@ -408,7 +415,7 @@
                             }
                         ],
                         margin: 10
-                    }
+                    };
                 });
                 // Change dataTable layout (Table styling)
                 // To use predefined layouts uncomment the line below and comment the custom lines below

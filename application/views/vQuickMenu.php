@@ -81,6 +81,17 @@
                 </div>
             </div>
         </div>
+        <div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2"></div>
+        <div class="col-12 col-sm-12 col-md-10 col-lg-10 col-xl-10">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h1 style="font-size: 130px; font-style: italic;">SHOESYSTEM ERP</h1>
+                </div>
+                <div class="card-footer">
+                    <h1 style="font-size: 100px;">TO LOBO SOLO</h1>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <style>
@@ -120,7 +131,7 @@
         cursor: pointer !important;
         font-weight: bold;
         background-color: #2384c6 !important;
-        color: #fff;
+        color: #fff; 
     }
     .card:hover .card-body{
         cursor: pointer !important;
@@ -150,13 +161,10 @@
         #MnuBlock{
             display: none;
         }
-    }
-   
+    } 
 </style>
 <script>
     function onMenuDisplay(e) {
         window.location.href = '<?php print base_url(); ?>' + e + '.shoes/';
     }
-    /* ---- particles.js config ---- */
-
 </script>

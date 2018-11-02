@@ -1,4 +1,4 @@
-<div class="modal animated fadeIn" id="mdlParesAsignados">
+<div class="modal animated slideInDown" id="mdlParesAsignados">
     <div class="modal-dialog modal-dialog-centered modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -79,6 +79,8 @@
     var is_showed = false;
 
     $(document).ready(function () {
+        
+        ParesAnio.val(new Date().getFullYear());
 
         mdlParesAsignados.find("input[type='radio']").change(function () {
             onBeep(3);
@@ -90,23 +92,28 @@
 
         mdlParesAsignados.on('shown.bs.modal', function () {
             ParesMaquilaInicial.focus();
+            ParesAnio.val(new Date().getFullYear());
         });
 
         mdlParesAsignados.find("#btnAceptar").click(function () {
-            console.log(mdlParesAsignados.find("[name='rCheck']"));
+            
             $.post(master_url_pares_asignados + 'getParesAsignados', {
                 MAQUILA_INICIAL: ParesMaquilaInicial.val().trim() !== '' ? ParesMaquilaInicial.val() : '',
                 MAQUILA_FINAL: ParesMaquilaFinal.val().trim() !== '' ? ParesMaquilaFinal.val() : '',
                 SEMANA_INICIAL: ParesSemanaInicial.val().trim() !== '' ? ParesSemanaInicial.val() : '',
                 SEMANA_FINAL: ParesSemanaFinal.val().trim() !== '' ? ParesSemanaFinal.val() : '',
                 ANIO: ParesAnio.val().trim() !== '' ? ParesAnio.val() : '',
-                TIPO: mdlParesAsignados.find("#rCteFechaEntrega")[0].checked ? 1 : mdlParesAsignados.find("#rPedido")[0].checked ? 2 : mdlParesAsignados.find("#rEstiloColor")[0].checked ? 3 : mdlParesAsignados.find("#rFechaEntregaCliente")[0].checked ? 4 : 0
+                TIPO:
+                        mdlParesAsignados.find("#rCteFechaEntrega")[0].checked ? 1 :
+                        mdlParesAsignados.find("#rPedido")[0].checked ? 2 :
+                        mdlParesAsignados.find("#rEstiloColor")[0].checked ? 3 :
+                        mdlParesAsignados.find("#rFechaEntregaCliente")[0].checked ? 4 : 0
             }).done(function (data, x, jq) {
-                console.log(data);
+                onBeep(1);
                 onImprimirReporteFancy(base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data);
             }).fail(function (x, y, z) {
                 console.log(x.responseText);
-                swal('ATENCIÓN', 'HA OCURRIDO UN INESPERADO AL OBTENER EL REPORTE,CONSULTE LA CONSOLA PARA MÁS DETALLES.', 'warning');
+                swal('ATENCIÓN', 'HA OCURRIDO UN ERROR INESPERADO AL OBTENER EL REPORTE,CONSULTE LA CONSOLA PARA MÁS DETALLES.', 'warning');
             }).always(function () {
 
             });
@@ -156,7 +163,6 @@
             }).fail(function (x, y, z) {
                 console.log(x, y, z);
             }).always(function () {
-
             });
         }
     }

@@ -488,9 +488,8 @@
         });
 
         btnImprimir.click(function () {
-            console.log(temp);
             if (temp > 0) {
-                //HoldOn.open({  message: 'Espere...', theme: 'sk-cube'});
+                HoldOn.open({message: 'Espere...', theme: 'sk-cube'});
                 $.post(master_url + 'onImprimirPedidoReducido', {ID: temp}).done(function (data) {
                     //check Apple device
                     if (isAppleDevice() || isMobile) {
@@ -522,7 +521,9 @@
                         });
                     }
                 }).fail(function (x, y, z) {
+                    HoldOn.close();
                     console.log(x, y, z);
+                    swal('ATENCIÓN', 'NO HA SIDO POSIBLE MOSTRAR EL PEDIDO PARA SU IMPRESIÓN,VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'warning');
                 }).always(function () {
                     HoldOn.close();
                 });

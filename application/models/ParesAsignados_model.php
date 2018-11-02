@@ -39,12 +39,12 @@ class ParesAsignados_model extends CI_Model {
                     $this->db->order_by('C.RazonS', 'ASC')->order_by('PD.FechaEntrega', 'ASC');
                     break;
                 case 2:
-                    /* ESTILO ASC - COLOR ASC */
-                    $this->db->order_by('PD.Estilo', 'ASC')->order_by('CO.Descripcion', 'ASC');
+                    /* PEDIDO ASC */
+                    $this->db->order_by('ABS(P.Clave)', 'ASC');
                     break;
                 case 3:
-                    /* PEDIDO ASC */
-                    $this->db->order_by('P.Clave', 'ASC');
+                    /* ESTILO ASC - COLOR ASC */
+                    $this->db->order_by('PD.Estilo', 'ASC')->order_by('CO.Descripcion', 'ASC');
                     break;
                 case 4:
                     /* FECHA DE ENTREGA ASC - CLIENTE ASC */
@@ -56,5 +56,4 @@ class ParesAsignados_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-
 }

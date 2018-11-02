@@ -116,7 +116,7 @@
         <script src="<?php echo base_url("js/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.min.js"); ?>"></script>
         <!-- CSS file -->
         <link rel="stylesheet" href="<?php echo base_url("js/EasyAutocomplete-1.3.5/easy-autocomplete.min.css"); ?>">
-        <!-- Additional CSS Themes file - not required-->
+        <!-- Additional CSS Themes file - not required--> 
         <link rel="stylesheet" href="<?php echo base_url("js/EasyAutocomplete-1.3.5/easy-autocomplete.themes.min.css"); ?>">
         <script>
             $.ajax({

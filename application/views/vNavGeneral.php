@@ -136,7 +136,7 @@
 </style>
 
 <!-- Sidebar  -->
-<nav id="sidebar" class="bg-primary">
+<nav id="sidebar" class="bg-primary blackdrop">
     <div id="dismiss">
         <i class="fas fa-arrow-left fa-lg"></i>
     </div>
