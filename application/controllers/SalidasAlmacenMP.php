@@ -180,7 +180,7 @@ class SalidasAlmacenMP extends CI_Controller {
     public function onImprimirValeEntrada() {
         $Doc = $this->SalidasAlmacenMP_model->onImprimirReporte($this->input->post('Doc'));
         if (!empty($Doc)) {
-            $pdf = new PDFAlm('P', 'mm', array(215.9, 279.4));
+            $pdf = new PDFSalidaAlm('P', 'mm', array(215.9, 279.4));
 
             $pdf->Doc = $Doc[0]->DocMov;
             $pdf->Sem = $Doc[0]->Sem;
