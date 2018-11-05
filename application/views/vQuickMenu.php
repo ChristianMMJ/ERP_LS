@@ -1,7 +1,7 @@
 <div id="particle-container"></div>
 <div class="col-12">
     <div id="MnuBlock" class="col-12 row justify-content-center mt-2" align="center">
-        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated fadeInUp" onclick="onMenuDisplay('MenuProveedores');">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated slideInLeft" onclick="onMenuDisplay('MenuProveedores');">
             <div class="card text-center">
                 <div class="card-body">
                     <span class="fa fa-user-secret fa-2x  mt-5"></span>
@@ -11,7 +11,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated fadeInDown" onclick="onMenuDisplay('MenuMateriales');">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated ra" onclick="onMenuDisplay('MenuMateriales');">
             <div class="card text-center">
                 <div class="card-body">
                     <span class="fa fa-cube fa-2x  mt-5"></span>
@@ -21,7 +21,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated fadeInUp" onclick="onMenuDisplay('MenuClientes');">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated slideInDown" onclick="onMenuDisplay('MenuClientes');">
             <div class="card text-center">
                 <div class="card-body">
                     <span class="fa fa-users fa-2x  mt-5"></span>
@@ -31,7 +31,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated fadeInDown" onclick="onMenuDisplay('MenuFichasTecnicas');">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated slideInDown" onclick="onMenuDisplay('MenuFichasTecnicas');">
             <div class="card text-center">
                 <div class="card-body">
                     <span class="fa fa-file-invoice fa-2x  mt-5"></span>
@@ -41,7 +41,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated fadeInUp" onclick="onMenuDisplay('MenuProduccion');">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated slideInRight" onclick="onMenuDisplay('MenuProduccion');">
             <div class="card text-center">
                 <div class="card-body">
                     <span class="fa fa-industry fa-2x  mt-5"></span>
@@ -51,7 +51,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated fadeInDown" onclick="onMenuDisplay('MenuContabilidad');">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated slideInLeft" onclick="onMenuDisplay('MenuContabilidad');">
             <div class="card text-center">
                 <div class="card-body">
                     <span class="fa fa-calculator fa-2x  mt-5"></span>
@@ -61,7 +61,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated fadeInUp" onclick="onMenuDisplay('MenuNomina');">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated slideInUp" onclick="onMenuDisplay('MenuNomina');">
             <div class="card text-center">
                 <div class="card-body">
                     <span class="fa fa-hand-holding-usd fa-2x  mt-5"></span>
@@ -71,7 +71,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated fadeInDown" onclick="onMenuDisplay('MenuParametros');">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated slideInRight" onclick="onMenuDisplay('MenuParametros');">
             <div class="card text-center">
                 <div class="card-body">
                     <span class="fa fa-cogs fa-2x  mt-5"></span>
@@ -81,7 +81,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2"></div>
+        <!--<div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2"></div>
         <div class="col-12 col-sm-12 col-md-10 col-lg-10 col-xl-10">
             <div class="card text-center">
                 <div class="card-body">
@@ -91,7 +91,7 @@
                     <h1 style="font-size: 100px;">TO LOBO SOLO</h1>
                 </div>
             </div>
-        </div>
+        </div>-->
     </div>
 </div>
 <style>

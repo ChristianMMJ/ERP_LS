@@ -33,20 +33,20 @@
     $(document).ready(function () {
         mdlParesPreProgramados.find("#btnClientePreProgramado").click(function () {
             console.log('CLIENTE');
-            getReportePreProgramado(1);
+            getParesPreProgramados(1);
         });
         mdlParesPreProgramados.find("#btnEstiloPreProgramado").click(function () {
             console.log('ESTILO');
-            getReportePreProgramado(2);
+            getParesPreProgramados(2);
         });
         mdlParesPreProgramados.find("#btnLineasPreProgramado").click(function () {
             console.log('LINEAS');
-            getReportePreProgramado(3);
+            getParesPreProgramados(3);
         });
     });
 
-    function getReportePreProgramado(t) {
-        $.post(master_url_pares_preprogramados + 'getParesPreProgramadosCliente', {
+    function getParesPreProgramados(t) {
+        $.post(master_url_pares_preprogramados + 'getParesPreProgramados', {
             TIPO: t
         }).done(function (data, x, jq) {
             onBeep(1);

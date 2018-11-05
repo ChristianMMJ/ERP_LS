@@ -10,20 +10,34 @@ class ParesPreProgramados_model extends CI_Model {
         parent::__construct();
     }
 
-    public function getParesPreProgramados($C) {
+    public function getParesPreProgramados($CEL, $I) {
         try {
-            return $this->db->select('C.Clave AS CLAVE_CLIENTE, C.RazonS AS  CLIENTE, A.Nombre AS AGENTE, ES.Descripcion AS ESTADO, 
+            $this->db->select('C.Clave AS CLAVE_CLIENTE, C.RazonS AS  CLIENTE, A.Clave AS CLAVE_AGENTE, A.Nombre AS AGENTE, ES.Descripcion AS ESTADO, 
 P.Clave AS PEDIDO, E.Linea AS CLAVE_LINEA, L.Descripcion AS LINEA, PD.Estilo AS CLAVE_ESTILO, CO.Descripcion AS COLOR,
-PD.FechaEntrega AS FECHA_ENTREGA, PD.Pares AS PARES, PD.Maquila AS MAQUILA, PD.Semana AS SEMANA', false)
-                            ->from('pedidos AS P')
-                            ->join('pedidodetalle as PD', 'P.ID = PD.Pedido')
-                            ->join('clientes AS C', 'P.Cliente = C.ID')
-                            ->join('agentes AS A', 'P.Agente = A.Clave')
-                            ->join('estilos AS E', 'PD.Estilo = E.Clave')
-                            ->join('colores AS CO', 'E.Clave = CO.Estilo AND PD.Color = CO.Clave')
-                            ->join('lineas AS L', 'E.Linea = L.Clave')
-                            ->join('estados AS ES', 'C.Estado = ES.Clave')
-                            ->where("C.Clave", $C)->get()->result();
+PD.FechaEntrega AS FECHA_ENTREGA, PD.Pares AS PARES, PD.Maquila AS MAQUILA, PD.Semana AS SEMANA, C.Pais AS PAIS', false)
+                    ->from('pedidos AS P')
+                    ->join('pedidodetalle as PD', 'P.ID = PD.Pedido')
+                    ->join('clientes AS C', 'P.Cliente = C.ID')
+                    ->join('agentes AS A', 'P.Agente = A.Clave')
+                    ->join('estilos AS E', 'PD.Estilo = E.Clave')
+                    ->join('colores AS CO', 'E.Clave = CO.Estilo AND PD.Color = CO.Clave')
+                    ->join('lineas AS L', 'E.Linea = L.Clave')
+                    ->join('estados AS ES', 'C.Estado = ES.Clave');
+            switch ($I) {
+                case 1:
+                    $this->db->where("C.Clave", $CEL);
+                    break;
+                case 2:
+                    $this->db->where("PD.Estilo", $CEL);
+                    $this->db->where("E.Clave", $CEL);
+                    $this->db->where("CO.Estilo", $CEL);
+                    break;
+                case 3:
+                    $this->db->where("L.Clave", $CEL);
+                    $this->db->where("E.Linea", $CEL);
+                    break;
+            }
+            return $this->db->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -41,6 +55,34 @@ PD.FechaEntrega AS FECHA_ENTREGA, PD.Pares AS PARES, PD.Maquila AS MAQUILA, PD.S
                     ->join('agentes AS A', 'C.Agente = A.Clave')
                     ->join('estados AS ES', 'C.Estado = ES.Clave')
                     ->group_by('C.ID');
+            return $this->db->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getEstilos() {
+        try {
+            $this->db->select('PD.Estilo AS CLAVE_ESTILO, PD.ColorT AS COLOR', false)
+                    ->from('pedidos AS P')
+                    ->join('pedidodetalle as PD', 'P.ID = PD.Pedido')
+                    ->join('clientes AS C', 'P.Cliente = C.ID')
+                    ->group_by('PD.Estilo');
+            return $this->db->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+
+    public function getLineas() {
+        try {
+            $this->db->select('E.Linea AS CLAVE_LINEA, L.Descripcion AS LINEA', false)
+                    ->from('pedidos AS P')
+                    ->join('pedidodetalle as PD', 'P.ID = PD.Pedido')
+                    ->join('estilos AS E', 'PD.Estilo = E.Clave')
+                    ->join('colores AS CO', 'E.Clave = CO.Estilo AND PD.Color = CO.Clave')
+                    ->join('lineas AS L', 'E.Linea = L.Clave')->group_by('L.Clave');
             return $this->db->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
