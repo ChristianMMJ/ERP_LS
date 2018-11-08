@@ -310,21 +310,31 @@
             }
         });
         btnAceptar.click(function () {
-
-            var pares_pedido = pnlTablero.find("#Pares").val();
-            var pares_salida = pnlTablero.find("#TotalParesEntrega").val();
-            if (pares_salida > pares_pedido) {
-                swal("Atención", "Cantidad de pares es mayor a la cantidad explosioanda ", {
+            var maq = pnlTablero.find("#Pares").val();
+            if (parseInt(maq) < 98) {
+                var pares_pedido = pnlTablero.find("#Pares").val();
+                var pares_salida = pnlTablero.find("#TotalParesEntrega").val();
+                if (pares_salida > pares_pedido) {
+                    swal("Atención", "Cantidad de pares es mayor a la cantidad explosioanda ", {
+                        buttons: ["Cancelar", true]
+                    }).then((value) => {
+                        if (value) {
+                            onGuardarMovimiento();
+                        }
+                    });
+                } else {
+                    onGuardarMovimiento();
+                }
+            } else {
+                swal("Atención", "LA MAQUILA 98 NO PUEDE ENTREGAR SUELA/PLANTA/ENTRESUELA ", {
                     buttons: ["Cancelar", true]
                 }).then((value) => {
-                    if (value) {
-                        onGuardarMovimiento();
-                    }
+                    pnlTablero.find('#Control').val('').focus();
                 });
-            } else {
-
-                onGuardarMovimiento();
             }
+
+
+
         });
     });
 

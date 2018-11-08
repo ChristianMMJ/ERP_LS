@@ -107,17 +107,6 @@ class EntregaSuelaPlantaFabrica_model extends CI_Model {
         }
     }
 
-    public function onAgregar_MovArt_Fabrica($array) {
-        try {
-            $this->db->insert("movarticulos_fabrica", $array);
-            $query = $this->db->query('SELECT LAST_INSERT_ID()');
-            $row = $query->row_array();
-            return $row['LAST_INSERT_ID()'];
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
     public function onImprimirReporte($doc) {
         try {
             $this->db->query("set sql_mode=''");

@@ -70,8 +70,8 @@
                     </li>
                     <a class="dropdown-item" href="<?php print base_url('InicialMaterialPrima.shoes'); ?>">Inicial Materia Prima</a>
                     <a class="dropdown-item" href="<?php print base_url('EntregaSuelaPlantaFabrica.shoes'); ?>">Entrega Suela/Planta a Fábrica</a>
-                    <a class="dropdown-item" href="#">Cancela Entradas/Salidas ***</a>
-                    <a class="dropdown-item" href="#">Elimina Entrada por Compra ***</a>
+                    <a class="dropdown-item" href="<?php print base_url('CancelaEntradasSalidas.shoes'); ?>">Cancela Entradas/Salidas</a>
+                    <a class="dropdown-item" href="<?php print base_url('EliminaEntradaCompra.shoes'); ?>">Elimina Entrada por Compra</a>
 
                     <a class="dropdown-item" href="#">Notas de Cargo ***</a>
 

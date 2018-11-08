@@ -124,6 +124,7 @@ class Recibeordencompra_model extends CI_Model {
                             . "U.Descripcion AS Unidad,"
                             . "C.Precio, "
                             . "sum(C.Cantidad) AS Cantidad,"
+                            . "C.Proveedor AS ClaveProv,"
                             . "C.FechaDoc,"
                             . "C.Doc,"
                             . "C.Tp,"

@@ -73,6 +73,7 @@ class EntregaSuelaPlantaFabrica extends CI_Controller {
 
     public function onAgregar() {
         try {
+
             $x = $this->input;
             $datos = array(
                 'Articulo' => $x->post('Articulo'),
@@ -89,7 +90,6 @@ class EntregaSuelaPlantaFabrica extends CI_Controller {
                 'Control' => $x->post('Control')
             );
             $this->EntregaSuelaPlantaFabrica_model->onAgregar($datos);
-            $this->EntregaSuelaPlantaFabrica_model->onAgregar_MovArt_Fabrica($datos);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
