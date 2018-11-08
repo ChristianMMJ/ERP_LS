@@ -13,7 +13,13 @@
                         <div class="btn-group btn-group-lg" role="group" aria-label="Opciones">
                             <button id="btnClientePreProgramado" type="button" class="btn btn-success"><span class="fa fa-user-circle"></span> Cliente</button>
                             <button id="btnEstiloPreProgramado" type="button" class="btn btn-warning"><span class="fa fa-dot-circle"></span> Estilo</button>
-                            <button id="btnLineasPreProgramado" type="button" class="btn btn-info"><span class="fa fa-dot-circle"></span> Lineas</button>
+                            <button id="btnLineasPreProgramado" type="button" class="btn btn-info"><span class="fa fa-align-left"></span> Lineas</button> 
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-3 text-center"> 
+                        <div class="btn-group btn-group-lg" role="group" aria-label="Opciones">
+                            <button id="btnMaquilasPreProgramado" type="button" class="btn btn-danger"><span class="fa fa-industry"></span> Maquilas</button>
+                            <button id="btnSemanaMaquilaPreProgramado" type="button" class="btn btn-default"><span class="fa fa-calendar"></span> Semana/Maquila</button>
                         </div>
                     </div>
                 </div>
@@ -29,19 +35,31 @@
 <script>
     var mdlParesPreProgramados = $("#mdlParesPreProgramados");
     var master_url_pares_preprogramados = base_url + 'index.php/ParesPreProgramados/';
-    
+
     $(document).ready(function () {
         mdlParesPreProgramados.find("#btnClientePreProgramado").click(function () {
             console.log('CLIENTE');
             getParesPreProgramados(1);
         });
+
         mdlParesPreProgramados.find("#btnEstiloPreProgramado").click(function () {
             console.log('ESTILO');
             getParesPreProgramados(2);
         });
+
         mdlParesPreProgramados.find("#btnLineasPreProgramado").click(function () {
             console.log('LINEAS');
             getParesPreProgramados(3);
+        });
+
+        mdlParesPreProgramados.find("#btnMaquilasPreProgramado").click(function () {
+            console.log('MAQUILAS');
+            getParesPreProgramados(4);
+        });
+
+        mdlParesPreProgramados.find("#btnSemanaMaquilaPreProgramado").click(function () {
+            console.log('SEMANA/MAQUILA');
+            getParesPreProgramados(5);
         });
     });
 

@@ -39,7 +39,8 @@
                         </div>
                     </li>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php print base_url('AsignaPFTSACXC/?origen=PRODUCCION'); ?>"><span class="fa fa-hand-pointer"></span> Asigna piel, forro, textiles y sintéticos a corte por control</a>                    
+                    <a class="dropdown-item" href="<?php print base_url('AsignaPFTSACXC.shoes/?origen=PRODUCCION'); ?>"><span class="fa fa-hand-pointer"></span> Asigna piel, forro, textiles y sintéticos a corte por control</a>                    
+                    <a class="dropdown-item" href="<?php print base_url('TiemposXEstiloDepto.shoes/?origen=PRODUCCION'); ?>"><span class="fa fa-clock"></span> Tiempos por estilo</a>                    
                 </ul>
             </li>
             <li class="nav-item dropdown">

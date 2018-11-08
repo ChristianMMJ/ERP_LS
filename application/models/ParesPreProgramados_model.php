@@ -89,4 +89,37 @@ PD.FechaEntrega AS FECHA_ENTREGA, PD.Pares AS PARES, PD.Maquila AS MAQUILA, PD.S
         }
     }
 
+    public function getMaquilas() {
+        try {
+            $this->db->select('M.Clave AS CLAVE_MAQUILA, M.Nombre AS MAQUILA, M.CapacidadPares AS CAPACIDAD_PARES', false)
+                    ->from('pedidos AS P')
+                    ->join('pedidodetalle as PD', 'P.ID = PD.Pedido')
+                    ->join('maquilas AS M', 'PD.Maquila = M.Clave')
+                    ->group_by(array('M.Nombre'))
+                    ->order_by('PD.Maquila','ASC')
+                    ->order_by('PD.Semana','ASC');
+            return $this->db->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getParesPreProgramadosPorMaquila($M) {
+        try {
+            $this->db->select('M.Clave AS CLAVE_MAQUILA, M.Nombre AS MAQUILA, '
+                    . 'M.CapacidadPares AS CAPACIDAD_PARES, PD.Semana AS SEMANA, '
+                    . 'SUM(PD.Pares) AS PARES, '
+                    . 'M.CapacidadPares - SUM(PD.Pares) AS DIFERENCIA', false)
+                    ->from('pedidos AS P')
+                    ->join('pedidodetalle as PD', 'P.ID = PD.Pedido')
+                    ->join('maquilas AS M', 'PD.Maquila = M.Clave')
+                    ->where('M.Clave',$M)->where('PD.Maquila',$M)
+                    ->group_by(array('M.Nombre','PD.Semana'))
+                    ->order_by('PD.Maquila','ASC')
+                    ->order_by('PD.Semana','ASC');
+            return $this->db->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 }
