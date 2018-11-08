@@ -98,11 +98,9 @@
             if (isValidInput(Linea) && isValidInput(Estilo)) {
                 var deptos = [];
                 $.each(pnlTablero.find("#Departamentos input.gen"), function () {
-                    console.log($(this), ',', $(this).val());
                     deptos.push({DEPTO: $(this).attr('id'), DEPTOTIME: $(this).val().trim().length > 0 ? parseFloat($(this).val()) : 0});
                 });
                 $.post(master_url + 'onGuardarTiempos', {ID: pnlTablero.find("#ID").val(), LINEA: Linea.val(), ESTILO: Estilo.val(), TIEMPOS: JSON.stringify(deptos), N: (nuevo) ? 0 : 1}).done(function (data, x, jq) {
-                    console.log(data);
                     onBeep(1);
                     pnlTablero.find("input").val('');
                     Departamentos.html('');
@@ -144,7 +142,6 @@
                 if (input.val().trim().length > 0) {
                     onBeep(1);
                     $.getJSON(master_url + 'getDepartamentosXEstilo', {ESTILO: input.val()}).done(function (data) {
-                        console.log(data, data.length);
                         if (data.length > 0) {
                             var deptos = '<div class="row">';
                             $.each(data, function (k, v) {
@@ -157,7 +154,6 @@
                             Departamentos.html(deptos);
                             Departamentos.find("input:eq(0)").focus().select();
                             $.getJSON(master_url + 'onComprobarTiempoXEstiloDeptos', {ESTILO: input.val()}).done(function (dta) {
-                                console.log('EXISTE ? ', dta);
                                 if (dta.length > 0) {
                                     $.each(dta, function (k, v) {
                                         Departamentos.find("#" + v.CLAVE_DEPARTAMENTO).val(v.TIEMPO);
@@ -338,7 +334,6 @@
     function onEliminarDeptoXEstilo(r) {
         var row = TiemposXEstiloDepto.row($(r).parents('tr')).data();
         $.post(master_url + 'onEliminarDeptoXEstilo', {ID: row.ID, IDD: row.IDD}).done(function (data) {
-            console.log(data);
             Departamentos.html('');
             TiemposXEstiloDepto.row($(r).parents('tr')).remove().draw();
             swal({
