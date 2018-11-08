@@ -15,12 +15,9 @@
             <div class="col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2">
                 <label>Linea</label>
                 <input type="text" class="form-control form-control-sm" id="Linea" maxlength="10" name="Linea">
-            </div> 
-            <div id="EstiloDescripcion" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center" aling="center"> 
-            </div>
-            <div id="Departamentos" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-
-            </div>
+            </div>  
+            <div id="EstiloDescripcion" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center" aling="center"></div>
+            <div id="Departamentos" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"></div>
             <div class="col-12 col-sm-6 col-md-4 col-lg-12 col-xl-12 m-2" align="left">
                 <button type="button" class="btn btn-primary animated fadeIn" id="btnGuardarTiempo">GUARDAR</button>
                 <button type="button" class="btn btn-danger animated fadeIn" id="btnCancelarTiempo">CANCELAR</button>
@@ -73,27 +70,6 @@
 
     $(document).ready(function () {
 
-        btnCancelarTiempo.click(function () {
-            pnlTablero.find("input").val('');
-            Departamentos.html('');
-            Linea.attr('readonly', false);
-            Estilo.attr('readonly', false);
-            Linea.focus();
-            tblTiemposXEstiloDepto.DataTable().column(1).search('').draw();
-            tblTiemposXEstiloDepto.DataTable().column(2).search('').draw();
-            Estilo.val('').focus();
-            Linea.removeClass("highlight-input");
-            pnlTablero.find("#EstiloDescripcion").html('');
-        });
-
-        Linea.on('keydown', function () {
-            if (isValidInput(Linea)) {
-                tblTiemposXEstiloDepto.DataTable().column(1).search($(this).val()).draw();
-            } else {
-                tblTiemposXEstiloDepto.DataTable().column(1).search('').draw();
-            }
-        });
-
         btnGuardarTiempo.click(function () {
             if (isValidInput(Linea) && isValidInput(Estilo)) {
                 var deptos = [];
@@ -131,6 +107,27 @@
             }
         });
 
+        btnCancelarTiempo.click(function () {
+            pnlTablero.find("input").val('');
+            Departamentos.html('');
+            Linea.attr('readonly', false);
+            Estilo.attr('readonly', false);
+            pnlTablero.find("#EstiloDescripcion").html('');
+            Linea.focus();
+            tblTiemposXEstiloDepto.DataTable().column(1).search('').draw();
+            tblTiemposXEstiloDepto.DataTable().column(2).search('').draw();
+            Estilo.val('').focus();
+            Linea.removeClass("highlight-input");
+        });
+
+        Linea.on('keydown', function () {
+            if (isValidInput(Linea)) {
+                tblTiemposXEstiloDepto.DataTable().column(1).search($(this).val()).draw();
+            } else {
+                tblTiemposXEstiloDepto.DataTable().column(1).search('').draw();
+            }
+        });
+
         Estilo.on('keydown', function (e) {
             var input = $(this);
             if ($(this).val() !== '') {
@@ -140,6 +137,10 @@
             }
             if (e.keyCode === 13) {
                 if (input.val().trim().length > 0) {
+                    HoldOn.open({
+                        theme: 'sk-cube',
+                        message: 'CARGANDO...'
+                    });
                     onBeep(1);
                     $.getJSON(master_url + 'getDepartamentosXEstilo', {ESTILO: input.val()}).done(function (data) {
                         if (data.length > 0) {
@@ -150,9 +151,16 @@
                                 deptos += '<input id="' + v.Clave + '" type="text" class="form-control form-control-sm numbersOnly gen" placeholder="0.0">';
                                 deptos += '</div>';
                             });
+                            deptos += '<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 mt-2 text-center">';
+                            deptos += '<span class="text-info font-weight-bold">TOTAL </span><br>';
+                            deptos += '<span class="text-danger font-weight-bold ed-total">0.00</span>';
+                            deptos += '</div>';
                             deptos += '</div>';
                             Departamentos.html(deptos);
                             Departamentos.find("input:eq(0)").focus().select();
+                            Departamentos.find("input.gen").keydown(function () {
+                                onCalcularTotal();
+                            });
                             $.getJSON(master_url + 'onComprobarTiempoXEstiloDeptos', {ESTILO: input.val()}).done(function (dta) {
                                 if (dta.length > 0) {
                                     $.each(dta, function (k, v) {
@@ -164,17 +172,14 @@
                                     Linea.attr('readonly', true);
                                     Estilo.attr('readonly', true);
                                     nuevo = false;
+                                    onCalcularTotal();
+                                    getLineaXEstilo(input);
                                 } else {
                                     Linea.addClass("highlight-input");
                                     setTimeout(function () {
                                         Linea.removeClass("highlight-input");
                                     }, 3500);
-                                    $.getJSON(master_url + 'getLineaXEstilo', {ESTILO: input.val()}).done(function (dt) {
-                                        if (dt.length > 0) {
-                                            Linea.val(dt[0].LINEA);
-                                            pnlTablero.find("#EstiloDescripcion").html('<h1>' + dt[0].ESTILO + '</h1>');
-                                        }
-                                    });
+                                    getLineaXEstilo(input);
                                     Linea.attr('readonly', false);
                                     Estilo.attr('readonly', false);
                                     nuevo = true;
@@ -196,7 +201,7 @@
                     }).fail(function (x, y, z) {
                         console.log(x.responseText);
                     }).always(function () {
-
+                        HoldOn.close();
                     });
                 } else {
                     onBeep(2);
@@ -204,8 +209,18 @@
                 }
             }
         });
+
         getTiemposXEstilo();
     });
+
+    function getLineaXEstilo(input) {
+        $.getJSON(master_url + 'getLineaXEstilo', {ESTILO: input.val()}).done(function (dt) {
+            if (dt.length > 0) {
+                Linea.val(dt[0].LINEA);
+                pnlTablero.find("#EstiloDescripcion").html('<h1>' + dt[0].ESTILO + '</h1>');
+            }
+        });
+    }
 
     function getTiemposXEstilo() {
 
@@ -331,23 +346,49 @@
             }
         });
     }
-    function onEliminarDeptoXEstilo(r) {
-        var row = TiemposXEstiloDepto.row($(r).parents('tr')).data();
-        $.post(master_url + 'onEliminarDeptoXEstilo', {ID: row.ID, IDD: row.IDD}).done(function (data) {
-            Departamentos.html('');
-            TiemposXEstiloDepto.row($(r).parents('tr')).remove().draw();
-            swal({
-                title: 'INFO',
-                text: 'SE HA EL TIEMPO DE ESTE ESTILO',
-                icon: 'success',
-                timer: 2000
-            });
-        }).fail(function (x, y, z) {
-            console.log(x.responseText);
-            swal('ATENCIÓN', 'NO HA SIDO POSIBLE ELIMINAR ESTE TIEMPO, VERIFIQUE LA CONSOLA.', 'warning');
-        }).always(function () {
 
+    function onEliminarDeptoXEstilo(r) {
+        onBeep(2);
+        swal({
+            buttons: ["Cancelar", "Aceptar"],
+            title: 'Estás Seguro?',
+            text: "Esta acción eliminará el tiempo de esta linea/estilo",
+            icon: "warning",
+            closeOnEsc: false,
+            closeOnClickOutside: false
+        }).then((action) => {
+            if (action) {
+                var row = TiemposXEstiloDepto.row($(r).parents('tr')).data();
+                $.post(master_url + 'onEliminarDeptoXEstilo', {ID: row.ID, IDD: row.IDD}).done(function (data) {
+                    btnCancelarTiempo.trigger('click');
+                    TiemposXEstiloDepto.row($(r).parents('tr')).remove().draw();
+                    swal({
+                        title: 'INFO',
+                        text: 'SE HA EL TIEMPO DE ESTE ESTILO',
+                        icon: 'success',
+                        timer: 2000
+                    }).then((value) => {
+                        Estilo.focus();
+                    });
+                }).fail(function (x, y, z) {
+                    console.log(x.responseText);
+                    swal('ATENCIÓN', 'NO HA SIDO POSIBLE ELIMINAR ESTE TIEMPO, VERIFIQUE LA CONSOLA.', 'warning');
+                }).always(function () {
+                    Estilo.focus();
+                });
+            } else {
+                Estilo.focus();
+            }
         });
+    }
+
+    function onCalcularTotal() {
+        var t = 0;
+        $.each(Departamentos.find("input.gen"), function (k, v) {
+            var v = $(this);
+            t += $.isNumeric($(v).val()) ? parseFloat($(v).val()) : 0;
+        });
+        Departamentos.find("span.ed-total").text($.number(t, 2, '.', ','));
     }
 </script>
 <style>

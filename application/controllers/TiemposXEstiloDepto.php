@@ -100,7 +100,8 @@ class TiemposXEstiloDepto extends CI_Controller {
                     $this->db->trans_complete();
                     $TOTAL = 0;
                     foreach ($TIEMPOS as $k => $v) {
-                        $this->db->insert('tiemposxestilodepto_has_deptos', array('TiempoXEstiloDepto' => $ID, 'Departamento' => $v->DEPTO, 'Tiempo' => $v->DEPTOTIME));
+                        $this->db->insert('tiemposxestilodepto_has_deptos', 
+                                array('TiempoXEstiloDepto' => $ID, 'Departamento' => $v->DEPTO, 'Tiempo' => $v->DEPTOTIME, 'Fecha' => Date('d/m/Y h:i:s a')));
                         $TOTAL += $v->DEPTOTIME;
                     }
                     $this->db->set('Total', $TOTAL)->where('ID', $ID)->update('tiemposxestilodepto');
