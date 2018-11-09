@@ -42,7 +42,7 @@ class ParesPreProgramados extends CI_Controller {
     public function getParesPreProgramadosCliente() {
         try {
             $x = $this->input;
-            $CLIENTES = $this->pam->getClientes();
+            $CLIENTES = $this->pam->getClientes($x->post('CLIENTE'), $x->post('ESTILO'), $x->post('LINEA'), $x->post('MAQUILA'), $x->post('SEMANA'), $x->post('FECHA'));
             $bordes = 0;
             $alto_celda = 4;
             $TIPO = $x->post('TIPO');
@@ -70,7 +70,7 @@ class ParesPreProgramados extends CI_Controller {
             $pdf->SetX(180);
             $pdf->Cell(20, $alto_celda, Date('d/m/Y'), $bordes/* BORDE */, 1/* SALTO */, 'C');
 
-            $anchos = array(100/* 0 */, 20/* 1 */, 33/* 2 */, 30/* 3 */, 15/* 4 */, 16/* 5 */);
+            $anchos = array(100/* 0 */, 20/* 1 */, 43/* 2 */, 30/* 3 */, 15/* 4 */, 16/* 5 */);
             $spacex = 10;
             $bordes = 1;
             /* SUB ENCABEZADO */
@@ -79,14 +79,14 @@ class ParesPreProgramados extends CI_Controller {
             $pdf->Cell($anchos[0], $alto_celda, 'Cliente', $bordes/* BORDE */, 0/* SALTO */, 'L');
             $spacex += $anchos[0];
             $pdf->SetX($spacex);
-            $pdf->Cell($anchos[1], $alto_celda, 'Pedido', $bordes/* BORDE */, 0/* SALTO */, 'C');
-            $spacex += $anchos[1];
+            $pdf->Cell($anchos[4], $alto_celda, 'Pedido', $bordes/* BORDE */, 0/* SALTO */, 'C');
+            $spacex += $anchos[4];
             $pdf->SetX($spacex);
             $pdf->Cell($anchos[1], $alto_celda, 'Linea', $bordes/* BORDE */, 0/* SALTO */, 'C');
             $spacex += $anchos[1];
             $pdf->SetX($spacex);
-            $pdf->Cell($anchos[1], $alto_celda, 'Estilo', $bordes/* BORDE */, 0/* SALTO */, 'C');
-            $spacex += $anchos[1];
+            $pdf->Cell($anchos[4], $alto_celda, 'Estilo', $bordes/* BORDE */, 0/* SALTO */, 'C');
+            $spacex += $anchos[4];
             $pdf->SetX($spacex);
             $pdf->Cell($anchos[2], $alto_celda, 'Color', $bordes/* BORDE */, 0/* SALTO */, 'C');
             $spacex += $anchos[2];
@@ -115,31 +115,32 @@ class ParesPreProgramados extends CI_Controller {
             $pdf->SetDrawColor(0, 0, 0);
             $spacex = 110;
             $YF = 0;
+
             foreach ($CLIENTES as $k => $v) {
                 $Y = $pdf->GetY();
                 $pdf->SetFont('Calibri', 'B', 7);
                 $pdf->SetX(10);
                 $pdf->setFilled(0);
                 $pdf->setBorders(0);
-                $pdf->SetAligns(array('C', 'C', 'C'));
-                $pdf->SetWidths(array(40/* 0 */, 40/* 1 */, 20/* 2 */));
-                $pdf->RowNoBorder(array(utf8_decode($v->CLAVE_CLIENTE . " " . $v->CLIENTE)/* 0 */,
+                $pdf->SetAligns(array('L', 'L', 'C'));
+                $pdf->SetWidths(array(43/* 0 */, 35/* 1 */, 22/* 2 */));
+                $pdf->RowNoBorder(array(substr(utf8_decode($v->CLAVE_CLIENTE . " " . $v->CLIENTE), 0, 30)/* 0 */,
                     utf8_decode($v->CLAVE_AGENTE . " " . $v->AGENTE)/* 1 */,
                     utf8_decode($v->ESTADO)));
                 $pdf->Line(10, $pdf->GetY(), 110, $pdf->GetY());
-                $PARES_PREPROGRAMADOS = $this->pam->getParesPreProgramados($v->CLAVE_CLIENTE, 1);
+                $PARES_PREPROGRAMADOS = $this->pam->getParesPreProgramados($v->CLAVE_CLIENTE, 1, $x->post('CLIENTE'), $x->post('ESTILO'), $x->post('LINEA'), $x->post('MAQUILA'), $x->post('SEMANA'), $x->post('FECHA'));
                 $bordes = 0;
                 foreach ($PARES_PREPROGRAMADOS as $kk => $vv) {
                     $Y = $pdf->GetY();
                     $pdf->SetX($spacex);
                     $pdf->setFilled(0);
-                    $pdf->setBorders(0);
+                    $pdf->setBorders(1);
                     $pdf->SetAligns(array('C'/* 0 */, 'L'/* 1 */, 'C'/* 2 */, 'L'/* 3 */, 'C'/* 4 */, 'C'/* 5 */, 'C'/* 6 */, 'C'/* 7 */));
-                    $pdf->SetWidths(array(20/* 0 */, 20/* 1 */, 20/* 2 */, 33/* 3 */, 20/* 4 */, 16/* 5 */, 15/* 6 */, 15/* 7 */));
+                    $pdf->SetWidths(array(15/* 0 */, 20/* 1 */, 15/* 2 */, 43/* 3 */, 20/* 4 */, 16/* 5 */, 15/* 6 */, 15/* 7 */));
                     $pdf->RowNoBorder(array(utf8_decode($vv->PEDIDO)/* 0 */,
                         utf8_decode($vv->CLAVE_LINEA . " " . $vv->LINEA)/* 1 */,
                         utf8_decode($vv->CLAVE_ESTILO)/* 2 */,
-                        utf8_decode($vv->COLOR)/* 3 */,
+                        substr(utf8_decode($vv->COLOR), 0, 28)/* 3 */,
                         utf8_decode($vv->FECHA_ENTREGA)/* 4 */,
                         utf8_decode($vv->PARES)/* 5 */,
                         utf8_decode($vv->MAQUILA)/* 6 */,
@@ -186,7 +187,7 @@ class ParesPreProgramados extends CI_Controller {
     public function getParesPreProgramadosEstilo() {
         try {
             $x = $this->input;
-            $ESTILOS = $this->pam->getEstilos();
+            $ESTILOS = $this->pam->getEstilos($x->post('ESTILO'), $x->post('CLIENTE'));
             $bordes = 0;
             $alto_celda = 4;
             $TIPO = $x->post('TIPO');
@@ -269,7 +270,7 @@ class ParesPreProgramados extends CI_Controller {
                 $pdf->SetWidths(array(15/* 0 */, 40/* 1 */, 20/* 2 */));
                 $pdf->RowNoBorder(array(utf8_decode($v->CLAVE_ESTILO)/* 0 */, utf8_decode($v->COLOR)/* 1 */));
                 $pdf->Line(10, $pdf->GetY(), 65, $pdf->GetY());
-                $PARES_PREPROGRAMADOS = $this->pam->getParesPreProgramados($v->CLAVE_ESTILO, 2);
+                $PARES_PREPROGRAMADOS = $this->pam->getParesPreProgramados($v->CLAVE_ESTILO, 2, $x->post('CLIENTE'), $x->post('ESTILO'), $x->post('LINEA'), $x->post('MAQUILA'), $x->post('SEMANA'), $x->post('FECHA'));
                 $bordes = 0;
                 $pdf->SetX(65);
                 foreach ($PARES_PREPROGRAMADOS as $kk => $vv) {
@@ -280,7 +281,7 @@ class ParesPreProgramados extends CI_Controller {
                     $pdf->setBorders(0);
                     $pdf->SetAligns(array('C', 'L'/* 0 */, 'L'/* 1 */, 'C'/* 2 */, 'C'/* 3 */, 'C'/* 4 */, 'C'/* 5 */, 'C'/* 6 */, 'C'/* 7 */, 'C'/* 8 */, 'C'/* 9 */));
                     $pdf->SetWidths(array(55, 43/* 0 */, 35/* 1 */, 25/* 2 */, 15/* 3 */, 20/* 4 */, 20/* 5 */, 15/* 6 */, 16/* 7 */, 15/* 8 */, 15/* 9 */));
-                    $pdf->RowNoBorder(array('', utf8_decode($vv->CLAVE_CLIENTE . " " . $vv->CLIENTE)/* 0 */,
+                    $pdf->RowNoBorder(array('', substr(utf8_decode($vv->CLAVE_CLIENTE . " " . $vv->CLIENTE), 0, 30)/* 0 */,
                         utf8_decode($vv->AGENTE)/* 1 */,
                         utf8_decode($vv->ESTADO . "/" . $vv->PAIS)/* 2 */,
                         utf8_decode($vv->PEDIDO)/* 3 */,
@@ -331,7 +332,7 @@ class ParesPreProgramados extends CI_Controller {
     public function getParesPreProgramadosLineas() {
         try {
             $x = $this->input;
-            $LINEAS = $this->pam->getLineas();
+            $LINEAS = $this->pam->getLineas($x->post('CLIENTE'), $x->post('ESTILO'), $x->post('LINEA'));
             $bordes = 0;
             $alto_celda = 4;
             $TIPO = $x->post('TIPO');
@@ -414,7 +415,7 @@ class ParesPreProgramados extends CI_Controller {
                 $pdf->SetWidths(array(20/* 0 */, 20/* 1 */, 20/* 2 */));
                 $pdf->RowNoBorder(array(utf8_decode($v->CLAVE_LINEA . " " . $v->LINEA)/* 0 */));
                 $pdf->Line(10, $pdf->GetY(), 30, $pdf->GetY());
-                $PARES_PREPROGRAMADOS = $this->pam->getParesPreProgramados($v->CLAVE_LINEA, 3);
+                $PARES_PREPROGRAMADOS = $this->pam->getParesPreProgramados($v->CLAVE_LINEA, 3, $x->post('CLIENTE'), $x->post('ESTILO'), $x->post('LINEA'), $x->post('MAQUILA'), $x->post('SEMANA'), $x->post('FECHA'));
                 $bordes = 0;
                 foreach ($PARES_PREPROGRAMADOS as $kk => $vv) {
                     $Y = $pdf->GetY();
@@ -423,12 +424,12 @@ class ParesPreProgramados extends CI_Controller {
                     $pdf->setBorders(0);
                     $pdf->SetAligns(array('C', 'L'/* 0 */, 'L'/* 1 */, 'C'/* 2 */, 'C'/* 3 */, 'C'/* 4 */, 'C'/* 5 */, 'C'/* 6 */, 'C'/* 7 */, 'C'/* 8 */, 'C'/* 9 */));
                     $pdf->SetWidths(array(20, 43/* 0 */, 35/* 1 */, 25/* 2 */, 15/* 3 */, 15/* 4 */, 40/* 5 */, 20/* 6 */, 16/* 7 */, 15/* 8 */, 15/* 9 */));
-                    $pdf->RowNoBorder(array('', utf8_decode($vv->CLAVE_CLIENTE . " " . $vv->CLIENTE)/* 0 */,
+                    $pdf->RowNoBorder(array('', substr(utf8_decode($vv->CLAVE_CLIENTE . " " . $vv->CLIENTE), 0, 30)/* 0 */,
                         utf8_decode($vv->AGENTE)/* 1 */,
                         utf8_decode($vv->ESTADO . "/" . $vv->PAIS)/* 2 */,
                         utf8_decode($vv->PEDIDO)/* 3 */,
                         utf8_decode($vv->CLAVE_ESTILO)/* 4 OK */,
-                        utf8_decode($vv->COLOR)/* 5 OK */,
+                        substr(utf8_decode($vv->COLOR), 0, 28)/* 5 OK */,
                         utf8_decode($vv->FECHA_ENTREGA)/* 6 */,
                         utf8_decode($vv->PARES)/* 7 */,
                         utf8_decode($vv->MAQUILA)/* 8 */,
@@ -720,6 +721,38 @@ class ParesPreProgramados extends CI_Controller {
 
             $pdf->Output($url);
             print base_url() . $url;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getClientes() {
+        try {
+            print json_encode($this->pam->getClientesX());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getMaquilas() {
+        try {
+            print json_encode($this->pam->getMaquilasX());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getLineas() {
+        try {
+            print json_encode($this->pam->getLineasX());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getEstilos() {
+        try {
+            print json_encode($this->pam->getEstilosX());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

@@ -88,11 +88,9 @@ class TiemposXEstiloDepto extends CI_Controller {
     public function onGuardarTiempos() {
         try {
             $x = $this->input;
-            $TIEMPOS = json_decode($x->post('TIEMPOS'));
-            print "\n N  = " . $x->post('N') . "\n";
+            $TIEMPOS = json_decode($x->post('TIEMPOS')); 
             switch ($x->post('N')) {
-                case 0:
-                    print "\n nuevo";
+                case 0: 
                     $this->db->trans_start();
                     $this->db->insert('tiemposxestilodepto', array('Linea' => $x->post('LINEA'), 'Estilo' => $x->post('ESTILO')));
                     $row = $this->db->query('SELECT LAST_INSERT_ID()')->row_array();
@@ -106,8 +104,7 @@ class TiemposXEstiloDepto extends CI_Controller {
                     }
                     $this->db->set('Total', $TOTAL)->where('ID', $ID)->update('tiemposxestilodepto');
                     break;
-                case 1:
-                    print "\n * MODIFICANDO * \n";
+                case 1: 
                     $TOTAL = 0;
                     foreach ($TIEMPOS as $k => $v) {
                         $EX = $this->txed->onComprobarDeptoXEstilo($x->post('ESTILO'), $v->DEPTO)[0]->EXISTE;

@@ -321,7 +321,7 @@
         swal({
             buttons: ["Cancelar", "Aceptar"],
             title: 'Estás Seguro?',
-            text: "Esta acción eliminará los tiempos de esta linea/estilo",
+            text: "Esta acción eliminará los tiempos de todos los departamento de esta linea/estilo",
             icon: "warning",
             closeOnEsc: false,
             closeOnClickOutside: false
@@ -352,7 +352,7 @@
         swal({
             buttons: ["Cancelar", "Aceptar"],
             title: 'Estás Seguro?',
-            text: "Esta acción eliminará el tiempo de esta linea/estilo",
+            text: "Esta acción eliminará el tiempo en este departamento de esta linea/estilo",
             icon: "warning",
             closeOnEsc: false,
             closeOnClickOutside: false
