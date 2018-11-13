@@ -1,5 +1,5 @@
 <style>
- /* Particle container. */
+    /* Particle container. */
     #particle-container { 
         position:fixed;
         top:0;
@@ -229,7 +229,7 @@
         background: linear-gradient(to bottom, rgba(0,0,0,1) 0%,rgba(0,0,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
     }
-    
+
     .blackdrop{
         /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#45484d+0,000000+100;Black+3D+%231 */
         background: rgb(69,72,77); /* Old browsers */
@@ -237,5 +237,15 @@
         background: -webkit-linear-gradient(top, rgba(69,72,77,1) 0%,rgba(0,0,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
         background: linear-gradient(to bottom, rgba(69,72,77,1) 0%,rgba(0,0,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
+    }
+    .noBorders{
+        border: 1px solid #ffffff; 
+        font-size: 14px;
+        font-weight: bold;
+    }
+    .noBorders:focus{
+        box-shadow: none;
+        -webkit-box-shadow: none;
+        border-color: #ffffff;
     }
 </style>

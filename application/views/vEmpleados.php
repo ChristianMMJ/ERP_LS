@@ -721,15 +721,5 @@
         color: #fff;
         background-color: #795548;
         border-color: #4E342E;
-    }
-    .noBorders{
-        border: 1px solid #ffffff; 
-        font-size: 14px;
-        font-weight: bold;
-    }
-    .noBorders:focus{
-        box-shadow: none;
-        -webkit-box-shadow: none;
-        border-color: #ffffff;
-    }
+    } 
 </style>

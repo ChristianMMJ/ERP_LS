@@ -1,11 +1,14 @@
 <div class="card m-3 animated fadeIn" id="pnlTablero">
-    <div class="card-body ">
+    <div class="card-body "> 
         <div class="row">
-            <div class="col-sm-6 float-left">
+            <div class="col-sm-2 float-left">
                 <legend class="float-left">Pedidos</legend>
             </div>
-            <div class="col-sm-6 float-right" align="right">
-                <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar">
+            <div class="col-sm-9">
+                <input type="text" id="NumeroDePedido" name="NumeroDePedido" style="font-size: 19px; font-style: italic;" class="form-control form-control-sm noBorders notEnter numbersOnly" autofocus="" placeholder="# # # # #">
+            </div>
+            <div class="col-sm-1 float-right" align="right">
+                <button type="button" class="btn btn-primary selectNotEnter" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar">
                     <span class="fa fa-plus"></span><br>
                 </button>
             </div>
@@ -18,7 +21,7 @@
                             <th>ID</th>
                             <th>Clave</th>
                             <th>Cliente</th>
-                            <th>Agente</th>
+                            <th>Agente</th> 
                             <th>Pares</th>
                             <th>Fecha de entrega</th>
                         </tr>
@@ -338,9 +341,34 @@
         };
     }();
 
+    const isValidInput = (x) => {
+        return x.val().trim().length > 0 ? true : false;
+    };
+
     $(document).ready(function () {
         init();
         handleEnter();
+
+        pnlTablero.find("#NumeroDePedido").keydown(function (e) {
+            if (e.keyCode === 13 && isValidInput($(this))) {
+                HoldOn.open({
+                    theme: 'sk-bounce',
+                    message: 'Por favor espere...'
+                });
+                $.getJSON(master_url + 'getIDXClave', {PEDIDO: $(this).val()}).done(function (data) {
+                    getPedidoByID(data[0].ID);
+                }).fail(function (x, y, z) {
+                    console.log(x.responseText);
+                }).always(function () {
+                    HoldOn.close();
+                });
+            }
+            if (isValidInput($(this))) {
+                tblPedidos.DataTable().column(1).search($(this).val()).draw();
+            } else {
+                tblPedidos.DataTable().column(1).search('').draw();
+            }
+        });
 
         pnlDatos.find('#Estilo').selectize({
             valueField: 'Clave',
@@ -479,12 +507,10 @@
 
         validacionSelectPorContenedor(pnlDatos);
 
-        pnlDatos.find("#Clave").keyup(function (e) {
+        pnlDatos.find("#Clave:not(:read-only)").on('keydown', function (e) {
             if (e.keyCode === 13) {
                 onComprobarClavePedido(this);
             }
-        }).focusout(function () {
-            onComprobarClavePedido(this);
         });
 
         btnImprimir.click(function () {
@@ -743,6 +769,7 @@
             PedidoDetalle.clear().draw();
             Pedidos.ajax.reload();
             Cliente = 0;
+            pnlTablero.find("#NumeroDePedido").focus().select();
         });
 
         pnlDatos.find("#Cliente").change(function () {
@@ -883,10 +910,6 @@
 
     function getRecords() {
         temp = 0;
-        HoldOn.open({
-            theme: 'sk-cube',
-            message: 'CARGANDO...'
-        });
         $.fn.dataTable.ext.errMode = 'throw';
         if ($.fn.DataTable.isDataTable('#tblPedidos')) {
             tblPedidos.DataTable().destroy();
@@ -912,7 +935,7 @@
             select: true,
             "autoWidth": true,
             "colReorder": true,
-            "displayLength": 20,
+            "displayLength": 50,
             "scrollX": false,
             "bLengthChange": false,
             "deferRender": true,
@@ -924,9 +947,9 @@
             ],
             initComplete: function (x, y) {
                 HoldOn.close();
+                $("#NumeroDePedido").focus();
             }
         });
-        $('#tblPedidos_filter input[type=search]').focus();
         tblPedidos.find('tbody').on('click', 'tr', function () {
             HoldOn.open({
                 theme: 'sk-cube',
@@ -944,7 +967,7 @@
             tblPedidoDetalle.DataTable().destroy();
         }
         PedidoDetalle = tblPedidoDetalle.DataTable({
-            "dom": 'rt',
+            "dom": 'rit',
             buttons: buttons,
             "ajax": {
                 "url": master_url + 'getPedidosByID',
@@ -1019,7 +1042,7 @@
             select: true,
             "autoWidth": true,
             "colReorder": true,
-            "displayLength": 99,
+            "displayLength": 999,
             "bLengthChange": false,
             "deferRender": true,
             "scrollCollapse": false,
@@ -1241,7 +1264,6 @@
     function getPedidoByID(temp) {
         PedidoDetalle.clear().draw();
         $.getJSON(master_url + 'getPedidosByID', {ID: temp}).done(function (data) {
-            console.log(data);
             pnlDatos.find("input").val("");
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);

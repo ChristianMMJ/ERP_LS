@@ -64,6 +64,18 @@
     var master_url_pares_preprogramados = base_url + 'index.php/ParesPreProgramados/';
 
     $(document).ready(function () {
+        mdlParesPreProgramados.on('show.bs.modal', function () {
+            HoldOn.open({
+                theme: 'sk-bounce',
+                message: 'Espere...'
+            });
+            PaPreProInit();
+        });
+        
+        mdlParesPreProgramados.on('shown.bs.modal', function () {
+            HoldOn.close();
+        });
+        
         mdlParesPreProgramados.find("#btnClientePreProgramado").click(function () {
             console.log('CLIENTE');
             getParesPreProgramados(1);
@@ -88,7 +100,6 @@
             console.log('SEMANA/MAQUILA');
             getParesPreProgramados(5);
         });
-        PaPreProInit();
     });
 
     function getParesPreProgramados(t) {
@@ -119,7 +130,6 @@
 
     function PaPreProInit() {
         $.getJSON(master_url_pares_preprogramados + 'getClientes').done(function (data) {
-            console.log(data);
             $.each(data, function (k, v) {
                 mdlParesPreProgramados.find("#PaPreProCliente")[0].selectize.addOption({text: v.CLIENTE, value: v.CLAVE_CLIENTE});
             });
@@ -131,7 +141,6 @@
         });
 
         $.getJSON(master_url_pares_preprogramados + 'getMaquilas').done(function (data) {
-            console.log(data);
             $.each(data, function (k, v) {
                 mdlParesPreProgramados.find("#PaPreProMaquila")[0].selectize.addOption({text: v.MAQUILA, value: v.CLAVE_MAQUILA});
             });
@@ -143,7 +152,7 @@
         });
 
         $.getJSON(master_url_pares_preprogramados + 'getLineas').done(function (data) {
-            console.log(data);
+//            console.log("*LINEAS*\n",data);
             $.each(data, function (k, v) {
                 mdlParesPreProgramados.find("#PaPreProLinea")[0].selectize.addOption({text: v.LINEA, value: v.CLAVE_LINEA});
             });
@@ -155,7 +164,6 @@
         });
 
         $.getJSON(master_url_pares_preprogramados + 'getEstilos').done(function (data) {
-            console.log(data);
             $.each(data, function (k, v) {
                 mdlParesPreProgramados.find("#PaPreProEstilo")[0].selectize.addOption({text: v.CLAVE_ESTILO + ' - ' + v.ESTILO, value: v.CLAVE_ESTILO});
             });

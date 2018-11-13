@@ -12,15 +12,22 @@ class Pedidos_model extends CI_Model {
 
     public function getRecords() {
         try {
-            $this->db->query("set sql_mode=''");
-            return $this->db->select("P.ID, P.Clave, CONCAT(IFNULL(P.Cliente,''),' ', IFNULL(C.RazonS,'')) AS Cliente, "
-                                    . "A.Nombre Agente,P.FechaPedido, SUM(PD.Pares) AS Pares", false)
+            return $this->db->select("P.ID, P.Clave, CONCAT(IFNULL(P.Cliente,''),' ', IFNULL(C.RazonS,'')) AS Cliente, A.Nombre Agente,P.FechaPedido, "
+                                    . "SUM(PD.Pares) AS Pares ", false)
                             ->from('pedidos AS P')
                             ->join('pedidodetalle AS PD', 'P.Clave = PD.Pedido')
-                            ->join('agentes AS A', 'P.Agente = A.Clave')
-                            ->join("clientes AS C", "P.Cliente = C.Clave", 'left')
+                            ->join('clientes AS C', 'P.Cliente = C.Clave')
+                            ->join('agentes AS A', 'P.Agente = A.Clave', 'left')
                             ->group_by('P.ID')
                             ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getIDXClave($Clave) {
+        try {
+            return $this->db->select('P.ID, P.Clave')->from('pedidos AS P')->where('P.Clave', $Clave)->where('P.Estatus', 'A')->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -280,7 +287,7 @@ class Pedidos_model extends CI_Model {
                             ->join('fraccionesxestilo AS FE', 'FE.Estilo = E.Clave')
                             ->where("E.Clave", $CLAVE)
                             ->where("E.Estatus", "ACTIVO")
-                            ->group_by('FT.Estilo') 
+                            ->group_by('FT.Estilo')
                             ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
