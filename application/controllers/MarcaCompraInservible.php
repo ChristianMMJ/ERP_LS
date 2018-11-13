@@ -48,7 +48,7 @@ class MarcaCompraInservible extends CI_Controller {
 
     public function onModificar() {
         try {
-            $this->MarcaCompraInservible_model->onModificar($this->input->post('ID'));
+            $this->MarcaCompraInservible_model->onModificar($this->input->post('Tp'), $this->input->post('Folio'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

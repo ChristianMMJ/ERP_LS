@@ -27,7 +27,7 @@ class Recibeordencompra_model extends CI_Model {
                     . "OCD.Articulo AS ClaveArticulo "
                     . "", false);
             $this->db->from("ordencompradetalle OCD");
-            $this->db->join("ordencompra OC", "OC.ID = OCD.OrdenCompra ");
+            $this->db->join("ordencompra OC", "OC.Tp = OCD.TpOrdenCompra AND OC.Folio= OCD.FolioOrdenCompra ");
             $this->db->join("articulos A", "A.Clave = OCD.Articulo ");
             $this->db->where_in('OC.Estatus', array('PENDIENTE', 'ACTIVA'));
             $query = $this->db->get();
@@ -77,7 +77,7 @@ class Recibeordencompra_model extends CI_Model {
                             . "OC.Tp  "
                             . "")
                     ->from("ordencompradetalle OCD")
-                    ->join("ordencompra OC", 'ON OC.ID =  OCD.OrdenCompra')
+                    ->join("ordencompra OC", 'ON OC.Tp = OCD.TpOrdenCompra AND OC.Folio= OCD.FolioOrdenCompra')
                     ->join("articulos A", 'ON A.Clave =  OCD.Articulo')
                     ->where("OCD.Articulo", $Articulo)
                     ->where("OC.Tp", $Tp)
@@ -100,7 +100,7 @@ class Recibeordencompra_model extends CI_Model {
             $this->db->select("sum(OCD.Cantidad) AS Cantidad, sum(OCD.CantidadRecibida) AS Cantidad_Rec "
                             . "")
                     ->from("ordencompradetalle OCD")
-                    ->join("ordencompra OC", 'ON OC.ID =  OCD.OrdenCompra')
+                    ->join("ordencompra OC", 'ON OC.Tp = OCD.TpOrdenCompra AND OC.Folio= OCD.FolioOrdenCompra')
                     ->where("OC.Tp", $Tp)
                     ->where("OC.Folio", $Oc);
             $query = $this->db->get();
@@ -310,7 +310,7 @@ class Recibeordencompra_model extends CI_Model {
             $Fac = $DATA{'Factura'};
             $FechaFac = $DATA{'FechaFactura'};
             $sql = "UPDATE ordencompradetalle OCD "
-                    . "JOIN ordencompra OC ON OC.ID =  OCD.OrdenCompra "
+                    . "JOIN ordencompra OC ON OC.Tp = OCD.TpOrdenCompra AND OC.Folio= OCD.FolioOrdenCompra "
                     . "SET OCD.CantidadRecibida = $can_rec + ifnull(OCD.CantidadRecibida,0), "
                     . "OCD.Factura = '$Fac', "
                     . "OCD.FechaFactura = '$FechaFac' "

@@ -52,7 +52,7 @@ class ConfirmarOrdenCompra extends CI_Controller {
                 'ObservacionesConf' => $x->post('ObservacionesConf'),
                 'FechaConf' => Date('d/m/Y')
             );
-            $this->ConfirmarOrdencompra_model->onModificar($x->post('ID'), $datos);
+            $this->ConfirmarOrdencompra_model->onModificar($x->post('Tp'), $x->post('Folio'), $datos);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

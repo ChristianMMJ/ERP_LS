@@ -19,7 +19,18 @@ class Bancos extends CI_Controller {
             switch ($this->session->userdata["TipoAcceso"]) {
                 case 'SUPER ADMINISTRADOR':
                     $this->load->view('vNavGeneral');
-                    $this->load->view('vMenuProveedores');
+
+
+                    //Validamos que no venga vacia y asignamos un valor por defecto
+                    $Origen = isset($_GET['origen']) ? $_GET['origen'] : "";
+
+                    if ($Origen === 'CONTABILIDAD') {
+                        $this->load->view('vMenuContabilidad');
+                    } else if ($Origen === 'PROVEEDORES') {
+                        $this->load->view('vMenuProveedores');
+                    }
+
+
                     break;
 
                 case 'PROVEEDORES':

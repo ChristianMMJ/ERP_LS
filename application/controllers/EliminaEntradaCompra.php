@@ -72,31 +72,33 @@ class EliminaEntradaCompra extends CI_Controller {
             foreach ($Compra as $key => $v) {
 
                 $this->EliminaEntradaCompra_model->onActualizarCantidadesOrdenCompra(
-                        $this->input->post('Doc'), $v->TpOrdenCompra, $this->input->post('Proveedor'), $v->Articulo, $v->Cantidad
+                        $this->input->post('Doc'), $v->TpOrdenCompra, $v->OrdenCompra, $this->input->post('Proveedor'), $v->Articulo, $v->Cantidad
                 );
             }
 
+            //Actualiza estatus orden de compra dependiendo de lo que elimina
+            $Cantidades = $this->EliminaEntradaCompra_model->getCantidadesParaEstatus($Compra[0]->TpOrdenCompra, $Compra[0]->OrdenCompra);
 
-
-            //Actualiza estatus orden de compra dependiendo de lo que se recibe
-            $Cantidades = $this->EliminaEntradaCompra_model->getSumatoriasCantidadesParaEstatus($Compra[0]->TpOrdenCompra, $Compra[0]->OrdenCompra);
-            $can = $Cantidades[0]->Cantidad;
-            $Can_rec = $Cantidades[0]->Cantidad_Rec;
-            if ($Can_rec === '0' || $Can_rec === 0) {
-                $datos = array(
-                    'Estatus' => 'ACTIVA'
-                );
-                $this->EliminaEntradaCompra_model->onModificarEstatusOrdenCompra($Compra[0]->TpOrdenCompra, $Compra[0]->OrdenCompra, $datos);
-            } else if ($can > $Can_rec) {
-                $datos = array(
-                    'Estatus' => 'PENDIENTE'
-                );
-                $this->EliminaEntradaCompra_model->onModificarEstatusOrdenCompra($Compra[0]->TpOrdenCompra, $Compra[0]->OrdenCompra, $datos);
-            } else {
-                $datos = array(
-                    'Estatus' => 'RECIBIDA'
-                );
-                $this->EliminaEntradaCompra_model->onModificarEstatusOrdenCompra($Compra[0]->TpOrdenCompra, $Compra[0]->OrdenCompra, $datos);
+            foreach ($Cantidades as $key => $v) {
+                $can = $v->Cantidad;
+                $Can_rec = $v->Cantidad_Rec;
+                $ID = $v->ID;
+                if ($Can_rec === '0' || $Can_rec === 0) {
+                    $datos = array(
+                        'Estatus' => 'ACTIVA'
+                    );
+                    $this->EliminaEntradaCompra_model->onModificarEstatusOrdenCompra($ID, $datos);
+                } else if ($can > $Can_rec) {
+                    $datos = array(
+                        'Estatus' => 'PENDIENTE'
+                    );
+                    $this->EliminaEntradaCompra_model->onModificarEstatusOrdenCompra($ID, $datos);
+                } else {
+                    $datos = array(
+                        'Estatus' => 'RECIBIDA'
+                    );
+                    $this->EliminaEntradaCompra_model->onModificarEstatusOrdenCompra($ID, $datos);
+                }
             }
 
             //Eliminamos compra

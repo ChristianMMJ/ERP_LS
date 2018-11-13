@@ -560,7 +560,7 @@
                     pnlTablero.find('#MaquilaRecibe').text(data[0].Maq);
                     pnlTablero.find('#FechaOrden').val(data[0].FechaOrden);
                     pnlTablero.find('#Proveedor').val(data[0].Proveedor);
-                    pnlTablero.find('#NombreProveedor').val((Tp === 1) ? data[0].ProveedorF : data[0].ProveedorI);
+                    pnlTablero.find('#NombreProveedor').val((parseInt(Tp) === 1) ? data[0].ProveedorF : data[0].ProveedorI);
                 } else {
                     //Verificar que la orden de compra sea del mismo proveedor
                     if (prov !== data[0].Proveedor) {

@@ -23,7 +23,11 @@
                 <label>Departamento</label>
                 <input type="text" placeholder="10 PIEL/FORRO, 80 SUELA, 90 INDIR." class="form-control form-control-sm  numbersOnly column_filter" id="col2_filter" maxlength="2" >
             </div>
-
+            <div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 pt-4">
+                <button type="button" id="btnBuscar" class="btn btn-info btn-sm ">
+                    <span class="fa fa-search"></span> BUSCAR
+                </button>
+            </div>
         </div>
         <div class="card-block mt-4">
             <div id="Compras" class="table-responsive">
@@ -35,7 +39,7 @@
                             <th>Tipo</th>
                             <th>Tp</th>
                             <th>O.C.</th>
-                            <th>Nombre</th>
+                            <th>Prov</th>
                             <th>Fecha</th>
                             <th>Artículo</th>
                             <th>Cantidad</th>
@@ -82,11 +86,11 @@
     var Compras;
     var pnlTablero = $("#pnlTablero");
     $(document).ready(function () {
-
         /*FUNCIONES INICIALES*/
         init();
         handleEnter();
         pnlTablero.find("input").val("");
+        $(':input:text:enabled:visible:first').focus();
 
         pnlTablero.find('#btnLimpiarFiltros').click(function () {
             pnlTablero.find("input").val("");
@@ -118,11 +122,12 @@
             }
         });
 
-        pnlTablero.find("#col2_filter").change(function () {
-            var tp = parseInt($(this).val());
-            if (tp === 80 || tp === 90 || tp === 10) {
+        pnlTablero.find("#col2_filter").blur(function () {
 
-            } else if (isNaN(tp)) {
+            var tipo = parseInt($(this).val());
+            if (tipo === 80 || tipo === 90 || tipo === 10) {
+                pnlTablero.find("#btnBuscar").focus();
+            } else if (isNaN(tipo)) {
                 $(this).val('').focus();
                 tblCompras.DataTable().column(2).search("", false, true).draw();
             } else {
@@ -131,16 +136,32 @@
             }
         });
 
+
+        pnlTablero.find("#btnBuscar").click(function () {
+            var ano = pnlTablero.find("#col1_filter").val();
+            var tp = pnlTablero.find("#col3_filter").val();
+            var tipo = pnlTablero.find("#col2_filter").val();
+            getRecords(ano, tp, tipo);
+        });
+
         $('input.column_filter').on('keyup', function () {
             var i = $(this).parents('div').attr('data-column');
             tblCompras.DataTable().column(i).search($('#col' + i + '_filter').val()).draw();
         });
+
+        //Filtros del footer
+
+        $('#tblCompras tfoot th').each(function () {
+            var title = $(this).text();
+            $(this).html('<input class="form-control form-control-sm" type="text" placeholder="Buscar por ' + title + '" />');
+        });
+
     });
 
     function init() {
-        getRecords();
+        getRecords('', '', '');
     }
-    function getRecords() {
+    function getRecords(ano, tp, tipo) {
         temp = 0;
         HoldOn.open({
             theme: 'sk-cube',
@@ -157,7 +178,13 @@
             fixedHeader: true,
             "ajax": {
                 "url": master_url + 'getRecords',
-                "dataSrc": ""
+                "dataSrc": "",
+                "type": "POST",
+                "data": {
+                    Ano: ano,
+                    Tp: tp,
+                    Tipo: tipo
+                }
             },
             "columns": [
                 {"data": "GruposT"},
@@ -165,7 +192,7 @@
                 {"data": "Tipo"},
                 {"data": "Tp"},
                 {"data": "Folio"},
-                {"data": "NombreProveedor"},
+                {"data": "Proveedor"},
                 {"data": "FechaOrden"},
                 {"data": "Articulo"},
                 {"data": "Cantidad"},
@@ -239,7 +266,7 @@
 
             "autoWidth": true,
             "colReorder": true,
-            "displayLength": 8,
+            "displayLength": 15,
             "bLengthChange": false,
             "deferRender": true,
             "scrollCollapse": false,
@@ -273,13 +300,10 @@
             },
             initComplete: function (a, b) {
                 HoldOn.close();
-                $(':input:text:enabled:visible:first').focus();
+
             }
         });
-        $('#tblCompras tfoot th').each(function () {
-            var title = $(this).text();
-            $(this).html('<input class="form-control form-control-sm" type="text" placeholder="Buscar por ' + title + '" />');
-        });
+
         Compras.columns().every(function () {
             var that = this;
             $('input', this.footer()).on('keyup change', function () {
@@ -299,7 +323,7 @@
                 buttons: ["Cancelar", true]
             }).then((value) => {
                 if (value) {
-                    $.post(master_url + 'onImprimirOrdenCompra', {ID: temp}).done(function (data) {
+                    $.post(master_url + 'onImprimirOrdenCompra', {Tp: dtm.Tp, Folio: dtm.Folio}).done(function (data) {
                         onNotifyOld('fa fa-check', 'REPORTE GENERADO', 'success');
                         onImprimirReporteFancy(data);
                     }).fail(function (x, y, z) {

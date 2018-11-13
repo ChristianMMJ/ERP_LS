@@ -2,7 +2,7 @@
     <div class="card-body ">
         <div class="row">
             <div class="col-sm-8 float-left">
-                <legend class="float-left">Marca O.C. Inservible (Click en cualquier renglon de la orden de compra)</legend>
+                <legend class="float-left">Marca O.C. Inservible <span class="badge badge-info">(Click en cualquier renglon de la orden de compra)</span></legend>
             </div>
             <div class="col-sm-4" align="right">
                 <button type="button" class="btn btn-warning" id="btnLimpiarFiltros" data-toggle="tooltip" data-placement="right" title="Limpiar Filtros">
@@ -209,7 +209,7 @@
 
             "autoWidth": true,
             "colReorder": true,
-            "displayLength": 8,
+            "displayLength": 15,
             "bLengthChange": false,
             "deferRender": true,
             "scrollCollapse": false,
@@ -258,10 +258,11 @@
                 buttons: ["Cancelar", true]
             }).then((value) => {
                 if (value) {
-                    $.post(master_url + 'onModificar', {ID: temp}).done(function (data) {
+                    $.post(master_url + 'onModificar', {Tp: dtm.Tp, Folio: dtm.Folio}).done(function (data) {
                         onNotifyOld('fa fa-check', 'OPERACIÓN EXITOSA', 'success');
                         Compras.ajax.reload();
                         pnlTablero.find('#btnLimpiarFiltros').trigger('click');
+                        Compras.clear().draw();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     });

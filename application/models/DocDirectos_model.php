@@ -103,6 +103,18 @@ class DocDirectos_model extends CI_Model {
         }
     }
 
+    public function onAgregarMovArt($array) {
+        try {
+            $this->db->insert("movarticulos", $array);
+            $query = $this->db->query('SELECT LAST_INSERT_ID()');
+            $row = $query->row_array();
+            $LastIdInserted = $row['LAST_INSERT_ID()'];
+            return $LastIdInserted;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onAgregarMovArtFabrica($array) {
         try {
             $this->db->insert("movarticulos_fabrica", $array);

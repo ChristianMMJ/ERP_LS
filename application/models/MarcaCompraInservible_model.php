@@ -25,10 +25,10 @@ class MarcaCompraInservible_model extends CI_Model {
                                     . "END AS GruposT, "
                                     . "OC.FechaOrden, "
                                     . "CONCAT(A.Clave,' ',A.Descripcion) AS Articulo, "
-                                    . "OCD.Cantidad, "
-                                    . "OCD.CantidadRecibida, "
-                                    . "OCD.Precio, "
-                                    . "OCD.SubTotal, "
+                                    . "OC.Cantidad, "
+                                    . "OC.CantidadRecibida, "
+                                    . "OC.Precio, "
+                                    . "OC.SubTotal, "
                                     . "OC.Sem, "
                                     . "OC.Maq, "
                                     . "CONCAT(G.Clave,'-',G.Nombre) AS Grupo,"
@@ -36,9 +36,8 @@ class MarcaCompraInservible_model extends CI_Model {
                                     . "OC.Tipo  "
                                     . "", false)
                             ->from("ordencompra AS OC")
-                            ->join("ordencompradetalle OCD", 'ON OCD.OrdenCompra = OC.ID')
                             ->join("proveedores P", 'ON P.Clave = OC.Proveedor')
-                            ->join("articulos A", 'ON A.Clave = OCD.Articulo')
+                            ->join("articulos A", 'ON A.Clave = OC.Articulo')
                             ->join("grupos G", 'ON G.Clave =  A.Grupo')
                             ->join("unidades U", 'ON U.Clave =  A.UnidadMedida')
                             ->where_in('OC.Estatus', array('ACTIVA', 'PENDIENTE', 'RECIBIDA'))
@@ -48,9 +47,9 @@ class MarcaCompraInservible_model extends CI_Model {
         }
     }
 
-    public function onModificar($ID) {
+    public function onModificar($Tp, $Folio) {
         try {
-            $this->db->set('Estatus', 'CANCELADA')->where('ID', $ID)->update("ordencompra");
+            $this->db->set('Estatus', 'CANCELADA')->where('Tp', $Tp)->where('Folio', $Folio)->update("ordencompra");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

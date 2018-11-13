@@ -33,7 +33,7 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Tipo</th>
+                            <th>Tp</th>
                             <th>Departamento</th>
                             <th>Folio</th>
                             <th>Proveedor</th>
@@ -269,11 +269,7 @@
                     "visible": false,
                     "searchable": false
                 },
-                {
-                    "targets": [1],
-                    "visible": false,
-                    "searchable": true
-                },
+
                 {
                     "targets": [2],
                     "visible": false,
@@ -331,7 +327,7 @@
             swal("Observaciones", {
                 content: "input"
             }).then((value) => {
-                $.post(master_url + 'onModificar', {ID: temp, ObservacionesConf: value.toUpperCase()}).done(function (data) {
+                $.post(master_url + 'onModificar', {Tp: dtm.Tp, Folio: dtm.Folio, ObservacionesConf: value.toUpperCase()}).done(function (data) {
                     Compras.ajax.reload();
                     pnlTablero.find("input").val("");
                     tblCompras.DataTable().columns().search('').draw();

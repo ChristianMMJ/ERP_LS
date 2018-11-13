@@ -10,67 +10,9 @@ class Ordencompra_model extends CI_Model {
         parent::__construct();
     }
 
-    public function getRecords() {
+    public function getOrdenCompraByTpFolio($Tp, $Folio) {
         try {
-            return $this->db->select("OC.ID AS ID, "
-                                    . "OC.Tp AS Tp, "
-                                    . "CASE WHEN OC.Tipo = '10' THEN '10 PIEL Y FORRO' "
-                                    . "ELSE '90 PELETERIA' END AS Tipo,"
-                                    . "OC.Folio AS Folio, "
-                                    . "OC.Ano AS Ano, "
-                                    . "OC.Sem AS Sem, "
-                                    . "OC.Maq AS Maq, "
-                                    . "CASE WHEN OC.Tp ='1' THEN  CONCAT(P.Clave,'-',P.NombreF) ELSE "
-                                    . "CONCAT(P.Clave,'-',P.NombreI) END AS Proveedor, "
-                                    . "OC.FechaOrden AS Fecha, "
-                                    . "CASE WHEN OC.Estatus = 'BORRADOR' THEN "
-                                    . "CONCAT('<span class=''badge badge-info''>','EN CAPTURA','</span>') "
-                                    . "ELSE "
-                                    . "CONCAT('<span class=''badge badge-success''>','ACTIVA','</span>') "
-                                    . "END AS Estatus "
-                                    . "", false)
-                            ->from("ordencompra AS OC")
-                            ->join("proveedores AS P", 'P.Clave =  OC.Proveedor')
-                            ->where_in('OC.Estatus', array('ACTIVA', 'BORRADOR'))
-                            ->where_in('OC.Tipo', array('90', '10'))
-                            ->get()->result();
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function getRecordsTALLAS() {
-        try {
-            return $this->db->select("OC.ID AS ID, "
-                                    . "OC.Tp AS Tp, "
-                                    . "CASE WHEN OC.Tipo = '10' THEN '10 PIEL Y FORRO' "
-                                    . "ELSE '90 PELETERIA' END AS Tipo,"
-                                    . "OC.Folio AS Folio, "
-                                    . "OC.Ano AS Ano, "
-                                    . "OC.Sem AS Sem, "
-                                    . "OC.Maq AS Maq, "
-                                    . "CASE WHEN OC.Tp ='1' THEN  CONCAT(P.Clave,'-',P.NombreF) ELSE "
-                                    . "CONCAT(P.Clave,'-',P.NombreI) END AS Proveedor, "
-                                    . "OC.FechaOrden AS Fecha, "
-                                    . "CASE WHEN OC.Estatus = 'BORRADOR' THEN "
-                                    . "CONCAT('<span class=''badge badge-info''>','EN CAPTURA','</span>') "
-                                    . "ELSE "
-                                    . "CONCAT('<span class=''badge badge-success''>','ACTIVA','</span>') "
-                                    . "END AS Estatus "
-                                    . "", false)
-                            ->from("ordencompra AS OC")
-                            ->join("proveedores AS P", 'P.Clave =  OC.Proveedor')
-                            ->where_in('OC.Estatus', array('ACTIVA', 'BORRADOR'))
-                            ->where_in('OC.Tipo', array('80'))
-                            ->get()->result();
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function getOrdenCompraByID($ID) {
-        try {
-            return $this->db->select("OC.*", false)->from("ordencompra AS OC")->where('OC.ID', $ID)->get()->result();
+            return $this->db->select("OC.*", false)->from("ordencompra AS OC")->where('OC.Tp', $Tp)->where('OC.Folio', $Folio)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -355,29 +297,17 @@ where sc.ArticuloCBZ= '$Articulo' ", false);
         }
     }
 
-    public function onAgregar($array) {
+    public function onModificar($Tp, $Folio, $DATA) {
         try {
-            $this->db->insert("ordencompra", $array);
-            $query = $this->db->query('SELECT LAST_INSERT_ID()');
-            $row = $query->row_array();
-            $LastIdInserted = $row['LAST_INSERT_ID()'];
-            return $LastIdInserted;
+            $this->db->where('Tp', $Tp)->where('Folio', $Folio)->update("ordencompra", $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function onModificar($ID, $DATA) {
+    public function onCancelar($Tp, $Folio) {
         try {
-            $this->db->where('ID', $ID)->update("ordencompra", $DATA);
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function onEliminar($ID) {
-        try {
-            $this->db->set('Estatus', 'CANCELADA')->where('ID', $ID)->update("ordencompra");
+            $this->db->set('Estatus', 'CANCELADA')->where('Tp', $Tp)->where('Folio', $Folio)->update("ordencompra");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -385,12 +315,19 @@ where sc.ArticuloCBZ= '$Articulo' ", false);
 
     /* DETALLE */
 
-    public function getDetalleParaSepararByID($ID) {
+    /* AGRUPAR POR TALLAS */
+
+    public function getOrdenCompraTallasTemp() {
         try {
-            $this->db->select('OCD.ID, OCD.Articulo, OCD.Cantidad, OCD.Precio, OCD.Subtotal '
+            $this->db->query("SET sql_mode = '';");
+            $this->db->select('Tp, Proveedor, Tipo, Folio, FechaOrden, FechaCaptura, '
+                    . 'FechaEntrega, ConsignarA, Sem, Maq, Ano, '
+                    . 'Observaciones, Estatus, Usuario, '
+                    . 'Articulo, sum(Cantidad) AS Cantidad, '
+                    . 'Precio, sum(SubTotal) AS Subtotal '
                     . '', false);
-            $this->db->from('ordencompradetalle AS OCD')
-                    ->where('OCD.OrdenCompra', $ID);
+            $this->db->from('ordencompratallastemp AS OCDT');
+            $this->db->group_by('Articulo');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -404,7 +341,27 @@ where sc.ArticuloCBZ= '$Articulo' ", false);
         }
     }
 
-    public function getDetalleByID($ID) {
+    public function getDetalleParaSepararByID($Tp, $Folio) {
+        try {
+            $this->db->select('OCD.ID, OCD.Articulo, OCD.Cantidad, OCD.Precio, OCD.Subtotal '
+                    . '', false);
+            $this->db->from('ordencompra AS OCD')
+                    ->where('OCD.Folio', $Folio)
+                    ->where('OCD.Tp', $Tp);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getDetalleByID($Tp, $Folio) {
         try {
             $this->db->select('OCD.ID,'
                     . 'OCD.Articulo AS ClaveArticulo,'
@@ -415,11 +372,11 @@ where sc.ArticuloCBZ= '$Articulo' ", false);
                     . "OCD.Subtotal AS Subtotal,"
                     . 'CONCAT(\'<span class="fa fa-trash fa-lg" onclick="onEliminarDetalleByID(\',OCD.ID,\')">\',\'</span>\') AS Eliminar'
                     . '', false);
-            $this->db->from('ordencompradetalle AS OCD')
-                    ->join('ordencompra AS OC', 'OC.ID= OCD.OrdenCompra', 'left')
+            $this->db->from('ordencompra AS OCD')
                     ->join('articulos AS A', 'A.Clave = OCD.Articulo', 'left')
                     ->join('unidades AS UM', 'A.UnidadMedida = UM.Clave', 'left')
-                    ->where('OC.ID', $ID);
+                    ->where('OCD.Tp', $Tp)
+                    ->where('OCD.Folio', $Folio);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -436,7 +393,7 @@ where sc.ArticuloCBZ= '$Articulo' ", false);
     public function onEliminarDetalleByID($ID) {
         try {
             $this->db->where('ID', $ID);
-            $this->db->delete("ordencompradetalle");
+            $this->db->delete("ordencompra");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -444,16 +401,7 @@ where sc.ArticuloCBZ= '$Articulo' ", false);
 
     public function onModificarDetalle($ID, $DATA) {
         try {
-            $this->db->where('ID', $ID)->update("ordencompradetalle", $DATA);
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function onModificarDetalleByClave($Articulo, $OC, $DATA) {
-        try {
-            $this->db->where('Articulo', $Articulo)->where('OrdenCompra', $OC)
-                    ->update("ordencompradetalle", $DATA);
+            $this->db->where('ID', $ID)->update("ordencompra", $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -483,7 +431,7 @@ where sc.ArticuloCBZ= '$Articulo' ", false);
         }
     }
 
-    public function getReporteOrdenCompra($ID) {
+    public function getReporteOrdenCompra($Tp, $Folio) {
         try {
             $this->db->select(''
                     . 'OC.Tp,'
@@ -498,25 +446,25 @@ where sc.ArticuloCBZ= '$Articulo' ", false);
                     . "END AS NombreProveedor,"
                     . "OC.ConsignarA,"
                     . "OC.Observaciones,"
-                    . "OCD.Cantidad,"
+                    . "OC.Cantidad,"
                     . "U.Descripcion AS Unidad,"
-                    . "OCD.Articulo,"
+                    . "OC.Articulo,"
                     . "A.Descripcion AS NombreArticulo,"
-                    . "OCD.Precio,"
-                    . "OCD.SubTotal,"
+                    . "OC.Precio,"
+                    . "OC.SubTotal,"
                     . "OC.Sem,"
                     . "OC.Maq,"
                     . "OC.FechaEntrega, "
-                    . "OCD.Factura,"
-                    . "OCD.CantidadRecibida "
+                    . "OC.Factura,"
+                    . "OC.CantidadRecibida "
                     . '', false);
             $this->db->from('ordencompra AS OC')
-                    ->join('ordencompradetalle AS OCD', 'OCD.OrdenCompra = OC.ID')
                     ->join('proveedores AS P', 'OC.Proveedor = P.Clave')
-                    ->join('articulos AS A', ' A.Clave = OCD.Articulo')
+                    ->join('articulos AS A', ' A.Clave = OC.Articulo')
                     ->join('unidades AS U', 'U.Clave = A.UnidadMedida')
-                    ->where('OC.ID', $ID)
-                    ->order_by('OCD.Articulo', 'ASC');
+                    ->where('OC.Tp', $Tp)
+                    ->where('OC.Folio', $Folio)
+                    ->order_by('OC.Articulo', 'ASC');
 //                    ->where('OC.Tp', $TP);
             $query = $this->db->get();
             /*

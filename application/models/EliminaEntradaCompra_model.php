@@ -96,24 +96,6 @@ class EliminaEntradaCompra_model extends CI_Model {
         }
     }
 
-    public function onActualizarCantidadesOrdenCompra($Doc, $Tp, $Prov, $Art, $cant_restada) {
-        try {
-
-            $sql = "UPDATE ordencompradetalle OCD "
-                    . "JOIN ordencompra OC ON OC.ID =  OCD.OrdenCompra AND OC.Proveedor = '$Prov' "
-                    . "SET OCD.CantidadRecibida =  ifnull(OCD.CantidadRecibida,0) - $cant_restada , "
-                    . "OCD.Factura = '' , "
-                    . "OCD.FechaFactura = '' "
-                    . "WHERE OC.Tp = '$Tp' "
-                    . "AND OCD.Factura = '$Doc' "
-                    . "AND OCD.Articulo = '$Art'";
-            //print ($sql);
-            $this->db->query($sql);
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
     public function getCompra($Doc, $Tp, $Proveedor) {
         try {
             $this->db->query("set sql_mode=''");
@@ -142,14 +124,32 @@ class EliminaEntradaCompra_model extends CI_Model {
         }
     }
 
-    public function getSumatoriasCantidadesParaEstatus($Tp, $Oc) {
+    public function onActualizarCantidadesOrdenCompra($Doc, $Tp, $Folio, $Prov, $Art, $cant_restada) {
         try {
-            $this->db->select("sum(OCD.Cantidad) AS Cantidad, sum(OCD.CantidadRecibida) AS Cantidad_Rec "
+
+            $sql = "UPDATE ordencompra OC "
+                    . "SET OC.CantidadRecibida =  ifnull(OC.CantidadRecibida,0) - $cant_restada , "
+                    . "OC.Factura = '' , "
+                    . "OC.FechaFactura = '' "
+                    . "WHERE OC.Tp = '$Tp' "
+                    . "AND OC.Folio = '$Folio' "
+                    . "AND OC.Proveedor = '$Prov' "
+                    . "AND OC.Factura = '$Doc' "
+                    . "AND OC.Articulo = '$Art' ";
+            //print ($sql);
+            $this->db->query($sql);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getCantidadesParaEstatus($Tp, $Folio) {
+        try {
+            $this->db->select("OC.ID, OC.Cantidad AS Cantidad, OC.CantidadRecibida AS Cantidad_Rec "
                             . "")
-                    ->from("ordencompradetalle OCD")
-                    ->join("ordencompra OC", 'ON OC.ID =  OCD.OrdenCompra')
+                    ->from("ordencompra OC")
                     ->where("OC.Tp", $Tp)
-                    ->where("OC.Folio", $Oc);
+                    ->where("OC.Folio", $Folio);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -163,10 +163,9 @@ class EliminaEntradaCompra_model extends CI_Model {
         }
     }
 
-    public function onModificarEstatusOrdenCompra($Tp, $Folio, $DATA) {
+    public function onModificarEstatusOrdenCompra($ID, $DATA) {
         try {
-            $this->db->where('Tp', $Tp)
-                    ->where('Folio', $Folio)
+            $this->db->where('ID', $ID)
                     ->update("ordencompra", $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

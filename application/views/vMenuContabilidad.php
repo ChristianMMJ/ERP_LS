@@ -14,6 +14,8 @@
                     <span class="fas fa-wrench"></span> Catálogos
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCatalogos">
+                    <a class="dropdown-item" href="<?php print base_url('ConceptosTesoreria'); ?>"> Conceptos de Tesorería</a>
+                    <a class="dropdown-item" href="<?php print base_url('Bancos/?origen=CONTABILIDAD'); ?>"> Bancos</a>
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlTipoCambio"> Tipo Cambio Moneda</a>
                 </div>
             </li>

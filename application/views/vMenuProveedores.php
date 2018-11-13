@@ -15,7 +15,7 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCatalogos">
                     <a class="dropdown-item" href="<?php print base_url('Proveedores/?origen=PROVEEDORES'); ?>"> Proveedores</a>
-                    <a class="dropdown-item" href="<?php print base_url('Bancos'); ?>"> Bancos</a>
+                    <a class="dropdown-item" href="<?php print base_url('Bancos/?origen=PROVEEDORES'); ?>"> Bancos</a>
                 </div>
             </li>
             <li class="nav-item dropdown">

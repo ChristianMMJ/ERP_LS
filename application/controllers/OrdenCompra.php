@@ -38,17 +38,9 @@ class OrdenCompra extends CI_Controller {
         }
     }
 
-    public function getRecords() {
+    public function getOrdenCompraByTpFolio() {
         try {
-            print json_encode($this->Ordencompra_model->getRecords());
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function getOrdenCompraByID() {
-        try {
-            print json_encode($this->Ordencompra_model->getOrdenCompraByID($this->input->get('ID')));
+            print json_encode($this->Ordencompra_model->getOrdenCompraByTpFolio($this->input->get('Tp'), $this->input->get('Folio')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -138,40 +130,15 @@ class OrdenCompra extends CI_Controller {
         }
     }
 
-    public function onAgregar() {
+    public function onAgregarDetalle() {
         try {
-            $x = $this->input;
-            $datos = array(
-                'Tp' => $x->post('Tp'),
-                'Proveedor' => $x->post('Proveedor'),
-                'Tipo' => $x->post('Tipo'),
-                'Folio' => $x->post('Folio'),
-                'FechaOrden' => $x->post('FechaOrden'),
-                'FechaCaptura' => Date('d/m/Y'),
-                'FechaEntrega' => $x->post('FechaEntrega'),
-                'ConsignarA' => $x->post('ConsignarA'),
-                'Sem' => $x->post('Sem'),
-                'Maq' => $x->post('Maq'),
-                'Ano' => $x->post('Ano'),
-                'Observaciones' => $x->post('Observaciones'),
-                'Estatus' => 'BORRADOR',
-                'Usuario' => $this->session->userdata('ID')
-            );
-            $ID = $this->Ordencompra_model->onAgregar($datos);
-            print $ID;
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
 
-    public function onAgregarCompraPartida() {
-        try {
             $x = $this->input;
-            $datos = array(
+            $this->db->insert("ordencompra", array(
                 'Tp' => $x->post('Tp'),
-                'Proveedor' => $x->post('Proveedor'),
-                'Tipo' => $x->post('Tipo'),
                 'Folio' => $x->post('Folio'),
+                'Tipo' => $x->post('Tipo'),
+                'Proveedor' => $x->post('Proveedor'),
                 'FechaOrden' => $x->post('FechaOrden'),
                 'FechaCaptura' => Date('d/m/Y'),
                 'FechaEntrega' => $x->post('FechaEntrega'),
@@ -180,11 +147,13 @@ class OrdenCompra extends CI_Controller {
                 'Maq' => $x->post('Maq'),
                 'Ano' => $x->post('Ano'),
                 'Observaciones' => $x->post('Observaciones'),
+                'Articulo' => $x->post('Articulo'),
+                'Cantidad' => $x->post('Cantidad'),
+                'Precio' => $x->post('Precio'),
+                'Subtotal' => $x->post('SubTotal'),
                 'Estatus' => $x->post('Estatus'),
                 'Usuario' => $this->session->userdata('ID')
-            );
-            $ID = $this->Ordencompra_model->onAgregar($datos);
-            print $ID;
+            ));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -192,11 +161,10 @@ class OrdenCompra extends CI_Controller {
 
     public function onCerrarOrden() {
         try {
-            $x = $this->input;
             $datos = array(
                 'Estatus' => 'ACTIVA',
             );
-            $this->Ordencompra_model->onModificar($x->post('ID'), $datos);
+            $this->Ordencompra_model->onModificar($this->input->post('Tp'), $this->input->post('Folio'), $datos);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -204,20 +172,18 @@ class OrdenCompra extends CI_Controller {
 
     public function onCerrarOrdenAnterior() {
         try {
-            $x = $this->input;
             $datos = array(
-                'Tp' => '1',
                 'Estatus' => 'ACTIVA',
             );
-            $this->Ordencompra_model->onModificar($x->post('ID'), $datos);
+            $this->Ordencompra_model->onModificar($this->input->post('Tp'), $this->input->post('Folio'), $datos);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function onEliminar() {
+    public function onCancelar() {
         try {
-            $this->Ordencompra_model->onEliminar($this->input->post('ID'));
+            $this->Ordencompra_model->onCancelar($this->input->post('Tp'), $this->input->post('Folio'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -227,7 +193,7 @@ class OrdenCompra extends CI_Controller {
 
     public function getDetalleParaSepararByID() {
         try {
-            print json_encode($this->Ordencompra_model->getDetalleParaSepararByID($this->input->get('ID')));
+            print json_encode($this->Ordencompra_model->getDetalleParaSepararByID($this->input->get('Tp'), $this->input->get('Folio')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -235,22 +201,7 @@ class OrdenCompra extends CI_Controller {
 
     public function getDetalleByID() {
         try {
-            print json_encode($this->Ordencompra_model->getDetalleByID($this->input->post('ID')));
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function onAgregarDetalle() {
-        try {
-            $e = $this->input;
-            $this->db->insert("ordencompradetalle", array(
-                'OrdenCompra' => $e->post('OrdenCompra'),
-                'Articulo' => $e->post('Articulo'),
-                'Cantidad' => $e->post('Cantidad'),
-                'Precio' => $e->post('Precio'),
-                'Subtotal' => $e->post('SubTotal')
-            ));
+            print json_encode($this->Ordencompra_model->getDetalleByID($this->input->post('Tp'), $this->input->post('Folio')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -286,69 +237,66 @@ class OrdenCompra extends CI_Controller {
         if (!empty($Movs)) {
             $pdf = new PDF('L', 'mm', array(215.9, 279.4));
             foreach ($Movs as $k => $v) {
+                $Folio = $v->Folio;
+                $Tp = $v->Tp;
+                $DatosEmpresa = $cm->getDatosEmpresa();
+                $OrdenCompra = $cm->getReporteOrdenCompra($Tp, $Folio);
 
-                $ID_MOV = $v->ID;
-                if ($ID_MOV > 0) {
-                    //$ID_MOV_N = $v->ID2;
-                    $DatosEmpresa = $cm->getDatosEmpresa();
-                    $OrdenCompra = $cm->getReporteOrdenCompra($ID_MOV);
+                $pdf->Logo = $DatosEmpresa[0]->Logo;
+                $pdf->Empresa = $DatosEmpresa[0]->Empresa;
+                $pdf->Direccion = $DatosEmpresa[0]->Direccion;
+                $pdf->Direccion2 = $DatosEmpresa[0]->Direccion2;
+                $pdf->FechaOrden = $OrdenCompra[0]->FechaOrden;
+                $pdf->FechaCaptura = $OrdenCompra[0]->FechaCaptura;
+                $pdf->ClaveProveedor = $OrdenCompra[0]->Proveedor;
+                $pdf->Proveedor = $OrdenCompra[0]->NombreProveedor;
+                $pdf->Observaciones = $OrdenCompra[0]->Observaciones;
+                $pdf->ConsignarA = $OrdenCompra[0]->ConsignarA;
+                $pdf->Folio = $OrdenCompra[0]->Folio;
+                $pdf->Estatus = $OrdenCompra[0]->Estatus;
 
-                    $pdf->Logo = $DatosEmpresa[0]->Logo;
-                    $pdf->Empresa = $DatosEmpresa[0]->Empresa;
-                    $pdf->Direccion = $DatosEmpresa[0]->Direccion;
-                    $pdf->Direccion2 = $DatosEmpresa[0]->Direccion2;
-                    $pdf->FechaOrden = $OrdenCompra[0]->FechaOrden;
-                    $pdf->FechaCaptura = $OrdenCompra[0]->FechaCaptura;
-                    $pdf->ClaveProveedor = $OrdenCompra[0]->Proveedor;
-                    $pdf->Proveedor = $OrdenCompra[0]->NombreProveedor;
-                    $pdf->Observaciones = $OrdenCompra[0]->Observaciones;
-                    $pdf->ConsignarA = $OrdenCompra[0]->ConsignarA;
-                    $pdf->Folio = $OrdenCompra[0]->Folio;
-                    $pdf->Estatus = $OrdenCompra[0]->Estatus;
+                $pdf->AddPage();
+                $pdf->SetAutoPageBreak(true, 26.9);
 
-                    $pdf->AddPage();
-                    $pdf->SetAutoPageBreak(true, 26.9);
+                $SubTotal = 0;
+                $TotalCantidad = 0;
+                foreach ($OrdenCompra as $keyFT => $F) {
+                    $pdf->SetLineWidth(0.25);
+                    $pdf->SetX(5);
+                    $pdf->SetFont('Calibri', '', 8.5);
+                    $anchos = array(10/* 0 */, 90/* 1 */, 15/* 2 */, 10/* 3 */, 20/* 4 */, 20/* 5 */, 10/* 6 */, 15/* 7 */, 30/* 8 */, 30/* 9 */, 20/* 10 */);
+                    $aligns = array('L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L');
+                    $pdf->SetAligns($aligns);
+                    $pdf->SetWidths($anchos);
 
-                    $SubTotal = 0;
-                    $TotalCantidad = 0;
-                    foreach ($OrdenCompra as $keyFT => $F) {
-                        $pdf->SetLineWidth(0.25);
-                        $pdf->SetX(5);
-                        $pdf->SetFont('Calibri', '', 8.5);
-                        $anchos = array(10/* 0 */, 90/* 1 */, 15/* 2 */, 10/* 3 */, 20/* 4 */, 20/* 5 */, 10/* 6 */, 15/* 7 */, 30/* 8 */, 30/* 9 */, 20/* 10 */);
-                        $aligns = array('L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L');
-                        $pdf->SetAligns($aligns);
-                        $pdf->SetWidths($anchos);
-
-                        $pdf->Row(array(
-                            utf8_decode($F->Articulo),
-                            mb_strimwidth(utf8_decode($F->NombreArticulo), 0, 60, "..."),
-                            number_format($F->Cantidad, 2, ".", ","),
-                            utf8_decode($F->Unidad),
-                            '$' . number_format($F->Precio, 2, ".", ","),
-                            '$' . number_format($F->SubTotal, 2, ".", ","),
-                            $F->Sem,
-                            $F->Maq,
-                            '',
-                            '',
-                            utf8_decode($F->FechaEntrega)
-                        ));
-                        //TOTALES GRUPOS
-                        $SubTotal += $F->SubTotal;
-                        $TotalCantidad += $F->Cantidad;
-                    }
-                    $pdf->SetFont('Calibri', 'B', 9.5);
-                    $pdf->RowNoBorder(array('', '', number_format($TotalCantidad, 2, ".", ","), '',
-                        'Subtotal:', '$' . number_format($SubTotal, 2, ".", ","), '', '', '', '', ''
+                    $pdf->Row(array(
+                        utf8_decode($F->Articulo),
+                        mb_strimwidth(utf8_decode($F->NombreArticulo), 0, 60, "..."),
+                        number_format($F->Cantidad, 2, ".", ","),
+                        utf8_decode($F->Unidad),
+                        '$' . number_format($F->Precio, 2, ".", ","),
+                        '$' . number_format($F->SubTotal, 2, ".", ","),
+                        $F->Sem,
+                        $F->Maq,
+                        '',
+                        '',
+                        utf8_decode($F->FechaEntrega)
                     ));
+                    //TOTALES GRUPOS
+                    $SubTotal += $F->SubTotal;
+                    $TotalCantidad += $F->Cantidad;
+                }
+                $pdf->SetFont('Calibri', 'B', 9.5);
+                $pdf->RowNoBorder(array('', '', number_format($TotalCantidad, 2, ".", ","), '',
+                    'Subtotal:', '$' . number_format($SubTotal, 2, ".", ","), '', '', '', '', ''
+                ));
 
-                    //Pintamos el IVA si es TP 1
-                    if ($OrdenCompra[0]->Tp === '1') {
-                        $IVA = $SubTotal * 0.16;
-                        $Total = $SubTotal + $IVA;
-                        $pdf->RowNoBorder(array('', '', '', '', 'IVA:', '$' . number_format($IVA, 2, ".", ","), '', '', '', '', ''));
-                        $pdf->RowNoBorder(array('', '', '', '', 'Total:', '$' . number_format($Total, 2, ".", ","), '', '', '', '', ''));
-                    }
+                //Pintamos el IVA si es TP 1
+                if ($OrdenCompra[0]->Tp === '1') {
+                    $IVA = $SubTotal * 0.16;
+                    $Total = $SubTotal + $IVA;
+                    $pdf->RowNoBorder(array('', '', '', '', 'IVA:', '$' . number_format($IVA, 2, ".", ","), '', '', '', '', ''));
+                    $pdf->RowNoBorder(array('', '', '', '', 'Total:', '$' . number_format($Total, 2, ".", ","), '', '', '', '', ''));
                 }
             }
 

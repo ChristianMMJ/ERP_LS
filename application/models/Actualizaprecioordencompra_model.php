@@ -14,12 +14,11 @@ class Actualizaprecioordencompra_model extends CI_Model {
         try {
             $this->db->select(""
                     . "OC.Tp, OC.Folio, OC.Proveedor, "
-                    . "CONCAT(OCD.Articulo,' ',A.Descripcion) AS Articulo, "
-                    . "OCD.Cantidad, OCD.Precio, OCD.Subtotal"
+                    . "CONCAT(OC.Articulo,' ',A.Descripcion) AS Articulo, "
+                    . "OC.Cantidad, OC.Precio, OC.Subtotal"
                     . "", false);
-            $this->db->from("ordencompradetalle OCD");
-            $this->db->join("ordencompra OC", "OC.ID = OCD.OrdenCompra ");
-            $this->db->join("articulos A", "A.Clave = OCD.Articulo ");
+            $this->db->from("ordencompra OC");
+            $this->db->join("articulos A", "A.Clave = OC.Articulo ");
             $this->db->where("OC.Folio", $Folio);
             $this->db->where("OC.Tp", $Tp);
             $this->db->where_in('OC.Estatus', array('PENDIENTE', 'ACTIVA'));
@@ -63,21 +62,19 @@ class Actualizaprecioordencompra_model extends CI_Model {
     public function onModificarPreciosOrdenCompraByOrdenCompra($OC, $Tp, $Prov) {
         try {
             try {
-                $sql = "update ordencompradetalle ocd  "
-                        . "inner join ordencompra oc  "
-                        . "on oc.ID = ocd.OrdenCompra  "
-                        . "and oc.Tp = '$Tp' "
-                        . "and oc.Folio = '$OC' "
-                        . "and oc.Estatus IN('ACTIVA') "
-                        . "join articulos A on ocd.Articulo = A.Clave "
-                        . "set ocd.Precio = CASE  "
+                $sql = "UPDATE ordencompra OC  "
+                        . "JOIN articulos A on OC.Articulo = A.Clave "
+                        . "SET OC.Precio = CASE  "
                         . "WHEN A.ProveedorUno = '$Prov' THEN A.PrecioUno "
                         . "WHEN A.ProveedorDos = '$Prov' THEN A.PrecioDos "
                         . "WHEN A.ProveedorTres = '$Prov' THEN A.PrecioTres END, "
-                        . "ocd.SubTotal = CASE  "
+                        . "OC.SubTotal = CASE  "
                         . "WHEN A.ProveedorUno = '$Prov' THEN A.PrecioUno "
                         . "WHEN A.ProveedorDos = '$Prov' THEN A.PrecioDos "
-                        . "WHEN A.ProveedorTres = '$Prov' THEN A.PrecioTres END * ocd.Cantidad "
+                        . "WHEN A.ProveedorTres = '$Prov' THEN A.PrecioTres END * OC.Cantidad "
+                        . "WHERE OC.Tp = '$Tp' "
+                        . "AND OC.Folio = '$OC' "
+                        . "AND OC.Estatus IN('ACTIVA') "
                         . "";
                 //print ($sql);
                 $this->db->query($sql);

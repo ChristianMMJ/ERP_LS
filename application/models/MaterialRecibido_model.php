@@ -10,39 +10,48 @@ class MaterialRecibido_model extends CI_Model {
         parent::__construct();
     }
 
-    public function getRecords() {
+    public function getRecords($Ano, $Tp, $Tipo) {
         try {
-            return $this->db->select("OC.ID,"
-                                    . "OC.Tp, "
-                                    . "OC.Folio, "
-                                    . "OC.Proveedor, "
-                                    . "CASE WHEN OC.Tp ='1' THEN  CONCAT(P.Clave,' ',P.NombreF) "
-                                    . "ELSE CONCAT(P.Clave,' ',P.NombreI) END AS NombreProveedor, "
-                                    . "CASE WHEN OC.Tp ='1' THEN  "
-                                    . "CONCAT('[Ord_Compra: ',OC.Folio,']----->    Prov. ',OC.Proveedor,' ',P.NombreF) "
-                                    . "ELSE "
-                                    . "CONCAT('[Ord_Compra: ',OC.Folio,']----->    Prov. ',OC.Proveedor,' ',P.NombreI) "
-                                    . "END AS GruposT, "
-                                    . "OC.FechaOrden, "
-                                    . "CONCAT(A.Clave,' ',A.Descripcion) AS Articulo, "
-                                    . "OCD.Cantidad, "
-                                    . "OCD.CantidadRecibida, "
-                                    . "OCD.Precio, "
-                                    . "OCD.SubTotal, "
-                                    . "OC.Sem, "
-                                    . "OC.Maq, "
-                                    . "CONCAT(G.Clave,'-',G.Nombre) AS Grupo,"
-                                    . "OC.Ano,"
-                                    . "OC.Tipo  "
-                                    . "", false)
-                            ->from("ordencompra AS OC")
-                            ->join("ordencompradetalle OCD", 'ON OCD.OrdenCompra = OC.ID')
-                            ->join("proveedores P", 'ON P.Clave = OC.Proveedor')
-                            ->join("articulos A", 'ON A.Clave = OCD.Articulo')
-                            ->join("grupos G", 'ON G.Clave =  A.Grupo')
-                            ->join("unidades U", 'ON U.Clave =  A.UnidadMedida')
-                            ->where_in('OC.Estatus', array('ACTIVA', 'PENDIENTE', 'RECIBIDA'))
-                            ->get()->result();
+            $this->db->select("OC.ID,"
+                            . "OC.Tp, "
+                            . "OC.Folio, "
+                            . "OC.Proveedor, "
+                            . "CASE WHEN OC.Tp ='1' THEN  CONCAT(P.Clave,' ',P.NombreF) "
+                            . "ELSE CONCAT(P.Clave,' ',P.NombreI) END AS NombreProveedor, "
+                            . "CASE WHEN OC.Tp ='1' THEN  "
+                            . "CONCAT('[Ord_Compra: ',OC.Folio,']----->    Prov. ',OC.Proveedor,' ',P.NombreF) "
+                            . "ELSE "
+                            . "CONCAT('[Ord_Compra: ',OC.Folio,']----->    Prov. ',OC.Proveedor,' ',P.NombreI) "
+                            . "END AS GruposT, "
+                            . "OC.FechaOrden, "
+                            . "CONCAT(A.Clave,' ',A.Descripcion) AS Articulo, "
+                            . "OC.Cantidad, "
+                            . "OC.CantidadRecibida, "
+                            . "OC.Precio, "
+                            . "OC.SubTotal, "
+                            . "OC.Sem, "
+                            . "OC.Maq, "
+                            . "CONCAT(G.Clave,'-',G.Nombre) AS Grupo,"
+                            . "OC.Ano,"
+                            . "OC.Tipo  "
+                            . "", false)
+                    ->from("ordencompra AS OC")
+                    ->join("proveedores P", 'ON P.Clave = OC.Proveedor', 'left')
+                    ->join("articulos A", 'ON A.Clave = OC.Articulo', 'left')
+                    ->join("grupos G", 'ON G.Clave =  A.Grupo', 'left')
+                    ->join("unidades U", 'ON U.Clave =  A.UnidadMedida', 'left')
+                    ->where('OC.Ano', $Ano)
+                    ->where('OC.Tp', $Tp)
+                    ->where('OC.Tipo', $Tipo)
+                    ->where_in('OC.Estatus', array('ACTIVA', 'PENDIENTE', 'RECIBIDA'));
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

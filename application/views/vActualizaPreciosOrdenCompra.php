@@ -200,7 +200,9 @@
                     text: "NO EXISTE LA ORDEN DE COMPRA",
                     icon: "warning"
                 }).then((value) => {
-                    OrdenesCompra.clear().draw();
+                    if ($.fn.DataTable.isDataTable('#tblOrdenesCompra')) {
+                        OrdenesCompra.clear().draw();
+                    }
                     $(v).val('').focus();
                 });
             }

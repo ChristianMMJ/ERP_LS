@@ -41,7 +41,7 @@ class MaterialRecibido extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->MaterialRecibido_model->getRecords());
+            print json_encode($this->MaterialRecibido_model->getRecords($this->input->post('Ano'), $this->input->post('Tp'), $this->input->post('Tipo')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -52,7 +52,7 @@ class MaterialRecibido extends CI_Controller {
     public function onImprimirOrdenCompra() {
         $cm = $this->Ordencompra_model;
         $DatosEmpresa = $cm->getDatosEmpresa();
-        $OrdenCompra = $cm->getReporteOrdenCompra($this->input->post('ID'));
+        $OrdenCompra = $cm->getReporteOrdenCompra($this->input->post('Tp'), $this->input->post('Folio'));
 
         if (!empty($OrdenCompra)) {
             $pdf = new PDF('L', 'mm', array(215.9, 279.4));

@@ -1,244 +1,199 @@
 <div class="card m-3 animated fadeIn" id="pnlTablero">
     <div class="card-body ">
         <div class="row">
-            <div class="col-sm-8 float-left">
+            <div class="col-sm-6 float-left">
                 <legend class="float-left">Órdenes de Compra (PLANTAS, SUELAS, ENTRESUELAS)</legend>
             </div>
-            <div class="col-sm-4 float-right" align="right">
-                <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
+            <div class="col-12 col-sm-6 col-md-6" align="right">
+
+                <button type="button" class="btn btn-secondary btn-sm " id="btnVerProveedores" >
+                    <span class="fa fa-user-secret" ></span> PROVEEDORES
+                </button>
+                <button type="button" class="btn btn-info btn-sm " id="btnVerArticulos" >
+                    <span class="fa fa-cube" ></span> ARTÍCULOS
+                </button>
+                <button type="button" class="btn btn-warning btn-sm d-none" id="btnImprimir" >
+                    <span class="fa fa-print" ></span> IMPRIMIR O.C.
+                </button>
+                <button type="button" class="btn btn-danger btn-sm d-none" id="btnCancelar" >
+                    <span class="fa fa-ban" ></span> CANCELAR O.C.
+                </button>
+
             </div>
         </div>
-        <div class="card-block mt-4">
-            <div id="Compras" class="table-responsive">
-                <table id="tblCompras" class="table table-sm display " style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Tipo</th>
-                            <th>Departamento</th>
-                            <th>Folio</th>
-                            <th>Proveedor</th>
-                            <th>Fecha</th>
-                            <th>Año</th>
-                            <th>Sem</th>
-                            <th>Maq</th>
-                            <th>Estatus</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                    <tfoot>
-                        <tr>
-                            <th>ID</th>
-                            <th>Tipo</th>
-                            <th>Departamento</th>
-                            <th>Folio</th>
-                            <th>Proveedor</th>
-                            <th>Fecha</th>
-                            <th>Año</th>
-                            <th>Semana</th>
-                            <th>Maquila</th>
-                            <th>Estatus</th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+        <hr>
+        <div class="card-block mt-4" id="pnlDatos">
+            <form id="frmNuevo">
+
+                <div class="row" >
+                    <div class="d-none">
+                        <input type="text" id="ID" name="ID" class="form-control form-control-sm" >
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-3 col-lg-1 col-xl-1">
+                        <label for="Clave" >Tp*</label>
+                        <input type="text" class="form-control form-control-sm numbersOnly" maxlength="1" id="Tp" name="Tp" required="">
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-3 col-lg-2 col-xl-1">
+                        <label for="Folio" >Folio</label>
+                        <input type="text" class="form-control form-control-sm numbersOnly disabledForms" readonly="" id="Folio" name="Folio" required="">
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-2">
+                        <label for="" >Tipo*</label>
+                        <select id="Tipo" name="Tipo" class="form-control form-control-sm required" required="">
+                            <option value=""></option>
+                            <option value="80">80 SUELA</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-sm-4 col-md-3 col-xl-3" >
+                        <label for="" >Proveedor*</label>
+                        <select id="Proveedor" name="Proveedor" class="form-control form-control-sm mb-2 required" required="" >
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-3 col-xl-2">
+                        <label for="" >Fecha*</label>
+                        <input type="text" class="form-control form-control-sm date notEnter" id="FechaOrden" name="FechaOrden" >
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-1 col-xl-1">
+                        <label for="" >Maq.*</label>
+                        <input type="text" class="form-control form-control-sm numbersOnly" maxlength="3" id="Maq" name="Maq" required="">
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-1 col-xl-1">
+                        <label for="" >Año*</label>
+                        <input type="text" class="form-control form-control-sm numbersOnly" maxlength="4" id="Ano" name="Ano" required="">
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-1 col-xl-1">
+                        <label for="" >Sem.*</label>
+                        <input type="text" class="form-control form-control-sm numbersOnly" maxlength="2" id="Sem" name="Sem" required="">
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-3 col-xl-2">
+                        <label for="FechaEntrega" >Fecha Entrega*</label>
+                        <input type="text" class="form-control form-control-sm date notEnter" id="FechaEntrega" name="FechaEntrega" required="">
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-3 col-xl-5">
+                        <label for="" >Consignar a*</label>
+                        <input type="text" class="form-control form-control-sm" id="ConsignarA" name="ConsignarA" required="">
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6 col-xl-5">
+                        <label for="Observaciones" >Observaciones</label>
+                        <input type="text" class="form-control form-control-sm "  id="Observaciones" name="Observaciones">
+                    </div>
+
+                </div>
+            </form>
         </div>
-    </div>
-</div>
-<div class="card  m-3 d-none animated fadeIn text-dark" id="pnlDatos" style="z-index: 2 !important">
-    <!--            PRIMER CONTENEDOR-->
-    <div class="card-body" >
-        <form id="frmNuevo">
-            <div class="row">
-                <div class="col-12 col-sm-6 col-md-4 float-left">
-                    <legend >Orden Compra por Tallas</legend>
-                </div>
-                <div class="col-12 col-sm-6 col-md-8" align="right">
-                    <button type="button" class="btn btn-primary btn-sm" id="btnRegresar" >
-                        <span class="fa fa-arrow-left" ></span> REGRESAR
-                    </button>
-                    <button type="button" class="btn btn-secondary btn-sm " id="btnVerProveedores" >
-                        <span class="fa fa-user-secret" ></span> PROVEEDORES
-                    </button>
-                    <button type="button" class="btn btn-info btn-sm " id="btnVerArticulos" >
-                        <span class="fa fa-cube" ></span> ARTÍCULOS
-                    </button>
-                    <button type="button" class="btn btn-warning btn-sm d-none" id="btnImprimir" >
-                        <span class="fa fa-print" ></span> IMPRIMIR O.C.
-                    </button>
-                    <button type="button" class="btn btn-danger btn-sm d-none" id="btnCancelar" >
-                        <span class="fa fa-ban" ></span> CANCELAR O.C.
-                    </button>
-                    <button type="button" class="btn btn-success btn-lg btn-float d-none" id="btnCerrarOrden" data-toggle="tooltip" data-placement="left" title="Cerrar Orden">
-                        <i class="fa fa-money-bill"></i>
-                    </button>
-                </div>
-            </div>
-            <hr>
-            <div class="row" >
-                <div class="d-none">
-                    <input type="text" id="ID" name="ID" class="form-control form-control-sm" >
-                </div>
-                <div class="col-12 col-sm-6 col-md-3 col-lg-1 col-xl-1">
-                    <label for="Clave" >Tp*</label>
-                    <input type="text" class="form-control form-control-sm numbersOnly" maxlength="1" id="Tp" name="Tp" required="">
-                </div>
-                <div class="col-12 col-sm-6 col-md-3 col-lg-2 col-xl-1">
-                    <label for="Folio" >Folio</label>
-                    <input type="text" class="form-control form-control-sm numbersOnly disabledForms" readonly="" id="Folio" name="Folio" required="">
-                </div>
-                <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-2">
-                    <label for="" >Tipo*</label>
-                    <select id="Tipo" name="Tipo" class="form-control form-control-sm required" required="">
-                        <option value=""></option>
-                        <option value="80">80 SUELA</option>
-                    </select>
-                </div>
+        <div class="card-block mt-4" id="pnlDatosDetalle" >
+            <div class="row" id="ControlesDetalle">
+
                 <div class="col-12 col-sm-4 col-md-3 col-xl-3" >
-                    <label for="" >Proveedor*</label>
-                    <select id="Proveedor" name="Proveedor" class="form-control form-control-sm mb-2 required" required="" >
+                    <label for="" >Artículo CBZ*</label>
+                    <select id="Articulo" name="Articulo" class="form-control form-control-sm required" required="" >
                         <option value=""></option>
                     </select>
                 </div>
-                <div class="col-12 col-sm-6 col-md-3 col-xl-2">
-                    <label for="" >Fecha*</label>
-                    <input type="text" class="form-control form-control-sm date notEnter" id="FechaOrden" name="FechaOrden" >
+                <!--TALLAS-->
+                <div class="col-12">
+                    <div class="table-responsive" style="overflow-x:auto; white-space: nowrap;">
+                        <label class="font-weight-bold" for="Tallas"></label>
+                        <table id="tblTallas" class="Tallas" >
+                            <thead></thead>
+                            <tbody>
+                                <tr id="rArticulos">
+                                    <td class="font-weight-bold">Art.</td>
+                                    <?php
+                                    for ($index = 1; $index < 21; $index++) {
+                                        print '<td><input type="text" style="width: 55px;" id="A' . $index . '" name="A' . $index . '" disabled></td>';
+                                    }
+                                    ?>
+                                </tr>
+                                <tr id="rPrecios">
+                                    <td class="font-weight-bold">Precio</td>
+                                    <?php
+                                    for ($index = 1; $index < 21; $index++) {
+                                        print '<td><input type="text" style="width: 55px;" id="P' . $index . '" name="P' . $index . '" disabled></td>';
+                                    }
+                                    ?>
+                                </tr>
+                                <tr id="rTallasBuscaManual">
+                                    <td class="font-weight-bold">Tallas</td>
+                                    <?php
+                                    for ($index = 1; $index < 21; $index++) {
+                                        print '<td><input type="text" style="width: 55px;" id="T' . $index . '" name="T' . $index . '" disabled></td>';
+                                    }
+                                    ?>
+                                </tr>
+                                <tr class="rCapturaCantidades" id="rCantidades">
+                                    <td class="font-weight-bold">Cant.</td>
+                                    <?php
+                                    for ($index = 1; $index < 21; $index++) {
+                                        print '<td><input type="text" style="width: 55px;" id="C' . $index . '" class="form-control form-control-sm numbersOnly " name="C' . $index . '" ></td>';
+                                    }
+                                    ?>
+                                    <td>
+                                        <button type="button" id="btnAgregar" class="btn btn-primary btn-sm d-sm-block" data-toggle="tooltip" data-placement="right" title="Agregar">
+                                            <span class="fa fa-plus"></span> AGREGAR
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-success btn-sm d-none" id="btnCerrarOrden">
+                                            <i class="fa fa-money-bill"></i> CERRAR ORDEN
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="col-12 col-sm-6 col-md-1 col-xl-1">
-                    <label for="" >Maq.*</label>
-                    <input type="text" class="form-control form-control-sm numbersOnly" maxlength="3" id="Maq" name="Maq" required="">
-                </div>
-                <div class="col-12 col-sm-6 col-md-1 col-xl-1">
-                    <label for="" >Año*</label>
-                    <input type="text" class="form-control form-control-sm numbersOnly" maxlength="4" id="Ano" name="Ano" required="">
-                </div>
-                <div class="col-12 col-sm-6 col-md-1 col-xl-1">
-                    <label for="" >Sem.*</label>
-                    <input type="text" class="form-control form-control-sm numbersOnly" maxlength="2" id="Sem" name="Sem" required="">
-                </div>
-                <div class="col-12 col-sm-6 col-md-3 col-xl-2">
-                    <label for="FechaEntrega" >Fecha Entrega*</label>
-                    <input type="text" class="form-control form-control-sm date notEnter" id="FechaEntrega" name="FechaEntrega" required="">
-                </div>
-                <div class="col-12 col-sm-6 col-md-3 col-xl-5">
-                    <label for="" >Consignar a*</label>
-                    <input type="text" class="form-control form-control-sm" id="ConsignarA" name="ConsignarA" required="">
-                </div>
-                <div class="col-12 col-sm-6 col-md-6 col-xl-5">
-                    <label for="Observaciones" >Observaciones</label>
-                    <input type="text" class="form-control form-control-sm "  id="Observaciones" name="Observaciones">
-                </div>
-
             </div>
-        </form>
-    </div>
-
-</div>
-<div class="card m-3 d-none animated fadeIn" id="pnlDatosDetalle" >
-    <div class="card-body text-dark">
-        <div class="row" id="ControlesDetalle">
-            <div class="col-12 col-sm-4 col-md-3 col-xl-3" >
-                <label for="" >Artículo CBZ*</label>
-                <select id="Articulo" name="Articulo" class="form-control form-control-sm required" required="" >
-                    <option value=""></option>
-                </select>
-            </div>
-            <!--TALLAS-->
-            <div class="col-12">
-                <div class="table-responsive" style="overflow-x:auto; white-space: nowrap;">
-                    <label class="font-weight-bold" for="Tallas"></label>
-                    <table id="tblTallas" class="Tallas" >
-                        <thead></thead>
-                        <tbody>
-                            <tr id="rArticulos">
-                                <td class="font-weight-bold">Art.</td>
-                                <?php
-                                for ($index = 1; $index < 21; $index++) {
-                                    print '<td><input type="text" style="width: 55px;" id="A' . $index . '" name="A' . $index . '" disabled></td>';
-                                }
-                                ?>
+            <!--        DETALLE-->
+            <div class="row">
+                <div class="col-12 mt-4">
+                    <table id="tblComprasDetalle" class="table table-sm" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th class="d-none">ID</th>
+                                <th class="d-none">ClaveArticulo</th>
+                                <th>Articulo</th>
+                                <th>Cantidad</th>
+                                <th>Unidad</th>
+                                <th>Precio</th>
+                                <th>Subtotal</th>
+                                <th>Eliminar</th>
                             </tr>
-                            <tr id="rPrecios">
-                                <td class="font-weight-bold">Precio</td>
-                                <?php
-                                for ($index = 1; $index < 21; $index++) {
-                                    print '<td><input type="text" style="width: 55px;" id="P' . $index . '" name="P' . $index . '" disabled></td>';
-                                }
-                                ?>
+                        </thead>
+                        <tbody></tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="d-none"></td>
+                                <td class="d-none"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <th>Total:</th>
+                                <th>$0.0</th>
+                                <td></td>
                             </tr>
-                            <tr id="rTallasBuscaManual">
-                                <td class="font-weight-bold">Tallas</td>
-                                <?php
-                                for ($index = 1; $index < 21; $index++) {
-                                    print '<td><input type="text" style="width: 55px;" id="T' . $index . '" name="T' . $index . '" disabled></td>';
-                                }
-                                ?>
-                                <td class="font-weight-bold">Agregar</td>
-                            </tr>
-                            <tr class="rCapturaCantidades" id="rCantidades">
-                                <td class="font-weight-bold">Cant.</td>
-                                <?php
-                                for ($index = 1; $index < 21; $index++) {
-                                    print '<td><input type="text" style="width: 55px;" id="C' . $index . '" class="form-control form-control-sm numbersOnly " name="C' . $index . '" ></td>';
-                                }
-                                ?>
-                                <td>
-                                    <button type="button" id="btnAgregar" class="btn btn-primary btn-sm d-sm-block" data-toggle="tooltip" data-placement="right" title="Agregar"><span class="fa fa-plus"></span></button>
-                                </td>
-                            </tr>
-                        </tbody>
+                        </tfoot>
                     </table>
                 </div>
-            </div>
-        </div>
-        <!--        DETALLE-->
-        <div class="row">
-            <div class="col-12 mt-4">
-                <table id="tblComprasDetalle" class="table table-sm" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th class="d-none">ID</th>
-                            <th class="d-none">ClaveArticulo</th>
-                            <th>Articulo</th>
-                            <th>Cantidad</th>
-                            <th>Unidad</th>
-                            <th>Precio</th>
-                            <th>Subtotal</th>
-                            <th>Eliminar</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                    <tfoot>
-                        <tr>
-                            <td class="d-none"></td>
-                            <td class="d-none"></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <th>Total:</th>
-                            <th>$0.0</th>
-                            <td></td>
-                        </tr>
-                    </tfoot>
-                </table>
+
             </div>
         </div>
     </div>
 </div>
 <script>
     var master_url = base_url + 'index.php/OrdenCompraTallas/';
-    var tblCompras = $('#tblCompras');
     var Compras;
-    var btnNuevo = $("#btnNuevo"), btnAgregar = $("#btnAgregar");
+    var btnAgregar = $("#btnAgregar");
     var pnlTablero = $("#pnlTablero"), pnlDatos = $("#pnlDatos"), pnlDatosDetalle = $("#pnlDatosDetalle");
     var nuevo = false;
     var tblComprasDetalle = $("#tblComprasDetalle"), ComprasDetalle;
-    var btnRegresar = pnlDatos.find("#btnRegresar");
-    var btnCerrarOrden = pnlDatos.find('#btnCerrarOrden');
-    var btnCancelar = pnlDatos.find('#btnCancelar');
-    var btnImprimir = pnlDatos.find('#btnImprimir');
-    var btnVerProveedores = pnlDatos.find('#btnVerProveedores');
-    var btnVerArticulos = pnlDatos.find('#btnVerArticulos');
+    var btnRegresar = pnlTablero.find("#btnRegresar");
+    var btnCerrarOrden = pnlTablero.find('#btnCerrarOrden');
+    var btnCancelar = pnlTablero.find('#btnCancelar');
+    var btnImprimir = pnlTablero.find('#btnImprimir');
+    var btnVerProveedores = pnlTablero.find('#btnVerProveedores');
+    var btnVerArticulos = pnlTablero.find('#btnVerArticulos');
     var nuevoTemp = 0;
     $(document).ready(function () {
         /*FUNCIONES INICIALES*/
@@ -329,13 +284,6 @@
         /*FUNCIONES X BOTON*/
         btnImprimir.click(function () {
             //HoldOn.open({theme: 'sk-bounce', message: 'GENERANDO REPORTE...'});
-            var movs = [];
-            movs.push({
-                ID: temp
-            });
-            movs.push({
-                ID: (nuevoTemp === 0) ? 0 : nuevoTemp
-            });
             $.post(master_url + 'onImprimirOrdenCompra', {movs: JSON.stringify(movs)}).done(function (data, x, jq) {
                 if (data.length > 0) {
 
@@ -345,6 +293,7 @@
                         opts: {
                             afterShow: function (instance, current) {
                                 console.info('done!');
+                                init();
                             },
                             iframe: {
                                 // Iframe template
@@ -380,115 +329,50 @@
         });
 
         btnCancelar.click(function () {
-            if (temp !== 0 && temp !== undefined && temp > 0) {
-                swal({
-                    title: "Confirmar",
-                    text: "Deseas cancelar el registro?",
-                    icon: "warning",
-                    buttons: ["Cancelar", "Aceptar"],
-                    dangerMode: true
-                }).then((willDelete) => {
-                    if (willDelete) {
-                        HoldOn.open({
-                            theme: "sk-bounce",
-                            message: "CARGANDO DATOS..."
-                        });
-                        $.post(master_url + 'onEliminar', {ID: temp}).done(function (data, x, jq) {
-                            pnlTablero.removeClass("d-none");
-                            pnlDatos.addClass("d-none");
-                            pnlDatosDetalle.addClass("d-none");
-                            Compras.ajax.reload();
-                        }).fail(function (x, y, z) {
-                            console.log(x, y, z);
-                        }).always(function () {
-                            HoldOn.close();
-                        });
-                    }
-                });
+            var tp = pnlDatos.find("#Tp").val();
+            var folio = pnlDatos.find("#Folio").val();
+            if (tp !== 0 && tp !== undefined && tp > 0) {
+                if (folio !== 0 && folio !== undefined && folio > 0) {
+                    swal({
+                        title: "Confirmar",
+                        text: "Deseas cancelar el registro?",
+                        icon: "warning",
+                        buttons: ["Cancelar", "Aceptar"],
+                        dangerMode: true
+                    }).then((willDelete) => {
+                        if (willDelete) {
+                            HoldOn.open({
+                                theme: "sk-bounce",
+                                message: "CARGANDO DATOS..."
+                            });
+                            $.post(master_url + 'onCancelar', {Tp: tp, Folio: folio}).done(function (data, x, jq) {
+                                init();
+                            }).fail(function (x, y, z) {
+                                console.log(x, y, z);
+                            }).always(function () {
+                                HoldOn.close();
+                            });
+                        }
+                    });
+                } else {
+                    onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE CAPTURAR UN FOLIO', 'danger');
+                }
             } else {
-                onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE ELEGIR UN REGISTRO', 'danger');
+                onNotify('<span class="fa fa-exclamation fa-lg"></span>', 'DEBE DE CAPTURAR UN TP', 'danger');
             }
         });
 
         btnAgregar.click(function () {
-
             isValid('pnlDatos');
             if (valido) {
-                var frm = new FormData(pnlDatos.find("#frmNuevo")[0]);
-                if (!nuevo) {
-                    //AgregaDetalle
-                    onAgregarDetalle(pnlDatos.find("#ID").val());
-                } else {
-                    $.ajax({
-                        url: master_url + 'onAgregar',
-                        type: "POST",
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        data: frm
-                    }).done(function (data, x, jq) {
-                        pnlDatos.find("#ID").val(data);
-                        temp = data;
-                        Compras.ajax.reload();
-                        //Deshabilida encabezado
-                        pnlDatos.find('input').attr('readonly', true);
-                        $.each(pnlDatos.find("select"), function (k, v) {
-                            pnlDatos.find("select")[k].selectize.disable();
-                        });
-                        btnCancelar.removeClass('d-none');
-                        btnCerrarOrden.removeClass('d-none');
-                        //AgregaDetalle
-                        onAgregarDetalle(data);
-                    }).fail(function (x, y, z) {
-                        console.log(x, y, z);
-                    }).always(function () {
-                        HoldOn.close();
-                    });
+                //AgregaDetalle
+                isValid('pnlDatosDetalle');
+                if (valido) {
+                    onAgregarDetalle();
                 }
             } else {
                 swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'error');
             }
-        });
-
-        btnNuevo.click(function () {
-            nuevo = true;
-            nuevoTemp = 0;
-            pnlDatos.find("input").val("");
-            pnlDatosDetalle.find("input").val("");
-            $.each(pnlDatos.find("select"), function (k, v) {
-                pnlDatos.find("select")[k].selectize.clear(true);
-            });
-            $.each(pnlDatosDetalle.find("select"), function (k, v) {
-                pnlDatosDetalle.find("select")[k].selectize.clear(true);
-            });
-            if ($.fn.DataTable.isDataTable('#tblComprasDetalle')) {
-                ComprasDetalle.clear().draw();
-            }
-            pnlDatos.find('input').attr('readonly', false);
-            $.each(pnlDatos.find("select"), function (k, v) {
-                pnlDatos.find("select")[k].selectize.enable();
-            });
-            pnlDatos.find("#Tipo")[0].selectize.addItem('80', true);
-            pnlTablero.addClass("d-none");
-            pnlDatos.removeClass("d-none");
-            pnlDatosDetalle.removeClass("d-none");
-            pnlDatosDetalle.find('#ControlesDetalle').removeClass('d-none');
-            btnCancelar.addClass('d-none');
-            btnCerrarOrden.addClass('d-none');
-            btnImprimir.addClass('d-none');
-            var d = new Date();
-            var n = d.getFullYear();
-            pnlDatos.find("#Ano").val(n);
-            pnlDatos.find("#FechaOrden").val(getToday());
-            pnlDatos.find("#Tp").focus();
-            $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
-            temp = 0;
-        });
-
-        btnRegresar.click(function () {
-            pnlTablero.removeClass("d-none");
-            pnlDatos.addClass("d-none");
-            pnlDatosDetalle.addClass("d-none");
         });
 
         btnVerArticulos.click(function () {
@@ -547,6 +431,7 @@
 
         btnCerrarOrden.click(function () {
             var FolioActual = pnlDatos.find("#Folio").val();
+            var tpActual = pnlDatos.find("#Tp").val();
             swal({
                 title: "Confirmar",
                 text: "Deseas cerrar la Orden de Compra?",
@@ -556,15 +441,18 @@
             }).then((willDelete) => {
                 if (willDelete) {
                     if (!seParte) {
-
                         HoldOn.open({theme: "sk-bounce", message: "POR FAVOR ESPERE..."});
-                        $.post(master_url + 'onCerrarOrden', {ID: temp}).done(function (data, x, jq) {
+                        $.post(master_url + 'onCerrarOrden', {Tp: tpActual, Folio: FolioActual}).done(function (data, x, jq) {
                             btnCancelar.addClass('d-none');
                             btnCerrarOrden.addClass('d-none');
                             btnImprimir.removeClass('d-none');
                             pnlDatosDetalle.find('#ControlesDetalle').addClass('d-none');
+                            //Agregamos al arreglo para poder imprimir el reporte
+                            movs.push({
+                                Tp: tpActual,
+                                Folio: FolioActual
+                            });
                             HoldOn.close();
-                            Compras.ajax.reload();
                             btnImprimir.trigger('click');
                         }).fail(function (x, y, z) {
                             console.log(x, y, z);
@@ -572,110 +460,104 @@
 
                     } else {//Else de si se parte en dos o no
                         HoldOn.open({theme: "sk-bounce", message: "POR FAVOR ESPERE..."});
+                        //Agregamos el mov para el reporte
+                        movs.push({
+                            Tp: tpActual,
+                            Folio: FolioActual
+                        });
+
                         //Para encabezado nuevo de TP 2
-                        $.getJSON(master_url + 'getOrdenCompraByID', {ID: temp}).done(function (dataEncabezado) {
+                        $.getJSON(master_url + 'getOrdenCompraByTpFolio', {Tp: tpActual, Folio: FolioActual}).done(function (dataEncabezado) {
                             var enc = dataEncabezado[0];
-                            var frm = new FormData();
-                            $.when($.getJSON(master_url + 'getFolio', {tp: '2'}).done(function (data, x, jq) {
+                            var tpNuevo = (parseInt(tpActual) > 1) ? '1' : '2';
+
+                            $.when($.getJSON(master_url + 'getFolio', {tp: tpNuevo}).done(function (data, x, jq) {
+
                                 if (data.length > 0) {
                                     folioNuevo = $.isNumeric(data[0].Folio) ? parseInt(data[0].Folio) + 1 : 1;
                                 } else {
                                     folioNuevo = 1;
                                 }
                             })).done(function (x) {
-                                frm.append('Tp', 2);
-                                frm.append('Ano', enc.Ano);
-                                frm.append('Proveedor', enc.Proveedor);
-                                frm.append('Tipo', enc.Tipo);
-                                frm.append('Folio', folioNuevo);
-                                frm.append('FechaOrden', enc.FechaOrden);
-                                frm.append('FechaCaptura', enc.FechaCaptura);
-                                frm.append('FechaEntrega', enc.FechaEntrega);
-                                frm.append('ConsignarA', enc.ConsignarA);
-                                frm.append('Sem', enc.Sem);
-                                frm.append('Maq', enc.Maq);
-                                frm.append('Ano', enc.Ano);
-                                frm.append('Observaciones', enc.Observaciones);
-                                frm.append('Estatus', 'ACTIVA');
-                                //Inserta nuevo encabezado y regresa el ID para agregarlo en el detalle del nuevo encabezado
-                                //Partiendo del anterior encabezado y actualizando el movimiento anterior
-                                $.ajax({
-                                    url: master_url + 'onAgregarCompraPartida',
-                                    type: "POST",
-                                    cache: false,
-                                    contentType: false,
-                                    processData: false,
-                                    data: frm
-                                }).done(function (data, x, jq) {
-                                    nuevoTemp = data; //ID nuevo Encabezado
-                                    //ACtualizamos estatus del encabezado anterior a CERRADO y TP siempre 1
-                                    $.post(master_url + 'onCerrarOrdenAnterior', {ID: temp}).done(function (data, x, jq) {
-                                        $.getJSON(master_url + 'getDetalleParaSepararByID', {ID: temp}).done(function (data) {
-                                            $.each(data, function (k, v) {
-                                                var Precio = v.Precio;
-                                                var Articulo = v.Articulo;
-                                                var NuevaCantidadNueva = v.Cantidad * PorRemision;
-                                                var NuevaSubtotalNueva = NuevaCantidadNueva * Precio;
-                                                //Para modificar anterior y restarle el porcentaje
-                                                var NuevaCantidadAnterior = v.Cantidad * PorFactura;
-                                                var NuevaSubtotalAnterior = NuevaCantidadAnterior * Precio;
+                                movs.push({
+                                    Tp: tpNuevo,
+                                    Folio: folioNuevo
+                                });
+                                //ACtualizamos estatus del encabezado anterior a ACTIVA
+                                $.post(master_url + 'onCerrarOrdenAnterior', {Tp: tpActual, Folio: FolioActual}).done(function (data, x, jq) {
+                                    //Partiendo del anterior encabezado y actualizando el movimiento anterior
+                                    $.getJSON(master_url + 'getDetalleParaSepararByID', {Tp: tpActual, Folio: FolioActual}).done(function (data) {
+                                        $.each(data, function (k, v) {
+                                            var Precio = v.Precio;
+                                            var Articulo = v.Articulo;
+                                            var NuevaCantidadNueva = v.Cantidad * PorRemision;
+                                            var NuevaSubtotalNueva = NuevaCantidadNueva * Precio;
+                                            //Para modificar anterior y restarle el porcentaje
+                                            var NuevaCantidadAnterior = v.Cantidad * PorFactura;
+                                            var NuevaSubtotalAnterior = NuevaCantidadAnterior * Precio;
 
-                                                //insert OC Detalle
-                                                var detalle = {
-                                                    OrdenCompra: nuevoTemp,
-                                                    Articulo: Articulo,
-                                                    Cantidad: NuevaCantidadNueva,
-                                                    Precio: Precio,
-                                                    SubTotal: NuevaSubtotalNueva
+                                            //insert OC Detalle
+                                            var detalle = {
+                                                Tp: tpNuevo,
+                                                Folio: folioNuevo,
+                                                Tipo: enc.Tipo,
+                                                Proveedor: enc.Proveedor,
+                                                FechaOrden: enc.FechaOrden,
+                                                Maq: enc.Maq,
+                                                Ano: enc.Ano,
+                                                Sem: enc.Sem,
+                                                FechaEntrega: enc.FechaEntrega,
+                                                ConsignarA: enc.ConsignarA,
+                                                Observaciones: enc.Observaciones,
+                                                Articulo: Articulo,
+                                                Cantidad: NuevaCantidadNueva,
+                                                Precio: Precio,
+                                                SubTotal: NuevaSubtotalNueva,
+                                                Estatus: 'ACTIVA'
+                                            };
+                                            //Inserta nuevos registros
+                                            $.post(master_url + 'onAgregarDetalle', detalle).done(function (data) {
+                                                var detalleAnterior = {
+                                                    ID: v.ID,
+                                                    Cantidad: NuevaCantidadAnterior,
+                                                    SubTotal: NuevaSubtotalAnterior
                                                 };
-                                                //update actual o.c
-                                                $.post(master_url + 'onAgregarDetalle', detalle).done(function (data) {
-                                                    var detalleAnterior = {
-                                                        ID: v.ID,
-                                                        Cantidad: NuevaCantidadAnterior,
-                                                        SubTotal: NuevaSubtotalAnterior
-                                                    };
-                                                    $.post(master_url + 'onModificarDetalle', detalleAnterior).done(function (data) {
 
-                                                        HoldOn.close();
+                                                //update actual o.c con las nuevas cantidades
+                                                $.post(master_url + 'onModificarDetalle', detalleAnterior).done(function (data) {
+
+                                                    HoldOn.close();
+                                                    swal({
+                                                        title: 'Importante',
+                                                        text: 'Se ha cerrado la compra TP 1 con el FOLIO: ' + FolioActual,
+                                                        icon: 'success'
+                                                    }).then((value) => {
                                                         swal({
                                                             title: 'Importante',
-                                                            text: 'Se ha cerrado la compra TP 1 con el FOLIO: ' + FolioActual,
+                                                            text: 'Se ha cerrado la compra TP 2 con el FOLIO: ' + folioNuevo,
                                                             icon: 'success'
                                                         }).then((value) => {
-                                                            swal({
-                                                                title: 'Importante',
-                                                                text: 'Se ha cerrado la compra TP 2 con el FOLIO: ' + folioNuevo,
-                                                                icon: 'success'
-                                                            }).then((value) => {
-                                                                btnCancelar.addClass('d-none');
-                                                                btnCerrarOrden.addClass('d-none');
-                                                                btnImprimir.removeClass('d-none');
-                                                                pnlDatosDetalle.find('#ControlesDetalle').addClass('d-none');
-                                                                ComprasDetalle.ajax.reload();
-                                                                Compras.ajax.reload();
-                                                                HoldOn.close();
-                                                                btnImprimir.trigger('click');
-                                                            });
-                                                        });
-                                                    }).fail(function (x, y, z) {
-                                                        console.log(x, y, z);
-                                                    });
 
+                                                            HoldOn.close();
+                                                            btnImprimir.trigger('click');
+                                                        });
+                                                    });
                                                 }).fail(function (x, y, z) {
                                                     console.log(x, y, z);
                                                 });
+
+                                            }).fail(function (x, y, z) {
+                                                console.log(x, y, z);
                                             });
-                                        }).fail(function (x) {
-                                            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-                                            console.log(x.responseText);
                                         });
-                                    }).fail(function (x, y, z) {
-                                        console.log(x, y, z);
-                                    }); //CERRAR ORDEN ANTERIOR
+                                    }).fail(function (x) {
+                                        swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+                                        console.log(x.responseText);
+                                    });
                                 }).fail(function (x, y, z) {
                                     console.log(x, y, z);
-                                });//AGREGA NUEVO ENCABEZADO
+                                }); //CERRAR ORDEN ANTERIOR
+
                             });
                         }).fail(function (x) {
                             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
@@ -688,169 +570,36 @@
     });
 
     function init() {
-        getRecords();
-    }
-
-    function getRecords() {
-        temp = 0;
-        HoldOn.open({
-            theme: 'sk-cube',
-            message: 'CARGANDO...'
+        nuevo = true;
+        movs = [];
+        pnlDatos.find("input").val("");
+        pnlDatosDetalle.find("input").val("");
+        $.each(pnlDatos.find("select"), function (k, v) {
+            pnlDatos.find("select")[k].selectize.clear(true);
         });
-        $.fn.dataTable.ext.errMode = 'throw';
-        if ($.fn.DataTable.isDataTable('#tblCompras')) {
-            tblCompras.DataTable().destroy();
+        $.each(pnlDatosDetalle.find("select"), function (k, v) {
+            pnlDatosDetalle.find("select")[k].selectize.clear(true);
+        });
+        if ($.fn.DataTable.isDataTable('#tblComprasDetalle')) {
+            ComprasDetalle.clear().draw();
         }
-        Compras = tblCompras.DataTable({
-            "dom": 'Bfrtip',
-            buttons: buttons,
-            "ajax": {
-                "url": master_url + 'getRecords',
-                "dataSrc": ""
-            },
-            "columns": [
-                {"data": "ID"}, {"data": "Tp"}, {"data": "Tipo"},
-                {"data": "Folio"}, {"data": "Proveedor"}, {"data": "Fecha"},
-                {"data": "Ano"}, {"data": "Sem"}, {"data": "Maq"},
-                {"data": "Estatus"}
-            ],
-            "columnDefs": [
-                {
-                    "targets": [0],
-                    "visible": false,
-                    "searchable": false
-                }
-            ],
-            language: lang,
-            select: true,
-            "autoWidth": true,
-            "colReorder": true,
-            "displayLength": 20,
-            "bLengthChange": false,
-            "deferRender": true,
-            "scrollCollapse": false,
-            "bSort": true,
-            "aaSorting": [
-                [1, 'desc'], [3, 'desc']/*Folio*/
-            ],
-            "createdRow": function (row, data, index) {
-                $.each($(row).find("td"), function (k, v) {
-                    var c = $(v);
-                    var index = parseInt(k);
-                    switch (index) {
-                        case 2:
-                            /*FOLIO*/
-                            c.addClass('text-info text-strong');
-                            break;
-                        case 5:
-                            /*ANO*/
-                            c.addClass('text-info text-strong');
-                            break;
-                        case 6:
-                            /*SEM*/
-                            c.addClass('text-info text-strong');
-                            break;
-                        case 7:
-                            /*MAQ*/
-                            c.addClass('text-info text-strong');
-                            break;
-                    }
-                });
-            },
-            initComplete: function (a, b) {
-                HoldOn.close();
-            }
+        pnlDatos.find('input').attr('readonly', false);
+        $.each(pnlDatos.find("select"), function (k, v) {
+            pnlDatos.find("select")[k].selectize.enable();
         });
-
-        $('#tblCompras tfoot th').each(function () {
-            var title = $(this).text();
-            $(this).html('<input type="text" placeholder="Buscar por ' + title + '" class="form-control form-control-sm" style="width: 100%;"/>');
-        });
-
-        Compras.columns().every(function () {
-            var that = this;
-            $('input', this.footer()).on('keyup change', function () {
-                if (that.search() !== this.value) {
-                    that.search(this.value).draw();
-                }
-            });
-        });
-
-
-        $('#tblCompras_filter input[type=search]').focus();
-
-        tblCompras.find('tbody').on('click', 'tr', function () {
-            HoldOn.open({
-                theme: 'sk-cube',
-                message: 'CARGANDO...'
-            });
-            nuevo = false;
-            tblCompras.find("tbody tr").removeClass("success");
-            $(this).addClass("success");
-            var dtm = Compras.row(this).data();
-            temp = parseInt(dtm.ID);
-            nuevoTemp = 0;
-
-            $.getJSON(master_url + 'getOrdenCompraByID', {ID: temp}).done(function (data) {
-                pnlDatos.find("input").val("");
-                $.each(pnlDatos.find("select"), function (k, v) {
-                    pnlDatos.find("select")[k].selectize.clear(true);
-                });
-                $.each(pnlDatosDetalle.find("select"), function (k, v) {
-                    pnlDatosDetalle.find("select")[k].selectize.clear(true);
-                });
-
-
-                pnlTablero.addClass("d-none");
-                pnlDatos.removeClass('d-none');
-                pnlDatosDetalle.removeClass('d-none');
-
-
-                pnlDatos.find('input').attr('readonly', true);
-                $.each(pnlDatos.find("select"), function (k, v) {
-                    pnlDatos.find("select")[k].selectize.disable();
-                });
-                estatus = data[0].Estatus;
-                if (estatus === 'ACTIVA') {
-                    btnCancelar.addClass('d-none');
-                    btnCerrarOrden.addClass('d-none');
-                    btnImprimir.removeClass('d-none');
-                    pnlDatosDetalle.find('#ControlesDetalle').addClass('d-none');
-                } else {
-                    btnCancelar.removeClass('d-none');
-                    btnCerrarOrden.removeClass('d-none');
-                    btnImprimir.addClass('d-none');
-                }
-
-                //Obtener proveedor en base al tp
-                $.when($.getJSON(master_url + 'getProveedores').done(function (data) {
-                    pnlDatos.find("#Proveedor")[0].selectize.clear(true);
-                    pnlDatos.find("#Proveedor")[0].selectize.clearOptions();
-                    $.each(data, function (k, v) {
-                        pnlDatos.find("#Proveedor")[0].selectize.addOption({text: (data[0].Tp === 1) ? v.ProveedorF : v.ProveedorI, value: v.ID});
-                    });
-                })).done(function (x) {
-                    $.each(data[0], function (k, v) {
-                        pnlDatos.find("[name='" + k + "']").val(v);
-                        if (pnlDatos.find("[name='" + k + "']").is('select')) {
-                            pnlDatos.find("[name='" + k + "']")[0].selectize.addItem(v, true);
-                        }
-                    });
-                    getCabecerosByProveedor(data[0].Proveedor);
-                    getPorcentajesCompraByProveedor(data[0].Proveedor);
-                });
-
-                //Cargar Detalle
-                getDetalleByID(temp);
-            }).fail(function (x, y, z) {
-                swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-                console.log(x.responseText);
-            }).always(function () {
-                HoldOn.close();
-            });
-        });
-
+        pnlDatos.find("#Tipo")[0].selectize.addItem('80', true);
+        btnCancelar.addClass('d-none');
+        btnCerrarOrden.addClass('d-none');
+        btnImprimir.addClass('d-none');
+        var d = new Date();
+        var n = d.getFullYear();
+        pnlDatos.find("#Ano").val(n);
+        pnlDatos.find("#FechaOrden").val(getToday());
+        pnlDatos.find("#Tp").focus();
+        $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
+        temp = 0;
     }
+
     function getFolio(tp) {
         $.getJSON(master_url + 'getFolio', {tp: tp}).done(function (data, x, jq) {
             if (data.length > 0) {
@@ -902,7 +651,6 @@
             console.log(x, y, z);
         });
     }
-
     function getPorcentajesCompraByProveedor(proveedor) {
         $.getJSON(master_url + 'getPorcentajesCompraByProveedor', {Proveedor: proveedor}).done(function (data) {
             if (data.length > 0) {
@@ -1090,7 +838,7 @@
         });
     }
     /*Detalle*/
-    function getDetalleByID(IDX) {
+    function getDetalleByID(tp, folio) {
         if ($.fn.DataTable.isDataTable('#tblComprasDetalle')) {
             tblComprasDetalle.DataTable().destroy();
         }
@@ -1100,7 +848,8 @@
                 "dataSrc": "",
                 "type": 'POST',
                 "data": {
-                    "ID": IDX
+                    "Tp": tp,
+                    "Folio": folio
                 }
             },
             "columnDefs": [
@@ -1192,75 +941,81 @@
     }
     var cant_aux = 0;
     var total;
-    function onAgregarDetalle(IDX) {
+    function onAgregarDetalle() {
         HoldOn.open({theme: 'sk-bounce', message: 'CARGANDO DATOS...'});
         var table = pnlDatosDetalle.find('#tblTallas');
         var arts = pnlDatosDetalle.find("#tblTallas > tbody > tr").eq(0);
         var precios = pnlDatosDetalle.find("#tblTallas > tbody > tr").eq(1);
 
+        /*Encabezado*/
+        var tp = pnlDatos.find("#Tp").val();
+        var folio = pnlDatos.find("#Folio").val();
+        var tipo = pnlDatos.find("#Tipo").val();
+        var prov = pnlDatos.find("#Proveedor").val();
+        var fecha = pnlDatos.find("#FechaOrden").val();
+        var maq = pnlDatos.find("#Maq").val();
+        var ano = pnlDatos.find("#Ano").val();
+        var sem = pnlDatos.find("#Sem").val();
+        var fechaEnt = pnlDatos.find("#FechaEntrega").val();
+        var consignarA = pnlDatos.find("#ConsignarA").val();
+        var observaciones = pnlDatos.find("#Observaciones").val();
+
         $.when($.each(table.find("input.numbersOnly:enabled"), function (k, v) {
             if (parseFloat($(v).val()) > 0) {
                 var precio = precios.find('td').eq($(this).parent().index()).find("input").val();
                 var articulo = arts.find('td').eq($(this).parent().index()).find("input").val();
-                var articuloAnt = arts.find('td').eq($(this).parent().index() - 1).find("input").val();
+                //var articuloAnt = arts.find('td').eq($(this).parent().index() - 1).find("input").val();
                 var cantidad = parseFloat($(v).val());
+                var detalle = {
+                    Tp: tp,
+                    Folio: folio,
+                    Tipo: tipo,
+                    Proveedor: prov,
+                    FechaOrden: fecha,
+                    Maq: maq,
+                    Ano: ano,
+                    Sem: sem,
+                    FechaEntrega: fechaEnt,
+                    ConsignarA: consignarA,
+                    Observaciones: observaciones,
+                    Articulo: articulo,
+                    Cantidad: cantidad,
+                    Precio: precio,
+                    SubTotal: parseFloat(precio * cantidad),
+                    Estatus: 'BORRADOR'
+                };
 
-                if (articuloAnt === undefined) {
-                    cant_aux = cantidad;
-                    total = precio * cant_aux;
-                    var detalle = {
-                        OrdenCompra: IDX,
-                        Articulo: articulo,
-                        Cantidad: cant_aux,
-                        Precio: precio,
-                        SubTotal: parseFloat(total)
-                    };
+                $.post(master_url + 'onAgregarDetalleTemp', detalle).done(function (data) {
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                });
 
-                    $.post(master_url + 'onAgregarDetalle', detalle).done(function (data) {
-                    }).fail(function (x, y, z) {
-                        console.log(x, y, z);
-                    });
-                } else if (articulo === articuloAnt) {
-                    cant_aux += cantidad;
-                    total = cant_aux * precio;
-                    var detalle = {
-                        OrdenCompra: IDX,
-                        Articulo: articulo,
-                        Cantidad: cant_aux,
-                        SubTotal: parseFloat(total)
-                    };
-                    $.post(master_url + 'onModificarDetalleByClave', detalle).done(function (data) {
-                    }).fail(function (x, y, z) {
-                        console.log(x, y, z);
-                    });
-
-                } else if (articuloAnt !== articulo) {
-                    cant_aux = cantidad;
-                    total = precio * cant_aux;
-                    var detalle = {
-                        OrdenCompra: IDX,
-                        Articulo: articulo,
-                        Cantidad: cant_aux,
-                        Precio: precio,
-                        SubTotal: parseFloat(total)
-                    };
-                    $.post(master_url + 'onAgregarDetalle', detalle).done(function (data) {
-                    }).fail(function (x, y, z) {
-                        console.log(x, y, z);
-                    });
-                }
             }
         })).then(function (data, textStatus, jqXHR) {
+
+            $.post(master_url + 'onInsertarDetalleOptimizado', {Tp: tp, Folio: folio}).done(function (data) {
+            }).fail(function (x, y, z) {
+                console.log(x, y, z);
+            });
+
             if (nuevo) {
-                getDetalleByID(IDX);
+                getDetalleByID(tp, folio);
                 nuevo = false;
             } else {
                 ComprasDetalle.ajax.reload();
             }
 
+            //Despues de que se guarda
+            btnCancelar.removeClass('d-none');
+            btnCerrarOrden.removeClass('d-none');
             pnlDatosDetalle.find("input").val('');
             pnlDatosDetalle.find("[name='Articulo']")[0].selectize.clear(true);
             pnlDatosDetalle.find("[name='Articulo']")[0].selectize.focus();
+            //Deshabilida encabezado
+            pnlDatos.find('input').attr('readonly', true);
+            $.each(pnlDatos.find("select"), function (k, v) {
+                pnlDatos.find("select")[k].selectize.disable();
+            });
             HoldOn.close();
         });
     }

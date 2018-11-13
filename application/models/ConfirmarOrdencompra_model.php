@@ -28,6 +28,7 @@ class ConfirmarOrdencompra_model extends CI_Model {
                             ->from("ordencompra AS OC")
                             ->join("proveedores AS P", 'P.Clave =  OC.Proveedor')
                             ->where_in('OC.Estatus', array('ACTIVA'))
+                            ->group_by('OC.Tp', 'OC.Folio')
                             ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -42,9 +43,9 @@ class ConfirmarOrdencompra_model extends CI_Model {
         }
     }
 
-    public function onModificar($ID, $DATA) {
+    public function onModificar($Tp, $Folio, $DATA) {
         try {
-            $this->db->where('ID', $ID)->update("ordencompra", $DATA);
+            $this->db->where('Tp', $Tp)->where('Folio', $Folio)->update("ordencompra", $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -95,6 +96,7 @@ class ConfirmarOrdencompra_model extends CI_Model {
                     ->where('OC.Maq', $Maq)
                     ->where('OC.Tipo', $Tipo)
                     ->where_in('OC.Estatus', array('ACTIVA'))
+                    ->group_by('OC.Tp', 'OC.Folio')
                     ->order_by('OC.Folio', 'ASC');
 //                    ->where('OC.Tp', $TP);
             $query = $this->db->get();
