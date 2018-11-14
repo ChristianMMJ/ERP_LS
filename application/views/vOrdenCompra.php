@@ -166,9 +166,6 @@
         </div>
     </div>
 </div>
-
-
-
 <script>
     var master_url = base_url + 'index.php/OrdenCompra/';
     var tblCompras = $('#tblCompras');
@@ -307,62 +304,75 @@
                 Folio: FolioB
             }).done(function (data) {
                 if (data.length > 0) {
-                    //NOS TRAEMOS LOS DATOS DE LA ORDEN DE COMPRA YA CAPTURADA EN BORRADOR Y BRINCAMOS EL FOCO A LOS ARTICULOS
-                    if (data[0].Estatus === 'BORRADOR') {
+                    //EL DOCUMENTO SOLO PUEDE SER TIPO 10 O 90
+                    if (data[0].Tipo === '10' || data[0].Tipo === '90') {
+                        //NOS TRAEMOS LOS DATOS DE LA ORDEN DE COMPRA YA CAPTURADA EN BORRADOR Y BRINCAMOS EL FOCO A LOS ARTICULOS
+                        if (data[0].Estatus === 'BORRADOR') {
 
-                        //Obtener Proveedores y llenar campos de toda la orden
-                        pnlDatos.find("#Proveedor")[0].selectize.clear(true);
-                        pnlDatos.find("#Proveedor")[0].selectize.clearOptions();
-                        $.when($.getJSON(master_url + 'getProveedores').done(function (data) {
-                            $.each(data, function (k, v) {
-                                pnlDatos.find("#Proveedor")[0].selectize.addOption({text: (parseInt(TpB) === 1) ? v.ProveedorF : v.ProveedorI, value: v.ID});
+                            //Obtener Proveedores y llenar campos de toda la orden
+                            pnlDatos.find("#Proveedor")[0].selectize.clear(true);
+                            pnlDatos.find("#Proveedor")[0].selectize.clearOptions();
+                            $.when($.getJSON(master_url + 'getProveedores').done(function (data) {
+                                $.each(data, function (k, v) {
+                                    pnlDatos.find("#Proveedor")[0].selectize.addOption({text: (parseInt(TpB) === 1) ? v.ProveedorF : v.ProveedorI, value: v.ID});
+                                });
+                            })).done(function (x) {
+                                $.each(data[0], function (k, v) {
+                                    pnlDatos.find("[name='" + k + "']").val(v);
+                                    if (pnlDatos.find("[name='" + k + "']").is('select')) {
+                                        pnlDatos.find("[name='" + k + "']")[0].selectize.addItem(v, true);
+                                    }
+                                });
                             });
-                        })).done(function (x) {
-                            $.each(data[0], function (k, v) {
-                                pnlDatos.find("[name='" + k + "']").val(v);
-                                if (pnlDatos.find("[name='" + k + "']").is('select')) {
-                                    pnlDatos.find("[name='" + k + "']")[0].selectize.addItem(v, true);
+
+                            //Obtener Articulos del proveedor y el tipo
+                            $.getJSON(master_url + 'getArticuloByDeptoByProveedor', {Departamento: data[0].Tipo, Proveedor: data[0].Proveedor}).done(function (data) {
+                                if (data.length > 0) {
+                                    $.each(data, function (k, v) {
+                                        pnlDatosDetalle.find("#Articulo")[0].selectize.addOption({text: v.Articulo, value: v.CLAVE});
+                                    });
                                 }
                             });
-                        });
-
-                        //Obtener Articulos del proveedor y el tipo
-                        $.getJSON(master_url + 'getArticuloByDeptoByProveedor', {Departamento: data[0].Tipo, Proveedor: data[0].Proveedor}).done(function (data) {
-                            if (data.length > 0) {
-                                $.each(data, function (k, v) {
-                                    pnlDatosDetalle.find("#Articulo")[0].selectize.addOption({text: v.Articulo, value: v.CLAVE});
-                                });
-                            }
-                        });
-                        //Verificamos el proveedor para saber si partimos la orden en base al %
-                        getPorcentajesCompraByProveedor(data[0].Proveedor);
-                        //Nos traemos el detalle
-                        getDetalleByID(TpB, FolioB);
-                        //Acciones secundarias previas a la captura
-                        pnlTablero.find('#Acciones').removeClass('d-none');
-                        pnlTablero.find('#Busqueda').addClass('d-none');
-                        pnlTablero.find('#Busqueda').find('input').val('');
-                        pnlDatos.find('input').attr('readonly', true);
-                        $.each(pnlDatos.find("select"), function (k, v) {
-                            pnlDatos.find("select")[k].selectize.disable();
-                        });
-                        btnCancelar.removeClass('d-none');
-                        btnCerrarOrden.removeClass('d-none');
-                        //Seteamos el foco en articulo para continuar capturando
-                        pnlDatosDetalle.find("#Articulo")[0].selectize.focus();
+                            //Verificamos el proveedor para saber si partimos la orden en base al %
+                            getPorcentajesCompraByProveedor(data[0].Proveedor);
+                            //Nos traemos el detalle
+                            getDetalleByID(TpB, FolioB);
+                            //Acciones secundarias previas a la captura
+                            pnlTablero.find('#Acciones').removeClass('d-none');
+                            pnlTablero.find('#Busqueda').addClass('d-none');
+                            pnlTablero.find('#Busqueda').find('input').val('');
+                            pnlDatos.find('input').attr('readonly', true);
+                            $.each(pnlDatos.find("select"), function (k, v) {
+                                pnlDatos.find("select")[k].selectize.disable();
+                            });
+                            btnCancelar.removeClass('d-none');
+                            btnCerrarOrden.removeClass('d-none');
+                            //Seteamos el foco en articulo para continuar capturando
+                            pnlDatosDetalle.find("#Articulo")[0].selectize.focus();
 
 
 
-                    } else { //SI LA ORDEN DE COMPRA YA EXISTE Y ESTATUS CONCLUIDA SOLO MOSTRAMOS AVISO DE QUE YA ESTA CERRADA
+                        } else { //SI LA ORDEN DE COMPRA YA EXISTE Y ESTATUS CONCLUIDA SOLO MOSTRAMOS AVISO DE QUE YA ESTA CERRADA
+                            swal({
+                                title: "ATENCIÓN",
+                                text: "ORDEN DE COMPRA ACTIVA, PENDIENTE O RECIBIDA",
+                                icon: "warning"
+                            }).then((value) => {
+                                pnlTablero.find('#Busqueda').find('input').val('');
+                                pnlTablero.find('#Busqueda').find('#TpB').focus();
+                            });
+                        }
+                    } else {//EL DOCUMENTO ES TIPO 80
                         swal({
                             title: "ATENCIÓN",
-                            text: "ORDEN DE COMPRA ACTIVA, PENDIENTE O RECIBIDA",
+                            text: "ORDEN DE COMPRA SÓLO PUEDE SER DEL TIPO 10 Y 90",
                             icon: "warning"
                         }).then((value) => {
                             pnlTablero.find('#Busqueda').find('input').val('');
                             pnlTablero.find('#Busqueda').find('#TpB').focus();
                         });
                     }
+
                 } else {//EL DOCUMENTO NO EXISTE
                     swal({
                         title: "ATENCIÓN",
@@ -373,6 +383,9 @@
                         pnlTablero.find('#Busqueda').find('#TpB').focus();
                     });
                 }
+
+
+
             }).fail(function (x, y, z) {
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
                 console.log(x.responseText);
