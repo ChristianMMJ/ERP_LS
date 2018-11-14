@@ -4,8 +4,10 @@
             <div class="col-sm-6 float-left">
                 <legend class="float-left">Órdenes de Compra (PLANTAS, SUELAS, ENTRESUELAS)</legend>
             </div>
-            <div class="col-12 col-sm-6 col-md-6" align="right">
-
+            <div class="col-12 col-sm-6 col-md-6 animated bounceInLeft" align="right" id="Acciones">
+                <button type="button" class="btn btn-primary btn-sm " id="btnBuscar" >
+                    <span class="fa fa-search" ></span> BUSCAR O.C.
+                </button>
                 <button type="button" class="btn btn-secondary btn-sm " id="btnVerProveedores" >
                     <span class="fa fa-user-secret" ></span> PROVEEDORES
                 </button>
@@ -19,6 +21,26 @@
                     <span class="fa fa-ban" ></span> CANCELAR O.C.
                 </button>
 
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 d-none animated flipInX" id="Busqueda">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-4">
+                            <input type="text" class="form-control form-control-sm numbersOnly" maxlength="1" id="TpB" placeholder="Tp">
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control form-control-sm numbersOnly" id="FolioB" placeholder="Folio">
+                        </div>
+                        <div class="col-4 text-right">
+                            <button type="button" id="btnAceptarBusqueda" class="btn btn-primary btn-sm ">
+                                <span class="fa fa-check"></span> ACEPTAR
+                            </button>
+                            <button type="button" id="btnCancelarBusqueda" class="btn btn-secondary btn-sm " data-toggle="tooltip" data-placement="top" title="Cancelar Busqueda">
+                                <span class="fa fa-arrow-left"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <hr>
@@ -194,7 +216,13 @@
     var btnImprimir = pnlTablero.find('#btnImprimir');
     var btnVerProveedores = pnlTablero.find('#btnVerProveedores');
     var btnVerArticulos = pnlTablero.find('#btnVerArticulos');
-    var nuevoTemp = 0;
+
+
+    /*Busqueda*/
+    var btnBuscar = $('#btnBuscar');
+    var btnAceptarBusqueda = $('#btnAceptarBusqueda');
+    var btnCancelarBusqueda = $('#btnCancelarBusqueda');
+
     $(document).ready(function () {
         /*FUNCIONES INICIALES*/
         init();
@@ -282,6 +310,98 @@
         });
 
         /*FUNCIONES X BOTON*/
+        btnBuscar.click(function () {
+            pnlTablero.find('#Acciones').addClass('d-none');
+            pnlTablero.find('#Busqueda').removeClass('d-none');
+            pnlTablero.find('#Busqueda').find('#TpB').focus();
+        });
+
+        btnCancelarBusqueda.click(function () {
+            pnlTablero.find('#Acciones').removeClass('d-none');
+            pnlTablero.find('#Busqueda').addClass('d-none');
+            pnlTablero.find('#Busqueda').find('input').val('');
+        });
+
+        btnAceptarBusqueda.click(function () {
+            var TpB = pnlTablero.find('#Busqueda').find('#TpB').val();
+            var FolioB = pnlTablero.find('#Busqueda').find('#FolioB').val();
+            $.getJSON(master_url + 'getOrdenCompraByTpFolio', {
+                Tp: TpB,
+                Folio: FolioB
+            }).done(function (data) {
+                if (data.length > 0) {
+                    //NOS TRAEMOS LOS DATOS DE LA ORDEN DE COMPRA YA CAPTURADA EN BORRADOR Y BRINCAMOS EL FOCO A LOS ARTICULOS
+                    if (data[0].Estatus === 'BORRADOR') {
+
+                        //Obtener Proveedores y llenar campos de toda la orden
+                        pnlDatos.find("#Proveedor")[0].selectize.clear(true);
+                        pnlDatos.find("#Proveedor")[0].selectize.clearOptions();
+                        $.when($.getJSON(master_url + 'getProveedores').done(function (data) {
+                            $.each(data, function (k, v) {
+                                pnlDatos.find("#Proveedor")[0].selectize.addOption({text: (parseInt(TpB) === 1) ? v.ProveedorF : v.ProveedorI, value: v.ID});
+                            });
+                        })).done(function (x) {
+                            $.each(data[0], function (k, v) {
+                                pnlDatos.find("[name='" + k + "']").val(v);
+                                if (pnlDatos.find("[name='" + k + "']").is('select')) {
+                                    pnlDatos.find("[name='" + k + "']")[0].selectize.addItem(v, true);
+                                }
+                            });
+                        });
+
+                        //Obtener Articulos del proveedor y el tipo
+                        $.getJSON(master_url + 'getArticuloByDeptoByProveedor', {Departamento: data[0].Tipo, Proveedor: data[0].Proveedor}).done(function (data) {
+                            if (data.length > 0) {
+                                $.each(data, function (k, v) {
+                                    pnlDatosDetalle.find("#Articulo")[0].selectize.addOption({text: v.Articulo, value: v.CLAVE});
+                                });
+                            }
+                        });
+                        //Verificamos el proveedor para saber si partimos la orden en base al %
+                        getPorcentajesCompraByProveedor(data[0].Proveedor);
+                        //Nos traemos el detalle
+                        getDetalleByID(TpB, FolioB);
+                        //Acciones secundarias previas a la captura
+                        pnlTablero.find('#Acciones').removeClass('d-none');
+                        pnlTablero.find('#Busqueda').addClass('d-none');
+                        pnlTablero.find('#Busqueda').find('input').val('');
+                        pnlDatos.find('input').attr('readonly', true);
+                        $.each(pnlDatos.find("select"), function (k, v) {
+                            pnlDatos.find("select")[k].selectize.disable();
+                        });
+                        btnCancelar.removeClass('d-none');
+                        btnCerrarOrden.removeClass('d-none');
+                        //Seteamos el foco en articulo para continuar capturando
+                        pnlDatosDetalle.find("#Articulo")[0].selectize.focus();
+
+
+
+                    } else { //SI LA ORDEN DE COMPRA YA EXISTE Y ESTATUS CONCLUIDA SOLO MOSTRAMOS AVISO DE QUE YA ESTA CERRADA
+                        swal({
+                            title: "ATENCIÓN",
+                            text: "ORDEN DE COMPRA ACTIVA, PENDIENTE O RECIBIDA",
+                            icon: "warning"
+                        }).then((value) => {
+                            pnlTablero.find('#Busqueda').find('input').val('');
+                            pnlTablero.find('#Busqueda').find('#TpB').focus();
+                        });
+                    }
+                } else {//EL DOCUMENTO NO EXISTE
+                    swal({
+                        title: "ATENCIÓN",
+                        text: "ORDEN DE COMPRA INEXISTENTE",
+                        icon: "warning"
+                    }).then((value) => {
+                        pnlTablero.find('#Busqueda').find('input').val('');
+                        pnlTablero.find('#Busqueda').find('#TpB').focus();
+                    });
+                }
+            }).fail(function (x, y, z) {
+                swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+                console.log(x.responseText);
+            });
+        });
+
         btnImprimir.click(function () {
             //HoldOn.open({theme: 'sk-bounce', message: 'GENERANDO REPORTE...'});
             $.post(master_url + 'onImprimirOrdenCompra', {movs: JSON.stringify(movs)}).done(function (data, x, jq) {

@@ -81,26 +81,64 @@ class RecibeOrdenCompra extends CI_Controller {
                     'OC' => $v->OC,
                 ));
             }
-            //Quitar repetivos
-            $resultado = array_unique($oc_s, SORT_REGULAR);
-            //Cambiar estatus a las ordenes de compra en base a sus Tp y Folio OC
-            foreach ($resultado as $k => $v) {
+            //Si se agregaron mas ordenes de compra naturalmente
+            if (!empty($Ordenes_Capturadas)) {
+                //Quitar repetivos
+                $resultado = array_unique($oc_s, SORT_REGULAR);
+                //Cambiar estatus a las ordenes de compra en base a sus Tp y Folio OC
+                foreach ($resultado as $k => $v) {
+                    //Actualiza estatus orden de compra dependiendo de lo que se recibe
+                    $Cantidades = $this->Recibeordencompra_model->getCantidadesParaEstatus($v['Tp'], $v['OC']);
+
+                    foreach ($Cantidades as $key => $v) {
+                        $can = $v->Cantidad;
+                        $Can_rec = $v->Cantidad_Rec;
+                        $ID = $v->ID;
+                        if ($Can_rec === '0' || $Can_rec === 0) {
+                            $datos = array(
+                                'Estatus' => 'ACTIVA'
+                            );
+                            $this->Recibeordencompra_model->onModificarEstatusOrdenCompra($ID, $datos);
+                        } else if ($can > $Can_rec) {
+                            $datos = array(
+                                'Estatus' => 'PENDIENTE'
+                            );
+                            $this->Recibeordencompra_model->onModificarEstatusOrdenCompra($ID, $datos);
+                        } else {
+                            $datos = array(
+                                'Estatus' => 'RECIBIDA'
+                            );
+                            $this->Recibeordencompra_model->onModificarEstatusOrdenCompra($ID, $datos);
+                        }
+                    }
+                }
+            } else { //Si no se agregaron porque se capturó desde el detalle o desde un borrador
                 //Actualiza estatus orden de compra dependiendo de lo que se recibe
-                $Cantidades = $this->Recibeordencompra_model->getSumatoriasCantidadesParaEstatus($v['Tp'], $v['OC']);
-                $can = $Cantidades[0]->Cantidad;
-                $Can_rec = $Cantidades[0]->Cantidad_Rec;
-                if ($can > $Can_rec) {
-                    $datos = array(
-                        'Estatus' => 'PENDIENTE'
-                    );
-                    $this->Recibeordencompra_model->onModificarEstatusOrdenCompra($v['Tp'], $v['OC'], $datos);
-                } else {
-                    $datos = array(
-                        'Estatus' => 'RECIBIDA'
-                    );
-                    $this->Recibeordencompra_model->onModificarEstatusOrdenCompra($v['Tp'], $v['OC'], $datos);
+                $Cantidades = $this->Recibeordencompra_model->getCantidadesParaEstatus($this->input->post('Tp'), $this->input->post('Folio'));
+
+                foreach ($Cantidades as $key => $v) {
+                    $can = $v->Cantidad;
+                    $Can_rec = $v->Cantidad_Rec;
+                    $ID = $v->ID;
+                    if ($Can_rec === '0' || $Can_rec === 0) {
+                        $datos = array(
+                            'Estatus' => 'ACTIVA'
+                        );
+                        $this->Recibeordencompra_model->onModificarEstatusOrdenCompra($ID, $datos);
+                    } else if ($can > $Can_rec) {
+                        $datos = array(
+                            'Estatus' => 'PENDIENTE'
+                        );
+                        $this->Recibeordencompra_model->onModificarEstatusOrdenCompra($ID, $datos);
+                    } else {
+                        $datos = array(
+                            'Estatus' => 'RECIBIDA'
+                        );
+                        $this->Recibeordencompra_model->onModificarEstatusOrdenCompra($ID, $datos);
+                    }
                 }
             }
+
 
             //Actualiza estatus compra a CONCLUIDA
             $this->Recibeordencompra_model->onModificarEstatusCompra($this->input->post('Factura'), $this->input->post('TpDoc'), $this->input->post('Proveedor'));

@@ -13,22 +13,21 @@ class Recibeordencompra_model extends CI_Model {
     public function getRecords() {
         try {
             $this->db->select(""
-                    . "OCD.ID,"
+                    . "OC.ID,"
                     . "OC.Tp,"
                     . "OC.Folio, "
-                    . "CONCAT(OCD.Articulo,' ',A.Descripcion) AS Articulo, "
-                    . "OCD.Cantidad, "
-                    . "ifnull(OCD.CantidadRecibida,'') AS Recibida, "
-                    . "OCD.Precio, "
-                    . "OCD.Subtotal,"
+                    . "CONCAT(OC.Articulo,' ',A.Descripcion) AS Articulo, "
+                    . "OC.Cantidad, "
+                    . "ifnull(OC.CantidadRecibida,'') AS Recibida, "
+                    . "OC.Precio, "
+                    . "OC.Subtotal,"
                     . "OC.Maq, "
                     . "OC.Sem, "
                     . "OC.Tipo, "
-                    . "OCD.Articulo AS ClaveArticulo "
+                    . "OC.Articulo AS ClaveArticulo "
                     . "", false);
-            $this->db->from("ordencompradetalle OCD");
-            $this->db->join("ordencompra OC", "OC.Tp = OCD.TpOrdenCompra AND OC.Folio= OCD.FolioOrdenCompra ");
-            $this->db->join("articulos A", "A.Clave = OCD.Articulo ");
+            $this->db->from("ordencompra OC");
+            $this->db->join("articulos A", "A.Clave = OC.Articulo ");
             $this->db->where_in('OC.Estatus', array('PENDIENTE', 'ACTIVA'));
             $query = $this->db->get();
             /*
@@ -67,21 +66,16 @@ class Recibeordencompra_model extends CI_Model {
         }
     }
 
-    public function getArticuloByTpByOC($Articulo, $Tp, $Oc) {
+    public function onVerificarExisteCompra($Doc, $Tp, $Proveedor) {
         try {
-            $this->db->select("A.Clave, A.Descripcion, OCD.Precio, "
-                            . "OCD.Subtotal, "
-                            . "OC.Maq, "
-                            . "OC.Sem,"
-                            . "OC.Tipo, "
-                            . "OC.Tp  "
+            $this->db->select("C.Doc, C.FechaDoc, C.Estatus "
                             . "")
-                    ->from("ordencompradetalle OCD")
-                    ->join("ordencompra OC", 'ON OC.Tp = OCD.TpOrdenCompra AND OC.Folio= OCD.FolioOrdenCompra')
-                    ->join("articulos A", 'ON A.Clave =  OCD.Articulo')
-                    ->where("OCD.Articulo", $Articulo)
-                    ->where("OC.Tp", $Tp)
-                    ->where("OC.Folio", $Oc);
+                    ->from("compras AS C")
+                    ->where("C.Doc", $Doc)
+                    ->where("C.Tp", $Tp)
+                    ->where("C.Proveedor", $Proveedor)
+                    ->where_in("C.Estatus", array("BORRADOR", "CONCLUIDA"))
+                    ->group_by("C.Doc");
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -95,12 +89,18 @@ class Recibeordencompra_model extends CI_Model {
         }
     }
 
-    public function getSumatoriasCantidadesParaEstatus($Tp, $Oc) {
+    public function getArticuloByTpByOC($Articulo, $Tp, $Oc) {
         try {
-            $this->db->select("sum(OCD.Cantidad) AS Cantidad, sum(OCD.CantidadRecibida) AS Cantidad_Rec "
+            $this->db->select("A.Clave, A.Descripcion, OC.Precio, "
+                            . "OC.Subtotal, "
+                            . "OC.Maq, "
+                            . "OC.Sem,"
+                            . "OC.Tipo, "
+                            . "OC.Tp  "
                             . "")
-                    ->from("ordencompradetalle OCD")
-                    ->join("ordencompra OC", 'ON OC.Tp = OCD.TpOrdenCompra AND OC.Folio= OCD.FolioOrdenCompra')
+                    ->from("ordencompra OC")
+                    ->join("articulos A", 'ON A.Clave =  OC.Articulo')
+                    ->where("OC.Articulo", $Articulo)
                     ->where("OC.Tp", $Tp)
                     ->where("OC.Folio", $Oc);
             $query = $this->db->get();
@@ -219,16 +219,6 @@ class Recibeordencompra_model extends CI_Model {
         }
     }
 
-    public function onModificarEstatusOrdenCompra($Tp, $Folio, $DATA) {
-        try {
-            $this->db->where('Tp', $Tp)
-                    ->where('Folio', $Folio)
-                    ->update("ordencompra", $DATA);
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
     public function onModificarEstatusCompra($Doc, $Tp, $Proveedor) {
         try {
             $this->db->set('Estatus', 'CONCLUIDA')
@@ -289,15 +279,19 @@ class Recibeordencompra_model extends CI_Model {
         }
     }
 
+    /* ORDENES DE COMPRA */
+
     public function onModificar($ID, $DATA) {
         try {
 
             $can_rec = $DATA{'CantidadRecibida'};
             $Fac = $DATA{'Factura'};
             $FechaFac = $DATA{'FechaFactura'};
-            $sql = "UPDATE ordencompradetalle OCD "
-                    . "SET OCD.CantidadRecibida = $can_rec + ifnull(OCD.CantidadRecibida,0), OCD.Factura = '$Fac', OCD.FechaFactura = '$FechaFac' "
-                    . "WHERE OCD.ID = '$ID'";
+            $sql = "UPDATE ordencompra OC "
+                    . "SET OC.CantidadRecibida = $can_rec + ifnull(OC.CantidadRecibida,0), "
+                    . "OC.Factura = '$Fac', "
+                    . "OC.FechaFactura = '$FechaFac' "
+                    . "WHERE OC.ID = '$ID' ";
             $this->db->query($sql);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -309,14 +303,13 @@ class Recibeordencompra_model extends CI_Model {
             $can_rec = $DATA{'CantidadRecibida'};
             $Fac = $DATA{'Factura'};
             $FechaFac = $DATA{'FechaFactura'};
-            $sql = "UPDATE ordencompradetalle OCD "
-                    . "JOIN ordencompra OC ON OC.Tp = OCD.TpOrdenCompra AND OC.Folio= OCD.FolioOrdenCompra "
-                    . "SET OCD.CantidadRecibida = $can_rec + ifnull(OCD.CantidadRecibida,0), "
-                    . "OCD.Factura = '$Fac', "
-                    . "OCD.FechaFactura = '$FechaFac' "
+            $sql = "UPDATE ordencompra OC "
+                    . "SET OC.CantidadRecibida = $can_rec + ifnull(OC.CantidadRecibida,0), "
+                    . "OC.Factura = '$Fac', "
+                    . "OC.FechaFactura = '$FechaFac' "
                     . "WHERE OC.Tp = '$Tp' "
                     . "AND OC.Folio = '$OC' "
-                    . "AND OCD.Articulo = '$Art'";
+                    . "AND OC.Articulo = '$Art'";
             //print ($sql);
             $this->db->query($sql);
         } catch (Exception $exc) {
@@ -324,24 +317,30 @@ class Recibeordencompra_model extends CI_Model {
         }
     }
 
-    public function onVerificarExisteCompra($Doc, $Tp, $Proveedor) {
+    public function getCantidadesParaEstatus($Tp, $Folio) {
         try {
-            $this->db->select("C.Doc, C.FechaDoc, C.Estatus "
+            $this->db->select("OC.ID, ifnull(OC.Cantidad,0)  AS Cantidad, ifnull(OC.CantidadRecibida,0) AS Cantidad_Rec "
                             . "")
-                    ->from("compras AS C")
-                    ->where("C.Doc", $Doc)
-                    ->where("C.Tp", $Tp)
-                    ->where("C.Proveedor", $Proveedor)
-                    ->where_in("C.Estatus", array("BORRADOR", "CONCLUIDA"))
-                    ->group_by("C.Doc");
+                    ->from("ordencompra OC")
+                    ->where("OC.Tp", $Tp)
+                    ->where("OC.Folio", $Folio);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
              */
             $str = $this->db->last_query();
-            //print $str;
+            print $str;
             $data = $query->result();
             return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onModificarEstatusOrdenCompra($ID, $DATA) {
+        try {
+            $this->db->where('ID', $ID)
+                    ->update("ordencompra", $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

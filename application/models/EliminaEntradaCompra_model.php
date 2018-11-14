@@ -110,7 +110,7 @@ class EliminaEntradaCompra_model extends CI_Model {
                     ->where("C.Tp", $Tp)
                     ->where("C.Doc", $Doc)
                     ->where("C.Proveedor", $Proveedor)
-                    ->group_by("C.Articulo");
+                    ->group_by("C.TpOrdenCompra", "C.OrdenCompra", "C.Articulo");
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY

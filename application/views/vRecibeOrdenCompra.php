@@ -24,7 +24,7 @@
                 <button type="button" class="btn btn-info btn-sm d-none" id="btnAgregarOC">
                     <i class="fa fa-plus"></i> AGREGAR O. DE COMPRA
                 </button>
-                <button type="button" class="btn btn-success btn-float" id="btnCerrarCompra" data-toggle="tooltip" data-placement="top" title="Cerrar Compra">
+                <button type="button" class="btn btn-success btn-float d-none" id="btnCerrarCompra" data-toggle="tooltip" data-placement="top" title="Cerrar Compra">
                     <i class="fa fa-check"></i>
                 </button>
             </div>
@@ -121,19 +121,16 @@
     var o_cs = [];
 
     $(document).ready(function () {
-
         /*FUNCIONES INICIALES*/
         init();
         handleEnter();
         validacionSelectPorContenedor(pnlTablero);
-
         pnlTablero.find('#SalidaMaquilas').change(function () {
             if (parseInt(MaqOC) > 1) {
             } else {
                 $(this).prop("checked", false);
             }
         });
-
         pnlTablero.find("input").val("");
         pnlTablero.find("#FechaFactura").val(getToday());
         btnAgregarOC.addClass('d-none');
@@ -173,15 +170,12 @@
             var fact = pnlTablero.find('#Factura').val();
             var fecFact = pnlTablero.find('#FechaFactura').val();
             var tp = pnlTablero.find("#Tp").val();
+
+            var tpoc = pnlTablero.find("#col1_filter").val();
             var oc = pnlTablero.find("#col2_filter").val();
             var art = pnlTablero.find("#Articulo").val();
             var prov = pnlTablero.find("#Proveedor").val();
             var cant_rec = pnlTablero.find("#CantidadRecibida").val();
-
-            o_cs.push({
-                Tp: tp,
-                OC: oc
-            });
 
             $.post(master_url + 'onModificarCantidadRecibidaByArtByOCByTp', {
 
@@ -199,6 +193,10 @@
                 Departamento: Departamento,
                 TpOrdenCompra: TpOC
             }).done(function (data) {
+                o_cs.push({
+                    Tp: tpoc,
+                    OC: oc
+                });
                 onNotifyOld('fa fa-check', 'CANTIDAD ACTUALIZADA', 'info');
                 OrdenesCompra.ajax.reload();
                 pnlTablero.find("#NombreArtículo").val('');
@@ -212,6 +210,7 @@
                 Departamento = 0;
                 pnlTablero.find('#Encabezado').find('.captura').addClass('disabledForms');
                 btnAgregarOC.removeClass('d-none');
+                btnCerrarCompra.removeClass('d-none');
             }).fail(function (x, y, z) {
                 console.log(x, y, z);
             });
@@ -259,6 +258,7 @@
                         agregaOC = false;
                         pnlTablero.find("input").val("");
                         btnAgregarOC.addClass('d-none');
+                        btnCerrarCompra.addClass('d-none');
                         pnlTablero.find('#Detalle').find('.captura').addClass('disabledForms');
                         pnlTablero.find('#Encabezado').find('input:not(.noCaptura)').removeClass('disabledForms');
                         pnlTablero.find("#FechaFactura").val(getToday());
@@ -366,6 +366,15 @@
                 } else {//NOS TRAEMOS LOS DATOS DE LA ORDEN DE COMPRA YA CAPTURADA Y BRINCAMOS EL FOCO A LOS ARTICULOS
                     pnlTablero.find('#Encabezado').find('.captura').addClass('disabledForms');
                     pnlTablero.find('#FechaDoc').val(data[0].FechaDoc);
+                    btnAgregarOC.removeClass('d-none');
+                    btnCerrarCompra.removeClass('d-none');
+                    var tpoc = pnlTablero.find("#col1_filter").val();
+                    var oc = pnlTablero.find("#col2_filter").val();
+                    o_cs.push({
+                        Tp: tpoc,
+                        OC: oc
+                    });
+
                     pnlTablero.find('#Articulo').focus();
                 }
             } else {//EL DOCUMENTO NO EXISTE
@@ -387,7 +396,7 @@
             tblOrdenesCompra.DataTable().destroy();
         }
         OrdenesCompra = tblOrdenesCompra.DataTable({
-            "dom": 'Bfrtip',
+            "dom": 'frtip',
             buttons: buttons,
             orderCellsTop: true,
             fixedHeader: true,
@@ -503,7 +512,9 @@
                 var fact = pnlTablero.find('#Factura').val();
                 var fecFact = pnlTablero.find('#FechaFactura').val();
                 var tp = pnlTablero.find("#Tp").val();
+                var tpoc = pnlTablero.find("#col1_filter").val();
                 var oc = pnlTablero.find("#col2_filter").val();
+
                 var prov = pnlTablero.find("#Proveedor").val();
                 var can_pen = dtm.Cantidad - dtm.Recibida;
                 swal({
@@ -531,6 +542,11 @@
                         Departamento: dtm.Tipo,
                         TpOrdenCompra: dtm.Tp
                     }).done(function (data) {
+                        o_cs.push({
+                            Tp: tp,
+                            OC: tpoc
+                        });
+                        btnCerrarCompra.removeClass('d-none');
                         onNotifyOld('fa fa-check', 'CANTIDAD ACTUALIZADA', 'info');
                         OrdenesCompra.ajax.reload();
                     }).fail(function (x, y, z) {
