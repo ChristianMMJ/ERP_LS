@@ -21,7 +21,7 @@
                             <th>ID</th>
                             <th>Clave</th>
                             <th>Cliente</th>
-                            <th>Agente</th> 
+                            <th>Agente</th>  
                             <th>Pares</th>
                             <th>Fecha de entrega</th>
                         </tr>
@@ -61,6 +61,7 @@
                     <div class="row">
                         <div class="d-none">
                             <input type="text" id="ID" name="ID" class="form-control form-control-sm d-none" readonly="" >
+                            <input type="text" id="pedcte" name="pedcte" class="form-control form-control-sm" readonly="" >
                         </div>
                         <div class="col-12 col-sm-6 col-md-4 col-lg-2 col-xl-1">
                             <label for="Pedido" >Pedido*</label>
@@ -360,9 +361,14 @@
                 }).fail(function (x, y, z) {
                     console.log(x.responseText);
                 }).always(function () {
-                    HoldOn.close();
                 });
             }
+            if (isValidInput($(this))) {
+                tblPedidos.DataTable().column(1).search($(this).val()).draw();
+            } else {
+                tblPedidos.DataTable().column(1).search('').draw();
+            }
+        }).keyup(function () {
             if (isValidInput($(this))) {
                 tblPedidos.DataTable().column(1).search($(this).val()).draw();
             } else {
@@ -514,7 +520,7 @@
         });
 
         btnImprimir.click(function () {
-            if (temp > 0) {
+            if (temp !== '') {
                 HoldOn.open({message: 'Espere...', theme: 'sk-cube'});
                 $.post(master_url + 'onImprimirPedidoReducido', {ID: temp}).done(function (data) {
                     //check Apple device
@@ -522,7 +528,7 @@
                         window.open(data, '_blank');
                     } else {
                         $.fancybox.open({
-                            src: base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data,
+                            src: base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data + '#pagemode=thumbs',
                             type: 'iframe',
                             opts: {
                                 afterShow: function (instance, current) {
@@ -595,78 +601,23 @@
         });
 
         btnGuardar.click(function () {
-            isValid('pnlDatos');
-            if (valido) {
-                var f = new FormData();
-                f.append('Clave', pnlDatos.find("#Clave").val());
-                f.append('Cliente', Cliente);
-                f.append('Agente', pnlDatos.find("#Agente").val());
-                f.append('FechaPedido', pnlDatos.find("#FechaPedido").val());
-                f.append('Observacion', pnlDatos.find("#Observacion").val());
-                f.append('FechaRecepcion', pnlDatos.find("#FechaRecepcion").val());
-                if (!nuevo) {
-                    var detalle = [];
-                    $.each(tblPedidoDetalle.find("tbody tr"), function (k, v) {
-                        var tr = PedidoDetalle.row($(this)).data();
-                        if (tr[38] === 'N') {
-                            var d = new Date(tr[32]);
-                            var n = d.getFullYear();
-                            detalle.push({
-                                Estilo: tr[2],
-                                EstiloT: tr[3],
-                                Color: tr[4],
-                                ColorT: tr[5],
-                                FechaEntrega: tr[32],
-                                Maquila: tr[7],
-                                Semana: tr[6],
-                                Recio: tr[34],
-                                Precio: tr[30],
-                                Observacion: tr[35],
-                                ObservacionDetalle: tr[36],
-                                Serie: tr[37],
-                                Ano: n,
-                                Recibido: tr[1],
-                                Pares: tr[31],
-                                C1: $(tr[8]).find("div.cantidad").text(),
-                                C2: $(tr[9]).find("div.cantidad").text(),
-                                C3: $(tr[10]).find("div.cantidad").text(),
-                                C4: $(tr[11]).find("div.cantidad").text(),
-                                C5: $(tr[12]).find("div.cantidad").text(),
-                                C6: $(tr[13]).find("div.cantidad").text(),
-                                C7: $(tr[14]).find("div.cantidad").text(),
-                                C8: $(tr[15]).find("div.cantidad").text(),
-                                C9: $(tr[16]).find("div.cantidad").text(),
-                                C10: $(tr[17]).find("div.cantidad").text(),
-                                C11: $(tr[18]).find("div.cantidad").text(),
-                                C12: $(tr[19]).find("div.cantidad").text(),
-                                C13: $(tr[20]).find("div.cantidad").text(),
-                                C14: $(tr[21]).find("div.cantidad").text(),
-                                C15: $(tr[22]).find("div.cantidad").text(),
-                                C16: $(tr[23]).find("div.cantidad").text(),
-                                C17: $(tr[24]).find("div.cantidad").text(),
-                                C18: $(tr[25]).find("div.cantidad").text(),
-                                C19: $(tr[26]).find("div.cantidad").text(),
-                                C20: $(tr[27]).find("div.cantidad").text(),
-                                C21: $(tr[28]).find("div.cantidad").text(),
-                                C22: $(tr[29]).find("div.cantidad").text()
-                            });
-                        }
-                    });
-                    f.append('Detalle', JSON.stringify(detalle));
-                    f.append('ID', temp);
-                    onSave('onModificar', f, function (e) {
-                        nuevo = false;
-                        Pedidos.ajax.reload();
-                        getPedidoByID(temp);
-                        pnlDatos.find("#Estilo")[0].selectize.focus();
-                    });
-                } else {
-                    var detalle = [];
-                    $.each(tblPedidoDetalle.find("tbody tr"), function (k, v) {
-                        var tr = PedidoDetalle.row($(this)).data();
+            var f = new FormData();
+            f.append('Clave', pnlDatos.find("#Clave").val());
+            f.append('Cliente', pnlDatos.find("#pedcte").val());
+            f.append('Agente', pnlDatos.find("#Agente").val());
+            f.append('FechaPedido', pnlDatos.find("#FechaPedido").val());
+            f.append('Observacion', pnlDatos.find("#Observacion").val());
+            f.append('FechaRecepcion', pnlDatos.find("#FechaRecepcion").val());
+            var cte = pnlDatos.find("#pedcte").val();
+            if (!nuevo) {
+                var detalle = [];
+                $.each(tblPedidoDetalle.find("tbody tr"), function (k, v) {
+                    var tr = PedidoDetalle.row($(this)).data();
+                    if (tr[38] === 'N') {
                         var d = new Date(tr[32]);
                         var n = d.getFullYear();
                         detalle.push({
+                            Cte: pnlDatos.find("#IDCliente").val(),
                             Estilo: tr[2],
                             EstiloT: tr[3],
                             Color: tr[4],
@@ -705,29 +656,81 @@
                             C21: $(tr[28]).find("div.cantidad").text(),
                             C22: $(tr[29]).find("div.cantidad").text()
                         });
+                    }
+                });
+                f.append('Detalle', JSON.stringify(detalle));
+                f.append('ID', temp);
+                onSave('onModificar', f, function (e) {
+                    nuevo = false;
+                    Pedidos.ajax.reload();
+                    getPedidoByID(temp);
+                    pnlDatos.find("#Estilo")[0].selectize.focus();
+                });
+            } else {
+                var detalle = [];
+                $.each(tblPedidoDetalle.find("tbody tr"), function (k, v) {
+                    var tr = PedidoDetalle.row($(this)).data();
+                    var d = new Date(tr[32]);
+                    var n = d.getFullYear();
+                    detalle.push({
+                        Estilo: tr[2],
+                        EstiloT: tr[3],
+                        Color: tr[4],
+                        ColorT: tr[5],
+                        FechaEntrega: tr[32],
+                        Maquila: tr[7],
+                        Semana: tr[6],
+                        Recio: tr[34],
+                        Precio: tr[30],
+                        Observacion: tr[35],
+                        ObservacionDetalle: tr[36],
+                        Serie: tr[37],
+                        Ano: n,
+                        Recibido: tr[1],
+                        Pares: tr[31],
+                        C1: $(tr[8]).find("div.cantidad").text(),
+                        C2: $(tr[9]).find("div.cantidad").text(),
+                        C3: $(tr[10]).find("div.cantidad").text(),
+                        C4: $(tr[11]).find("div.cantidad").text(),
+                        C5: $(tr[12]).find("div.cantidad").text(),
+                        C6: $(tr[13]).find("div.cantidad").text(),
+                        C7: $(tr[14]).find("div.cantidad").text(),
+                        C8: $(tr[15]).find("div.cantidad").text(),
+                        C9: $(tr[16]).find("div.cantidad").text(),
+                        C10: $(tr[17]).find("div.cantidad").text(),
+                        C11: $(tr[18]).find("div.cantidad").text(),
+                        C12: $(tr[19]).find("div.cantidad").text(),
+                        C13: $(tr[20]).find("div.cantidad").text(),
+                        C14: $(tr[21]).find("div.cantidad").text(),
+                        C15: $(tr[22]).find("div.cantidad").text(),
+                        C16: $(tr[23]).find("div.cantidad").text(),
+                        C17: $(tr[24]).find("div.cantidad").text(),
+                        C18: $(tr[25]).find("div.cantidad").text(),
+                        C19: $(tr[26]).find("div.cantidad").text(),
+                        C20: $(tr[27]).find("div.cantidad").text(),
+                        C21: $(tr[28]).find("div.cantidad").text(),
+                        C22: $(tr[29]).find("div.cantidad").text()
                     });
-                    f.append('Detalle', JSON.stringify(detalle));
-                    onSave('onAgregar', f, function (e) {
-                        nuevo = false;
-                        var dtm = JSON.parse(e);
-                        getPedidoByID(dtm.ID);
-                        temp = dtm.ID;
+                });
+                f.append('Detalle', JSON.stringify(detalle));
+                onSave('onAgregar', f, function (e) {
+                    nuevo = false;
+                    var dtm = JSON.parse(e);
+                    getPedidoByID(dtm.ID);
+                    temp = dtm.ID;
 //                        $.each(tblPedidoDetalle.find("tbody tr"), function (k, v) {
 //                            PedidoDetalle.cell($(this), 38).data('N').draw();
 //                        });
-                        Pedidos.ajax.reload();
-                        //NUEVO > MODIFICAR
-                        pnlDatos.find("#Clave").prop('readonly', true);
-                        pnlDatos.find("#FechaPedido").prop('readonly', true);
-                        pnlDatos.find("#FechaRecepcion").prop('readonly', true);
-                        pnlDatos.find("#FechaEntrega").prop('readonly', true);
-                        pnlDatos.find("#Cliente")[0].selectize.disable();
-                        pnlDatos.find("#Agente")[0].selectize.disable();
-                        pnlDatos.find("#Estilo")[0].selectize.focus();
-                    });
-                }
-            } else {
-                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'error');
+                    Pedidos.ajax.reload();
+                    //NUEVO > MODIFICAR
+                    pnlDatos.find("#Clave").prop('readonly', true);
+                    pnlDatos.find("#FechaPedido").prop('readonly', true);
+                    pnlDatos.find("#FechaRecepcion").prop('readonly', true);
+                    pnlDatos.find("#FechaEntrega").prop('readonly', true);
+                    pnlDatos.find("#Cliente")[0].selectize.disable();
+                    pnlDatos.find("#Agente")[0].selectize.disable();
+                    pnlDatos.find("#Estilo")[0].selectize.focus();
+                });
             }
         });
 
@@ -767,7 +770,6 @@
             pnlDatos.addClass("d-none");
             btnImprimir.addClass("d-none");
             PedidoDetalle.clear().draw();
-            Pedidos.ajax.reload();
             Cliente = 0;
             pnlTablero.find("#NumeroDePedido").focus().select();
         });
@@ -935,7 +937,7 @@
             select: true,
             "autoWidth": true,
             "colReorder": true,
-            "displayLength": 50,
+            "displayLength": 20,
             "scrollX": false,
             "bLengthChange": false,
             "deferRender": true,
@@ -953,13 +955,13 @@
         tblPedidos.find('tbody').on('click', 'tr', function () {
             HoldOn.open({
                 theme: 'sk-cube',
-                message: 'CARGANDO...'
+                message: 'Por favor espere...'
             });
             nuevo = false;
             tblPedidos.find("tbody tr").removeClass("success");
             $(this).addClass("success");
             var dtm = Pedidos.row(this).data();
-            temp = parseInt(dtm.ID);
+            temp = dtm.Clave;
             getPedidoByID(temp);
         });
         $.fn.dataTable.ext.errMode = 'throw';
@@ -1261,9 +1263,9 @@
         }
     }
 
-    function getPedidoByID(temp) {
+    function getPedidoByID(idx) {
         PedidoDetalle.clear().draw();
-        $.getJSON(master_url + 'getPedidosByID', {ID: temp}).done(function (data) {
+        $.getJSON(master_url + 'getPedidosByID', {ID: idx}).done(function (data) {
             pnlDatos.find("input").val("");
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
@@ -1272,6 +1274,7 @@
             //SEGURIDAD
             pnlDatos.find("#ID").val(dt.PDID);
             pnlDatos.find("#Clave").val(dt.Clave);
+            pnlDatos.find("#pedcte").val(dt.Cliente);
             pnlDatos.find("#Cliente")[0].selectize.setValue(dt.Cliente);
             pnlDatos.find("#FechaPedido").val(dt.FechaPedido);
             pnlDatos.find("#FechaRecepcion").val(dt.FechaRecepcion);
@@ -1319,10 +1322,12 @@
                 dtm.push((v.Pares * v.Precio));
                 PedidoDetalle.row.add(dtm).draw(false);
             });
+            pnlDatos.find("#Cliente")[0].selectize.disable();
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass('d-none');
             pnlDatos.find("#Estilo")[0].selectize.focus();
             $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
+            temp = dt.Clave;
         }).fail(function (x, y, z) {
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
         }).always(function () {
@@ -1396,7 +1401,6 @@
 
     function onComprobarCapacidades(e) {
         var Semana = $("#Semana").val();
-        console.log("\n", e, pnlDatos.find("#Maquila").val(), "\n");
         $.getJSON(master_url + 'getCapacidadMaquila', {CLAVE: pnlDatos.find("#Maquila").val(), SEMANA: Semana}).done(function (data) {
             console.log(data);
             var dx = data[0];

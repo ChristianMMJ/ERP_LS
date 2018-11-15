@@ -224,7 +224,7 @@ class PDF extends FPDF {
 
     var $widths;
     var $aligns;
-    var $alto = 5;
+    var $alto = 3.5;
 
     function getAlto() {
         return $this->alto;

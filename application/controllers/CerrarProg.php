@@ -7,7 +7,7 @@ class CerrarProg extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('Cerrarprog_model');
+        $this->load->library('session')->model('Cerrarprog_model','cprm');
     }
 
     public function index() {
@@ -48,7 +48,7 @@ class CerrarProg extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->Cerrarprog_model->getRecords());
+            print json_encode($this->cprm->getRecords());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -56,7 +56,7 @@ class CerrarProg extends CI_Controller {
 
     public function getHistorialDeControles() {
         try {
-            print json_encode($this->Cerrarprog_model->getHistorialDeControles());
+            print json_encode($this->cprm->getHistorialDeControles());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -72,9 +72,9 @@ class CerrarProg extends CI_Controller {
                             $Y = substr(Date('Y'), 2);
                             $M = str_pad($v->Maquila, 2, '0', STR_PAD_LEFT);
                             $S = str_pad($v->Semana, 2, '0', STR_PAD_LEFT);
-                            $C = str_pad($this->Cerrarprog_model->getMaximoConsecutivo($v->Maquila, $v->Semana, 0)[0]->MAX, 3, '0', STR_PAD_LEFT);
+                            $C = str_pad($this->cprm->getMaximoConsecutivo($v->Maquila, $v->Semana, 0)[0]->MAX, 3, '0', STR_PAD_LEFT);
                             $C = $C > 0 ? $C : str_pad(1, 3, '0', STR_PAD_LEFT);
-                            $this->Cerrarprog_model->onAgregarControl(array(
+                            $this->cprm->onAgregarControl(array(
                                 'Control' => $Y . $S . $M . $C,
                                 'FechaProgramacion' => Date('d/m/Y h:i:s a'),
                                 'Estilo' => $v->Estilo, 'Color' => $v->Color,
@@ -84,13 +84,14 @@ class CerrarProg extends CI_Controller {
                                 'Estatus' => 'A', 'Departamento' => 1 /* 0|null|Inexistente - PEDIDO => 1 - PROGRAMADO*/,
                                 'Ano' => $Y, 'Maquila' => $M, 'Semana' => $S, 'Consecutivo' => $C
                             ));
-                            $this->db->set('Control', $Y . $S . $M . $C)->where('ID', $v->PedidoDetalle)->update('pedidodetalle');
+                            $this->db->set('Control', $Y . $S . $M . $C)->where('ID', $v->PedidoDetalle)->update('pedidox');
+                            print $this->db->last_query();
                         }
                     }
                     break;
                 case 2:
                     foreach ($controles as $k => $v) { 
-                        $this->Cerrarprog_model->onAgregarHistorialControl(array(
+                        $this->cprm->onAgregarHistorialControl(array(
                             'Control' => $v->Control,
                             'Estilo' => $v->Estilo,
                             'EstiloDescripcion' => $v->DescripcionEstilo,
@@ -116,7 +117,7 @@ class CerrarProg extends CI_Controller {
                             'Usuario' => $_SESSION["USERNAME"]
                         ));
                         $this->db->where('Pedido', $v->Pedido)->where('PedidoDetalle', $v->PedidoDetalle)->delete('Controles');
-                        $this->db->set('Control', 0)->where('ID', $v->PedidoDetalle)->update('pedidodetalle');
+                        $this->db->set('Control', 0)->where('ID', $v->PedidoDetalle)->update('pedidox');
                     }
                     break;
             }

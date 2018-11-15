@@ -43,6 +43,7 @@ class ParesPreProgramados extends CI_Controller {
         try {
             $x = $this->input;
             $CLIENTES = $this->pam->getClientes($x->post('CLIENTE'), $x->post('ESTILO'), $x->post('LINEA'), $x->post('MAQUILA'), $x->post('SEMANA'), $x->post('FECHA'));
+            
             $bordes = 0;
             $alto_celda = 4;
             $TIPO = $x->post('TIPO');

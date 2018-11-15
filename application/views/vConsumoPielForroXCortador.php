@@ -107,7 +107,7 @@
                         FECHA_INICIAL: FechaInicial.val(),
                         FECHA_FINAL: FechaFinal.val()
                     }).done(function (data, x, jq) {
-                onImprimirReporteFancy(base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data);
+                onImprimirReporteFancy(base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data + '#pagemode=thumbs');
             }).fail(function (x, y, z) {
                 console.log(x.responseText);
                 onBeep(2);
@@ -135,7 +135,7 @@
                         FECHA_INICIAL: FechaInicial.val(),
                         FECHA_FINAL: FechaFinal.val()
                     }).done(function (data, x, jq) {
-                onImprimirReporteFancy(base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data);
+                onImprimirReporteFancy(base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data + '#pagemode=thumbs');
             }).fail(function (x, y, z) {
                 console.log(x.responseText);
                 onBeep(2);
@@ -163,7 +163,7 @@
                         FECHA_INICIAL: FechaInicial.val(),
                         FECHA_FINAL: FechaFinal.val()
                     }).done(function (data, x, jq) {
-                onImprimirReporteFancy(base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data);
+                onImprimirReporteFancy(base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data + '#pagemode=thumbs');
             }).fail(function (x, y, z) {
                 console.log(x.responseText);
                 onBeep(2);
@@ -191,7 +191,7 @@
                         FECHA_INICIAL: FechaInicial.val(),
                         FECHA_FINAL: FechaFinal.val()
                     }).done(function (data, x, jq) {
-                onImprimirReporteFancy(base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data);
+                onImprimirReporteFancy(base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data + '#pagemode=thumbs');
             }).fail(function (x, y, z) {
                 console.log(x.responseText);
                 onBeep(2);
@@ -221,8 +221,11 @@
             mdlConsumosPielForro.find("#Ano").val(new Date().getFullYear());
             mdlConsumosPielForro.find("#Maquila").focus();
         });
-        getCortadores();
-        getArticulos();
+
+        mdlConsumosPielForro.on('show.bs.modal', function () {
+            getCortadores();
+            getArticulos();
+        });
     });
 
     function getCortadores() {
@@ -236,12 +239,18 @@
     }
 
     function getArticulos() {
+        HoldOn.open({
+            theme: 'sk-bounce',
+            message: 'Por favor espere...'
+        });
         $.getJSON(master_url_modal + 'getArticulos').done(function (data) {
             $.each(data, function (k, v) {
                 mdlConsumosPielForro.find("#Articulo")[0].selectize.addOption({text: v.CLAVE_ARTICULO, value: v.CLAVE});
             });
         }).fail(function (x, y, z) {
             console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
         });
     }
 

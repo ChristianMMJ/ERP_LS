@@ -79,7 +79,7 @@
     var is_showed = false;
 
     $(document).ready(function () {
-        
+
         ParesAnio.val(new Date().getFullYear());
 
         mdlParesAsignados.find("input[type='radio']").change(function () {
@@ -96,7 +96,7 @@
         });
 
         mdlParesAsignados.find("#btnAceptar").click(function () {
-            
+
             $.post(master_url_pares_asignados + 'getParesAsignados', {
                 MAQUILA_INICIAL: ParesMaquilaInicial.val().trim() !== '' ? ParesMaquilaInicial.val() : '',
                 MAQUILA_FINAL: ParesMaquilaFinal.val().trim() !== '' ? ParesMaquilaFinal.val() : '',
@@ -110,7 +110,7 @@
                         mdlParesAsignados.find("#rFechaEntregaCliente")[0].checked ? 4 : 0
             }).done(function (data, x, jq) {
                 onBeep(1);
-                onImprimirReporteFancy(base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data);
+                onImprimirReporteFancy(base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data + '#pagemode=thumbs');
             }).fail(function (x, y, z) {
                 console.log(x.responseText);
                 swal('ATENCIÓN', 'HA OCURRIDO UN ERROR INESPERADO AL OBTENER EL REPORTE,CONSULTE LA CONSOLA PARA MÁS DETALLES.', 'warning');

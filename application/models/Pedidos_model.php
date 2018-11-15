@@ -12,13 +12,9 @@ class Pedidos_model extends CI_Model {
 
     public function getRecords() {
         try {
-            return $this->db->select("P.ID, P.Clave, CONCAT(IFNULL(P.Cliente,''),' ', IFNULL(C.RazonS,'')) AS Cliente, A.Nombre Agente,P.FechaPedido, "
-                                    . "SUM(PD.Pares) AS Pares ", false)
-                            ->from('pedidos AS P')
-                            ->join('pedidodetalle AS PD', 'P.Clave = PD.Pedido')
-                            ->join('clientes AS C', 'P.Cliente = C.Clave')
-                            ->join('agentes AS A', 'P.Agente = A.Clave', 'left')
-                            ->group_by('P.ID')
+            return $this->db->select("P.ID, P.Clave, P.Cliente AS Cliente, P.Agente Agente,P.FechaPedido,SUM(P.Pares) AS Pares", false)
+                            ->from('pedidox AS P')  
+                            ->group_by('P.Clave')
                             ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -27,7 +23,7 @@ class Pedidos_model extends CI_Model {
 
     public function getIDXClave($Clave) {
         try {
-            return $this->db->select('P.ID, P.Clave')->from('pedidos AS P')->where('P.Clave', $Clave)->where('P.Estatus', 'A')->get()->result();
+            return $this->db->select('P.Clave AS ID, P.Clave')->from('pedidox AS P')->where('P.Clave', $Clave)->where('P.Estatus', 'A')->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -35,23 +31,22 @@ class Pedidos_model extends CI_Model {
 
     public function getPedidosByID($ID) {
         try {
-            return $this->db->select("PD.ID as PDID, P.Clave, P.Cliente, P.Agente, P.FechaPedido, P.FechaRecepcion, P.Usuario, P.Estatus, P.Registro,
-                                    PD.Pedido, PD.Estilo,PD.EstiloT, PD.Color, PD.ColorT,PD.FechaEntrega, PD.Maquila, PD.Semana, PD.Ano, PD.Recio,
-                                    PD.Precio, PD.Observacion, PD.ObservacionDetalle, PD.Serie, PD.Control,
-                                    PD.C1, PD.C2, PD.C3, PD.C4, PD.C5, PD.C6, PD.C7, PD.C8, PD.C9, PD.C10, PD.C11,
-                                    PD.C12, PD.C13, PD.C14, PD.C15, PD.C16, PD.C17, PD.C18, PD.C19, PD.C20, PD.C21, PD.C22,
-                                    'A' AS EstatusDetalle, PD.Recibido,
-                                    S.Clave AS Serie, PD.Pares, CONCAT(C.Clave,'-',C.RazonS) AS ClienteT,
+            return $this->db->select("P.ID as PDID, P.Clave, P.Cliente, P.Agente, P.FechaPedido, P.FechaRecepcion, P.Usuario, P.Estatus, P.Registro,
+                                    P.Clave AS Pedido, P.Estilo,P.EstiloT, P.Color, P.ColorT,P.FechaEntrega, P.Maquila, P.Semana, P.Ano, P.Recio,
+                                    P.Precio, P.Observacion, P.ObservacionDetalle, P.Serie, P.Control,
+                                    P.C1, P.C2, P.C3, P.C4, P.C5, P.C6, P.C7, P.C8, P.C9, P.C10, P.C11,
+                                    P.C12, P.C13, P.C14, P.C15, P.C16, P.C17, P.C18, P.C19, P.C20, P.C21, P.C22,
+                                    'A' AS EstatusDetalle, P.Recibido,
+                                    S.Clave AS Serie, P.Pares, CONCAT(C.Clave,'-',C.RazonS) AS ClienteT,
                                     CONCAT(A.Clave, \" - \", A.Nombre) AS AgenteT,
                                     S.T1, S.T2, S.T3, S.T4, S.T5, S.T6, S.T7, S.T8, S.T9, S.T10, S.T11,
                                     S.T12, S.T13, S.T14, S.T15, S.T16, S.T17, S.T18, S.T19, S.T20, S.T21, S.T22", false)
-                            ->from('pedidos AS P')
-                            ->join('pedidodetalle AS PD', 'P.Clave = PD.Pedido')
-                            ->join('series AS S', 'PD.Serie = S.Clave')
+                            ->from('pedidox AS P') 
+                            ->join('series AS S', 'P.Serie = S.Clave')
                             ->join('clientes AS C', 'P.Cliente = C.Clave')
                             ->join('agentes AS A', 'P.Agente = A.Clave', 'left')
                             ->order_by('S.Clave', 'ASC')
-                            ->where('P.ID', $ID)
+                            ->where('P.Clave', $ID)
                             ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -74,22 +69,22 @@ class Pedidos_model extends CI_Model {
 
     public function getPedidoByID($ID) {
         try {
-            return $this->db->select("PD.ID as PDID, P.Clave, P.Cliente, P.Agente, P.FechaPedido, P.FechaRecepcion, P.Usuario, P.Estatus, P.Registro,
-                                    PD.Pedido, PD.Estilo,PD.EstiloT, PD.Color, PD.ColorT,PD.FechaEntrega, PD.Maquila, PD.Semana, PD.Ano, PD.Recio, PD.Precio,
-                                    PD.Observacion AS OBSTITULO, PD.ObservacionDetalle AS OBSCONTENIDO, PD.Serie, PD.Control,
-                                    PD.C1, PD.C2, PD.C3, PD.C4, PD.C5, PD.C6, PD.C7, PD.C8, PD.C9, PD.C10, PD.C11,
-                                    PD.C12, PD.C13, PD.C14, PD.C15, PD.C16, PD.C17, PD.C18, PD.C19, PD.C20, PD.C21, PD.C22,
-                                    'A' AS EstatusDetalle, PD.Recibido, C.ciudad AS Ciudad, CONCAT(E.Clave,' - ',E.Descripcion) AS Estado, C.RFC, C.TelPart AS Tel,
-                                    S.Clave AS Serie, PD.Pares, CONCAT(C.Clave,'-',C.RazonS) AS ClienteT, C.Direccion AS Dir,C.CodigoPostal AS CP,
-                                    CONCAT(A.Clave, \" - \", A.Nombre) AS AgenteT, P.Observaciones AS Obs, T.Descripcion AS Transporte, C.Observaciones AS OBSCLIENTE,
+            return $this->db->select("P.ID as PDID, P.Clave, P.Cliente, P.Agente, P.FechaPedido, P.FechaRecepcion, P.Usuario, P.Estatus, P.Registro,
+                                    P.Clave, P.Estilo,P.EstiloT, P.Color, P.ColorT,P.FechaEntrega, P.Maquila, P.Semana, P.Ano, P.Recio, P.Precio,
+                                    P.Observacion AS OBSTITULO, P.ObservacionDetalle AS OBSCONTENIDO, P.Serie, P.Control,
+                                    P.C1, P.C2, P.C3, P.C4, P.C5, P.C6, P.C7, P.C8, P.C9, P.C10, P.C11,
+                                    P.C12, P.C13, P.C14, P.C15, P.C16, P.C17, P.C18, P.C19, P.C20, P.C21, P.C22,
+                                    'A' AS EstatusDetalle, P.Recibido, C.ciudad AS Ciudad, CONCAT(E.Clave,' - ',E.Descripcion) AS Estado, C.RFC, C.TelPart AS Tel,
+                                    S.Clave AS Serie, P.Pares, CONCAT(C.Clave,'-',C.RazonS) AS ClienteT, C.Direccion AS Dir,C.CodigoPostal AS CP,
+                                    CONCAT(A.Clave, \" - \", A.Nombre) AS AgenteT, P.Observacion AS Obs, T.Descripcion AS Transporte, C.Observaciones AS OBSCLIENTE,
                                     S.T1, S.T2, S.T3, S.T4, S.T5, S.T6, S.T7, S.T8, S.T9, S.T10, S.T11,
                                     S.T12, S.T13, S.T14, S.T15, S.T16, S.T17, S.T18, S.T19, S.T20, S.T21, S.T22", false)
-                            ->from('pedidos AS P')->join('pedidodetalle AS PD', 'P.Clave = PD.Pedido')
-                            ->join('series AS S', 'PD.Serie = S.Clave')->join('clientes AS C', 'P.Cliente = C.Clave')
+                            ->from('pedidox AS P')
+                            ->join('series AS S', 'P.Serie = S.Clave')->join('clientes AS C', 'P.Cliente = C.Clave')
                             ->join('estados AS E', 'C.Estado = E.Clave', 'left')->join('agentes AS A', 'P.Agente = A.Clave', 'left')
                             ->join('transportes AS T', 'C.Transporte = T.Clave', 'left')
-                            ->order_by('PD.ID', 'DESC')
-                            ->where('P.ID', $ID)->get()->result();
+                            ->order_by('P.ID', 'DESC')
+                            ->where('P.Clave', $ID)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -98,7 +93,7 @@ class Pedidos_model extends CI_Model {
     public function onComprobarClavePedido($ID) {
         try {
             return $this->db->select("COUNT(*) AS EXISTE", false)
-                            ->from('pedidos AS P')
+                            ->from('pedidox AS P')
                             ->where('P.Clave', $ID)
                             ->get()->result();
         } catch (Exception $exc) {
@@ -122,20 +117,19 @@ class Pedidos_model extends CI_Model {
     public function getSerieXPedido($ID) {
         try {
             $this->db->query("set sql_mode=''");
-            return $this->db->select("PD.ID as PDID, PD.Pedido,
+            return $this->db->select("P.ID as PDID, P.Clave,
                                     S.Clave AS Serie,
                                     S.T1, S.T2, S.T3, S.T4, S.T5, S.T6, S.T7, S.T8, S.T9, S.T10,
                                     S.T11, S.T12, S.T13, S.T14, S.T15, S.T16, S.T17, S.T18, S.T19, S.T20,
                                     S.T21, S.T22", false)
-                            ->from('pedidos AS P')
-                            ->join('pedidodetalle AS PD', 'P.Clave = PD.Pedido')
-                            ->join('series AS S', 'PD.Serie = S.Clave')
+                            ->from('pedidox AS P') 
+                            ->join('series AS S', 'P.Serie = S.Clave')
                             ->join('clientes AS C', 'P.Cliente = C.Clave')
                             ->join('estados AS E', 'C.Estado = E.Clave')
                             ->join('agentes AS A', 'P.Agente = A.Clave')
                             ->group_by(array('S.Clave'))
                             ->order_by('S.Clave', 'ASC')
-                            ->where('P.ID', $ID)
+                            ->where('P.Clave', $ID)
                             ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -144,7 +138,7 @@ class Pedidos_model extends CI_Model {
 
     public function onComprobarClave($C) {
         try {
-            return $this->db->select("G.Clave")->from("pedidos AS G")->where("G.Clave", $C)->where("G.Estatus", "ACTIVO")->get()->result();
+            return $this->db->select("G.Clave")->from("pedidox AS G")->where("G.Clave", $C)->where("G.Estatus", "ACTIVO")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -152,7 +146,7 @@ class Pedidos_model extends CI_Model {
 
     public function getID() {
         try {
-            return $this->db->select("A.Clave AS CLAVE")->from("pedidos AS A")->order_by("Clave", "DESC")->limit(1)->get()->result();
+            return $this->db->select("A.Clave AS CLAVE")->from("pedidox AS A")->order_by("Clave", "DESC")->limit(1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -161,15 +155,15 @@ class Pedidos_model extends CI_Model {
     public function getCapacidadMaquila($CLAVE, $SEMANA) {
         try {
             return $this->db->select("`M`.`CapacidadPares` AS `CAPACIDAD`,"
-                                    . "(SELECT SUM(PD.Pares) FROM pedidodetalle AS PD WHERE PD.Maquila = M.Clave AND PD.Semana = '$SEMANA') AS PARES")
+                                    . "(SELECT SUM(PD.Pares) FROM pedidox AS PD WHERE PD.Maquila = M.Clave AND PD.Semana = '$SEMANA') AS PARES")
                             ->from('maquilas AS M')
                             ->where('M.Clave', $CLAVE)
                             ->limit(1)
                             ->get()->result();
 //            return $this->db->select("P.CapacidadPares AS CLAVE")
-//                            ->from('pedidos AS P')
-//                            ->join('pedidodetalle AS PD', 'P.Clave = PD.Pedido')
-//                            ->join('maquilas AS M', 'P.Clave = PD.Pedido')
+//                            ->from('pedidox AS P')
+//                            ->join('pedidox AS PD', 'P.Clave = P.Clave')
+//                            ->join('maquilas AS M', 'P.Clave = P.Clave')
 //                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -178,7 +172,7 @@ class Pedidos_model extends CI_Model {
 
     public function onAgregar($array) {
         try {
-            $this->db->insert("pedidos", $array);
+            $this->db->insert("pedidox", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID() AS IDL');
             $row = $query->row_array();
             return $row['IDL'];
@@ -186,10 +180,10 @@ class Pedidos_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-
+/*ELIMINAR YA NO EXISTE*/
     public function onAgregarDetalle($array) {
         try {
-            $this->db->insert("pedidodetalle", $array);
+            $this->db->insert("pedidox", $array);
             $query = $this->db->query('SELECT LAST_INSERT_ID() AS IDL');
             $row = $query->row_array();
             return $row['IDL'];
@@ -200,7 +194,7 @@ class Pedidos_model extends CI_Model {
 
     public function onModificar($ID, $DATA) {
         try {
-            $this->db->where('ID', $ID)->update("pedidos", $DATA);
+            $this->db->where('ID', $ID)->update("pedidox", $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -208,7 +202,7 @@ class Pedidos_model extends CI_Model {
 
     public function onEliminar($ID) {
         try {
-            $this->db->set('Estatus', 'INACTIVO')->where('ID', $ID)->update("pedidos");
+            $this->db->set('Estatus', 'INACTIVO')->where('ID', $ID)->update("pedidox");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -226,8 +220,8 @@ class Pedidos_model extends CI_Model {
 
     public function getProduccionMaquilaSemana($M, $S) {
         try {
-            return $this->db->select('SUM(PD.Pares) AS Pares', false)->from('pedidodetalle AS PD')
-                            ->where('PD.Maquila', $M)->where('PD.Semana', $S)->where('PD.Estatus', 'A')
+            return $this->db->select('SUM(P.Pares) AS Pares', false)->from('pedidox AS P')
+                            ->where('P.Maquila', $M)->where('P.Semana', $S)->where('P.Estatus', 'A')
                             ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

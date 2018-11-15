@@ -9,7 +9,7 @@ class Pedidos extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->helper('Pedido_helper')->model('Pedidos_model','pem');
+        $this->load->library('session')->helper('Pedido_helper')->model('Pedidos_model', 'pem');
     }
 
     public function index() {
@@ -214,24 +214,18 @@ class Pedidos extends CI_Controller {
     public function onAgregar() {
         try {
             $x = $this->input;
-            $data = array();
-            foreach ($x->post() as $key => $v) {
-                if ($v !== '') {
-                    $data[$key] = ($v !== '') ? strtoupper($v) : NULL;
-                }
-            }
-            unset($data["Observacion"]);
-            $data["Observaciones"] = $x->post('Observacion');
-            $data["Usuario"] = $_SESSION["USERNAME"];
-            $data["Estatus"] = 'A';
-            $data["Registro"] = Date('d/m/Y h:i:s');
-            unset($data["Detalle"]);
-            $ID = $this->pem->onAgregar($data);
+            $usr = $_SESSION["USERNAME"];
+            $clave = $x->post('Clave');
             $Detalle = json_decode($this->input->post("Detalle"));
             foreach ($Detalle as $key => $v) {
                 $dt = date_parse($v->FechaEntrega);
                 $data = array(
-                    "Pedido" => $data["Clave"],
+                    "Clave" => $clave,
+                    "Cliente" => $x->post('Cliente'),
+                    "Agente" => $x->post('Agente'),
+                    "FechaPedido" => $x->post('FechaPedido'),
+                    "FechaRecepcion" => $x->post('FechaRecepcion'),
+                    "Usuario" => $usr,
                     "Estilo" => ($v->Estilo !== '') ? $v->Estilo : NULL,
                     "EstiloT" => ($v->EstiloT !== '') ? $v->EstiloT : NULL,
                     "Color" => ($v->Color !== '') ? $v->Color : NULL,
@@ -262,11 +256,11 @@ class Pedidos extends CI_Controller {
                 );
                 $data["Estatus"] = 'A';
                 $data["Registro"] = Date('d/m/Y h:i:s a');
-                $this->db->insert("pedidodetalle", $data);
-                $this->onLog("AGREGO " . $v->Pares . " PARES AL PEDIDO $ID DEL ESTILO: " . $v->EstiloT . ", COLOR: " . $v->ColorT);
+                $this->db->insert("pedidox", $data);
+                $this->onLog("AGREGO " . $v->Pares . " PARES AL PEDIDO $clave DEL ESTILO: " . $v->EstiloT . ", COLOR: " . $v->ColorT);
             }
             //RETURN ID
-            print '{ "ID":' . $ID . ',"EVT":"Agregar"}';
+            print '{ "ID":' . $clave . ',"EVT":"Agregar"}';
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -275,11 +269,19 @@ class Pedidos extends CI_Controller {
     public function onModificar() {
         try {
             $x = $this->input;
+            var_dump($x->post());
+            $usr = $_SESSION["USERNAME"];
+            $clave = $x->post('Clave');
             $Detalle = json_decode($this->input->post("Detalle"));
             foreach ($Detalle as $key => $v) {
                 $dt = date_parse($v->FechaEntrega);
                 $data = array(
-                    "Pedido" => $x->post('Clave'),
+                    "Clave" => $clave,
+                    "Cliente" => $x->post('Cliente'),
+                    "Agente" => $x->post('Agente'),
+                    "FechaPedido" => $x->post('FechaPedido'),
+                    "FechaRecepcion" => $x->post('FechaRecepcion'),
+                    "Usuario" => $usr,
                     "Estilo" => ($v->Estilo !== '') ? $v->Estilo : NULL,
                     "EstiloT" => ($v->EstiloT !== '') ? $v->EstiloT : NULL,
                     "Color" => ($v->Color !== '') ? $v->Color : NULL,
@@ -293,9 +295,8 @@ class Pedidos extends CI_Controller {
                     "Observacion" => ($v->Observacion !== '') ? $v->Observacion : NULL,
                     "ObservacionDetalle" => ($v->ObservacionDetalle !== '') ? $v->ObservacionDetalle : NULL,
                     "Serie" => ($v->Serie !== '') ? $v->Serie : NULL,
-                    "Control" => ($v->Control !== '') ? $v->Control : NULL,
-                    "Pares" => ($v->Pares !== '') ? $v->Pares : NULL,
                     "Control" => 0,
+                    "Pares" => ($v->Pares !== '') ? $v->Pares : NULL,
                     "C1" => ($v->C1 !== '') ? $v->C1 : NULL, "C2" => ($v->C2 !== '') ? $v->C2 : NULL,
                     "C3" => ($v->C3 !== '') ? $v->C3 : NULL, "C4" => ($v->C4 !== '') ? $v->C4 : NULL,
                     "C5" => ($v->C5 !== '') ? $v->C5 : NULL, "C6" => ($v->C6 !== '') ? $v->C6 : NULL,
@@ -311,10 +312,10 @@ class Pedidos extends CI_Controller {
                 );
                 $data["Estatus"] = 'A';
                 $data["Registro"] = Date('d/m/Y h:i:s a');
-                $this->db->insert("pedidodetalle", $data);
+                $this->db->insert("pedidox", $data);
             }
             //RETURN ID
-            print '{ "ID":' . $ID . ',"EVT":"Agregar"}';
+            print '{ "ID":' . $x->post('Clave') . ',"EVT":"Agregar"}';
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -322,7 +323,7 @@ class Pedidos extends CI_Controller {
 
     public function onEliminar() {
         try {
-            $this->db->where('ID', $this->input->post('ID'))->delete('pedidodetalle');
+            $this->db->where('ID', $this->input->post('ID'))->delete('pedidox');
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -560,9 +561,9 @@ class Pedidos extends CI_Controller {
                         array_push($row, number_format($precio, 2, ".", ",")); //TOTAL 7
                         array_push($row, $v->FechaEntrega); //ENTREGA 8
                         if (strlen($estilo_color) >= 40) {
-                            $pdf->setAlto(3.5);
+                            $pdf->setAlto(3);
                         } else {
-                            $pdf->setAlto(4.5);
+                            $pdf->setAlto(3.5);
                         }
                         $pdf->SetFont('Calibri', '', 7.5);
                         $pdf->Row($row);
