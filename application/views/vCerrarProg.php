@@ -319,7 +319,19 @@
             });
 
             mdlHistorial.on('shown.bs.modal', function () {
-                getHistorialDeControles();
+               HoldOn.open({
+                  theme:'sk-bounce',
+                  message:'Por favor espere...'
+               });
+            });
+
+            mdlHistorial.on('shown.bs.modal', function () {
+                HoldOn.close();
+                if ($.fn.DataTable.isDataTable('#tblHistorial')) {
+                    getHistorialDeControles();
+                } else {
+                    getHistorial();
+                }
             });
 
             btnReload.click(function () {
@@ -381,6 +393,10 @@
         pnlTablero.find("#col12_filter").focus();
         handleEnter();
         pnlTablero.find("#col14_filter").val((new Date()).getFullYear());
+
+    }
+
+    function getHistorial() {
 
         $.fn.dataTable.ext.errMode = 'throw';
         if ($.fn.DataTable.isDataTable('#tblHistorial')) {
@@ -470,19 +486,6 @@
                 [0, 'desc']/*ID*/
             ],
             "createdRow": function (row, data, dataIndex, cells) {
-                $.each($(row).find("td"), function (k, v) {
-                    switch (parseInt(k)) {
-                        case 1:
-                            $(v).attr('title', data["Cliente Razon"]);
-                            break;
-                        case 2:
-                            $(v).attr('title', data["Descripcion Estilo"]);
-                            break;
-                        case 3:
-                            $(v).attr('title', data["Descripcion Color"]);
-                            break;
-                    }
-                });
                 $.each($(row), function (k, v) {
                     if (data["Marca"] === '0' && data["Control"] !== null) {
                         $(v).addClass('HasMca');
@@ -498,7 +501,6 @@
             }
         });
     }
-
     function getRecords() {
         HoldOn.open({
             theme: 'sk-cube',
@@ -509,7 +511,7 @@
             tblCerrarProg.DataTable().destroy();
         }
         CerrarProg = tblCerrarProg.DataTable({
-            dom: 'Brt',
+            dom: 'Brtip',
             buttons: [
                 {
                     text: "Todos",
@@ -592,19 +594,6 @@
                 [0, 'desc']/*ID*/
             ],
             "createdRow": function (row, data, dataIndex, cells) {
-                $.each($(row).find("td"), function (k, v) {
-                    switch (parseInt(k)) {
-                        case 1:
-                            $(v).attr('title', data["Cliente Razon"]);
-                            break;
-                        case 2:
-                            $(v).attr('title', data["Descripcion Estilo"]);
-                            break;
-                        case 3:
-                            $(v).attr('title', data["Descripcion Color"]);
-                            break;
-                    }
-                });
                 $.each($(row), function (k, v) {
                     if (data["Marca"] === '0' && data["Control"] !== null) {
                         $(v).addClass('HasMca');

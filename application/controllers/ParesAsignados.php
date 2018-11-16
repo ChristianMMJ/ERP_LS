@@ -147,8 +147,8 @@ class ParesAsignados extends CI_Controller {
                             utf8_decode($vv->FECHA_ENTREGA)/* 6 */,
                             utf8_decode($vv->SEMANA)/* 7 */,
                             utf8_decode($vv->PARES)/* 8 */,
-                            utf8_decode($vv->OBSERVACION_UNO)/* 9 */,
-                            utf8_decode($vv->OBSERVACION_DOS)/* 10 */,
+                            utf8_decode(strlen($vv->OBSERVACION_UNO) > 1 ? utf8_decode($vv->OBSERVACION_UNO) : '')/* 9 */,
+                            utf8_decode(strlen($vv->OBSERVACION_DOS) > 1 ? utf8_decode($vv->OBSERVACION_DOS) : '')/* 10 */,
                             utf8_decode(strlen($vv->OBSERVACIONES_CLIENTE) > 1 ? utf8_decode($vv->OBSERVACIONES_CLIENTE) : '')/* 11 */));
                         $PARES += $vv->PARES;
                         $TOTAL_PARES += $vv->PARES;
@@ -157,16 +157,18 @@ class ParesAsignados extends CI_Controller {
                 }
                 $bordes = 0;
                 $pdf->SetFont('Calibri', 'B', 9);
+                $pdf->setFillColor(225, 225, 234);
                 $pdf->SetX(135);
-                $pdf->Cell(30, $alto_celda, "Pares por maquila", 1/* BORDE */, 0/* SALTO */, 'C');
+                $pdf->Cell(30, $alto_celda, "Pares por maquila", 1/* BORDE */, 0/* SALTO */, 'C', 1);
                 $pdf->SetX(165);
                 $pdf->Cell(21, $alto_celda, $PARES, 1/* BORDE */, 1/* SALTO */, 'C');
                 $PARES = 0;
             }
             $bordes = 0;
             $pdf->SetFont('Calibri', 'B', 9);
+            $pdf->setFillColor(225, 225, 234);
             $pdf->SetX(135);
-            $pdf->Cell(30, $alto_celda, "Total pares", 1/* BORDE */, 0/* SALTO */, 'C');
+            $pdf->Cell(30, $alto_celda, "Total pares", 1/* BORDE */, 0/* SALTO */, 'C', 1);
             $pdf->SetX(165);
             $pdf->Cell(21, $alto_celda, $TOTAL_PARES, 1/* BORDE */, 0/* SALTO */, 'C');
             /* FIN RESUMEN */

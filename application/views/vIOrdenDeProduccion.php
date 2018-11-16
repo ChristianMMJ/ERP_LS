@@ -132,7 +132,7 @@
                         window.open(data, '_blank');
                     } else {
                         $.fancybox.open({
-                            src: base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data,
+                            src: base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data + '#pagemode=thumbs',
                             type: 'iframe',
                             opts: {
                                 afterShow: function (instance, current) {
@@ -156,9 +156,9 @@
                             }
                         });
                     }
-                }).fail(function (x, y, z) { 
+                }).fail(function (x, y, z) {
                     console.log(x.responseText);
-                    swal('ATENCION','HA OCURRIDO UN ERROR AL OBTENER EL REPORTE, REVISE LA CONSOLA PARA MÁS DETALLE','warning');
+                    swal('ATENCION', 'HA OCURRIDO UN ERROR AL OBTENER EL REPORTE, REVISE LA CONSOLA PARA MÁS DETALLE', 'warning');
                 }).always(function () {
                     HoldOn.close();
                 });

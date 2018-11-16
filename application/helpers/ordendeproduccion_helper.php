@@ -902,13 +902,13 @@ class PDF extends FPDF {
 
         /* FECHA DE IMPRESIÓN */
         $this->SetFont('Calibri', 'B', 8);
-        $this->SetX($pos[2] - 13.34);
+        $this->SetX($pos[2] - 15.34);
         $this->Cell(43.33, $alto_celda, utf8_decode("Imp. " . Date('d/m/Y h:i:s a')), 0/* BORDE */, 0, 'L', 0);
 
         /* CODIGO DE BARRAS */
         $this->SetFont('Calibri', 'B', 14);
         $this->SetX($pos[3]);
-        $this->Code128($pos[3]/* X */, $this->GetY()/* Y */, $this->getControl()/* TEXT */, 42.5/* ANCHO */, 6/* ALTURA */);
+        $this->Code128($pos[3]/* X */, $this->GetY()/* Y */, $this->getControl()/* TEXT */, 43/* ANCHO */, 6/* ALTURA */); 
         $this->Cell(42.5, 6, "", 0/* BORDE */, 1, 'C', 0);
         $this->SetFont('Calibri', 'B', 8);
 

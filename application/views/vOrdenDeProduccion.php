@@ -136,7 +136,7 @@
             tblControles.DataTable().destroy();
         }
         Controles = tblControles.DataTable({
-            dom: 'irt',
+            dom: 'irtp',
             buttons: [
                 {
                     text: "Todos",

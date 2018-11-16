@@ -19,10 +19,10 @@ class Iordendeproduccion_model extends CI_Model {
                                     . "E.Descripcion AS \"Descripcion Estilo\", "
                                     . "C.Clave AS Color, "
                                     . "C.Descripcion AS \"Descripcion Color\", "
-                                    . "PE.Clave AS Pedido,"
-                                    . "PE.FechaPedido AS \"Fecha Pedido\","
-                                    . "PE.FechaRecepcion AS \"Fecha Entrega\","
-                                    . "PE.Registro AS \"Fecha Captura\","
+                                    . "PD.Clave AS Pedido,"
+                                    . "PD.FechaPedido AS \"Fecha Pedido\","
+                                    . "PD.FechaRecepcion AS \"Fecha Entrega\","
+                                    . "PD.Registro AS \"Fecha Captura\","
                                     . "PD.Semana AS Semana,"
                                     . "PD.Maquila AS Maq,"
                                     . "CL.Clave AS Cliente,"
@@ -39,14 +39,13 @@ class Iordendeproduccion_model extends CI_Model {
                                     . "ELSE PD.Control END AS Marca, "
                                     . "CONCAT(CT.Ano, CT.Semana, CT.Maquila, CT.Consecutivo) AS Control,"
                                     . "S.ID AS SerieID,"
-                                    . "PE.ID AS ID_PEDIDO", false)->from('pedidodetalle AS PD')
-                            ->join('pedidos AS PE', 'PD.Pedido = PE.Clave')
-                            ->join('clientes AS CL', 'CL.Clave = PE.Cliente')
+                                    . "PD.Clave AS ID_PEDIDO", false)->from('pedidox AS PD') 
+                            ->join('clientes AS CL', 'CL.Clave = PD.Cliente')
                             ->join('estilos AS E', 'PD.Estilo = E.Clave')
                             ->join('colores AS C', 'PD.color = C.Clave AND C.Estilo = E.Clave')
                             ->join('series AS S', 'E.Serie = S.Clave')
                             ->join('controles AS CT', 'CT.PedidoDetalle = PD.ID')
-                            ->join('ordendeproduccion AS OP', 'OP.Pedido = PE.Clave  AND OP.PedidoDetalle = PD.ID', 'left')
+                            ->join('ordendeproduccion AS OP', 'OP.Pedido = PD.Clave  AND OP.PedidoDetalle = PD.ID', 'left')
                             ->where('PD.Control != 0 AND OP.ID IS NOT NULL', null, false)
                             ->where('CT.Estatus', 'A')->get()->result();
         } catch (Exception $exc) {

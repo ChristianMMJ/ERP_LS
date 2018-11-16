@@ -43,6 +43,7 @@ class ParesPreProgramados extends CI_Controller {
         try {
             $x = $this->input;
             $CLIENTES = $this->pam->getClientes($x->post('CLIENTE'), $x->post('ESTILO'), $x->post('LINEA'), $x->post('MAQUILA'), $x->post('SEMANA'), $x->post('FECHA'));
+
             $bordes = 0;
             $alto_celda = 4;
             $TIPO = $x->post('TIPO');
@@ -70,7 +71,7 @@ class ParesPreProgramados extends CI_Controller {
             $pdf->SetX(180);
             $pdf->Cell(20, $alto_celda, Date('d/m/Y'), $bordes/* BORDE */, 1/* SALTO */, 'C');
 
-            $anchos = array(100/* 0 */, 20/* 1 */, 43/* 2 */, 30/* 3 */, 15/* 4 */, 16/* 5 */);
+            $anchos = array(100/* 0 */, 23/* 1 */, 43/* 2 */, 30/* 3 */, 15/* 4 */, 16/* 5 */, 12/* 6 */, 20/* 7 */);
             $spacex = 10;
             $bordes = 1;
             /* SUB ENCABEZADO */
@@ -85,14 +86,14 @@ class ParesPreProgramados extends CI_Controller {
             $pdf->Cell($anchos[1], $alto_celda, 'Linea', $bordes/* BORDE */, 0/* SALTO */, 'C');
             $spacex += $anchos[1];
             $pdf->SetX($spacex);
-            $pdf->Cell($anchos[4], $alto_celda, 'Estilo', $bordes/* BORDE */, 0/* SALTO */, 'C');
-            $spacex += $anchos[4];
+            $pdf->Cell($anchos[6], $alto_celda, 'Estilo', $bordes/* BORDE */, 0/* SALTO */, 'C');
+            $spacex += $anchos[6];
             $pdf->SetX($spacex);
             $pdf->Cell($anchos[2], $alto_celda, 'Color', $bordes/* BORDE */, 0/* SALTO */, 'C');
             $spacex += $anchos[2];
             $pdf->SetX($spacex);
-            $pdf->Cell($anchos[1], $alto_celda, 'Fecha-Ent', $bordes/* BORDE */, 0/* SALTO */, 'C');
-            $spacex += $anchos[1];
+            $pdf->Cell($anchos[7], $alto_celda, 'Fecha-Ent', $bordes/* BORDE */, 0/* SALTO */, 'C');
+            $spacex += $anchos[7];
             $pdf->SetX($spacex);
             $pdf->Cell($anchos[5], $alto_celda, 'Pares', $bordes/* BORDE */, 0/* SALTO */, 'C');
             $spacex += $anchos[5];
@@ -113,7 +114,7 @@ class ParesPreProgramados extends CI_Controller {
             $alto_celda = 3;
             $pdf->SetDrawColor(226, 226, 226);
             $pdf->SetDrawColor(0, 0, 0);
-            $spacex = 110;
+            $spacex = 10;
             $YF = 0;
 
             foreach ($CLIENTES as $k => $v) {
@@ -125,19 +126,20 @@ class ParesPreProgramados extends CI_Controller {
                 $pdf->SetAligns(array('L', 'L', 'C'));
                 $pdf->SetWidths(array(43/* 0 */, 35/* 1 */, 22/* 2 */));
                 $pdf->RowNoBorder(array(substr(utf8_decode($v->CLAVE_CLIENTE . " " . $v->CLIENTE), 0, 30)/* 0 */,
-                    utf8_decode($v->CLAVE_AGENTE . " " . $v->AGENTE)/* 1 */,
+                    utf8_decode($v->CLAVE_AGENTE . " " . $v->AGENTE)/* 1 */, /* SI NO TIENE AGENTE O ESTA EN CERO, ES UNA MUESTRA */
                     utf8_decode($v->ESTADO)));
                 $pdf->Line(10, $pdf->GetY(), 110, $pdf->GetY());
                 $PARES_PREPROGRAMADOS = $this->pam->getParesPreProgramados($v->CLAVE_CLIENTE, 1, $x->post('CLIENTE'), $x->post('ESTILO'), $x->post('LINEA'), $x->post('MAQUILA'), $x->post('SEMANA'), $x->post('FECHA'));
                 $bordes = 0;
+                $pdf->SetFont('Calibri', 'B', 6.5);
                 foreach ($PARES_PREPROGRAMADOS as $kk => $vv) {
                     $Y = $pdf->GetY();
                     $pdf->SetX($spacex);
                     $pdf->setFilled(0);
                     $pdf->setBorders(1);
-                    $pdf->SetAligns(array('C'/* 0 */, 'L'/* 1 */, 'C'/* 2 */, 'L'/* 3 */, 'C'/* 4 */, 'C'/* 5 */, 'C'/* 6 */, 'C'/* 7 */));
-                    $pdf->SetWidths(array(15/* 0 */, 20/* 1 */, 15/* 2 */, 43/* 3 */, 20/* 4 */, 16/* 5 */, 15/* 6 */, 15/* 7 */));
-                    $pdf->RowNoBorder(array(utf8_decode($vv->PEDIDO)/* 0 */,
+                    $pdf->SetAligns(array('C', 'C'/* 0 */, 'L'/* 1 */, 'C'/* 2 */, 'L'/* 3 */, 'C'/* 4 */, 'C'/* 5 */, 'C'/* 6 */, 'C'/* 7 */));
+                    $pdf->SetWidths(array(100, 15/* 0 */, 23/* 1 */, 12/* 2 */, 43/* 3 */, 20/* 4 */, 16/* 5 */, 15/* 6 */, 15/* 7 */));
+                    $pdf->RowNoBorder(array('', utf8_decode($vv->PEDIDO)/* 0 */,
                         utf8_decode($vv->CLAVE_LINEA . " " . $vv->LINEA)/* 1 */,
                         utf8_decode($vv->CLAVE_ESTILO)/* 2 */,
                         substr(utf8_decode($vv->COLOR), 0, 28)/* 3 */,
@@ -146,23 +148,23 @@ class ParesPreProgramados extends CI_Controller {
                         utf8_decode($vv->MAQUILA)/* 6 */,
                         utf8_decode($vv->SEMANA)/* 7 */));
                     $pdf->Line(110, $pdf->GetY(), 269, $pdf->GetY());
-                    $spacex = 110;
+                    $spacex = 10;
                     $PARES += $vv->PARES;
                     $TOTAL_PARES += $vv->PARES;
                 }
 
                 $bordes = 0;
                 $pdf->SetFont('Calibri', 'B', 8.5);
-                $pdf->SetX(193);
-                $pdf->Cell(30, $alto_celda, "Total por cliente", $bordes/* BORDE */, 0/* SALTO */, 'C');
+                $pdf->SetX(178);
+                $pdf->Cell(45, $alto_celda, "Total por cliente", $bordes/* BORDE */, 0/* SALTO */, 'R', 0);
                 $pdf->SetX(223);
-                $pdf->Cell(16, $alto_celda, $PARES, $bordes/* BORDE */, 1/* SALTO */, 'C');
+                $pdf->Cell(16, $alto_celda, $PARES, $bordes/* BORDE */, 1/* SALTO */, 'C', 0);
                 $PARES = 0;
             }
             $bordes = 0;
-            $pdf->SetFont('Calibri', 'B', 8.5);
+            $pdf->SetFont('Calibri', 'B', 8.5); 
             $pdf->SetX(178);
-            $pdf->Cell(45, $alto_celda, utf8_decode("Total pares en preprogramación"), $bordes/* BORDE */, 0/* SALTO */, 'C');
+            $pdf->Cell(45, $alto_celda, utf8_decode("Total pares en preprogramación"), $bordes/* BORDE */, 0/* SALTO */, 'R', 0);
             $pdf->SetX(223);
             $pdf->Cell(16, $alto_celda, $TOTAL_PARES, $bordes/* BORDE */, 0/* SALTO */, 'C');
             /* FIN RESUMEN */
@@ -299,15 +301,15 @@ class ParesPreProgramados extends CI_Controller {
                 $bordes = 0;
                 $pdf->SetFont('Calibri', 'B', 8.5);
                 $pdf->SetX(193);
-                $pdf->Cell(30, $alto_celda, "Total por estilo", $bordes/* BORDE */, 0/* SALTO */, 'C');
+                $pdf->Cell(30, $alto_celda, "Total por estilo", $bordes/* BORDE */, 0/* SALTO */, 'C', 0);
                 $pdf->SetX(223);
                 $pdf->Cell(16, $alto_celda, $PARES, $bordes/* BORDE */, 1/* SALTO */, 'C');
                 $PARES = 0;
             }
             $bordes = 0;
-            $pdf->SetFont('Calibri', 'B', 8.5);
+            $pdf->SetFont('Calibri', 'B', 8.5); 
             $pdf->SetX(178);
-            $pdf->Cell(45, $alto_celda, utf8_decode("Total pares en preprogramación"), $bordes/* BORDE */, 0/* SALTO */, 'C');
+            $pdf->Cell(45, $alto_celda, utf8_decode("Total pares en preprogramación"), $bordes/* BORDE */, 0/* SALTO */, 'C', 0);
             $pdf->SetX(223);
             $pdf->Cell(16, $alto_celda, $TOTAL_PARES, $bordes/* BORDE */, 0/* SALTO */, 'C');
             /* FIN RESUMEN */
@@ -450,7 +452,7 @@ class ParesPreProgramados extends CI_Controller {
             $bordes = 0;
             $pdf->SetFont('Calibri', 'B', 8.5);
             $pdf->SetX(178);
-            $pdf->Cell(45, $alto_celda, utf8_decode("Total pares en preprogramación"), $bordes/* BORDE */, 0/* SALTO */, 'C');
+            $pdf->Cell(45, $alto_celda, utf8_decode("Total pares en preprogramación"), $bordes/* BORDE */, 0/* SALTO */, 'C', 0);
             $pdf->SetX(223);
             $pdf->Cell(16, $alto_celda, $TOTAL_PARES, $bordes/* BORDE */, 0/* SALTO */, 'C');
             /* FIN RESUMEN */
@@ -577,7 +579,7 @@ class ParesPreProgramados extends CI_Controller {
             $bordes = 0;
             $pdf->SetFont('Calibri', 'B', 9);
             $pdf->SetX(120);
-            $pdf->Cell(45, $alto_celda, utf8_decode("Total pares en preprogramación"), $bordes/* BORDE */, 0/* SALTO */, 'C');
+            $pdf->Cell(45, $alto_celda, utf8_decode("Total pares en preprogramación"), $bordes/* BORDE */, 0/* SALTO */, 'C', 1);
             $pdf->SetX(165);
             $pdf->Cell(25, $alto_celda, $TOTAL_PARES, $bordes/* BORDE */, 0/* SALTO */, 'C');
             /* FIN RESUMEN */
