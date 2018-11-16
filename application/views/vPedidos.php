@@ -357,6 +357,7 @@
                     message: 'Por favor espere...'
                 });
                 $.getJSON(master_url + 'getIDXClave', {PEDIDO: $(this).val()}).done(function (data) {
+                    console.log('getIDXClave', "\n", data);
                     getPedidoByID(data[0].ID);
                 }).fail(function (x, y, z) {
                     console.log(x.responseText);
@@ -1266,6 +1267,7 @@
     function getPedidoByID(idx) {
         PedidoDetalle.clear().draw();
         $.getJSON(master_url + 'getPedidosByID', {ID: idx}).done(function (data) {
+            console.log('getPedidosByID', "\n", data);
             pnlDatos.find("input").val("");
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);

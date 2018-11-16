@@ -13,9 +13,7 @@ class Pedidos_model extends CI_Model {
     public function getRecords() {
         try {
             return $this->db->select("P.ID, P.Clave, P.Cliente AS Cliente, P.Agente Agente,P.FechaPedido,SUM(P.Pares) AS Pares", false)
-                            ->from('pedidox AS P')  
-                            ->group_by('P.Clave')
-                            ->get()->result();
+                            ->from('pedidox AS P')->group_by('P.Clave')->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -31,7 +29,7 @@ class Pedidos_model extends CI_Model {
 
     public function getPedidosByID($ID) {
         try {
-            return $this->db->select("P.ID as PDID, P.Clave, P.Cliente, P.Agente, P.FechaPedido, P.FechaRecepcion, P.Usuario, P.Estatus, P.Registro,
+            $data = $this->db->select("P.ID as PDID, P.Clave, P.Cliente, P.Agente, P.FechaPedido, P.FechaRecepcion, P.Usuario, P.Estatus, P.Registro,
                                     P.Clave AS Pedido, P.Estilo,P.EstiloT, P.Color, P.ColorT,P.FechaEntrega, P.Maquila, P.Semana, P.Ano, P.Recio,
                                     P.Precio, P.Observacion, P.ObservacionDetalle, P.Serie, P.Control,
                                     P.C1, P.C2, P.C3, P.C4, P.C5, P.C6, P.C7, P.C8, P.C9, P.C10, P.C11,
@@ -41,13 +39,15 @@ class Pedidos_model extends CI_Model {
                                     CONCAT(A.Clave, \" - \", A.Nombre) AS AgenteT,
                                     S.T1, S.T2, S.T3, S.T4, S.T5, S.T6, S.T7, S.T8, S.T9, S.T10, S.T11,
                                     S.T12, S.T13, S.T14, S.T15, S.T16, S.T17, S.T18, S.T19, S.T20, S.T21, S.T22", false)
-                            ->from('pedidox AS P') 
+                            ->from('pedidox AS P')
                             ->join('series AS S', 'P.Serie = S.Clave')
                             ->join('clientes AS C', 'P.Cliente = C.Clave')
                             ->join('agentes AS A', 'P.Agente = A.Clave', 'left')
                             ->order_by('S.Clave', 'ASC')
                             ->where('P.Clave', $ID)
                             ->get()->result();
+//            print $this->db->last_query();
+            return $data;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -122,7 +122,7 @@ class Pedidos_model extends CI_Model {
                                     S.T1, S.T2, S.T3, S.T4, S.T5, S.T6, S.T7, S.T8, S.T9, S.T10,
                                     S.T11, S.T12, S.T13, S.T14, S.T15, S.T16, S.T17, S.T18, S.T19, S.T20,
                                     S.T21, S.T22", false)
-                            ->from('pedidox AS P') 
+                            ->from('pedidox AS P')
                             ->join('series AS S', 'P.Serie = S.Clave')
                             ->join('clientes AS C', 'P.Cliente = C.Clave')
                             ->join('estados AS E', 'C.Estado = E.Clave')
@@ -180,7 +180,9 @@ class Pedidos_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
-/*ELIMINAR YA NO EXISTE*/
+
+    /* ELIMINAR YA NO EXISTE */
+
     public function onAgregarDetalle($array) {
         try {
             $this->db->insert("pedidox", $array);

@@ -109,28 +109,35 @@
                 Fecha = mdlParesPreProgramados.find("#PaPreProFecha").val(),
                 Linea = mdlParesPreProgramados.find("#PaPreProLinea").val(),
                 Estilo = mdlParesPreProgramados.find("#PaPreProEstilo").val();
-        HoldOn.open({
-            theme: 'sk-bounce',
-            message: 'Por favor espere...'
-        });
-        $.post(master_url_pares_preprogramados + 'getParesPreProgramados', {
-            CLIENTE: Cliente !== '' ? Cliente : '',
-            MAQUILA: Maquila !== '' ? Maquila : '',
-            SEMANA: Semana !== '' ? Semana : '',
-            FECHA: Fecha !== '' ? Fecha : '',
-            LINEA: Linea !== '' ? Linea : '',
-            ESTILO: Estilo !== '' ? Estilo : '',
-            TIPO: t
-        }).done(function (data, x, jq) {
-            console.log(data);
-            onBeep(1);
-            onImprimirReporteFancy(base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data + '#pagemode=thumbs');
-        }).fail(function (x, y, z) {
-            console.log(x.responseText);
-            swal('ATENCIÓN', 'HA OCURRIDO UN ERROR INESPERADO AL OBTENER EL REPORTE,CONSULTE LA CONSOLA PARA MÁS DETALLES.', 'warning');
-        }).always(function () {
-            HoldOn.close();
-        });
+        if (Cliente !== '') {
+            HoldOn.open({
+                theme: 'sk-bounce',
+                message: 'Por favor espere...'
+            });
+            $.post(master_url_pares_preprogramados + 'getParesPreProgramados', {
+                CLIENTE: Cliente !== '' ? Cliente : '',
+                MAQUILA: Maquila !== '' ? Maquila : '',
+                SEMANA: Semana !== '' ? Semana : '',
+                FECHA: Fecha !== '' ? Fecha : '',
+                LINEA: Linea !== '' ? Linea : '',
+                ESTILO: Estilo !== '' ? Estilo : '',
+                TIPO: t
+            }).done(function (data, x, jq) {
+                console.log(data);
+                onBeep(1);
+                onImprimirReporteFancy(base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data + '#pagemode=thumbs');
+            }).fail(function (x, y, z) {
+                console.log(x.responseText);
+                swal('ATENCIÓN', 'HA OCURRIDO UN ERROR INESPERADO AL OBTENER EL REPORTE,CONSULTE LA CONSOLA PARA MÁS DETALLES.', 'warning');
+            }).always(function () {
+                HoldOn.close();
+            });
+        } else {
+            swal('ATENCIÓN', 'DEBE DE ESPECIFICAR UN CLIENTE', 'warning').then((value) => {
+                mdlParesPreProgramados.find("#PaPreProCliente")[0].selectize.focus();
+                mdlParesPreProgramados.find("#PaPreProCliente")[0].selectize.open();
+            });
+        }
     }
 
     function PaPreProInit() {
