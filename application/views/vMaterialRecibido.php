@@ -272,7 +272,7 @@
             "scrollCollapse": false,
             "bSort": true,
             "aaSorting": [
-                [4, 'asc'], [5, 'asc']/*Folio*/
+                [4, 'asc'], [5, 'asc'], [7, 'asc']/*Folio*/
             ],
             "createdRow": function (row, data, index) {
                 $.each($(row).find("td"), function (k, v) {

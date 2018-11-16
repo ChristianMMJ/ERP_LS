@@ -36,7 +36,7 @@ class Explosiones_model extends CI_Model {
             $this->db->query("set sql_mode=''");
             $this->db->select("CAST(G.Clave AS SIGNED ) AS Clave ,G.Nombre "
                     . " ", false);
-            $this->db->from('pedidodetalle PE');
+            $this->db->from('pedidox PE');
             $this->db->join('fichatecnica FT', 'ON FT.Estilo =  PE.Estilo AND FT.Color = PE.Color');
             $this->db->join('articulos A', 'ON A.Clave =  FT.Articulo');
             $this->db->join('grupos G', 'ON G.Clave = A.Grupo');
@@ -74,7 +74,7 @@ class Explosiones_model extends CI_Model {
         try {
             $this->db->select("SUM(PE.Pares) AS Pares "
                             . " ", false)
-                    ->from('pedidodetalle PE')
+                    ->from('pedidox PE')
                     ->where('PE.Estatus', 'A')
                     ->where("PE.Maquila BETWEEN $Maquila AND $aMaquila")
                     ->where("PE.Semana BETWEEN $Semana AND $aSemana")
@@ -102,7 +102,7 @@ class Explosiones_model extends CI_Model {
             $this->db->select("A.Grupo, "
                             . "FT.Articulo "
                             . " ", false)
-                    ->from('pedidodetalle PE')
+                    ->from('pedidox PE')
                     ->join('fichatecnica FT', 'ON FT.Estilo =  PE.Estilo AND FT.Color = PE.Color')
                     ->join('articulos A', 'ON A.Clave =  FT.Articulo')
                     ->where("PE.Maquila BETWEEN $Maquila AND $aMaquila")
@@ -183,7 +183,7 @@ class Explosiones_model extends CI_Model {
                             . "SUM(FT.Consumo) AS Consumo,"
                             . "PM.Precio "
                             . " ", false)
-                    ->from('pedidodetalle PE')
+                    ->from('pedidox PE')
                     ->join('fichatecnica FT', 'ON FT.Estilo =  PE.Estilo AND FT.Color = PE.Color')
                     ->join('preciosmaquilas PM', "ON PM.Articulo = FT.Articulo AND PM.Maquila ='$Maquila' ")
                     ->join('articulos A', 'ON A.Clave =  FT.Articulo')
@@ -261,7 +261,7 @@ class Explosiones_model extends CI_Model {
             $this->db->query("set sql_mode=''");
             $this->db->select("CAST(G.Clave AS SIGNED ) AS Clave ,G.Nombre "
                     . " ", false);
-            $this->db->from('pedidodetalle PE');
+            $this->db->from('pedidox PE');
             $this->db->join('fichatecnica FT', 'ON FT.Estilo =  PE.Estilo AND FT.Color = PE.Color');
             $this->db->join('articulos A', 'ON A.Clave =  FT.Articulo');
             $this->db->join('grupos G', 'ON G.Clave = A.Grupo');
@@ -295,7 +295,7 @@ class Explosiones_model extends CI_Model {
                             . "PM.Precio, "
                             . "CAST(FT.Articulo AS SIGNED ) AS ClaveART "
                             . " ", false)
-                    ->from('pedidodetalle PE')
+                    ->from('pedidox PE')
                     ->join('fichatecnica FT', 'ON FT.Estilo =  PE.Estilo AND FT.Color = PE.Color')
                     ->join('articulos A', 'ON A.Clave =  FT.Articulo')
                     ->join('preciosmaquilas PM', "ON PM.Articulo = FT.Articulo AND PM.Maquila ='1' ")
@@ -348,7 +348,7 @@ SC.A21, SC.A22, "
                             . "SUM(FT.Consumo) AS Consumo "
                             . " "
                             . " ", false)
-                    ->from('pedidodetalle PE')
+                    ->from('pedidox PE')
                     ->join('fichatecnica FT', 'ON FT.Estilo =  PE.Estilo AND FT.Color = PE.Color')
                     ->join('articulos A', 'ON A.Clave =  FT.Articulo')
                     ->join('unidades U', 'ON U.Clave = A.UnidadMedida')

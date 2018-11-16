@@ -40,7 +40,7 @@ class MarcaCompraInservible extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->MarcaCompraInservible_model->getRecords());
+            print json_encode($this->MarcaCompraInservible_model->getRecords($this->input->post('Ano'), $this->input->post('Tp'), $this->input->post('Folio')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

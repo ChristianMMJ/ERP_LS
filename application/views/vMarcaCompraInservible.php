@@ -5,23 +5,26 @@
                 <legend class="float-left">Marca O.C. Inservible <span class="badge badge-info">(Click en cualquier renglon de la orden de compra)</span></legend>
             </div>
             <div class="col-sm-4" align="right">
-                <button type="button" class="btn btn-warning" id="btnLimpiarFiltros" data-toggle="tooltip" data-placement="right" title="Limpiar Filtros">
-                    <i class="fa fa-trash"></i>
-                </button>
+
             </div>
         </div>
         <div class="row">
-            <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1" data-column="1">
+            <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1" >
                 <label>Año</label>
-                <input type="text" class="form-control form-control-sm  numbersOnly column_filter" id="col1_filter" autofocus maxlength="4" >
+                <input type="text" class="form-control form-control-sm  numbersOnly " id="Ano" autofocus maxlength="4" >
             </div>
-            <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1" data-column="3">
+            <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1" >
                 <label>Tp</label>
-                <input type="text" class="form-control form-control-sm  numbersOnly column_filter" id="col3_filter"  maxlength="2" >
+                <input type="text" class="form-control form-control-sm  numbersOnly " id="Tp"  maxlength="2" >
             </div>
-            <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1" data-column="4">
+            <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1" >
                 <label>Folio O.C.</label>
-                <input type="text" class="form-control form-control-sm  numbersOnly column_filter" id="col4_filter" maxlength="10" >
+                <input type="text" class="form-control form-control-sm  numbersOnly" id="Folio" maxlength="10" >
+            </div>
+            <div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 pt-4">
+                <button type="button" id="btnBuscar" class="btn btn-info btn-sm ">
+                    <span class="fa fa-search"></span> BUSCAR
+                </button>
             </div>
         </div>
         <div class="card-block mt-4">
@@ -66,13 +69,7 @@
         handleEnter();
         pnlTablero.find("input").val("");
 
-        pnlTablero.find('#btnLimpiarFiltros').click(function () {
-            pnlTablero.find("input").val("");
-            tblCompras.DataTable().columns().search('').draw();
-            $(':input:text:enabled:visible:first').focus();
-        });
-
-        pnlTablero.find("#col1_filter").change(function () {
+        pnlTablero.find("#Ano").change(function () {
             if (parseInt($(this).val()) < 2016 || parseInt($(this).val()) > 2020 || $(this).val() === '') {
                 swal({
                     title: "ATENCIÓN",
@@ -83,29 +80,92 @@
                     buttons: false,
                     timer: 1000
                 }).then((action) => {
-                    pnlTablero.find("#col1_filter").val("");
-                    pnlTablero.find("#col1_filter").focus();
+                    pnlTablero.find("#Ano").val("");
+                    pnlTablero.find("#Ano").focus();
                 });
             }
         });
 
-        pnlTablero.find("#col3_filter").keyup(function () {
+        pnlTablero.find("#Tp").keyup(function () {
             var tp = parseInt($(this).val());
             if (tp > 2) {
                 $(this).val('').focus();
             }
         });
 
-        $('input.column_filter').on('keyup', function () {
-            var i = $(this).parents('div').attr('data-column');
-            tblCompras.DataTable().column(i).search($('#col' + i + '_filter').val()).draw();
+        pnlTablero.find("#btnBuscar").click(function () {
+            var Ano = pnlTablero.find("#Ano").val();
+            var Tp = pnlTablero.find("#Tp").val();
+            var Folio = pnlTablero.find("#Folio").val();
+            getRecords(Ano, Tp, Folio);
         });
+
+
+
     });
 
     function init() {
-        getRecords();
+        Compras = tblCompras.DataTable({
+            "dom": 'Brtip',
+            buttons: buttons,
+            orderCellsTop: true,
+            fixedHeader: true,
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": true
+                },
+                {
+                    "targets": [1],
+                    "visible": false,
+                    "searchable": true
+                },
+                {
+                    "targets": [2],
+                    "visible": false,
+                    "searchable": true
+                },
+                {
+                    "targets": [3],
+                    "visible": false,
+                    "searchable": true
+                },
+                {
+                    "targets": [5],
+                    "visible": false,
+                    "searchable": true
+                },
+                {
+                    "targets": [10],
+                    "render": function (data, type, row) {
+                        return '$' + $.number(parseFloat(data), 2, '.', ',');
+                    }
+                },
+                {
+                    "targets": [11],
+                    "render": function (data, type, row) {
+                        return '$' + $.number(parseFloat(data), 2, '.', ',');
+                    }
+                },
+                {
+                    "targets": [15],
+                    "visible": false,
+                    "searchable": true
+                }
+            ],
+            language: lang,
+
+            "autoWidth": true,
+            "colReorder": true,
+            "displayLength": 15,
+            "bLengthChange": false,
+            "deferRender": true,
+            "scrollCollapse": false,
+            "bSort": true
+        });
     }
-    function getRecords() {
+    function getRecords(Ano, tp, folio) {
         temp = 0;
         HoldOn.open({
             theme: 'sk-cube',
@@ -122,7 +182,13 @@
             fixedHeader: true,
             "ajax": {
                 "url": master_url + 'getRecords',
-                "dataSrc": ""
+                "dataSrc": "",
+                "type": "POST",
+                "data": {
+                    Ano: Ano,
+                    Tp: tp,
+                    Folio: folio
+                }
             },
             "columns": [
                 {"data": "GruposT"},
@@ -243,7 +309,7 @@
             },
             initComplete: function (a, b) {
                 HoldOn.close();
-                $(':input:text:enabled:visible:first').focus();
+                $(':input:text:enabled:visible:first').focus().select();
             }
         });
 
@@ -260,8 +326,6 @@
                 if (value) {
                     $.post(master_url + 'onModificar', {Tp: dtm.Tp, Folio: dtm.Folio}).done(function (data) {
                         onNotifyOld('fa fa-check', 'OPERACIÓN EXITOSA', 'success');
-                        Compras.ajax.reload();
-                        pnlTablero.find('#btnLimpiarFiltros').trigger('click');
                         Compras.clear().draw();
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
