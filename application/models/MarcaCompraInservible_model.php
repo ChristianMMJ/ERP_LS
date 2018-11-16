@@ -10,7 +10,7 @@ class MarcaCompraInservible_model extends CI_Model {
         parent::__construct();
     }
 
-    public function getRecords() {
+    public function getRecords($Ano, $Tp, $Folio) {
         try {
             return $this->db->select("OC.ID,"
                                     . "OC.Tp, "
@@ -41,6 +41,9 @@ class MarcaCompraInservible_model extends CI_Model {
                             ->join("grupos G", 'ON G.Clave =  A.Grupo')
                             ->join("unidades U", 'ON U.Clave =  A.UnidadMedida')
                             ->where_in('OC.Estatus', array('ACTIVA', 'PENDIENTE', 'RECIBIDA'))
+                            ->where('OC.Ano', $Ano)
+                            ->where('OC.Tp', $Tp)
+                            ->where('OC.Folio', $Folio)
                             ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -49,7 +52,7 @@ class MarcaCompraInservible_model extends CI_Model {
 
     public function onModificar($Tp, $Folio) {
         try {
-            $this->db->set('Estatus', 'CANCELADA')->where('Tp', $Tp)->where('Folio', $Folio)->update("ordencompra");
+            $this->db->set('Estatus', 'INACTIVA')->where('Tp', $Tp)->where('Folio', $Folio)->update("ordencompra");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

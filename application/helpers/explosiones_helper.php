@@ -475,14 +475,14 @@ class PDF extends FPDF {
             0/* ClaveArt */,
             80/* Articulo */,
             0/* Clasif */,
-            15/* UM */,
-            15/* Explosion */,
+            13/* UM */,
+            17/* Explosion */,
             15/* Precio */,
-            15/* Subtotal */,
+            20/* Subtotal */,
             20/* Requerido */,
-            25/* 1raEnt */,
+            20/* 1raEnt */,
             20/* 2daEnt */);
-        $aligns = array('L', 'L', 'L', 'L', 'L', 'C', 'L', 'C', 'C', 'R');
+        $aligns = array('L', 'L', 'L', 'L', 'L', 'C', 'C', 'C', 'C', 'R');
 
         $this->SetY(25);
         $this->SetX(5);
@@ -510,13 +510,13 @@ class PDF extends FPDF {
             10/* ClaveArt */,
             63/* Articulo */,
             7/* Clasif */,
-            15/* UM */,
-            12/* Explosion */,
-            15/* Precio */,
-            15/* Subtotal */,
-            22/* Requerido */,
-            23/* 1raEnt */,
-            23/* 2daEnt */);
+            13/* UM */,
+            15/* Explosion */,
+            14/* Precio */,
+            18/* Subtotal */,
+            21/* Requerido */,
+            22/* 1raEnt */,
+            22/* 2daEnt */);
         $aligns = array('R', 'L', 'L', 'L', 'R', 'R', 'R', 'C', 'L', 'L');
         $this->SetAligns($aligns);
         $this->SetWidths($anchos);

@@ -102,7 +102,7 @@ class Explosiones extends CI_Controller {
                                         if ($Exp_Acum > 0) {
                                             $pdf->Row(array(
                                                 utf8_decode($D->Articulo),
-                                                mb_strimwidth(utf8_decode($D->Descripcion), 0, 55, "..."),
+                                                mb_strimwidth(utf8_decode($D->Descripcion), 0, 40, ""),
                                                 utf8_decode($D->Unidad),
                                                 $Talla,
                                                 number_format($Exp_Acum, 2, ".", ","),
@@ -117,7 +117,7 @@ class Explosiones extends CI_Controller {
                                         if ($Exp_Acum > 0) {
                                             $pdf->Row(array(
                                                 utf8_decode($D->Articulo),
-                                                mb_strimwidth(utf8_decode($D->Descripcion), 0, 55, "..."),
+                                                mb_strimwidth(utf8_decode($D->Descripcion), 0, 40, ""),
                                                 utf8_decode($D->Unidad),
                                                 $Talla,
                                                 number_format($Exp_Acum, 2, ".", ","),
@@ -141,18 +141,19 @@ class Explosiones extends CI_Controller {
                                 $TOTAL_SUBT += $Subtotal;
                             }
                         }
-
-                        $pdf->SetFont('Calibri', 'B', 8);
-                        $pdf->SetX(58);
-                        $pdf->Cell(40, 4, 'Total por Articulo: ', 'B'/* BORDE */, 0, 'L');
-                        $pdf->SetFont('Calibri', '', 8);
-                        $pdf->SetX(98);
-                        $pdf->Cell(14, 4, number_format($TOTAL_EXP_ART, 2, ".", ","), 'B'/* BORDE */, 0, 'R');
-                        $pdf->SetX(112);
-                        $pdf->Cell(15, 4, '', 'B'/* BORDE */, 0, 'R');
-                        $pdf->SetX(127);
-                        $pdf->Cell(15, 4, '$' . number_format($TOTAL_SUBT_ART, 2, ".", ","), 'B'/* BORDE */, 1, 'R');
-                        $pdf->SetX(150);
+                        if ($TOTAL_EXP_ART > 0 && $TOTAL_SUBT_ART > 0) {
+                            $pdf->SetFont('Calibri', 'B', 8);
+                            $pdf->SetX(58);
+                            $pdf->Cell(40, 4, 'Total por Articulo: ', 'B'/* BORDE */, 0, 'L');
+                            $pdf->SetFont('Calibri', '', 8);
+                            $pdf->SetX(98);
+                            $pdf->Cell(14, 4, number_format($TOTAL_EXP_ART, 2, ".", ","), 'B'/* BORDE */, 0, 'R');
+                            $pdf->SetX(112);
+                            $pdf->Cell(15, 4, '', 'B'/* BORDE */, 0, 'R');
+                            $pdf->SetX(127);
+                            $pdf->Cell(15, 4, '$' . number_format($TOTAL_SUBT_ART, 2, ".", ","), 'B'/* BORDE */, 1, 'R');
+                            $pdf->SetX(150);
+                        }
                     }
                 }
 
@@ -302,7 +303,7 @@ class Explosiones extends CI_Controller {
                                 $PorcentajeSuelas = ($Tipo === '80') ? number_format($Porcentaje, 2, ".", ",") . '%' : '';
                                 $pdf->Row(array(
                                     utf8_decode($D->Articulo),
-                                    mb_strimwidth(utf8_decode($D->Descripcion), 0, 55, "..."),
+                                    mb_strimwidth(utf8_decode($D->Descripcion), 0, 45, ""),
                                     utf8_decode($D->Clasificacion),
                                     utf8_decode($D->Unidad),
                                     number_format($ExplosionCant, 2, ".", ","),
@@ -326,14 +327,14 @@ class Explosiones extends CI_Controller {
                             case '10':
                                 if ($SinClasif === '0') {
                                     $pdf->SetFont('Calibri', 'B', 8);
-                                    $pdf->SetX(58);
+                                    $pdf->SetX(59);
                                     $pdf->Cell(40, 4, 'Total por Articulo: ', 'B'/* BORDE */, 0, 'L');
                                     $pdf->SetFont('Calibri', '', 8);
-                                    $pdf->SetX(98);
+                                    $pdf->SetX(99);
                                     $pdf->Cell(14, 4, number_format($TOTAL_EXP_ART, 2, ".", ","), 'B'/* BORDE */, 0, 'R');
-                                    $pdf->SetX(112);
-                                    $pdf->Cell(15, 4, '', 'B'/* BORDE */, 0, 'R');
-                                    $pdf->SetX(127);
+                                    $pdf->SetX(113);
+                                    $pdf->Cell(17, 4, '', 'B'/* BORDE */, 0, 'R');
+                                    $pdf->SetX(130);
                                     $pdf->Cell(15, 4, '$' . number_format($TOTAL_SUBT_ART, 2, ".", ","), 'B'/* BORDE */, 1, 'R');
                                     $pdf->SetX(150);
                                 }
@@ -350,14 +351,14 @@ class Explosiones extends CI_Controller {
                 $pdf->SetFont('Calibri', 'B', 8);
                 $y = $pdf->GetY();
                 $pdf->SetY($y);
-                $pdf->SetX(58);
+                $pdf->SetX(59);
                 $pdf->Cell(40, 4, 'Totales por Grupo: ', 'B'/* BORDE */, 0, 'L');
                 $pdf->SetFont('Calibri', '', 8);
-                $pdf->SetX(98);
+                $pdf->SetX(99);
                 $pdf->Cell(14, 4, number_format($TOTAL_EXP_GRUPO, 2, ".", ","), 'B'/* BORDE */, 0, 'R');
-                $pdf->SetX(112);
-                $pdf->Cell(15, 4, '', 'B'/* BORDE */, 0, 'R');
-                $pdf->SetX(127);
+                $pdf->SetX(113);
+                $pdf->Cell(17, 4, '', 'B'/* BORDE */, 0, 'R');
+                $pdf->SetX(130);
                 $pdf->Cell(15, 4, '$' . number_format($TOTAL_SUBT_GRUPO, 2, ".", ","), 'B'/* BORDE */, 0, 'R');
                 if ($Tipo !== '80') {
                     $pdf->SetX(150);
@@ -372,14 +373,14 @@ class Explosiones extends CI_Controller {
             }
 
             $pdf->SetFont('Calibri', 'B', 8);
-            $pdf->SetX(58);
+            $pdf->SetX(59);
             $pdf->Cell(40, 4, 'Total por Semana Maquila: ', 'B'/* BORDE */, 0, 'L');
             $pdf->SetFont('Calibri', '', 8);
-            $pdf->SetX(98);
+            $pdf->SetX(99);
             $pdf->Cell(14, 4, number_format($TOTAL_EXP, 2, ".", ","), 'B'/* BORDE */, 0, 'R');
-            $pdf->SetX(112);
-            $pdf->Cell(15, 4, '', 'B'/* BORDE */, 0, 'R');
-            $pdf->SetX(127);
+            $pdf->SetX(113);
+            $pdf->Cell(17, 4, '', 'B'/* BORDE */, 0, 'R');
+            $pdf->SetX(130);
             $pdf->Cell(15, 4, '$' . number_format($TOTAL_SUBT, 2, ".", ","), 'B'/* BORDE */, 0, 'R');
 
 
