@@ -305,7 +305,7 @@
             if (data.length > 0) {
                 swal({
                     title: "ATENCIÓN",
-                    text: "ESTE DOCUMENTO YA FUE CAPTRUADO",
+                    text: "ESTE DOCUMENTO YA FUE CAPTURADO",
                     icon: "warning"
                 }).then((value) => {
                     $(v).val('').focus();

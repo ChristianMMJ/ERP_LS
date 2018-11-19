@@ -24,7 +24,7 @@
                     <span class="fas fa-pencil-alt"></span> Capturas
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCapturas">
-                    <a class="dropdown-item" href="#"> --</a>
+                    <a class="dropdown-item" href="<?php print base_url('PagosProveedores/?origen=CONTABILIDAD'); ?>">Pagos a Proveedores</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
