@@ -67,6 +67,14 @@ class Pedidos extends CI_Controller {
         }
     }
 
+    public function getPedidoDByID() {
+        try { 
+            print json_encode($this->pem->getPedidoDByID($this->input->get('ID')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getIDXClave() {
         try {
             print json_encode($this->pem->getIDXClave($this->input->get('PEDIDO')));

@@ -311,7 +311,136 @@
     var Cliente = '';
     var mdlAviso = $("#mdlAviso");
     var btnAgregarDetalle = pnlDatos.find("#btnAgregarDetalle");
-
+    var opciones_detalle = {
+        "dom": 'rit',
+        buttons: buttons,
+        "columns": [
+            {"data": "PDID"}, {"data": "Recibido"}, {"data": "Estilo"}, {"data": "EstiloT"},
+            {"data": "Color"}, {"data": "ColorT"}, {"data": "Semana"}, {"data": "Maquila"},
+            {"data": "T1"}, {"data": "T2"}, {"data": "T3"}, {"data": "T4"},
+            {"data": "T5"}, {"data": "T6"}, {"data": "T7"}, {"data": "T8"},
+            {"data": "T9"}, {"data": "T10"}, {"data": "T11"}, {"data": "T12"},
+            {"data": "T13"}, {"data": "T14"}, {"data": "T15"}, {"data": "T16"},
+            {"data": "T17"}, {"data": "T18"}, {"data": "T19"}, {"data": "T20"},
+            {"data": "T21"}, {"data": "T22"},
+            {"data": "Precio"}, {"data": "Pares"},
+            {"data": "FechaEntrega"}, {"data": "ELIMINAR"},
+            {"data": "Recio"}, {"data": "Observacion"},
+            {"data": "ObservacionDetalle"}, {"data": "Serie"},
+            {"data": "EstatusD"}, {"data": "STT"}
+        ],
+        "columnDefs": [
+            //ID
+            {
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            },
+            //RECIBIDO
+            {
+                "targets": [1],
+                "visible": false,
+                "searchable": false
+            },
+            //ESTILO ID
+            {
+                "targets": [3],
+                "visible": false,
+                "searchable": false
+            },
+            //COLOR ID
+            {
+                "targets": [5],
+                "visible": false,
+                "searchable": false
+            },
+            //RECIO
+            {
+                "targets": [34],
+                "visible": false,
+                "searchable": false
+            },
+            //TITULO OBSERVACIONES
+            {
+                "targets": [35],
+                "visible": false,
+                "searchable": false
+            },
+            //TITULO OBSERVACIONES
+            {
+                "targets": [36],
+                "visible": false,
+                "searchable": false
+            },
+            //SERIE
+            {
+                "targets": [37],
+                "visible": false,
+                "searchable": false
+            },
+            //ESTATUS REGISTRO
+            {
+                "targets": [38],
+                "visible": false,
+                "searchable": false
+            },
+            //IMPORTE
+            {
+                "targets": [39],
+                "visible": false,
+                "searchable": false
+            }
+        ],
+        language: lang,
+        select: true,
+        "autoWidth": true,
+        "colReorder": true,
+        "displayLength": 999,
+        "bLengthChange": false,
+        "deferRender": true,
+        "scrollCollapse": false,
+        "bSort": true,
+        "scrollY": "500px",
+        "scrollX": true,
+        "createdRow": function (row, data, index) {
+            $.each($(row).find("td"), function (k, v) {
+                var c = $(v);
+                var index = parseInt(k);
+                switch (index) {
+                    case 0:
+                        /*ESTILO*/
+                        c.attr('title', data[3]);
+                        break;
+                    case 1:
+                        /*COLOR*/
+                        c.attr('title', data[5]);
+                        break;
+                }
+                $(row).find("td").slice(4, 26).addClass("zoom");
+            });
+        },
+        "footerCallback": function (row, data, start, end, display) {
+            var api = this.api();//Get access to Datatable API
+            // Update footer
+            var pares = api.column(31).data().reduce(function (a, b) {
+                var ax = 0, bx = 0;
+                ax = $.isNumeric(a) ? parseFloat(a) : 0;
+                bx = $.isNumeric(b) ? parseFloat(b) : 0;
+                return  (ax + bx);
+            }, 0);
+            var total = api.column(39).data().reduce(function (a, b) {
+                var ax = 0, bx = 0;
+                ax = $.isNumeric(a) ? parseFloat(a) : 0;
+                bx = $.isNumeric(b) ? parseFloat(b) : 0;
+                return  (ax + bx);
+            }, 0);
+            $("#ParesTotales").html("<span class='text-warning'>" + pares + "</span>");
+            $("#Total").html("<span class='text-info'>$" + $.number(total, 3, '.', ',') + "</span>");
+        },
+        initComplete: function (x, y) {
+            HoldOn.close();
+        }
+    };
     var Selectizer = function () {
         return {
             loadOptions: function (query, callback) {
@@ -349,7 +478,6 @@
     $(document).ready(function () {
         init();
         handleEnter();
-
         pnlTablero.find("#NumeroDePedido").keydown(function (e) {
             if (e.keyCode === 13 && isValidInput($(this))) {
                 HoldOn.open({
@@ -969,133 +1097,6 @@
         if ($.fn.DataTable.isDataTable('#tblPedidoDetalle')) {
             tblPedidoDetalle.DataTable().destroy();
         }
-        PedidoDetalle = tblPedidoDetalle.DataTable({
-            "dom": 'rit',
-            buttons: buttons,
-            "ajax": {
-                "url": master_url + 'getPedidosByID',
-                "dataSrc": "",
-                "data": {
-                    "ID": temp
-                }
-            },
-            "columnDefs": [
-                //ID
-                {
-                    "targets": [0],
-                    "visible": false,
-                    "searchable": false
-                },
-                //RECIBIDO
-                {
-                    "targets": [1],
-                    "visible": false,
-                    "searchable": false
-                },
-                //ESTILO ID
-                {
-                    "targets": [3],
-                    "visible": false,
-                    "searchable": false
-                },
-                //COLOR ID
-                {
-                    "targets": [5],
-                    "visible": false,
-                    "searchable": false
-                },
-                //RECIO
-                {
-                    "targets": [34],
-                    "visible": false,
-                    "searchable": false
-                },
-                //TITULO OBSERVACIONES
-                {
-                    "targets": [35],
-                    "visible": false,
-                    "searchable": false
-                },
-                //TITULO OBSERVACIONES
-                {
-                    "targets": [36],
-                    "visible": false,
-                    "searchable": false
-                },
-                //SERIE
-                {
-                    "targets": [37],
-                    "visible": false,
-                    "searchable": false
-                },
-                //ESTATUS REGISTRO
-                {
-                    "targets": [38],
-                    "visible": false,
-                    "searchable": false
-                },
-                //IMPORTE
-                {
-                    "targets": [39],
-                    "visible": false,
-                    "searchable": false
-                }
-            ],
-            language: lang,
-            select: true,
-            "autoWidth": true,
-            "colReorder": true,
-            "displayLength": 999,
-            "bLengthChange": false,
-            "deferRender": true,
-            "scrollCollapse": false,
-            "bSort": true,
-            "scrollY": "500px",
-            "scrollX": true,
-            "createdRow": function (row, data, index) {
-                $.each($(row).find("td"), function (k, v) {
-                    var c = $(v);
-                    var index = parseInt(k);
-                    switch (index) {
-                        case 0:
-                            /*ESTILO*/
-                            c.attr('title', data[3]);
-                            break;
-                        case 1:
-                            /*COLOR*/
-                            c.attr('title', data[5]);
-                            break;
-                    }
-
-                    $(row).find("td").slice(4, 26).addClass("zoom");
-                });
-
-            },
-//            "createdRow": function (row, data, index) {
-//                $(row).find("td").slice(4, 26).addClass("zoom");
-//            },
-            "footerCallback": function (row, data, start, end, display) {
-                var api = this.api();//Get access to Datatable API
-                // Update footer
-                var pares = api.column(31).data().reduce(function (a, b) {
-                    var ax = 0, bx = 0;
-                    ax = $.isNumeric(a) ? parseFloat(a) : 0;
-                    bx = $.isNumeric(b) ? parseFloat(b) : 0;
-                    return  (ax + bx);
-                }, 0);
-                var total = api.column(39).data().reduce(function (a, b) {
-                    var ax = 0, bx = 0;
-                    ax = $.isNumeric(a) ? parseFloat(a) : 0;
-                    bx = $.isNumeric(b) ? parseFloat(b) : 0;
-                    return  (ax + bx);
-                }, 0);
-                $("#ParesTotales").html("<span class='text-warning'>" + pares + "</span>");
-                $("#Total").html("<span class='text-info'>$" + $.number(total, 3, '.', ',') + "</span>");
-            },
-            initComplete: function (x, y) {
-                HoldOn.close();
-            }
-        });
     }
 
     function getOptions(url, comp, key, field) {
@@ -1265,9 +1266,7 @@
     }
 
     function getPedidoByID(idx) {
-        PedidoDetalle.clear().draw();
         $.getJSON(master_url + 'getPedidosByID', {ID: idx}).done(function (data) {
-            console.log('getPedidosByID', "\n", data);
             pnlDatos.find("input").val("");
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
@@ -1295,41 +1294,23 @@
             pnlDatos.find("#Agente")[0].selectize.disable();
 
             btnImprimir.removeClass("d-none");
-            //ASIGNAR DETALLE
-            var tal = '<div class="row"><div class="col-12 text-danger text-nowrap talla" align="center">';
-            var cnt = '</div><div class="col-12 cantidad" align="center">';
-            var close = '</div></div>';
-            $.each(data, function (k, v) {
-                var dtm = [
-                    v.PDID, //ID
-                    v.Recibido, //Recibido
-                    v.Estilo, //EstiloID
-                    v.EstiloT, //Estilo
-                    v.Color, //ColorID
-                    v.ColorT,
-                    v.Semana,
-                    v.Maquila];
-                for (var i = 1, max = 23; i < max; i++) {
-                    dtm.push(tal + (v["T" + i] !== '0' ? v["T" + i] : '-') + cnt + (v["C" + i] !== '0' ? v["C" + i] : '-') + close);
-                }
-                dtm.push(v.Precio);
-                dtm.push(v.Pares);
-                dtm.push(v.FechaEntrega);
-                dtm.push('<button type="button" class="btn btn-danger" onclick="onEliminar(this,2)"><span class="fa fa-trash"></span></button>');
-                dtm.push(v.Recio);
-                dtm.push(v.Observacion);
-                dtm.push(v.ObservacionDetalle);
-                dtm.push(v.Serie);
-                dtm.push('A');
-                dtm.push((v.Pares * v.Precio));
-                PedidoDetalle.row.add(dtm).draw(false);
-            });
             pnlDatos.find("#Cliente")[0].selectize.disable();
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass('d-none');
             pnlDatos.find("#Estilo")[0].selectize.focus();
             $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
             temp = dt.Clave;
+            opciones_detalle.ajax = {
+                "url": master_url + 'getPedidoDByID',
+                "dataSrc": "",
+                "data": {
+                    "ID": dt.Clave
+                }
+            };
+            if ($.fn.DataTable.isDataTable('#tblPedidoDetalle')) {
+                tblPedidoDetalle.DataTable().destroy();
+            }
+            PedidoDetalle = tblPedidoDetalle.DataTable(opciones_detalle);
         }).fail(function (x, y, z) {
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
         }).always(function () {
