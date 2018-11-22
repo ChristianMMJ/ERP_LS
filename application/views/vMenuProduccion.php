@@ -40,7 +40,14 @@
                     </li>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php print base_url('AsignaPFTSACXC.shoes/?origen=PRODUCCION'); ?>"><span class="fa fa-hand-pointer"></span> Asigna piel, forro, textiles y sintéticos a corte por control</a>                    
-                    <a class="dropdown-item" href="<?php print base_url('TiemposXEstiloDepto.shoes/?origen=PRODUCCION'); ?>"><span class="fa fa-clock"></span> Tiempos por estilo</a>                    
+                    <div class="dropdown-divider"></div>
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#"><span class="fa fa-clock"></span> Tiempos</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="<?php print base_url('TiemposXEstiloDepto.shoes/?origen=PRODUCCION'); ?>"><span class="fa fa-stopwatch"></span> Tiempos por estilo</a>                    
+                            <a class="dropdown-item" href="<?php print base_url('HojasDeEstudioTiempos.shoes/?origen=PRODUCCION'); ?>"><span class="fa fa-swatchbook"></span> Hojas de estudios y tiempos</a>                    
+                        </div>
+                    </li>
                 </ul>
             </li>
             <li class="nav-item dropdown">
@@ -70,8 +77,8 @@
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" href="#"><span class="fa fa-dot-circle"></span> Preprogramaciones</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlParesAsignados"><span class="fa fa-dot-circle"></span> Pares asignados</a>
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlParesPreProgramados"><span class="fa fa-dot-circle"></span> Pares en preprogramación</a>
+                            <a class="dropdown-item" href="<?php print base_url('ParesAsignados.shoes'); ?>"><span class="fa fa-dot-circle"></span> Pares asignados</a>
+                            <a class="dropdown-item" href="<?php print base_url('ParesPreProgramados.shoes'); ?>"><span class="fa fa-dot-circle"></span> Pares en preprogramación</a>
                         </div>
                     </li>
                 </ul>
@@ -128,5 +135,3 @@
 <?php
 $this->load->view('vExplosionSemanal');
 $this->load->view('vConsumoPielForroXCortador');
-$this->load->view('vParesAsignados');
-$this->load->view('vParesPreProgramados');

@@ -14,6 +14,36 @@ class ParesAsignados extends CI_Controller {
         $this->load->library('session')->model('ParesAsignados_model', 'pam')->helper('paresasignados_helper');
     }
 
+    public function index() {
+        if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
+            $this->load->view('vEncabezado');
+            switch ($this->session->userdata["TipoAcceso"]) {
+                case 'SUPER ADMINISTRADOR':
+                    $this->load->view('vNavGeneral')->view('vMenuProduccion');
+                    break;
+                case 'VENTAS':
+                    $this->load->view('vMenuClientes');
+                    break;
+                case 'PRODUCCION':
+                    $this->load->view('vMenuProduccion');
+                    break;
+                case 'RECURSOS HUMANOS':
+                    $this->load->view('vMenuProduccion');
+                    break;
+                case 'FACTURACION':
+                    $this->load->view('vMenuFacturacion');
+                    break;
+                case 'PRODUCCION':
+                    $this->load->view('vMenuProduccion');
+                    break;
+            }
+
+            $this->load->view('vFondo')->view('vParesAsignados')->view('vFooter');
+        } else {
+            $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
+        }
+    }
+
     public function getParesAsignados() {
         try {
             $x = $this->input;
@@ -27,7 +57,6 @@ class ParesAsignados extends CI_Controller {
                 }
             }
             sort($MAQUILAS);
-
             $bordes = 0;
             $alto_celda = 4;
             $TIPO = $x->post('TIPO');
@@ -190,4 +219,19 @@ class ParesAsignados extends CI_Controller {
         }
     }
 
+    public function onComprobarMaquilas() {
+        try {
+            print json_encode($this->pam->onComprobarMaquilas($this->input->get('MAQUILA')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    
+    public function onChecarSemanaValida() {
+        try {
+            print json_encode($this->pam->onChecarSemanaValida($this->input->get('SEMANA')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }    
 }

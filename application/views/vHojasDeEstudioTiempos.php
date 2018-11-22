@@ -1,28 +1,60 @@
 <div class="card m-3 animated fadeIn" id="pnlTablero">
     <div class="card-header" align="center">
-        <h3 class="font-weight-bold">Tiempos por estilo departamento</h3>
+        <h3 class="font-weight-bold">Mantenimientos a tiempos por estilo</h3>
     </div>
     <div class="card-body">
         <div class="row">
             <div class="col-12 d-none">
                 <label>ID</label>
                 <input type="text" class="form-control form-control-sm d-none" id="ID" maxlength="10" name="ID">
-            </div> 
+            </div>
             <div class="col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2">
                 <label>Estilo</label>     
                 <input type="text" class="form-control form-control-sm" autofocus id="Estilo" name="Estilo" maxlength="10"  min="1" max="10">
             </div>
             <div class="col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2">
-                <label>Linea</label>
-                <input type="text" class="form-control form-control-sm" id="Linea" maxlength="10" name="Linea">
+                <label>Fecha</label>
+                <input type="text" class="form-control form-control-sm date" id="Fecha" maxlength="10" name="Fecha">
             </div>  
+            <div class="col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2">
+                <label>Conteo no.</label>     
+                <input type="text" class="form-control form-control-sm numbersOnly" autofocus id="Conteo" name="Conteo" maxlength="10"  min="1" max="10">
+            </div>
+            <div class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-3"> 
+                <label>Departamento</label>
+                <select id="Departamento" name="Departamento" class="form-control form-control-sm"></select>
+            </div>
+            <div class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-3"> 
+                <label>Fracción</label>
+                <select id="Fraccion" name="Fraccion" class="form-control form-control-sm"></select>
+            </div>
+            <div class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-3"> 
+                <label>Sub-Fracción</label>
+                <select id="SubFraccion" name="SubFraccion" class="form-control form-control-sm"></select>
+            </div>
+            <div class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-3"> 
+                <label>Linea</label>
+                <select id="Linea" name="Linea" class="form-control form-control-sm"></select>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2">
+                <label>Operar</label>     
+                <select id="Operar" name="Operar" class="form-control form-control-sm"></select>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2">
+                <label>Pares</label>     
+                <input type="text" class="form-control form-control-sm" autofocus id="Operar" name="Operar" >
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2">
+                <label>Productividad</label>     
+                <input type="text" class="form-control form-control-sm" autofocus id="Productividad" name="Productividad" >
+            </div>
             <div id="EstiloDescripcion" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center" aling="center"></div>
             <div id="Departamentos" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"></div>
             <div class="col-12 col-sm-6 col-md-4 col-lg-12 col-xl-12 m-2" align="left">
                 <button type="button" class="btn btn-primary animated fadeIn" id="btnGuardarTiempo">GUARDAR</button>
                 <button type="button" class="btn btn-danger animated fadeIn" id="btnCancelarTiempo">CANCELAR</button>
             </div>
-            <div id="TiemposXEstiloDepto" class="table-responsive">
+            <div id="TiemposXEstiloDepto" class="table-responsive d-none">
                 <table id="tblTiemposXEstiloDepto" class="table table-sm display hover" style="width:100%">
                     <thead>
                         <tr>
@@ -249,7 +281,7 @@
                 "visible": false,
                 "searchable": true
             },
-            { 
+            {
                 "targets": [3],
                 "visible": true,
                 "searchable": true,
@@ -312,7 +344,7 @@
         TiemposXEstiloDepto = tblTiemposXEstiloDepto.DataTable(xoptions);
         tblTiemposXEstiloDepto.on('click', 'tr', function () {
             var data = TiemposXEstiloDepto.row(this).data();
-        }); 
+        });
         Estilo.focus();
     }
 

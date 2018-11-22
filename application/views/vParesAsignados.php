@@ -1,71 +1,67 @@
-<div class="modal animated slideInDown" id="mdlParesAsignados">
-    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Pares asignados en preprogramación</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+<div class="card m-3 animated fadeIn" id="mdlParesAsignados">
+    <div class="card-header" align="center">
+        <h3 class="font-weight-bold">Pares asignados en preprogramación</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                <label>De la Maquila</label>
+                <input type="text" id="ParesMaquilaInicial" name="ParesMaquilaInicial" class="form-control form-control-sm" autofocus="">
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                        <label>De la Maquila</label>
-                        <input type="text" id="ParesMaquilaInicial" name="ParesMaquilaInicial" class="form-control form-control-sm" autofocus="">
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                        <label>A la Maquila</label>
-                        <input type="text" id="ParesMaquilaFinal" name="ParesMaquilaFinal" class="form-control form-control-sm">
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                        <label>De sem</label>
-                        <input type="text" id="ParesSemanaInicial" name="ParesSemanaInicial" class="form-control form-control-sm">
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                        <label>A sem</label>
-                        <input type="text" id="ParesSemanaFinal" name="ParesSemanaFinal" class="form-control form-control-sm">
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                        <label>Año</label>
-                        <input type="text" id="ParesAnio" name="ParesAnio" class="form-control form-control-sm">
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6"> 
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6"> 
-                        <div class="form-group">
-                            <div class="custom-control custom-radio">
-                                <input type="radio" id="rCteFechaEntrega" name="rCheck" class="custom-control-input">
-                                <label class="custom-control-label" for="rCteFechaEntrega">Cte fecha entrega</label>
-                            </div>
-                            <div class="custom-control custom-radio">
-                                <input type="radio" id="rPedido" name="rCheck" class="custom-control-input">
-                                <label class="custom-control-label" for="rPedido">Pedido</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6"> 
-                        <div class="form-group">
-                            <div class="custom-control custom-radio">
-                                <input type="radio" id="rEstiloColor" name="rCheck" class="custom-control-input">
-                                <label class="custom-control-label" for="rEstiloColor">Estilo-Color</label>
-                            </div>
-                            <div class="custom-control custom-radio">
-                                <input type="radio" id="rFechaEntregaCliente" name="rCheck" class="custom-control-input">
-                                <label class="custom-control-label" for="rFechaEntregaCliente">Fecha entrega cte</label>
-                            </div>
-                        </div>
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                <label>A la Maquila</label>
+                <input type="text" id="ParesMaquilaFinal" name="ParesMaquilaFinal" class="form-control form-control-sm">
+            </div>
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-2">
+                <label>De sem</label>
+                <input type="text" id="ParesSemanaInicial" name="ParesSemanaInicial" class="form-control form-control-sm">
+            </div>
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-2">
+                <label>A sem</label>
+                <input type="text" id="ParesSemanaFinal" name="ParesSemanaFinal" class="form-control form-control-sm">
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-2">
+                <label>Año</label>
+                <input type="text" id="ParesAnio" name="ParesAnio" class="form-control form-control-sm">
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-3"> 
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3">
+                <div class="form-group">
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="rCteFechaEntrega" name="rCheck" class="custom-control-input">
+                        <label class="custom-control-label" for="rCteFechaEntrega">Cte fecha entrega</label>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer"> 
-                <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" align="left">
-                    <button type="button" class="btn btn-primary" id="btnAceptar">Aceptar</button>
-                </div> 
-                <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" align="right">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                </div> 
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3">
+                <div class="form-group">
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="rPedido" name="rCheck" class="custom-control-input">
+                        <label class="custom-control-label" for="rPedido">Pedido</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3">
+                <div class="form-group">
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="rEstiloColor" name="rCheck" class="custom-control-input">
+                        <label class="custom-control-label" for="rEstiloColor">Estilo-Color</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3">
+                <div class="custom-control custom-radio">
+                    <input type="radio" id="rFechaEntregaCliente" name="rCheck" class="custom-control-input">
+                    <label class="custom-control-label" for="rFechaEntregaCliente">Fecha entrega cte</label>
+                </div>
             </div>
         </div>
+    </div>
+    <div class="card-footer">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" align="right">
+            <button type="button" class="btn btn-primary" id="btnAceptar">Aceptar</button>
+        </div> 
     </div>
 </div>
 <script>
@@ -96,7 +92,10 @@
         });
 
         mdlParesAsignados.find("#btnAceptar").click(function () {
-
+            HoldOn.open({
+                theme: 'sk-cube',
+                message: 'Por favor espere...'
+            });
             $.post(master_url_pares_asignados + 'getParesAsignados', {
                 MAQUILA_INICIAL: ParesMaquilaInicial.val().trim() !== '' ? ParesMaquilaInicial.val() : '',
                 MAQUILA_FINAL: ParesMaquilaFinal.val().trim() !== '' ? ParesMaquilaFinal.val() : '',
@@ -115,7 +114,7 @@
                 console.log(x.responseText);
                 swal('ATENCIÓN', 'HA OCURRIDO UN ERROR INESPERADO AL OBTENER EL REPORTE,CONSULTE LA CONSOLA PARA MÁS DETALLES.', 'warning');
             }).always(function () {
-
+                HoldOn.close();
             });
         });
 
@@ -132,7 +131,7 @@
         });
 
         ParesSemanaFinal.on('keydown', function (e) {
-            onVerificarSemana(e, $(this));
+            onVerificarSemanaPares(e, $(this));
         });
     });
 
@@ -154,7 +153,8 @@
 
     function onVerificarSemanaPares(e, input) {
         if (e.keyCode === 13 && input.val() !== '') {
-            $.getJSON(master_url_modal + 'onChecarSemanaValida', {SEMANA: input.val()}).done(function (data, x, jq) {
+            $.getJSON(master_url_pares_asignados + 'onChecarSemanaValida', {SEMANA: input.val()}).done(function (data, x, jq) {
+                console.log('SEMANA VÁLIDA ? ',data);
                 if (parseInt(data[0].SEMANA_NO_CERRADA) === 1) {
                     swal('ATENCIÓN', 'LA SEMANA ESPECIFICADA NO EXISTE', 'warning').then((value) => {
                         input.focus();

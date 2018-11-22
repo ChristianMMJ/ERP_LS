@@ -558,7 +558,6 @@
                 ClaveArticulo.val(data.ARTICULO_CLAVE);
                 Articulo.val(data.ARTICULO_DESCRIPCION);
                 Pares.val(data.PARES);
-                console.log(data)
                 getExplosionXSemanaControlFraccionArticulo(Semana, Control, Fraccion, data.ARTICULO_CLAVE, 1);
                 tipo_consumo = 1;/*PIEL*/
             } else {

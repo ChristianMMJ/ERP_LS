@@ -14,6 +14,36 @@ class ParesPreProgramados extends CI_Controller {
         $this->load->library('session')->model('ParesPreProgramados_model', 'pam')->helper('parespreprogramados_helper');
     }
 
+    public function index() {
+        if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
+            $this->load->view('vEncabezado');
+            switch ($this->session->userdata["TipoAcceso"]) {
+                case 'SUPER ADMINISTRADOR':
+                    $this->load->view('vNavGeneral')->view('vMenuProduccion');
+                    break;
+                case 'VENTAS':
+                    $this->load->view('vMenuClientes');
+                    break;
+                case 'PRODUCCION':
+                    $this->load->view('vMenuProduccion');
+                    break;
+                case 'RECURSOS HUMANOS':
+                    $this->load->view('vMenuProduccion');
+                    break;
+                case 'FACTURACION':
+                    $this->load->view('vMenuFacturacion');
+                    break;
+                case 'PRODUCCION':
+                    $this->load->view('vMenuProduccion');
+                    break;
+            }
+
+            $this->load->view('vFondo')->view('vParesPreProgramados')->view('vFooter');
+        } else {
+            $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
+        }
+    }
+    
     public function getParesPreProgramados() {
         try {
             $x = $this->input;
@@ -42,7 +72,7 @@ class ParesPreProgramados extends CI_Controller {
     public function getParesPreProgramadosCliente() {
         try {
             $x = $this->input;
-            $CLIENTES = $this->pam->getClientes($x->post('CLIENTE'), $x->post('ESTILO'), $x->post('LINEA'), $x->post('MAQUILA'), $x->post('SEMANA'), $x->post('FECHA'));
+            $CLIENTES = $this->pam->getClientes($x->post('CLIENTE'), $x->post('ESTILO'), $x->post('LINEA'), $x->post('MAQUILA'), $x->post('SEMANA'), $x->post('FECHA'), $x->post('FECHAF'));
 
             $bordes = 0;
             $alto_celda = 4;
@@ -129,7 +159,7 @@ class ParesPreProgramados extends CI_Controller {
                     utf8_decode($v->CLAVE_AGENTE . " " . $v->AGENTE)/* 1 */, /* SI NO TIENE AGENTE O ESTA EN CERO, ES UNA MUESTRA */
                     utf8_decode($v->ESTADO)));
                 $pdf->Line(10, $pdf->GetY(), 110, $pdf->GetY());
-                $PARES_PREPROGRAMADOS = $this->pam->getParesPreProgramados($v->CLAVE_CLIENTE, 1, $x->post('CLIENTE'), $x->post('ESTILO'), $x->post('LINEA'), $x->post('MAQUILA'), $x->post('SEMANA'), $x->post('FECHA'));
+                $PARES_PREPROGRAMADOS = $this->pam->getParesPreProgramados($v->CLAVE_CLIENTE, 1, $x->post('CLIENTE'), $x->post('ESTILO'), $x->post('LINEA'), $x->post('MAQUILA'), $x->post('SEMANA'), $x->post('FECHA'), $x->post('FECHAF'));
                 $bordes = 0;
                 $pdf->SetFont('Calibri', 'B', 6.5);
                 foreach ($PARES_PREPROGRAMADOS as $kk => $vv) {
@@ -162,7 +192,7 @@ class ParesPreProgramados extends CI_Controller {
                 $PARES = 0;
             }
             $bordes = 0;
-            $pdf->SetFont('Calibri', 'B', 8.5); 
+            $pdf->SetFont('Calibri', 'B', 8.5);
             $pdf->SetX(178);
             $pdf->Cell(45, $alto_celda, utf8_decode("Total pares en preprogramación"), $bordes/* BORDE */, 0/* SALTO */, 'R', 0);
             $pdf->SetX(223);
@@ -272,7 +302,7 @@ class ParesPreProgramados extends CI_Controller {
                 $pdf->SetWidths(array(15/* 0 */, 40/* 1 */, 20/* 2 */));
                 $pdf->RowNoBorder(array(utf8_decode($v->CLAVE_ESTILO)/* 0 */, utf8_decode($v->COLOR)/* 1 */));
                 $pdf->Line(10, $pdf->GetY(), 65, $pdf->GetY());
-                $PARES_PREPROGRAMADOS = $this->pam->getParesPreProgramados($v->CLAVE_ESTILO, 2, $x->post('CLIENTE'), $x->post('ESTILO'), $x->post('LINEA'), $x->post('MAQUILA'), $x->post('SEMANA'), $x->post('FECHA'));
+                $PARES_PREPROGRAMADOS = $this->pam->getParesPreProgramados($v->CLAVE_ESTILO, 2, $x->post('CLIENTE'), $x->post('ESTILO'), $x->post('LINEA'), $x->post('MAQUILA'), $x->post('SEMANA'), $x->post('FECHA'), $x->post('FECHAF'));
                 $bordes = 0;
                 $pdf->SetX(65);
                 foreach ($PARES_PREPROGRAMADOS as $kk => $vv) {
@@ -307,7 +337,7 @@ class ParesPreProgramados extends CI_Controller {
                 $PARES = 0;
             }
             $bordes = 0;
-            $pdf->SetFont('Calibri', 'B', 8.5); 
+            $pdf->SetFont('Calibri', 'B', 8.5);
             $pdf->SetX(178);
             $pdf->Cell(45, $alto_celda, utf8_decode("Total pares en preprogramación"), $bordes/* BORDE */, 0/* SALTO */, 'C', 0);
             $pdf->SetX(223);
@@ -417,7 +447,7 @@ class ParesPreProgramados extends CI_Controller {
                 $pdf->SetWidths(array(20/* 0 */, 20/* 1 */, 20/* 2 */));
                 $pdf->RowNoBorder(array(utf8_decode($v->CLAVE_LINEA . " " . $v->LINEA)/* 0 */));
                 $pdf->Line(10, $pdf->GetY(), 30, $pdf->GetY());
-                $PARES_PREPROGRAMADOS = $this->pam->getParesPreProgramados($v->CLAVE_LINEA, 3, $x->post('CLIENTE'), $x->post('ESTILO'), $x->post('LINEA'), $x->post('MAQUILA'), $x->post('SEMANA'), $x->post('FECHA'));
+                $PARES_PREPROGRAMADOS = $this->pam->getParesPreProgramados($v->CLAVE_LINEA, 3, $x->post('CLIENTE'), $x->post('ESTILO'), $x->post('LINEA'), $x->post('MAQUILA'), $x->post('SEMANA'), $x->post('FECHA'), $x->post('FECHAF'));
                 $bordes = 0;
                 foreach ($PARES_PREPROGRAMADOS as $kk => $vv) {
                     $Y = $pdf->GetY();
@@ -476,11 +506,12 @@ class ParesPreProgramados extends CI_Controller {
 
     public function getParesPreProgramadosMaquila() {
         try {
-            $MAQUILAS = $this->pam->getMaquilas();
+            $xxx = $this->input;
+            $MAQUILAS = $this->pam->getMaquila($xxx->post('MAQUILA'), $xxx->post('CLIENTE'), $xxx->post('ESTILO'), $xxx->post('MAQUILA'), $xxx->post('SEMANA'));
 
             $bordes = 0;
             $alto_celda = 4;
-            $pdf = new PDF('L', 'mm', array(215.9, 279.4));
+            $pdf = new PDF('P', 'mm', array(215.9, 279.4));
             $pdf->AddFont('Calibri', '');
             $pdf->AddFont('Calibri', 'I');
             $pdf->AddFont('Calibri', 'B');
@@ -491,7 +522,7 @@ class ParesPreProgramados extends CI_Controller {
             $pdf->SetTextColor(0, 0, 0);
             $pdf->SetFont('Calibri', 'B', 10);
             $pdf->SetY(10);
-            $pdf->Rect(10, 10, 259, 12.5);
+            $pdf->Rect(10, 10, 195.9, 12.5);
             $pdf->Image($_SESSION["LOGO"], /* LEFT */ 10, 10/* TOP */, /* ANCHO */ 30, 12.5);
             $pdf->SetX(10);
             //$pdf->Rect(10, 10, 259, 195); /* DELIMITADOR DE MARGENES */
@@ -504,7 +535,7 @@ class ParesPreProgramados extends CI_Controller {
             $pdf->SetX(180);
             $pdf->Cell(20, $alto_celda, Date('d/m/Y'), $bordes/* BORDE */, 1/* SALTO */, 'C');
 
-            $anchos = array(100/* 0 */, 30/* 1 */, 25/* 2 */, 25/* 3 */, 25/* 4 */, 20/* 5 */, 16/* 6 */, 15/* 7 */, 15/* 8 */);
+            $anchos = array(90.9/* 0 */, 30/* 1 */, 25/* 2 */, 25/* 3 */, 25/* 4 */, 20/* 5 */, 16/* 6 */, 15/* 7 */, 15/* 8 */);
             $spacex = 10;
             $bordes = 1;
             /* SUB ENCABEZADO */
@@ -544,11 +575,11 @@ class ParesPreProgramados extends CI_Controller {
                 $pdf->setFilled(0);
                 $pdf->setBorders(0);
                 $pdf->SetAligns(array('L', 'C', 'C'));
-                $pdf->SetWidths(array(100/* 0 */, 30/* 1 */, 30/* 2 */));
+                $pdf->SetWidths(array(90.9/* 0 */, 30/* 1 */, 30/* 2 */));
                 $pdf->setAlto(4);
-                $pdf->RowNoBorder(array(utf8_decode($v->CLAVE_MAQUILA . " " . $v->MAQUILA)/* 0 */, utf8_decode($v->CAPACIDAD_PARES)/* 1 */));
-                $pdf->Line(10, $pdf->GetY(), 140, $pdf->GetY());
-                $PARES_PREPROGRAMADOS = $this->pam->getParesPreProgramadosPorMaquila($v->CLAVE_MAQUILA, 4);
+                $pdf->RowNoBorder(array(utf8_decode($v->MAQUILA)/* 0 */, utf8_decode($v->CAPACIDAD_PARES)/* 1 */));
+                $pdf->Line(10, $pdf->GetY(), 130.9, $pdf->GetY());
+                $PARES_PREPROGRAMADOS = $this->pam->getParesPreProgramadosPorMaquila($v->CLAVE_MAQUILA, $xxx->post('CLIENTE'), $xxx->post('ESTILO'), $xxx->post('MAQUILA'), $xxx->post('SEMANA'));
                 $bordes = 0;
                 $pdf->SetFont('Calibri', 'B', 8);
                 $pdf->setAlto(3.5);
@@ -559,28 +590,28 @@ class ParesPreProgramados extends CI_Controller {
                     $pdf->setFilled(0);
                     $pdf->setBorders(0);
                     $pdf->SetAligns(array('C', 'C'/* 0 */, 'C'/* 1 */, 'C'/* 2 */, 'C'/* 3 */, 'C'/* 4 */, 'C'/* 5 */, 'C'/* 6 */, 'C'/* 7 */, 'C'/* 8 */, 'C'/* 9 */));
-                    $pdf->SetWidths(array(130, 25/* 0 */, 25/* 1 */, 25/* 2 */, 15/* 3 */, 15/* 4 */, 40/* 5 */, 20/* 6 */, 16/* 7 */, 15/* 8 */, 15/* 9 */));
+                    $pdf->SetWidths(array(120.9, 25/* 0 */, 25/* 1 */, 25/* 2 */, 15/* 3 */, 15/* 4 */, 40/* 5 */, 20/* 6 */, 16/* 7 */, 15/* 8 */, 15/* 9 */));
                     $pdf->RowNoBorder(array('', utf8_decode($vv->SEMANA)/* 0 */,
                         utf8_decode($vv->PARES)/* 1 */,
                         utf8_decode($vv->DIFERENCIA)/* 2 */));
-                    $pdf->Line(140, $pdf->GetY(), 215, $pdf->GetY());
+                    $pdf->Line(130.9, $pdf->GetY(), 205, $pdf->GetY());
                     $spacex = 40;
                     $PARES += $vv->PARES;
                     $TOTAL_PARES += $vv->PARES;
                 }
                 $bordes = 0;
                 $pdf->SetFont('Calibri', 'B', 9);
-                $pdf->SetX(137);
-                $pdf->Cell(28, $alto_celda, "Total por maquila", $bordes/* BORDE */, 0/* SALTO */, 'C');
-                $pdf->SetX(165);
+                $pdf->SetX(129.8);
+                $pdf->Cell(26, $alto_celda, "Total por maquila", $bordes/* BORDE */, 0/* SALTO */, 'C');
+                $pdf->SetX(156);
                 $pdf->Cell(25, $alto_celda, $PARES, $bordes/* BORDE */, 1/* SALTO */, 'C');
                 $PARES = 0;
             }
             $bordes = 0;
             $pdf->SetFont('Calibri', 'B', 9);
-            $pdf->SetX(120);
-            $pdf->Cell(45, $alto_celda, utf8_decode("Total pares en preprogramación"), $bordes/* BORDE */, 0/* SALTO */, 'C', 1);
-            $pdf->SetX(165);
+            $pdf->SetX(111);
+            $pdf->Cell(45, $alto_celda, utf8_decode("Total pares en preprogramación"), $bordes/* BORDE */, 0/* SALTO */, 'C', 0);
+            $pdf->SetX(156);
             $pdf->Cell(25, $alto_celda, $TOTAL_PARES, $bordes/* BORDE */, 0/* SALTO */, 'C');
             /* FIN RESUMEN */
             $path = 'uploads/Reportes/ParesPreProgramados';
@@ -603,11 +634,12 @@ class ParesPreProgramados extends CI_Controller {
 
     public function getParesPreProgramadosSemanaMaquila() {
         try {
-            $MAQUILAS = $this->pam->getMaquilas();
+            $xxx = $this->input;
+            $MAQUILAS = $this->pam->getMaquila($this->input->post('MAQUILA'), $xxx->post('CLIENTE'), $xxx->post('ESTILO'), $xxx->post('MAQUILA'), $xxx->post('SEMANA'));
 
             $bordes = 0;
             $alto_celda = 4;
-            $pdf = new PDF('L', 'mm', array(215.9, 279.4));
+            $pdf = new PDF('P', 'mm', array(215.9, 279.4));
             $pdf->AddFont('Calibri', '');
             $pdf->AddFont('Calibri', 'I');
             $pdf->AddFont('Calibri', 'B');
@@ -618,7 +650,7 @@ class ParesPreProgramados extends CI_Controller {
             $pdf->SetTextColor(0, 0, 0);
             $pdf->SetFont('Calibri', 'B', 10);
             $pdf->SetY(10);
-            $pdf->Rect(10, 10, 259, 12.5);
+            $pdf->Rect(10, 10, 195.9, 12.5);
             $pdf->Image($_SESSION["LOGO"], /* LEFT */ 10, 10/* TOP */, /* ANCHO */ 30, 12.5);
             $pdf->SetX(10);
             //$pdf->Rect(10, 10, 259, 195); /* DELIMITADOR DE MARGENES */
@@ -631,7 +663,7 @@ class ParesPreProgramados extends CI_Controller {
             $pdf->SetX(180);
             $pdf->Cell(20, $alto_celda, Date('d/m/Y'), $bordes/* BORDE */, 1/* SALTO */, 'C');
 
-            $anchos = array(100/* 0 */, 30/* 1 */, 25/* 2 */, 25/* 3 */, 25/* 4 */, 20/* 5 */, 16/* 6 */, 15/* 7 */, 15/* 8 */);
+            $anchos = array(90.9/* 0 */, 30/* 1 */, 25/* 2 */, 25/* 3 */, 25/* 4 */, 20/* 5 */, 16/* 6 */, 15/* 7 */, 15/* 8 */);
             $spacex = 10;
             $bordes = 1;
             /* SUB ENCABEZADO */
@@ -671,11 +703,11 @@ class ParesPreProgramados extends CI_Controller {
                 $pdf->setFilled(0);
                 $pdf->setBorders(0);
                 $pdf->SetAligns(array('L', 'C', 'C'));
-                $pdf->SetWidths(array(100/* 0 */, 30/* 1 */, 30/* 2 */));
+                $pdf->SetWidths(array(90.9/* 0 */, 30/* 1 */, 30/* 2 */));
                 $pdf->setAlto(4);
-                $pdf->RowNoBorder(array(utf8_decode($v->CLAVE_MAQUILA . " " . $v->MAQUILA)/* 0 */, utf8_decode($v->CAPACIDAD_PARES)/* 1 */));
-                $pdf->Line(10, $pdf->GetY(), 140, $pdf->GetY());
-                $PARES_PREPROGRAMADOS = $this->pam->getParesPreProgramadosPorMaquila($v->CLAVE_MAQUILA, 4);
+                $pdf->RowNoBorder(array(utf8_decode($v->MAQUILA)/* 0 */, utf8_decode($v->CAPACIDAD_PARES)/* 1 */));
+                $pdf->Line(10, $pdf->GetY(), 130.9, $pdf->GetY());
+                $PARES_PREPROGRAMADOS = $this->pam->getParesPreProgramadosPorMaquila($v->CLAVE_MAQUILA, $xxx->post('CLIENTE'), $xxx->post('ESTILO'), $xxx->post('MAQUILA'), $xxx->post('SEMANA'));
                 $bordes = 0;
                 $pdf->SetFont('Calibri', 'B', 8);
                 $pdf->setAlto(3.5);
@@ -686,28 +718,28 @@ class ParesPreProgramados extends CI_Controller {
                     $pdf->setFilled(0);
                     $pdf->setBorders(0);
                     $pdf->SetAligns(array('C', 'C'/* 0 */, 'C'/* 1 */, 'C'/* 2 */, 'C'/* 3 */, 'C'/* 4 */, 'C'/* 5 */, 'C'/* 6 */, 'C'/* 7 */, 'C'/* 8 */, 'C'/* 9 */));
-                    $pdf->SetWidths(array(130, 25/* 0 */, 25/* 1 */, 25/* 2 */, 15/* 3 */, 15/* 4 */, 40/* 5 */, 20/* 6 */, 16/* 7 */, 15/* 8 */, 15/* 9 */));
+                    $pdf->SetWidths(array(120.9, 25/* 0 */, 25/* 1 */, 25/* 2 */, 15/* 3 */, 15/* 4 */, 40/* 5 */, 20/* 6 */, 16/* 7 */, 15/* 8 */, 15/* 9 */));
                     $pdf->RowNoBorder(array('', utf8_decode($vv->SEMANA)/* 0 */,
                         utf8_decode($vv->PARES)/* 1 */,
                         utf8_decode($vv->DIFERENCIA)/* 2 */));
-                    $pdf->Line(140, $pdf->GetY(), 215, $pdf->GetY());
+                    $pdf->Line(130.9, $pdf->GetY(), 205, $pdf->GetY());
                     $spacex = 40;
                     $PARES += $vv->PARES;
                     $TOTAL_PARES += $vv->PARES;
                 }
                 $bordes = 0;
                 $pdf->SetFont('Calibri', 'B', 9);
-                $pdf->SetX(137);
-                $pdf->Cell(28, $alto_celda, "Total por maquila", $bordes/* BORDE */, 0/* SALTO */, 'C');
-                $pdf->SetX(165);
+                $pdf->SetX(129.9);
+                $pdf->Cell(26, $alto_celda, "Total por maquila", $bordes/* BORDE */, 0/* SALTO */, 'C');
+                $pdf->SetX(156);
                 $pdf->Cell(25, $alto_celda, $PARES, $bordes/* BORDE */, 1/* SALTO */, 'C');
                 $PARES = 0;
             }
             $bordes = 0;
             $pdf->SetFont('Calibri', 'B', 9);
-            $pdf->SetX(120);
+            $pdf->SetX(111);
             $pdf->Cell(45, $alto_celda, utf8_decode("Total pares en preprogramación"), $bordes/* BORDE */, 0/* SALTO */, 'C');
-            $pdf->SetX(165);
+            $pdf->SetX(156);
             $pdf->Cell(25, $alto_celda, $TOTAL_PARES, $bordes/* BORDE */, 0/* SALTO */, 'C');
             /* FIN RESUMEN */
             $path = 'uploads/Reportes/ParesPreProgramados';
@@ -731,6 +763,14 @@ class ParesPreProgramados extends CI_Controller {
     public function getClientes() {
         try {
             print json_encode($this->pam->getClientesX());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getAgentes() {
+        try {
+            print json_encode($this->pam->getAgentes());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
