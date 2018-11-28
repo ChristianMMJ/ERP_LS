@@ -20,10 +20,23 @@ class DocDirecSinAfectacion extends CI_Controller {
             switch ($this->session->userdata["TipoAcceso"]) {
                 case 'SUPER ADMINISTRADOR':
                     $this->load->view('vNavGeneral');
-                    $this->load->view('vMenuMateriales');
+
+
+                    //Validamos que no venga vacia y asignamos un valor por defecto
+                    $Origen = isset($_GET['origen']) ? $_GET['origen'] : "";
+
+                    if ($Origen === 'MATERIALES') {
+                        $this->load->view('vMenuMateriales');
+                    } else if ($Origen === 'PROVEEDORES') {
+                        $this->load->view('vMenuProveedores');
+                    }
+
                     break;
                 case 'ALMACEN':
                     $this->load->view('vMenuMateriales');
+                    break;
+                case 'PROVEEDORES':
+                    $this->load->view('vMenuProveedores');
                     break;
             }
 

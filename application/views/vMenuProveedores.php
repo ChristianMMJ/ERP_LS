@@ -19,11 +19,22 @@
                 </div>
             </li>
             <li class="nav-item dropdown">
+                <a class="btn btn-primary dropdown-toggle" href="#" id="navCapturas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="fa fa-pencil-alt"></span>  Capturas
+                </a>
+                <div class="dropdown-menu dropdown-menu" aria-labelledby="navCapturas">
+                    <a class="dropdown-item" href="<?php print base_url('Proveedores/?origen=PROVEEDORES'); ?>"> </a>
+                    <a class="dropdown-item" href="<?php print base_url('DocDirecSinAfectacion/?origen=PROVEEDORES'); ?>">Doc Directos Sin Afectación a Maquilas</a>
+                    <a class="dropdown-item" href="<?php print base_url('PagosProveedores/?origen=PROVEEDORES'); ?>">Pagos a Proveedores por Movimiento</a>
+                    <a class="dropdown-item" href="<?php print base_url('PagosProveedoresLote/?origen=PROVEEDORES'); ?>">Pagos a Proveedores por Lote</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navConsultas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="fa fa-search"></span>  Consultas
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navConsultas">
-                    <a class="dropdown-item" href="#"> Prueba.</a>
+                    <a class="dropdown-item" href="<?php print base_url('MovimientosProveedor/?origen=PROVEEDORES'); ?>"> Movimientos por Proveedor</a>
                 </div>
             </li>
 
@@ -41,7 +52,9 @@
                     <span class="fa fa-file-pdf"></span>  Reportes
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navReportes">
-                    <a class="dropdown-item" href="#"> Prueba</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlEstadoCuentaProveedor" data-backdrop='true'> Estados de cuenta por Proveedor</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlAntiguedadSaldosProveedores" data-backdrop='true'> Antigüedad de Saldos</a>
+
                 </div>
             </li>
 
@@ -83,3 +96,6 @@
         }
     });
 </script>
+<?php
+$this->load->view('vEstadoCuentaProveedor');
+$this->load->view('vAntiguedadSaldosProveedor');

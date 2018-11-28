@@ -27,6 +27,8 @@ class PagosProveedores extends CI_Controller {
                         $this->load->view('vMenuMateriales');
                     } else if ($Origen === 'CONTABILIDAD') {
                         $this->load->view('vMenuContabilidad');
+                    } else if ($Origen === 'PROVEEDORES') {
+                        $this->load->view('vMenuProveedores');
                     }
                     //Cuando no viene de ningun modulo y lo teclean
                     else {
@@ -35,6 +37,9 @@ class PagosProveedores extends CI_Controller {
                     break;
                 case 'ALMACEN':
                     $this->load->view('vMenuMateriales');
+                    break;
+                case 'PROVEEDORES':
+                    $this->load->view('vMenuProveedores');
                     break;
             }
 

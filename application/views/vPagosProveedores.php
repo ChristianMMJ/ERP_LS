@@ -86,6 +86,14 @@
                     <option value="4">4 DESC. SIN COMPROBANTE</option>
                     <option value="5">5 DEVOLUCIÓN</option>
                     <option value="6">6 CARGOS</option>';
+                    } else if ($Origen === 'PROVEEDORES') {
+                        print '<option value=""></option>
+                    <option value="1">1 EFECTIVO</option>
+                    <option value="2">2 TRANSFERENCIA</option>
+                    <option value="3">3 CHEQUE</option>
+                    <option value="4">4 DESC. SIN COMPROBANTE</option>
+                    <option value="5">5 DEVOLUCIÓN</option>
+                    <option value="6">6 CARGOS</option>';
                     }
                     ?>
                 </select>

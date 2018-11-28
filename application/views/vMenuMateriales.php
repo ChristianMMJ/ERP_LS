@@ -57,7 +57,7 @@
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" href="#">Documentos Directos</a>
                         <ul class="dropdown-menu">
-                            <a class="dropdown-item" href="<?php print base_url('DocDirecSinAfectacion.shoes'); ?>">Sin Afectación a Maquilas</a>
+                            <a class="dropdown-item" href="<?php print base_url('DocDirecSinAfectacion/?origen=MATERIALES'); ?>">Sin Afectación a Maquilas</a>
                             <a class="dropdown-item" href="<?php print base_url('DocDirecConAfectacion.shoes'); ?>">Con Afectación a Maquilas</a>
                         </ul>
                     </li>
