@@ -77,6 +77,14 @@ class TiemposXEstiloDepto extends CI_Controller {
         }
     }
 
+    public function onComprobarEstilo() {
+        try {
+            print json_encode($this->txed->onComprobarEstilo($this->input->get('ESTILO')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getTiemposXEstiloDepto() {
         try {
             print json_encode($this->txed->getTiemposXEstiloDepto());

@@ -18,9 +18,9 @@
             </div>  
             <div id="EstiloDescripcion" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 text-center" aling="center"></div>
             <div id="Departamentos" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"></div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-12 col-xl-12 m-2" align="left">
-                <button type="button" class="btn btn-primary animated fadeIn" id="btnGuardarTiempo">GUARDAR</button>
-                <button type="button" class="btn btn-danger animated fadeIn" id="btnCancelarTiempo">CANCELAR</button>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-12 col-xl-12 m-2" align="right">
+                <button type="button" class="btn btn-primary animated fadeIn" id="btnGuardarTiempo"><span class="fa fa-save"></span> </button>
+                <button type="button" class="btn btn-danger animated fadeIn" id="btnCancelarTiempo"><span class="fa fa-times"></span> </button>
             </div>
             <div id="TiemposXEstiloDepto" class="table-responsive">
                 <table id="tblTiemposXEstiloDepto" class="table table-sm display hover" style="width:100%">
@@ -33,8 +33,7 @@
                             <th>DEPARTAMENTO</th><!--3-->
 
                             <th>TIEMPO</th><!--4--> 
-                            <th></th><!--5--> 
-                            <th></th><!--6--> 
+                            <th></th><!--5-->  
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -53,7 +52,8 @@
             </div>
         </div>
     </div>
-</div>
+</div> 
+
 <script>
     var master_url = base_url + 'index.php/TiemposXEstiloDepto/';
     var pnlTablero = $("#pnlTablero");
@@ -74,7 +74,9 @@
             if (isValidInput(Linea) && isValidInput(Estilo)) {
                 var deptos = [];
                 $.each(pnlTablero.find("#Departamentos input.gen"), function () {
-                    deptos.push({DEPTO: $(this).attr('id'), DEPTOTIME: $(this).val().trim().length > 0 ? parseFloat($(this).val()) : 0});
+                    if ($(this).val().trim().length > 0) {
+                        deptos.push({DEPTO: $(this).attr('id'), DEPTOTIME: $(this).val().trim().length > 0 ? parseFloat($(this).val()) : 0});
+                    }
                 });
                 $.post(master_url + 'onGuardarTiempos', {ID: pnlTablero.find("#ID").val(), LINEA: Linea.val(), ESTILO: Estilo.val(), TIEMPOS: JSON.stringify(deptos), N: (nuevo) ? 0 : 1}).done(function (data, x, jq) {
                     onBeep(1);
@@ -84,12 +86,10 @@
                     nuevo = false;
                     Linea.attr('readonly', false);
                     Estilo.attr('readonly', false);
-                    swal('ATENCIÓN', 'TIEMPOS GUARDADOS', 'success').then((value) => {
-                        Estilo.focus();
-                        tblTiemposXEstiloDepto.DataTable().column(1).search('').draw();
-                        tblTiemposXEstiloDepto.DataTable().column(2).search('').draw();
-                        pnlTablero.find("#EstiloDescripcion").html('');
-                    });
+                    Estilo.select().focus();
+                    tblTiemposXEstiloDepto.DataTable().column(1).search('').draw();
+                    tblTiemposXEstiloDepto.DataTable().column(2).search('').draw();
+                    pnlTablero.find("#EstiloDescripcion").html('');
                 }).fail(function (x, y, z) {
                     console.log(x.responseText);
                 }).always(function () {
@@ -135,78 +135,100 @@
             } else {
                 tblTiemposXEstiloDepto.DataTable().column(2).search('').draw();
             }
-            if (e.keyCode === 13) {
-                if (input.val().trim().length > 0) {
-                    HoldOn.open({
-                        theme: 'sk-cube',
-                        message: 'CARGANDO...'
-                    });
-                    onBeep(1);
-                    $.getJSON(master_url + 'getDepartamentosXEstilo', {ESTILO: input.val()}).done(function (data) {
-                        if (data.length > 0) {
-                            var deptos = '<div class="row">';
-                            $.each(data, function (k, v) {
-                                deptos += '<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2">';
-                                deptos += '<label>' + v.Descripcion + '</label>';
-                                deptos += '<input id="' + v.Clave + '" type="text" class="form-control form-control-sm numbersOnly gen" placeholder="0.0">';
-                                deptos += '</div>';
+            if (e.keyCode === 13 && input.val() !== '') {
+                $.getJSON(master_url + 'onComprobarEstilo', {ESTILO: input.val()}).done(function (data, x, jq) {
+                    if (parseInt(data[0].EXISTE) <= 0) {
+                        swal('ATENCIÓN', 'EL ESTILO ESPECIFICADO NO EXISTE', 'warning').then((value) => {
+                            input.focus().select();
+                        });
+                    } else if (parseInt(data[0].EXISTE) > 0){
+                        if (input.val().trim().length > 0) {
+                            HoldOn.open({
+                                theme: 'sk-cube',
+                                message: 'CARGANDO...'
                             });
-                            deptos += '<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 mt-2 text-center">';
-                            deptos += '<span class="text-info font-weight-bold">TOTAL </span><br>';
-                            deptos += '<span class="text-danger font-weight-bold ed-total">0.00</span>';
-                            deptos += '</div>';
-                            deptos += '</div>';
-                            Departamentos.html(deptos);
-                            Departamentos.find("input:eq(0)").focus().select();
-                            Departamentos.find("input.gen").keydown(function () {
-                                onCalcularTotal();
-                            });
-                            $.getJSON(master_url + 'onComprobarTiempoXEstiloDeptos', {ESTILO: input.val()}).done(function (dta) {
-                                if (dta.length > 0) {
-                                    $.each(dta, function (k, v) {
-                                        Departamentos.find("#" + v.CLAVE_DEPARTAMENTO).val(v.TIEMPO);
-                                        Linea.val(v.LINEA);
-                                        pnlTablero.find("#ID").val(v.ID);
+                            onBeep(1);
+                            $.getJSON(master_url + 'getDepartamentosXEstilo', {ESTILO: input.val()}).done(function (data) {
+                                if (data.length > 0) {
+                                    var deptos = '<div class="row">';
+                                    $.each(data, function (k, v) {
+                                        deptos += '<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2">';
+                                        deptos += '<label>' + v.Descripcion + '</label>';
+                                        deptos += '<input id="' + v.Clave + '" type="text" max="999" maxlength="5" class="form-control form-control-sm gen" placeholder="0.0">';
+                                        deptos += '</div>';
                                     });
+                                    deptos += '<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 mt-2 text-center">';
+                                    deptos += '<span class="text-info font-weight-bold">TOTAL </span><br>';
+                                    deptos += '<span class="text-danger font-weight-bold ed-total">0.00</span>';
+                                    deptos += '</div>';
+                                    deptos += '</div>';
+                                    Departamentos.html(deptos);
                                     Departamentos.find("input:eq(0)").focus().select();
-                                    Linea.attr('readonly', true);
-                                    Estilo.attr('readonly', true);
-                                    nuevo = false;
-                                    onCalcularTotal();
-                                    getLineaXEstilo(input);
+                                    Departamentos.find("input.gen").keydown(function () {
+                                        onCalcularTotal();
+                                    });
+                                    Departamentos.find('input').keypress(function (event) {
+                                        var charCode = (event.which) ? event.which : event.keyCode;
+                                        if (
+                                                (charCode !== 45 || $(this).val().indexOf('-') !== -1) && // “-” CHECK MINUS, AND ONLY ONE.
+                                                (charCode !== 46 || $(this).val().indexOf('.') !== -1) && // “.” CHECK DOT, AND ONLY ONE.
+                                                (charCode < 48 || charCode > 57))
+                                            return false;
+
+                                        return true;
+                                    });
+                                    $.getJSON(master_url + 'onComprobarTiempoXEstiloDeptos', {ESTILO: input.val()}).done(function (dta) {
+                                        if (dta.length > 0) {
+                                            $.each(dta, function (k, v) {
+                                                Departamentos.find("#" + v.CLAVE_DEPARTAMENTO).val(v.TIEMPO);
+                                                Linea.val(v.LINEA);
+                                                pnlTablero.find("#ID").val(v.ID);
+                                            });
+                                            Departamentos.find("input:eq(0)").focus().select();
+                                            Linea.attr('readonly', true);
+                                            Estilo.attr('readonly', true);
+                                            nuevo = false;
+                                            onCalcularTotal();
+                                            getLineaXEstilo(input);
+                                        } else {
+                                            Linea.addClass("highlight-input");
+                                            setTimeout(function () {
+                                                Linea.removeClass("highlight-input");
+                                            }, 3500);
+                                            getLineaXEstilo(input);
+                                            Linea.attr('readonly', false);
+                                            Estilo.attr('readonly', false);
+                                            nuevo = true;
+                                        }
+                                    }).fail(function (x, y, z) {
+                                        console.log(x.responseText);
+                                    }).always(function () {
+
+                                    });
                                 } else {
-                                    Linea.addClass("highlight-input");
-                                    setTimeout(function () {
-                                        Linea.removeClass("highlight-input");
-                                    }, 3500);
-                                    getLineaXEstilo(input);
-                                    Linea.attr('readonly', false);
-                                    Estilo.attr('readonly', false);
-                                    nuevo = true;
+                                    onBeep(2);
+                                    nuevo = false;
+                                    Departamentos.html('');
+                                    Linea.val('');
+                                    swal('ATENCIÓN', 'EL ESTILO "' + input.val() + ' NO TIENE FICHA TÉCNICA O NO EXISTE', 'warning').then((value) => {
+                                        Estilo.focus().select();
+                                    });
                                 }
                             }).fail(function (x, y, z) {
                                 console.log(x.responseText);
                             }).always(function () {
-
+                                HoldOn.close();
                             });
                         } else {
                             onBeep(2);
-                            nuevo = false;
-                            Departamentos.html('');
-                            Linea.val('');
-                            swal('ATENCIÓN', 'EL ESTILO "' + input.val() + ' NO TIENE FICHA TÉCNICA O NO EXISTE', 'warning').then((value) => {
-                                Estilo.focus().select();
-                            });
+                            input.focus();
                         }
-                    }).fail(function (x, y, z) {
-                        console.log(x.responseText);
-                    }).always(function () {
-                        HoldOn.close();
-                    });
-                } else {
-                    onBeep(2);
-                    input.focus();
-                }
+                    }
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                }).always(function () {
+
+                });
             }
         });
 
@@ -230,7 +252,6 @@
             {"data": "ESTILO"}/*2*/,
             {"data": "DEPARTAMENTO"}/*3*/,
             {"data": "TIEMPO"}/*4*/,
-            {"data": "TIEMPO_BTN"}/*5*/,
             {"data": "IDD"}/*5*/
         ];
         var coldefs = [
@@ -249,7 +270,7 @@
                 "visible": false,
                 "searchable": true
             },
-            { 
+            {
                 "targets": [3],
                 "visible": true,
                 "searchable": true,
@@ -263,12 +284,6 @@
             },
             {
                 "targets": [5],
-                "visible": true,
-                "searchable": true,
-                "orderable": false
-            },
-            {
-                "targets": [6],
                 "visible": false,
                 "searchable": true,
                 "orderable": false
@@ -312,7 +327,7 @@
         TiemposXEstiloDepto = tblTiemposXEstiloDepto.DataTable(xoptions);
         tblTiemposXEstiloDepto.on('click', 'tr', function () {
             var data = TiemposXEstiloDepto.row(this).data();
-        }); 
+        });
         Estilo.focus();
     }
 
