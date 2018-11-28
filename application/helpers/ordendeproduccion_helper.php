@@ -1336,7 +1336,7 @@ class PDF extends FPDF {
         $this->SetFont('Calibri', 'I', 7);
         // Print centered page number
         $this->SetTextColor(0, 0, 0);
-        $this->Cell(35, 3, utf8_decode('Pag. ' . $this->PageNo() . ' de {totalPages}'), 0, 0, 'R');
+        $this->Cell(32, 3, utf8_decode('Pag. ' . $this->PageNo() . ' de {totalPages}'), 0, 0, 'R');
         $this->SetY(50);
         $this->SetX(5);
     }

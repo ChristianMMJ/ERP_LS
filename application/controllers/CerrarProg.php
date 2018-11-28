@@ -7,7 +7,7 @@ class CerrarProg extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('Cerrarprog_model','cprm');
+        $this->load->library('session')->model('Cerrarprog_model', 'cprm');
     }
 
     public function index() {
@@ -48,7 +48,10 @@ class CerrarProg extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->cprm->getRecords());
+            $x = $this->input; 
+//            var_dump($x->get());
+           
+            print json_encode($this->cprm->getRecords($x->get('MAQUILA'), $x->get('SEMANA'), $x->get('ANIO')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -65,10 +68,11 @@ class CerrarProg extends CI_Controller {
     public function onGenerarControles() {
         try {
             $controles = json_decode($this->input->post('SubControles'));
+           
             switch ($this->input->post('Marca')) {
                 case 1:
                     foreach ($controles as $k => $v) {
-                        if ($v->Control == "") {
+                        if ($v->Control == "" || $v->Control == 0) {
                             $Y = substr(Date('Y'), 2);
                             $M = str_pad($v->Maquila, 2, '0', STR_PAD_LEFT);
                             $S = str_pad($v->Semana, 2, '0', STR_PAD_LEFT);
@@ -81,7 +85,7 @@ class CerrarProg extends CI_Controller {
                                 'Serie' => $v->Serie, 'Cliente' => $v->Cliente,
                                 'Pares' => $v->Pares, 'Pedido' => $v->Pedido,
                                 'PedidoDetalle' => $v->PedidoDetalle,
-                                'Estatus' => 'A', 'Departamento' => 1 /* 0|null|Inexistente - PEDIDO => 1 - PROGRAMADO*/,
+                                'Estatus' => 'A', 'Departamento' => 1 /* 0|null|Inexistente - PEDIDO => 1 - PROGRAMADO */,
                                 'Ano' => $Y, 'Maquila' => $M, 'Semana' => $S, 'Consecutivo' => $C
                             ));
                             $this->db->set('Control', $Y . $S . $M . $C)->where('ID', $v->PedidoDetalle)->update('pedidox');
@@ -90,7 +94,7 @@ class CerrarProg extends CI_Controller {
                     }
                     break;
                 case 2:
-                    foreach ($controles as $k => $v) { 
+                    foreach ($controles as $k => $v) {
                         $this->cprm->onAgregarHistorialControl(array(
                             'Control' => $v->Control,
                             'Estilo' => $v->Estilo,
@@ -125,4 +129,5 @@ class CerrarProg extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
+
 }

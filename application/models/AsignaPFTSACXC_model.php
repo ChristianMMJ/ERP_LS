@@ -34,12 +34,12 @@ class AsignaPFTSACXC_model extends CI_Model {
             if ($SEMANA !== '' && $CONTROL !== '') {
                 $this->db->where('OP.Semana', $SEMANA)->where('OP.ControlT', $CONTROL);
             }
-            return $this->db->where('OPD.Grupo', 1)->where('F.Departamento', 10)
-                            ->group_by('OPD.OrdenDeProduccion')
-                            ->group_by('OP.ControlT')
-                            ->group_by('OPD.Pieza')
-                            ->group_by('OPD.Articulo')
-                            ->group_by('OPD.UnidadMedidaT')->get()->result();
+           return $this->db->where('OPD.Grupo', 1)->where('F.Departamento', 10)
+                    ->group_by('OPD.OrdenDeProduccion')
+                    ->group_by('OP.ControlT')
+                    ->group_by('OPD.Pieza')
+                    ->group_by('OPD.Articulo')
+                    ->group_by('OPD.UnidadMedidaT')->get()->result(); 
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -216,5 +216,4 @@ FORMAT(OPD.Cantidad, 3) AS CANTIDAD, `OP`.`Semana` AS `SEMANA`, GROUP_CONCAT(F.C
             echo $exc->getTraceAsString();
         }
     }
-
 }

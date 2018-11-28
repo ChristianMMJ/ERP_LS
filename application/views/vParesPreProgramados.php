@@ -1,76 +1,73 @@
-<div class="modal animated slideInDown" id="mdlParesPreProgramados">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Rep.Pares en preprogramación</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+<div class="card m-3 animated fadeIn" id="mdlParesPreProgramados">
+    <div class="card-header" align="center">
+        <h3 class="font-weight-bold">Rep.Pares en preprogramación</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6"> 
+                <label>Cliente</label>
+                <select id="PaPreProCliente" name="PaPreProCliente" class="form-control form-control-sm"></select>
             </div>
-            <div class="modal-body">
-                <div class="row"> 
-                    <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4"> 
-                        <label>Cliente</label>
-                        <select id="PaPreProCliente" name="PaPreProCliente" class="form-control form-control-sm"></select>
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4"> 
-                        <label>Maquila</label>
-                        <select id="PaPreProMaquila" name="PaPreProMaquila" class="form-control form-control-sm"></select>
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4"> 
-                        <label>Semana</label>
-                        <input type="text" id="PaPreProSemana" name="PaPreProSemana" class="form-control form-control-sm">
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4"> 
-                        <label>Fecha</label>
-                        <input type="text" id="PaPreProFecha" name="PaPreProFecha"  class="form-control form-control-sm date notEnter" placeholder="" >
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4"> 
-                        <label>Linea</label>
-                        <select id="PaPreProLinea" name="PaPreProLinea" class="form-control form-control-sm"></select>
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4"> 
-                        <label>Estilo</label>
-                        <select id="PaPreProEstilo" name="PaPreProEstilo" class="form-control form-control-sm"></select>
-                    </div>
-                    <div class="w-100"></div>
-                    <div class="col-12 my-2">
-                        <hr>
-                    </div>
-                    <div class="w-100"></div>
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center"> 
-                        <div class="btn-group btn-group-lg" role="group" aria-label="Opciones">
-                            <button id="btnClientePreProgramado" type="button" class="btn btn-success"><span class="fa fa-user-circle"></span> Cliente</button>
-                            <button id="btnEstiloPreProgramado" type="button" class="btn btn-warning"><span class="fa fa-dot-circle"></span> Estilo</button>
-                            <button id="btnLineasPreProgramado" type="button" class="btn btn-info"><span class="fa fa-align-left"></span> Lineas</button> 
-                        </div> 
-                        <div class="btn-group btn-group-lg" role="group" aria-label="Opciones">
-                            <button id="btnMaquilasPreProgramado" type="button" class="btn btn-danger"><span class="fa fa-industry"></span> Maquilas</button>
-                            <button id="btnSemanaMaquilaPreProgramado" type="button" class="btn btn-default"><span class="fa fa-calendar"></span> Semana/Maquila</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-3"> 
+                <label>Maquila</label>
+                <select id="PaPreProMaquila" name="PaPreProMaquila" class="form-control form-control-sm"></select>
             </div>
-            <div class="modal-footer">
-                <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" align="right">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><span class="fa fa-times"></span> Cerrar</button>
+            <div class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-3"> 
+                <label>Semana</label>
+                <input type="text" id="PaPreProSemana" name="PaPreProSemana" class="form-control form-control-sm">
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6"> 
+                <label>Linea</label>
+                <select id="PaPreProLinea" name="PaPreProLinea" class="form-control form-control-sm"></select>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6"> 
+                <label>Estilo</label>
+                <select id="PaPreProEstilo" name="PaPreProEstilo" class="form-control form-control-sm"></select>
+            </div>
+            <div class="w-100"></div>
+            <div class="col-12 my-2">
+                <hr>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6"> 
+                <label>De la fecha</label>
+                <input type="text" id="PaPreProFecha" name="PaPreProFecha"  class="form-control form-control-sm date notEnter" placeholder="" >
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6"> 
+                <label>A la fecha</label>
+                <input type="text" id="PaPreProFechaF" name="PaPreProFechaF"  class="form-control form-control-sm date notEnter" placeholder="" >
+            </div>
+            <div class="w-100"></div>
+            <div class="col-12 my-2">
+                <hr>
+            </div>
+            <div class="w-100"></div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center"> 
+                <div class="btn-group btn-group-lg" role="group" aria-label="Opciones">
+                    <button id="btnClientePreProgramado" type="button" class="btn btn-success"><span class="fa fa-user-circle"></span> Cliente</button>
+                    <button id="btnEstiloPreProgramado" type="button" class="btn btn-warning"><span class="fa fa-dot-circle"></span> Estilo</button>
+                    <button id="btnLineasPreProgramado" type="button" class="btn btn-info"><span class="fa fa-align-left"></span> Lineas</button> 
                 </div> 
+                <div class="btn-group btn-group-lg" role="group" aria-label="Opciones">
+                    <button id="btnMaquilasPreProgramado" type="button" class="btn btn-danger"><span class="fa fa-industry"></span> Maquilas</button>
+                    <button id="btnSemanaMaquilaPreProgramado" type="button" class="btn btn-default"><span class="fa fa-calendar"></span> Semana/Maquila</button>
+                </div>
             </div>
         </div>
     </div>
+    <div class="card-footer">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" align="right">
+            <button type="button" class="btn btn-primary" id="btnAceptar">Aceptar</button>
+        </div> 
+    </div>
 </div>
+
 <script>
     var mdlParesPreProgramados = $("#mdlParesPreProgramados");
     var master_url_pares_preprogramados = base_url + 'index.php/ParesPreProgramados/';
 
     $(document).ready(function () {
-        mdlParesPreProgramados.on('show.bs.modal', function () {
-            HoldOn.open({
-                theme: 'sk-bounce',
-                message: 'Espere...'
-            });
-            PaPreProInit();
-        });
+
+        PaPreProInit(); 
 
         mdlParesPreProgramados.on('shown.bs.modal', function () {
             HoldOn.close();
@@ -107,6 +104,7 @@
                 Maquila = mdlParesPreProgramados.find("#PaPreProMaquila").val(),
                 Semana = mdlParesPreProgramados.find("#PaPreProSemana").val(),
                 Fecha = mdlParesPreProgramados.find("#PaPreProFecha").val(),
+                FechaF = mdlParesPreProgramados.find("#PaPreProFechaF").val(),
                 Linea = mdlParesPreProgramados.find("#PaPreProLinea").val(),
                 Estilo = mdlParesPreProgramados.find("#PaPreProEstilo").val();
         if (Cliente !== '') {
@@ -119,6 +117,7 @@
                 MAQUILA: Maquila !== '' ? Maquila : '',
                 SEMANA: Semana !== '' ? Semana : '',
                 FECHA: Fecha !== '' ? Fecha : '',
+                FECHAF: FechaF !== '' ? FechaF : '',
                 LINEA: Linea !== '' ? Linea : '',
                 ESTILO: Estilo !== '' ? Estilo : '',
                 TIPO: t
@@ -186,5 +185,4 @@
 
         });
     }
-
 </script>

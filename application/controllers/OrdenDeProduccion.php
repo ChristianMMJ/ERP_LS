@@ -44,7 +44,8 @@ class OrdenDeProduccion extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->odpm->getRecords());
+            $x = $this->input; 
+            print json_encode($this->odpm->getRecords($x->get('MAQUILA'), $x->get('SEMANA'), $x->get('ANIO')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

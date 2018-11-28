@@ -11,6 +11,16 @@ class PDF extends FPDF {
     public $Borders = 0;
     public $Filled = 0;
 
+    function Footer() {
+        // Go to 1.5 cm from bottom
+        $this->SetY(-13);
+        // Select Arial italic 8
+        $this->SetFont('Arial', 'I', 8);
+        // Print centered page number
+        $this->Cell(0, 10, utf8_decode('Página ') . $this->PageNo().  ' de {totalPages}', 0, 0, 'C');
+        $this->AliasNbPages(' {totalPages}');
+    }
+
     function getFilled() {
         return $this->Filled;
     }

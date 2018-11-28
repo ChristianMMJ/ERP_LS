@@ -10,7 +10,7 @@ class ParesPreProgramados_model extends CI_Model {
         parent::__construct();
     }
 
-    public function getParesPreProgramados($CEL, $I, $CLIENTE, $ESTILO, $LINEA, $MAQUILA, $SEMANA, $FECHA) {
+    public function getParesPreProgramados($CEL, $I, $CLIENTE, $ESTILO, $LINEA, $MAQUILA, $SEMANA, $FECHA, $FECHAF) {
         try {
             $this->db->select('C.Clave AS CLAVE_CLIENTE, C.RazonS AS  CLIENTE, A.Clave AS CLAVE_AGENTE, A.Nombre AS AGENTE, ES.Descripcion AS ESTADO, 
 P.Clave AS PEDIDO, E.Linea AS CLAVE_LINEA, L.Descripcion AS LINEA, P.Estilo AS CLAVE_ESTILO, CO.Descripcion AS COLOR,
@@ -51,10 +51,15 @@ P.FechaEntrega AS FECHA_ENTREGA, P.Pares AS PARES, P.Maquila AS MAQUILA, P.Seman
             if ($SEMANA !== '') {
                 $this->db->where("P.Semana", $SEMANA);
             }
-            if ($FECHA !== '') {
-                $this->db->where("P.FechaEntrega", $FECHA);
+            if ($FECHA !== '' && $FECHAF !== '') {
+                $this->db->where("STR_TO_DATE(P.FechaEntrega, \"%d/%m/%Y\") BETWEEN STR_TO_DATE('$FECHA', \"%d/%m/%Y\") AND STR_TO_DATE('$FECHAF', \"%d/%m/%Y\")");
+            } else if ($FECHA !== '') {
+                $this->db->where("STR_TO_DATE(P.FechaEntrega, \"%d/%m/%Y\") BETWEEN STR_TO_DATE('$FECHA', \"%d/%m/%Y\") AND STR_TO_DATE('$FECHA', \"%d/%m/%Y\")");
+            } else if ($FECHAF !== '') {
+                $this->db->where("STR_TO_DATE(P.FechaEntrega, \"%d/%m/%Y\") BETWEEN STR_TO_DATE('$FECHAF', \"%d/%m/%Y\") AND STR_TO_DATE('$FECHAF', \"%d/%m/%Y\")");
             }
-            return $this->db->get()->result();
+            $sql =  $this->db->get()->result();
+            return $sql;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -202,7 +207,34 @@ P.FechaEntrega AS FECHA_ENTREGA, P.Pares AS PARES, P.Maquila AS MAQUILA, P.Seman
         }
     }
 
-    public function getParesPreProgramadosPorMaquila($M) {
+    public function getMaquila($M, $CLIENTE, $ESTILO, $MAQUILA, $SEMANA) {
+        try {
+            $this->db->select('M.Clave AS CLAVE_MAQUILA, CONCAT(M.Clave," - ", M.Nombre) AS MAQUILA, M.CapacidadPares AS CAPACIDAD_PARES', false)
+                    ->from('pedidox AS P')
+                    ->join('maquilas AS M', 'P.Maquila = M.Clave');
+            if ($M !== '') {
+                $this->db->where('M.Clave', $M);
+            }
+            if ($CLIENTE !== '') {
+                $this->db->where("P.Cliente", $CLIENTE);
+            }
+            if ($ESTILO !== '') {
+                $this->db->where("P.Estilo", $ESTILO);
+            }
+            if ($MAQUILA !== '') {
+                $this->db->where("P.Maquila", $MAQUILA);
+            }
+            if ($SEMANA !== '') {
+                $this->db->where("P.Semana", $SEMANA);
+            }
+            $this->db->group_by(array('M.Nombre'))->order_by('P.Maquila', 'ASC')->order_by('P.Semana', 'ASC');
+            return $this->db->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getParesPreProgramadosPorMaquila($M, $CLIENTE, $ESTILO, $MAQUILA, $SEMANA) {
         try {
             $this->db->select('M.Clave AS CLAVE_MAQUILA, M.Nombre AS MAQUILA, '
                             . 'M.CapacidadPares AS CAPACIDAD_PARES, P.Semana AS SEMANA, '
@@ -210,8 +242,21 @@ P.FechaEntrega AS FECHA_ENTREGA, P.Pares AS PARES, P.Maquila AS MAQUILA, P.Seman
                             . 'M.CapacidadPares - SUM(P.Pares) AS DIFERENCIA', false)
                     ->from('pedidox AS P')
                     ->join('maquilas AS M', 'P.Maquila = M.Clave')
-                    ->where('M.Clave', $M)->where('P.Maquila', $M)
-                    ->group_by(array('M.Nombre', 'P.Semana'))
+                    ->where('M.Clave', $M)->where('P.Maquila', $M);
+
+            if ($CLIENTE !== '') {
+                $this->db->where("P.Cliente", $CLIENTE);
+            }
+            if ($ESTILO !== '') {
+                $this->db->where("P.Estilo", $ESTILO);
+            }
+            if ($MAQUILA !== '') {
+                $this->db->where("P.Maquila", $MAQUILA);
+            }
+            if ($SEMANA !== '') {
+                $this->db->where("P.Semana", $SEMANA);
+            }
+            $this->db->group_by(array('M.Nombre', 'P.Semana'))
                     ->order_by('P.Maquila', 'ASC')
                     ->order_by('P.Semana', 'ASC');
             return $this->db->get()->result();
