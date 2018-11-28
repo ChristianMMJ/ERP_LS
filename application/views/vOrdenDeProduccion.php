@@ -90,6 +90,125 @@
     var Controles;
     var tblControles = $('#tblControles');
     var btnReload = $("#btnReload");
+    var options_ordendeproduccion = {
+        dom: 'irtp',
+        buttons: [
+            {
+                text: "Todos",
+                className: 'btn btn-info btn-sm',
+                titleAttr: 'Todos',
+                action: function (dt) {
+                    Controles.rows({page: 'current'}).select();
+                }
+            },
+            {
+                extend: 'selectNone',
+                className: 'btn btn-info btn-sm',
+                text: 'Ninguno',
+                titleAttr: 'Deseleccionar Todos'
+            }
+        ],
+        "ajax": {
+            "url": master_url + 'getRecords',
+            "dataSrc": "",
+            "data": function (d) {
+                d.MAQUILA = (Maquila.val().trim());
+                d.SEMANA = (Semana.val().trim());
+                d.ANIO = (Anio.val().trim());
+            }
+        },
+        "columnDefs": [
+            {
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            },
+            {
+                "targets": [1],
+                "visible": false,
+                "searchable": false
+            },
+            {
+                "targets": [2],
+                "visible": false,
+                "searchable": false
+            },
+            {
+                "targets": [16],
+                "visible": false,
+                "searchable": false
+            },
+            {
+                "targets": [17],
+                "visible": false,
+                "searchable": false
+            }],
+        "columns": [
+            {"data": "ID"}, /*0*/
+            {"data": "IdEstilo"}, /*1*/
+            {"data": "IdColor"}, /*2*/
+            {"data": "Pedido"}, /*3*/
+            {"data": "Cliente"}, /*4*/
+            {"data": "Estilo"}, /*5*/
+            {"data": "Color"}, /*6*/
+            {"data": "Serie"}, /*7*/
+            {"data": "Fecha Captura"}, /*8*/
+            {"data": "Fecha Pedido"}, /*9*/
+            {"data": "Fecha Entrega"}, /*10*/
+            {"data": "Pares"}, /*11*/
+            {"data": "Maq"}, /*12*/
+            {"data": "Semana"}, /*13*/
+            {"data": "Anio"}, /*14*/
+            {"data": "Control"}, /*15*/
+            {"data": "SerieID"}/*16*/,
+            {"data": "ID_PEDIDO"}/*17*/
+        ],
+        language: lang,
+        select: true,
+        keys: true,
+        "autoWidth": true,
+        "colReorder": true,
+        "displayLength": 9999999999,
+        "scrollY": 380,
+        "scrollX": true,
+        "bLengthChange": false,
+        "deferRender": true,
+        "scrollCollapse": false,
+        "bSort": true,
+        "aaSorting": [
+            [0, 'desc']/*ID*/
+        ],
+        "createdRow": function (row, data, dataIndex, cells) {
+            $.each($(row).find("td"), function (k, v) {
+                switch (parseInt(k)) {
+                    case 1:
+                        $(v).attr('title', data["Cliente Razon"]);
+                        break;
+                    case 2:
+                        $(v).attr('title', data["Descripcion Estilo"]);
+                        break;
+                    case 3:
+                        $(v).attr('title', data["Descripcion Color"]);
+                        break;
+                }
+            });
+            $.each($(row), function (k, v) {
+                if (data["Marca"] === '0' && data["Control"] !== null) {
+                    $(v).addClass('HasMca');
+                }
+            });
+        },
+        "footerCallback": function (row, data, start, end, display) {
+            var api = this.api(); //Get access to Datatable API
+            // Update footer
+            $(api.column(11).footer()).html(api.column(11, {page: 'current'}).data().reduce(function (a, b) {
+                return parseFloat(a) + parseFloat(b);
+            }, 0));
+        },
+        initComplete: function (a, b) {
+            HoldOn.close();
+        }
+    };
 
     // IIFE - Immediately Invoked Function Expression
     (function (yc) {
@@ -100,154 +219,41 @@
         // Listen for the jQuery ready event on the document
         $(function () {
             handleEnter();
-            getRecords();
+
+            Semana.keydown(function (e) {
+                if (e.keyCode === 13 && Maquila.val() !== '' && Semana.val() !== '') {
+                    HoldOn.open({
+                        theme: 'sk-bounce',
+                        message: 'Por favor espere...'
+                    });
+                    $.fn.dataTable.ext.errMode = 'throw';
+                    if ($.fn.DataTable.isDataTable('#tblControles')) {
+                        Controles.ajax.reload();
+                        HoldOn.close();
+                    } else {
+                        Controles = tblControles.DataTable(options_ordendeproduccion);
+                    }
+                }
+            });
 
             btnGenerar.prop("disabled", true);
             Anio.val((new Date()).getFullYear());
-
             Anio.focusout(function () {
                 onVerificarFormValido();
             });
 
             btnReload.click(function () {
-                Controles.ajax.reload();
+                if (Maquila.val() !== '' && Semana.val() !== '') {
+                    Controles.ajax.reload();
+                }
             });
 
             btnGenerar.click(function () {
                 btnGenerar.prop("disabled", true);
                 onAgregarAOrdenDeProduccion();
             });
-
-            $('input.column_filter').on('keyup', function () {
-                var i = $(this).parents('div').attr('data-column');
-                tblControles.DataTable().column(i).search($('#col' + i + '_filter').val()).draw();
-            });
         });
     }));
-
-
-    function getRecords() {
-        HoldOn.open({
-            theme: 'sk-cube',
-            message: 'CARGANDO...'
-        });
-        $.fn.dataTable.ext.errMode = 'throw';
-        if ($.fn.DataTable.isDataTable('#tblControles')) {
-            tblControles.DataTable().destroy();
-        }
-        Controles = tblControles.DataTable({
-            dom: 'irtp',
-            buttons: [
-                {
-                    text: "Todos",
-                    className: 'btn btn-info btn-sm',
-                    titleAttr: 'Todos',
-                    action: function (dt) {
-                        Controles.rows({page: 'current'}).select();
-                    }
-                },
-                {
-                    extend: 'selectNone',
-                    className: 'btn btn-info btn-sm',
-                    text: 'Ninguno',
-                    titleAttr: 'Deseleccionar Todos'
-                }
-            ],
-            "ajax": {
-                "url": master_url + 'getRecords',
-                "dataSrc": ""
-            },
-            "columnDefs": [
-                {
-                    "targets": [0],
-                    "visible": false,
-                    "searchable": false
-                },
-                {
-                    "targets": [1],
-                    "visible": false,
-                    "searchable": false
-                },
-                {
-                    "targets": [2],
-                    "visible": false,
-                    "searchable": false
-                },
-                {
-                    "targets": [16],
-                    "visible": false,
-                    "searchable": false
-                },
-                {
-                    "targets": [17],
-                    "visible": false,
-                    "searchable": false
-                }],
-            "columns": [
-                {"data": "ID"}, /*0*/
-                {"data": "IdEstilo"}, /*1*/
-                {"data": "IdColor"}, /*2*/
-                {"data": "Pedido"}, /*3*/
-                {"data": "Cliente"}, /*4*/
-                {"data": "Estilo"}, /*5*/
-                {"data": "Color"}, /*6*/
-                {"data": "Serie"}, /*7*/
-                {"data": "Fecha Captura"}, /*8*/
-                {"data": "Fecha Pedido"}, /*9*/
-                {"data": "Fecha Entrega"}, /*10*/
-                {"data": "Pares"}, /*11*/
-                {"data": "Maq"}, /*12*/
-                {"data": "Semana"}, /*13*/
-                {"data": "Anio"}, /*14*/
-                {"data": "Control"}, /*15*/
-                {"data": "SerieID"}/*16*/,
-                {"data": "ID_PEDIDO"}/*17*/
-            ],
-            language: lang,
-            select: true,
-            keys: true,
-            "autoWidth": true,
-            "colReorder": true,
-            "displayLength": 9999999999,
-            "scrollY": 380,
-            "scrollX": true,
-            "bLengthChange": false,
-            "deferRender": true,
-            "scrollCollapse": false,
-            "bSort": true,
-            "aaSorting": [
-                [0, 'desc']/*ID*/
-            ],
-            "createdRow": function (row, data, dataIndex, cells) {
-                $.each($(row).find("td"), function (k, v) {
-                    switch (parseInt(k)) {
-                        case 1:
-                            $(v).attr('title', data["Cliente Razon"]);
-                            break;
-                        case 2:
-                            $(v).attr('title', data["Descripcion Estilo"]);
-                            break;
-                        case 3:
-                            $(v).attr('title', data["Descripcion Color"]);
-                            break;
-                    }
-                });
-                $.each($(row), function (k, v) {
-                    if (data["Marca"] === '0' && data["Control"] !== null) {
-                        $(v).addClass('HasMca');
-                    }
-                });
-            },
-            "footerCallback": function (row, data, start, end, display) {
-                var api = this.api(); //Get access to Datatable API
-                // Update footer
-                $(api.column(11).footer()).html(api.column(11, {page: 'current'}).data().reduce(function (a, b) {
-                    return parseFloat(a) + parseFloat(b);
-                }, 0));
-            }
-        });
-        HoldOn.close();
-    }
 
     function onAgregarAOrdenDeProduccion() {
         HoldOn.open({
@@ -255,7 +261,6 @@
             message: 'GENERANDO...'
         });
         $.post(master_url + 'onAgregarAOrdenDeProduccion', {MAQUILA: Maquila.val(), SEMANA: Semana.val(), ANO: Anio.val()}).done(function (data) {
-            console.log(data);
             var nordenes = parseInt(data);
             if (nordenes > 0) {
                 $("#Resultado").html('<p class="text-info font-weight-bold mt-2"> SE HAN GENERADO ' + nordenes + ' ORDENES DE PRODUCCIÓN</p>');

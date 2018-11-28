@@ -10,9 +10,9 @@ class Ordendeproduccion_model extends CI_Model {
         parent::__construct();
     }
 
-    public function getRecords() {
+    public function getRecords($MAQUILA, $SEMANA, $ANO) {
         try {
-            return $this->db->select('PD.ID AS ID, '
+             $this->db->select('PD.ID AS ID, '
                                     . 'PD.Estilo AS IdEstilo, '
                                     . 'PD.Color AS IdColor, '
                                     . "PD.Estilo AS Estilo, "
@@ -40,16 +40,29 @@ class Ordendeproduccion_model extends CI_Model {
                                     . "CONCAT(CT.Ano, CT.Semana, CT.Maquila, CT.Consecutivo) AS Control,"
                                     . "S.ID AS SerieID,"
                                     . "PD.Clave AS ID_PEDIDO", false)->from('pedidox AS PD')
-                            ->join('clientes AS CL', 'CL.Clave = PD.Cliente') 
+                            ->join('clientes AS CL', 'CL.Clave = PD.Cliente')
                             ->join('series AS S', 'PD.Serie = S.Clave')
                             ->join('controles AS CT', 'CT.PedidoDetalle = PD.ID')
                             ->join('ordendeproduccion AS OP', 'OP.Pedido = PD.Clave  AND OP.PedidoDetalle = PD.ID', 'left')
                             ->where('PD.Control <> 0 AND OP.ID IS NULL', null, false)
-                            ->where('CT.Estatus', 'A')->get()->result();
+                            ->where('CT.Estatus', 'A');
+            if ($ANO !== '') {
+                $this->db->where('PD.Ano', $ANO);
+            }
+            if ($MAQUILA !== '') {
+                $this->db->where('PD.Maquila', $MAQUILA);
+            }
+            if ($SEMANA !== '') {
+                $this->db->where('PD.Semana', $SEMANA);
+            }
+            $sql = $this->db->get();
+//            PRINT $this->db->last_query();
+            return $sql->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
+
     public function getRecordsGenerados() {
         try {
             return $this->db->select('PD.ID AS ID, '

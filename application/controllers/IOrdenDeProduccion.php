@@ -225,6 +225,7 @@ class IOrdenDeProduccion extends CI_Controller {
                 $pdf->Line(5, $pdf->GetY(), 210, $pdf->GetY());
 
                 $Y = $pdf->GetY();
+                $CELL = 0;
                 foreach ($DEPARTAMENTOS as $dk => $dv) {
                     if ($COLUMN === 2) {
                         $pdf->Cell(200, 3.5, "", 0/* BORDE */, 1/* SALTO NO */, 'C', 0);
@@ -241,6 +242,7 @@ class IOrdenDeProduccion extends CI_Controller {
                     $anc = array(25, 50, 8, 10, 10);
                     $alto_celda = 3.5;
                     $COLUMN = 1;
+                    $border = 0;
                     foreach ($OP as $k => $v) {
                         /* PRIMER DETALLE */
                         if ($vc->ControlT === $v->ControlT && $v->DEPARTAMENTO === $dv->DEPARTAMENTO) {
@@ -249,38 +251,40 @@ class IOrdenDeProduccion extends CI_Controller {
                                 case 1:
                                     $COLUMN += 1;
                                     $pdf->SetX($col[0]);
-                                    $pdf->Cell($anc[0], $alto_celda, utf8_decode($v->PIEZA), 0/* BORDE */, 0, 'L', 0);
+                                    $pdf->Cell($anc[0], $alto_celda, utf8_decode($v->PIEZA), $border/* BORDE */, 0, 'L', 0);
 
                                     $pdf->SetX($col[1]);
-                                    $pdf->Cell($anc[1], $alto_celda, utf8_decode(mb_strimwidth($v->ARTICULOT, 0, 47)) . " " . $v->CLASIFICACION, 0/* BORDE */, 0, 'L', 0);
+                                    $pdf->Cell($anc[1], $alto_celda, utf8_decode(mb_strimwidth($v->ARTICULOT, 0, 47)) . " " . $v->CLASIFICACION, $border/* BORDE */, 0, 'L', 0);
 
                                     $pdf->SetX($col[2]);
-                                    $pdf->Cell($anc[2], $alto_celda, ($v->PZXPAR > 0) ? $v->PZXPAR : '', 0/* BORDE */, 0, 'C', 0);
+                                    $pdf->Cell($anc[2], $alto_celda, ($v->PZXPAR > 0) ? $v->PZXPAR : '', $border/* BORDE */, 0, 'C', 0);
 
                                     $pdf->SetX($col[3]);
-                                    $pdf->Cell($anc[3], $alto_celda, $v->UNIDAD, 0/* BORDE */, 0, 'C', 0);
+                                    $pdf->Cell($anc[3], $alto_celda, $v->UNIDAD, $border/* BORDE */, 0, 'C', 0);
 
                                     $pdf->SetX($col[4]);
-                                    $pdf->Cell($anc[4], $alto_celda, $v->CANTIDAD, 0/* BORDE */, 0/* SALTO NO */, 'R', 0);
+                                    $pdf->Cell($anc[4], $alto_celda, $v->CANTIDAD, $border/* BORDE */, 0/* SALTO NO */, 'R', 0);
                                     $pdf->Line(5, $pdf->GetY() + $alto_celda, 108, $pdf->GetY() + $alto_celda);
+                                    $CELL = 1;
                                     break;
                                 case 2:
                                     $COLUMN = 1;
                                     $pdf->SetX($col[5]);
-                                    $pdf->Cell($anc[0], $alto_celda, utf8_decode($v->PIEZA), 0/* BORDE */, 0, 'L', 0);
+                                    $pdf->Cell($anc[0], $alto_celda, utf8_decode($v->PIEZA), $border/* BORDE */, 0, 'L', 0);
 
                                     $pdf->SetX($col[6]);
-                                    $pdf->Cell($anc[1], $alto_celda, utf8_decode(mb_strimwidth($v->ARTICULOT, 0, 47)) . " " . $v->CLASIFICACION, 0/* BORDE */, 0, 'L', 0);
+                                    $pdf->Cell($anc[1], $alto_celda, utf8_decode(mb_strimwidth($v->ARTICULOT, 0, 47)) . " " . $v->CLASIFICACION, $border/* BORDE */, 0, 'L', 0);
 
                                     $pdf->SetX($col[7]);
-                                    $pdf->Cell($anc[2], $alto_celda, ($v->PZXPAR > 0) ? $v->PZXPAR : '', 0/* BORDE */, 0, 'C', 0);
+                                    $pdf->Cell($anc[2], $alto_celda, ($v->PZXPAR > 0) ? $v->PZXPAR : '', $border/* BORDE */, 0, 'C', 0);
 
                                     $pdf->SetX($col[8]);
-                                    $pdf->Cell($anc[3], $alto_celda, $v->UNIDAD, 0/* BORDE */, 0, 'C', 0);
+                                    $pdf->Cell($anc[3], $alto_celda, $v->UNIDAD, $border/* BORDE */, 0, 'C', 0);
 
                                     $pdf->SetX($col[9]);
-                                    $pdf->Cell($anc[4], $alto_celda, $v->CANTIDAD, 0/* BORDE */, 1/* SALTO SI */, 'R', 0);
+                                    $pdf->Cell($anc[4], $alto_celda, $v->CANTIDAD, $border/* BORDE */, 1/* SALTO SI */, 'R', 0);
                                     $pdf->Line(108, $pdf->GetY(), 210, $pdf->GetY());
+                                    $CELL = 2;
                                     break;
                             }
                             /* FIN PRIMER DETALLE */
@@ -288,14 +292,17 @@ class IOrdenDeProduccion extends CI_Controller {
                     }
 //                    $pdf->Rect(5, $PUNTO_INICIAL, 104/* DER-X */, $pdf->GetY()/* DER-Y */);
                 }
+
+                if ($COLUMN === 2 && $CELL === 1) {
+                    $pdf->Cell(200, 3.5, "", 0/* BORDE */, 1/* SALTO NO */, 'C', 0);
+                    $pdf->Line(108, $pdf->GetY(), 210, $pdf->GetY());
+                }
                 list($width, $height, $type, $attr) = getimagesize(base_url($vc->FOTO));
                 $pdf->Line(5, $Y, 5, $pdf->GetY());
                 $pdf->Line(108, $Y, 108, $pdf->GetY());
                 $pdf->Line(210, $Y, 210, $pdf->GetY());
                 $pdf->SetFont('Calibri', 'B', 14);
                 $pdf->SetX(5);
-                $pdf->Cell(53, 10, "", 0/* BORDE */, 0/* SALTO SI */, 'C', 0);
-
                 $pdf->Code128(5/* X */, $pdf->GetY()/* Y */, $vc->ControlT/* TEXT */, 53/* ANCHO */, 6/* ALTURA */);
                 $width_final = $this->getSize($width, 96);
                 $height_final = $this->getSize($height, 96);
@@ -313,7 +320,7 @@ class IOrdenDeProduccion extends CI_Controller {
                     $pdf->SetX(5);
                     $pdf->Cell(205, 5, utf8_decode($vc->OBSERVACIONES_COLOR), 0/* BORDE */, 1/* SALTO SI */, 'C', 0);
                 }
-                /* END FOREACH PIEZAS */ 
+                /* END FOREACH PIEZAS */
                 if ($altura_final > 260) {
                     if ($vc->FOTO !== NULL && $vc->FOTO !== null && $vc->FOTO !== 'NULL') {
                         $pdf->AddPage();

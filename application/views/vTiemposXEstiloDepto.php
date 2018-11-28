@@ -16,7 +16,7 @@
                 <label>Linea</label>
                 <input type="text" class="form-control form-control-sm" id="Linea" maxlength="10" name="Linea">
             </div>  
-            <div id="EstiloDescripcion" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center" aling="center"></div>
+            <div id="EstiloDescripcion" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 text-center" aling="center"></div>
             <div id="Departamentos" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"></div>
             <div class="col-12 col-sm-6 col-md-4 col-lg-12 col-xl-12 m-2" align="left">
                 <button type="button" class="btn btn-primary animated fadeIn" id="btnGuardarTiempo">GUARDAR</button>

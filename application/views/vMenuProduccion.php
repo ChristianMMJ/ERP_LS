@@ -73,7 +73,7 @@
                     <a class="dropdown-item" href="<?php print base_url('EliminaOrdenDeProduccion.shoes'); ?>"><span class="fa fa-dot-circle fade-infinite"></span> Elimina orden de producción </a>
                     <a class="dropdown-item" href="<?php print base_url('IOrdenDeProduccion.shoes'); ?>"><span class="fa fa-dot-circle fade-infinite"></span> Imprime orden de producción </a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlConsumosPielForro"><span class="fa fa-puzzle-piece"></span> Consumo piel y forro por cortador</a>
+                    <a class="dropdown-item" href="<?php print base_url('ConsumoPielForroXCortador.shoes'); ?>"><span class="fa fa-puzzle-piece"></span> Consumo piel y forro por cortador</a>
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" href="#"><span class="fa fa-dot-circle"></span> Preprogramaciones</a>
                         <div class="dropdown-menu">
@@ -134,4 +134,3 @@
 
 <?php
 $this->load->view('vExplosionSemanal');
-$this->load->view('vConsumoPielForroXCortador');

@@ -12,6 +12,36 @@ class ConsumoPielForroXCortador extends CI_Controller {
         $this->load->library('session')->model('ConsumoPielForroXCortador_model', 'cpfxc')->helper('consumopielforro_helper');
     }
 
+    public function index() {
+        if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
+            $this->load->view('vEncabezado');
+            switch ($this->session->userdata["TipoAcceso"]) {
+                case 'SUPER ADMINISTRADOR':
+                    $this->load->view('vNavGeneral')->view('vMenuProduccion');
+                    break;
+                case 'VENTAS':
+                    $this->load->view('vMenuClientes');
+                    break;
+                case 'PRODUCCION':
+                    $this->load->view('vMenuProduccion');
+                    break;
+                case 'RECURSOS HUMANOS':
+                    $this->load->view('vMenuProduccion');
+                    break;
+                case 'FACTURACION':
+                    $this->load->view('vMenuFacturacion');
+                    break;
+                case 'PRODUCCION':
+                    $this->load->view('vMenuProduccion');
+                    break;
+            }
+
+            $this->load->view('vFondo')->view('vConsumoPielForroXCortador')->view('vFooter');
+        } else {
+            $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
+        }
+    }
+
     public function getCortadores() {
         try {
             print json_encode($this->cpfxc->getCortadores());

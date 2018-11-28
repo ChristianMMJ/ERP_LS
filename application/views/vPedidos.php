@@ -161,7 +161,7 @@
                         <!--TALLAS-->
                         <div class="col-12">
                             <div class="row">
-                                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" >
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-8" >
                                     <div class="table-responsive" style="overflow-x:auto; white-space: nowrap;">
                                         <label class="font-weight-bold" for="Tallas">Tallas</label>
                                         <table id="tblTallas" class="Tallas" >
@@ -881,6 +881,10 @@
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);
             });
+            if ($.fn.DataTable.isDataTable('#tblPedidoDetalle')) {
+                PedidoDetalle.clear().draw();
+            }
+            PedidoDetalle = tblPedidoDetalle.DataTable(opciones_detalle);
             PedidoDetalle.clear().draw();
             getID();
         });
