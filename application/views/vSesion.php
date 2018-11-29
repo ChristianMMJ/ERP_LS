@@ -48,6 +48,7 @@
         </div>
     </div>
 </div>
+
 <div class="w-s content-hidden">
     <div class="content-wrap">
         <ul class="fly-in-text">
@@ -56,6 +57,7 @@
         </ul> 
     </div>
 </div>
+
 <div id="frmLogin" class="row div-login d-none" aling="center"> 
     <div id="frmtitulo" class="col-12 text-center d-none">
         <h4 class="mb-3 text-white text-shadow">CONTROL DE ACCESO</h4>
@@ -135,8 +137,7 @@
                 {src: "<?php print base_url('img/vg/1.jpg'); ?>"},
                 {src: "<?php print base_url('img/vg/2.jpg'); ?>"},
                 {src: "<?php print base_url('img/vg/3.jpg'); ?>"},
-                {src: "<?php print base_url('img/vg/4.jpg'); ?>"},
-                {src: "<?php print base_url('img/vg/5.jpg'); ?>"},
+                {src: "<?php print base_url('img/vg/4.jpg'); ?>"}, 
                 {src: "<?php print base_url('img/vg/6.jpg'); ?>"},
                 {src: "<?php print base_url('img/vg/7.jpg'); ?>"},
                 {src: "<?php print base_url('img/vg/8.jpg'); ?>"},

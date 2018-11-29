@@ -5,13 +5,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+require_once APPPATH . "/third_party/fpdf17/fpdf.php";
 
 class TiemposXEstiloDepto extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('TiemposXEstiloDepto_model', 'txed');
+        $this->load->library('session')->model('TiemposXEstiloDepto_model', 'txed')->helper('tiemposxestilos_helper');
     }
 
     public function index() {
@@ -77,6 +78,14 @@ class TiemposXEstiloDepto extends CI_Controller {
         }
     }
 
+    public function onComprobarEstilo() {
+        try {
+            print json_encode($this->txed->onComprobarEstilo($this->input->get('ESTILO')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getTiemposXEstiloDepto() {
         try {
             print json_encode($this->txed->getTiemposXEstiloDepto());
@@ -88,9 +97,9 @@ class TiemposXEstiloDepto extends CI_Controller {
     public function onGuardarTiempos() {
         try {
             $x = $this->input;
-            $TIEMPOS = json_decode($x->post('TIEMPOS')); 
+            $TIEMPOS = json_decode($x->post('TIEMPOS'));
             switch ($x->post('N')) {
-                case 0: 
+                case 0:
                     $this->db->trans_start();
                     $this->db->insert('tiemposxestilodepto', array('Linea' => $x->post('LINEA'), 'Estilo' => $x->post('ESTILO')));
                     $row = $this->db->query('SELECT LAST_INSERT_ID()')->row_array();
@@ -98,13 +107,12 @@ class TiemposXEstiloDepto extends CI_Controller {
                     $this->db->trans_complete();
                     $TOTAL = 0;
                     foreach ($TIEMPOS as $k => $v) {
-                        $this->db->insert('tiemposxestilodepto_has_deptos', 
-                                array('TiempoXEstiloDepto' => $ID, 'Departamento' => $v->DEPTO, 'Tiempo' => $v->DEPTOTIME, 'Fecha' => Date('d/m/Y h:i:s a')));
+                        $this->db->insert('tiemposxestilodepto_has_deptos', array('TiempoXEstiloDepto' => $ID, 'Departamento' => $v->DEPTO, 'Tiempo' => $v->DEPTOTIME, 'Fecha' => Date('d/m/Y h:i:s a')));
                         $TOTAL += $v->DEPTOTIME;
                     }
                     $this->db->set('Total', $TOTAL)->where('ID', $ID)->update('tiemposxestilodepto');
                     break;
-                case 1: 
+                case 1:
                     $TOTAL = 0;
                     foreach ($TIEMPOS as $k => $v) {
                         $EX = $this->txed->onComprobarDeptoXEstilo($x->post('ESTILO'), $v->DEPTO)[0]->EXISTE;
@@ -143,6 +151,74 @@ class TiemposXEstiloDepto extends CI_Controller {
             $this->db->where('TiempoXEstiloDepto', $this->input->post('ID'))
                     ->where('ID', $this->input->post('IDD'))
                     ->delete('tiemposxestilodepto_has_deptos');
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onObtenerTiemposXEstilo() {
+        try {
+            $pdf = new PDF('P', 'mm', array(215.9, 279.4));
+            $ESTILO = $this->input->post('ESTILO');
+            $LINEA = "";
+            $pdf->AddFont('Calibri', '');
+            $pdf->AddFont('Calibri', 'I');
+            $pdf->AddFont('Calibri', 'B');
+            $pdf->AddFont('Calibri', 'BI');
+            $TIEMPOS = $this->txed->getTiemposXEstilo($ESTILO);
+            if (count($TIEMPOS) > 0) {
+                $pdf->setEstilo($ESTILO . " - " . $TIEMPOS[0]->ESTILO);
+                $LINEA = $TIEMPOS[0]->LINEA;
+                $pdf->setLinea($LINEA);
+                $pdf->AddPage();
+                $pdf->SetAutoPageBreak(true, 10);
+                $pdf->SetFont('Calibri', 'B', 7.5);
+                $pdf->setY(25);
+                $pdf->setFilled(1);
+                $pdf->SetFillColor(244, 244, 244);
+                $pdf->SetAligns(array('C'/* 0 */, 'C'/* 1 */, 'C'/* 2 */));
+                $pdf->SetWidths(array(70/* 0 */, 20/* 1 */, 20/* 2 */));
+                $pdf->SetX(10);
+                $pdf->Row(array("DEPARTAMENTO", "TIEMPO"));
+                $TOTAL = 0;
+                $pdf->SetFont('Calibri', '', 7.5);
+                $pdf->setFilled(0);
+                $pdf->setY(30);
+                $pdf->SetX(10);
+                foreach ($TIEMPOS as $k => $v) {
+                    $TOTAL += $v->TIEMPO;
+                    $pdf->SetAligns(array('L'/* 0 */, 'C'/* 1 */, 'C'/* 2 */));
+                    $pdf->SetWidths(array(70/* 0 */, 20/* 1 */, 20/* 2 */));
+                    $r = array(
+                        utf8_decode($v->CLAVE_DEPTO . " - " . $v->DEPTO)/* 0 */,
+                        ($v->TIEMPO)/* 1 */
+                    );
+                    $pdf->SetX(10);
+                    $pdf->Row($r);
+                }
+                $pdf->SetFont('Calibri', 'B', 7.5);
+                $pdf->SetX(30);
+                $pdf->Cell(50, 5, utf8_decode("TOTAL DEL ESTILO $ESTILO, LINEA $LINEA "), 1/* BORDE */, 0, 'L', 1);
+                $pdf->SetX($pdf->GetX());
+                $pdf->Cell(20, 5, $TOTAL, 1/* BORDE */, 1, 'C', 0);
+
+                /* FIN RESUMEN */
+                $path = 'uploads/Reportes/TiemposXEstilo';
+                if (!file_exists($path)) {
+                    mkdir($path, 0777, true);
+                }
+                if (delete_files('uploads/Reportes/TiemposXEstilo/')) {
+                    /* ELIMINA LA EXISTENCIA DE CUALQUIER ARCHIVO EN EL DIRECTORIO */
+                }
+                $file_name = "TiemposXEstilo_$ESTILO- " . date("d_m_Y_his");
+                $url = $path . '/' . $file_name . '.pdf';
+                /* Borramos el archivo anterior */
+
+                $pdf->Output($url);
+                print base_url() . $url;
+            } else {
+                return '';
+            }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
