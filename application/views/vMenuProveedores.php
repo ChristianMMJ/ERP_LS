@@ -16,6 +16,7 @@
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCatalogos">
                     <a class="dropdown-item" href="<?php print base_url('Proveedores/?origen=PROVEEDORES'); ?>"> Proveedores</a>
                     <a class="dropdown-item" href="<?php print base_url('Bancos/?origen=PROVEEDORES'); ?>"> Bancos</a>
+                    <a class="dropdown-item" href="<?php print base_url('Maquilas/?origen=PROVEEDORES'); ?>"> Maquilas</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -43,7 +44,7 @@
                     <span class="fa fa-building"></span> Maquiladoras
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navMaquiladoras">
-                    <a class="dropdown-item" href="<?php print base_url('Maquilas/?origen=PROVEEDORES'); ?>"> Maquilas</a>
+
                 </div>
             </li>
 
@@ -54,6 +55,7 @@
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navReportes">
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlEstadoCuentaProveedor" data-backdrop='true'> Estados de cuenta por Proveedor</a>
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlAntiguedadSaldosProveedores" data-backdrop='true'> Antigüedad de Saldos</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlGeneraReciboPago" data-backdrop='true'> Genera Recibo de Pago a Proveedores</a>
 
                 </div>
             </li>
@@ -99,3 +101,4 @@
 <?php
 $this->load->view('vEstadoCuentaProveedor');
 $this->load->view('vAntiguedadSaldosProveedor');
+$this->load->view('vReciboPagoProveedores');

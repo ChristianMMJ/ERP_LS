@@ -9,6 +9,10 @@ class ReportesProveedores extends CI_Controller {
         parent::__construct();
         $this->load->library('session')->model('ReportesProveedores_model')
                 ->helper('Reportesproveedores_helper')->helper('file');
+        date_default_timezone_set('America/Mexico_City');
+
+        setlocale(LC_ALL, "");
+        setlocale(LC_TIME, 'spanish');
     }
 
     public function getProveedores() {
@@ -16,6 +20,163 @@ class ReportesProveedores extends CI_Controller {
             print json_encode($this->ReportesProveedores_model->getProveedores());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onReporteRecibosEfectivoProv() {
+
+        $fecha = $this->input->post('FechaIni');
+        $aFecha = $this->input->post('FechaFin');
+
+        $cm = $this->ReportesProveedores_model;
+        $Proveedores = $cm->getProveedoresReporteRecibosEfectivo($fecha, $aFecha);
+        $Doctos = $cm->getDocsReporteRecibosEfectivo($fecha, $aFecha);
+
+        if (!empty($Proveedores)) {
+
+            $pdf = new PDFRecibosEfectivo('P', 'mm', array(215.9, 279.4));
+            foreach ($Proveedores as $key => $G) {
+                $pdf->AddPage();
+                $pdf->SetAutoPageBreak(true, 10);
+                $pdf->SetFont('Calibri', '', 9.5);
+
+                $TP_IMPORTE = 0;
+                foreach ($Doctos as $key => $D) {
+                    if ($G->ClaveNum === $D->ClaveNum) {
+                        $pdf->RowNoBorder(array(
+                            utf8_decode($D->Factura),
+                            '$' . number_format($D->Importe, 2, ".", ","),
+                            '',
+                            mb_strimwidth(utf8_decode($D->DocPago), 0, 40, "")
+                        ));
+
+                        $TP_IMPORTE += $D->Importe;
+                    }
+                }
+
+                $pdf->SetY($pdf->GetY() + 5);
+                $pdf->SetX(45);
+                $pdf->SetFont('Calibri', 'B', 11);
+
+                $pdf->MultiCell(140, 4, utf8_decode('Recibí del ' . $_SESSION["EMPRESA_REPRESENTANTE"] . ' la cantidad de $' . number_format($TP_IMPORTE, 2, ".", ",")
+                                . ' por el concepto de PAGO DE DOCUMENTOS ANTES MENCIONADOS.'), 0/* BORDE */, 'J');
+
+                $pdf->SetY($pdf->GetY() + 20);
+                $pdf->SetFont('Calibri', '', 11);
+
+                $pdf->SetX(30);
+                $pdf->Cell(60, 5, utf8_decode($_SESSION["EMPRESA_REPRESENTANTE"]), 'T'/* BORDE */, 0, 'C');
+                $pdf->SetX(125);
+                $pdf->Cell(60, 5, utf8_decode($G->ProveedorF), 'T'/* BORDE */, 0, 'C');
+
+                $pdf->SetFont('Calibri', 'B', 11);
+                $pdf->SetY($pdf->GetY() + 5);
+                $pdf->SetX(30);
+                $pdf->Cell(60, 5, utf8_decode('ENTREGA'), 0/* BORDE */, 0, 'C');
+                $pdf->SetX(125);
+                $pdf->Cell(60, 5, utf8_decode('RECIBE'), 0/* BORDE */, 0, 'C');
+            }
+
+
+
+            /* FIN RESUMEN */
+            $path = 'uploads/Reportes/Proveedores';
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $file_name = "RECIBOS DE PAGO EN EFECTIVO " . ' ' . date("d-m-Y his");
+            $url = $path . '/' . $file_name . '.pdf';
+            /* Borramos el archivo anterior */
+            if (delete_files('uploads/Reportes/Proveedores/')) {
+                /* ELIMINA LA EXISTENCIA DE CUALQUIER ARCHIVO EN EL DIRECTORIO */
+            }
+            $pdf->Output($url);
+            print base_url() . $url;
+        }
+    }
+
+    public function onReporteRelacionPagos() {
+
+        $fecha = $this->input->post('FechaIni');
+        $aFecha = $this->input->post('FechaFin');
+
+        $cm = $this->ReportesProveedores_model;
+        $Proveedores = $cm->getProveedoresReporteRelacionPagos($fecha, $aFecha);
+        $Doctos = $cm->getPagosByProveedor($fecha, $aFecha);
+
+
+        if (!empty($Proveedores)) {
+
+            $pdf = new PDFRelacionPagos('P', 'mm', array(215.9, 279.4));
+
+            $pdf->Fecha = $fecha;
+            $pdf->Afecha = $aFecha;
+
+            $pdf->AddPage();
+            $pdf->SetAutoPageBreak(true, 10);
+
+
+            $TP_IMPORTE_G = 0;
+            foreach ($Proveedores as $key => $G) {
+                $pdf->SetX(5);
+                $pdf->SetFont('Calibri', '', 8);
+                $pdf->Cell(80, 5, utf8_decode($G->ProveedorF), 'B'/* BORDE */, 1, 'L');
+
+
+                $TP_IMPORTE = 0;
+                foreach ($Doctos as $key => $D) {
+
+                    if ($G->ClaveNum === $D->ClaveNum) {
+                        $pdf->Row(array(
+                            utf8_decode($D->Tp),
+                            utf8_decode($D->Factura),
+                            utf8_decode($D->Fecha),
+                            '$' . number_format($D->Importe, 2, ".", ","),
+                            mb_strimwidth(utf8_decode($D->DocPago), 0, 40, "")
+                        ));
+
+                        $TP_IMPORTE += $D->Importe;
+                        $TP_IMPORTE_G += $D->Importe;
+                    }
+                }
+                $pdf->SetX(85);
+                $pdf->SetFont('Calibri', 'B', 8);
+                $pdf->Cell(70, 5, utf8_decode('TOTAL POR PROVEEDOR: '), 0/* BORDE */, 0, 'L');
+
+                $pdf->RowNoBorder(array(
+                    '',
+                    '',
+                    '',
+                    '$' . number_format($TP_IMPORTE, 2, ".", ","),
+                    '',
+                ));
+            }
+            $pdf->SetX(85);
+            $pdf->SetFont('Calibri', 'B', 8);
+            $pdf->Cell(70, 5, utf8_decode('TOTAL GENERAL: '), 0/* BORDE */, 0, 'L');
+
+            $pdf->RowNoBorder(array(
+                '',
+                '',
+                '',
+                '$' . number_format($TP_IMPORTE_G, 2, ".", ","),
+                '',
+            ));
+
+
+            /* FIN RESUMEN */
+            $path = 'uploads/Reportes/Proveedores';
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $file_name = "RELACION PAGOS POR PROVEEDOR " . ' ' . date("d-m-Y his");
+            $url = $path . '/' . $file_name . '.pdf';
+            /* Borramos el archivo anterior */
+            if (delete_files('uploads/Reportes/Proveedores/')) {
+                /* ELIMINA LA EXISTENCIA DE CUALQUIER ARCHIVO EN EL DIRECTORIO */
+            }
+            $pdf->Output($url);
+            print base_url() . $url;
         }
     }
 
@@ -53,13 +214,16 @@ class ReportesProveedores extends CI_Controller {
             $GTOTAL_4 = 0;
             $GTOTAL_5 = 0;
             $GTOTAL_6 = 0;
+            $GTOTAL_7 = 0;
+            $GTOTAL_8 = 0;
+            $GTOTAL_9 = 0;
 
             foreach ($Proveedores as $key => $G) {
                 $pdf->SetX(5);
-                $pdf->SetFont('Calibri', '', 8);
-                $pdf->Cell(45, 5, utf8_decode(mb_strimwidth(utf8_decode($G->ProveedorF), 0, 35, "...")), 'B'/* BORDE */, 0, 'L');
-                $pdf->SetX(50);
-                $pdf->Cell(10, 5, utf8_decode($G->Plazo), 'B'/* BORDE */, 1, 'C');
+                $pdf->SetFont('Times', '', 7.8);
+                $pdf->SetLineWidth(0.5);
+                $pdf->Cell(90, 6, utf8_decode($G->ProveedorF . ' =====> PLAZO: ' . $G->Plazo . ' DÍAS'), 'B'/* BORDE */, 1, 'L');
+                $pdf->SetLineWidth(0.2);
 
                 $TP_IMPORTE = 0;
                 $TP_PAGOS = 0;
@@ -71,6 +235,9 @@ class ReportesProveedores extends CI_Controller {
                 $TOTAL_4 = 0;
                 $TOTAL_5 = 0;
                 $TOTAL_6 = 0;
+                $TOTAL_7 = 0;
+                $TOTAL_8 = 0;
+                $TOTAL_9 = 0;
                 foreach ($Doctos as $key => $D) {
 
                     if ($G->ClaveNum === $D->ClaveNum) {
@@ -87,7 +254,10 @@ class ReportesProveedores extends CI_Controller {
                             ($D->TRES > 0) ? '$' . number_format($D->TRES, 2, ".", ",") : '',
                             ($D->CUATRO > 0) ? '$' . number_format($D->CUATRO, 2, ".", ",") : '',
                             ($D->CINCO > 0) ? '$' . number_format($D->CINCO, 2, ".", ",") : '',
-                            ($D->SEIS > 0) ? '$' . number_format($D->SEIS, 2, ".", ",") : ''
+                            ($D->SEIS > 0) ? '$' . number_format($D->SEIS, 2, ".", ",") : '',
+                            ($D->SIETE > 0) ? '$' . number_format($D->SIETE, 2, ".", ",") : '',
+                            ($D->OCHO > 0) ? '$' . number_format($D->OCHO, 2, ".", ",") : '',
+                            ($D->NUEVE > 0) ? '$' . number_format($D->NUEVE, 2, ".", ",") : ''
                         ));
 
                         $TP_IMPORTE += $D->ImporteDoc;
@@ -102,55 +272,67 @@ class ReportesProveedores extends CI_Controller {
                         $TOTAL_4 += $D->CUATRO;
                         $TOTAL_5 += $D->CINCO;
                         $TOTAL_6 += $D->SEIS;
+                        $TOTAL_7 += $D->SIETE;
+                        $TOTAL_8 += $D->OCHO;
+                        $TOTAL_9 += $D->NUEVE;
                         $GTOTAL_1 += $D->UNO;
                         $GTOTAL_2 += $D->DOS;
                         $GTOTAL_3 += $D->TRES;
                         $GTOTAL_4 += $D->CUATRO;
                         $GTOTAL_5 += $D->CINCO;
                         $GTOTAL_6 += $D->SEIS;
+                        $GTOTAL_7 += $D->SIETE;
+                        $GTOTAL_8 += $D->OCHO;
+                        $GTOTAL_9 += $D->NUEVE;
                     }
                 }
-                $pdf->SetX(60);
-                $pdf->SetFont('Calibri', 'B', 8);
-                $pdf->Cell(70, 5, utf8_decode('TOTAL POR PROVEEDOR: '), 0/* BORDE */, 0, 'L');
+                $pdf->SetX(5);
+                $pdf->SetFont('Times', 'B', 7.8);
+                $pdf->Cell(70, 4, utf8_decode('TOTAL POR PROVEEDOR: '), 0/* BORDE */, 0, 'L');
 
                 $pdf->RowNoBorder(array(
                     '',
                     '',
                     '',
-                    '$' . number_format($TP_IMPORTE, 2, ".", ","),
-                    '$' . number_format($TP_PAGOS, 2, ".", ","),
-                    '$' . number_format($TP_SALDO, 2, ".", ","),
+                    mb_strimwidth('$' . number_format($TP_IMPORTE, 2, ".", ","), 0, 12, ""),
+                    mb_strimwidth('$' . number_format($TP_PAGOS, 2, ".", ","), 0, 12, ""),
+                    mb_strimwidth('$' . number_format($TP_SALDO, 2, ".", ","), 0, 12, ""),
                     '',
-                    ($TOTAL_1 > 0) ? '$' . number_format($TOTAL_1, 2, ".", ",") : '',
-                    ($TOTAL_2 > 0) ? '$' . number_format($TOTAL_2, 2, ".", ",") : '',
-                    ($TOTAL_3 > 0) ? '$' . number_format($TOTAL_3, 2, ".", ",") : '',
-                    ($TOTAL_4 > 0) ? '$' . number_format($TOTAL_4, 2, ".", ",") : '',
-                    ($TOTAL_5 > 0) ? '$' . number_format($TOTAL_5, 2, ".", ",") : '',
-                    ($TOTAL_6 > 0) ? '$' . number_format($TOTAL_6, 2, ".", ",") : ''
+                    ($TOTAL_1 > 0) ? mb_strimwidth('$' . number_format($TOTAL_1, 2, ".", ","), 0, 12, "") : '',
+                    ($TOTAL_2 > 0) ? mb_strimwidth('$' . number_format($TOTAL_2, 2, ".", ","), 0, 12, "") : '',
+                    ($TOTAL_3 > 0) ? mb_strimwidth('$' . number_format($TOTAL_3, 2, ".", ","), 0, 12, "") : '',
+                    ($TOTAL_4 > 0) ? mb_strimwidth('$' . number_format($TOTAL_4, 2, ".", ","), 0, 12, "") : '',
+                    ($TOTAL_5 > 0) ? mb_strimwidth('$' . number_format($TOTAL_5, 2, ".", ","), 0, 12, "") : '',
+                    ($TOTAL_6 > 0) ? mb_strimwidth('$' . number_format($TOTAL_6, 2, ".", ","), 0, 12, "") : '',
+                    ($TOTAL_7 > 0) ? mb_strimwidth('$' . number_format($TOTAL_7, 2, ".", ","), 0, 12, "") : '',
+                    ($TOTAL_8 > 0) ? mb_strimwidth('$' . number_format($TOTAL_8, 2, ".", ","), 0, 12, "") : '',
+                    ($TOTAL_9 > 0) ? mb_strimwidth('$' . number_format($TOTAL_9, 2, ".", ","), 0, 12, "") : ''
                 ));
                 $pdf->SetLineWidth(0.8);
                 $pdf->Line(5, $pdf->GetY(), 274.9, $pdf->GetY());
                 $pdf->SetLineWidth(0.2);
             }
-            $pdf->SetX(60);
-            $pdf->SetFont('Calibri', 'B', 8);
-            $pdf->Cell(70, 5, utf8_decode('TOTAL GENERAL: '), 0/* BORDE */, 0, 'L');
+            $pdf->SetX(5);
+            $pdf->SetFont('Times', 'B', 7.8);
+            $pdf->Cell(70, 4, utf8_decode('TOTAL GENERAL: '), 0/* BORDE */, 0, 'L');
 
             $pdf->RowNoBorder(array(
                 '',
                 '',
                 '',
-                '$' . number_format($TP_IMPORTE_G, 2, ".", ","),
-                '$' . number_format($TP_PAGOS_G, 2, ".", ","),
-                '$' . number_format($TP_SALDO_G, 2, ".", ","),
+                mb_strimwidth('$' . number_format($TP_IMPORTE_G, 2, ".", ","), 0, 12, ""),
+                mb_strimwidth('$' . number_format($TP_PAGOS_G, 2, ".", ","), 0, 12, ""),
+                mb_strimwidth('$' . number_format($TP_SALDO_G, 2, ".", ","), 0, 12, ""),
                 '',
-                ($GTOTAL_1 > 0) ? '$' . number_format($GTOTAL_1, 2, ".", ",") : '',
-                ($GTOTAL_2 > 0) ? '$' . number_format($GTOTAL_2, 2, ".", ",") : '',
-                ($GTOTAL_3 > 0) ? '$' . number_format($GTOTAL_3, 2, ".", ",") : '',
-                ($GTOTAL_4 > 0) ? '$' . number_format($GTOTAL_4, 2, ".", ",") : '',
-                ($GTOTAL_5 > 0) ? '$' . number_format($GTOTAL_5, 2, ".", ",") : '',
-                ($GTOTAL_6 > 0) ? '$' . number_format($GTOTAL_6, 2, ".", ",") : ''
+                ($GTOTAL_1 > 0) ? mb_strimwidth('$' . number_format($GTOTAL_1, 2, ".", ","), 0, 12, "") : '',
+                ($GTOTAL_2 > 0) ? mb_strimwidth('$' . number_format($GTOTAL_2, 2, ".", ","), 0, 12, "") : '',
+                ($GTOTAL_3 > 0) ? mb_strimwidth('$' . number_format($GTOTAL_3, 2, ".", ","), 0, 12, "") : '',
+                ($GTOTAL_4 > 0) ? mb_strimwidth('$' . number_format($GTOTAL_4, 2, ".", ","), 0, 12, "") : '',
+                ($GTOTAL_5 > 0) ? mb_strimwidth('$' . number_format($GTOTAL_5, 2, ".", ","), 0, 12, "") : '',
+                ($GTOTAL_6 > 0) ? mb_strimwidth('$' . number_format($GTOTAL_6, 2, ".", ","), 0, 12, "") : '',
+                ($GTOTAL_7 > 0) ? mb_strimwidth('$' . number_format($GTOTAL_7, 2, ".", ","), 0, 12, "") : '',
+                ($GTOTAL_8 > 0) ? mb_strimwidth('$' . number_format($GTOTAL_8, 2, ".", ","), 0, 12, "") : '',
+                ($GTOTAL_9 > 0) ? mb_strimwidth('$' . number_format($GTOTAL_9, 2, ".", ","), 0, 12, "") : ''
             ));
 
 

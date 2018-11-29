@@ -31,7 +31,11 @@ class Usuario_model extends CI_Model {
 
     public function getAcceso($USUARIO, $CONTRASENA) {
         try {
-            $this->db->select('U.*, E.RazonSocial AS EMPRESA_RAZON,E.Direccion AS EMPRESA_DIRECCION, E.Foto AS LOGO', false);
+            $this->db->select('U.*,'
+                    . 'E.Representante AS EMPRESA_REPRESENTANTE, '
+                    . 'E.RazonSocial AS EMPRESA_RAZON,'
+                    . 'E.Direccion AS EMPRESA_DIRECCION, '
+                    . 'E.Foto AS LOGO', false);
             $this->db->from('usuarios AS U');
             $this->db->join('empresas AS E', 'U.Empresa = E.ID');
             $this->db->where('U.Usuario', $USUARIO);

@@ -75,6 +75,7 @@ class Sesion extends CI_Controller {
                     'Empresa' => $data[0]->Empresa,
                     'EMPRESA_RAZON' => $data[0]->EMPRESA_RAZON,
                     'EMPRESA_DIRECCION' => $data[0]->EMPRESA_DIRECCION,
+                    'EMPRESA_REPRESENTANTE' => $data[0]->EMPRESA_REPRESENTANTE,
                     'LOGO' => $data[0]->LOGO,
                     'SEG' => $data[0]->Seguridad
                 );

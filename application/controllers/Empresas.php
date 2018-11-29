@@ -101,7 +101,8 @@ class Empresas extends CI_Controller {
                 'Estado' => ($this->input->post('Estado') !== NULL) ? $this->input->post('Estado') : NULL,
                 'CP' => ($this->input->post('CP') !== NULL) ? $this->input->post('CP') : NULL,
                 'Telefono' => ($this->input->post('Telefono') !== NULL) ? $this->input->post('Telefono') : NULL,
-                'Estatus' => 'ACTIVO'
+                'Estatus' => 'ACTIVO',
+                'Representante' => ($this->input->post('Representante') !== NULL) ? $this->input->post('Representante') : NULL
             );
             $ID = $this->Empresas_model->onAgregar($data);
             /* MODIFICAR FOTO */
@@ -168,7 +169,8 @@ class Empresas extends CI_Controller {
                 'Ciudad' => ($this->input->post('Ciudad') !== NULL) ? $this->input->post('Ciudad') : NULL,
                 'Estado' => ($this->input->post('Estado') !== NULL) ? $this->input->post('Estado') : NULL,
                 'CP' => ($this->input->post('CP') !== NULL) ? $this->input->post('CP') : NULL,
-                'Telefono' => ($this->input->post('Telefono') !== NULL) ? $this->input->post('Telefono') : NULL
+                'Telefono' => ($this->input->post('Telefono') !== NULL) ? $this->input->post('Telefono') : NULL,
+                'Representante' => ($this->input->post('Representante') !== NULL) ? $this->input->post('Representante') : NULL
             );
             $this->Empresas_model->onModificar($ID, $DATA);
 

@@ -96,6 +96,10 @@
                         <label for="Telefono">Teléfono</label>
                         <input type="tel" class="form-control form-control-sm"  maxlength="15"  id="Telefono" name="Telefono"  >
                     </div>
+                    <div class="col-6 col-sm-4">
+                        <label for="Representante">Representante</label>
+                        <input type="text" class="form-control form-control-sm"  maxlength="110"  id="Representante" name="Representante"  >
+                    </div>
                 </div>
                 <div class="row pt-2">
                     <div class="col-6 col-md-6 ">
