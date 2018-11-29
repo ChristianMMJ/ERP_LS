@@ -25,7 +25,7 @@ class TiemposXEstiloDepto_model extends CI_Model {
         try {
             return $this->db->select('TXED.ID, TXED.Linea AS LINEA, TXED.Estilo AS ESTILO,'
                                     . 'TXEDHDTO.Departamento AS CLAVE_DEPARTAMENTO, DEPTO.Descripcion AS DEPARTAMENTO, '
-                                    . 'TXEDHDTO.Tiempo AS TIEMPO, ' 
+                                    . 'TXEDHDTO.Tiempo AS TIEMPO, '
                                     . 'TXED.Total AS TOTAL, TXEDHDTO.ID AS IDD')
                             ->from('tiemposxestilodepto AS TXED')
                             ->join('tiemposxestilodepto_has_deptos AS TXEDHDTO', 'TXED.ID = TXEDHDTO.TiempoXEstiloDepto')
@@ -62,10 +62,11 @@ class TiemposXEstiloDepto_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
+
     public function onComprobarEstilo($E) {
         try {
             return $this->db->select('COUNT(E.Clave) AS EXISTE')
-                            ->from('estilos AS E') 
+                            ->from('estilos AS E')
                             ->where('E.Clave', $E)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -76,6 +77,24 @@ class TiemposXEstiloDepto_model extends CI_Model {
         try {
             return $this->db->select('E.Linea AS LINEA, E.Descripcion AS ESTILO')
                             ->from('estilos AS E')
+                            ->where('E.Clave', $E)->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getTiemposXEstilo($E) {
+        try {
+            return $this->db->select('E.Clave AS CLAVE, '
+                                    . 'E.Linea AS LINEA, '
+                                    . 'E.Descripcion AS ESTILO, '
+                                    . 'D.Clave AS CLAVE_DEPTO, '
+                                    . 'D.Descripcion AS DEPTO, '
+                                    . 'TEDXD.Tiempo AS TIEMPO')
+                            ->from('estilos AS E')
+                            ->join('tiemposxestilodepto AS TED', 'E.Clave = TED.Estilo AND E.Linea = TED.Linea')
+                            ->join('tiemposxestilodepto_has_deptos AS TEDXD', 'TED.ID = TEDXD.TiempoXEstiloDepto')
+                            ->join('departamentos AS D', 'D.Clave = TEDXD.Departamento')
                             ->where('E.Clave', $E)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

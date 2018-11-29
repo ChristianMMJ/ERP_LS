@@ -19,8 +19,9 @@
             <div id="EstiloDescripcion" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 text-center" aling="center"></div>
             <div id="Departamentos" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"></div>
             <div class="col-12 col-sm-6 col-md-4 col-lg-12 col-xl-12 m-2" align="right">
-                <button type="button" class="btn btn-primary animated fadeIn" id="btnGuardarTiempo"><span class="fa fa-save"></span> </button>
-                <button type="button" class="btn btn-danger animated fadeIn" id="btnCancelarTiempo"><span class="fa fa-times"></span> </button>
+                <button type="button" class="btn btn-info animated fadeIn" id="btnImprimirTiempos" data-toggle="tooltip" data-placement="top" title="Imprimir"><span class="fa fa-print"></span> </button>
+                <button type="button" class="btn btn-primary animated fadeIn" id="btnGuardarTiempo" data-toggle="tooltip" data-placement="top" title="Guardar"><span class="fa fa-save"></span> </button>
+                <button type="button" class="btn btn-danger animated fadeIn" id="btnCancelarTiempo" data-toggle="tooltip" data-placement="top" title="Cancelar"><span class="fa fa-times"></span> </button>
             </div>
             <div id="TiemposXEstiloDepto" class="table-responsive">
                 <table id="tblTiemposXEstiloDepto" class="table table-sm display hover" style="width:100%">
@@ -63,6 +64,7 @@
     var tblTiemposXEstiloDepto = pnlTablero.find("#tblTiemposXEstiloDepto");
     var Departamentos = pnlTablero.find("#Departamentos");
     var nuevo = false;
+    var btnImprimirTiempos = $("#btnImprimirTiempos");
 
     const isValidInput = (x) => {
         return x.val().trim().length > 0 ? true : false;
@@ -70,15 +72,78 @@
 
     $(document).ready(function () {
 
+        btnImprimirTiempos.click(function () {
+            var stilo = Estilo.val();
+            if (stilo !== '' && stilo.length > 0) {
+                onBeep(1);
+                HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+                var f = new FormData();
+                f.append('ESTILO', Estilo.val());
+                $.ajax({
+                    url: master_url + 'onObtenerTiemposXEstilo',
+                    type: "POST",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: f
+                }).done(function (data, x, jq) {
+                    if (data.length > 0) {
+                        $.fancybox.open({
+                            src: base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data + '#pagemode=thumbs',
+                            type: 'iframe',
+                            opts: {
+                                afterShow: function (instance, current) {
+                                    console.info('done!');
+                                },
+                                iframe: {
+                                    // Iframe template
+                                    tpl: '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen allowtransparency="true" src=""></iframe>',
+                                    preload: true,
+                                    // Custom CSS styling for iframe wrapping element
+                                    // You can use this to set custom iframe dimensions
+                                    css: {
+                                        width: "95%",
+                                        height: "95%"
+                                    },
+                                    // Iframe tag attributes
+                                    attr: {
+                                        scrolling: "auto"
+                                    }
+                                }
+                            }
+                        });
+                    } else {
+                        onBeep(2);
+                        swal({
+                            title: "ATENCIÓN",
+                            text: "NO EXISTEN TIEMPOS PARA ESTE ESTILO, SE HA ELIMINADO, HA SIDO CAMBIADO O NO EXISTEN REGISTROS",
+                            icon: "error"
+                        }).then((action) => {
+                            onBeep(2);
+                            Estilo.focus().select();
+                        });
+                    }
+                    HoldOn.close();
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                    HoldOn.close();
+                });
+            } else {
+                onBeep(2);
+                swal('ATENCIÓN', 'DEBE DE ESPECIFICAR UN ESTILO EXISTENTE', 'warning').then((value) => {
+                    Estilo.focus().select();
+                });
+            }
+        });
         btnGuardarTiempo.click(function () {
             if (isValidInput(Linea) && isValidInput(Estilo)) {
-                var deptos = [];
+                var dptos = [];
                 $.each(pnlTablero.find("#Departamentos input.gen"), function () {
                     if ($(this).val().trim().length > 0) {
-                        deptos.push({DEPTO: $(this).attr('id'), DEPTOTIME: $(this).val().trim().length > 0 ? parseFloat($(this).val()) : 0});
+                        dptos.push({DEPTO: $(this).attr('id'), DEPTOTIME: $(this).val().trim().length > 0 ? parseFloat($(this).val()) : 0});
                     }
                 });
-                $.post(master_url + 'onGuardarTiempos', {ID: pnlTablero.find("#ID").val(), LINEA: Linea.val(), ESTILO: Estilo.val(), TIEMPOS: JSON.stringify(deptos), N: (nuevo) ? 0 : 1}).done(function (data, x, jq) {
+                $.post(master_url + 'onGuardarTiempos', {ID: pnlTablero.find("#ID").val(), LINEA: Linea.val(), ESTILO: Estilo.val(), TIEMPOS: JSON.stringify(dptos), N: (nuevo) ? 0 : 1}).done(function (data, x, jq) {
                     onBeep(1);
                     pnlTablero.find("input").val('');
                     Departamentos.html('');
@@ -106,7 +171,6 @@
                 });
             }
         });
-
         btnCancelarTiempo.click(function () {
             pnlTablero.find("input").val('');
             Departamentos.html('');
@@ -119,7 +183,6 @@
             Estilo.val('').focus();
             Linea.removeClass("highlight-input");
         });
-
         Linea.on('keydown', function () {
             if (isValidInput(Linea)) {
                 tblTiemposXEstiloDepto.DataTable().column(1).search($(this).val()).draw();
@@ -127,7 +190,6 @@
                 tblTiemposXEstiloDepto.DataTable().column(1).search('').draw();
             }
         });
-
         Estilo.on('keydown', function (e) {
             var input = $(this);
             if ($(this).val() !== '') {
@@ -141,7 +203,7 @@
                         swal('ATENCIÓN', 'EL ESTILO ESPECIFICADO NO EXISTE', 'warning').then((value) => {
                             input.focus().select();
                         });
-                    } else if (parseInt(data[0].EXISTE) > 0){
+                    } else if (parseInt(data[0].EXISTE) > 0) {
                         if (input.val().trim().length > 0) {
                             HoldOn.open({
                                 theme: 'sk-cube',
@@ -150,19 +212,19 @@
                             onBeep(1);
                             $.getJSON(master_url + 'getDepartamentosXEstilo', {ESTILO: input.val()}).done(function (data) {
                                 if (data.length > 0) {
-                                    var deptos = '<div class="row">';
+                                    var dptos = '<div class="row">';
                                     $.each(data, function (k, v) {
-                                        deptos += '<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2">';
-                                        deptos += '<label>' + v.Descripcion + '</label>';
-                                        deptos += '<input id="' + v.Clave + '" type="text" max="999" maxlength="5" class="form-control form-control-sm gen" placeholder="0.0">';
-                                        deptos += '</div>';
+                                        dptos += '<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2">';
+                                        dptos += '<label>' + v.Descripcion + '</label>';
+                                        dptos += '<input id="' + v.Clave + '" type="text" max="999" maxlength="5" class="form-control form-control-sm gen" placeholder="0.0">';
+                                        dptos += '</div>';
                                     });
-                                    deptos += '<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 mt-2 text-center">';
-                                    deptos += '<span class="text-info font-weight-bold">TOTAL </span><br>';
-                                    deptos += '<span class="text-danger font-weight-bold ed-total">0.00</span>';
-                                    deptos += '</div>';
-                                    deptos += '</div>';
-                                    Departamentos.html(deptos);
+                                    dptos += '<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 mt-2 text-center">';
+                                    dptos += '<span class="text-info font-weight-bold">TOTAL </span><br>';
+                                    dptos += '<span class="text-danger font-weight-bold ed-total">0.00</span>';
+                                    dptos += '</div>';
+                                    dptos += '</div>';
+                                    Departamentos.html(dptos);
                                     Departamentos.find("input:eq(0)").focus().select();
                                     Departamentos.find("input.gen").keydown(function () {
                                         onCalcularTotal();
@@ -174,7 +236,6 @@
                                                 (charCode !== 46 || $(this).val().indexOf('.') !== -1) && // “.” CHECK DOT, AND ONLY ONE.
                                                 (charCode < 48 || charCode > 57))
                                             return false;
-
                                         return true;
                                     });
                                     $.getJSON(master_url + 'onComprobarTiempoXEstiloDeptos', {ESTILO: input.val()}).done(function (dta) {
@@ -231,10 +292,8 @@
                 });
             }
         });
-
         getTiemposXEstilo();
     });
-
     function getLineaXEstilo(input) {
         $.getJSON(master_url + 'getLineaXEstilo', {ESTILO: input.val()}).done(function (dt) {
             if (dt.length > 0) {
@@ -311,7 +370,7 @@
             "scrollX": true,
             rowGroup: {
                 startRender: function (rows, group) {
-                    return '<span class="d-none row-id">' + $(rows.data().pluck('ID')).eq(0)[0] + '</span>Linea ' + $(rows.data().pluck('LINEA')).eq(0)[0] + ' | Estilo ' + group + ' | (' + rows.count() + ' deptos) | <span class="btn btn-danger" onclick="onEliminarTiemposXEstiloDeptos(this)"><span class="fa fa-trash"></span></span>';
+                    return '<span class="d-none row-id">' + $(rows.data().pluck('ID')).eq(0)[0] + '</span>Linea ' + $(rows.data().pluck('LINEA')).eq(0)[0] + ' | Estilo ' + group + ' | (' + rows.count() + ' dptos) | <span class="btn btn-danger" onclick="onEliminarTiemposXEstiloDeptos(this)"><span class="fa fa-trash"></span></span>';
                 },
                 endRender: function (rows, group) {
                     var stc = $.number(rows.data().pluck('TIEMPO').reduce(function (a, b) {
