@@ -21,6 +21,86 @@ class ReportesProveedores_model extends CI_Model {
         }
     }
 
+    public function getGruposCostoMaterialMaqFecha($fecha, $aFecha, $Maq) {
+        try {
+            $this->db->query("SET sql_mode = '';");
+            return $this->db->select("CAST(G.Clave AS SIGNED ) AS Clave, CONCAT(G.Clave,' - ',G.Nombre) AS Grupo  "
+                                    . " ", false)
+                            ->from("movarticulos MA")
+                            ->join("articulos A", 'ON A.Clave = MA.Articulo')
+                            ->join("grupos G", 'ON G.Clave =  A.Grupo', 'left')
+                            ->where("MA.TipoMov", 'SXM')
+                            ->where("MA.Maq", $Maq)
+                            ->where("STR_TO_DATE(MA.FechaMov, \"%d/%m/%Y\") BETWEEN STR_TO_DATE('$fecha', \"%d/%m/%Y\") AND STR_TO_DATE('$aFecha', \"%d/%m/%Y\")")
+                            ->group_by("G.Clave")
+                            ->order_by("Clave", 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getArticulosCostoMaterialMaqFechaPrecioActual($fecha, $aFecha, $Maq) {
+        try {
+            return $this->db->select("CAST(G.Clave AS SIGNED ) AS ClaveGpo, "
+                                    . "A.Clave, "
+                                    . "A.Descripcion, "
+                                    . "U.Descripcion AS Unidad, "
+                                    . "MA.Tp, "
+                                    . "MA.CantidadMov, "
+                                    . "PM.Precio AS PrecioMov, "
+                                    . "(PM.Precio * MA.CantidadMov)AS Subtotal, "
+                                    . "MA.DocMov, "
+                                    . "MA.FechaMov,"
+                                    . "MA.Maq, "
+                                    . "MA.Sem "
+                                    . " ", false)
+                            ->from("movarticulos MA")
+                            ->join("articulos A", 'ON A.Clave = MA.Articulo')
+                            ->join("grupos G", 'ON G.Clave =  A.Grupo', 'left')
+                            ->join('unidades U', 'ON U.Clave = A.UnidadMedida')
+                            ->join('preciosmaquilas PM', "ON PM.Articulo = MA.Articulo AND PM.Maquila = '$Maq' ")
+                            ->where("MA.TipoMov", 'SXM')
+                            ->where("MA.Maq", $Maq)
+                            ->where("STR_TO_DATE(MA.FechaMov, \"%d/%m/%Y\") BETWEEN STR_TO_DATE('$fecha', \"%d/%m/%Y\") AND STR_TO_DATE('$aFecha', \"%d/%m/%Y\")")
+                            ->order_by("MA.DocMov", 'ASC')
+                            ->order_by("A.Descripcion", 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getArticulosCostoMaterialMaqFecha($fecha, $aFecha, $Maq) {
+        try {
+            return $this->db->select("CAST(G.Clave AS SIGNED ) AS ClaveGpo, "
+                                    . "A.Clave, "
+                                    . "A.Descripcion, "
+                                    . "U.Descripcion AS Unidad, "
+                                    . "MA.Tp, "
+                                    . "MA.CantidadMov, "
+                                    . "MA.PrecioMov, "
+                                    . "MA.Subtotal, "
+                                    . "MA.DocMov, "
+                                    . "MA.FechaMov,"
+                                    . "MA.Maq, "
+                                    . "MA.Sem "
+                                    . " ", false)
+                            ->from("movarticulos MA")
+                            ->join("articulos A", 'ON A.Clave = MA.Articulo')
+                            ->join("grupos G", 'ON G.Clave =  A.Grupo', 'left')
+                            ->join('unidades U', 'ON U.Clave = A.UnidadMedida')
+                            ->where("MA.TipoMov", 'SXM')
+                            ->where("MA.Maq", $Maq)
+                            ->where("STR_TO_DATE(MA.FechaMov, \"%d/%m/%Y\") BETWEEN STR_TO_DATE('$fecha', \"%d/%m/%Y\") AND STR_TO_DATE('$aFecha', \"%d/%m/%Y\")")
+                            ->order_by("MA.DocMov", 'ASC')
+                            ->order_by("A.Descripcion", 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getProveedoresReporteRecibosEfectivo($fecha, $aFecha) {
         try {
             $this->db->query("SET sql_mode = '';");
@@ -219,6 +299,14 @@ CASE WHEN DATEDIFF(CURRENT_DATE(), date_format(str_to_date(CP.FechaDoc, '%d/%m/%
                             ->order_by("Dias", 'DESC')
                             ->order_by("CP.Doc", 'ASC')
                             ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onComprobarMaquilas($Clave) {
+        try {
+            return $this->db->select("G.Clave, G.Direccion")->from("maquilas AS G")->where("G.Clave", $Clave)->where("G.Estatus", "ACTIVO")->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

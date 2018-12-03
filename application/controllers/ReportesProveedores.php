@@ -15,11 +15,132 @@ class ReportesProveedores extends CI_Controller {
         setlocale(LC_TIME, 'spanish');
     }
 
+    public function onComprobarMaquilas() {
+        try {
+            print json_encode($this->ReportesProveedores_model->onComprobarMaquilas($this->input->get('Clave')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getProveedores() {
         try {
             print json_encode($this->ReportesProveedores_model->getProveedores());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onReporteCostoMaterialesMaqFecha() {
+
+        $fecha = $this->input->post('FechaIni');
+        $aFecha = $this->input->post('FechaFin');
+        $maq = $this->input->post('Maq');
+        $conPrecioActual = $this->input->post('ConPrecioActual');
+
+        $cm = $this->ReportesProveedores_model;
+        $Grupos = $cm->getGruposCostoMaterialMaqFecha($fecha, $aFecha, $maq);
+        if ($conPrecioActual === '1') {
+            $Articulos = $cm->getArticulosCostoMaterialMaqFechaPrecioActual($fecha, $aFecha, $maq);
+        } else {
+            $Articulos = $cm->getArticulosCostoMaterialMaqFecha($fecha, $aFecha, $maq);
+        }
+
+
+        if (!empty($Grupos)) {
+
+            $pdf = new PDFCostosMateriales('P', 'mm', array(215.9, 279.4));
+
+            $pdf->Fecha = $fecha;
+            $pdf->Afecha = $aFecha;
+            $pdf->Maq = $maq;
+
+            $pdf->AddPage();
+            $pdf->SetAutoPageBreak(true, 5);
+
+
+            $IMPORTE_G = 0;
+            foreach ($Grupos as $key => $G) {
+                $pdf->SetX(5);
+                $pdf->SetFont('Calibri', 'B', 8.5);
+                $pdf->Cell(15, 4, utf8_decode('Grupo: '), 'B'/* BORDE */, 0, 'L');
+                $pdf->SetX(20);
+                $pdf->SetFont('Calibri', '', 8.5);
+                $pdf->Cell(50, 4, utf8_decode($G->Grupo), 'B'/* BORDE */, 1, 'L');
+
+
+                $IMPORTE = 0;
+                $pdf->SetFont('Calibri', '', 8.5);
+                foreach ($Articulos as $key => $D) {
+                    if ($G->Clave === $D->ClaveGpo) {
+                        $pdf->Row(array(
+                            utf8_decode($D->Clave),
+                            mb_strimwidth(utf8_decode($D->Descripcion), 0, 45, ""),
+                            utf8_decode($D->Unidad),
+                            utf8_decode($D->Tp),
+                            number_format($D->CantidadMov, 2, ".", ","),
+                            '$' . number_format($D->PrecioMov, 2, ".", ","),
+                            '$' . number_format($D->Subtotal, 2, ".", ","),
+                            mb_strimwidth(utf8_decode($D->DocMov), 0, 40, ""),
+                            utf8_decode($D->FechaMov),
+                            utf8_decode($D->Maq),
+                            utf8_decode($D->Sem)
+                                ), 0);
+
+                        $IMPORTE += $D->Subtotal;
+                        $IMPORTE_G += $D->Subtotal;
+                    }
+                }
+                $pdf->SetX(85);
+                $pdf->SetFont('Calibri', 'B', 8.5);
+                $pdf->Cell(70, 4, utf8_decode('TOTAL POR PROVEEDOR: '), 0/* BORDE */, 0, 'L');
+
+                $pdf->Row(array(
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '$' . number_format($IMPORTE, 2, ".", ","),
+                    '',
+                    '',
+                    '',
+                    ''
+                        ), 'T');
+            }
+            $pdf->SetX(85);
+            $pdf->SetFont('Calibri', 'B', 8.5);
+            $pdf->Cell(70, 4, utf8_decode('TOTAL GENERAL: '), 0/* BORDE */, 0, 'L');
+
+            $pdf->Row(array(
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '$' . number_format($IMPORTE_G, 2, ".", ","),
+                '',
+                '',
+                '',
+                ''
+                    ), 'T');
+
+
+            /* FIN RESUMEN */
+            $path = 'uploads/Reportes/Proveedores';
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $file_name = "RELACION PAGOS POR PROVEEDOR " . ' ' . date("d-m-Y his");
+            $url = $path . '/' . $file_name . '.pdf';
+            /* Borramos el archivo anterior */
+            if (delete_files('uploads/Reportes/Proveedores/')) {
+                /* ELIMINA LA EXISTENCIA DE CUALQUIER ARCHIVO EN EL DIRECTORIO */
+            }
+            $pdf->Output($url);
+            print base_url() . $url;
         }
     }
 

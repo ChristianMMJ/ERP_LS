@@ -44,7 +44,7 @@
                     <span class="fa fa-building"></span> Maquiladoras
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navMaquiladoras">
-
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlCostoMaterialMaqSemFecha" data-backdrop='true'> Costo Material Maq-Sem por Fecha</a>
                 </div>
             </li>
 
@@ -102,3 +102,4 @@
 $this->load->view('vEstadoCuentaProveedor');
 $this->load->view('vAntiguedadSaldosProveedor');
 $this->load->view('vReciboPagoProveedores');
+$this->load->view('vCostoMaterialesMaqSemFecha');
