@@ -75,10 +75,10 @@
                 <input type="text" class="form-control form-control-sm numbersOnly disabledForms" id="Cantidad" name="Cantidad" maxlength="15" required>
             </div>
             <div class="col-6 col-sm-6 col-md-6 col-lg-3 col-xl-3 mt-4">
-                <button type="button" class="btn btn-primary disabledForms" id="btnGuardar" data-toggle="tooltip" data-placement="right" title="Capturar Entrada">
+                <button type="button" class="btn btn-primary disabledForms" id="btnGuardar" data-toggle="tooltip" data-placement="top" title="Capturar Entrada">
                     <i class="fa fa-save"></i>
                 </button>
-                <button type="button" class="btn btn-success disabledForms" id="btnTerminarCaptura" data-toggle="tooltip" data-placement="right" title="Capturar Entrada">
+                <button type="button" class="btn btn-success disabledForms" id="btnTerminarCaptura" data-toggle="tooltip" data-placement="right" title="Terminar Captura">
                     <i class="fa fa-check"></i> TERMINAR CAPTURA
                 </button>
             </div>

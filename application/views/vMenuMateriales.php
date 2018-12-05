@@ -73,7 +73,7 @@
                     <a class="dropdown-item" href="<?php print base_url('CancelaEntradasSalidas.shoes'); ?>">Cancela Entradas/Salidas</a>
                     <a class="dropdown-item" href="<?php print base_url('EliminaEntradaCompra.shoes'); ?>">Elimina Entrada por Compra</a>
                     <a class="dropdown-item" href="<?php print base_url('PagosProveedores/?origen=MATERIALES'); ?>">Pagos a Proveedores</a>
-                    <a class="dropdown-item" href="#">Notas de Cargo ***</a>
+                    <a class="dropdown-item" href="<?php print base_url('NotasCargo.shoes'); ?>">Notas de Cargo</a>
 
                     <a class="dropdown-item" href="#">Cargos diferentes a Maquilas ***</a>
                     <a class="dropdown-item" href="#">Cargos a Empleados ***</a>

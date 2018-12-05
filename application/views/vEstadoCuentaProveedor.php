@@ -47,7 +47,7 @@
     </div>
 </div>
 <script>
-    var master_url = base_url + 'index.php/ReportesProveedores/';
+    var master_url_remota = base_url + 'index.php/ReportesProveedores/';
     var mdlEstadoCuentaProveedor = $('#mdlEstadoCuentaProveedor');
 
     $(document).ready(function () {
@@ -75,7 +75,7 @@
             }
 
             $.ajax({
-                url: master_url + reporte,
+                url: master_url_remota + reporte,
                 type: "POST",
                 cache: false,
                 contentType: false,
@@ -133,7 +133,7 @@
     function getProveedoresAnt() {
         mdlEstadoCuentaProveedor.find("#Proveedor")[0].selectize.clear(true);
         mdlEstadoCuentaProveedor.find("#Proveedor")[0].selectize.clearOptions();
-        $.getJSON(master_url + 'getProveedores').done(function (data) {
+        $.getJSON(master_url_remota + 'getProveedores').done(function (data) {
             $.each(data, function (k, v) {
                 mdlEstadoCuentaProveedor.find("#Proveedor")[0].selectize.addOption({text: v.ProveedorF, value: v.ID});
                 mdlEstadoCuentaProveedor.find("#aProveedor")[0].selectize.addOption({text: v.ProveedorF, value: v.ID});
