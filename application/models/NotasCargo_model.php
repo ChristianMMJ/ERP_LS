@@ -49,7 +49,7 @@ class NotasCargo_model extends CI_Model {
 
             $sql2 = "UPDATE cartera_proveedores "
                     . "SET Estatus = CASE "
-                    . "WHEN ifnull(Saldo_Doc,0) = 0 THEN 'PAGADO' ELSE 'PENDIENTE' END "
+                    . "WHEN ifnull(Saldo_Doc,0) <= 1 THEN 'PAGADO' ELSE 'PENDIENTE' END "
                     . "WHERE Proveedor= '$Prov' "
                     . "AND Tp = '$Tp' "
                     . "AND Doc = '$Doc' ";
