@@ -45,6 +45,48 @@ class NotasCargo extends CI_Controller {
         }
     }
 
+    public function onCancelarNotaCredito() {
+        try {
+            $x = $this->input;
+            $Tp = $x->post('Tp');
+            $Folio = $x->post('Folio');
+            $Proveedor = $x->post('Proveedor');
+
+            $NotaCredito = $this->NotasCargo_model->getRegistrosParaCancelar($Tp, $Folio, $Proveedor);
+
+            if (!empty($NotaCredito)) {
+
+                $Total = 0;
+                foreach ($NotaCredito as $key => $G) {
+                    $Total += $G->Subtotal;
+                }
+                if ($Tp === '1') {
+                    $Total = $Total * 1.16;
+                }
+
+
+                //ACTUALIZA CARTERA DE PROVEEDORES
+                $datosCartProv = array(
+                    'Proveedor' => $Proveedor,
+                    'Factura' => $NotaCredito[0]->DocCartProv,
+                    'Importe' => $Total,
+                    'Tp' => $Tp,
+                );
+
+                $this->NotasCargo_model->onRegresarSaldoCartera($datosCartProv);
+
+                //ACTUALIZA ESTATUS Y PONE CANTIDADES EN 0
+                $this->NotasCargo_model->onCancelarNotaCredito($Tp, $Folio, $Proveedor);
+                $this->NotasCargo_model->onCancelarPagoProv($Tp, $Folio, $Proveedor);
+                $this->NotasCargo_model->onCancelarMovArt($Tp, $Folio, $Proveedor);
+            } else {
+                print '0';
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onCerrarNotaCredito() {
         try {
             $x = $this->input;
@@ -85,6 +127,7 @@ class NotasCargo extends CI_Controller {
                     'Importe' => $R->Subtotal,
                     'Tp' => $Tp,
                     'DocPago' => 'NC ' . $Folio,
+                    'NotaCredito' => $Folio,
                     'TipoPago' => $Tipo,
                     'Estatus' => 'ACTIVO',
                     'Registro' => Date('d/m/Y H:i:s'),

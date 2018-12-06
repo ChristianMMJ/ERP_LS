@@ -295,4 +295,90 @@ class NotasCargo_model extends CI_Model {
         }
     }
 
+    /* CANCELA NOTA CREDITO */
+
+    public function getRegistrosParaCancelar($tp, $nc, $prov) {
+        try {
+            return $this->db->select("NC.* "
+                                    . "", false)
+                            ->from("notascreditoprov NC")
+                            ->where('NC.Proveedor', $prov)
+                            ->where('NC.Folio', $nc)
+                            ->where('NC.Tp', $tp)
+                            ->where('NC.Estatus', '2')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onCancelarNotaCredito($tp, $nc, $prov) {
+        try {
+            $this->db->set('Estatus', 3)
+                    ->set('Cantidad', 0)
+                    ->set('Subtotal', 0)
+                    ->where('Tp', $tp)
+                    ->where('Folio', $nc)
+                    ->where('Proveedor', $prov)
+                    ->update("notascreditoprov");
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onCancelarPagoProv($tp, $nc, $prov) {
+        try {
+            $this->db->set('Estatus', 'CANCELADO')
+                    ->set('Importe', 0)
+                    ->where('Tp', $tp)
+                    ->where('NotaCredito', $nc)
+                    ->where('Proveedor', $prov)
+                    ->update("pagosproveedores");
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onCancelarMovArt($tp, $nc, $prov) {
+        try {
+            $this->db->set('CantidadMov', 0)
+                    ->set('Subtotal', 0)
+                    ->where('TipoMov', 'SXO')
+                    ->where('Tp', $tp)
+                    ->where('DocMov', $nc)
+                    ->where('Proveedor', $prov)
+                    ->update("movarticulos");
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onRegresarSaldoCartera($DATA) {
+        try {
+
+            $Prov = $DATA{'Proveedor'};
+            $Doc = $DATA{'Factura'};
+            $Pago = $DATA{'Importe'};
+            $Tp = $DATA{'Tp'};
+            $sql = "UPDATE cartera_proveedores CP "
+                    . "SET CP.Saldo_Doc = ifnull(CP.Saldo_Doc,0) + $Pago  , "
+                    . "CP.Pagos_Doc = ifnull(CP.Pagos_Doc,0) - $Pago  "
+                    . "WHERE CP.Proveedor= '$Prov' "
+                    . "AND CP.Tp = '$Tp' "
+                    . "AND CP.Doc = '$Doc' "
+                    . "";
+            $this->db->query($sql);
+
+            $sql2 = "UPDATE cartera_proveedores "
+                    . "SET Estatus = CASE "
+                    . "WHEN ifnull(Saldo_Doc,0) <= 1 THEN 'PAGADO' ELSE 'PENDIENTE' END "
+                    . "WHERE Proveedor= '$Prov' "
+                    . "AND Tp = '$Tp' "
+                    . "AND Doc = '$Doc' ";
+            $this->db->query($sql2);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
 }

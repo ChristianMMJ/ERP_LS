@@ -8,6 +8,10 @@
                 </legend>
             </div>
             <div class="col-sm-8" align="right">
+
+
+                <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#mdlCancelaNotaCargo" data-backdrop='true'>
+                    <span class="fa fa-ban" ></span> CANCELAR NOTA</a>
                 <a class="btn btn-primary btn-sm" href="#" data-toggle="modal" data-target="#mdlEstadoCuentaProveedor" data-backdrop='true'>
                     <span class="fa fa-file-pdf" ></span> EDOS. DE CUENTA</a>
                 <button type="button" class="btn btn-warning btn-sm" id="btnVerArticulos" >
@@ -946,3 +950,4 @@
 </style>
 <?php
 $this->load->view('vEstadoCuentaProveedor');
+$this->load->view('vCancelaNotaCreditoProv');

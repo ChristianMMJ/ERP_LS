@@ -58,6 +58,8 @@
 
         <!-- PivotTable.js libs from ../dist -->
         <script  src="<?php print base_url(); ?>js/jquery-ui.min.js"></script>
+        <link href="<?php print base_url(); ?>css/jquery-ui.min.css" rel="stylesheet" />
+
         <link rel="stylesheet" href="<?php print base_url(); ?>js/pivot/dist/pivot.css">
         <script  src="<?php print base_url(); ?>js/pivot/dist/pivot.js"></script>
 
@@ -116,7 +118,7 @@
         <script src="<?php echo base_url("js/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.min.js"); ?>"></script>
         <!-- CSS file -->
         <link rel="stylesheet" href="<?php echo base_url("js/EasyAutocomplete-1.3.5/easy-autocomplete.min.css"); ?>">
-        <!-- Additional CSS Themes file - not required--> 
+        <!-- Additional CSS Themes file - not required-->
         <link rel="stylesheet" href="<?php echo base_url("js/EasyAutocomplete-1.3.5/easy-autocomplete.themes.min.css"); ?>">
         <!--Final Modifiers for CSS-->
 <!--        <link href="<?php print base_url(); ?>css/style.css" rel="stylesheet" />-->

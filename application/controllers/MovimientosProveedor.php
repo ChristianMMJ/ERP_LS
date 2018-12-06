@@ -26,6 +26,8 @@ class MovimientosProveedor extends CI_Controller {
                         $this->load->view('vMenuContabilidad');
                     } else if ($Origen === 'PROVEEDORES') {
                         $this->load->view('vMenuProveedores');
+                    } else if ($Origen === 'MATERIALES') {
+                        $this->load->view('vMenuMateriales');
                     }
 
                     break;
@@ -34,6 +36,9 @@ class MovimientosProveedor extends CI_Controller {
                     break;
                 case 'CONTABILIDAD':
                     $this->load->view('vMenuContabilidad');
+                    break;
+                case 'MATERIALES':
+                    $this->load->view('vMenuMateriales');
                     break;
             }
 

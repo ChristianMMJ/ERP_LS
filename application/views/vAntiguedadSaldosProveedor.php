@@ -13,7 +13,7 @@
                     <div class="row">
                         <div class="col-6">
                             <label>Tp <span class="badge badge-warning mb-2" style="font-size: 12px;">Para consultar todo deja en blanco</span></label>
-                            <input type="text" maxlength="4" class="form-control form-control-sm numbersOnly" id="Tp" name="Tp" >
+                            <input type="text" maxlength="1" class="form-control form-control-sm numbersOnly" id="Tp" name="Tp" >
                         </div>
                     </div>
 

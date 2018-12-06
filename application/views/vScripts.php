@@ -51,6 +51,7 @@
 
 
 
+
     shortcut.add("F5", function () {
         location.reload();
     });
@@ -146,7 +147,11 @@
 
     $(function () {
 
-
+        $('.modal-dialog').draggable();
+        $('.modal-content').resizable({
+            minHeight: 300,
+            minWidth: 450
+        });
 
 
         $("input[type='text']").on('keydown', function (e) {
@@ -154,7 +159,7 @@
                 onBeep(3);
             }
         });
-        
+
         mobilecheck();
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-toggle="popover"]').popover();
