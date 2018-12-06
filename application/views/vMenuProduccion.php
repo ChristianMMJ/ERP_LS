@@ -40,6 +40,7 @@
                     </li>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php print base_url('AsignaPFTSACXC.shoes/?origen=PRODUCCION'); ?>"><span class="fa fa-hand-pointer"></span> Asigna piel, forro, textiles y sintéticos a corte por control</a>                    
+                    <a class="dropdown-item" href="<?php print base_url('AsignaDiaSemACtrlParaCorte.shoes/?origen=PRODUCCION'); ?>"><span class="fa fa-hand-pointer"></span>  Asigna dia semana a control para corte</a>                    
                     <div class="dropdown-divider"></div>
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" href="#"><span class="fa fa-clock"></span> Tiempos</a>

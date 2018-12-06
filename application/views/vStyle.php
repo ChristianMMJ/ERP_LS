@@ -112,8 +112,9 @@
         border-bottom: 0.5px solid #dee2e6;
     }
     table tbody tr:hover {
-        background-color: #2C3E50;
+        background-color: #2C3E50 !important;
         color: #fff !important;
+        font-weight: bold !important; 
     }
 
     .table>tbody>tr>td.success,
@@ -126,12 +127,7 @@
     .table>tfoot>tr.success>th {
         background-color: #2C3E50 ;
         color: #fff;
-    }
-
-    table tbody tr:hover {
-        background-color: #2C3E50;
-        color: #fff !important;
-    }
+    } 
 
     /*Hacer todo el texto de los inputs mayusculas*/
     input {

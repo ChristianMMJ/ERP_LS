@@ -312,7 +312,7 @@
     var mdlAviso = $("#mdlAviso");
     var btnAgregarDetalle = pnlDatos.find("#btnAgregarDetalle");
     var opciones_detalle = {
-        "dom": 'rit',
+         dom: 'Bfrtip',
         buttons: buttons,
         "columns": [
             {"data": "PDID"}, {"data": "Recibido"}, {"data": "Estilo"}, {"data": "EstiloT"},

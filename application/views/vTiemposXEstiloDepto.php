@@ -93,7 +93,7 @@
                             type: 'iframe',
                             opts: {
                                 afterShow: function (instance, current) {
-                                    console.info('done!');
+                                    console.info('done!', data);
                                 },
                                 iframe: {
                                     // Iframe template
@@ -130,7 +130,7 @@
                 });
             } else {
                 onBeep(2);
-                swal('ATENCIÓN', 'DEBE DE ESPECIFICAR UN ESTILO EXISTENTE', 'warning').then((value) => {
+                swal('ATENCIÓN', 'DEBE DE ESPECIFICAR UN ESTILO', 'warning').then((value) => {
                     Estilo.focus().select();
                 });
             }
@@ -226,7 +226,7 @@
                                     dptos += '</div>';
                                     Departamentos.html(dptos);
                                     Departamentos.find("input:eq(0)").focus().select();
-                                    Departamentos.find("input.gen").keydown(function () {
+                                    Departamentos.find("input.gen").on('keydown focusout keyup', function () {
                                         onCalcularTotal();
                                     });
                                     Departamentos.find('input').keypress(function (event) {

@@ -12,40 +12,40 @@ class Ordendeproduccion_model extends CI_Model {
 
     public function getRecords($MAQUILA, $SEMANA, $ANO) {
         try {
-             $this->db->select('PD.ID AS ID, '
-                                    . 'PD.Estilo AS IdEstilo, '
-                                    . 'PD.Color AS IdColor, '
-                                    . "PD.Estilo AS Estilo, "
-                                    . "PD.Estilo AS \"Descripcion Estilo\", "
-                                    . "PD.color AS Color, "
-                                    . "PD.color AS \"Descripcion Color\", "
-                                    . "PD.Clave AS Pedido,"
-                                    . "PD.FechaPedido AS \"Fecha Pedido\","
-                                    . "PD.FechaRecepcion AS \"Fecha Entrega\","
-                                    . "PD.Registro AS \"Fecha Captura\","
-                                    . "PD.Semana AS Semana,"
-                                    . "PD.Maquila AS Maq,"
-                                    . "PD.Cliente AS Cliente,"
-                                    . "PD.Cliente AS \"Cliente Razon\","
-                                    . "PD.Pares AS Pares,"
-                                    . "CONCAT('$',PD.Precio) AS Precio , "
-                                    . "CONCAT('$',(PD.Precio * PD.Pares)) AS Importe, "
-                                    . "CONCAT('$',(PD.Precio * PD.Pares)) AS Descuento,"
-                                    . "PD.FechaEntrega AS Entrega,"
-                                    . "PD.Serie AS Serie, "
-                                    . "PD.Ano AS Anio,"
-                                    . " CASE "
-                                    . "WHEN PD.Control IS NULL THEN '' "
-                                    . "ELSE PD.Control END AS Marca, "
-                                    . "CONCAT(CT.Ano, CT.Semana, CT.Maquila, CT.Consecutivo) AS Control,"
-                                    . "S.ID AS SerieID,"
-                                    . "PD.Clave AS ID_PEDIDO", false)->from('pedidox AS PD')
-                            ->join('clientes AS CL', 'CL.Clave = PD.Cliente')
-                            ->join('series AS S', 'PD.Serie = S.Clave')
-                            ->join('controles AS CT', 'CT.PedidoDetalle = PD.ID')
-                            ->join('ordendeproduccion AS OP', 'OP.Pedido = PD.Clave  AND OP.PedidoDetalle = PD.ID', 'left')
-                            ->where('PD.Control <> 0 AND OP.ID IS NULL', null, false)
-                            ->where('CT.Estatus', 'A');
+            $this->db->select('PD.ID AS ID, '
+                            . 'PD.Estilo AS IdEstilo, '
+                            . 'PD.Color AS IdColor, '
+                            . "PD.Estilo AS Estilo, "
+                            . "PD.Estilo AS \"Descripcion Estilo\", "
+                            . "PD.color AS Color, "
+                            . "PD.color AS \"Descripcion Color\", "
+                            . "PD.Clave AS Pedido,"
+                            . "PD.FechaPedido AS \"Fecha Pedido\","
+                            . "PD.FechaRecepcion AS \"Fecha Entrega\","
+                            . "PD.Registro AS \"Fecha Captura\","
+                            . "PD.Semana AS Semana,"
+                            . "PD.Maquila AS Maq,"
+                            . "PD.Cliente AS Cliente,"
+                            . "PD.Cliente AS \"Cliente Razon\","
+                            . "PD.Pares AS Pares,"
+                            . "CONCAT('$',PD.Precio) AS Precio , "
+                            . "CONCAT('$',(PD.Precio * PD.Pares)) AS Importe, "
+                            . "CONCAT('$',(PD.Precio * PD.Pares)) AS Descuento,"
+                            . "PD.FechaEntrega AS Entrega,"
+                            . "PD.Serie AS Serie, "
+                            . "PD.Ano AS Anio,"
+                            . " CASE "
+                            . "WHEN PD.Control IS NULL THEN '' "
+                            . "ELSE PD.Control END AS Marca, "
+                            . "CONCAT(CT.Ano, CT.Semana, CT.Maquila, CT.Consecutivo) AS Control,"
+                            . "S.ID AS SerieID,"
+                            . "PD.Clave AS ID_PEDIDO", false)->from('pedidox AS PD')
+                    ->join('clientes AS CL', 'CL.Clave = PD.Cliente')
+                    ->join('series AS S', 'PD.Serie = S.Clave')
+                    ->join('controles AS CT', 'CT.PedidoDetalle = PD.ID')
+                    ->join('ordendeproduccion AS OP', 'OP.Pedido = PD.Clave  AND OP.PedidoDetalle = PD.ID', 'left')
+                    ->where('PD.Control <> 0 AND OP.ID IS NULL', null, false)
+                    ->where('CT.Estatus', 'A');
             if ($ANO !== '') {
                 $this->db->where('PD.Ano', $ANO);
             }
@@ -167,8 +167,7 @@ class Ordendeproduccion_model extends CI_Model {
                     ->where_in('A.Grupo', array(1, 2, 40, 3))
                     ->group_by('A.Descripcion')
                     ->order_by('ABS(G.Clave)', 'ASC')
-                    ->order_by('A.Descripcion', 'ASC')
-            ;
+                    ->order_by('A.Descripcion', 'ASC');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY

@@ -15,7 +15,6 @@ class AsignaPFTSACXC extends CI_Controller {
     public function index() {
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             $this->load->view('vEncabezado');
-
             switch ($this->session->userdata["TipoAcceso"]) {
                 case 'SUPER ADMINISTRADOR':
                     $this->load->view('vNavGeneral')->view('vMenuProduccion');
