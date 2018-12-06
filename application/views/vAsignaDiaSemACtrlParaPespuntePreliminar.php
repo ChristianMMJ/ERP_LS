@@ -1,29 +1,11 @@
 <div class="card m-3 animated fadeIn" id="pnlTablero">
     <div class="card-header"> 
         <h4 class="font-weight-bold text-center">
-            Asigna dia semana a control para corte
+            Asigna dia semana a control para pespunte y preliminar
         </h4> 
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-2">
-            </div>
-            <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8" align="center"> 
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-info">
-                        <input type="radio" name="btnPiel" id="btnPiel" autocomplete="off" checked> PIEL
-                    </label>
-                    <label class="btn btn-info">
-                        <input type="radio" name="btnForro" id="btnForro" autocomplete="off"> FORRO
-                    </label>
-                    <label class="btn btn-info">
-                        <input type="radio" name="btnAmbas" id="btnAmbas" autocomplete="off"> AMBAS
-                    </label>
-                </div>
-            </div>
-            <div class="col-2">
-            </div>
-            <div class="w-100"></div>
             <div class="col-12 col-sm-12 col-md-2 col-lg-1 col-xl-1">
                 <label>Año</label>
                 <input type="text" id="Anio" name="Anio" class="form-control form-control-sm" maxlength="4">
@@ -48,7 +30,7 @@
                 <label>Cortador</label>
                 <select id="Cortador" name="Cortador" class="form-control form-control-sm">
                 </select>
-            </div> 
+            </div>
             <div class="w-100"></div>
             <div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
                 <label>Control</label>
@@ -89,7 +71,7 @@
                 <input type="text" id="Pesos" name="Pesos" class="form-control form-control-sm numbersOnly" maxlength="10">
             </div> 
             <button type="button" class="btn btn-info btn-lg btn-float animated tada" id="btnGuardar" name="btnGuardar"  data-toggle="tooltip" data-placement="left" title="Guardar">
-                <i class="fa fa-save"></i>
+                <span class="fa fa-save"></span>
             </button>
             <div class="w-100 my-2"></div>
             <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">

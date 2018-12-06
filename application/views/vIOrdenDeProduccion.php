@@ -82,7 +82,7 @@
 <script>
     var master_url = base_url + 'index.php/IOrdenDeProduccion/';
     var btnGenerar = $("#btnGenerar");
-    var controlinicial = $("#ControlInicial"), controlfinal = $("#ControlFinal"), semana = $("#col13_filter"), Anio = $("#col14_filter");
+    var ControlInicial = $("#ControlInicial"), ControlFinal = $("#ControlFinal"), semana = $("#col13_filter"), Anio = $("#col14_filter");
     var Controles;
     var tblControles = $('#tblControles');
 
@@ -125,7 +125,7 @@
                     theme: 'sk-bounce',
                     message: 'GENERANDO...'
                 });
-                var params = {INICIO: controlinicial.val(), FIN: controlfinal.val(), SEMANA: '', ANIO: ''};
+                var params = {INICIO: ControlInicial.val(), FIN: ControlFinal.val(), SEMANA: '', ANIO: ''};
                 $.post(master_url + 'getOrdenDeProduccion', params).done(function (data) {
                     //check Apple device
                     if (isAppleDevice() || isMobile) {
@@ -210,7 +210,11 @@
             ],
             "ajax": {
                 "url": master_url + 'getRecords',
-                "dataSrc": ""
+                "dataSrc": "",
+                "data": function (d) { 
+                    d.CONTROL_INICIAL = (ControlInicial.val().trim()); 
+                    d.CONTROL_FINAL = (ControlFinal.val().trim());
+                }
             },
             "columnDefs": [
                 {

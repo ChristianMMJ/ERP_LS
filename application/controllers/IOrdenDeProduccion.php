@@ -9,7 +9,7 @@ class IOrdenDeProduccion extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('Iordendeproduccion_model')->helper('ordendeproduccion_helper');
+        $this->load->library('session')->model('Iordendeproduccion_model','iopm')->helper('ordendeproduccion_helper');
     }
 
     public function index() {
@@ -44,7 +44,8 @@ class IOrdenDeProduccion extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->Iordendeproduccion_model->getRecords());
+            $x = $this->input;
+            print json_encode($this->iopm->getRecords($x->get('CONTROL_INICIAL'), $x->get('CONTROL_FINAL')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -52,7 +53,7 @@ class IOrdenDeProduccion extends CI_Controller {
 
     public function onObtenerElUltimoControl() {
         try {
-            print json_encode($this->Iordendeproduccion_model->onObtenerElUltimoControl($this->input->get('SEMANA'), $this->input->get('MAQUILA')));
+            print json_encode($this->iopm->onObtenerElUltimoControl($this->input->get('SEMANA'), $this->input->get('MAQUILA')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -72,10 +73,10 @@ class IOrdenDeProduccion extends CI_Controller {
             $pdf->AddFont('Calibri', 'I');
             $pdf->AddFont('Calibri', 'B');
             $pdf->AddFont('Calibri', 'BI');
-            $CONTROLES = $this->Iordendeproduccion_model->getControlesXOrdenDeProduccionEntreControles($INICIO, $FIN, $SEMANA, $ANO);
+            $CONTROLES = $this->iopm->getControlesXOrdenDeProduccionEntreControles($INICIO, $FIN, $SEMANA, $ANO);
             foreach ($CONTROLES as $kc => $vc) {
-                $OP = $this->Iordendeproduccion_model->getOrdenDeProduccionEntreControles($vc->ControlT, $vc->ControlT, $SEMANA, $ANO);
-                $DEPARTAMENTOS = $this->Iordendeproduccion_model->getDepartamentosXOrdenDeProduccionEntreControles($vc->ControlT, $vc->ControlT, $SEMANA, $ANO);
+                $OP = $this->iopm->getOrdenDeProduccionEntreControles($vc->ControlT, $vc->ControlT, $SEMANA, $ANO);
+                $DEPARTAMENTOS = $this->iopm->getDepartamentosXOrdenDeProduccionEntreControles($vc->ControlT, $vc->ControlT, $SEMANA, $ANO);
                 $P = $OP[0];
                 $pdf->setCliente($P->Clave . " " . $P->Cliente);
                 $pdf->setFechaEntrega($P->FechaEntrega);

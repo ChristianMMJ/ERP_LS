@@ -48,9 +48,7 @@ class CerrarProg extends CI_Controller {
 
     public function getRecords() {
         try {
-            $x = $this->input; 
-//            var_dump($x->get());
-           
+            $x = $this->input;  
             print json_encode($this->cprm->getRecords($x->get('MAQUILA'), $x->get('SEMANA'), $x->get('ANIO')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
