@@ -23,7 +23,7 @@ class AsignaDiaSemACtrlParaPespuntePreliminar_model extends CI_Model {
                             ->join('programacion AS PR', 'P.Control = PR.Control', 'left')
                             ->where('PR.Control IS NULL', null, false)
                             ->where_not_in('P.Control', array(0))
-                            ->get()->result();  
+                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -31,7 +31,7 @@ class AsignaDiaSemACtrlParaPespuntePreliminar_model extends CI_Model {
 
     public function getProgramacion() {
         try {
-            $styl= 'style=\"font-size: 100%;\"';
+            $styl = 'style=\"font-size: 100%;\"';
             $sp = "<span class=\"badge badge-pill badge-info\" {$styl}>";
             $spbf = "<span class=\"badge badge-pill badge-fusion\" {$styl}>";
             $sps = "<span class=\"badge badge-pill badge-fusion-success\" {$styl}>";
@@ -67,7 +67,7 @@ class AsignaDiaSemACtrlParaPespuntePreliminar_model extends CI_Model {
         try {
             return $this->db->select("F.Clave AS CLAVE, CONCAT(F.Clave,' ',F.Descripcion) AS FRACCION", false)
                             ->from('fracciones AS F')
-                            ->where_in('F.Clave', array(299,300,301,304))
+                            ->where_in('F.Clave', array(300, 301, 304))
                             ->where_in('F.Departamento', array(110, 120))
                             ->order_by('ABS(F.Clave)', 'ASC')
                             ->get()->result();
@@ -90,22 +90,20 @@ class AsignaDiaSemACtrlParaPespuntePreliminar_model extends CI_Model {
                     ->join('fraccionesxestilo AS FXE', 'FXE.Estilo = FT.Estilo')
                     ->join('fracciones AS FR', 'FXE.Fraccion = FR.Clave')
                     ->join('tiemposxestilodepto AS TXE', 'PE.Estilo = TXE.Estilo')
-                    ->join('tiemposxestilodepto_has_deptos AS TXEHD', 'TXE.ID = TXEHD.TiempoXEstiloDepto');
-            $this->db->where("FR.Departamento = 10 AND TXEHD.Departamento = 10", null, false);
+                    ->join('tiemposxestilodepto_has_deptos AS TXEHD', 'TXE.ID = TXEHD.TiempoXEstiloDepto')
+                    ->where_in('FR.Departamento', array(110, 120))
+                    ->where_in('TXEHD.Departamento', array(110, 120));
             if ($CONTROL !== '') {
                 $this->db->like("PE.Control", $CONTROL);
             }
             switch ($FRACCION) {
-                case 99:
-                    $this->db->where("FXE.Fraccion = ", $FRACCION)->where_in("A.Grupo", array(2));
-                    break;
-                case 100:
-                    $this->db->where("FXE.Fraccion = ", $FRACCION)->where_in("A.Grupo", array(1));
-                    break;
-                case 99100:
+                case 300:
                     $this->db->where("FXE.Fraccion = ", $FRACCION)->where_in("A.Grupo", array(1, 2));
                     break;
-                default:
+                case 301:
+                    $this->db->where("FXE.Fraccion = ", $FRACCION)->where_in("A.Grupo", array(1, 2));
+                    break;
+                case 304:
                     $this->db->where("FXE.Fraccion = ", $FRACCION)->where_in("A.Grupo", array(1, 2));
                     break;
             }

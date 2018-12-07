@@ -171,21 +171,13 @@
     };
     var c = {};
     var options = {
-        dom: 'Brtip',
+        dom: 'Bfrtip',
         buttons: [
-            {
-                text: "Todos",
-                className: 'btn btn-info btn-sm',
-                titleAttr: 'Todos',
-                action: function (dt) {
-                    ControlesSinAsignarAlDia.rows().select();
-                }
-            },
             {
                 extend: 'selectNone',
                 className: 'btn btn-info btn-sm',
                 text: 'Ninguno',
-                titleAttr: 'Deseleccionar Todos'
+                titleAttr: 'Deseleccionar'
             }
         ], "ajax": {
             "url": '<?= base_url('AsignaDiaSemACtrlParaCorte/getRecords') ?>',
@@ -342,21 +334,13 @@
     function getControlesSinAsignarYAsignadosAlDia() {
         ControlesSinAsignarAlDia = tblControlesSinAsignarAlDia.DataTable(options);
         ControlesAsignadosAlDia = tblControlesAsignadosAlDia.DataTable({
-            dom: 'Brtip',
+            dom: 'Bfrtip',
             buttons: [
-                {
-                    text: "Todos",
-                    className: 'btn btn-info btn-sm',
-                    titleAttr: 'Todos',
-                    action: function (dt) {
-                        ControlesAsignadosAlDia.rows().select();
-                    }
-                },
                 {
                     extend: 'selectNone',
                     className: 'btn btn-info btn-sm',
                     text: 'Ninguno',
-                    titleAttr: 'Deseleccionar Todos'
+                    titleAttr: 'Deseleccionar'
                 }
             ],
             "ajax": {
@@ -451,7 +435,7 @@
             message: 'Por favor espere un momento...'
         });
         $.getJSON('<?= base_url('AsignaDiaSemACtrlParaCorte/getEstiloColorParesTxParPorControl') ?>', {
-            CONTROL: e, TIPO: Fraccion.val()
+            CONTROL: e, TIPO: Fraccion.val()[0]
         }).done(function (data, x, jq) {
             var r = data[0];
             if (r) {
@@ -480,7 +464,7 @@
 
     function onGuardarAsignacionDeDiaXControl() {
         if (Anio.val() && Semana.val() && Dia.val() &&
-                Fraccion.val() && Cortador.val() && Control.val() &&
+                Fraccion.val().length > 0 && Cortador.val() && Control.val() &&
                 Estilo.val() && Color.val() && Pesos.val() &&
                 Articulo.val() && ClaveArticulo.val()) {
             $.post('<?= base_url('AsignaDiaSemACtrlParaCorte/onGuardarAsignacionDeDiaXControl'); ?>',
@@ -490,7 +474,7 @@
                         ANIO: Anio.val(),
                         SEMANA: Semana.val(),
                         DIA: Dia.val(),
-                        FRACCION: Fraccion.val(),
+                        FRACCION: Fraccion.val()[0],
                         ESTILO: Estilo.val(),
                         PARES: Pares.val(),
                         TIEMPO: Pares.val(),
@@ -526,11 +510,11 @@
                     var row = ControlesSinAsignarAlDia.row(tblControlesSinAsignarAlDia.find("tbody tr.selected")).data();
                     if (row) {
                         row["ANIO"] = Anio.val();
+                        row["CONTROL"] = $(row.Control).text();
                         row["DIA"] = Dia.val();
                         row["CORTADOR"] = Cortador.val();
                         row["FRACCION"] = Fraccion.val()[0];
                         $.post('<?= base_url('AsignaDiaSemACtrlParaCorte/onAnadirAsignacion'); ?>', row).done(function (data, x, jq) {
-                            console.log(data);
                             Cortador[0].selectize.clear(true);
                             ControlesSinAsignarAlDia.ajax.reload();
                             ControlesAsignadosAlDia.ajax.reload();

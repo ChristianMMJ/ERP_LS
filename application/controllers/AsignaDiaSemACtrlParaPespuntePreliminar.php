@@ -48,6 +48,14 @@ class AsignaDiaSemACtrlParaPespuntePreliminar extends CI_Controller {
         }
     }
 
+    public function getFracciones() {
+        try {
+            print json_encode($this->adscppp->getFracciones());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    
     public function getProgramacion() {
         try {
             print json_encode($this->adscppp->getProgramacion());
@@ -179,12 +187,13 @@ class AsignaDiaSemACtrlParaPespuntePreliminar extends CI_Controller {
     public function onAnadirAsignacion() {
         try {
             $x = $this->input;
-            $data = ($this->adscppp->getEstiloColorParesTxParPorControl($x->post('Control'), $x->post('FRACCION')));
+            $data = ($this->adscppp->getEstiloColorParesTxParPorControl($x->post('CONTROL'), $x->post('FRACCION')));
+            print_r($data);
             if (isset($data[0])) {
                 $r = $data[0];
                 $dtm = array(
                     'numemp' => $x->post('CORTADOR'),
-                    'control' => $x->post('Control'),
+                    'control' => $x->post('CONTROL'),
                     'año' => $x->post('ANIO'),
                     'semana' => $x->post('Semana'),
                     'diaprg' => $x->post('DIA'),

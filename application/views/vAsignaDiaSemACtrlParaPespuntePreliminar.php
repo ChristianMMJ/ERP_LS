@@ -155,14 +155,6 @@
         dom: 'Bfrtip',
         buttons: [
             {
-                text: "Todos",
-                className: 'btn btn-info btn-sm',
-                titleAttr: 'Todos',
-                action: function (dt) {
-                    ControlesSinAsignarAlDia.rows().select();
-                }
-            },
-            {
                 extend: 'selectNone',
                 className: 'btn btn-info btn-sm',
                 text: 'Ninguno',
@@ -318,20 +310,12 @@
         getControlesSinAsignarYAsignadosAlDia();
         Anio.val(new Date().getFullYear());
     });
-    
+
     function getControlesSinAsignarYAsignadosAlDia() {
         ControlesSinAsignarAlDia = tblControlesSinAsignarAlDia.DataTable(options);
         ControlesAsignadosAlDia = tblControlesAsignadosAlDia.DataTable({
             dom: 'Bfrtip',
             buttons: [
-                {
-                    text: "Todos",
-                    className: 'btn btn-info btn-sm',
-                    titleAttr: 'Todos',
-                    action: function (dt) {
-                        ControlesAsignadosAlDia.rows().select();
-                    }
-                },
                 {
                     extend: 'selectNone',
                     className: 'btn btn-info btn-sm',
@@ -415,7 +399,7 @@
         });
         Fraccion[0].selectize.clear(true);
         Fraccion[0].selectize.clearOptions();
-        $.getJSON('<?= base_url('AsignaDiaSemACtrlParaCorte/getFracciones') ?>').done(function (data) {
+        $.getJSON('<?= base_url('AsignaDiaSemACtrlParaPespuntePreliminar/getFracciones') ?>').done(function (data) {
             $.each(data, function (k, v) {
                 Fraccion[0].selectize.addOption({text: v.FRACCION, value: v.CLAVE});
             });
@@ -431,7 +415,7 @@
             message: 'Por favor espere un momento...'
         });
         $.getJSON('<?= base_url('AsignaDiaSemACtrlParaPespuntePreliminar/getEstiloColorParesTxParPorControl') ?>', {
-            CONTROL: e, TIPO: Fraccion.val()
+            CONTROL: e, TIPO: Fraccion.val()[0]
         }).done(function (data, x, jq) {
             var r = data[0];
             if (r) {
@@ -502,17 +486,16 @@
 
     function onAnadirAsignacion() {
         if (Dia.val()) {
-            if (Fraccion.val()) {
+            if (Fraccion.val().length > 0) {
                 if (Cortador.val()) {
                     var row = ControlesSinAsignarAlDia.row(tblControlesSinAsignarAlDia.find("tbody tr.selected")).data();
                     if (row) {
-                        console.log('row', row)
                         row["ANIO"] = Anio.val();
+                        row["CONTROL"] = $(row.Control).text();
                         row["DIA"] = Dia.val();
                         row["CORTADOR"] = Cortador.val();
-                        row["FRACCION"] = Fraccion.val();
+                        row["FRACCION"] = Fraccion.val()[0];
                         $.post('<?= base_url('AsignaDiaSemACtrlParaPespuntePreliminar/onAnadirAsignacion'); ?>', row).done(function (data, x, jq) {
-                            console.log(data);
                             Cortador[0].selectize.clear(true);
                             ControlesSinAsignarAlDia.ajax.reload();
                             ControlesAsignadosAlDia.ajax.reload();

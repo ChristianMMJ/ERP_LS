@@ -47,6 +47,7 @@ class AsignaDiaSemACtrlParaCorte extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
+    
     public function getFracciones() {
         try {
             print json_encode($this->adscpc->getFracciones());
@@ -186,12 +187,12 @@ class AsignaDiaSemACtrlParaCorte extends CI_Controller {
     public function onAnadirAsignacion() {
         try {
             $x = $this->input;
-            $data = ($this->adscpc->getEstiloColorParesTxParPorControl($x->post('Control'), $x->post('FRACCION')));
+            $data = ($this->adscpc->getEstiloColorParesTxParPorControl($x->post('CONTROL'), $x->post('FRACCION')));
             if (isset($data[0])) {
                 $r = $data[0];
                 $dtm = array(
                     'numemp' => $x->post('CORTADOR'),
-                    'control' => $x->post('Control'),
+                    'control' => $x->post('CONTROL'),
                     'año' => $x->post('ANIO'),
                     'semana' => $x->post('Semana'),
                     'diaprg' => $x->post('DIA'),
