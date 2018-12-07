@@ -5,7 +5,7 @@
                 <legend class="float-left">Pedidos</legend>
             </div>
             <div class="col-sm-9">
-                <input type="text" id="NumeroDePedido" name="NumeroDePedido" style="font-size: 19px; font-style: italic;" class="form-control form-control-sm noBorders notEnter numbersOnly" autofocus="" placeholder="# # # # #">
+                <input type="text" id="NumeroDePedido" name="NumeroDePedido" style="font-size: 20px; font-style: italic; background-color: #f1f0eb; border-color: #f1f0eb; " class="form-control form-control-sm noBorders notEnter numbersOnly" autofocus="" placeholder="# # # # #">
             </div>
             <div class="col-sm-1 float-right" align="right">
                 <button type="button" class="btn btn-primary selectNotEnter" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar">

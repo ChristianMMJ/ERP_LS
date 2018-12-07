@@ -4,11 +4,18 @@ class AsignaDiaSemACtrlParaCorte_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
+        /*
+         * 
+         * 98	CORTE FORRO A MANO	10
+         * 99	CORTAR FORRO A MAQUINA	10
+         * 100	CORTAR PIEL A  MAQUINA	10
+         *
+         */
     }
 
     public function getRecords() {
         try {
-            return $this->db->select("P.ID, P.Control AS Control, P.Cliente, "
+            return $this->db->select("P.ID, CONCAT('<span class=\"badge badge-info\" style=\"font-size: 100%;\">',P.Control,'</span>') AS Control, P.Cliente, "
                                     . "P.Estilo, P.Color, P.Pares, "
                                     . "P.Semana AS Semana", false)
                             ->from("pedidox AS P")->join('estilos AS E', 'P.Estilo = E.Clave')
@@ -24,17 +31,23 @@ class AsignaDiaSemACtrlParaCorte_model extends CI_Model {
 
     public function getProgramacion() {
         try {
-            $sp = '<span class="badge badge-pill badge-primary">';
+            $styl= 'style=\"font-size: 100%;\"';
+            $sp = "<span class=\"badge badge-pill badge-info\" {$styl}>";
+            $spbf = "<span class=\"badge badge-pill badge-fusion\" {$styl}>";
+            $sps = "<span class=\"badge badge-pill badge-fusion-success\" {$styl}>";
+            $spda = "<span class=\"badge badge-pill badge-danger\" {$styl}>";
+            $spd = "<span class=\"badge badge-pill badge-dark\" {$styl}>";
+            $spw = "<span class=\"badge badge-pill badge-warning\" {$styl}>";
             $spf = '</span>';
-            return $this->db->select("PR.ID, PR.numemp AS Emp, PR.control AS Control, "
-                                    . "PR.año AS Ano, PR.semana AS Sem, ELT(PR.diaprg,"
+            return $this->db->select("PR.ID, CONCAT('{$sps}',PR.numemp,'{$spf}') AS Emp, CONCAT('{$spw}',PR.control,'{$spf}') AS Control, "
+                                    . "PR.año AS Ano, CONCAT('{$spda}',PR.semana,'{$spf}') AS Sem, ELT(PR.diaprg,"
                                     . "'{$sp}LUNES{$spf}','{$sp}MARTES{$spf}','{$sp}MIERCOLES{$spf}',"
                                     . "'{$sp}JUEVES{$spf}','{$sp}VIERNES{$spf}','{$sp}SABADO{$spf}',"
                                     . "'{$sp}DOMINGO{$spf}') AS Dia, "
-                                    . "PR.frac AS Frac, PR.fecha AS Fecha, PR.estilo AS Estilo, "
+                                    . " CONCAT('{$spbf}',PR.frac,'{$spf}') AS Frac, PR.fecha AS Fecha, PR.estilo AS Estilo, "
                                     . "PR.par AS Pares, PR.tiempo AS Tiempo, PR.precio AS Precio, "
                                     . "PR.nomart", false)
-                            ->from("programacion AS PR")->get()->result();
+                            ->from("programacion AS PR")->where_in("PR.frac", array(99, 100))->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -45,6 +58,18 @@ class AsignaDiaSemACtrlParaCorte_model extends CI_Model {
             return $this->db->select("E.Numero AS CLAVE, CONCAT(E.Numero ,' ',E.PrimerNombre, ' ', E.SegundoNombre,' ', E.Paterno,' ', E.Materno) AS EMPLEADO", false)
                             ->from('empleados AS E')->join('departamentos AS D', 'E.DepartamentoFisico = D.Clave')
                             ->where('D.Descripcion LIKE \'CORTE\'', null, false)->order_by('ABS(E.Numero)', 'ASC')->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getFracciones() {
+        try {
+            return $this->db->select("F.Clave AS CLAVE, CONCAT(F.Clave,' ',F.Descripcion) AS FRACCION", false)
+                            ->from('fracciones AS F')
+                            ->where('F.Departamento = 10', null, false)
+                            ->order_by('ABS(F.Clave)', 'ASC')
+                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
