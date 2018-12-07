@@ -244,4 +244,21 @@
         -webkit-box-shadow: none;
         border-color: #ffffff;
     }
+    .badge-fusion-success {
+        color: #fff;
+        background-color: #8BC34A;
+    }
+    .badge-fusion{
+        color: #fff;
+        background-color: #673AB7;
+    }
+    table tbody tr:hover {
+        background-color: #000000 !important;
+        color: #fff !important;
+        font-weight: bold !important;
+    }
+    .card {
+        background-color: #f1f0eb;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)!important;
+    }
 </style>

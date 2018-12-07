@@ -47,6 +47,13 @@ class AsignaDiaSemACtrlParaCorte extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
+    public function getFracciones() {
+        try {
+            print json_encode($this->adscpc->getFracciones());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 
     public function getProgramacion() {
         try {

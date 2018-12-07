@@ -40,9 +40,10 @@
                 <label>Dia/Nombre</label>
                 <input type="text" id="DiaNombre" name="DiaNombre" class="form-control form-control-sm" readonly="" maxlength="2">
             </div>
-            <div class="col-12 col-sm-12 col-md-2 col-lg-1 col-xl-1">
+            <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
                 <label>Fracción</label>
-                <input type="text" id="Fraccion" name="Fraccion" class="form-control form-control-sm numbersOnly animated bounceIn" maxlength="5" data-toggle="tooltip" data-placement="left" title="Fracciones; Forro: 99, Piel: 100">
+                <select id="Fraccion" name="Fraccion" class="form-control form-control-sm NotSelectize" multiple="">
+                </select>
             </div>
             <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                 <label>Cortador</label>
@@ -242,7 +243,7 @@
     $(document).ready(function () {
 
         Cortador.change(function () {
-            var op = $(this).val(); 
+            var op = $(this).val();
             var dt = tblControlesAsignadosAlDia.DataTable().column(1);
             if (op) {
                 dt.search(op).draw();
@@ -271,12 +272,13 @@
             onBeep(3);
             switch ($(this).attr('id')) {
                 case 'btnPiel':
-                    Fraccion.val(100);
+                    Fraccion[0].selectize.setValue(100);
                     break;
                 case 'btnForro':
-                    Fraccion.val(99);
+                    Fraccion[0].selectize.setValue(99);
                     break;
                 case 'btnAmbas':
+                    Fraccion[0].selectize.setValue([99, 100]);
                     Fraccion.val('99,100');
                     break;
             }
@@ -336,6 +338,7 @@
         getControlesSinAsignarYAsignadosAlDia();
         Anio.val(new Date().getFullYear());
     });
+
     function getControlesSinAsignarYAsignadosAlDia() {
         ControlesSinAsignarAlDia = tblControlesSinAsignarAlDia.DataTable(options);
         ControlesAsignadosAlDia = tblControlesAsignadosAlDia.DataTable({
@@ -419,6 +422,27 @@
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
             console.log(x.responseText);
         });
+        getFracciones();
+    }
+
+    function getFracciones() {
+        Fraccion.selectize({
+            maxItems: 2,
+            delimiter: ',',
+            persist: true,
+            create: false,
+            hideSelected: true
+        });
+        Fraccion[0].selectize.clear(true);
+        Fraccion[0].selectize.clearOptions();
+        $.getJSON('<?= base_url('AsignaDiaSemACtrlParaCorte/getFracciones') ?>').done(function (data) {
+            $.each(data, function (k, v) {
+                Fraccion[0].selectize.addOption({text: v.FRACCION, value: v.CLAVE});
+            });
+        }).fail(function (x) {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        });
     }
 
     function getEstiloColorParesTxParPorControl(e) {
@@ -459,7 +483,6 @@
                 Fraccion.val() && Cortador.val() && Control.val() &&
                 Estilo.val() && Color.val() && Pesos.val() &&
                 Articulo.val() && ClaveArticulo.val()) {
-            console.log('GUardando...');
             $.post('<?= base_url('AsignaDiaSemACtrlParaCorte/onGuardarAsignacionDeDiaXControl'); ?>',
                     {
                         CORTADOR: Cortador.val(),
@@ -498,15 +521,14 @@
 
     function onAnadirAsignacion() {
         if (Dia.val()) {
-            if (Fraccion.val()) {
+            if (Fraccion.val().length > 0) {
                 if (Cortador.val()) {
                     var row = ControlesSinAsignarAlDia.row(tblControlesSinAsignarAlDia.find("tbody tr.selected")).data();
                     if (row) {
-                        console.log('row', row)
                         row["ANIO"] = Anio.val();
                         row["DIA"] = Dia.val();
                         row["CORTADOR"] = Cortador.val();
-                        row["FRACCION"] = Fraccion.val();
+                        row["FRACCION"] = Fraccion.val()[0];
                         $.post('<?= base_url('AsignaDiaSemACtrlParaCorte/onAnadirAsignacion'); ?>', row).done(function (data, x, jq) {
                             console.log(data);
                             Cortador[0].selectize.clear(true);
@@ -534,10 +556,8 @@
             } else {
                 onBeep(2);
                 swal('ATENCIÓN', 'ES NECESARIO ESPECIFICAR UNA FRACCIÓN', 'warning').then((value) => {
-                    Fraccion.focus().addClass("highlight-input");
-                    setTimeout(function () {
-                        Fraccion.removeClass("highlight-input");
-                    }, 1500);
+                    Fraccion[0].selectize.focus();
+                    Fraccion[0].selectize.open();
                 });
             }
         } else {
@@ -575,6 +595,27 @@
     }
 </script>
 <style>
+    table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
+        background-color: #0275d8;
+        color:#fff !important;
+        font-weight: bold;
+    }
+    .selectize-control.multi .selectize-input > div {
+        cursor: pointer;
+        margin: 0 3px 3px 0;
+        padding: 1px 3px;
+        background: #3F51B5;
+        color: #ffffff;
+        border: 0 solid rgba(0, 0, 0, 0);
+        border-radius: 5px;
+        font-weight: bold;
+    }
+    .selectize-control.multi .selectize-input > div.active {
+        background: #3F51B5;
+        color: #ffffff;
+        border: 0 solid rgba(0, 0, 0, 0);
+        font-weight: bold;
+    }
     .btn-info:not(:disabled):not(.disabled):active, 
     .btn-info:not(:disabled):not(.disabled).active, 
     .show > .btn-info.dropdown-toggle {
