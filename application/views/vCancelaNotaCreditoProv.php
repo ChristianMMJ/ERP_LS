@@ -119,7 +119,6 @@
                     }).then((action) => {
                         mdlCancelaNotaCargo.modal('hide');
                     });
-
                 }
             }).fail(function (x, y, z) {
                 console.log(x, y, z);
