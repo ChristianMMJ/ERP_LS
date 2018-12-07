@@ -35,7 +35,7 @@ class EntregaSuelaPlantaFabrica_model extends CI_Model {
             $this->db->select("PD.* ,S.* ,"
                             . "CONCAT(ifnull(M.EntregaMat1,''),' - ',ifnull(M.EntregaMat2,''),' - ',ifnull(M.EntregaMat3,'')) AS EntregaMat "
                             . "")
-                    ->from("pedidodetalle AS PD")
+                    ->from("pedidox AS PD")
                     ->join("series AS S", 'ON PD.Serie = S.Clave ')
                     ->join("maquilas AS M", 'ON PD.Maquila = M.Clave ')
                     ->where("PD.Control", $Control);

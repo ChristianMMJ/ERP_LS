@@ -1,12 +1,12 @@
 <style>
     /* Particle container. */
-    #particle-container { 
+    #particle-container {
         position:fixed;
         top:0;
         right:0;
         bottom:0;
         left:0;
-        z-index:0; 
+        z-index:0;
     }
     .selectize-input {
         border: 1px solid #9E9E9E;
@@ -114,7 +114,7 @@
     table tbody tr:hover {
         background-color: #2C3E50 !important;
         color: #fff !important;
-        font-weight: bold !important; 
+        font-weight: bold !important;
     }
 
     .table>tbody>tr>td.success,
@@ -127,7 +127,7 @@
     .table>tfoot>tr.success>th {
         background-color: #2C3E50 ;
         color: #fff;
-    } 
+    }
 
     /*Hacer todo el texto de los inputs mayusculas*/
     input {
@@ -235,7 +235,7 @@
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
     }
     .noBorders{
-        border: 1px solid #ffffff; 
+        border: 1px solid #ffffff;
         font-size: 14px;
         font-weight: bold;
     }
@@ -258,7 +258,7 @@
         font-weight: bold !important;
     }
     .card {
-        background-color: #f1f0eb;
+        background-color: #dadfe4;
         box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)!important;
     }
 </style>

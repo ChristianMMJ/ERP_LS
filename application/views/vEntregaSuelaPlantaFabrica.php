@@ -54,7 +54,7 @@
         <div class="row">
             <div class="col-6 col-sm-3 col-md-2 col-lg-2 col-xl-2" >
                 <label>Fecha*</label>
-                <input type="text" class="form-control form-control-sm  numbersOnly date notEnter" id="FechaMov" name="FechaMov" maxlength="12" required>
+                <input type="text" class="form-control form-control-sm  numbersOnly date notEnter" readonly="" id="FechaMov" name="FechaMov" maxlength="12" required>
             </div>
             <div class="col-6 col-sm-3 col-md-2 col-lg-2 col-xl-2" >
                 <label>Docto</label>

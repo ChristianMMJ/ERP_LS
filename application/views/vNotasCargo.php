@@ -8,8 +8,6 @@
                 </legend>
             </div>
             <div class="col-sm-8" align="right">
-
-
                 <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#mdlCancelaNotaCargo" data-backdrop='true'>
                     <span class="fa fa-ban" ></span> CANCELAR NOTA</a>
                 <a class="btn btn-primary btn-sm" href="#" data-toggle="modal" data-target="#mdlEstadoCuentaProveedor" data-backdrop='true'>
@@ -52,6 +50,10 @@
                 <input type="text" class="form-control form-control-sm disabledForms" id="Saldo_Doc" name="Saldo_Doc" readonly="">
             </div>
             <div class="w-100"></div>
+            <div class="col-6 col-sm-6 col-md-5 col-lg-5 col-xl-4" >
+                <label>Concepto</label>
+                <input type="text" class="form-control form-control-sm "  id="Concepto" name="Concepto" maxlength="90">
+            </div>
             <div class="col-6 col-sm-3 col-md-3 col-lg-3 col-xl-2" >
                 <label for="" >Tipo Movimiento</label>
                 <select id="Tipo" name="Tipo" class="form-control form-control-sm required" required="" >
@@ -61,10 +63,7 @@
                     <option value="3">3 Descuento</option>
                 </select>
             </div>
-            <div class="col-6 col-sm-6 col-md-5 col-lg-5 col-xl-4" >
-                <label>Concepto</label>
-                <input type="text" class="form-control form-control-sm "  id="Concepto" name="Concepto" maxlength="90">
-            </div>
+
         </div>
         <hr>
         <div class="row" id="Detalle">
@@ -175,8 +174,8 @@
         /*FUNCIONES INICIALES*/
         validacionSelectPorContenedor(pnlTablero);
         setFocusSelectToSelectOnChange('#Proveedor', '#DocCartProv', pnlTablero);
-        setFocusSelectToSelectOnChange('#DocCartProv', '#Tipo', pnlTablero);
-        setFocusSelectToInputOnChange('#Tipo', '#Concepto', pnlTablero);
+        setFocusSelectToInputOnChange('#DocCartProv', '#Concepto', pnlTablero);
+        setFocusSelectToSelectOnChange('#Tipo', '#Articulo', pnlTablero);
         setFocusSelectToInputOnChange('#Articulo', '#Precio', pnlTablero);
         handleEnter();
         init();
@@ -293,16 +292,14 @@
                 console.log(x.responseText);
             });
         });
-        pnlTablero.find("#Concepto").keydown(function (e) {
-            if (e.keyCode === 13) {
-                isValid('Encabezado');
-                if (valido) {
-                    disableFieldsEncabezado();
-                    enableFieldsDetalle();
-                    pnlTablero.find("#Articulo")[0].selectize.focus();
-                    pnlTablero.find("#Articulo")[0].selectize.open();
+        pnlTablero.find("#Tipo").change(function () {
+            isValid('Encabezado');
+            if (valido) {
+                enableFieldsDetalle();
+                disableFieldsEncabezado();
+                pnlTablero.find("#Articulo")[0].selectize.focus();
+                pnlTablero.find("#Articulo")[0].selectize.open();
 
-                }
             }
         });
         pnlTablero.find("#Precio").change(function () {
@@ -435,6 +432,7 @@
                             pnlTablero.find('#Detalle').find("input").val('');
                             pnlTablero.find("#Articulo")[0].selectize.clear(true);
                             pnlTablero.find("#Articulo")[0].selectize.focus();
+                            pnlTablero.find('#Tipo')[0].selectize.disable();
                             btnTerminarCaptura.removeClass('disabledForms');
                         }).fail(function (x, y, z) {
                             console.log(x, y, z);
@@ -442,9 +440,6 @@
                     }).fail(function (x, y, z) {
                         console.log(x, y, z);
                     });
-
-
-
                 } else {
                     swal('ATENCION', 'Completa los campos requeridos', 'warning');
                 }
@@ -885,7 +880,7 @@
         total = 0;
         folio = '';
         getCompra('', '', '');
-        getRecords('', '', '')
+        getRecords('', '', '');
         Movimientos.clear().draw();
         Compra.clear().draw();
         pnlTablero.find("input").val("");
@@ -897,29 +892,33 @@
         pnlTablero.find("#Tp").focus();
     }
     function disableFieldsDetalle() {
+        $('#Detalle').find("input").prop("readonly", true);
         $.each($('#Detalle').find("select"), function (k, v) {
             $('#Detalle').find("select")[k].selectize.disable();
         });
-        $('#Detalle').find("input").prop("readonly", true);
+
     }
     function enableFieldsDetalle() {
+        $('#Detalle').find("input").prop("readonly", false);
         $.each($('#Detalle').find("select"), function (k, v) {
             $('#Detalle').find("select")[k].selectize.enable();
         });
-        $('#Detalle').find("input").prop("readonly", false);
+
 
     }
     function disableFieldsEncabezado() {
-        $.each($('#Encabezado').find("select"), function (k, v) {
-            $('#Encabezado').find("select")[k].selectize.disable();
-        });
-        $('#Encabezado').find("input").prop("readonly", true);
+        pnlTablero.find('#Tp').prop("readonly", true);
+        pnlTablero.find('#Concepto').prop("readonly", true);
+        pnlTablero.find('#Proveedor')[0].selectize.disable();
+        pnlTablero.find('#DocCartProv')[0].selectize.disable();
+        //pnlTablero.find('#Tipo')[0].selectize.disable();
     }
     function enableFieldsEncabezado() {
+        $('#Encabezado').find("input").prop("readonly", false);
         $.each($('#Encabezado').find("select"), function (k, v) {
             $('#Encabezado').find("select")[k].selectize.enable();
         });
-        $('#Encabezado').find("input").prop("readonly", false);
+
     }
 </script>
 <style>

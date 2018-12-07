@@ -25,6 +25,7 @@ class NotasCargo_model extends CI_Model {
                             ->where('NC.Proveedor', $prov)
                             ->where('NC.Folio', $nc)
                             ->where('NC.Tp', $tp)
+                            ->where('NC.Estatus', '1')
                             ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -101,6 +102,7 @@ class NotasCargo_model extends CI_Model {
                             ->where('NC.Proveedor', $prov)
                             ->where('NC.Folio', $nc)
                             ->where('NC.Tp', $tp)
+                            ->where_in("NC.Estatus", '1')
                             ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -141,7 +143,6 @@ class NotasCargo_model extends CI_Model {
             $this->db->select("CAST(NC.Folio AS SIGNED ) AS Folio "
                             . "")
                     ->from("notascreditoprov AS NC")
-                    ->where("NC.Estatus", '2')
                     ->where("NC.Tp", $Tp)
                     ->order_by("Folio", 'DESC')
                     ->limit(1);
