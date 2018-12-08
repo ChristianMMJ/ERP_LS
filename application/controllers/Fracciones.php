@@ -20,7 +20,6 @@ class Fracciones extends CI_Controller {
                     $this->load->view('vNavGeneral');
                     //Validamos que no venga vacia y asignamos un valor por defecto
                     $Origen = isset($_GET['origen']) ? $_GET['origen'] : "";
-
                     if ($Origen === 'NOMINAS') {
                         $this->load->view('vMenuNominas');
                     } else if ($Origen === 'PRODUCCION') {

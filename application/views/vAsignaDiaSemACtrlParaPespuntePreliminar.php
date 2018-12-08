@@ -1,11 +1,47 @@
 <div class="card m-3 animated fadeIn" id="pnlTablero">
-    <div class="card-header"> 
-        <h4 class="font-weight-bold text-center">
-            Asigna dia semana a control para pespunte y preliminar
-        </h4> 
+    <div class="card-header">
+        <div class="row">
+            <div class="col-4 col-md-4 col-lg-4 col-xl-4">
+                <button type="button" id="btnRefrescar" name="btnRefrescar" class="btn btn-sm btn-warning " data-toggle="tooltip" data-placement="top" title="Refrescar">
+                    <span class="fa fa-retweet"></span>
+                </button>
+            </div>
+            <div class="col-4 col-md-4 col-lg-4 col-xl-4">
+                <h4 class="font-weight-bold text-center">
+                    Asigna dia semana a control para pespunte y preliminar
+                </h4> 
+            </div>
+            <div class="col-4 col-md-4 col-lg-4 col-xl-4 text-center">
+                <button type="button" id="btnTiemposXEstilos" name="btnTiemposXEstilos" class="btn btn-sm btn-danger " data-toggle="tooltip" data-placement="top" title="Tiempos por estilos">
+                    <span class="fa fa-clock"></span>
+                </button>
+
+                <button type="button" id="btnFracciones" name="btnFracciones" class="btn btn-sm btn-indigo mx-4" data-toggle="tooltip" data-placement="top" title="Fracciones">
+                    <span class="fa fa-puzzle-piece"></span>
+                </button>
+
+                <button type="button" id="btnFraccionesXEstilos" name="btnFraccionesXEstilos" class="btn btn-sm btn-indigo" data-toggle="tooltip" data-placement="top" title="Fracciones por estilos">
+                    <span class="fa fa-check-double"></span>
+                </button>
+            </div>
+        </div>        
     </div>
     <div class="card-body">
         <div class="row">
+            <div class="col-2">
+            </div>
+            <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8" align="center"> 
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-indigo">
+                        <input type="radio" name="btnPespunte" id="btnPespunte" autocomplete="off" checked> PESPUNTE
+                    </label>
+                    <label class="btn btn-indigo">
+                        <input type="radio" name="btnPreliminar" id="btnPreliminar" autocomplete="off"> PRELIMINAR
+                    </label> 
+                </div>
+            </div>
+            <div class="col-2">
+            </div>
             <div class="col-12 col-sm-12 col-md-2 col-lg-1 col-xl-1">
                 <label>Año</label>
                 <input type="text" id="Anio" name="Anio" class="form-control form-control-sm" maxlength="4">
@@ -128,6 +164,25 @@
         </div><!--END ROW-->
     </div><!--END CARD BODY-->
 </div>
+
+<div id="mdlFracciones" class="modal  modal-fullscreen">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     var pnlTablero = $("#pnlTablero"), Anio = pnlTablero.find("#Anio"), Dia = pnlTablero.find("#Dia"),
             Semana = pnlTablero.find("#Semana"), Cortador = pnlTablero.find("#Cortador"),
@@ -139,8 +194,10 @@
     var tblControlesSinAsignarAlDia = pnlTablero.find("#tblControlesSinAsignarAlDia"), ControlesSinAsignarAlDia,
             tblControlesAsignadosAlDia = pnlTablero.find("#tblControlesAsignadosAlDia"), ControlesAsignadosAlDia,
             btnPiel = $("#btnPiel"), btnForro = $("#btnForro"), btnAmbas = $("#btnAmbas"),
-            btnAnadir = $("#Anadir"), btnQuitar = $("#Quitar");
-    var Cortadores = pnlTablero.find("#Cortador");
+            btnAnadir = $("#Anadir"), btnQuitar = $("#Quitar"), btnRefrescar = pnlTablero.find("#btnRefrescar"),
+            btnTiemposXEstilos = pnlTablero.find("#btnTiemposXEstilos"), btnFracciones = pnlTablero.find("#btnFracciones"),
+            btnFraccionesXEstilos = pnlTablero.find("#btnFraccionesXEstilos");
+    var Cortadores = pnlTablero.find("#Cortador"), mdlFracciones = $("#mdlFracciones");
     var dias = {
         1: 'LUNES',
         2: 'MARTES',
@@ -215,6 +272,63 @@
     };
     $(document).ready(function () {
 
+        btnTiemposXEstilos.click(function () {
+//            mdlFracciones.modal('show');
+            $.fancybox.open({
+                src: '<?= base_url('Fracciones/?origen=PRODUCCION'); ?>',
+                type: 'iframe',
+                opts: {
+                    afterShow: function (instance, current) {
+                        console.info('done!');
+                    },
+                    iframe: {
+                        // Iframe template
+                        tpl: '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen allowtransparency="true" src=""></iframe>',
+                        preload: true,
+                        // Custom CSS styling for iframe wrapping element
+                        // You can use this to set custom iframe dimensions
+                        css: {
+                            width: "95%",
+                            height: "95%"
+                        },
+                        // Iframe tag attributes
+                        attr: {
+                            scrolling: "auto"
+                        }
+                    }
+                }
+            });
+
+        });
+
+        btnFracciones.click(function () {
+//            mdlFracciones.modal('show');
+        });
+
+        btnFraccionesXEstilos.click(function () {
+//            mdlFracciones.modal('show');
+        });
+
+        btnRefrescar.click(function () {
+            if ($.fn.DataTable.isDataTable('#tblControlesSinAsignarAlDia') && $.fn.DataTable.isDataTable('#tblControlesAsignadosAlDia')) {
+                ControlesSinAsignarAlDia.ajax.reload();
+                ControlesAsignadosAlDia.ajax.reload();
+                getCortadores();
+                pnlTablero.find(".btn-group-toggle label").removeClass("active");
+                onBeep(4);
+                swal({
+                    title: "ATENCIÓN",
+                    text: "LOS DATOS HAN SIDO ACTUALIZADOS",
+                    icon: "success",
+                    buttons: false,
+                    timer: 1000
+                });
+            } else {
+                getCortadores();
+                getControlesSinAsignarYAsignadosAlDia();
+            }
+        });
+
         Cortador.change(function () {
             var op = $(this).val();
             var dt = tblControlesAsignadosAlDia.DataTable().column(1);
@@ -241,17 +355,14 @@
             Fraccion.removeClass('bounceIn animated');
         });
 
-        $("#btnAmbas, #btnPiel, #btnForro").change(function () {
+        $("#btnPespunte, #btnPreliminar").change(function () {
             onBeep(3);
             switch ($(this).attr('id')) {
-                case 'btnPiel':
-                    Fraccion.val(100);
+                case 'btnPespunte':
+                    Fraccion[0].selectize.setValue(300);
                     break;
-                case 'btnForro':
-                    Fraccion.val(99);
-                    break;
-                case 'btnAmbas':
-                    Fraccion.val('99,100');
+                case 'btnPreliminar':
+                    Fraccion[0].selectize.setValue(304);
                     break;
             }
             Fraccion.addClass('bounceIn animated');
@@ -305,9 +416,7 @@
                 tblControlesSinAsignarAlDia.DataTable().column(6).search('').draw();
             }
         });
-
-        getCortadores();
-        getControlesSinAsignarYAsignadosAlDia();
+        btnRefrescar.trigger('click');
         Anio.val(new Date().getFullYear());
     });
 
@@ -557,19 +666,40 @@
             });
         } else {
             onBeep(2);
-            swal('ATENCIÓN', 'DEBE DE SELECCIONAR UN CONTROL ASIGNADO', 'warning');
+            swal('ATENCIÓN', 'DEBE DE SELECCIONAR UN CONTROL ASIGNADO', 'warning').then((value) => {
+                tblControlesAsignadosAlDia.find("tbody tr").addClass("highlight-rows");
+                setTimeout(function () {
+                    tblControlesAsignadosAlDia.find("tbody tr").removeClass("highlight-rows");
+                }, 1500);
+            });
         }
     }
 </script>
 <style>
-    .btn-info:not(:disabled):not(.disabled):active, 
-    .btn-info:not(:disabled):not(.disabled).active, 
-    .show > .btn-info.dropdown-toggle {
+    .btn-indigo:not(:disabled):not(.disabled):active, 
+    .btn-indigo:not(:disabled):not(.disabled).active, 
+    .show > .btn-indigo.dropdown-toggle {
         color: #fff;
         background-color: #99cc00;
         border: 2px solid #99cc00;
         font-weight: bold;
     }   
+    .selectize-control.multi .selectize-input > div {
+        cursor: pointer;
+        margin: 0 3px 3px 0;
+        padding: 1px 3px;
+        background: #3F51B5;
+        color: #ffffff;
+        border: 0 solid rgba(0, 0, 0, 0);
+        border-radius: 5px;
+        font-weight: bold;
+    }
+    .selectize-control.multi .selectize-input > div.active {
+        background: #3F51B5;
+        color: #ffffff;
+        border: 0 solid rgba(0, 0, 0, 0);
+        font-weight: bold;
+    }
     .highlight-input,.highlight-input:focus{  
         color: #000;
         background:#ffcc00;
@@ -586,6 +716,12 @@
         -moz-animation:illuminaterow .4s infinite; /* Firefox */
         -webkit-animation:illuminaterow .4s infinite; /* Safari and Chrome */
     } 
+
+    .btn-indigo {
+        color: #fff;
+        background-color: #3F51B5;
+        border-color: #3F51B5;
+    }
 
     @-moz-keyframes illuminaterow /* Firefox */
     {

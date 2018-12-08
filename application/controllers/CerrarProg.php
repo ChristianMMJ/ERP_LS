@@ -87,7 +87,7 @@ class CerrarProg extends CI_Controller {
                                 'Ano' => $Y, 'Maquila' => $M, 'Semana' => $S, 'Consecutivo' => $C
                             ));
                             $this->db->set('Control', $Y . $S . $M . $C)->where('ID', $v->PedidoDetalle)->update('pedidox');
-                            print $this->db->last_query();
+//                            print $this->db->last_query();/*QUEDA PARA PRUEBAS*/
                         }
                     }
                     break;
