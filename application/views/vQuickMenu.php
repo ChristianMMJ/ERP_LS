@@ -162,6 +162,9 @@
             display: none;
         }
     } 
+    .card.text-center {
+        background-color: #fff; 
+    }
 </style>
 <script>
     function onMenuDisplay(e) {
