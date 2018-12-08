@@ -262,6 +262,9 @@
                                                 closeOnEsc: false
                                             }).then((action) => {
                                                 if (action) {
+                                                    pnlTablero.find('#MaquilaRecibe').html('');
+                                                    pnlTablero.find('#tblTallas').find("input").prop('disabled', true);
+                                                    pnlTablero.find('input').val('');
                                                     pnlTablero.find('#Control').val('').focus();
                                                 }
                                             });
@@ -278,6 +281,9 @@
                                         closeOnEsc: false
                                     }).then((action) => {
                                         if (action) {
+                                            pnlTablero.find('#MaquilaRecibe').html('');
+                                            pnlTablero.find('#tblTallas').find("input").prop('disabled', true);
+                                            pnlTablero.find('input').val('');
                                             pnlTablero.find('#Control').val('').focus();
                                         }
                                     });
