@@ -74,13 +74,10 @@
                     <a class="dropdown-item" href="<?php print base_url('EliminaEntradaCompra.shoes'); ?>">Elimina Entrada por Compra</a>
                     <a class="dropdown-item" href="<?php print base_url('PagosProveedores/?origen=MATERIALES'); ?>">Pagos a Proveedores</a>
                     <a class="dropdown-item" href="<?php print base_url('NotasCargo.shoes'); ?>">Notas de Cargo</a>
-
-                    <a class="dropdown-item" href="#">Cargos diferentes a Maquilas ***</a>
-                    <a class="dropdown-item" href="#">Cargos a Empleados ***</a>
-                    <a class="dropdown-item" href="#">Material Control Fecha ***</a>
-                    <a class="dropdown-item" href="#">Asigna Día/Semana a Controles ***</a>
+                    <a class="dropdown-item" href="<?php print base_url('MaterialControlFecha.shoes'); ?>">Material Control Fecha </a>
+                    <a class="dropdown-item" href="">Asigna Día/Semana a Controles ***</a>
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" href="#">Inspeccion Mat. Piel/Forro</a>
+                        <a class="dropdown-item dropdown-toggle" href="#">Inspeccion Mat. Piel/Forro ***</a>
                         <ul class="dropdown-menu">
                             <a class="dropdown-item" href="#">Captura Inspección ***</a>
                             <a class="dropdown-item" href="#">Reporte de Inspección ***</a>
