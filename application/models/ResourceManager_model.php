@@ -18,4 +18,12 @@ class ResourceManager_model extends CI_Model {
         }
     }
 
+    public function getOpcionesXModulo() {
+        try {
+            return $this->db->select("ID, Modulo, Fecha, Icon, Ref")->from("opcionesxmodulo AS OXM")->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
 }

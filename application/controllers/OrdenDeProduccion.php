@@ -179,6 +179,7 @@ class OrdenDeProduccion extends CI_Controller {
                     $opd["FechaAlta"] = Date('d/m/Y');
                     $opd["AfectaPV"] = $vvv->AFECTAPV;
                     $opd["PiezaClasificacion"] = $vvv->CLASIFICACION;
+                    $opd["DepartamentoArt"] = $vvv->DEPTOART;
                     $this->db->insert('ordendeproducciond', $opd);
                 }
             }

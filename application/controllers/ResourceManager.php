@@ -18,5 +18,13 @@ class ResourceManager extends CI_Controller {
             echo $exc->getTraceAsString();
         }
     }
+    
+    public function getOpcionesXModulo() {
+        try {
+            print json_encode($this->rsm->getOpcionesXModulo());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 
 }
