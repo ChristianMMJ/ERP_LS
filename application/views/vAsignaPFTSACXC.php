@@ -235,6 +235,7 @@
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
+                            <th scope="col">Control</th>
                             <th scope="col">Emp</th>
                             <th scope="col">Art.</th>
                             <th scope="col">Descripcion</th>
@@ -688,7 +689,11 @@
                 "dataSrc": ""
             },
             "columns": [
-                {"data": "ID"}, {"data": "Empleado"}, {"data": "Articulo"}, {"data": "Descripcion"}, {"data": "Fecha"}, {"data": "Cargo"}, {"data": "Abono"}, {"data": "Dev"}
+                {"data": "ID"}, {"data": "Control"}, 
+                {"data": "Empleado"}, {"data": "Articulo"}, 
+                {"data": "Descripcion"}, {"data": "Fecha"}, 
+                {"data": "Cargo"}, {"data": "Abono"}, 
+                {"data": "Dev"}
             ],
             "columnDefs": [
                 {

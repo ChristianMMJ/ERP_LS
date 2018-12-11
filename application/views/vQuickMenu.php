@@ -1,101 +1,8 @@
 <div id="particle-container"></div>
 <div class="col-12">
-    <div id="MnuBlock" class="col-12 row justify-content-center mt-2" align="center">
-        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated slideInLeft" onclick="onMenuDisplay('MenuProveedores');">
-            <div class="card text-center">
-                <div class="card-body">
-                    <span class="fa fa-user-secret fa-2x  mt-5"></span>
-                </div>
-                <div class="card-footer">
-                    <h5>PROVEEDORES</h5>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated ra" onclick="onMenuDisplay('MenuMateriales');">
-            <div class="card text-center">
-                <div class="card-body">
-                    <span class="fa fa-cube fa-2x  mt-5"></span>
-                </div>
-                <div class="card-footer">
-                    <h5>MATERIALES</h5>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated slideInDown" onclick="onMenuDisplay('MenuClientes');">
-            <div class="card text-center">
-                <div class="card-body">
-                    <span class="fa fa-users fa-2x  mt-5"></span>
-                </div>
-                <div class="card-footer">
-                    <h5>CLIENTES</h5>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated slideInDown" onclick="onMenuDisplay('MenuFichasTecnicas');">
-            <div class="card text-center">
-                <div class="card-body">
-                    <span class="fa fa-file-invoice fa-2x  mt-5"></span>
-                </div>
-                <div class="card-footer">
-                    <h5>FICHAS TÉCNICAS</h5>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated slideInRight" onclick="onMenuDisplay('MenuProduccion');">
-            <div class="card text-center">
-                <div class="card-body">
-                    <span class="fa fa-industry fa-2x  mt-5"></span>
-                </div>
-                <div class="card-footer">
-                    <h5>PRODUCCIÓN</h5>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated slideInLeft" onclick="onMenuDisplay('MenuContabilidad');">
-            <div class="card text-center">
-                <div class="card-body">
-                    <span class="fa fa-calculator fa-2x  mt-5"></span>
-                </div>
-                <div class="card-footer">
-                    <h5>CONTABILIDAD</h5>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated slideInUp" onclick="onMenuDisplay('MenuNomina');">
-            <div class="card text-center">
-                <div class="card-body">
-                    <span class="fa fa-hand-holding-usd fa-2x  mt-5"></span>
-                </div>
-                <div class="card-footer">
-                    <h5>NOMINAS</h5>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated slideInRight" onclick="onMenuDisplay('MenuParametros');">
-            <div class="card text-center">
-                <div class="card-body">
-                    <span class="fa fa-cogs fa-2x  mt-5"></span>
-                </div>
-                <div class="card-footer">
-                    <h5>PARÁMETROS</h5>
-                </div>
-            </div>
-        </div>
-        <!--<div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2"></div>
-        <div class="col-12 col-sm-12 col-md-10 col-lg-10 col-xl-10">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h1 style="font-size: 130px; font-style: italic;">SHOESYSTEM ERP</h1>
-                </div>
-                <div class="card-footer">
-                    <h1 style="font-size: 100px;">TO LOBO SOLO</h1>
-                </div>
-            </div>
-        </div>-->
-    </div>
+    <div id="MnuBlock" class="col-12 row justify-content-center mt-2" align="center"></div>
 </div>
 <style>
-
     .col-1, .col-2, .col-3, .col-4, .col-5,
     .col-6, .col-7, .col-8, .col-9, .col-10,
     .col-11, .col-12, .col, .col-auto, .col-sm-1,
@@ -170,6 +77,31 @@
     function onMenuDisplay(e) {
         window.location.href = '<?php print base_url(); ?>' + e + '.shoes/';
     }
+
+    $(document).ready(function () {
+        $.getJSON('<?php print base_url('ResourceManager/getModulos'); ?>').done(function (data) {
+            var modulo = "";
+            if (data.length > 0) {
+                $.each(data, function (k, v) {
+                    modulo += '<div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated bounceIn" onclick="onMenuDisplay(\'' + v.Ref + '\');">';
+                    modulo += '<div class="card text-center">';
+                    modulo += '<div class="card-body">';
+                    modulo += '<span class="fa fa-' + v.Icon + ' fa-2x mt-5"></span>';
+                    modulo += '</div>';
+                    modulo += '<div class="card-footer">';
+                    modulo += '<h5>' + v.Modulo + '</h5>';
+                    modulo += '</div>';
+                    modulo += '</div>';
+                    modulo += '</div>';
+                });
+                $("#MnuBlock").html(modulo);
+            } else {
+                swal('ATENCIÓN', 'LO SENTIMOS, NO PUDIMOS CONECTAR CON LA BASE DE DATOS', 'error');
+            }
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+        });
+    });
 </script>
 <script>
     $.ajax({

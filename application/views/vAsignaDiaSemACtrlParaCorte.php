@@ -554,6 +554,7 @@
 
     function getFracciones() {
         Fraccion.selectize({
+            plugins: ['remove_button'],
             maxItems: 2,
             delimiter: ',',
             persist: true,
