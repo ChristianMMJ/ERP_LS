@@ -9,7 +9,7 @@ class AsignaPFTSACXC extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('AsignaPFTSACXC_model');
+        $this->load->library('session')->model('AsignaPFTSACXC_model','apftsacxc');
     }
 
     public function index() {
@@ -34,7 +34,7 @@ class AsignaPFTSACXC extends CI_Controller {
 
     public function onChecarSemanaValida() {
         try {
-            print json_encode($this->AsignaPFTSACXC_model->onChecarSemanaValida($this->input->get('ID')));
+            print json_encode($this->apftsacxc->onChecarSemanaValida($this->input->get('ID')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -42,7 +42,7 @@ class AsignaPFTSACXC extends CI_Controller {
 
     public function getControlesAsignados() {
         try {
-            print json_encode($this->AsignaPFTSACXC_model->getControlesAsignados());
+            print json_encode($this->apftsacxc->getControlesAsignados());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -50,7 +50,7 @@ class AsignaPFTSACXC extends CI_Controller {
 
     public function getRegresos() {
         try {
-            print json_encode($this->AsignaPFTSACXC_model->getRegresos());
+            print json_encode($this->apftsacxc->getRegresos());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -58,7 +58,7 @@ class AsignaPFTSACXC extends CI_Controller {
 
     public function getEmpleados() {
         try {
-            print json_encode($this->AsignaPFTSACXC_model->getEmpleados());
+            print json_encode($this->apftsacxc->getEmpleados());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -66,7 +66,7 @@ class AsignaPFTSACXC extends CI_Controller {
 
     public function getParesXControl() {
         try {
-            print json_encode($this->AsignaPFTSACXC_model->getParesXControl($this->input->get('CONTROL')));
+            print json_encode($this->apftsacxc->getParesXControl($this->input->get('CONTROL')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -74,7 +74,11 @@ class AsignaPFTSACXC extends CI_Controller {
 
     public function getPieles() {
         try { 
-            print json_encode($this->AsignaPFTSACXC_model->getPieles(isset($_GET['SEMANA']) ? $this->input->get('SEMANA') : '', isset($_GET['CONTROL']) ? $this->input->get('CONTROL') : ''));
+            $x = $this->input;
+            print json_encode($this->apftsacxc->getPieles(
+                    isset($_POST['SEMANA']) ? $x->post('SEMANA') : '', 
+                    isset($_POST['CONTROL']) ? $x->post('CONTROL') : '', 
+                    $x->post('FT')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -82,7 +86,11 @@ class AsignaPFTSACXC extends CI_Controller {
 
     public function getForros() {
         try {
-            print json_encode($this->AsignaPFTSACXC_model->getForros(isset($_GET['SEMANA']) ? $this->input->get('SEMANA') : '', isset($_GET['CONTROL']) ? $this->input->get('CONTROL') : ''));
+            $x = $this->input;
+            print json_encode($this->apftsacxc->getForros(
+                    isset($_POST['SEMANA']) ? $x->post('SEMANA') : '', 
+                    isset($_POST['CONTROL']) ? $x->post('CONTROL') : '', 
+                    $x->post('FT')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -90,7 +98,11 @@ class AsignaPFTSACXC extends CI_Controller {
 
     public function getTextiles() {
         try {
-            print json_encode($this->AsignaPFTSACXC_model->getTextiles(isset($_GET['SEMANA']) ? $this->input->get('SEMANA') : '', isset($_GET['CONTROL']) ? $this->input->get('CONTROL') : ''));
+            $x = $this->input;
+            print json_encode($this->apftsacxc->getTextiles(
+                    isset($_POST['SEMANA']) ? $x->post('SEMANA') : '', 
+                    isset($_POST['CONTROL']) ? $x->post('CONTROL') : '', 
+                    $x->post('FT')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -98,7 +110,10 @@ class AsignaPFTSACXC extends CI_Controller {
 
     public function getSinteticos() {
         try {
-            print json_encode($this->AsignaPFTSACXC_model->getSinteticos(isset($_GET['SEMANA']) ? $this->input->get('SEMANA') : '', isset($_GET['CONTROL']) ? $this->input->get('CONTROL') : ''));
+            $x = $this->input;
+            print json_encode($this->apftsacxc->getSinteticos(
+                    isset($_POST['SEMANA']) ? $x->post('SEMANA') : '', 
+                    isset($_POST['CONTROL']) ? $x->post('CONTROL') : '',  $x->post('FT')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -106,7 +121,7 @@ class AsignaPFTSACXC extends CI_Controller {
 
     public function getExplosionXSemanaControlFraccionArticulo() {
         try {
-            print json_encode($this->AsignaPFTSACXC_model->getExplosionXSemanaControlFraccionArticulo($this->input->get('SEMANA'), $this->input->get('CONTROL'), $this->input->get('FRACCION'), $this->input->get('ARTICULO'), $this->input->get('GRUPO')));
+            print json_encode($this->apftsacxc->getExplosionXSemanaControlFraccionArticulo($this->input->get('SEMANA'), $this->input->get('CONTROL'), $this->input->get('FRACCION'), $this->input->get('ARTICULO'), $this->input->get('GRUPO')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -116,12 +131,12 @@ class AsignaPFTSACXC extends CI_Controller {
         try {
             $x = $this->input;
             /* COMPROBAR SI YA EXISTE EL REGISTRO POR EMPLEADO,SEMANA, CONTROL, FRACCION, ARTICULO */
-            $DT = $this->AsignaPFTSACXC_model->onComprobarEntrega($x->post('SEMANA'), $x->post('CONTROL'), $x->post('ARTICULO'), $x->post('FRACCION'));
+            $DT = $this->apftsacxc->onComprobarEntrega($x->post('SEMANA'), $x->post('CONTROL'), $x->post('ARTICULO'), $x->post('FRACCION'));
             /* EXISTE LA POSIBILIDAD DE QUE LA FRACCION SEA DIFERENTE Y QUE HAGA UN NUEVO REGISTRO */
             if (count($DT) > 0) {
                 $this->db->set('Cargo', ( $DT[0]->Cargo + $x->post('ENTREGA')))->where('ID', $DT[0]->ID)->update('asignapftsacxc');
             } else {
-                $PRECIO = $this->AsignaPFTSACXC_model->onObtenerPrecioMaquila($x->post('ARTICULO'));
+                $PRECIO = $this->apftsacxc->onObtenerPrecioMaquila($x->post('ARTICULO'));
                 $data = array(
                     'PrecioProgramado' => $PRECIO[0]->PRECIO_MAQUILA_UNO,
                     'PrecioActual' => $PRECIO[0]->PRECIO_MAQUILA_UNO,
@@ -152,6 +167,23 @@ class AsignaPFTSACXC extends CI_Controller {
                         . " AND A.Pares = " . $x->post('PARES')
                         . " AND A.Semana = " . $x->post('SEMANA')
                         . " AND A.Fraccion = " . $x->post('FRACCION'));
+                /* GENERAR AVANCE DE CONTROL A CORTE */
+
+                /* COMPROBAR SI YA EXISTE UN REGISTRO DE ESTE AVANCE PARA NO GENERAR DOS AVANCES AL MISMO DEPTO EN CASO DE QUE LLEGUEN A PEDIR MÁS MATERIAL */
+                $avance = array(
+                    'Control' => $x->post('CONTROL'),
+                    'FechaAProduccion' => Date('d/m/Y'),
+                    'Departamento' => 10,
+                    'DepartamentoT' => 'CORTE',
+                    'FechaAvance' => Date('d/m/Y'),
+                    'Estatus' => 'A',
+                    'Usuario' => $_SESSION["ID"],
+                    'Fecha' => Date('d/m/Y'),
+                    'Hora' => Date('h:i:s a')
+                );
+                $this->db->insert('avance', $avance);
+                /* FIN DE AVANCE DE CONTROL A CORTE */
+
                 if ($this->db->trans_status() === FALSE) {
                     $this->db->trans_rollback();
                 } else {
@@ -172,7 +204,7 @@ class AsignaPFTSACXC extends CI_Controller {
                     'OrdenCompra' => NULL,
                     'Subtotal' => 0
                 );
-                $this->AsignaPFTSACXC_model->onAgregarMovArt($datos);
+                $this->apftsacxc->onAgregarMovArt($datos);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -198,10 +230,10 @@ class AsignaPFTSACXC extends CI_Controller {
                     'OrdenCompra' => NULL,
                     'Subtotal' => 0
                 );
-                $this->AsignaPFTSACXC_model->onAgregarMovArt($datos);
+                $this->apftsacxc->onAgregarMovArt($datos);
 
                 /* OBTENER ULTIMO REGRESO */
-                $REGRESO = $this->AsignaPFTSACXC_model->onObtenerUltimoRegreso($x->post('ID'));
+                $REGRESO = $this->apftsacxc->onObtenerUltimoRegreso($x->post('ID'));
                 if (isset($REGRESO[0]->REGRESO)) {
                     $this->db->set('Empleado', $x->post('EMPLEADO'))->set('Empleado', $x->post('EMPLEADO'))
                             ->set('Devolucion', $x->post('REGRESO') + $REGRESO[0]->REGRESO)
@@ -229,7 +261,7 @@ class AsignaPFTSACXC extends CI_Controller {
                         'OrdenCompra' => NULL,
                         'Subtotal' => 0
                     );
-                    $this->AsignaPFTSACXC_model->onAgregarMovArt($datos);
+                    $this->apftsacxc->onAgregarMovArt($datos);
                     /**/
                     $this->db->set('Empleado', $x->post('EMPLEADO'))
                             ->set('Basura', $x->post('REGRESO'))

@@ -50,6 +50,9 @@
                             <a class="dropdown-item" href="<?php print base_url('HojasDeEstudioTiempos.shoes/?origen=PRODUCCION'); ?>"><span class="fa fa-swatchbook"></span> Hojas de estudios y tiempos</a>                    
                         </div>
                     </li>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?php print base_url('Avance.shoes/?origen=PRODUCCION'); ?>"><span class="fa fa-arrow-right"></span> Captura de avance</a>                    
+
                 </ul>
             </li>
             <li class="nav-item dropdown">

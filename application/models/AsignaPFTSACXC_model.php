@@ -20,26 +20,29 @@ class AsignaPFTSACXC_model extends CI_Model {
         }
     }
 
-    public function getPieles($SEMANA, $CONTROL) {
+    public function getPieles($SEMANA, $CONTROL, $FT) {
         try {
-            $this->db->select("OP.ID, OP.ControlT AS CONTROL, OPD.Articulo AS ARTICULO_CLAVE, "
+            $xdb = $this->db;
+            $xdb->select("OP.ID, OP.ControlT AS CONTROL, OPD.Articulo AS ARTICULO_CLAVE, "
                             . "OPD.ArticuloT AS ARTICULO_DESCRIPCION, OPD.UnidadMedidaT AS UM, OPD.Pieza AS PIEZA, "
                             . "OPD.PiezaT AS PIEZA_DESCRIPCION, OPD.Grupo AS GRUPO, FORMAT(OPD.Cantidad,3) AS CANTIDAD, "
-                            . "OP.ControlT AS CONTROL, OP.Semana AS SEMANA, GROUP_CONCAT(F.Clave ORDER BY F.Clave ASC) AS FRACCION, "
+                            . "OP.ControlT AS CONTROL, OP.Semana AS SEMANA, CONCAT(96,99,100) AS FRACCION, "
                             . "OP.Pares AS PARES")
                     ->from("ordendeproduccion AS OP")
-                    ->join('ordendeproducciond AS OPD', 'OP.ID = OPD.OrdenDeProduccion')
-                    ->join('fraccionesxestilo AS FXE', 'OP.Estilo = FXE.Estilo')
-                    ->join('fracciones AS F', 'FXE.Fraccion = F.Clave');
+                    ->join('ordendeproducciond AS OPD', 'OP.ID = OPD.OrdenDeProduccion');
             if ($SEMANA !== '' && $CONTROL !== '') {
-                $this->db->where('OP.Semana', $SEMANA)->where('OP.ControlT', $CONTROL);
+                $xdb->where('OP.Semana', $SEMANA)->where('OP.ControlT', $CONTROL);
             }
-           return $this->db->where('OPD.Grupo', 1)->where('F.Departamento', 10)
+            $xdb->where('OPD.Grupo', 1)->where('OPD.Departamento', 10)
                     ->group_by('OPD.OrdenDeProduccion')
                     ->group_by('OP.ControlT')
                     ->group_by('OPD.Pieza')
                     ->group_by('OPD.Articulo')
-                    ->group_by('OPD.UnidadMedidaT')->get()->result(); 
+                    ->group_by('OPD.UnidadMedidaT');
+            if ($FT === 1 || $FT === '1') {
+                $xdb->limit(50);
+            }
+            return $xdb->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -74,72 +77,82 @@ class AsignaPFTSACXC_model extends CI_Model {
         }
     }
 
-    public function getForros($SEMANA, $CONTROL) {
+    public function getForros($SEMANA, $CONTROL, $FT) {
         try {
             $this->db->select("OP.ID, OP.ControlT AS CONTROL, OPD.Articulo AS ARTICULO_CLAVE, "
                             . "OPD.ArticuloT AS ARTICULO_DESCRIPCION, OPD.UnidadMedidaT AS UM, OPD.Pieza AS PIEZA, "
                             . "OPD.PiezaT AS PIEZA_DESCRIPCION, OPD.Grupo AS GRUPO, FORMAT(OPD.Cantidad,3) AS CANTIDAD, "
-                            . "OP.Semana AS SEMANA, GROUP_CONCAT(F.Clave ORDER BY F.Clave ASC) AS FRACCION, OP.Pares AS PARES")
+                            . "OP.ControlT AS CONTROL, OP.Semana AS SEMANA, CONCAT(96,99,100) AS FRACCION, "
+                            . "OP.Pares AS PARES")
                     ->from("ordendeproduccion AS OP")
-                    ->join('ordendeproducciond AS OPD', 'OP.ID = OPD.OrdenDeProduccion')
-                    ->join('fraccionesxestilo AS FXE', 'OP.Estilo = FXE.Estilo')
-                    ->join('fracciones AS F', 'FXE.Fraccion = F.Clave');
+                    ->join('ordendeproducciond AS OPD', 'OP.ID = OPD.OrdenDeProduccion');
             if ($SEMANA !== '' && $CONTROL !== '') {
                 $this->db->where('OP.Semana', $SEMANA)->where('OP.ControlT', $CONTROL);
             }
-            return $this->db->where('OPD.Grupo', 2)->where('F.Departamento', 10)
-                            ->group_by('OPD.OrdenDeProduccion')
-                            ->group_by('OP.ControlT')
-                            ->group_by('OPD.Pieza')
-                            ->group_by('OPD.Articulo')
-                            ->group_by('OPD.UnidadMedidaT')->get()->result();
+            $this->db->where('OPD.Grupo', 2)->where('OPD.Departamento', 10)
+                    ->group_by('OPD.OrdenDeProduccion')
+                    ->group_by('OP.ControlT')
+                    ->group_by('OPD.Pieza')
+                    ->group_by('OPD.Articulo')
+                    ->group_by('OPD.UnidadMedidaT');
+            if ($FT === 1 || $FT === '1') {
+                $this->db->limit(50);
+            }
+            return $this->db->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getTextiles($SEMANA, $CONTROL) {
+    public function getTextiles($SEMANA, $CONTROL, $FT) {
         try {
-            $this->db->select("`OP`.`ID`, `OP`.`ControlT` AS `CONTROL`, `OPD`.`Articulo` AS `ARTICULO_CLAVE`, `OPD`.`ArticuloT` AS `ARTICULO_DESCRIPCION`, 
-`OPD`.`UnidadMedidaT` AS `UM`, `OPD`.`Pieza` AS `PIEZA`, `OPD`.`PiezaT` AS `PIEZA_DESCRIPCION`, `OPD`.`Grupo` AS `GRUPO`, 
-FORMAT(OPD.Cantidad, 3) AS CANTIDAD, `OP`.`Semana` AS `SEMANA`, GROUP_CONCAT(F.Clave ORDER BY F.Clave ASC) AS FRACCION, OP.Pares AS PARES")
+            $this->db->select("OP.ID, OP.ControlT AS CONTROL, OPD.Articulo AS ARTICULO_CLAVE, "
+                            . "OPD.ArticuloT AS ARTICULO_DESCRIPCION, OPD.UnidadMedidaT AS UM, OPD.Pieza AS PIEZA, "
+                            . "OPD.PiezaT AS PIEZA_DESCRIPCION, OPD.Grupo AS GRUPO, FORMAT(OPD.Cantidad,3) AS CANTIDAD, "
+                            . "OP.ControlT AS CONTROL, OP.Semana AS SEMANA, CONCAT(96,99,100) AS FRACCION, "
+                            . "OP.Pares AS PARES")
                     ->from("ordendeproduccion AS OP")
-                    ->join('ordendeproducciond AS OPD', 'OP.ID = OPD.OrdenDeProduccion')
-                    ->join('fraccionesxestilo AS FXE', 'OP.Estilo = FXE.Estilo')
-                    ->join('fracciones AS F', 'FXE.Fraccion = F.Clave');
+                    ->join('ordendeproducciond AS OPD', 'OP.ID = OPD.OrdenDeProduccion');
             if ($SEMANA !== '' && $CONTROL !== '') {
                 $this->db->where('OP.Semana', $SEMANA)->where('OP.ControlT', $CONTROL);
             }
-            return $this->db->where('OPD.Grupo', 34)->where('F.Departamento', 10)
-                            ->group_by('OPD.OrdenDeProduccion')
-                            ->group_by('OP.ControlT')
-                            ->group_by('OPD.Pieza')
-                            ->group_by('OPD.Articulo')
-                            ->group_by('OPD.UnidadMedidaT')->get()->result();
+            $this->db->where('OPD.Grupo', 34)->where('OPD.Departamento', 10)
+                    ->group_by('OPD.OrdenDeProduccion')
+                    ->group_by('OP.ControlT')
+                    ->group_by('OPD.Pieza')
+                    ->group_by('OPD.Articulo')
+                    ->group_by('OPD.UnidadMedidaT');
+            if ($FT === 1 || $FT === '1') {
+                $this->db->limit(50);
+            }
+            return $this->db->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function getSinteticos($SEMANA, $CONTROL) {
+    public function getSinteticos($SEMANA, $CONTROL, $FT) {
         try {
             $this->db->select("OP.ID, OP.ControlT AS CONTROL, OPD.Articulo AS ARTICULO_CLAVE, "
                             . "OPD.ArticuloT AS ARTICULO_DESCRIPCION, OPD.UnidadMedidaT AS UM, OPD.Pieza AS PIEZA, "
                             . "OPD.PiezaT AS PIEZA_DESCRIPCION, OPD.Grupo AS GRUPO, FORMAT(OPD.Cantidad,3) AS CANTIDAD, "
-                            . "OP.Semana AS SEMANA, GROUP_CONCAT(F.Clave ORDER BY F.Clave ASC) AS FRACCION, OP.Pares AS PARES")
+                            . "OP.ControlT AS CONTROL, OP.Semana AS SEMANA, CONCAT(96,99,100) AS FRACCION, "
+                            . "OP.Pares AS PARES")
                     ->from("ordendeproduccion AS OP")
-                    ->join('ordendeproducciond AS OPD', 'OP.ID = OPD.OrdenDeProduccion')
-                    ->join('fraccionesxestilo AS FXE', 'OP.Estilo = FXE.Estilo')
-                    ->join('fracciones AS F', 'FXE.Fraccion = F.Clave');
+                    ->join('ordendeproducciond AS OPD', 'OP.ID = OPD.OrdenDeProduccion');
             if ($SEMANA !== '' && $CONTROL !== '') {
                 $this->db->where('OP.Semana', $SEMANA)->where('OP.ControlT', $CONTROL);
             }
-            return $this->db->where('OPD.Grupo', 40)->where('F.Departamento', 10)
-                            ->group_by('OPD.OrdenDeProduccion')
-                            ->group_by('OP.ControlT')
-                            ->group_by('OPD.Pieza')
-                            ->group_by('OPD.Articulo')
-                            ->group_by('OPD.UnidadMedidaT')->get()->result();
+            $this->db->where('OPD.Grupo', 40)->where('OPD.Departamento', 10)
+                    ->group_by('OPD.OrdenDeProduccion')
+                    ->group_by('OP.ControlT')
+                    ->group_by('OPD.Pieza')
+                    ->group_by('OPD.Articulo')
+                    ->group_by('OPD.UnidadMedidaT');
+            if ($FT === 1 || $FT === '1') {
+                $this->db->limit(50);
+            }
+            return $this->db->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -216,4 +229,5 @@ FORMAT(OPD.Cantidad, 3) AS CANTIDAD, `OP`.`Semana` AS `SEMANA`, GROUP_CONCAT(F.C
             echo $exc->getTraceAsString();
         }
     }
+
 }

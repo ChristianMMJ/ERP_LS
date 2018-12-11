@@ -1,4 +1,4 @@
-<div class="card m-3 animated fadeIn" id="pnlTablero">
+<div class="card m-3" id="pnlTablero">
     <div class="card-header">
         <div class="row">
             <div class="col-12 col-sm-12 col-md-2">
@@ -18,15 +18,15 @@
         <div class="row" style="padding-left: 15px">
             <div class="col-12 col-sm-6 col-md-6 col-lg-2 col-xl-1" align="left">
                 <strong>Semana</strong>
-                <input type="text" class="form-control form-control-sm column_filter numbersOnly" id="Semana" autofocus onkeyup="onChecarSemanaValida(this)">
+                <input type="text" class="form-control form-control-sm column_filter numbersOnly" id="Semana" data-toggle="tooltip" data-placement="bottom" title="Por favor escriba la semana..." autofocus onkeyup="onChecarSemanaValida(this)">
             </div>
             <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-2" align="left">
                 <strong>Control</strong>
-                <input type="text" class="form-control form-control-sm column_filter" id="Control">
+                <input type="text" class="form-control form-control-sm column_filter" id="Control" data-toggle="tooltip" data-placement="bottom" title="Especifique el control..." >
             </div>
             <div class="col-12 col-sm-6 col-md-6 col-lg-2 col-xl-2" align="left">
                 <strong>Fracción</strong>
-                <input type="text" class="form-control form-control-sm column_filter numbersOnly" id="Fraccion">
+                <input type="text" class="form-control form-control-sm column_filter numbersOnly" id="Fraccion" data-toggle="tooltip" data-placement="bottom" title="Indique la fracción: 96,99,100">
             </div>
             <div class="col-12 col-sm-6 col-md-6 col-lg-5 col-xl-3" align="left">
                 <strong>Artículo</strong>
@@ -43,7 +43,7 @@
             </div>
             <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-1" align="left">
                 <strong>Entregar</strong>
-                <input type="text" class="form-control form-control-sm numbersOnly" readonly="" id="Entregar" onkeyup="">
+                <input type="text" class="form-control form-control-sm numbersOnly" readonly="" id="Entregar" onkeyup=""  data-toggle="tooltip" data-placement="bottom" title="Presiona Enter para aceptar">
             </div>
             <div class="col-2 col-sm-2 col-md-2 col-lg-1 col-xl-1 mt-4 text-center" align="center">
                 <div class="custom-control custom-checkbox"  align="center" style="cursor: pointer !important;">
@@ -398,7 +398,7 @@
     var tblRegresos = mdlRetornaMaterial.find("#tblRegresos"), Regresos = $("#Regresos");
     var btnAceptar = mdlRetornaMaterial.find("#btnAceptar"), MatMalo = mdlRetornaMaterial.find("#MatMalo");
 
-    var tipo_consumo = 0;
+    var tipo_consumo = 0, FT = 1;
 
     $(document).ready(function () {
 
@@ -408,7 +408,6 @@
                 mdlRetornaMaterial.find("#tblRegresos tbody tr").removeClass("highlight-rows");
             }, 2500);
         });
-
         mdlRetornaMaterial.find("#PielForro").change(function () {
             if ($(this).val() !== '') {
                 mdlRetornaMaterial.find("#Control").focus();
@@ -424,13 +423,11 @@
                 tblRegresos.DataTable().column(11).search('').draw();
             }
         });
-
         MatMalo.keydown(function (e) {
             if (e.keyCode === 13) {
                 btnAceptar.focus();
             }
         });
-
         btnAceptar.click(function () {
             if (mdlRetornaMaterial.find("#Entrego").val() !== '' || mdlRetornaMaterial.find("#Regreso").val() !== '') {
                 onDevolverPielForro();
@@ -443,7 +440,6 @@
                 });
             }
         });
-
         mdlRetornaMaterial.find("#Control").change(function () {
             getParesXControl($(this));
         }).keyup(function () {
@@ -451,23 +447,19 @@
         }).keypress(function () {
             getParesXControl($(this));
         });
-
         mdlRetornaMaterial.find("#Cortador").change(function () {
             if ($(this).val() !== '') {
                 mdlRetornaMaterial.find("#PielForro")[0].selectize.open();
                 mdlRetornaMaterial.find("#PielForro")[0].selectize.focus();
             }
         });
-
         mdlRetornaMaterial.on('webkitAnimationStart', function () {
             mdlRetornaMaterial.find("#Cortador")[0].selectize.clear(true);
         });
-
         mdlRetornaMaterial.on('webkitAnimationEnd', function () {
             mdlRetornaMaterial.find("#Cortador")[0].selectize.open();
             mdlRetornaMaterial.find("#Cortador")[0].selectize.focus();
         });
-
         btnRetornaMaterial.click(function () {
             mdlRetornaMaterial.find("input").val("");
             $.each(mdlRetornaMaterial.find("select"), function (k, v) {
@@ -476,13 +468,11 @@
             Regresos.ajax.reload();
             mdlRetornaMaterial.modal('show');
         });
-
         Entregar.keydown(function (event) {
             if (event.which === 13) {
                 onEntregar(this, event);
             }
         });
-
         btnReload.click(function () {
             Semana.val('');
             Control.val('');
@@ -490,10 +480,7 @@
             tipo_consumo = 0;
             init();
         });
-
         $("div > h4").removeClass("d-none");
-        $("div > h4").addClass("animated fadeInDown");
-
         Semana.focus();
         var cols = [
             {"data": "ID"}/*0*/, {"data": "CONTROL"}/*1*/,
@@ -526,11 +513,17 @@
             }
         ];
         var xoptions = {
-            "dom": 'rt',
+            "dom": 'rit',
             buttons: buttons,
             "ajax": {
                 "url": master_url + 'getPieles',
-                "dataSrc": ""
+                "type": "POST",
+                "dataSrc": "",
+                "data": function (d) {
+                    d.SEMANA = (Semana.val().trim());
+                    d.CONTROL = (Control.val().trim());
+                    d.FT = FT;
+                }
             },
             "columns": cols,
             "columnDefs": coldefs,
@@ -559,15 +552,20 @@
                 Articulo.val(data.ARTICULO_DESCRIPCION);
                 Pares.val(data.PARES);
                 getExplosionXSemanaControlFraccionArticulo(Semana, Control, Fraccion, data.ARTICULO_CLAVE, 1);
-                tipo_consumo = 1;/*PIEL*/
+                tipo_consumo = 1; /*PIEL*/
             } else {
                 onUnSelect();
             }
         });
-
         xoptions.ajax = {
             "url": master_url + 'getForros',
-            "dataSrc": ""
+            "type": "POST",
+            "dataSrc": "",
+            "data": function (d) {
+                d.SEMANA = (Semana.val().trim());
+                d.CONTROL = (Control.val().trim());
+                d.FT = FT;
+            }
         };
         Forros = tblForros.DataTable(xoptions);
         tblForros.on('click', 'tr', function () {
@@ -579,15 +577,20 @@
                 Articulo.val(data.ARTICULO_DESCRIPCION);
                 Pares.val(data.PARES);
                 getExplosionXSemanaControlFraccionArticulo(Semana, Control, Fraccion, data.ARTICULO_CLAVE, 2);
-                tipo_consumo = 2;/*FORRO*/
+                tipo_consumo = 2; /*FORRO*/
             } else {
                 onUnSelect();
             }
         });
-
         xoptions.ajax = {
             "url": master_url + 'getTextiles',
-            "dataSrc": ""
+            "type": "POST",
+            "dataSrc": "",
+            "data": function (d) {
+                d.SEMANA = (Semana.val().trim());
+                d.CONTROL = (Control.val().trim());
+                d.FT = FT;
+            }
         };
         Textiles = tblTextiles.DataTable(xoptions);
         tblTextiles.on('click', 'tr', function () {
@@ -599,17 +602,22 @@
                 Articulo.val(data.ARTICULO_DESCRIPCION);
                 Pares.val(data.PARES);
                 getExplosionXSemanaControlFraccionArticulo(Semana, Control, Fraccion, data.ARTICULO_CLAVE, 34);
-                tipo_consumo = 34;/*TEXTIL*/
+                tipo_consumo = 34; /*TEXTIL*/
             } else {
                 onUnSelect();
             }
         });
         xoptions.ajax = {
             "url": master_url + 'getSinteticos',
-            "dataSrc": ""
+            "type": "POST",
+            "dataSrc": "",
+            "data": function (d) {
+                d.SEMANA = (Semana.val().trim());
+                d.CONTROL = (Control.val().trim());
+                d.FT = FT;
+            }
         };
         Sinteticos = tblSinteticos.DataTable(xoptions);
-
         tblSinteticos.on('click', 'tr', function () {
             if (Semana.val() !== '' && Control.val() !== '' && Fraccion.val() !== '') {
                 var data = Sinteticos.row(this).data();
@@ -619,7 +627,7 @@
                 Articulo.val(data.ARTICULO_DESCRIPCION);
                 Pares.val(data.PARES);
                 getExplosionXSemanaControlFraccionArticulo(Semana, Control, Fraccion, data.ARTICULO_CLAVE, 40);
-                tipo_consumo = 40;/*SINTETICOS*/
+                tipo_consumo = 40; /*SINTETICOS*/
             } else {
                 onUnSelect();
             }
@@ -628,9 +636,10 @@
         Forros.order([1, 'desc']).draw();
         Textiles.order([1, 'desc']).draw();
         Sinteticos.order([1, 'desc']).draw();
-
-        Fraccion.on('keyup', function () {
-            onBuscarX(10, Fraccion.val());
+        Fraccion.on('keydown', function (e) {
+            if (e.keyCode === 13) {
+                onBuscarX(10, Fraccion.val());
+            }
         }).focusout(function () {
             if (Explosion.val() === '') {
                 tblPieles.find("tbody tr").addClass("highlight-rows");
@@ -645,15 +654,28 @@
                 }, 2500);
             }
         });
-
-        Semana.on('keyup', function () {
-            onBuscarX(9, Semana.val());
+        Semana.on('keydown', function (e) {
+            FT = 0;
+            if (e.keyCode === 13) {
+                HoldOn.open({theme: 'sk-bounce', message: 'Buscando por semana...'});
+                Pieles.ajax.reload(function () {
+                    HoldOn.close();
+                });
+                Forros.ajax.reload();
+                Sinteticos.ajax.reload();
+                Textiles.ajax.reload();
+            }
         });
 
-        Control.on('keyup', function () {
-            onBuscarX(1, Control.val());
+        Control.on('keydown', function (e) {
+            FT = 0;
+            if (e.keyCode === 13) {
+                Pieles.ajax.reload();
+                Forros.ajax.reload();
+                Sinteticos.ajax.reload();
+                Textiles.ajax.reload();
+            }
         });
-
         $.fn.dataTable.ext.errMode = 'throw';
         if ($.fn.DataTable.isDataTable('#tblControlesAsignados')) {
             tblControlesAsignados.DataTable().destroy();
@@ -691,7 +713,6 @@
                 $("#tblControlesAsignados_filter").find("input").addClass("selectNotEnter");
             }
         });
-
         $.fn.dataTable.ext.errMode = 'throw';
         if ($.fn.DataTable.isDataTable('#tblRegresos')) {
             tblRegresos.DataTable().destroy();
@@ -730,7 +751,6 @@
                 [1, 'desc']/*ID*/
             ]
         });
-
         tblRegresos.on('click', 'tr', function () {
             var data = Regresos.row(this).data();
             console.log('Regresos', data);
@@ -743,7 +763,6 @@
             mdlRetornaMaterial.find("#AnteriormenteRetorno").val(data.Regreso);
             mdlRetornaMaterial.find("#Regreso").focus();
         });
-
         init();
     });
 
@@ -771,7 +790,6 @@
             });
             $.getJSON(master_url + 'getExplosionXSemanaControlFraccionArticulo',
                     {SEMANA: S.val(), CONTROL: C.val(), FRACCION: F.val(), ARTICULO: A, GRUPO: G}).done(function (data) {
-                console.log(data, data.length);
                 if (data.length > 0) {
                     Explosion.val(data[0].EXPLOSION);
                     Entregar.prop('readonly', false);
@@ -849,12 +867,6 @@
     function init() {
         getEmpleados();
         Semana.focus();
-        Pieles.ajax.reload();
-        Forros.ajax.reload();
-        Textiles.ajax.reload();
-        Sinteticos.ajax.reload();
-        ControlesAsignados.ajax.reload();
-        Regresos.ajax.reload();
         onBuscarX(1, '');
         onBuscarX(9, '');
         onBuscarX(10, '');
@@ -938,7 +950,6 @@
     }
 
     function onEntregar(e, evt) {
-        console.log(evt, evt.keyCode, MaterialExtra[0].checked);
         var seguro = true;
         if (evt.keyCode === 13) {
             console.log('KEY CODE 13');
@@ -1039,7 +1050,6 @@
             var entrego = mdlRetornaMaterial.find("#Entrego").val(),
                     retorno = parseFloat(mdlRetornaMaterial.find("#AnteriormenteRetorno").val()) + parseFloat(mdlRetornaMaterial.find("#Regreso").val());
             console.log(entrego, '|', entrego + ' >=' + retorno, ' ', entrego >= retorno);
-
             if (entrego >= retorno || parseInt(entrego) === 0) {
                 if (mdlRetornaMaterial.find("#ID").val() !== '') {
                     onRetornar();
@@ -1130,24 +1140,26 @@
     .highlight-rows{ 
         width:100px;
         height:20px;
-        background:#99cc00;
+        color: #000;
+        background:#ffcc33;
         animation: myfirst .4s;
         -moz-animation:myfirst .4s infinite; /* Firefox */
         -webkit-animation:myfirst .4s infinite; /* Safari and Chrome */
+        font-weight: bold;
     }
 
     @-moz-keyframes myfirst /* Firefox */
     {
-        0%   {background:0066cc; color:#fff;}
+        0%   {background:#ffcc33; color:#000;}
         50%  {background:#ffffff;color:#000;}
-        100%   {background:#0066cc;color:#fff;}
+        100%   {background:#ffcc33;color:#000;}
     }
 
     @-webkit-keyframes myfirst /* Firefox */
     {
-        0%   {background:#0066cc;color:#fff;}
+        0%   {background:#ffcc33;color:#000;}
         50%  {background:#ffffff;color:#000;}
-        100%   {background:#0066cc;color:#fff;}
+        100%   {background:#ffcc33;color:#000;}
     }
 
 </style>

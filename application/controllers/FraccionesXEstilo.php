@@ -66,9 +66,6 @@ class FraccionesXEstilo extends CI_Controller {
                     $this->load->view('vFraccionesXEstiloConsulta');
                     break;
             }
-
-
-
             $this->load->view('vFooter');
         } else {
             $this->load->view('vEncabezado');

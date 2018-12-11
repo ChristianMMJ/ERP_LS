@@ -19,8 +19,8 @@
             <div id="EstiloDescripcion" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 text-center" aling="center"></div>
             <div id="Departamentos" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"></div>
             <div class="col-12 col-sm-6 col-md-4 col-lg-12 col-xl-12 m-2" align="right">
-                <button type="button" class="btn btn-info animated fadeIn" id="btnImprimirTiempos" data-toggle="tooltip" data-placement="top" title="Imprimir"><span class="fa fa-print"></span> </button>
                 <button type="button" class="btn btn-primary animated fadeIn" id="btnGuardarTiempo" data-toggle="tooltip" data-placement="top" title="Guardar"><span class="fa fa-save"></span> </button>
+                <button type="button" class="btn btn-info animated fadeIn" id="btnImprimirTiempos" data-toggle="tooltip" data-placement="top" title="Imprimir"><span class="fa fa-print"></span> </button>
                 <button type="button" class="btn btn-danger animated fadeIn" id="btnCancelarTiempo" data-toggle="tooltip" data-placement="top" title="Cancelar"><span class="fa fa-times"></span> </button>
             </div>
             <div id="TiemposXEstiloDepto" class="table-responsive">

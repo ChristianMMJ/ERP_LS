@@ -12,11 +12,11 @@
                 </h4> 
             </div>
             <div class="col-4 col-md-4 col-lg-4 col-xl-4 text-center">
-                <button type="button" id="btnTiemposXEstilos" name="btnTiemposXEstilos" class="btn btn-sm btn-danger " data-toggle="tooltip" data-placement="top" title="Tiempos por estilos">
+                <button type="button" id="btnTiemposXEstilos" name="btnTiemposXEstilos" class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Tiempos por estilos">
                     <span class="fa fa-clock"></span>
                 </button>
 
-                <button type="button" id="btnFracciones" name="btnFracciones" class="btn btn-sm btn-indigo mx-4" data-toggle="tooltip" data-placement="top" title="Fracciones">
+                <button type="button" id="btnFracciones" name="btnFracciones" class="btn btn-sm btn-ok mx-4" data-toggle="tooltip" data-placement="top" title="Fracciones">
                     <span class="fa fa-puzzle-piece"></span>
                 </button>
 
@@ -273,7 +273,33 @@
     $(document).ready(function () {
 
         btnTiemposXEstilos.click(function () {
-//            mdlFracciones.modal('show');
+            $.fancybox.open({
+                src: '<?= base_url('TiemposXEstiloDepto/?origen=PRODUCCION'); ?>',
+                type: 'iframe',
+                opts: {
+                    afterShow: function (instance, current) {
+                        console.info('done!');
+                    },
+                    iframe: {
+                        // Iframe template
+                        tpl: '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen allowtransparency="true" src=""></iframe>',
+                        preload: true,
+                        // Custom CSS styling for iframe wrapping element
+                        // You can use this to set custom iframe dimensions
+                        css: {
+                            width: "100%",
+                            height: "100%"
+                        },
+                        // Iframe tag attributes
+                        attr: {
+                            scrolling: "auto"
+                        }
+                    }
+                }
+            });
+        });
+
+        btnFracciones.click(function () {
             $.fancybox.open({
                 src: '<?= base_url('Fracciones/?origen=PRODUCCION'); ?>',
                 type: 'iframe',
@@ -288,8 +314,8 @@
                         // Custom CSS styling for iframe wrapping element
                         // You can use this to set custom iframe dimensions
                         css: {
-                            width: "95%",
-                            height: "95%"
+                            width: "100%",
+                            height: "100%"
                         },
                         // Iframe tag attributes
                         attr: {
@@ -298,15 +324,33 @@
                     }
                 }
             });
-
-        });
-
-        btnFracciones.click(function () {
-//            mdlFracciones.modal('show');
         });
 
         btnFraccionesXEstilos.click(function () {
-//            mdlFracciones.modal('show');
+            $.fancybox.open({
+                src: '<?= base_url('FraccionesXEstilo/?origen=PRODUCCION'); ?>',
+                type: 'iframe',
+                opts: {
+                    afterShow: function (instance, current) {
+                        console.info('done!');
+                    },
+                    iframe: {
+                        // Iframe template
+                        tpl: '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen allowtransparency="true" src=""></iframe>',
+                        preload: true,
+                        // Custom CSS styling for iframe wrapping element
+                        // You can use this to set custom iframe dimensions
+                        css: {
+                            width: "100%",
+                            height: "100%"
+                        },
+                        // Iframe tag attributes
+                        attr: {
+                            scrolling: "auto"
+                        }
+                    }
+                }
+            });
         });
 
         btnRefrescar.click(function () {
@@ -723,6 +767,11 @@
         border-color: #3F51B5;
     }
 
+    .btn-ok{
+        color: #fff;
+        background-color: #99cc00;
+        border-color: #99cc00; 
+    }
     @-moz-keyframes illuminaterow /* Firefox */
     {
         0%   {    border: 1px solid #2196F3;        background:#ffffff ;}
@@ -751,4 +800,14 @@
         50%  {    border: 1px solid #ff0000;font-weight: bold;        background:#ffcc00;}
         100%   {border: 1px solid #2196F3; background:#ff3300;}
     } 
+
+    .animation-delay-100 {
+        -webkit-animation-delay: 0.1s;
+        animation-delay: 0.1s;
+    }
+
+    .animation-delay-200 {
+        -webkit-animation-delay: 1.7s;
+        animation-delay: 1.7s;
+    }
 </style>
