@@ -14,10 +14,10 @@
                     <span class="fa fa-user-circle"></span>  Usuarios
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCatalogos">
-                    <a class="dropdown-item" href="<?php print base_url('Usuarios.shoes') ?>"><span class="fa fa-user-circle"></span>  Usuarios</a>
-                    <a class="dropdown-item" href="<?php print base_url('ListaDePrecios.shoes') ?>"><span class="fa fa-coins"></span>  Lista de precios</a>
+                    <a class="dropdown-item" href="<?php print base_url('Usuarios.shoes'); ?>"><span class="fa fa-user-circle"></span>  Usuarios</a>
+                    <a class="dropdown-item" href="<?php print base_url('ListaDePrecios.shoes'); ?>"><span class="fa fa-coins"></span>  Lista de precios</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#"><span class="fa fa-key"></span>  Accesos</a>
+                    <a class="dropdown-item" href="<?php print base_url('Accesos.shoes'); ?>"><span class="fa fa-key"></span>  Accesos</a>
                     <a class="dropdown-item" href="#"><span class="fa fa-exclamation-circle"></span>  Token de Seguridad</a>
                 </div>
             </li>

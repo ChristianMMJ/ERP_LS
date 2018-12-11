@@ -24,7 +24,6 @@
                     <span class="fa fa-pencil-alt"></span>  Capturas
                 </a>
                 <div class="dropdown-menu dropdown-menu" aria-labelledby="navCapturas">
-                    <a class="dropdown-item" href="<?php print base_url('Proveedores/?origen=PROVEEDORES'); ?>"> </a>
                     <a class="dropdown-item" href="<?php print base_url('DocDirecSinAfectacion/?origen=PROVEEDORES'); ?>">Doc Directos Sin Afectación a Maquilas</a>
                     <a class="dropdown-item" href="<?php print base_url('PagosProveedores/?origen=PROVEEDORES'); ?>">Pagos a Proveedores por Movimiento</a>
                     <a class="dropdown-item" href="<?php print base_url('PagosProveedoresLote/?origen=PROVEEDORES'); ?>">Pagos a Proveedores por Lote</a>
@@ -56,15 +55,8 @@
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlEstadoCuentaProveedor" data-backdrop='true'> Estados de cuenta por Proveedor</a>
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlAntiguedadSaldosProveedores" data-backdrop='true'> Antigüedad de Saldos</a>
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlGeneraReciboPago" data-backdrop='true'> Genera Recibo de Pago a Proveedores</a>
-
                 </div>
-            </li>
-
-            <li class="nav-item mx-1 d-none" id="btnRegresar">
-                <a class="btn btn-danger " href="<?php print base_url(isset($_GET['parentMenu']) ? $_GET['parentMenu'] : ""); ?>">
-                    <i class="fa fa-arrow-left"></i> Regresar
-                </a>
-            </li>
+            </li> 
 
             <li class="nav-item dropdown ml-auto">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

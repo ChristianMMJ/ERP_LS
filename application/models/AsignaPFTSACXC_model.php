@@ -6,13 +6,23 @@ header('Access-Control-Allow-Origin: *');
 
 class AsignaPFTSACXC_model extends CI_Model {
 
+    private $limite_inicial = 100;
+
+    function getLimite_inicial() {
+        return $this->limite_inicial;
+    }
+
+    function setLimite_inicial($limite_inicial) {
+        $this->limite_inicial = $limite_inicial;
+    }
+
     public function __construct() {
         parent::__construct();
     }
 
     public function getControlesAsignados() {
         try {
-            $this->db->select("A.ID, A.Empleado, A.Articulo, A.Descripcion, A.Fecha, A.Cargo, A.Abono, A.Devolucion AS Dev")
+            $this->db->select("A.ID, A.Empleado, A.Articulo, A.Descripcion, A.Fecha, A.Cargo, A.Abono, A.Devolucion AS Dev, A.Control AS Control")
                     ->from("asignapftsacxc AS A");
             return $this->db->get()->result();
         } catch (Exception $exc) {
@@ -40,7 +50,7 @@ class AsignaPFTSACXC_model extends CI_Model {
                     ->group_by('OPD.Articulo')
                     ->group_by('OPD.UnidadMedidaT');
             if ($FT === 1 || $FT === '1') {
-                $xdb->limit(50);
+                $xdb->limit($this->getLimite_inicial());
             }
             return $xdb->get()->result();
         } catch (Exception $exc) {
@@ -96,7 +106,7 @@ class AsignaPFTSACXC_model extends CI_Model {
                     ->group_by('OPD.Articulo')
                     ->group_by('OPD.UnidadMedidaT');
             if ($FT === 1 || $FT === '1') {
-                $this->db->limit(50);
+                $this->db->limit($this->getLimite_inicial());
             }
             return $this->db->get()->result();
         } catch (Exception $exc) {
@@ -123,7 +133,7 @@ class AsignaPFTSACXC_model extends CI_Model {
                     ->group_by('OPD.Articulo')
                     ->group_by('OPD.UnidadMedidaT');
             if ($FT === 1 || $FT === '1') {
-                $this->db->limit(50);
+                $this->db->limit($this->getLimite_inicial());
             }
             return $this->db->get()->result();
         } catch (Exception $exc) {
@@ -150,7 +160,7 @@ class AsignaPFTSACXC_model extends CI_Model {
                     ->group_by('OPD.Articulo')
                     ->group_by('OPD.UnidadMedidaT');
             if ($FT === 1 || $FT === '1') {
-                $this->db->limit(50);
+                $this->db->limit($this->getLimite_inicial());
             }
             return $this->db->get()->result();
         } catch (Exception $exc) {

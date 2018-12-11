@@ -9,7 +9,7 @@ class AsignaPFTSACXC extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('AsignaPFTSACXC_model','apftsacxc');
+        $this->load->library('session')->model('AsignaPFTSACXC_model', 'apftsacxc');
     }
 
     public function index() {
@@ -73,12 +73,10 @@ class AsignaPFTSACXC extends CI_Controller {
     }
 
     public function getPieles() {
-        try { 
+        try {
             $x = $this->input;
             print json_encode($this->apftsacxc->getPieles(
-                    isset($_POST['SEMANA']) ? $x->post('SEMANA') : '', 
-                    isset($_POST['CONTROL']) ? $x->post('CONTROL') : '', 
-                    $x->post('FT')));
+                                    isset($_POST['SEMANA']) ? $x->post('SEMANA') : '', isset($_POST['CONTROL']) ? $x->post('CONTROL') : '', $x->post('FT')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -88,9 +86,7 @@ class AsignaPFTSACXC extends CI_Controller {
         try {
             $x = $this->input;
             print json_encode($this->apftsacxc->getForros(
-                    isset($_POST['SEMANA']) ? $x->post('SEMANA') : '', 
-                    isset($_POST['CONTROL']) ? $x->post('CONTROL') : '', 
-                    $x->post('FT')));
+                                    isset($_POST['SEMANA']) ? $x->post('SEMANA') : '', isset($_POST['CONTROL']) ? $x->post('CONTROL') : '', $x->post('FT')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -100,9 +96,7 @@ class AsignaPFTSACXC extends CI_Controller {
         try {
             $x = $this->input;
             print json_encode($this->apftsacxc->getTextiles(
-                    isset($_POST['SEMANA']) ? $x->post('SEMANA') : '', 
-                    isset($_POST['CONTROL']) ? $x->post('CONTROL') : '', 
-                    $x->post('FT')));
+                                    isset($_POST['SEMANA']) ? $x->post('SEMANA') : '', isset($_POST['CONTROL']) ? $x->post('CONTROL') : '', $x->post('FT')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -112,8 +106,7 @@ class AsignaPFTSACXC extends CI_Controller {
         try {
             $x = $this->input;
             print json_encode($this->apftsacxc->getSinteticos(
-                    isset($_POST['SEMANA']) ? $x->post('SEMANA') : '', 
-                    isset($_POST['CONTROL']) ? $x->post('CONTROL') : '',  $x->post('FT')));
+                                    isset($_POST['SEMANA']) ? $x->post('SEMANA') : '', isset($_POST['CONTROL']) ? $x->post('CONTROL') : '', $x->post('FT')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -170,18 +163,25 @@ class AsignaPFTSACXC extends CI_Controller {
                 /* GENERAR AVANCE DE CONTROL A CORTE */
 
                 /* COMPROBAR SI YA EXISTE UN REGISTRO DE ESTE AVANCE PARA NO GENERAR DOS AVANCES AL MISMO DEPTO EN CASO DE QUE LLEGUEN A PEDIR MÁS MATERIAL */
-                $avance = array(
-                    'Control' => $x->post('CONTROL'),
-                    'FechaAProduccion' => Date('d/m/Y'),
-                    'Departamento' => 10,
-                    'DepartamentoT' => 'CORTE',
-                    'FechaAvance' => Date('d/m/Y'),
-                    'Estatus' => 'A',
-                    'Usuario' => $_SESSION["ID"],
-                    'Fecha' => Date('d/m/Y'),
-                    'Hora' => Date('h:i:s a')
-                );
-                $this->db->insert('avance', $avance);
+                $check_avance = $this->db->select('COUNT(A.Control) AS EXISTE', false)->from('avance AS A')->where('A.Control', $x->post('CONTROL'))->get()->result;
+                print "\n ESTATUS DE AVANCE: ";
+                var_dump($check_avance);
+                print "\n *FIN ESTATUS DE AVANCE* \n";
+                if (count($check_avance) <= 0) {
+                    /*YA EXISTE UN AVANCE DE CORTE EN ESTE CONTROL*/
+                    $avance = array(
+                        'Control' => $x->post('CONTROL'),
+                        'FechaAProduccion' => Date('d/m/Y'),
+                        'Departamento' => 10,
+                        'DepartamentoT' => 'CORTE',
+                        'FechaAvance' => Date('d/m/Y'),
+                        'Estatus' => 'A',
+                        'Usuario' => $_SESSION["ID"],
+                        'Fecha' => Date('d/m/Y'),
+                        'Hora' => Date('h:i:s a')
+                    );
+                    $this->db->insert('avance', $avance);
+                }
                 /* FIN DE AVANCE DE CONTROL A CORTE */
 
                 if ($this->db->trans_status() === FALSE) {
