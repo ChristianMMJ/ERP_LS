@@ -2,6 +2,16 @@
 
 class PDF extends FPDF {
 
+    public $Tipo;
+
+    function getTipo() {
+        return $this->Tipo;
+    }
+
+    function setTipo($Tipo) {
+        $this->Tipo = $Tipo;
+    }
+
     function Header() {
         $this->AddFont('Calibri', '');
         $this->AddFont('Calibri', 'I');
@@ -14,7 +24,10 @@ class PDF extends FPDF {
         $this->Cell(60, 4, utf8_decode($_SESSION["EMPRESA_RAZON"]), 0/* BORDE */, 1, 'L');
         $this->SetFont('Calibri', 'B', 9);
         $this->SetX(36);
-        $this->Cell(60, 4, utf8_decode("Material a Entregar por Control "), 0/* BORDE */, 1, 'L');
+        $this->Cell(50, 4, utf8_decode("Material a Entregar por Control de: "), 0/* BORDE */, 0, 'L');
+        $this->SetX(85);
+        $this->SetFont('Calibri', '', 9);
+        $this->Cell(20, 4, utf8_decode($this->getTipo()), 0/* BORDE */, 1, 'L');
 
 
         //Paginador
@@ -35,14 +48,14 @@ class PDF extends FPDF {
 
         /* ENCABEZADO DETALLE TITULOS */
         $anchos = array(
-            30/* Control */,
+            20/* Control */,
             0/* ClaveArt */,
-            80/* Articulo */,
-            20/* UM */,
-            20/* Cantidad */,
-            55/* Requerido */
+            85/* Articulo */,
+            14/* UM */,
+            18/* Cantidad */,
+            33/* Requerido */
         );
-        $aligns = array('L', 'L', 'L', 'C', 'C', 'C');
+        $aligns = array('L', 'L', 'L', 'C', 'R', 'C');
 
         $this->SetY(20);
         $this->SetX(5);
@@ -59,14 +72,14 @@ class PDF extends FPDF {
                 ), 'B');
 
         $anchos = array(
-            30/* Control */,
-            10/* ClaveArt */,
-            70/* Articulo */,
-            20/* UM */,
-            20/* Cantidad */,
-            55/* Requerido */
+            20/* Control */,
+            12/* ClaveArt */,
+            73/* Articulo */,
+            14/* UM */,
+            18/* Cantidad */,
+            33/* Requerido */
         );
-        $aligns = array('L', 'L', 'L', 'C', 'R', 'C');
+        $aligns = array('L', 'R', 'L', 'C', 'R', 'C');
         $this->SetAligns($aligns);
         $this->SetWidths($anchos);
     }
@@ -100,7 +113,7 @@ class PDF extends FPDF {
         $this->CheckPageBreak($h);
 
         //Se pone para que depues de insertar una pagina establezca la posicion en X = 5
-        $this->SetX(5);
+        $this->SetX(40);
 
         //Draw the cells of the row
         for ($i = 0; $i < count($data); $i++) {
