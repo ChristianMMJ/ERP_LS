@@ -957,4 +957,164 @@
         var audio = new Audio('<?php print base_url(); ?>/media/' + index + '.mp3');
         audio.play();
     }
-</script>
+
+    var opcion = "";
+
+    function getMenu(m) {
+        $.post('<?php print base_url('ResourceManager/getOpcionesXModulo'); ?>', {MOD: m}).done(function (data) {
+            var dtm = JSON.parse(data);
+            if (dtm.length > 0) {
+                var uniqueNames = [], menus = [];
+                $.each(dtm, function (i, el) {
+                    if ($.inArray(el.Opcion, uniqueNames) === -1) {
+                        uniqueNames.push(el.Opcion);
+                        menus.push({Opcion: el.Opcion, Icon: el.Icon, Ref: el.Ref});
+                    }
+                });
+                var n = 0, burl = '<?php print base_url(); ?>';
+                var uitems = [], items = [], usubitems = [], subitems = [], usubsubitems = [], subsubitems = [];
+                $.each(dtm, function (i, el) {
+                    /*ITEMS*/
+                    if ($.inArray(el.Item, uitems) === -1) {
+                        uitems.push(el.Item);
+                        items.push({Opcion: el.Opcion, Item: el.Item, IconItem: el.IconItem,
+                            RefItem: el.RefItem, ItemModal: el.ItemModal,
+                            ItemBackdrop: el.ItemBackdrop, ItemDropdown: parseInt(el.ItemDropdown)});
+                    }
+                    /*ITEMS TIENEN ITEMS*/
+                    if ($.inArray(el.SubItem, usubitems) === -1) {
+                        usubitems.push(el.SubItem);
+                        subitems.push({Item: el.Item, SubItem: el.SubItem, IconSubItem: el.IconSubItem,
+                            RefSubItem: el.RefSubItem, SubItemModal: el.SubItemModal,
+                            SubItemBackdrop: el.SubItemBackdrop, SubItemDropdown: el.SubItemDropdown});
+                    }
+                    /*ITEMS TIENEN ITEMS EN LOS ITEMS*/
+                    if ($.inArray(el.SubSubItem, usubsubitems) === -1 && el.RefItem === '#' && el.RefSubItem === '#' && parseInt(el.SubItemDropdown) === 1) {
+                        usubsubitems.push(el.SubSubItem);
+                        subsubitems.push({SubItem: el.SubItem, SubSubItem: el.SubSubItem, IconSubSubItem: el.IconSubSubItem,
+                            RefSubSubItem: el.RefSubSubItem, SubSubItemModal: el.SubSubItemModal});
+                    }
+                });
+                $.each(menus, function (k, v) {
+                    opcion += '<li class="nav-item dropdown">';
+                    opcion += '<a class="btn btn-primary dropdown-toggle" href="' + v.Ref + '" id="nav' + v.Opcion + '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                    opcion += '<span class="fas fa-' + v.Icon + '"></span> ' + v.Opcion + '</a>';
+                    /*START ITEMS*/
+                    opcion += '<ul class="dropdown-menu" aria-labelledby="nav' + v.Opcion + '">';
+                    $.each(items, function (kk, vv) {
+                        if (v.Opcion === vv.Opcion) {
+                            switch (vv.ItemDropdown) {
+                                case 0:
+                                    switch (parseInt(vv.ItemModal)) {
+                                        case 0:
+                                            opcion += '<a class="dropdown-item" href="' + (burl + vv.RefItem) + '"><span class="fas fa-' + vv.IconItem + '"></span> ' + vv.Item + '</a>';
+                                            break;
+                                        case 1:
+                                            opcion += '<a class="dropdown-item" href="#" data-toggle="modal" data-target="' + vv.RefItem + '" data-backdrop=\'true\'><span class="fas fa-' + vv.IconItem + '"></span> ' + vv.Item + '</a>';
+                                            break;
+                                    }
+                                    break;
+                                case 1:
+                                    if (n === 0) {
+                                        opcion += '<li class="dropdown-submenu">';
+                                        opcion += '<a class="dropdown-item dropdown-toggle" href="#">' + vv.Item + '</a>';
+                                        var nav_subitems = 0, nav_subsubitems = 0;
+                                        if (nav_subitems === 0) {
+                                            opcion += '<ul class="dropdown-menu">';
+                                        }
+                                        /*NIVEL 2*/
+                                        $.each(subitems, function (kkk, vvv) {
+                                            if (vv.Item === vvv.Item) {
+                                                switch (parseInt(vvv.SubItemDropdown)) {
+                                                    case 0:
+                                                        switch (parseInt(vvv.SubItemModal)) {
+                                                            case 0:
+                                                                opcion += '<a class="dropdown-item" href="' + vvv.RefSubItem + '"><span class="fas fa-' + vvv.IconSubItem + '"></span> ' + vvv.SubItem + '</a>';
+                                                                break;
+                                                            case 1:
+                                                                opcion += '<a class="dropdown-item" href="#" data-toggle="modal" data-target="' + vvv.RefSubItem + '" data-backdrop=\'' + vvv.SubItemBackdrop + '\'><span class="fas fa-' + vvv.IconSubItem + '"></span> ' + vvv.SubItem + '</a>';
+                                                                break;
+                                                        }
+                                                        break;
+                                                    case 1:
+                                                        opcion += '<li class="dropdown-submenu">';
+                                                        opcion += '<a class="dropdown-item dropdown-toggle" href="#">' + vvv.SubItem + '</a>';
+                                                        /*NIVEL 3*/
+                                                        if (nav_subsubitems === 0) {
+                                                            opcion += '<ul class="dropdown-menu">';
+                                                        }
+                                                        $.each(subsubitems, function (kss, vss) {
+                                                            opcion += '<a class="dropdown-item" href="' + vss.RefSubSubItem + '"><span class="fas fa-' + vss.IconSubSubItem + '"></span> ' + vss.SubSubItem + '</a>';
+                                                            nav_subsubitems = 1;
+                                                        });
+                                                        if (nav_subsubitems === 1) {
+                                                            opcion += '</ul>';
+                                                        }
+                                                        break;
+                                                }
+                                            }
+                                            nav_subitems = 1;
+                                        });
+                                        if (nav_subitems === 1) {
+                                            opcion += '</ul>';
+                                        }
+                                        if (n === 0) {
+                                            opcion += '</li>';
+                                            n = 1;
+                                        }
+                                    }
+                                    break;
+                            }
+                        }
+                        n = 0;
+                    });
+                    /*END ITEMS*/
+                    opcion += '</ul>';
+                    opcion += '</li>';
+                });
+
+            } else {
+                swal('ATENCIÓN', 'LO SENTIMOS, NO PUDIMOS CONECTAR CON LA BASE DE DATOS', 'error');
+            }
+        }, "json").fail(function (x, y, z) {
+            console.log(x, y, z);
+        }).always(function () {
+            opcion += '<li class="nav-item dropdown ml-auto">';
+            opcion += '<a class="btn btn-primary dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+            opcion += ' <?php echo $this->session->userdata('Nombre') . ' ' . $this->session->userdata('Apellidos'); ?> ';
+            opcion += '<i class="fa fa-user-circle fa-lg"></i>';
+            opcion += '</a>';
+            opcion += '<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">';
+            opcion += '<a class="dropdown-item" href="#"><i class="fa fa-question-circle"></i> Reportar un problema</a>';
+            opcion += '<a class="dropdown-item" href="#"><i class="fa fa-key"></i> Cambiar Contraseña</a>';
+            opcion += '<div class="dropdown-divider"></div>';
+            opcion += '<a class="dropdown-item" href="<?php print base_url('Sesion/onSalir'); ?>"><i class="fa fa-sign-out-alt"></i> Salir</a>';
+            opcion += '</div>';
+            opcion += '</li>';
+            console.log(opcion)
+            $("#navbarSupportedContent").find("ul.navbar-nav").html(opcion);
+            /*AQUI ES DONDE ME CONSAGRO*/
+            $("#navbarSupportedContent").find("ul.navbar-nav").find('.dropdown-menu a.dropdown-toggle').on('click', function (e) {
+                var $el = $(this);
+                var $parent = $(this).offsetParent(".dropdown-menu");
+                if (!$(this).next().hasClass('show')) {
+                    $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
+                }
+                var $subMenu = $(this).next(".dropdown-menu");
+                $subMenu.toggleClass('show');
+
+                $(this).parent("li").toggleClass('show');
+
+                $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function (e) {
+                    $('.dropdown-menu .show').removeClass("show");
+                });
+
+                if (!$parent.parent().hasClass('navbar-nav')) {
+                    $el.next().css({"top": $el[0].offsetTop, "left": $parent.outerWidth() - 4});
+                }
+
+                return false;
+            });
+        });
+    }
+</script> 

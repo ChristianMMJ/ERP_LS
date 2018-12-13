@@ -31,7 +31,8 @@
                     <a class="dropdown-item" href="<?php print base_url('ControlesCancelados.shoes'); ?>"><span class="fa fa-ban"></span> Control pedidos cancelados</a>
                     <div class="dropdown-divider"></div>
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" href="#"><span class="fa fa-circle"></span> Cerrar Semanas Producción</a>
+                        <a class="dropdown-item dropdown-toggle" href="#"><span class="fa fa-circle"></span> Cerrar Semanas Producción
+                        </a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="<?php print base_url('CerrarSemanasProd.shoes'); ?>"><span class="fa fa-dot-circle"></span> Cerrar Semanas</a>
                             <a class="dropdown-item" href="<?php print base_url('CerrarSemanasProdDepartamento.shoes'); ?>"><span class="fa fa-dot-circle"></span> Cerrar Semanas por Departamento/Artículos</a>
@@ -132,29 +133,6 @@
         } else {
             $('#btnRegresar').addClass('d-none');
         }
-        
-        $.getJSON('<?php print base_url('ResourceManager/getOpcionesXModulo'); ?>').done(function (data) {
-            var modulo = "";
-            if (data.length > 0) {
-                $.each(data, function (k, v) {
-                    modulo += '<div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated bounceIn" onclick="onMenuDisplay(\'' + v.Ref + '\');">';
-                    modulo += '<div class="card text-center">';
-                    modulo += '<div class="card-body">';
-                    modulo += '<span class="fa fa-' + v.Icon + ' fa-2x mt-5"></span>';
-                    modulo += '</div>';
-                    modulo += '<div class="card-footer">';
-                    modulo += '<h5>' + v.Modulo + '</h5>';
-                    modulo += '</div>';
-                    modulo += '</div>';
-                    modulo += '</div>';
-                });
-                $("#MnuBlock").html(modulo);
-            } else {
-                swal('ATENCIÓN', 'LO SENTIMOS, NO PUDIMOS CONECTAR CON LA BASE DE DATOS', 'error');
-            }
-        }).fail(function (x, y, z) {
-            console.log(x, y, z);
-        });
     });
     handleEnter();
 </script>

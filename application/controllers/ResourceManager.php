@@ -21,10 +21,10 @@ class ResourceManager extends CI_Controller {
     
     public function getOpcionesXModulo() {
         try {
-            print json_encode($this->rsm->getOpcionesXModulo());
+            print json_encode($this->rsm->getOpcionesXModulo($this->input->post('MOD')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
-
+     
 }
