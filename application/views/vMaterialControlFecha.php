@@ -17,10 +17,10 @@
                 <input type="text" class="form-control form-control-sm numbersOnly" maxlength="10" id="Control" name="Control" required="">
             </div>
             <div class="col-6 col-sm-5 col-md-4 col-lg-4 col-xl-4 mt-4">
-                <button type="button" class="btn btn-primary" id="btnAceptar" data-toggle="tooltip" data-placement="top" title="Agregar Control">
+                <button type="button" class="btn btn-primary  selectNotEnter" id="btnAceptar" data-toggle="tooltip" data-placement="top" title="Agregar Control">
                     <i class="fa fa-save"></i> ACEPTAR
                 </button>
-                <button type="button" class="btn btn-success" id="btnImprimir" data-toggle="tooltip" data-placement="right" title="Imprimir Reporte">
+                <button type="button" class="btn btn-success  selectNotEnter" id="btnImprimir" data-toggle="tooltip" data-placement="right" title="Imprimir Reporte">
                     <i class="fa fa-print"></i> IMPRIMIR
                 </button>
             </div>
@@ -102,56 +102,62 @@
     var n = 1;
     var mdlMaterialParaEntregaMaqSemAno = $('#mdlMaterialParaEntregaMaqSemAno');
     var btnImprimirSemMaqAno = mdlMaterialParaEntregaMaqSemAno.find('#btnImprimirSemMaqAno');
-
+    var valida = false;
     $(document).ready(function () {
 
         handleEnter();
         init();
-        pnlTablero.find('#Control').blur(function () {
-            var control = $(this).val().toString();
-            if (control !== '') {
-                //---------------Consultar Contro en pedido-------------------
-                $.getJSON(master_url + 'getPedidoByControl', {
-                    Control: control
-                }).done(function (data) {
-                    if (data.length > 0) { //Si el control existe
-                        //---------------Consultar orden de produccion por control-------------------
-                        $.getJSON(master_url + 'getOrdenProduccionByControl', {
-                            Control: control
-                        }).done(function (data) {
-                            if (data.length > 0) { //Si la orden existe
-
-                            } else { //Si el orden existe
-                                swal({
-                                    title: "ATENCIÓN",
-                                    text: "LA ORDEN DE PRODUCCIÓN PARA EL CONTROL " + control + " NO EXISTE ",
-                                    icon: "warning",
-                                    closeOnClickOutside: false,
-                                    closeOnEsc: false
-                                }).then((action) => {
-                                    if (action) {
-                                        pnlTablero.find('#Control').val('').focus();
-                                    }
-                                });
-                            }
-                        });
-                    } else { //Si el control no existe
-                        swal({
-                            title: "ATENCIÓN",
-                            text: "EL CONTROL " + control + " NO EXISTE ",
-                            icon: "warning",
-                            closeOnClickOutside: false,
-                            closeOnEsc: false
-                        }).then((action) => {
-                            if (action) {
-                                pnlTablero.find('#Control').val('').focus();
-                            }
-                        });
-                    }
-                });
+        pnlTablero.find('#Control').keydown(function (e) {
+            if (e.keyCode === 13) {
+                valida = false;
+                var control = $(this).val().toString();
+                if (control !== '') {
+                    //---------------Consultar Contro en pedido-------------------
+                    $.getJSON(master_url + 'getPedidoByControl', {
+                        Control: control
+                    }).done(function (data) {
+                        if (data.length > 0) { //Si el control existe
+                            valida = true;
+                            //---------------Consultar orden de produccion por control-------------------
+                            $.getJSON(master_url + 'getOrdenProduccionByControl', {
+                                Control: control
+                            }).done(function (data) {
+                                if (data.length > 0) { //Si la orden existe
+                                    //btnAceptar.trigger('click');
+                                    btnAceptar.focus();
+                                } else { //Si el orden existe
+                                    swal({
+                                        title: "ATENCIÓN",
+                                        text: "LA ORDEN DE PRODUCCIÓN PARA EL CONTROL " + control + " NO EXISTE ",
+                                        icon: "warning",
+                                        closeOnClickOutside: false,
+                                        closeOnEsc: false
+                                    }).then((action) => {
+                                        if (action) {
+                                            pnlTablero.find('#Control').val('').focus();
+                                        }
+                                    });
+                                }
+                            });
+                        } else { //Si el control no existe
+                            swal({
+                                title: "ATENCIÓN",
+                                text: "EL CONTROL " + control + " NO EXISTE ",
+                                icon: "warning",
+                                closeOnClickOutside: false,
+                                closeOnEsc: false
+                            }).then((action) => {
+                                if (action) {
+                                    pnlTablero.find('#Control').val('').focus();
+                                }
+                            });
+                        }
+                    });
+                }
             }
         });
         btnAceptar.click(function () {
+
             var control = pnlTablero.find('#Control').val();
             if (control !== '') {
                 var existe = false;
@@ -169,7 +175,7 @@
                     Controles.row.add([
                         n,
                         control,
-                        '<button type="button" class="btn btn-danger btn-sm" onclick="onEliminarRenglon(this)" title="Eliminar"><i class="fa fa-trash"></i> </button>'
+                        '<button type="button" class="btn btn-danger btn-sm selectNotEnter" onclick="onEliminarRenglon(this)" title="Eliminar"><i class="fa fa-trash"></i> </button>'
                     ]).draw(false);
                     n += 1;
                     pnlTablero.find('#Control').val('').focus();
@@ -200,6 +206,7 @@
                     }
                 });
             }
+
 
         });
         btnImprimir.click(function () {
@@ -308,6 +315,7 @@
             mdlMaterialParaEntregaMaqSemAno.modal('show');
         });
         btnImprimirSemMaqAno.click(function () {
+            HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
             var ano = mdlMaterialParaEntregaMaqSemAno.find('#Ano').val();
             var sem = mdlMaterialParaEntregaMaqSemAno.find('#Sem').val();
             var maq = mdlMaterialParaEntregaMaqSemAno.find('#Maq').val();
@@ -320,7 +328,7 @@
                 reporte = 'onImprimirReportePorAnoSemMaqPorDepartamento';
             }
 
-            HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+
             //Imprimir
             $.post(master_url + reporte, {
                 Ano: ano,
@@ -381,7 +389,7 @@
         pnlTablero.find('#Control').focus();
         pnlTablero.find("#tblControles > tbody").html("");
         Controles = tblControles.DataTable({
-            "dom": 'frti',
+            "dom": 'rti',
             buttons: buttons,
             orderCellsTop: true,
             fixedHeader: true,
