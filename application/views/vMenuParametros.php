@@ -7,42 +7,11 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav w-100">
-
-            <li class="nav-item dropdown">
-                <a class="btn btn-primary dropdown-toggle" href="#" id="navCatalogos" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fa fa-user-circle"></span>  Usuarios
-                </a>
-                <div class="dropdown-menu dropdown-menu" aria-labelledby="navCatalogos">
-                    <a class="dropdown-item" href="<?php print base_url('Usuarios.shoes'); ?>"><span class="fa fa-user-circle"></span>  Usuarios</a>
-                    <a class="dropdown-item" href="<?php print base_url('ListaDePrecios.shoes'); ?>"><span class="fa fa-coins"></span>  Lista de precios</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php print base_url('Accesos.shoes'); ?>"><span class="fa fa-key"></span>  Accesos</a>
-                    <a class="dropdown-item" href="#"><span class="fa fa-exclamation-circle"></span>  Token de Seguridad</a>
-                </div>
-            </li>
-
-            <li class="nav-item dropdown">
-                <a class="btn btn-primary dropdown-toggle" href="#" id="navEmpresas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fa fa-building"></span> Empresas
-                </a>
-                <div class="dropdown-menu dropdown-menu" aria-labelledby="navEmpresas">
-                    <a class="dropdown-item" href="<?php print base_url('Empresas') ?>"> Empresas</a>
-                </div>
-            </li>
-
-            <li class="nav-item dropdown ml-auto">
-                <a class="btn btn-primary dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <?php echo $this->session->userdata('Nombre') . ' ' . $this->session->userdata('Apellidos'); ?>
-                    <i class="fa fa-user-circle fa-lg"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#"><i class="fa fa-question-circle"></i> Reportar un problema</a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-key"></i> Cambiar Contraseña</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php print base_url('Sesion/onSalir'); ?>"><i class="fa fa-sign-out-alt"></i> Salir</a>
-                </div>
-            </li>
-        </ul>
+        <ul class="navbar-nav w-100"></ul>
     </div>
 </nav>
+<script>
+    $(document).ready(function () {
+        getMenu(8);
+    });
+</script>

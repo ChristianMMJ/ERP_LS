@@ -20,7 +20,7 @@ class ResourceManager_model extends CI_Model {
 
     public function getOpcionesXModulo($M) {
         try {
-            return $this->db->select("OXM.Opcion, OXM.Icon, OXM.Ref, "
+            return $this->db->select("OXM.Opcion, OXM.Icon, OXM.Ref, OXM.Button, OXM.Class, "
                                     . "IXO.Item, IXO.Icon AS IconItem, IXO.Ref AS RefItem, IXO.Modal AS ItemModal, IXO.Backdrop AS ItemBackdrop, IXO.Dropdown AS ItemDropdown,"
                                     . "SIXO.SubItem AS SubItem, SIXO.Icon AS IconSubItem, SIXO.Ref AS RefSubItem, SIXO.Modal AS SubItemModal, SIXO.Backdrop AS SubItemBackdrop, SIXO.Dropdown AS SubItemDropdown,"
                                     . "SSIXSI.SubSubItem AS SubSubItem, SSIXSI.Icon AS IconSubSubItem, SSIXSI.Ref AS RefSubSubItem, SSIXSI.Modal AS SubSubItemModal, SSIXSI.Backdrop AS SubSubItemBackdrop")

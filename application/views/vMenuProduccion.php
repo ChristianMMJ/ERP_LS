@@ -7,115 +7,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav w-100">
-            <li class="nav-item dropdown">
-                <a class="btn btn-primary dropdown-toggle" href="#" id="navCatalogos" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fas fa-wrench"></span> Catálogos
-                </a>
-                <div class="dropdown-menu dropdown-menu" aria-labelledby="navCatalogos">
-                    <a class="dropdown-item"  href="<?php print base_url('Agentes'); ?>"> Agentes</a>
-                    <a class="dropdown-item" href="<?php print base_url('Maquilas/?origen=PRODUCCION'); ?>"> Maquiladoras</a>
-                    <a class="dropdown-item" href="<?php print base_url('Fracciones/?origen=PRODUCCION'); ?>"> Fracciones</a>
-                    <a class="dropdown-item" href="<?php print base_url('FraccionesXEstilo/?origen=PRODUCCION'); ?>"> Fracciones Por Estilo</a>
-                    <a class="dropdown-item" href="<?php print base_url('SemanasProduccion/?origen=PRODUCCION'); ?>"> Semanas Prod.</a>
-                </div>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="btn btn-primary dropdown-toggle" href="#" id="navCapturas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fas fa-pencil-alt"></span> Capturas
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navCaptura">
-                    <a class="dropdown-item" href="<?php print base_url('Pedidos/?origen=PRODUCCION'); ?>"><span class="fa fa-check"></span> Pedidos</a>
-                    <a class="dropdown-item" href="<?php print base_url('CerrarProg.shoes'); ?>"><span class="fa fa-highlighter"></span> Marcar pedidos para control</a>
-                    <a class="dropdown-item" href="<?php print base_url('ReasignarControles.shoes'); ?>"><span class="fa fa-retweet"></span> Reasignar controles</a>
-                    <a class="dropdown-item" href="<?php print base_url('ControlesCancelados.shoes'); ?>"><span class="fa fa-ban"></span> Control pedidos cancelados</a>
-                    <div class="dropdown-divider"></div>
-                    <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" href="#"><span class="fa fa-circle"></span> Cerrar Semanas Producción
-                        </a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="<?php print base_url('CerrarSemanasProd.shoes'); ?>"><span class="fa fa-dot-circle"></span> Cerrar Semanas</a>
-                            <a class="dropdown-item" href="<?php print base_url('CerrarSemanasProdDepartamento.shoes'); ?>"><span class="fa fa-dot-circle"></span> Cerrar Semanas por Departamento/Artículos</a>
-                        </div>
-                    </li>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php print base_url('AsignaPFTSACXC.shoes/?origen=PRODUCCION'); ?>"><span class="fa fa-hand-pointer"></span> Asigna piel, forro, textiles y sintéticos a corte por control</a>                    
-                    <a class="dropdown-item" href="<?php print base_url('AsignaDiaSemACtrlParaCorte.shoes/?origen=PRODUCCION'); ?>"><span class="fa fa-hand-pointer"></span>  Asigna dia semana a control para corte</a>                    
-                    <a class="dropdown-item" href="<?php print base_url('AsignaDiaSemACtrlParaPespuntePreliminar.shoes/?origen=PRODUCCION'); ?>"><span class="fa fa-hand-pointer"></span>  Asigna dia semana a control para pespunte y preliminar</a>                    
-                    <div class="dropdown-divider"></div>
-                    <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" href="#"><span class="fa fa-clock"></span> Tiempos</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="<?php print base_url('TiemposXEstiloDepto.shoes/?origen=PRODUCCION'); ?>"><span class="fa fa-stopwatch"></span> Tiempos por estilo</a>                    
-                            <a class="dropdown-item" href="<?php print base_url('HojasDeEstudioTiempos.shoes/?origen=PRODUCCION'); ?>"><span class="fa fa-swatchbook"></span> Hojas de estudios y tiempos</a>                    
-                        </div>
-                    </li>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php print base_url('Avance.shoes/?origen=PRODUCCION'); ?>"><span class="fa fa-arrow-right"></span> Captura de avance</a>                    
-
-                </ul>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="btn btn-primary dropdown-toggle" href="#" id="navConsultas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fas fa-search"></span> Consultas
-                </a>
-                <div class="dropdown-menu dropdown-menu" aria-labelledby="navConsultas">
-                    <a class="dropdown-item" href="#"> En construcción....</a>
-                </div>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="btn btn-primary dropdown-toggle" href="#" id="navReportes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fa fa-file-pdf"></span> Reportes
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navReportes">
-                    <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" href="#">Explosiones</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlExplosionSemanal"> Explosión Semanal</a>
-                        </div>
-                    </li>
-                    <a class="dropdown-item" href="<?php print base_url('OrdenDeProduccion.shoes'); ?>"><span class="fa fa-dot-circle fade-infinite"></span> Genera ordenes de producción semana maquila </a>
-                    <a class="dropdown-item" href="<?php print base_url('EliminaOrdenDeProduccion.shoes'); ?>"><span class="fa fa-dot-circle fade-infinite"></span> Elimina orden de producción </a>
-                    <a class="dropdown-item" href="<?php print base_url('IOrdenDeProduccion.shoes'); ?>"><span class="fa fa-dot-circle fade-infinite"></span> Imprime orden de producción </a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php print base_url('ConsumoPielForroXCortador.shoes'); ?>"><span class="fa fa-puzzle-piece"></span> Consumo piel y forro por cortador</a>
-                    <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" href="#"><span class="fa fa-dot-circle"></span> Preprogramaciones</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="<?php print base_url('ParesAsignados.shoes'); ?>"><span class="fa fa-dot-circle"></span> Pares asignados</a>
-                            <a class="dropdown-item" href="<?php print base_url('ParesPreProgramados.shoes'); ?>"><span class="fa fa-dot-circle"></span> Pares en preprogramación</a>
-                        </div>
-                    </li>
-                </ul>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="btn btn-primary dropdown-toggle" href="#" id="navUtilerias" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fa fa-atlas"></span> Utilerías
-                </a>
-                <div class="dropdown-menu dropdown-menu" aria-labelledby="navUtilerias">
-                    <a class="dropdown-item" href="#"> Estadisticas</a>
-                </div>
-            </li>
-
-            <li class="nav-item mx-1 d-none" id="btnRegresar">
-                <a class="btn btn-danger " href="<?php print base_url(isset($_GET['parentMenu']) ? $_GET['parentMenu'] : ""); ?>">
-                    <i class="fa fa-arrow-left"></i> Regresar
-                </a>
-            </li>
-
-            <li class="nav-item dropdown ml-auto">
-                <a class="btn btn-primary dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <?php echo $this->session->userdata('Nombre') . ' ' . $this->session->userdata('Apellidos'); ?>
-                    <i class="fa fa-user-circle fa-lg"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#"><i class="fa fa-question-circle"></i> Reportar un problema</a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-key"></i> Cambiar Contraseña</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php print base_url('Sesion/onSalir'); ?>"><i class="fa fa-sign-out-alt"></i> Salir</a>
-                </div>
-            </li>
-        </ul>
+        <ul class="navbar-nav w-100"></ul>
     </div>
 </nav>
 <script>
@@ -133,6 +25,7 @@
         } else {
             $('#btnRegresar').addClass('d-none');
         }
+        getMenu(5);
     });
     handleEnter();
 </script>

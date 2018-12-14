@@ -7,67 +7,11 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav w-100">
-
-            <li class="nav-item dropdown">
-                <a class="btn btn-primary dropdown-toggle" href="#" id="navCatalogos" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fas fa-wrench"></span> Catálogos
-                </a>
-                <div class="dropdown-menu dropdown-menu" aria-labelledby="navCatalogos">
-                    <a class="dropdown-item" href="<?php print base_url('Departamentos/?origen=NOMINAS'); ?>"> Departamentos</a>
-                    <a class="dropdown-item" href="<?php print base_url('Fracciones/?origen=NOMINAS'); ?>"> Fracciones</a>
-                    <a class="dropdown-item" href="<?php print base_url('FraccionesXEstilo/?origen=NOMINAS'); ?>"> Fracciones Por Estilo</a>
-                    <a class="dropdown-item" href="<?php print base_url('Semanas'); ?>"> Semanas Nómina</a>
-                    <a class="dropdown-item" href="<?php print base_url('Empleados.shoes'); ?>"><span class="fa fa-address-book"></span> Empleados</a>
-                </div>
-
-            </li>
-            <li class="nav-item dropdown">
-                <a class="btn btn-primary dropdown-toggle" href="#" id="navConsultas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fas fa-search"></span> Consultas
-                </a>
-                <div class="dropdown-menu dropdown-menu" aria-labelledby="navConsultas">
-                    <a class="dropdown-item" href="#"> En construcción....</a>
-                </div>
-            </li>
-
-            <li class="nav-item dropdown">
-                <a class="btn btn-primary dropdown-toggle" href="#" id="navEmpleados" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fas fa-users"></span>  Empleados
-                </a>
-            </li>
-
-            <li class="nav-item dropdown">
-                <a class="btn btn-primary dropdown-toggle" href="#" id="navReportes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fa fa-file-pdf"></span> Reportes
-                </a>
-                <div class="dropdown-menu dropdown-menu" aria-labelledby="navReportes">
-                    <a class="dropdown-item" href="#"> En construcción...</a>
-                </div>
-            </li>
-            <li class="nav-item mx-1">
-                <a class="btn btn-info" href="<?php print base_url('MenuProduccion/?parentMenu=MenuNomina'); ?>">
-                    <span class="fa fa-industry"></span>  Menú Producción
-                </a>
-            </li>
-            <li class="nav-item mx-1">
-                <a class="btn btn-info" href="<?php print base_url('MenuClientes/?parentMenu=MenuNomina'); ?>">
-                    <span class="fa fa-users"></span>  Menú Clientes
-                </a>
-            </li>
-
-            <li class="nav-item dropdown ml-auto">
-                <a class="btn btn-primary dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <?php echo $this->session->userdata('Nombre') . ' ' . $this->session->userdata('Apellidos'); ?>
-                    <i class="fa fa-user-circle fa-lg"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#"><i class="fa fa-question-circle"></i> Reportar un problema</a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-key"></i> Cambiar Contraseña</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php print base_url('Sesion/onSalir'); ?>"><i class="fa fa-sign-out-alt"></i> Salir</a>
-                </div>
-            </li>
-        </ul>
+        <ul class="navbar-nav w-100"></ul>
     </div>
 </nav>
+<script>
+    $(document).ready(function () {
+        getMenu(7);
+    });
+</script>
