@@ -2,23 +2,20 @@
     <div class="card-body ">
         <div class="row">
             <div class="col-sm-6 float-left">
-                <legend class="float-left">Departamentos</legend>
+                <legend class="float-left">Detalles Defectos</legend>
             </div>
             <div class="col-sm-6 float-right" align="right">
                 <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
             </div>
         </div>
         <div class="card-block mt-4">
-            <div id="Departamentos" class="table-responsive">
-                <table id="tblDepartamentos" class="table table-sm display " style="width:100%">
+            <div id="DetallesDefectos" class="table-responsive">
+                <table id="tblDetallesDefectos" class="table table-sm display " style="width:100%">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Clave</th>
                             <th>Descripción</th>
-                            <th>Tipo</th>
-                            <th>Avance</th>
-                            <th>Fracción</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -33,7 +30,7 @@
             <fieldset>
                 <div class="row">
                     <div class="col-12 col-sm-6 col-md-4 float-left">
-                        <legend >Departamento</legend>
+                        <legend >Detalle Defecto</legend>
                     </div>
                     <div class="col-12 col-sm-6 col-md-8" align="right">
                         <button type="button" class="btn btn-primary btn-sm" id="btnCancelar" >
@@ -49,62 +46,37 @@
                     <div class="d-none">
                         <input type="text"  name="ID" class="form-control form-control-sm" >
                     </div>
-                    <div class="col-6 col-md-2 col-sm-4">
+                    <div class="col-12 col-md-6 col-sm-6">
                         <label for="Clave" >Clave*</label>
-                        <input type="text" class="form-control form-control-sm" id="Clave" name="Clave" required >
+                        <input type="text" class="form-control form-control-sm disabledForms" id="Clave" name="Clave" required >
                     </div>
-                    <div class="col-12 col-md-6 col-sm-8">
+                    <div class="col-12 col-md-6 col-sm-6">
                         <label for="Descripcion" >Descripción*</label>
-                        <input type="text" id="Descripcion" name="Descripcion" class="form-control form-control-sm" required>
-                    </div>
-                </div>
-                <div class="row">
-
-
-                    <div class="col-12 col-md-2 col-sm-4">
-                        <label for="" >Tipo*</label>
-                        <select id="Tipo" name="Tipo" class="form-control form-control-sm required" >
-                            <option value=""></option>
-                            <option value="1">1-ADMINISTRACIÓN</option>
-                            <option value="2">2-PRODUCCIÓN</option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-md-2 col-sm-3">
-                        <label for="" >Avance*</label>
-                        <select id="Avance" name="Avance" class="form-control form-control-sm required" >
-                            <option value=""></option>
-                            <option value="1">1-SI</option>
-                            <option value="0">0-NO</option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-md-4 col-sm-5 d-none" id="dFraccion">
-                        <label for="Fraccion" >Fracción</label>
-                        <select id="Fraccion" name="Fraccion" class="form-control form-control-sm" >
-                            <option value=""></option>
-                        </select>
+                        <input type="text" id="Descripcion" name="Descripcion" class="form-control form-control-sm" placeholder="" required>
                     </div>
                 </div>
                 <div class="row pt-2">
                     <div class="col-6 col-md-6 ">
                         <h6 class="text-danger">Los campos con * son obligatorios</h6>
                     </div>
-                    <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
-                        <i class="fa fa-save"></i>
-                    </button>
                     <!--                    <div class="col-6 col-sm-6 col-md-6" align="right">
                                             <button type="button" class="btn btn-raised btn-info btn-sm" id="btnGuardar">
                                                 <span class="fa fa-save "></span> GUARDAR
                                             </button>
                                         </div>-->
+                    <button type="button" class="btn btn-info btn-lg btn-float" id="btnGuardar" data-toggle="tooltip" data-placement="left" title="Guardar">
+                        <i class="fa fa-save"></i>
+                    </button>
+
                 </div>
             </fieldset>
         </form>
     </div>
 </div>
 <script>
-    var master_url = base_url + 'index.php/Departamentos/';
-    var tblDepartamentos = $('#tblDepartamentos');
-    var Departamentos;
+    var master_url = base_url + 'index.php/DetallesDefectos/';
+    var tblDetallesDefectos = $('#tblDetallesDefectos');
+    var DetallesDefectos;
     var btnNuevo = $("#btnNuevo"), btnCancelar = $("#btnCancelar"), btnEliminar = $("#btnEliminar"), btnGuardar = $("#btnGuardar");
     var pnlTablero = $("#pnlTablero"), pnlDatos = $("#pnlDatos");
     var nuevo = false;
@@ -113,26 +85,8 @@
         /*FUNCIONES INICIALES*/
         init();
         handleEnter();
-        validacionSelectPorContenedor(pnlDatos);
-        setFocusSelectToSelectOnChange('#Tipo', '#Avance', pnlDatos);
-        setFocusSelectToSelectOnChange('#Avance', '#Fraccion', pnlDatos);
-        setFocusSelectToInputOnChange('#Fraccion', '#btnGuardar', pnlDatos);
-        pnlDatos.find("[name='Avance']").change(function () {
-            console.log(parseInt($(this).val()));
-            if (parseInt($(this).val()) === 1) {
-                pnlDatos.find('#dFraccion').removeClass('d-none');
-            } else {
-                pnlDatos.find('#dFraccion').addClass('d-none');
-            }
-        });
 
         /*FUNCIONES X BOTON*/
-        pnlDatos.find("#Clave").focusout(function () {
-            if (nuevo) {
-                onComprobarClave(this);
-            }
-        });
-
         btnGuardar.click(function () {
             isValid('pnlDatos');
             if (valido) {
@@ -147,7 +101,7 @@
                         data: frm
                     }).done(function (data, x, jq) {
                         swal('ATENCIÓN', 'SE HA MODIFICADO EL REGISTRO', 'info');
-                        Departamentos.ajax.reload();
+                        DetallesDefectos.ajax.reload();
                         pnlDatos.addClass("d-none");
                         pnlTablero.removeClass("d-none");
                     }).fail(function (x, y, z) {
@@ -166,7 +120,7 @@
                     }).done(function (data, x, jq) {
                         pnlDatos.find("[name='ID']").val(data);
                         nuevo = false;
-                        Departamentos.ajax.reload();
+                        DetallesDefectos.ajax.reload();
                         pnlDatos.addClass("d-none");
                         pnlTablero.removeClass("d-none");
                     }).fail(function (x, y, z) {
@@ -176,7 +130,7 @@
                     });
                 }
             } else {
-                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'error');
+                swal('ATENCIÓN', '* DEBE DE COMPLETAR LOS CAMPOS REQUERIDOS *', 'danger');
             }
         });
 
@@ -200,7 +154,7 @@
                     case "eliminar":
                         $.post(master_url + 'onEliminar', {ID: temp}).done(function () {
                             swal('ATENCIÓN', 'SE HA ELIMINADO EL REGISTRO', 'success');
-                            Departamentos.ajax.reload();
+                            DetallesDefectos.ajax.reload();
                             pnlDatos.addClass("d-none");
                             pnlTablero.removeClass("d-none");
                         }).fail(function (x, y, z) {
@@ -218,14 +172,12 @@
         btnNuevo.click(function () {
             nuevo = true;
             pnlDatos.find("input").val("");
-            $.each(pnlDatos.find("select"), function (k, v) {
-                pnlDatos.find("select")[k].selectize.clear(true);
-            });
             pnlTablero.addClass("d-none");
             pnlDatos.removeClass("d-none");
             btnEliminar.addClass("d-none");
-            pnlDatos.find("[name='Clave']").focus();
-            pnlDatos.find('#dFraccion').addClass('d-none');
+            getID();
+            pnlDatos.find("[name='Clave']").addClass('disabledForms');
+            pnlDatos.find("[name='Descripcion']").focus();
         });
 
         btnCancelar.click(function () {
@@ -236,17 +188,21 @@
 
     function init() {
         getRecords();
-        getFracciones();
     }
 
-    function  getFracciones() {
-        $.getJSON(master_url + 'getFracciones').done(function (data) {
-            $.each(data, function (k, v) {
-                pnlDatos.find("#Fraccion")[0].selectize.addOption({text: v.Fraccion, value: v.ID});
-            });
+    function getID() {
+        $.getJSON(master_url + 'getID').done(function (data, x, jq) {
+            console.log(data);
+            if (data.length > 0) {
+                var ID = $.isNumeric(data[0].CLAVE) ? parseInt(data[0].CLAVE) + 1 : 1;
+                pnlDatos.find("#Clave").val(ID);
+            } else {
+                pnlDatos.find("#Clave").val('1');
+            }
         }).fail(function (x, y, z) {
-            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-            console.log(x.responseText);
+            console.log(x, y, z);
+        }).always(function () {
+            HoldOn.close();
         });
     }
 
@@ -257,10 +213,10 @@
             message: 'CARGANDO...'
         });
         $.fn.dataTable.ext.errMode = 'throw';
-        if ($.fn.DataTable.isDataTable('#tblDepartamentos')) {
-            tblDepartamentos.DataTable().destroy();
+        if ($.fn.DataTable.isDataTable('#tblDetallesDefectos')) {
+            tblDetallesDefectos.DataTable().destroy();
         }
-        Departamentos = tblDepartamentos.DataTable({
+        DetallesDefectos = tblDetallesDefectos.DataTable({
             "dom": 'Bfrtip',
             buttons: buttons,
             "ajax": {
@@ -268,12 +224,7 @@
                 "dataSrc": ""
             },
             "columns": [
-                {"data": "ID"},
-                {"data": "Clave"},
-                {"data": "Descripcion"},
-                {"data": "Tipo"},
-                {"data": "Avance"},
-                {"data": "Fraccion"}
+                {"data": "ID"}, {"data": "Clave"}, {"data": "Descripcion"}
             ],
             "columnDefs": [
                 {
@@ -297,25 +248,24 @@
             ]
         });
 
-        $('#tblDepartamentos_filter input[type=search]').focus();
+        $('#tblDetallesDefectos_filter input[type=search]').focus();
 
-        tblDepartamentos.find('tbody').on('click', 'tr', function () {
+        tblDetallesDefectos.find('tbody').on('click', 'tr', function () {
             HoldOn.open({
                 theme: 'sk-cube',
                 message: 'CARGANDO...'
             });
             nuevo = false;
-            tblDepartamentos.find("tbody tr").removeClass("success");
+            tblDetallesDefectos.find("tbody tr").removeClass("success");
             $(this).addClass("success");
-            var dtm = Departamentos.row(this).data();
+            var dtm = DetallesDefectos.row(this).data();
             temp = parseInt(dtm.ID);
-            $.getJSON(master_url + 'getDepartamentoByID', {ID: temp}).done(function (data) {
+            $.getJSON(master_url + 'getDetalleDefectoByID', {ID: temp}).done(function (data) {
                 pnlDatos.find("input").val("");
                 $.each(pnlDatos.find("select"), function (k, v) {
                     pnlDatos.find("select")[k].selectize.clear(true);
                 });
                 $.each(data[0], function (k, v) {
-                    console.log(k, v);
                     pnlDatos.find("[name='" + k + "']").val(v);
                     if (pnlDatos.find("[name='" + k + "']").is('select')) {
                         pnlDatos.find("[name='" + k + "']")[0].selectize.addItem(v, true);
@@ -325,45 +275,14 @@
                 pnlDatos.removeClass('d-none');
                 btnEliminar.removeClass("d-none");
 
-                pnlDatos.find("#Clave").addClass('disabledForms');
                 pnlDatos.find("#Descripcion").focus().select();
             }).fail(function (x, y, z) {
                 swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-
+                console.log(x.responseText);
             }).always(function () {
                 HoldOn.close();
             });
         });
         HoldOn.close();
-    }
-    function onComprobarClave(e) {
-        if (nuevo) {
-            $.getJSON(master_url + 'onComprobarClave', {Clave: $(e).val()}).done(function (data) {
-
-                if (data.length > 0) {
-                    swal({
-                        title: "ATENCIÓN",
-                        text: "LA CLAVE " + pnlDatos.find("#Clave").val() + " YA EXISTE",
-                        icon: "warning",
-                        buttons: {
-                            eliminar: {
-                                text: "Aceptar",
-                                value: "aceptar"
-                            }
-                        }
-                    }).then((value) => {
-                        switch (value) {
-                            case "aceptar":
-                                swal.close();
-                                pnlDatos.find("#Clave").val('').focus();
-                                break;
-                        }
-                    });
-                }
-            }).fail(function (x, y, z) {
-                swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-                console.log(x.responseText);
-            });
-        }
     }
 </script>

@@ -142,7 +142,7 @@
         btnEliminar.click(function () {
             swal({
                 title: "¿Estas seguro?",
-                text: "Nota: No se eliminara ninguna unidad que tenga alguna relacion con otro dato dentro del sistema",
+                text: "Nota: No se eliminara ningun registro que tenga alguna relacion con otro dato dentro del sistema",
                 icon: "warning",
                 buttons: {
                     cancelar: {
