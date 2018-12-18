@@ -1029,7 +1029,7 @@
                                                         case 0:
                                                             switch (parseInt(vvv.SubItemModal)) {
                                                                 case 0:
-                                                                    opcion += '<a class="dropdown-item" href="' + vvv.RefSubItem + '"><span class="fas fa-' + vvv.IconSubItem + '"></span> ' + vvv.SubItem + '</a>';
+                                                                    opcion += '<a class="dropdown-item" href="' + (burl + vvv.RefSubItem) + '"><span class="fas fa-' + vvv.IconSubItem + '"></span> ' + vvv.SubItem + '</a>';
                                                                     break;
                                                                 case 1:
                                                                     opcion += '<a class="dropdown-item" href="#" data-toggle="modal" data-target="' + vvv.RefSubItem + '" data-backdrop=\'' + vvv.SubItemBackdrop + '\'><span class="fas fa-' + vvv.IconSubItem + '"></span> ' + vvv.SubItem + '</a>';
@@ -1044,7 +1044,7 @@
                                                                 opcion += '<ul class="dropdown-menu">';
                                                             }
                                                             $.each(subsubitems, function (kss, vss) {
-                                                                opcion += '<a class="dropdown-item" href="' + vss.RefSubSubItem + '"><span class="fas fa-' + vss.IconSubSubItem + '"></span> ' + vss.SubSubItem + '</a>';
+                                                                opcion += '<a class="dropdown-item" href="' + (burl + vss.RefSubSubItem) + '"><span class="fas fa-' + vss.IconSubSubItem + '"></span> ' + vss.SubSubItem + '</a>';
                                                                 nav_subsubitems = 1;
                                                             });
                                                             if (nav_subsubitems === 1) {
