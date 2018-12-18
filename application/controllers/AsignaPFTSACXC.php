@@ -7,12 +7,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class AsignaPFTSACXC extends CI_Controller {
 
     public function __construct() {
-        parent::__construct();
+        parent::__construct(); 
         date_default_timezone_set('America/Mexico_City');
         $this->load->library('session')->model('AsignaPFTSACXC_model', 'apftsacxc');
     }
 
-    public function index() {
+    public function is_logged() {
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             $this->load->view('vEncabezado');
             switch ($this->session->userdata["TipoAcceso"]) {
@@ -32,6 +32,10 @@ class AsignaPFTSACXC extends CI_Controller {
         }
     }
 
+    public function index() {
+        $this->is_logged();
+    }
+
     public function onChecarSemanaValida() {
         try {
             print json_encode($this->apftsacxc->onChecarSemanaValida($this->input->get('ID')));
@@ -41,7 +45,7 @@ class AsignaPFTSACXC extends CI_Controller {
     }
 
     public function getControlesAsignados() {
-        try {
+        try { 
             print json_encode($this->apftsacxc->getControlesAsignados());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -163,12 +167,12 @@ class AsignaPFTSACXC extends CI_Controller {
                 /* GENERAR AVANCE DE CONTROL A CORTE */
 
                 /* COMPROBAR SI YA EXISTE UN REGISTRO DE ESTE AVANCE PARA NO GENERAR DOS AVANCES AL MISMO DEPTO EN CASO DE QUE LLEGUEN A PEDIR MÁS MATERIAL */
-                $check_avance = $this->db->select('COUNT(A.Control) AS EXISTE', false)->from('avance AS A')->where('A.Control', $x->post('CONTROL'))->get()->result;
+                $check_avance = $this->db->select('COUNT(A.Control) AS EXISTE', false)->from('avance AS A')->where('A.Control', $x->post('CONTROL'))->where('A.Departamento', 10)->get()->result();
                 print "\n ESTATUS DE AVANCE: ";
                 var_dump($check_avance);
                 print "\n *FIN ESTATUS DE AVANCE* \n";
                 if (count($check_avance) <= 0) {
-                    /*YA EXISTE UN AVANCE DE CORTE EN ESTE CONTROL*/
+                    /* YA EXISTE UN AVANCE DE CORTE EN ESTE CONTROL */
                     $avance = array(
                         'Control' => $x->post('CONTROL'),
                         'FechaAProduccion' => Date('d/m/Y'),
@@ -244,6 +248,33 @@ class AsignaPFTSACXC extends CI_Controller {
                             ->set('Devolucion', $x->post('REGRESO'))
                             ->set('MaterialMalo', 0)
                             ->where('ID', $x->post('ID'))->update('asignapftsacxc');
+
+                    /* AVANCE DE (10) CORTE A (20) RAYADO */
+                    /* COMPROBAR SI YA EXISTE UN REGISTRO DE ESTE AVANCE (20 - RAYADO) PARA NO GENERAR DOS AVANCES AL MISMO DEPTO EN CASO DE QUE LLEGUEN A PEDIR MÁS MATERIAL */
+                    $check_avance = $this->db->select('COUNT(A.Control) AS EXISTE', false)
+                                    ->from('avance AS A')
+                                    ->where('A.Control', $x->post('CONTROL'))
+                                    ->where('A.Departamento', 20)->get()->result();
+                    print "\n ESTATUS DE AVANCE: ";
+                    var_dump($check_avance);
+                    print "\n *FIN ESTATUS DE AVANCE* \n";
+                    if (count($check_avance) <= 0) {
+                        $avance = array(
+                            'Control' => $x->post('CONTROL'),
+                            'FechaAProduccion' => Date('d/m/Y'),
+                            'Departamento' => 20,
+                            'DepartamentoT' => 'RAYADO',
+                            'FechaAvance' => Date('d/m/Y'),
+                            'Estatus' => 'A',
+                            'Usuario' => $_SESSION["ID"],
+                            'Fecha' => Date('d/m/Y'),
+                            'Hora' => Date('h:i:s a')
+                        );
+                        $this->db->insert('avance', $avance);
+                    } else {
+                        /* YA EXISTE UN AVANCE DE RAYADO EN ESTE CONTROL */
+                    }
+                    /* FIN DE AVANCE DE CONTROL DE (10) CORTE A (20) RAYADO */
                 }
             } else {
                 if ($x->post("MATERIALMALO") > 0) {
@@ -271,6 +302,51 @@ class AsignaPFTSACXC extends CI_Controller {
                     print "LA CANTIDAD DEVUELTA O DEFECTUOSA HA SIDO ZERO 0";
                 }
             }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    function onGenerarAvanceAlDevolver() {
+        try {
+            /* GENERAR AVANCE DE CONTROL A CORTE */
+
+            /* COMPROBAR SI YA EXISTE UN REGISTRO DE ESTE AVANCE PARA NO GENERAR DOS AVANCES AL MISMO DEPTO EN CASO DE QUE LLEGUEN A PEDIR MÁS MATERIAL */
+            $check_avance = $this->db->select('COUNT(A.Control) AS EXISTE', false)
+                            ->from('avance AS A')
+                            ->where('A.Control', $x->post('CONTROL'))
+                            ->where('A.Departamento', 20)
+                            ->get()->result();
+            print "\n ESTATUS DE AVANCE RAYADO: ";
+            var_dump($check_avance);
+            print "\n *FIN ESTATUS DE AVANCE RAYADO* \n";
+            if (count($check_avance) <= 0) {
+                /* YA EXISTE UN AVANCE DE (10)CORTE A (20)RAYADO EN ESTE CONTROL */
+                $avance = array(
+                    'Control' => $x->post('CONTROL'),
+                    'FechaAProduccion' => Date('d/m/Y'),
+                    'Departamento' => 20,
+                    'DepartamentoT' => 'RAYADO',
+                    'FechaAvance' => Date('d/m/Y'),
+                    'Estatus' => 'A',
+                    'Usuario' => $_SESSION["ID"],
+                    'Fecha' => Date('d/m/Y'),
+                    'Hora' => Date('h:i:s a')
+                );
+                $this->db->insert('avance', $avance);
+            }
+            /* FIN DE AVANCE DE CONTROL A CORTE */
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onComprobarAvance() {
+        try {
+            $check_avance = $this->db->select('COUNT(A.Control) AS EXISTE', false)
+                            ->from('avance AS A')
+                            ->where('A.Control', $x->post('CONTROL'))
+                            ->where('A.Departamento', 20)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

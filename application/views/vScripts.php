@@ -995,7 +995,6 @@
                     }
                 });
                 $.each(menus, function (k, v) {
-                    console.log('Menu', v);
                     if (parseInt(v.Button) === 0) {
                         opcion += '<li class="nav-item dropdown">';
                         opcion += '<a class="btn btn-primary dropdown-toggle" href="' + v.Ref + '" id="nav' + v.Opcion + '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';

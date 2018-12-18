@@ -52,3 +52,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'Sesion';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE; 
+/*PEDIDOS*/
+$route['peds'] = 'Pedidos/getRecords';
+$route['pedsid'] = 'Pedidos/getPedidosByID';
+
+/*ASIGNA*/
+$route['pieles'] = 'AsignaPFTSACXC/getPieles';
+$route['forros'] = 'AsignaPFTSACXC/getForros';
+$route['textiles'] = 'AsignaPFTSACXC/getTextiles';
+$route['sinteticos'] = 'AsignaPFTSACXC/getSinteticos';
+$route['controlesasignados'] = 'AsignaPFTSACXC/getControlesAsignados';
+
+/*AVANCES*/
+$route['departamentos'] = 'Avance/getDepartamentos';
+$route['prosmaq'] = 'Avance/getMaquilasPlantillas';
+$route['avances'] = 'Avance';
+$route['avance_semana_actual'] = 'Avance/getSemanasDeProduccion';
+$route['avance_maqplant'] = 'Avance/getMaquilasPlantillas';
+$route['avance_empleados'] = 'Avance/getEmpleados';
+$route['avance_fracciones'] = 'Avance/getFracciones';
+$route['avance_buscar_avance_x_control'] = 'Avance/onComprobarAvanceXControl';
+
+/*ACCESOS*/
+$route['accesos_modulos_x_usuario'] = 'Accesos/getModulosXUsuario';

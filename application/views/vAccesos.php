@@ -45,7 +45,15 @@
                 $("#Usuario")[0].selectize.addOption({text: v.USUARIO + ' (' + v.TIPO_ACCESO + ')', value: v.ID});
             });
         }).fail(function (x, y, z) {
-            console.log(x, y, z);
+           console.log(x.responseText);
+        });
+        
+        $.getJSON('<?php print base_url('accesos_modulos'); ?>').done(function(dx){
+            
+        }).fail(function(x,y,z){
+           console.log(x.responseText); 
+        }).always(function(){
+            
         });
     });
 

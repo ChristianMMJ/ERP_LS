@@ -517,7 +517,7 @@
             "dom": 'rit',
             buttons: buttons,
             "ajax": {
-                "url": master_url + 'getPieles',
+                "url": '<?= base_url('pieles'); ?>',
                 "type": "POST",
                 "dataSrc": "",
                 "data": function (d) {
@@ -559,7 +559,7 @@
             }
         });
         xoptions.ajax = {
-            "url": master_url + 'getForros',
+            "url": '<?= base_url('forros'); ?>',
             "type": "POST",
             "dataSrc": "",
             "data": function (d) {
@@ -584,7 +584,7 @@
             }
         });
         xoptions.ajax = {
-            "url": master_url + 'getTextiles',
+            "url": '<?= base_url('textiles'); ?>',
             "type": "POST",
             "dataSrc": "",
             "data": function (d) {
@@ -609,7 +609,7 @@
             }
         });
         xoptions.ajax = {
-            "url": master_url + 'getSinteticos',
+            "url": '<?= base_url('sinteticos'); ?>',
             "type": "POST",
             "dataSrc": "",
             "data": function (d) {
@@ -685,14 +685,14 @@
             "dom": 'Bfrtip',
             buttons: buttons,
             "ajax": {
-                "url": master_url + 'getControlesAsignados',
+                "url": '<?= base_url('controlesasignados'); ?>',
                 "dataSrc": ""
             },
             "columns": [
-                {"data": "ID"}, {"data": "Control"}, 
-                {"data": "Empleado"}, {"data": "Articulo"}, 
-                {"data": "Descripcion"}, {"data": "Fecha"}, 
-                {"data": "Cargo"}, {"data": "Abono"}, 
+                {"data": "ID"}, {"data": "Control"},
+                {"data": "Empleado"}, {"data": "Articulo"},
+                {"data": "Descripcion"}, {"data": "Fecha"},
+                {"data": "Cargo"}, {"data": "Abono"},
                 {"data": "Dev"}
             ],
             "columnDefs": [

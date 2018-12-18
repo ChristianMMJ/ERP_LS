@@ -312,7 +312,7 @@
     var mdlAviso = $("#mdlAviso");
     var btnAgregarDetalle = pnlDatos.find("#btnAgregarDetalle");
     var opciones_detalle = {
-         dom: 'Bfrtip',
+        dom: 'Bfrtip',
         buttons: buttons,
         "columns": [
             {"data": "PDID"}, {"data": "Recibido"}, {"data": "Estilo"}, {"data": "EstiloT"},
@@ -883,8 +883,9 @@
             });
             if ($.fn.DataTable.isDataTable('#tblPedidoDetalle')) {
                 PedidoDetalle.clear().draw();
+            } else {
+                PedidoDetalle = tblPedidoDetalle.DataTable(opciones_detalle);
             }
-            PedidoDetalle = tblPedidoDetalle.DataTable(opciones_detalle);
             PedidoDetalle.clear().draw();
             getID();
         });
@@ -1053,7 +1054,7 @@
             "dom": 'Bfrtip',
             buttons: buttons,
             "ajax": {
-                "url": master_url + 'getRecords',
+                "url": '<?php print base_url('peds'); ?>',
                 "dataSrc": ""
             },
             "columns": [
@@ -1270,7 +1271,7 @@
     }
 
     function getPedidoByID(idx) {
-        $.getJSON(master_url + 'getPedidosByID', {ID: idx}).done(function (data) {
+        $.getJSON('<?php print base_url('pedsid'); ?>', {ID: idx}).done(function (data) {
             pnlDatos.find("input").val("");
             $.each(pnlDatos.find("select"), function (k, v) {
                 pnlDatos.find("select")[k].selectize.clear(true);

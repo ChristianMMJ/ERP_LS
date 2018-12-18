@@ -35,4 +35,44 @@ class Avance extends CI_Controller {
         }
     }
 
+    public function getEmpleados() {
+        try {
+            print json_encode($this->avm->getEmpleados());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getFracciones() {
+        try {
+            print json_encode($this->avm->getFracciones());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getSemanasDeProduccion() {
+        try {
+            print json_encode($this->avm->getSemanaByFecha(Date('d/m/Y')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getMaquilasPlantillas() {
+        try {
+            print json_encode($this->avm->getMaquilasPlantillas());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onComprobarAvanceXControl() {
+        try {
+            print json_encode($this->avm->getMaquilasPlantillas());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
 }
