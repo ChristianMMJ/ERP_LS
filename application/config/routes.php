@@ -77,3 +77,7 @@ $route['avance_buscar_avance_x_control'] = 'Avance/onComprobarAvanceXControl';
 $route['accesos_modulos'] = 'Accesos/getModulos';
 $route['accesos_modulos_x_usuario'] = 'Accesos/getModulosXUsuario';
 $route['accesos_add_modulos'] = 'Accesos/onAgregarModulosXUsuario';
+
+$route['accesos_opciones'] = 'Accesos/getOpciones';
+$route['accesos_opciones_x_modulo_x_usuario'] = 'Accesos/getOpcionesXModuloxUsuario';
+$route['accesos_add_opciones_x_modulo_x_usuario'] = 'Accesos/onAgregarOpcionesXModuloXUsuario';

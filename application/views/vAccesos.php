@@ -30,11 +30,15 @@
                 <select name="from[]" id="modulos" class="form-control NotSelectize " size="10" multiple="multiple"> 
                 </select>
             </div>
-            <div class="col-2">
-                <button type="button" id="modulos_rightAll" class="btn btn-block btn-default"><i class="fa fa-forward"></i></button>
-                <button type="button" id="modulos_rightSelected" class="btn btn-block  btn-default"><i class="fa fa-chevron-right"></i></button>
-                <button type="button" id="modulos_leftSelected" class="btn btn-block  btn-danger"><i class="fa fa-chevron-left"></i></button>
-                <button type="button" id="modulos_leftAll" class="btn btn-block  btn-danger"><i class="fa fa-backward"></i></button>
+            <div class="col-2 text-center">
+                <button type="button" id="modulos_rightAll" class="btn btn-block btn-default" data-toggle="tooltip" data-placement="top" title="ASIGNAR TODOS"><i class="fa fa-forward"></i></button>
+                <button type="button" id="modulos_rightSelected" class="btn btn-block  btn-default" data-toggle="tooltip" data-placement="top" title="ASIGNAR"><i class="fa fa-chevron-right"></i></button>
+                <button type="button" id="modulos_leftSelected" class="btn btn-block  btn-danger" data-toggle="tooltip" data-placement="top" title="REMOVER"><i class="fa fa-chevron-left"></i></button>
+                <button type="button" id="modulos_leftAll" class="btn btn-block  btn-danger" data-toggle="tooltip" data-placement="top" title="REMOVER TODOS"><i class="fa fa-backward"></i></button>
+
+                <button type="button" id="modulo_nuevo" class="btn btn-info mt-2"  data-toggle="tooltip" data-placement="top" title="AGREGAR MODULO"><span class="fa fa-plus"></span></button>
+                <button type="button" id="modulo_editor" class="btn btn-warning mt-2" data-toggle="tooltip" data-placement="top" title="EDITAR MODULO"><span class="fa fa-pencil-alt"></span></button>
+                <button type="button" id="modulo_eliminar" class="btn btn-danger mt-2" data-toggle="tooltip" data-placement="top" title="ELIMINAR MODULO"><span class="fa fa-trash"></span></button>
             </div>
             <div class="col-5">
                 <select name="to[]" id="modulos_to" class="form-control NotSelectize" size="10" multiple="multiple"></select>
@@ -72,17 +76,24 @@
             </div>
             <div class="w-100"></div>
             <div class="col-5">
-                <select name="from[]" id="opciones" class="form-control NotSelectize " size="30" multiple="multiple"> 
+                <select name="from[]" id="opciones" class="form-control NotSelectize " size="10" multiple="multiple"> 
                 </select>
             </div>
-            <div class="col-2">
-                <button type="button" id="opciones_rightAll" class="btn btn-block btn-default"><i class="fa fa-forward"></i></button>
-                <button type="button" id="opciones_rightSelected" class="btn btn-block  btn-default"><i class="fa fa-chevron-right"></i></button>
-                <button type="button" id="opciones_leftSelected" class="btn btn-block  btn-danger"><i class="fa fa-chevron-left"></i></button>
-                <button type="button" id="opciones_leftAll" class="btn btn-block  btn-danger"><i class="fa fa-backward"></i></button>
+            <div class="col-2 text-center">
+                <button type="button" id="opciones_rightAll" class="btn btn-block btn-default"  data-toggle="tooltip" data-placement="top" title="ASIGNAR TODOS"><i class="fa fa-forward"></i></button>
+                <button type="button" id="opciones_rightSelected" class="btn btn-block  btn-default" data-toggle="tooltip" data-placement="top" title="ASIGNAR TODOS"><i class="fa fa-chevron-right"></i></button>
+                <button type="button" id="opciones_leftSelected" class="btn btn-block  btn-danger" data-toggle="tooltip" data-placement="top" title="REMOVER"><i class="fa fa-chevron-left"></i></button>
+                <button type="button" id="opciones_leftAll" class="btn btn-block  btn-danger" data-toggle="tooltip" data-placement="top" title="REMOVER TODOS"><i class="fa fa-backward"></i></button>
+
+                <button type="button" id="opciones_nuevo" class="btn btn-info mt-2" data-toggle="tooltip" data-placement="top" title="AGREGAR OPCION"><span class="fa fa-plus"></span></button>
+                <button type="button" id="opciones_editor" class="btn btn-warning mt-2" data-toggle="tooltip" data-placement="top" title="EDITAR OPCION"><span class="fa fa-pencil-alt"></span></button>
+                <button type="button" id="opciones_eliminar" class="btn btn-danger mt-2" data-toggle="tooltip" data-placement="top" title="ELIMINAR OPCION"><span class="fa fa-trash"></span></button>
             </div>
             <div class="col-5">
-                <select name="to[]" id="opciones_to" class="form-control NotSelectize" size="30" multiple="multiple"></select>
+                <select name="to[]" id="opciones_to" class="form-control NotSelectize" size="10" multiple="multiple"></select>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 pt-2" align="right">
+                <button type="button" class="btn btn-info" id="btnAsignarOpcionesxModulos"><span class="fa fa-save"></span> GUARDAR</button>
             </div>
         </div>     
         <!--FIN OPCIONES POR MODULO--> 
@@ -119,17 +130,21 @@
             </div>
             <div class="w-100"></div>
             <div class="col-5">
-                <select name="from[]" id="items" class="form-control NotSelectize " size="50" multiple="multiple"> 
+                <select name="from[]" id="items" class="form-control NotSelectize " size="15" multiple="multiple"> 
                 </select>
             </div>
-            <div class="col-2">
-                <button type="button" id="items_rightAll" class="btn btn-block btn-default"><i class="fa fa-forward"></i></button>
-                <button type="button" id="items_rightSelected" class="btn btn-block  btn-default"><i class="fa fa-chevron-right"></i></button>
-                <button type="button" id="items_leftSelected" class="btn btn-block  btn-danger"><i class="fa fa-chevron-left"></i></button>
-                <button type="button" id="items_leftAll" class="btn btn-block  btn-danger"><i class="fa fa-backward"></i></button>
+            <div class="col-2 text-center">
+                <button type="button" id="items_rightAll" class="btn btn-block btn-default" data-toggle="tooltip" data-placement="top" title="ASIGNAR TODOS"><i class="fa fa-forward"></i></button>
+                <button type="button" id="items_rightSelected" class="btn btn-block  btn-default" data-toggle="tooltip" data-placement="top" title="ASIGNAR"><i class="fa fa-chevron-right"></i></button>
+                <button type="button" id="items_leftSelected" class="btn btn-block  btn-danger" data-toggle="tooltip" data-placement="top" title="REMOVER"><i class="fa fa-chevron-left"></i></button>
+                <button type="button" id="items_leftAll" class="btn btn-block  btn-danger"  data-toggle="tooltip" data-placement="top" title="REMOVER TODOS"><i class="fa fa-backward"></i></button>
+
+                <button type="button" id="items_nuevo" class="btn btn-info mt-2" data-toggle="tooltip" data-placement="top" title="AGREGAR ITEM"><span class="fa fa-plus"></span></button>
+                <button type="button" id="items_editor" class="btn btn-warning mt-2"  data-toggle="tooltip" data-placement="top" title="EDITAR ITEM"><span class="fa fa-pencil-alt"></span></button>
+                <button type="button" id="items_eliminar" class="btn btn-danger mt-2"  data-toggle="tooltip" data-placement="top" title="ELIMINAR ITEM"><span class="fa fa-trash"></span></button>
             </div>
             <div class="col-5">
-                <select name="to[]" id="items_to" class="form-control NotSelectize" size="50" multiple="multiple"></select>
+                <select name="to[]" id="items_to" class="form-control NotSelectize" size="15" multiple="multiple"></select>
             </div>
         </div>     
         <!--FIN ITEMS POR OPCION-->
@@ -174,11 +189,15 @@
                 <select name="from[]" id="subitems" class="form-control NotSelectize " size="15" multiple="multiple"> 
                 </select>
             </div>
-            <div class="col-2">
-                <button type="button" id="subitems_rightAll" class="btn btn-block btn-default"><i class="fa fa-forward"></i></button>
-                <button type="button" id="subitems_rightSelected" class="btn btn-block  btn-default"><i class="fa fa-chevron-right"></i></button>
-                <button type="button" id="subitems_leftSelected" class="btn btn-block  btn-danger"><i class="fa fa-chevron-left"></i></button>
-                <button type="button" id="subitems_leftAll" class="btn btn-block  btn-danger"><i class="fa fa-backward"></i></button>
+            <div class="col-2 text-center">
+                <button type="button" id="subitems_rightAll" class="btn btn-block btn-default" data-toggle="tooltip" data-placement="top" title="ASIGNAR TODOS"><i class="fa fa-forward"></i></button>
+                <button type="button" id="subitems_rightSelected" class="btn btn-block  btn-default" data-toggle="tooltip" data-placement="top" title="ASIGNAR"><i class="fa fa-chevron-right"></i></button>
+                <button type="button" id="subitems_leftSelected" class="btn btn-block  btn-danger" data-toggle="tooltip" data-placement="top" title="REMOVER"><i class="fa fa-chevron-left"></i></button>
+                <button type="button" id="subitems_leftAll" class="btn btn-block  btn-danger" data-toggle="tooltip" data-placement="top" title="REMOVER TODOS"><i class="fa fa-backward"></i></button>
+
+                <button type="button" id="subitems_nuevo" class="btn btn-info mt-2" data-toggle="tooltip" data-placement="top" title="AGREGAR SUBITEM"><span class="fa fa-plus"></span></button>
+                <button type="button" id="subitems_editor" class="btn btn-warning mt-2" data-toggle="tooltip" data-placement="top" title="EDITAR SUBITEM"><span class="fa fa-pencil-alt"></span></button>
+                <button type="button" id="subitems_eliminar" class="btn btn-danger mt-2" data-toggle="tooltip" data-placement="top" title="ELIMINAR SUBITEM"><span class="fa fa-trash"></span></button>
             </div>
             <div class="col-5">
                 <select name="to[]" id="subitems_to" class="form-control NotSelectize" size="15" multiple="multiple"></select>
@@ -188,14 +207,14 @@
         <!--SUBSUBITEMS POR ITEM-->
         <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 pt-3 text-center">
-                <h4 class="font-italic">SUBITEMS POR ITEM</h4> 
+                <h4 class="font-italic">SUBSUBITEMS POR SUBITEM</h4> 
                 <hr>
                 <div class="w-100"></div>
             </div>
             <div class="w-100"></div>
             <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 pb-3">
                 <label>Usuario</label>
-                <select id="sixiu" name="sixiu" class="form-control form-control-sm">
+                <select id="ssixiu" name="ssixiu" class="form-control form-control-sm">
                 </select>
             </div>
             <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 pb-3">
@@ -215,25 +234,29 @@
             </div>
             <div class="w-100"></div>
             <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
-                <h4>SUBITEMS NO ASIGNADAS</h4>
+                <h4>SUBSUBITEMS NO ASIGNADOS</h4>
             </div>
             <div class="col-2"></div>
             <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
-                <h4>SUBITEMS ASIGNADOS</h4>
+                <h4>SUBSUBITEMS ASIGNADOS</h4>
             </div>
             <div class="w-100"></div>
             <div class="col-5">
-                <select name="from[]" id="subitems" class="form-control NotSelectize " size="15" multiple="multiple"> 
+                <select name="from[]" id="subsubitems" class="form-control NotSelectize " size="15" multiple="multiple"> 
                 </select>
             </div>
-            <div class="col-2">
-                <button type="button" id="subitems_rightAll" class="btn btn-block btn-default"><i class="fa fa-forward"></i></button>
-                <button type="button" id="subitems_rightSelected" class="btn btn-block  btn-default"><i class="fa fa-chevron-right"></i></button>
-                <button type="button" id="subitems_leftSelected" class="btn btn-block  btn-danger"><i class="fa fa-chevron-left"></i></button>
-                <button type="button" id="subitems_leftAll" class="btn btn-block  btn-danger"><i class="fa fa-backward"></i></button>
+            <div class="col-2 text-center">
+                <button type="button" id="subsubitems_rightAll" class="btn btn-block btn-default" data-toggle="tooltip" data-placement="top" title="ASIGNAR TODOS"><i class="fa fa-forward"></i></button>
+                <button type="button" id="subsubitems_rightSelected" class="btn btn-block  btn-default" data-toggle="tooltip" data-placement="top" title="ASIGNAR"><i class="fa fa-chevron-right"></i></button>
+                <button type="button" id="subsubitems_leftSelected" class="btn btn-block  btn-danger" data-toggle="tooltip" data-placement="top" title="REMOVER"><i class="fa fa-chevron-left"></i></button>
+                <button type="button" id="subsubitems_leftAll" class="btn btn-block  btn-danger" data-toggle="tooltip" data-placement="top" title="REMOVER TODOS"><i class="fa fa-backward"></i></button>
+
+                <button type="button" id="subsubitems_nuevo" class="btn btn-info mt-2" data-toggle="tooltip" data-placement="top" title="AGREGAR SUBSUBITEM"><span class="fa fa-plus"></span></button>
+                <button type="button" id="subsubitems_editor" class="btn btn-warning mt-2" data-toggle="tooltip" data-placement="top" title="EDITAR SUBSUBITEM"><span class="fa fa-pencil-alt"></span></button>
+                <button type="button" id="subsubitems_eliminar" class="btn btn-danger mt-2" data-toggle="tooltip" data-placement="top" title="ELIMINAR SUBSUBITEM"><span class="fa fa-trash"></span></button>
             </div>
             <div class="col-5">
-                <select name="to[]" id="subitems_to" class="form-control NotSelectize" size="15" multiple="multiple"></select>
+                <select name="to[]" id="subsubitems_to" class="form-control NotSelectize" size="15" multiple="multiple"></select>
             </div>
         </div>     
         <!--FIN SUBSUBITEMS POR ITEM-->
@@ -242,10 +265,98 @@
 <script type="text/javascript">
     var pnlTablero = $("#pnlTablero"), pnlTableroBody = $("#pnlTablero").find(".card-body");
     var mxu = pnlTableroBody.find("#mxu"), oxmu = pnlTableroBody.find("#oxmu"), ixou = pnlTableroBody.find("#ixou"),
-            sixiu = pnlTableroBody.find("#sixiu");
-    var btnAsignarModulos = pnlTableroBody.find("#btnAsignarModulos");
+            sixiu = pnlTableroBody.find("#sixiu"), oxmm = $("#oxmm");
+    ;
+    var btnAsignarModulos = pnlTableroBody.find("#btnAsignarModulos"), btnAsignarOpcionesxModulos = $("#btnAsignarOpcionesxModulos");
     $(document).ready(function () {
-                
+
+        $('#modulos').multiselect();
+        $('#opciones').multiselect();
+
+        $('button[id^="modulos"].btn-default').click(function () {
+            onBeep(1);
+        });
+
+        $('button[id^="modulos"].btn-danger').click(function () {
+            onBeep(3);
+        });
+
+        /*OPCIONES POR MODULO*/
+        btnAsignarOpcionesxModulos.click(function () {
+            if (oxmm.val() && oxmu.val()) {
+                var options = [];
+                $.each($("#opciones_to").find('option'), function (k, v) {
+                    options.push({OPCION: $(v).val(), OPCIONT: $(v).text()});
+                });
+                if (options.length > 0) {
+                    onEstablecerOpciones(oxmu.val(), oxmm.val(), options);
+                } else {
+                    onBeep(2);
+                    swal({
+                        buttons: ["CANCELAR", "ACEPTAR"],
+                        title: 'NO HA SELECCIONADO NINGÚNA OPCIÓN ESTO VA A ELIMINAR TODOS LOS ACCESOS A LAS OPCIONES, ¿DESEA CONTINUAR?',
+                        text: "ESTA ACCIÓN ELIMINARÁ LOS PERMISOS",
+                        icon: "warning",
+                        closeOnEsc: true,
+                        closeOnClickOutside: true
+                    }).then((action) => {
+                        if (action) {
+                            onEstablecerOpciones(oxmu.val(), oxmm.val(), options);
+                        }
+                    });
+                }
+            } else {
+                onBeep(2);
+                swal('ATENCIÓN', 'SELECCIONE UN USUARIO', 'warning').then((value) => {
+                    oxmu[0].selectize.focus();
+                    oxmu[0].selectize.open();
+                });
+            }
+        });
+
+        oxmm.change(function () {
+            $("#opciones_to").html('');
+            getOpcionesXModuloXUsuario();
+        });
+
+        oxmu.change(function () {
+            $("#opciones").html('');
+            $.getJSON('<?php print base_url('accesos_modulos_x_usuario'); ?>', {U: oxmu.val()}).done(function (dx) {
+                oxmm[0].selectize.clear(true);
+                oxmm[0].selectize.clearOptions();
+                $.each(dx, function (k, v) {
+                    oxmm[0].selectize.addOption({text: v.Modulo, value: v.ID});
+                });
+                oxmm[0].selectize.focus();
+                oxmm[0].selectize.open();
+            }).fail(function (x, y, z) {
+                console.log(x.responseText);
+            }).always(function () {
+            });
+        });
+        /* FIN OPCIONES POR MODULO*/
+
+        /*MODULOS POR USUARIO*/
+
+        $.getJSON('<?php print base_url('Accesos/getUsuarios') ?>').done(function (dx) {
+            $.each(dx, function (k, v) {
+                mxu[0].selectize.addOption({text: v.USUARIO + ' (' + v.TIPO_ACCESO + ')', value: v.ID});
+                oxmu[0].selectize.addOption({text: v.USUARIO + ' (' + v.TIPO_ACCESO + ')', value: v.ID});
+                ixou[0].selectize.addOption({text: v.USUARIO + ' (' + v.TIPO_ACCESO + ')', value: v.ID});
+                sixiu[0].selectize.addOption({text: v.USUARIO + ' (' + v.TIPO_ACCESO + ')', value: v.ID});
+            });
+        }).fail(function (x, y, z) {
+            console.log(x.responseText);
+        });
+
+        $.getJSON('<?php print base_url('accesos_modulos') ?>').done(function (dx) {
+            $.each(dx, function (k, v) {
+                $("#modulos").append('<option value="' + v.ID + '">' + v.Modulo + '</option>');
+            });
+        }).fail(function (x, y, z) {
+            console.log(x.responseText);
+        });
+
         btnAsignarModulos.click(function () {
             if (mxu.val()) {
                 var options = [];
@@ -278,41 +389,14 @@
             }
         });
 
-        $('#modulos').multiselect();
-
-        $('button[id^="modulos"].btn-default').click(function () {
-            onBeep(1);
-        });
-
-        $('button[id^="modulos"].btn-danger').click(function () {
-            onBeep(3);
-        });
-
-        $.getJSON('<?php print base_url('Accesos/getUsuarios') ?>').done(function (dx) {
-            $.each(dx, function (k, v) {
-                mxu[0].selectize.addOption({text: v.USUARIO + ' (' + v.TIPO_ACCESO + ')', value: v.ID});
-                oxmu[0].selectize.addOption({text: v.USUARIO + ' (' + v.TIPO_ACCESO + ')', value: v.ID});
-                ixou[0].selectize.addOption({text: v.USUARIO + ' (' + v.TIPO_ACCESO + ')', value: v.ID});
-                sixiu[0].selectize.addOption({text: v.USUARIO + ' (' + v.TIPO_ACCESO + ')', value: v.ID});
-            });
-        }).fail(function (x, y, z) {
-            console.log(x.responseText);
-        });
-
-        $.getJSON('<?php print base_url('accesos_modulos') ?>').done(function (dx) {
-            $.each(dx, function (k, v) {
-                $("#modulos").append('<option value="' + v.ID + '">' + v.Modulo + '</option>');
-            });
-        }).fail(function (x, y, z) {
-            console.log(x.responseText);
-        });
-
         mxu.change(function () {
             $("#modulos_to").html('');
             getModulosXUsuario();
         });
+        /*FIN MODULOS POR USUARIO*/
     });
 
+    /*MODULOS*/
     function getModulosXUsuario() {
         $.getJSON('<?php print base_url('accesos_modulos_x_usuario'); ?>', {U: mxu.val()}).done(function (dx) {
             if (dx.length > 0) {
@@ -392,6 +476,88 @@
             console.log(x.responseText);
         });
     }
+
+    /*OPCIONES*/
+    function getOpcionesXModuloXUsuario() {
+        $.getJSON('<?php print base_url('accesos_opciones_x_modulo_x_usuario') ?>', {U: oxmu.val(), M: oxmm.val()}).done(function (dx) {
+        if (dx.length > 0) {
+                var opciones_asignadas = [];
+                $.each(dx, function (k, v) {
+                    $("#opciones_to").append('<option value="' + v.ID + '">' + v.Opcion + '</option>');
+                    opciones_asignadas.push(v.ID);
+                });
+                getOpciones(2, opciones_asignadas, oxmm.val());
+            } else {
+                onBeep(2);
+                $.notify({
+                    // options
+                    message: 'ESTE USUARIO NO TIENE ASIGNADO NINGÚNA OPCIÓN EN ESTE MODULO'
+                }, {
+                    // settings
+                    type: 'danger',
+                    delay: 3500,
+                    animate: {
+                        enter: 'animated bounceIn',
+                        exit: 'animated flipOutX'
+                    },
+                    placement: {
+                        from: "top",
+                        align: "center"
+                    }
+                });
+                getOpciones(1, [], oxmm.val());
+            }
+        }).fail(function (x, y, z) {
+            console.log(x.responseText);
+        });
+    }
+
+    function getOpciones(action, ops, m) {
+        var opciones = $("#opciones");
+        opciones.html('');
+        $.getJSON('<?php print base_url('accesos_opciones') ?>', {M: m}).done(function (dx) {
+             
+            switch (action) {
+                case 1:
+                    $("#opciones_to").html('');
+                    $.each(dx, function (k, v) {
+                        opciones.append('<option value="' + v.ID + '">' + v.Opcion + '</option>');
+                    });
+                    break;
+                case 2:
+                    $.each(dx, function (kk, vv) {
+                        if (ops.indexOf(vv.ID) === -1) {
+                            opciones.append('<option value="' + vv.ID + '">' + vv.Opcion + '</option>');
+                        }
+                    });
+                    break;
+            }
+        }).fail(function (x, y, z) {
+            console.log(x.responseText);
+        });
+    }
+
+    function onEstablecerOpciones(usr, mdl, op) {
+        var f = new FormData();
+        f.append('USR', usr);
+        f.append('MDL', mdl);
+        f.append('OPTIONS', JSON.stringify(op));
+        $.ajax({
+            url: '<?php print base_url('accesos_add_opciones_x_modulo_x_usuario'); ?>',
+            type: "POST",
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: f
+        }).done(function (data, x, jq) {
+            swal('ATENCIÓN', 'SE HAN GUARDADO LOS CAMBIOS', 'success');
+        }).fail(function (x, y, z) {
+            console.log(x.responseText);
+        }).always(function () {
+
+        });
+    }
+
 </script>
 <style>
     .btn-default{

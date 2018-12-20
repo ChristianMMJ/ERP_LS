@@ -12,8 +12,6 @@
 </nav>
 <script>
     $(document).ready(function () {
-        getMenu(8);
-        getQuickMenu(2);
-        onComprobarModulos(2);
+        getMenu(8); 
     });
 </script>

@@ -960,6 +960,8 @@
     var opcion = "";
 
     function getMenu(m) {
+        getQuickMenu(2);
+        onComprobarModulos(2);
         $.post('<?= base_url('ResourceManager/getOpcionesXModulo'); ?>', {MOD: m}).done(function (data) {
             var dtm = JSON.parse(data);
             if (dtm.length > 0) {
@@ -1129,10 +1131,11 @@
         setTimeout(function () {
             getQuickMenu(type);
             onComprobarModulos(type);
-        }, 2500);
+        }, 1500);
     }
 
     function getQuickMenu(type) {
+        var burl = '<?= base_url(); ?>';
         $.getJSON('<?php print base_url('ResourceManager/getModulos'); ?>').done(function (data) {
             var modulo = "";
             if (modulos_counter === 0) {
@@ -1156,7 +1159,7 @@
                             modulo = "";
                             $.each(data, function (k, v) {
                                 modulo += '<li class="item">';
-                                modulo += '<a  href="' + v.Ref + '">';
+                                modulo += '<a  href="' + (burl + v.Ref) + '">';
                                 modulo += '<i class="fa fa-' + v.Icon + '" style="width: 45px;"></i> ' + v.Modulo;
                                 modulo += '</a>';
                                 modulo += '</li>';
@@ -1167,7 +1170,7 @@
                             modulo = "";
                             $.each(data, function (k, v) {
                                 modulo += '<li class="item">';
-                                modulo += '<a  href="' + v.Ref + '">';
+                                modulo += '<a  href="' + (burl + v.Ref) + '">';
                                 modulo += '<i class="fa fa-' + v.Icon + '" style="width: 45px;"></i> ' + v.Modulo;
                                 modulo += '</a>';
                                 modulo += '</li>';

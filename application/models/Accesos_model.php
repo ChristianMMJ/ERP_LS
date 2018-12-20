@@ -58,9 +58,25 @@ class Accesos_model extends CI_Model {
         }
     }
 
+    public function getOpciones($M) {
+        try {
+            $this->db->select("OXM.ID, OXM.Modulo, OXM.Opcion, OXM.Fecha, OXM.Icon, OXM.Ref, OXM.Order, OXM.Button, OXM.Class", false)
+                    ->from('opcionesxmodulo AS OXM')->where('OXM.Modulo', $M);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getModulosXUsuario($U) {
         try {
-            return $this->db->select("M.ID, M.Modulo, M.Fecha, M.Icon, M.Ref, M.Order", false)
+            return $this->db->select("M.ID, M.Modulo", false)
                             ->from('modulosxusuario AS U')
                             ->join('modulos AS M', 'U.Modulo = M.ID')
                             ->where('U.Usuario', $U)
@@ -68,6 +84,19 @@ class Accesos_model extends CI_Model {
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
-    } 
+    }
+
+    public function getOpcionesXModuloxUsuario($U, $M) {
+        try {
+            return $this->db->select("OXM.ID, OXM.Opcion", false)
+                            ->from('opcionesxmoduloxusuario AS OXMU')
+                            ->join('opcionesxmodulo AS OXM', 'OXMU.Opcion = OXM.ID')
+                            ->where('OXMU.Usuario', $U)
+                            ->where('OXMU.Modulo', $M)
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 
 }
