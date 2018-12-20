@@ -960,7 +960,7 @@
     var opcion = "";
 
     function getMenu(m) {
-        $.post('<?php print base_url('ResourceManager/getOpcionesXModulo'); ?>', {MOD: m}).done(function (data) {
+        $.post('<?= base_url('ResourceManager/getOpcionesXModulo'); ?>', {MOD: m}).done(function (data) {
             var dtm = JSON.parse(data);
             if (dtm.length > 0) {
                 var uniqueNames = [], menus = [];
@@ -970,7 +970,7 @@
                         menus.push({Opcion: el.Opcion, Icon: el.Icon, Ref: el.Ref, Button: el.Button, Class: el.Class});
                     }
                 });
-                var n = 0, burl = '<?php print base_url(); ?>';
+                var n = 0, burl = '<?= base_url(); ?>';
                 var uitems = [], items = [], usubitems = [], subitems = [], usubsubitems = [], subsubitems = [];
                 $.each(dtm, function (i, el) {
                     /*ITEMS*/
@@ -1112,13 +1112,77 @@
                 $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function (e) {
                     $('.dropdown-menu .show').removeClass("show");
                 });
-
                 if (!$parent.parent().hasClass('navbar-nav')) {
                     $el.next().css({"top": $el[0].offsetTop, "left": $parent.outerWidth() - 4});
                 }
-
                 return false;
             });
+        });
+    }
+
+    var modulos_counter = 0;
+    function onMenuDisplay(e) {
+        window.location.href = '<?php print base_url(); ?>' + e + '.shoes/';
+    }
+
+    function onComprobarModulos(type) {
+        setTimeout(function () {
+            getQuickMenu(type);
+            onComprobarModulos(type);
+        }, 2500);
+    }
+
+    function getQuickMenu(type) {
+        $.getJSON('<?php print base_url('ResourceManager/getModulos'); ?>').done(function (data) {
+            var modulo = "";
+            if (modulos_counter === 0) {
+                if (data.length > 0) {
+                    modulos_counter = data.length;
+                    switch (type) {
+                        case 1:
+                            $.each(data, function (k, v) {
+                                modulo += '<div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-2 m-2 animated bounceIn" onclick="onMenuDisplay(\'' + v.Ref + '\');">';
+                                modulo += '<div class="card text-center">';
+                                modulo += '<div class="card-body">';
+                                modulo += '<span class="fa fa-' + v.Icon + ' fa-2x mt-5"></span>';
+                                modulo += '</div>';
+                                modulo += '<div class="card-footer">';
+                                modulo += '<h5>' + v.Modulo + '</h5>';
+                                modulo += '</div>';
+                                modulo += '</div>';
+                                modulo += '</div>';
+                            });
+                            $("#MnuBlock").html(modulo);
+                            modulo = "";
+                            $.each(data, function (k, v) {
+                                modulo += '<li class="item">';
+                                modulo += '<a  href="' + v.Ref + '">';
+                                modulo += '<i class="fa fa-' + v.Icon + '" style="width: 45px;"></i> ' + v.Modulo;
+                                modulo += '</a>';
+                                modulo += '</li>';
+                            });
+                            $("ul.main").html(modulo);
+                            break;
+                        case 2:
+                            modulo = "";
+                            $.each(data, function (k, v) {
+                                modulo += '<li class="item">';
+                                modulo += '<a  href="' + v.Ref + '">';
+                                modulo += '<i class="fa fa-' + v.Icon + '" style="width: 45px;"></i> ' + v.Modulo;
+                                modulo += '</a>';
+                                modulo += '</li>';
+                            });
+                            $("ul.main").html(modulo);
+                            break;
+                    }
+                } else {
+                    swal('ATENCIÓN', 'LO SENTIMOS, NO PUDIMOS CONECTAR CON LA BASE DE DATOS', 'error');
+                }
+            } else if (data.length !== modulos_counter) {
+                modulos_counter = 0;
+            }
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
         });
     }
 </script> 

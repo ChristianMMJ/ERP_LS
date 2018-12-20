@@ -12,7 +12,10 @@ class ResourceManager_model extends CI_Model {
 
     public function getModulos() {
         try {
-            return $this->db->select("ID, Modulo, Fecha, Icon, Ref")->from("modulos AS M")->order_by('M.Order', 'ASC')->get()->result();
+            return $this->db->select("M.ID, M.Modulo, M.Fecha, M.Icon, M.Ref")->from("modulos AS M")
+                            ->join('modulosxusuario AS MXU', 'MXU.Modulo = M.ID', 'left')
+                            ->where('MXU.Usuario', $_SESSION["ID"])
+                            ->order_by('M.Order', 'ASC')->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -27,7 +30,7 @@ class ResourceManager_model extends CI_Model {
                             ->from("opcionesxmodulo AS OXM")
                             ->join('itemsxopcion AS IXO', 'OXM.ID = IXO.Opcion', 'left')
                             ->join('subitemsxitem AS SIXO', 'IXO.ID = SIXO.Item', 'left')
-                            ->join('subsubitemxsubitem AS SSIXSI', 'SIXO.ID = SSIXSI. SubItem', 'left')
+                            ->join('subsubitemxsubitem AS SSIXSI', 'SIXO.ID = SSIXSI.SubItem', 'left')
                             ->where('OXM.Modulo', $M)
                             ->order_by('OXM.Order', 'ASC')
                             ->order_by('IXO.Order', 'ASC')

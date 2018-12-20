@@ -74,4 +74,6 @@ $route['avance_fracciones'] = 'Avance/getFracciones';
 $route['avance_buscar_avance_x_control'] = 'Avance/onComprobarAvanceXControl';
 
 /*ACCESOS*/
+$route['accesos_modulos'] = 'Accesos/getModulos';
 $route['accesos_modulos_x_usuario'] = 'Accesos/getModulosXUsuario';
+$route['accesos_add_modulos'] = 'Accesos/onAgregarModulosXUsuario';

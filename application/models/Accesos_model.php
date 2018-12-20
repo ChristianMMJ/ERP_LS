@@ -41,4 +41,33 @@ class Accesos_model extends CI_Model {
             echo $exc->getTraceAsString();
         }
     }
+
+    public function getModulos() {
+        try {
+            $this->db->select("M.ID, M.Modulo, M.Fecha, M.Icon, M.Ref, M.Order", false)
+                    ->from('modulos AS M');
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getModulosXUsuario($U) {
+        try {
+            return $this->db->select("M.ID, M.Modulo, M.Fecha, M.Icon, M.Ref, M.Order", false)
+                            ->from('modulosxusuario AS U')
+                            ->join('modulos AS M', 'U.Modulo = M.ID')
+                            ->where('U.Usuario', $U)
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    } 
+
 }

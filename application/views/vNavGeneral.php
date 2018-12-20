@@ -144,57 +144,13 @@
         <a href="<?php print base_url() ?>">
             <img src="<?php print base_url(); ?>img/logo_mediano.png" width="160">
         </a>
-
     </div>
     <!--    <ul class="list-unstyled pl-3 pr-3 pt-3">
             <li>
                 <input type="text" class="form-control form-control-sm" autofocus="" placeholder="BUSCAR" id="txtBusqueda">
             </li>
         </ul>-->
-    <ul class="list-unstyled components">
-        <li class="item">
-            <a  href="<?php print base_url('MenuProveedores.shoes') ?>">
-                <i class="fa fa-user-secret" style="width: 45px;"></i>Proveedores
-            </a>
-        </li>
-        <li class="item">
-            <a href="<?php print base_url('MenuMateriales.shoes') ?>">
-                <i class="fa fa-cube" style="width: 45px;"></i>Materiales
-            </a>
-        </li>
-        <li class="item">
-            <a href="<?php print base_url('MenuClientes.shoes') ?>">
-                <i class="fa fa-users" style="width: 45px;"></i>Clientes
-            </a>
-        </li>
-
-        <li class="item">
-            <a href="<?php print base_url('MenuFichasTecnicas.shoes') ?>">
-                <i class="fa fa-file-invoice" style="width: 45px;"></i>Fichas Técnicas
-            </a>
-        </li>
-        <li class="item">
-            <a href="<?php print base_url('MenuProduccion.shoes') ?>">
-                <i class="fa fa-industry" style="width: 45px;"></i>Producción
-            </a>
-        </li>
-        <li class="item">
-            <a href="<?php print base_url('MenuContabilidad.shoes') ?>">
-                <i class="fa fa-calculator" style="width: 45px;"></i>Contabilidad
-                </div>
-            </a>
-        </li>
-        <li class="item">
-            <a href="<?php print base_url('MenuNomina.shoes') ?>">
-                <i class="fas fa-hand-holding-usd" style="width: 45px;"></i>Nóminas
-            </a>
-        </li>
-        <li class="item">
-            <a href="<?php print base_url('MenuParametros.shoes') ?>">
-                <i class="fa fa-cogs" style="width: 45px;"></i>Parámetros
-            </a>
-        </li>
-
+    <ul class="list-unstyled components main">
     </ul>
     <ul class="list-unstyled pl-3 pr-3">
         <li>
@@ -209,8 +165,6 @@
     var options = components.find("li.item");
 
     $(document).ready(function () {
-
-
         /*KEYUP, KEYDOWN, KEYPRESS; SON REQUERIDOS PARA LOS NON-PRINTABLE CHARACTERS*/
         sidebar.find("#txtBusqueda").on('keyup', function (e) {
             onBuscarSideBar(this);
