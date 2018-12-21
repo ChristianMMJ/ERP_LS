@@ -108,7 +108,7 @@ class Accesos_model extends CI_Model {
                             ->from('opcionesxmoduloxusuario AS OXMU')
                             ->join('opcionesxmodulo AS OXM', 'OXMU.Opcion = OXM.ID')
                             ->where('OXMU.Usuario', $U)
-                            ->where('OXMU.Modulo', $M)
+                            ->where('OXMU.Modulo', $M) 
                             ->order_by('OXM.Order', 'ASC')
                             ->get()->result();
         } catch (Exception $exc) {
