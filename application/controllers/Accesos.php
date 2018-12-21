@@ -67,6 +67,14 @@ class Accesos extends CI_Controller {
         }
     }
 
+    public function getModulosXUsuario() {
+        try {
+            print json_encode($this->acm->getModulosXUsuario($this->input->get('U')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getOpciones() {
         try {
             print json_encode($this->acm->getOpciones($this->input->get('M')));
@@ -83,9 +91,17 @@ class Accesos extends CI_Controller {
         }
     }
 
-    public function getModulosXUsuario() {
+    public function getItems() {
         try {
-            print json_encode($this->acm->getModulosXUsuario($this->input->get('U')));
+            print json_encode($this->acm->getItems($this->input->get('O')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getItemsXOpcionXModuloxUsuario() {
+        try {
+            print json_encode($this->acm->getItemsXOpcionXModuloxUsuario($this->input->get('U'), $this->input->get('M'), $this->input->get('O')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -160,12 +176,62 @@ class Accesos extends CI_Controller {
             /* ELIMINAR LOS NO SELECCIONADOS */
             $opciones_no_seleccionadas = $this->db->select('MXU.ID, MXU.Opcion AS OPCION')
                             ->from('opcionesxmoduloxusuario AS MXU')
-                            ->where('MXU.Usuario', $x->post('USR'))
+                            ->where('MXU.Usuario', $USR)
                             ->get()->result();
 
             foreach ($opciones_no_seleccionadas as $k => $v) {
                 if (!in_array($v->OPCION, $opciones)) {
-                    $this->db->where('ID', $v->ID)->where('Modulo', $MDL)->where('Opcion', $v->OPCION)->where('Usuario', $USR)->delete('opcionesxmoduloxusuario');
+                    $this->db->where('ID', $v->ID)->where('Modulo', $MDL)
+                            ->where('Opcion', $v->OPCION)->where('Usuario', $USR)
+                            ->delete('opcionesxmoduloxusuario');
+                }
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onAgregarItemsXOpcionXModuloXUsuario() {
+        try {
+            $x = $this->input;
+            $USR = $x->post('USR');
+            $MDL = $x->post('MDL');
+            $OPC = $x->post('OPC');
+            $options = json_decode($this->input->post('OPTIONS'));
+            $items = array();
+            foreach ($options as $k => $v) {
+                /* COMPROBAR SI YA SE TIENE ESE MODULO */
+                $tiene_la_opcion = $this->db->select('IXOMU.ID')
+                                ->from('itemsxopcionxmoduloxusuario AS IXOMU')
+                                ->where('IXOMU.Usuario', $USR)
+                                ->where('IXOMU.Modulo', $MDL)
+                                ->where('IXOMU.Opcion', $OPC)
+                                ->where('IXOMU.Item', $v->ITEM)
+                                ->get()->result();
+
+                if (count($tiene_la_opcion) <= 0) {
+                    $this->db->insert('itemsxopcionxmoduloxusuario', array(
+                        'Item' => $v->ITEM,
+                        'Opcion' => $OPC,
+                        'Modulo' => $MDL,
+                        'Usuario' => $USR,
+                        'UsuarioAsigna' => $_SESSION["ID"],
+                        'Fecha' => Date('d/m/Y h:i:s a')
+                    ));
+                }
+                array_push($items, $v->ITEM);
+            }
+            /* ELIMINAR LOS NO SELECCIONADOS */
+            $items_no_seleccionados = $this->db->select('IXOMU.ID, IXOMU.Item AS ITEM')
+                            ->from('itemsxopcionxmoduloxusuario AS IXOMU')
+                            ->where('IXOMU.Usuario', $USR)
+                            ->get()->result();
+            foreach ($items_no_seleccionados as $k => $v) {
+                if (!in_array($v->ITEM, $items)) {
+                    $this->db->where('ID', $v->ID)->where('Modulo', $MDL)
+                            ->where('Opcion', $OPC)->where('Item', $v->ITEM)
+                            ->where('Usuario', $USR)->delete('itemsxopcionxmoduloxusuario');
+                    PRINT $this->db->last_query();
                 }
             }
         } catch (Exception $exc) {

@@ -117,7 +117,7 @@
             </div>
             <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 pb-3">
                 <label>Opcion</label>
-                <select id="ixo" name="ixo" class="form-control form-control-sm">
+                <select id="ixoo" name="ixoo" class="form-control form-control-sm">
                 </select>
             </div>
             <div class="w-100"></div>
@@ -145,6 +145,9 @@
             </div>
             <div class="col-5">
                 <select name="to[]" id="items_to" class="form-control NotSelectize" size="15" multiple="multiple"></select>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 pt-2" align="right">
+                <button type="button" class="btn btn-info" id="btnAsignarItemsXOpcionXModulo"><span class="fa fa-save"></span> GUARDAR</button>
             </div>
         </div>     
         <!--FIN ITEMS POR OPCION-->
@@ -265,13 +268,17 @@
 <script type="text/javascript">
     var pnlTablero = $("#pnlTablero"), pnlTableroBody = $("#pnlTablero").find(".card-body");
     var mxu = pnlTableroBody.find("#mxu"), oxmu = pnlTableroBody.find("#oxmu"), ixou = pnlTableroBody.find("#ixou"),
-            sixiu = pnlTableroBody.find("#sixiu"), oxmm = $("#oxmm");
+            sixiu = pnlTableroBody.find("#sixiu"), oxmm = $("#oxmm"), ixom = $("#ixom"), ixoo = $("#ixoo");
     ;
-    var btnAsignarModulos = pnlTableroBody.find("#btnAsignarModulos"), btnAsignarOpcionesxModulos = $("#btnAsignarOpcionesxModulos");
+    var btnAsignarModulos = pnlTableroBody.find("#btnAsignarModulos"),
+            btnAsignarOpcionesxModulos = $("#btnAsignarOpcionesxModulos"),
+            btnAsignarItemsXOpcionXModulo = $("#btnAsignarItemsXOpcionXModulo");
+
     $(document).ready(function () {
 
         $('#modulos').multiselect();
         $('#opciones').multiselect();
+        $('#items').multiselect();
 
         $('button[id^="modulos"].btn-default').click(function () {
             onBeep(1);
@@ -280,6 +287,83 @@
         $('button[id^="modulos"].btn-danger').click(function () {
             onBeep(3);
         });
+        /*ITEMS POR OPCIÓN*/
+
+        btnAsignarItemsXOpcionXModulo.click(function () {
+            if (ixom.val() && ixou.val() && ixoo.val()) {
+                var items = [];
+                $.each($("#items_to").find('option'), function (k, v) {
+                    items.push({ITEM: $(v).val(), ITEMT: $(v).text()});
+                });
+                if (items.length > 0) {
+                    onEstablecerItems(ixou.val(), ixom.val(), ixoo.val(), items);
+                } else {
+                    onBeep(2);
+                    swal({
+                        buttons: ["CANCELAR", "ACEPTAR"],
+                        title: 'NO HA SELECCIONADO NINGÚN ITEM ESTO VA A ELIMINAR TODOS LOS ACCESOS A LOS ITEMS POR OPCIÓN, ¿DESEA CONTINUAR?',
+                        text: "ESTA ACCIÓN ELIMINARÁ LOS PERMISOS",
+                        icon: "warning",
+                        closeOnEsc: true,
+                        closeOnClickOutside: true
+                    }).then((action) => {
+                        if (action) { 
+                            onEstablecerItems(ixou.val(), ixom.val(), ixoo.val(), items);
+                        }
+                    });
+                }
+            } else {
+                onBeep(2);
+                swal('ATENCIÓN', 'SELECCIONE UN USUARIO', 'warning').then((value) => {
+                    ixou[0].selectize.focus();
+                    ixou[0].selectize.open();
+                });
+            }
+        });
+
+        ixoo.change(function () {
+            $("#items_to").html('');
+            getItemsXOpcionXModuloXUsuario();
+        });
+
+        ixom.change(function () {
+            $("#items").html('');
+            $.getJSON('<?php print base_url('accesos_opciones_x_modulo_x_usuario'); ?>', {U: ixou.val(), M: ixom.val()}).done(function (dx) {
+                console.log(dx);
+                if (dx.length > 0) {
+                    ixoo[0].selectize.clear(true);
+                    ixoo[0].selectize.clearOptions();
+                    $.each(dx, function (k, v) {
+                        ixoo[0].selectize.addOption({text: v.Opcion, value: v.ID});
+                    });
+                    ixoo[0].selectize.focus();
+                    ixoo[0].selectize.open();
+                } else {
+                    onBeep(2);
+                    swal('ATENCIÓN', 'ESTE USUARIO NO TIENE OPCIONES EN ESTE MODULO', 'warning');
+                }
+            }).fail(function (x, y, z) {
+                console.log(x.responseText);
+            }).always(function () {
+            });
+        });
+
+        ixou.change(function () {
+            $("#items").html('');
+            $.getJSON('<?php print base_url('accesos_modulos_x_usuario'); ?>', {U: ixou.val()}).done(function (dx) {
+                ixom[0].selectize.clear(true);
+                ixom[0].selectize.clearOptions();
+                $.each(dx, function (k, v) {
+                    ixom[0].selectize.addOption({text: v.Modulo, value: v.ID});
+                });
+                ixom[0].selectize.focus();
+                ixom[0].selectize.open();
+            }).fail(function (x, y, z) {
+                console.log(x.responseText);
+            }).always(function () {
+            });
+        });
+        /* FIN ITEMS POR OPCIÓN*/
 
         /*OPCIONES POR MODULO*/
         btnAsignarOpcionesxModulos.click(function () {
@@ -476,11 +560,12 @@
             console.log(x.responseText);
         });
     }
+    /*FIN MODULOS*/
 
     /*OPCIONES*/
     function getOpcionesXModuloXUsuario() {
         $.getJSON('<?php print base_url('accesos_opciones_x_modulo_x_usuario') ?>', {U: oxmu.val(), M: oxmm.val()}).done(function (dx) {
-        if (dx.length > 0) {
+            if (dx.length > 0) {
                 var opciones_asignadas = [];
                 $.each(dx, function (k, v) {
                     $("#opciones_to").append('<option value="' + v.ID + '">' + v.Opcion + '</option>');
@@ -516,7 +601,7 @@
         var opciones = $("#opciones");
         opciones.html('');
         $.getJSON('<?php print base_url('accesos_opciones') ?>', {M: m}).done(function (dx) {
-             
+
             switch (action) {
                 case 1:
                     $("#opciones_to").html('');
@@ -557,7 +642,89 @@
 
         });
     }
+    /*FIN OPCIONES*/
 
+    /*ITEMS*/
+    function getItemsXOpcionXModuloXUsuario() {
+        $.getJSON('<?php print base_url('accesos_items_x_opcion_x_modulo_x_usuario') ?>', {U: ixou.val(), M: ixom.val(), O: ixoo.val()}).done(function (dx) {
+            if (dx.length > 0) {
+                var items_asignados = [];
+                $.each(dx, function (k, v) {
+                    $("#items_to").append('<option value="' + v.ID + '">' + v.Item + '</option>');
+                    items_asignados.push(v.ID);
+                });
+                getItems(2, items_asignados, ixom.val(), ixoo.val());
+            } else {
+                onBeep(2);
+                $.notify({
+                    // options
+                    message: 'ESTE USUARIO NO TIENE ASIGNADO NINGÚNA OPCIÓN EN ESTE MODULO'
+                }, {
+                    // settings
+                    type: 'danger',
+                    delay: 3500,
+                    animate: {
+                        enter: 'animated bounceIn',
+                        exit: 'animated flipOutX'
+                    },
+                    placement: {
+                        from: "top",
+                        align: "center"
+                    }
+                });
+                getItems(1, [], ixom.val(), ixoo.val());
+            }
+        }).fail(function (x, y, z) {
+            console.log(x.responseText);
+        });
+    }
+
+    function getItems(action, ops, m, o) {
+        var items = $("#items");
+        items.html('');
+        $.getJSON('<?php print base_url('accesos_items') ?>', {O: o}).done(function (dx) {
+            switch (action) {
+                case 1:
+                    $("#items_to").html('');
+                    $.each(dx, function (k, v) {
+                        items.append('<option value="' + v.ID + '">' + v.Item + '</option>');
+                    });
+                    break;
+                case 2:
+                    $.each(dx, function (kk, vv) {
+                        if (ops.indexOf(vv.ID) === -1) {
+                            items.append('<option value="' + vv.ID + '">' + vv.Item + '</option>');
+                        }
+                    });
+                    break;
+            }
+        }).fail(function (x, y, z) {
+            console.log(x.responseText);
+        });
+    }
+
+    function onEstablecerItems(usr, mdl, op, itms) {
+        var f = new FormData();
+        f.append('USR', usr);
+        f.append('MDL', mdl);
+        f.append('OPC', op);
+        f.append('OPTIONS', JSON.stringify(itms));
+        $.ajax({
+            url: '<?php print base_url('accesos_add_item_x_opcion_x_modulo_x_usuario'); ?>',
+            type: "POST",
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: f
+        }).done(function (data, x, jq) {
+            swal('ATENCIÓN', 'SE HAN GUARDADO LOS CAMBIOS', 'success');
+        }).fail(function (x, y, z) {
+            console.log(x.responseText);
+        }).always(function () {
+
+        });
+    }
+    /*FIN ITEMS*/
 </script>
 <style>
     .btn-default{

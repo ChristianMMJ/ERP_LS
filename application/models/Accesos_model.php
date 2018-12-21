@@ -61,7 +61,23 @@ class Accesos_model extends CI_Model {
     public function getOpciones($M) {
         try {
             $this->db->select("OXM.ID, OXM.Modulo, OXM.Opcion, OXM.Fecha, OXM.Icon, OXM.Ref, OXM.Order, OXM.Button, OXM.Class", false)
-                    ->from('opcionesxmodulo AS OXM')->where('OXM.Modulo', $M);
+                    ->from('opcionesxmodulo AS OXM')->where('OXM.Modulo', $M)->order_by('OXM.Order', 'ASC');
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getItems($O) {
+        try {
+            $this->db->select("IXO.ID, IXO.Item, IXO.Opcion", false)
+                    ->from('itemsxopcion AS IXO')->where('IXO.Opcion', $O);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -93,6 +109,23 @@ class Accesos_model extends CI_Model {
                             ->join('opcionesxmodulo AS OXM', 'OXMU.Opcion = OXM.ID')
                             ->where('OXMU.Usuario', $U)
                             ->where('OXMU.Modulo', $M)
+                            ->order_by('OXM.Order', 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getItemsXOpcionXModuloxUsuario($U, $M, $O) {
+        try {
+            return $this->db->select("IXO.ID, IXO.Item", false)
+                            ->from('itemsxopcionxmoduloxusuario AS IXOMU')
+                            ->join('itemsxopcion AS IXO', 'IXOMU.Item = IXO.ID')
+                            ->where('IXOMU.Usuario', $U)
+                            ->where('IXOMU.Modulo', $M)
+                            ->where('IXOMU.Opcion', $O)
+                            ->where('IXO.Opcion', $O)
+                            ->order_by('IXO.Order', 'ASC')
                             ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

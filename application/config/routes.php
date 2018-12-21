@@ -81,3 +81,7 @@ $route['accesos_add_modulos'] = 'Accesos/onAgregarModulosXUsuario';
 $route['accesos_opciones'] = 'Accesos/getOpciones';
 $route['accesos_opciones_x_modulo_x_usuario'] = 'Accesos/getOpcionesXModuloxUsuario';
 $route['accesos_add_opciones_x_modulo_x_usuario'] = 'Accesos/onAgregarOpcionesXModuloXUsuario';
+
+$route['accesos_items'] = 'Accesos/getItems';
+$route['accesos_items_x_opcion_x_modulo_x_usuario'] = 'Accesos/getItemsXOpcionXModuloxUsuario';
+$route['accesos_add_item_x_opcion_x_modulo_x_usuario'] = 'Accesos/onAgregarItemsXOpcionXModuloXUsuario';
