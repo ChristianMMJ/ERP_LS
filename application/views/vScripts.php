@@ -144,6 +144,17 @@
         img.src = url;
     }
 
+    function padLeft(nr, n, str) {
+        return Array(n - String(nr).length + 1).join(str || '0') + nr;
+    }
+
+//examples
+//    console.log(padLeft(23, 5));       //=> '00023'
+//    console.log((23).padLeft(5));     //=> '00023'
+//    console.log((23).padLeft(5, ' ')); //=> '   23'
+//    console.log(padLeft(23, 5, '>>'));  //=> '>>>>>>23'
+
+
 
     $(function () {
 
@@ -226,7 +237,7 @@
         }, {
             type: type,
             z_index: 3031,
-            delay: 2000,
+            delay: 4000,
             placement: {
                 from: "bottom",
                 align: "left"
@@ -1188,4 +1199,4 @@
             console.log(x, y, z);
         });
     }
-</script> 
+</script>
