@@ -261,4 +261,21 @@
         background-color: #dadfe4;
         box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)!important;
     }
+
+    .card-body .custom-control-label::after {
+        position: absolute;
+        top: 0.25rem;
+        left: 0;
+        display: block;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 3px;
+        content: "";
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 50% 50%;
+        background-color: #2C3E50;
+    }
+
+
 </style>

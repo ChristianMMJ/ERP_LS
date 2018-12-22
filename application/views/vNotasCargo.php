@@ -634,7 +634,7 @@
         });
 
         tblCompra.find('tbody').on('click', 'tr', function () {
-            Compra.find("tbody tr").removeClass("success");
+            tblCompra.find("tbody tr").removeClass("success");
             $(this).addClass("success");
 
         });

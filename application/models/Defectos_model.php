@@ -18,7 +18,7 @@ class Defectos_model extends CI_Model {
         }
     }
 
-    public function getTemporadas() {
+    public function getDefectos() {
         try {
             return $this->db->select("T.Clave,CONCAT(T.Clave,'-',T.Descripcion) AS Defecto")->from("defectos AS T")->where("T.Estatus", "ACTIVO")->get()->result();
         } catch (Exception $exc) {

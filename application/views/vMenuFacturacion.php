@@ -18,6 +18,8 @@
                     <a class="dropdown-item" href="<?php print base_url('Agentes.shoes'); ?>"> Agentes</a>
                     <a class="dropdown-item" href="<?php print base_url('Estados.shoes'); ?>"> Estados</a>
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mdlTipoCambio"> Tipo Cambio Moneda</a>
+                    <a class="dropdown-item" href="<?php print base_url('Detalles.shoes'); ?>"> Detalles</a>
+                    <a class="dropdown-item" href="<?php print base_url('DetallesDefectos.shoes'); ?>"> Detalles del Defecto</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
