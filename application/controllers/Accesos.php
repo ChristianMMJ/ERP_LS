@@ -101,7 +101,39 @@ class Accesos extends CI_Controller {
 
     public function getItemsXOpcionXModuloxUsuario() {
         try {
-            print json_encode($this->acm->getItemsXOpcionXModuloxUsuario($this->input->get('U'), $this->input->get('M'), $this->input->get('O')));
+            print json_encode($this->acm->getItemsConSubItemsXOpcionXModuloxUsuario($this->input->get('U'), $this->input->get('M'), $this->input->get('O')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getSubItems() {
+        try {
+            print json_encode($this->acm->getSubItems($this->input->get('I')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getSubItemsXItemXOpcionXModuloxUsuario() {
+        try {
+            print json_encode($this->acm->getSubItemsXItemXOpcionXModuloxUsuario($this->input->get('U'), $this->input->get('M'), $this->input->get('O'), $this->input->get('I')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getSubSubItems() {
+        try {
+            print json_encode($this->acm->getSubSubItems($this->input->get('SI')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getSubSubItemsXSubItemXItemXOpcionXModuloxUsuario() {
+        try {
+            print json_encode($this->acm->getSubSubItemsXSubItemXItemXOpcionXModuloxUsuario($this->input->get('U'), $this->input->get('M'), $this->input->get('O'), $this->input->get('I'), $this->input->get('SI')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -232,6 +264,113 @@ class Accesos extends CI_Controller {
                             ->where('Opcion', $OPC)->where('Item', $v->ITEM)
                             ->where('Usuario', $USR)->delete('itemsxopcionxmoduloxusuario');
                     PRINT $this->db->last_query();
+                }
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onAgregarSubItemsXItemXOpcionXModuloXUsuario() {
+        try {
+            $x = $this->input;
+            $USR = $x->post('USR');
+            $MDL = $x->post('MDL');
+            $OPC = $x->post('OPC');
+            $ITE = $x->post('ITE');
+            $options = json_decode($this->input->post('OPTIONS'));
+            $subitems = array();
+            foreach ($options as $k => $v) {
+                /* COMPROBAR SI YA SE TIENE ESE MODULO */
+                $tiene_la_opcion = $this->db->select('SIXIOMU.ID')
+                                ->from('subitemsxitemxopcionxmoduloxusuario AS SIXIOMU')
+                                ->where('SIXIOMU.Usuario', $USR)
+                                ->where('SIXIOMU.Modulo', $MDL)
+                                ->where('SIXIOMU.Opcion', $OPC)
+                                ->where('SIXIOMU.Item', $ITE)
+                                ->where('SIXIOMU.SubItem', $v->SUBITEM)
+                                ->get()->result();
+
+                if (count($tiene_la_opcion) <= 0) {
+                    $this->db->insert('subitemsxitemxopcionxmoduloxusuario', array(
+                        'SubItem' => $v->SUBITEM,
+                        'Item' => $ITE,
+                        'Opcion' => $OPC,
+                        'Modulo' => $MDL,
+                        'Usuario' => $USR,
+                        'UsuarioAsigna' => $_SESSION["ID"],
+                        'Fecha' => Date('d/m/Y h:i:s a')
+                    ));
+                }
+                array_push($subitems, $v->SUBITEM);
+            }
+            /* ELIMINAR LOS NO SELECCIONADOS */
+            $items_no_seleccionados = $this->db->select('SIOXM.ID, SIOXM.SubItem AS SUBITEM')
+                            ->from('subitemsxitemxopcionxmoduloxusuario AS SIOXM')
+                            ->where('SIOXM.Usuario', $USR)
+                            ->get()->result();
+            foreach ($items_no_seleccionados as $k => $v) {
+                if (!in_array($v->SUBITEM, $subitems)) {
+                    $this->db->where('ID', $v->ID)->where('Modulo', $MDL)
+                            ->where('Opcion', $OPC)->where('Item', $ITE)
+                            ->where('SubItem', $v->SUBITEM)->where('Usuario', $USR)
+                            ->delete('subitemsxitemxopcionxmoduloxusuario');
+                    PRINT $this->db->last_query();
+                }
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onAgregarSubSubItemsXSubItemXItemXOpcionXModuloXUsuario() {
+        try {
+            $x = $this->input;
+            $USR = $x->post('USR');
+            $MDL = $x->post('MDL');
+            $OPC = $x->post('OPC');
+            $ITE = $x->post('ITE');
+            $SITE = $x->post('SITE');
+            $options = json_decode($this->input->post('OPTIONS'));
+            $subsubitems = array();
+            foreach ($options as $k => $v) {
+                /* COMPROBAR SI YA SE TIENE ESE MODULO */
+                $tiene_la_opcion = $this->db->select('A.ID')
+                                ->from('subsubitemsxitemxopcionxmoduloxusuario AS A')
+                                ->where('A.Usuario', $USR)
+                                ->where('A.Modulo', $MDL)
+                                ->where('A.Opcion', $OPC)
+                                ->where('A.Item', $ITE)
+                                ->where('A.SubItem', $SITE)
+                                ->where('A.SubSubItem', $v->SUBSUBITEM)
+                                ->get()->result(); 
+                if (count($tiene_la_opcion) <= 0) {
+                    $this->db->insert('subsubitemsxitemxopcionxmoduloxusuario', array(
+                        'SubSubItem' => $v->SUBSUBITEM,
+                        'SubItem' => $SITE,
+                        'Item' => $ITE,
+                        'Opcion' => $OPC,
+                        'Modulo' => $MDL,
+                        'Usuario' => $USR,
+                        'UsuarioAsigna' => $_SESSION["ID"],
+                        'Fecha' => Date('d/m/Y h:i:s a')
+                    ));
+                }
+                array_push($subsubitems, $v->SUBSUBITEM);
+            }
+            /* ELIMINAR LOS NO SELECCIONADOS */
+            $items_no_seleccionados = $this->db->select('B.ID, B.SubSubItem AS SUBSUBITEM')
+                            ->from('subsubitemsxitemxopcionxmoduloxusuario AS B')
+                            ->where('B.Usuario', $USR)
+                            ->get()->result(); 
+            foreach ($items_no_seleccionados as $k => $v) {
+                if (!in_array($v->SUBSUBITEM, $subsubitems)) {
+                    $this->db->where('ID', $v->ID)->where('Modulo', $MDL)
+                            ->where('Opcion', $OPC)->where('Item', $ITE)
+                            ->where('SubItem', $SITE)
+                            ->where('SubItem', $v->SUBSUBITEM)
+                            ->where('Usuario', $USR)
+                            ->delete('subsubitemsxitemxopcionxmoduloxusuario'); 
                 }
             }
         } catch (Exception $exc) {

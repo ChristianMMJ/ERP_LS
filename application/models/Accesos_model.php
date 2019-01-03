@@ -90,6 +90,38 @@ class Accesos_model extends CI_Model {
         }
     }
 
+    public function getSubItems($I) {
+        try {
+            $this->db->select("SIXI.ID, SIXI.SubItem, SIXI.Item, SIXI.Dropdown", false)
+                    ->from('subitemsxitem AS SIXI')->where('SIXI.Item', $I);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getSubSubItems($I) {
+        try {
+            $this->db->select("SSI.ID, SSI.SubSubItem, SSI.SubItem", false)
+                    ->from('subsubitemxsubitem AS SSI')->where('SSI.SubItem', $I);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getModulosXUsuario($U) {
         try {
             return $this->db->select("M.ID, M.Modulo", false)
@@ -126,6 +158,55 @@ class Accesos_model extends CI_Model {
                             ->where('IXOMU.Opcion', $O)
                             ->where('IXO.Opcion', $O)
                             ->order_by('IXO.Order', 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    public function getItemsConSubItemsXOpcionXModuloxUsuario($U, $M, $O) {
+        try {
+            return $this->db->select("IXO.ID, IXO.Item, IXO.Dropdown", false)
+                            ->from('itemsxopcionxmoduloxusuario AS IXOMU')
+                            ->join('itemsxopcion AS IXO', 'IXOMU.Item = IXO.ID')
+                            ->where('IXOMU.Usuario', $U)
+                            ->where('IXOMU.Modulo', $M)
+                            ->where('IXOMU.Opcion', $O)
+                            ->where('IXO.Opcion', $O)
+                            ->where('IXO.Dropdown', 1)
+                            ->order_by('IXO.Order', 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getSubItemsXItemXOpcionXModuloxUsuario($U, $M, $O, $I) {
+        try {
+            return $this->db->select("I.ID, I.SubItem, I.Dropdown", false)
+                            ->from('subitemsxitemxopcionxmoduloxusuario AS SI')
+                            ->join('subitemsxitem AS I', 'SI.SubItem = I.ID')
+                            ->where('SI.Usuario', $U)
+                            ->where('SI.Modulo', $M)
+                            ->where('SI.Opcion', $O)
+                            ->where('SI.Item', $I)
+                            ->order_by('I.Order', 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getSubSubItemsXSubItemXItemXOpcionXModuloxUsuario($U, $M, $O, $I, $SI) {
+        try {
+            return $this->db->select("I.ID, I.SubSubItem", false)
+                            ->from('subsubitemsxitemxopcionxmoduloxusuario AS SI')
+                            ->join('subsubitemxsubitem AS I', 'SI.SubSubItem = I.ID')
+                            ->where('SI.Usuario', $U)
+                            ->where('SI.Modulo', $M)
+                            ->where('SI.Opcion', $O)
+                            ->where('SI.Item', $I)
+                            ->where('SI.SubItem', $SI)
+                            ->order_by('I.Order', 'ASC')
                             ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

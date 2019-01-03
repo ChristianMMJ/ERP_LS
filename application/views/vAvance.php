@@ -94,8 +94,11 @@
             Control = pnlTablero.find("#Control"), Avances;
 
     $(document).ready(function () {
+        
         getDepartamentos();
+        
         $("#usuario").val('<?php print $_SESSION['USERNAME']; ?>');
+
         $.getJSON('<?php print base_url('avance_semana_actual'); ?>').done(function (d) {
             var m = $(d)[0];
             Fecha.val(m.Fecha);
@@ -103,7 +106,8 @@
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         });
-        $.getJSON('<?php print base_url('avance_maqplant'); ?>').done(function (d) { 
+
+        $.getJSON('<?php print base_url('avance_maqplant'); ?>').done(function (d) {
             var ProcesoMaquila = pnlTablero.find("#ProcesoMaquila");
             $.each(d, function (k, v) {
                 ProcesoMaquila[0].selectize.addOption({text: v.MaquilasPlantillas, value: v.Clave});
@@ -111,6 +115,7 @@
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         });
+        
         $.getJSON('<?php print base_url('avance_empleados'); ?>').done(function (d) {
             var Empleado = pnlTablero.find("#Empleado");
             $.each(d, function (k, v) {
@@ -119,6 +124,7 @@
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         });
+        
         $.getJSON('<?php print base_url('avance_fracciones'); ?>').done(function (d) {
             var Fraccion = pnlTablero.find("#Fraccion");
             $.each(d, function (k, v) {
@@ -131,7 +137,9 @@
         Control.on('keydown', function (e) {
             console.log(e.keyCode);
         });
+        
         Control.val('').focus();
+        
     });
 
     function getRecords() {
