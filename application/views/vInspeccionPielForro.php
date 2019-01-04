@@ -81,17 +81,17 @@
             </div>
             <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1" >
                 <label class="text-danger">Devolver</label>
-                <input type="text" class="form-control form-control-sm numbersOnly" id="CantidadDevuelta" maxlength="6" name="CantidadDevuelta" required>
+                <input type="text" class="form-control form-control-sm numbersOnly" id="CantidadDevuelta" maxlength="6" name="CantidadDevuelta">
             </div>
             <div class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-2" >
                 <label for="" >Defecto</label>
-                <select id="Defecto" name="Defecto" class="form-control form-control-sm required" required="" >
+                <select id="Defecto" name="Defecto" class="form-control form-control-sm required" >
                     <option value=""></option>
                 </select>
             </div>
             <div class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-2" >
                 <label for="" >Detalle</label>
-                <select id="DetalleDefecto" name="DetalleDefecto" class="form-control form-control-sm required" required="" >
+                <select id="DetalleDefecto" name="DetalleDefecto" class="form-control form-control-sm required">
                     <option value=""></option>
                 </select>
             </div>
@@ -245,8 +245,10 @@
         });
         btnGuardar.click(function () {
             //Calcular total 1
-            var cant = parseFloat(pnlTablero.find("#Cantidad").val());
-            var cant_dev = parseFloat(pnlTablero.find("#CantidadDevuelta").val());
+            var cant = $.isNumeric(pnlTablero.find("#Cantidad").val()) ? parseFloat(pnlTablero.find("#Cantidad").val()) : 0;
+            var cant_dev = $.isNumeric(pnlTablero.find("#CantidadDevuelta").val()) ? parseFloat(pnlTablero.find("#CantidadDevuelta").val()) : 0;
+
+
             var tot1 = cant - cant_dev;
             //Calcular total 2
             var primera = $.isNumeric(pnlTablero.find("#Primera").val()) ? parseFloat(pnlTablero.find("#Primera").val()) : 0;
@@ -347,6 +349,7 @@
                         closeOnClickOutside: false,
                         closeOnEsc: false
                     }).then((action) => {
+                        onImprimirReporteInspeccion(tp, fact);
                         init();
                     });
                 }).fail(function (x, y, z) {
@@ -398,7 +401,7 @@
         });
         pnlTablero.find("#CantidadDevuelta").change(function () {
             var cantidad_rec = parseFloat(pnlTablero.find("#Cantidad").val());
-            if ($(this).val() !== '' && parseFloat($(this).val()) > 0 && parseFloat($(this).val()) <= cantidad_rec) {
+            if ($(this).val() !== '' && parseFloat($(this).val()) <= cantidad_rec) {
                 pnlTablero.find("#Defecto")[0].selectize.focus();
             } else {
 
@@ -441,6 +444,57 @@
             }
         });
     });
+
+    function onImprimirReporteInspeccion(tp, fact) {
+        //HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+
+        $.post(master_url + 'onReporteInspeccion', {
+            Tp: tp,
+            Proveedor: clave_prov,
+            Factura: fact
+        }).done(function (data) {
+            console.log(data);
+            if (data.length > 0) {
+
+                $.fancybox.open({
+                    src: base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data + '#pagemode=thumbs',
+                    type: 'iframe',
+                    opts: {
+                        afterShow: function (instance, current) {
+                            console.info('done!');
+                        },
+                        iframe: {
+                            // Iframe template
+                            tpl: '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen allowtransparency="true" src=""></iframe>',
+                            preload: true,
+                            // Custom CSS styling for iframe wrapping element
+                            // You can use this to set custom iframe dimensions
+                            css: {
+                                width: "95%",
+                                height: "95%"
+                            },
+                            // Iframe tag attributes
+                            attr: {
+                                scrolling: "auto"
+                            }
+                        }
+                    }
+                });
+
+
+            } else {
+                swal({
+                    title: "ATENCIÓN",
+                    text: "NO EXISTEN DATOS PARA ESTE REPORTE",
+                    icon: "error"
+                });
+            }
+            HoldOn.close();
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+            HoldOn.close();
+        });
+    }
 
     function onEliminarDetalleByID(IDX) {
         swal({

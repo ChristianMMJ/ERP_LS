@@ -32,3 +32,4 @@
 <?php
 $this->load->view('vTipoCambio');
 $this->load->view('vExplosionSemanal');
+$this->load->view('vReporteInspeccion');

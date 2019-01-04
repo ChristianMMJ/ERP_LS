@@ -1,5 +1,5 @@
-<div class="modal " id="mdlAntiguedadSaldosProveedores"  role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+<div class="modal " id="mdlReporteInspeccion"  role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Antigüedad de Saldos</h5>
@@ -8,27 +8,12 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="frmEdoCta">
+                <form id="frmReporte">
 
                     <div class="row">
                         <div class="col-6">
-                            <label>Tp <span class="badge badge-warning mb-2" style="font-size: 12px;">Para consultar todo deja en blanco</span></label>
+                            <label>Tp </label>
                             <input type="text" maxlength="1" class="form-control form-control-sm numbersOnly" id="Tp" name="Tp" >
-                        </div>
-                    </div>
-
-                    <div class="row mt-2">
-                        <div class="col-12 col-sm-12">
-                            <label>Del Proveedor:</label>
-                            <select class="form-control form-control-sm required" id="Proveedor" name="Proveedor" >
-                                <option value=""></option>
-                            </select>
-                        </div>
-                        <div class="col-12 col-sm-12">
-                            <label>Al Proveedor:</label>
-                            <select class="form-control form-control-sm required" id="aProveedor" name="aProveedor" >
-                                <option value=""></option>
-                            </select>
                         </div>
                     </div>
 
@@ -42,6 +27,27 @@
                             <input type="text" class="form-control form-control-sm date notEnter" id="FechaFin" name="FechaFin" >
                         </div>
                     </div>
+
+                    <div class="col-12 col-sm-12 mt-4">
+                        <legend class="badge badge-danger" style="font-size: 14px;">Si desea ver todo NO CAPTURE proveedor NI artículo</legend>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-sm-12">
+                            <label>Proveedor</label>
+                            <select class="form-control form-control-sm" id="Proveedor" name="Proveedor" >
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-sm-12">
+                            <label>Artículo</label>
+                            <select class="form-control form-control-sm" id="Articulo" name="Articulo" >
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -52,27 +58,33 @@
     </div>
 </div>
 <script>
-    var master_url = base_url + 'index.php/ReportesProveedores/';
-    var mdlAntiguedadSaldosProveedores = $('#mdlAntiguedadSaldosProveedores');
-
+    var master_url = base_url + 'index.php/ReportesInspeccion/';
+    var mdlReporteInspeccion = $('#mdlReporteInspeccion');
     $(document).ready(function () {
-        validacionSelectPorContenedor(mdlAntiguedadSaldosProveedores);
-        setFocusSelectToInputOnChange('#aProveedor', '#FechaIni', mdlAntiguedadSaldosProveedores);
-        handleEnter();
-        mdlAntiguedadSaldosProveedores.on('shown.bs.modal', function () {
-            mdlAntiguedadSaldosProveedores.find("input").val("");
-            $.each(mdlAntiguedadSaldosProveedores.find("select"), function (k, v) {
-                mdlAntiguedadSaldosProveedores.find("select")[k].selectize.clear(true);
+        setFocusSelectToInputOnChange('#Tipo', '#btnImprimir', mdlReporteInspeccion);
+
+        mdlReporteInspeccion.on('shown.bs.modal', function () {
+            mdlReporteInspeccion.find("input").val("");
+            $.each(mdlReporteInspeccion.find("select"), function (k, v) {
+                mdlReporteInspeccion.find("select")[k].selectize.clear(true);
             });
             getProveedores();
-            mdlAntiguedadSaldosProveedores.find('#FechaFin').val(getToday());
-            mdlAntiguedadSaldosProveedores.find('#Tp').focus();
+            getArticulos();
+            mdlReporteInspeccion.find("#FechaIni").val(getToday());
+            mdlReporteInspeccion.find("#FechaFin").val(getToday());
+            mdlReporteInspeccion.find('#Tp').focus();
         });
-        mdlAntiguedadSaldosProveedores.find('#btnImprimir').on("click", function () {
+
+        mdlReporteInspeccion.find("#Tp").change(function () {
+            onVerificarTp($(this));
+        });
+
+        mdlReporteInspeccion.find('#btnImprimir').on("click", function () {
             HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
-            var frm = new FormData(mdlAntiguedadSaldosProveedores.find("#frmEdoCta")[0]);
+            var frm = new FormData(mdlReporteInspeccion.find("#frmReporte")[0]);
+
             $.ajax({
-                url: master_url + 'onReporteAntiguedadSaldos',
+                url: base_url + 'index.php/ReportesInspeccion/onReporteInspeccion',
                 type: "POST",
                 cache: false,
                 contentType: false,
@@ -106,13 +118,15 @@
                             }
                         }
                     });
+
+
                 } else {
                     swal({
                         title: "ATENCIÓN",
-                        text: "NO EXISTEN DOCUMENTOS PARA ESTE PROVEEDOR",
+                        text: "NO EXISTEN DATOS PARA ESTE REPORTE",
                         icon: "error"
                     }).then((action) => {
-                        mdlAntiguedadSaldosProveedores.find('#Tp').focus();
+                        mdlReporteInspeccion.find('#Tp').focus();
                     });
                 }
                 HoldOn.close();
@@ -121,27 +135,35 @@
                 HoldOn.close();
             });
         });
-        mdlAntiguedadSaldosProveedores.find("#Tp").change(function () {
-            onVerificarTp($(this));
-        });
+
     });
+
     function getProveedores() {
-        mdlAntiguedadSaldosProveedores.find("#Proveedor")[0].selectize.clear(true);
-        mdlAntiguedadSaldosProveedores.find("#Proveedor")[0].selectize.clearOptions();
-
-        mdlAntiguedadSaldosProveedores.find("#aProveedor")[0].selectize.clear(true);
-        mdlAntiguedadSaldosProveedores.find("#aProveedor")[0].selectize.clearOptions();
-
+        mdlReporteInspeccion.find("#Proveedor")[0].selectize.clear(true);
+        mdlReporteInspeccion.find("#Proveedor")[0].selectize.clearOptions();
         $.getJSON(master_url + 'getProveedores').done(function (data) {
             $.each(data, function (k, v) {
-                mdlAntiguedadSaldosProveedores.find("#Proveedor")[0].selectize.addOption({text: v.ProveedorF, value: v.ID});
-                mdlAntiguedadSaldosProveedores.find("#aProveedor")[0].selectize.addOption({text: v.ProveedorF, value: v.ID});
+                mdlReporteInspeccion.find("#Proveedor")[0].selectize.addOption({text: v.ProveedorF, value: v.ID});
             });
         }).fail(function (x) {
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
             console.log(x.responseText);
         });
     }
+
+    function getArticulos() {
+        mdlReporteInspeccion.find("#Articulo")[0].selectize.clear(true);
+        mdlReporteInspeccion.find("#Articulo")[0].selectize.clearOptions();
+        $.getJSON(master_url + 'getArticulos').done(function (data) {
+            $.each(data, function (k, v) {
+                mdlReporteInspeccion.find("#Articulo")[0].selectize.addOption({text: v.Articulo, value: v.Clave});
+            });
+        }).fail(function (x) {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        });
+    }
+
     function onVerificarTp(v) {
         var tp = parseInt($(v).val());
         if (tp === 1 || tp === 2) {
