@@ -12,6 +12,56 @@ class FraccionesXEstilo_model extends CI_Model {
         date_default_timezone_set('America/Mexico_City');
     }
 
+    public function onVerificarEstiloBloqueado($Estilo) {
+        try {
+            $this->db->select("Seguridad   "
+                            . " ", false)
+                    ->from('estilos')
+                    ->where('Clave', $Estilo);
+
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onAumentaPrecioFracciones($Porcentaje) {
+        try {
+
+            $sql = "UPDATE fraccionesxestilo FXE "
+                    . "JOIN estilos E on FXE.Estilo = E.Clave "
+                    . "SET "
+                    . "FXE.CostoMO = FXE.CostoMO + (FXE.CostoMO * $Porcentaje) , "
+                    . "FXE.CostoVTA = FXE.CostoVTA + (FXE.CostoVTA * $Porcentaje) "
+                    . "WHERE E.Seguridad = 0 "
+                    . " ";
+            $this->db->query($sql);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onAumentaPrecioFraccionesXEstilo($Estilo, $Porcentaje) {
+        try {
+
+
+            $sql = "UPDATE fraccionesxestilo "
+                    . "SET CostoMO = CostoMO + (CostoMO * $Porcentaje) , CostoVTA = CostoVTA + (CostoVTA * $Porcentaje) "
+                    . "WHERE Estilo= '$Estilo' "
+                    . " ";
+            $this->db->query($sql);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getRecords() {
         try {
             $this->db->select("FXE.Estilo AS EstiloId,E.Descripcion   "

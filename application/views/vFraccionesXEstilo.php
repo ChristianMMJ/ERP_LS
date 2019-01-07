@@ -5,7 +5,10 @@
                 <legend class="float-left">Fracciones por Estilo</legend>
             </div>
             <div class="col-sm-6 float-right" align="right">
-                <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span><br></button>
+                <button type="button" class="btn btn-success" id="btnAumentaPrecioFracciones" >
+                    <span class="fa fa-dollar-sign"></span> AUMENTA PRECIO FRACCIONES
+                </button>
+                <button type="button" class="btn btn-primary" id="btnNuevo" data-toggle="tooltip" data-placement="left" title="Agregar"><span class="fa fa-plus"></span> NUEVO</button>
             </div>
         </div>
         <div class="card-block">
@@ -190,6 +193,52 @@
     </div>
 </div>
 
+
+<div class="modal " id="mdlAumentaPrecioFracciones"  role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Aumenta de Precio a Fracciones</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <label class="text-danger">Nota. Sólo se podrán modifcar los estilos que NO estén bloqueados por las personas autorizadas</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-sm-12">
+                        <label>Estilo</label>
+                        <select class="form-control form-control-sm required selectize" id="EstiloAum" name="EstiloAum" >
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-6">
+                        <label>% de aumento <span class="badge badge-info mb-2" style="font-size: 12px;">Ej. Si desea capturar el 5% capture .05</span></label>
+                        <input type="text" maxlength="5" class="form-control form-control-sm numbersOnly decimal" id="PorAum" name="PorAum" >
+                    </div>
+                    <div class="col-12 col-sm-6 mt-5">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="Todos" name="Todos" >
+                            <label class="custom-control-label text-info labelCheck" for="Todos">Todos los estilos</label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnAceptaAumentoPrecio">ACEPTAR</button>
+                <button type="button" class="btn btn-secondary" id="btnSalir" data-dismiss="modal">SALIR</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!--SCRIPT-->
 <script>
     var master_url = base_url + 'index.php/FraccionesXEstilo/';
@@ -198,6 +247,7 @@
     var pnlTablero = $("#pnlTablero");
     var pnlDetalle = $("#pnlDetalle");
     var btnNuevo = $("#btnNuevo");
+    var btnAumentaPrecioFracciones = $("#btnAumentaPrecioFracciones");
     var btnImprimirFraccionesXEstilo = $("#btnImprimirFraccionesXEstilo");
     var btnCancelar = pnlDatos.find("#btnCancelar");
     var Estilo = pnlDatos.find("#Estilo");
@@ -207,12 +257,83 @@
     var mdlEditarRenglon = $('#mdlEditarRenglon');
     var btnEditarRenglon = mdlEditarRenglon.find('#btnEditarRenglon');
 
+
+    var mdlAumentaPrecioFracciones = $('#mdlAumentaPrecioFracciones');
+    var btnAceptaAumentoPrecio = mdlAumentaPrecioFracciones.find('#btnAceptaAumentoPrecio');
+
+
     $(document).ready(function () {
 
         validacionSelectPorContenedor(pnlDatos);
         setFocusSelectToInputOnChange('#Estilo', '#FechaAlta', pnlDatos);
         setFocusSelectToSelectOnChange('#Departamento', '#Fraccion', pnlDatos);
         setFocusSelectToInputOnChange('#Fraccion', '#CostoMO', pnlDatos);
+        setFocusSelectToInputOnChange('#EstiloAum', '#PorAum', mdlAumentaPrecioFracciones);
+
+        btnAumentaPrecioFracciones.click(function () {
+            mdlAumentaPrecioFracciones.modal('show');
+        });
+
+        mdlAumentaPrecioFracciones.on('shown.bs.modal', function () {
+            mdlAumentaPrecioFracciones.find("input").val("");
+            $.each(mdlAumentaPrecioFracciones.find("select"), function (k, v) {
+                mdlAumentaPrecioFracciones.find("select")[k].selectize.clear(true);
+            });
+            getEstilosAumentaPrecio();
+            mdlAumentaPrecioFracciones.find('#EstiloAum')[0].selectize.focus();
+        });
+
+        btnAceptaAumentoPrecio.click(function () {
+            if (mdlAumentaPrecioFracciones.find('#PorAum').val() !== '') {
+                swal({
+                    buttons: ["Cancelar", "Aceptar"],
+                    title: 'Estás Seguro?',
+                    text: "Esta acción no se puede revertir",
+                    icon: "warning",
+                    closeOnEsc: false,
+                    closeOnClickOutside: false
+                }).then((action) => {
+                    if (action) {
+                        $.post(master_url + 'onAumentarPrecioFracciones', {
+                            Estilo: mdlAumentaPrecioFracciones.find('#EstiloAum').val(),
+                            Porcentaje: mdlAumentaPrecioFracciones.find('#PorAum').val(),
+                            Todos: mdlAumentaPrecioFracciones.find("#Todos")[0].checked ? '1' : '0'
+                        }).done(function (data) {
+                            if (parseInt(data) === 1) {
+                                swal({
+                                    title: "ATENCIÓN",
+                                    text: "EL ESTILO QUE QUIERES MODIFICAR SE ENCUENTRA BLOQUEADO",
+                                    icon: "error"
+                                }).then((value) => {
+                                    mdlAumentaPrecioFracciones.find("#EstiloAum")[0].selectize.clear(true);
+                                    mdlAumentaPrecioFracciones.find('#EstiloAum')[0].selectize.focus();
+                                });
+                            } else {
+                                swal({
+                                    title: "PRECIOS MODIFICADOS CON ÉXITO",
+                                    icon: "success",
+                                    closeOnClickOutside: false,
+                                    closeOnEsc: false
+                                }).then((action) => {
+                                    mdlAumentaPrecioFracciones.modal('hide');
+                                });
+                            }
+
+                        }).fail(function (x, y, z) {
+                            console.log(x, y, z);
+                        });
+                    }
+                });
+            } else {
+                swal({
+                    title: "ATENCIÓN",
+                    text: "DEBES DE CAPTURAR UN PORCENTAJE",
+                    icon: "warning"
+                }).then((value) => {
+                    mdlAumentaPrecioFracciones.find('#PorAum').val('').focus();
+                });
+            }
+        });
 
         btnImprimirFraccionesXEstilo.click(function () {
             if (temp.length > 0) {
@@ -324,6 +445,7 @@
         });
 
         getRecords();
+        onRevisarSeguridad();
         getEstilos();
         getDepartamentos();
         getFracciones();
@@ -353,6 +475,18 @@
                     "searchable": false
                 },
                 {
+                    "targets": [2],
+                    "render": function (data, type, row) {
+                        return '$' + $.number(parseFloat(data), 2, '.', ',');
+                    }
+                }, {
+                    "targets": [3],
+                    "render": function (data, type, row) {
+                        return '$' + $.number(parseFloat(data), 2, '.', ',');
+                    }
+                },
+
+                {
                     "targets": [6],
                     "visible": false,
                     "searchable": false
@@ -377,12 +511,12 @@
                 endRender: function (rows, group) {
                     var stcMO = $.number(rows.data().pluck('CostoMO').reduce(function (a, b) {
                         return a + parseFloat(b);
-                    }, 0), 4, '.', ',');
+                    }, 0), 2, '.', ',');
                     var stcV = $.number(rows.data().pluck('CostoVTA').reduce(function (a, b) {
                         return a + parseFloat(b);
-                    }, 0), 4, '.', ',');
+                    }, 0), 2, '.', ',');
                     return $('<tr>').
-                            append('<td colspan="1">Total de: ' + group + '</td>').append('<td>' + stcMO + '</td><td>' + stcV + '</td><td></td><td></td></tr>');
+                            append('<td colspan="1">Total de: ' + group + '</td>').append('<td>$' + stcMO + '</td><td>$' + stcV + '</td><td></td><td></td></tr>');
                 },
                 dataSrc: "DeptoCat"
             },
@@ -396,7 +530,7 @@
                     return  (ax + bx);
                 }, 0);
                 $(api.column(2).footer()).html(api.column(2, {page: 'current'}).data().reduce(function (a, b) {
-                    return  $.number(parseFloat(totalCO), 3, '.', ',');
+                    return '$' + $.number(parseFloat(totalCO), 2, '.', ',');
                 }, 0));
 
                 var totalCV = api.column(3).data().reduce(function (a, b) {
@@ -406,7 +540,7 @@
                     return  (ax + bx);
                 }, 0);
                 $(api.column(3).footer()).html(api.column(3, {page: 'current'}).data().reduce(function (a, b) {
-                    return  $.number(parseFloat(totalCV), 3, '.', ',');
+                    return '$' + $.number(parseFloat(totalCV), 2, '.', ',');
                 }, 0));
             },
 
@@ -476,6 +610,15 @@
     }
     var tblFraccionesXEstilo = $('#tblFraccionesXEstilo');
     var FraccionesXEstilo;
+
+    function onRevisarSeguridad() {
+        if (seg === 0) {
+            btnAumentaPrecioFracciones.addClass("d-none");
+        } else {
+            btnAumentaPrecioFracciones.removeClass("d-none");
+        }
+    }
+
     function getRecords() {
         HoldOn.open({theme: 'sk-bounce', message: 'CARGANDO DATOS...'});
         temp = 0;
@@ -543,6 +686,16 @@
                 console.log(x, y, z);
             }).always(function () {
             });
+        });
+    }
+
+    function getEstilosAumentaPrecio() {
+        $.getJSON(master_url + 'getEstilos').done(function (data, x, jq) {
+            $.each(data, function (k, v) {
+                mdlAumentaPrecioFracciones.find("#EstiloAum")[0].selectize.addOption({text: v.Estilo, value: v.Clave});
+            });
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
         });
     }
 

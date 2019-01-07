@@ -205,6 +205,17 @@
                     "searchable": false
                 },
                 {
+                    "targets": [2],
+                    "render": function (data, type, row) {
+                        return '$' + $.number(parseFloat(data), 2, '.', ',');
+                    }
+                }, {
+                    "targets": [3],
+                    "render": function (data, type, row) {
+                        return '$' + $.number(parseFloat(data), 2, '.', ',');
+                    }
+                },
+                {
                     "targets": [5],
                     "visible": false,
                     "searchable": false
@@ -235,12 +246,12 @@
                 endRender: function (rows, group) {
                     var stcMO = $.number(rows.data().pluck('CostoMO').reduce(function (a, b) {
                         return a + parseFloat(b);
-                    }, 0), 4, '.', ',');
+                    }, 0), 2, '.', ',');
                     var stcV = $.number(rows.data().pluck('CostoVTA').reduce(function (a, b) {
                         return a + parseFloat(b);
-                    }, 0), 4, '.', ',');
+                    }, 0), 2, '.', ',');
                     return $('<tr>').
-                            append('<td colspan="1">Total de: ' + group + '</td>').append('<td>' + stcMO + '</td><td>' + stcV + '</td><td></td><td></td></tr>');
+                            append('<td colspan="1">Total de: ' + group + '</td>').append('<td>$' + stcMO + '</td><td>$' + stcV + '</td><td></td><td></td></tr>');
                 },
                 dataSrc: "DeptoCat"
             },
@@ -254,7 +265,7 @@
                     return  (ax + bx);
                 }, 0);
                 $(api.column(2).footer()).html(api.column(2, {page: 'current'}).data().reduce(function (a, b) {
-                    return  $.number(parseFloat(totalCO), 3, '.', ',');
+                    return '$' + $.number(parseFloat(totalCO), 2, '.', ',');
                 }, 0));
 
                 var totalCV = api.column(3).data().reduce(function (a, b) {
@@ -264,7 +275,7 @@
                     return  (ax + bx);
                 }, 0);
                 $(api.column(3).footer()).html(api.column(3, {page: 'current'}).data().reduce(function (a, b) {
-                    return  $.number(parseFloat(totalCV), 3, '.', ',');
+                    return '$' + $.number(parseFloat(totalCV), 2, '.', ',');
                 }, 0));
             },
 

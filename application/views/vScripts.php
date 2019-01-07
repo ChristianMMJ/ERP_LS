@@ -212,6 +212,8 @@
 
         $('.money').maskMoney({prefix: '$', allowNegative: false, thousands: ',', decimal: '.', affixesStay: false});
 
+        $('.decimal').inputmask({mask: ".99"});
+
         $('[data-provide="datepicker"]').inputmask({alias: "date"});
         $('[data-provide="datepicker"]').addClass("notEnter");
         $('[data-provide="datepicker"]').val();

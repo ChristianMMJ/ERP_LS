@@ -84,6 +84,26 @@ class FraccionesXEstilo extends CI_Controller {
         }
     }
 
+    public function onAumentarPrecioFracciones() {
+        try {
+            $Todos = $this->input->post('Todos');
+            if ($Todos === '1') {
+                $this->FraccionesXEstilo_model->onAumentaPrecioFracciones($this->input->post('Porcentaje'));
+            } else {
+                //verificar si esta bloqueado o no en tabla de estilos
+                $Bloqueado = $this->FraccionesXEstilo_model->onVerificarEstiloBloqueado($this->input->post('Estilo'));
+
+                if ($Bloqueado[0]->Seguridad === '1') {
+                    print '1';
+                } else {
+                    $this->FraccionesXEstilo_model->onAumentaPrecioFraccionesXEstilo($this->input->post('Estilo'), $this->input->post('Porcentaje'));
+                }
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getFraccionesXDepartamento() {
         try {
             print json_encode($this->FraccionesXEstilo_model->getFraccionesXDepartamento($this->input->get('Departamento')));
