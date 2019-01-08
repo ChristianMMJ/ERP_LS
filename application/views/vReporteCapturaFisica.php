@@ -1,7 +1,7 @@
 <script>
 
 
-    function onReporteConeoFisico() {
+    function onReporteConteoFisico() {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
         $.post(base_url + 'index.php/ReporteCapturaFisica/onReporteConteoCapturaFisica').done(function (data) {
 
