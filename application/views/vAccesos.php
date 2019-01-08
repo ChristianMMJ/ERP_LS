@@ -14,7 +14,7 @@
             </div>
             <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5 pb-3">
                 <label>Usuario</label>
-                <select id="mxu" name="mxu" class="form-control form-control-sm">
+                <select id="mxu" name="mxu" class="form-control form-control-sm NotSelectize">
                 </select>
             </div>
             <div class="w-100"></div>
@@ -58,7 +58,7 @@
             <div class="w-100"></div>
             <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 pb-3">
                 <label>Usuario</label>
-                <select id="oxmu" name="oxmu" class="form-control form-control-sm">
+                <select id="oxmu" name="oxmu" class="form-control form-control-sm NotSelectize">
                 </select>
             </div>
             <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 pb-3">
@@ -107,7 +107,7 @@
             <div class="w-100"></div>
             <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 pb-3">
                 <label>Usuario</label>
-                <select id="ixou" name="ixou" class="form-control form-control-sm">
+                <select id="ixou" name="ixou" class="form-control form-control-sm NotSelectize">
                 </select>
             </div>
             <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 pb-3">
@@ -161,7 +161,7 @@
             <div class="w-100"></div>
             <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 pb-3">
                 <label>Usuario</label>
-                <select id="sixiu" name="sixiu" class="form-control form-control-sm">
+                <select id="sixiu" name="sixiu" class="form-control form-control-sm NotSelectize">
                 </select>
             </div>
             <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 pb-3">
@@ -220,7 +220,7 @@
             <div class="w-100"></div>
             <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 pb-3">
                 <label>Usuario</label>
-                <select id="ssixiu" name="ssixiu" class="form-control form-control-sm">
+                <select id="ssixiu" name="ssixiu" class="form-control form-control-sm NotSelectize">
                 </select>
             </div>
             <div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 pb-3">
@@ -294,7 +294,10 @@
             btnAsignarSubSubItemsXSubItemXItemXOpcionXModulo = pnlTableroBody.find("#btnAsignarSubSubItemsXSubItemXItemXOpcionXModulo");
 
     $(document).ready(function () {
-
+        pnlTableroBody.find("#mxu, #oxmu,#ixou,#sixiu,#ssixiu").selectize({
+            create: true,
+            sortField: 'text'
+        });
         pnlTableroBody.find('#modulos').multiselect();
         pnlTableroBody.find('#opciones').multiselect();
         pnlTableroBody.find('#items').multiselect();
@@ -717,12 +720,12 @@
         /*MODULOS POR USUARIO*/
 
         $.getJSON('<?php print base_url('Accesos/getUsuarios') ?>').done(function (dx) {
-            $.each(dx, function (k, v) {
-                mxu[0].selectize.addOption({text: v.USUARIO + ' (' + v.TIPO_ACCESO + ')', value: v.ID});
-                oxmu[0].selectize.addOption({text: v.USUARIO + ' (' + v.TIPO_ACCESO + ')', value: v.ID});
-                ixou[0].selectize.addOption({text: v.USUARIO + ' (' + v.TIPO_ACCESO + ')', value: v.ID});
-                sixiu[0].selectize.addOption({text: v.USUARIO + ' (' + v.TIPO_ACCESO + ')', value: v.ID});
-                ssixiu[0].selectize.addOption({text: v.USUARIO + ' (' + v.TIPO_ACCESO + ')', value: v.ID});
+            dx.forEach(function(v){
+                mxu[0].selectize.addOption({text: v.ID + ' ' + v.USUARIO + ' (' + v.TIPO_ACCESO + ')', value: v.ID});
+                oxmu[0].selectize.addOption({text: v.ID + ' ' + v.USUARIO + ' (' + v.TIPO_ACCESO + ')', value: v.ID});
+                ixou[0].selectize.addOption({text: v.ID + ' ' + v.USUARIO + ' (' + v.TIPO_ACCESO + ')', value: v.ID});
+                sixiu[0].selectize.addOption({text: v.ID + ' ' + v.USUARIO + ' (' + v.TIPO_ACCESO + ')', value: v.ID});
+                ssixiu[0].selectize.addOption({text: v.ID + ' ' + v.USUARIO + ' (' + v.TIPO_ACCESO + ')', value: v.ID});
             });
         }).fail(function (x, y, z) {
             console.log(x.responseText);

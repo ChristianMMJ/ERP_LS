@@ -67,14 +67,6 @@ class Avance extends CI_Controller {
         }
     }
 
-    public function onComprobarAvanceXControl() {
-        try {
-            print json_encode($this->avm->getMaquilasPlantillas());
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
     public function onAvanceXControl() {
         try {
             /**
@@ -132,4 +124,27 @@ class Avance extends CI_Controller {
         }
     }
 
+    public function onComprobarAvanceXControl() {
+        try {
+
+            $CONTROL = $this->input->post('CONTROL');
+
+            /*
+             * SE COMPRUEBA QUE EL CONTROL HAYA PASADO POR LOS DOS DEPARTAMENTOS REQUERIDOS
+             * CORTE => RAYADO
+             * 10 = CORTE
+             * 20 = RAYADO
+             * 
+             */
+            $CORTE_10_RAYADO_20 = $this->db->select('A.Departamento AS DEPARTAMENTO, (CASE WHEN COUNT(*) = 0 OR COUNT(*) IS NULL THEN 0 WHEN COUNT(*) > 0 THEN COUNT(*) END) AS AVANCE')
+                            ->from('avance AS A ')
+                            ->where_in('A.Departamento', array(10, 20))
+                            ->like('A.Control', $CONTROL)->group_by('A.Departamento')
+                            ->get()->result();
+            /* UNA VEZ COMPROBADO QUE EL CONTROL SE ENCUENTRA EN LOS DOS DEPTOS SE ENVIA UN RESULTADO */
+            print json_encode($CORTE_10_RAYADO_20);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 }

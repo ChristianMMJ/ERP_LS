@@ -9,7 +9,7 @@ class Sesion extends CI_Controller {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
         $this->load->library('session');
-        $this->load->model('Usuario_model');
+        $this->load->model('Usuario_model', 'um');
     }
 
     public function index() {
@@ -18,9 +18,8 @@ class Sesion extends CI_Controller {
             switch ($this->session->TipoAcceso) {
                 case 'SUPER ADMINISTRADOR':
                     $this->load->view('vNavGeneral')
-                        ->view('vMenuPrincipal')
-                        ->view('vNavGeneral')
-                        ->view('vQuickMenu');
+                            ->view('vMenuPrincipal')
+                            ->view('vQuickMenu');
                     break;
                 case 'VENTAS':
                     $this->load->view('vMenuClientes');
@@ -46,6 +45,61 @@ class Sesion extends CI_Controller {
                 case 'CONTABILIDAD':
                     $this->load->view('vMenuContabilidad');
                     break;
+                case 'DESTAJOS':
+                    $this->load->view('vMenuPrincipal');
+                    switch ($this->session->USERNAME) {
+                        case '777777':
+                            /*
+                             * 
+                             * 60 FOLEAR CORTE CALIDAD
+                             * 70 TROQUELAR PLANTILLA
+                             * 71 TROQUELAR MUESTRA
+                             * 72 TROQUELAR NORMA
+                             * 75 TROQUELAR CORTE
+                             * 204 EMPALMAR P'LASER
+                             * 337 RECORTAR FORRO LASER
+                             * 
+                             * */
+                            $this->load->view('vAvanceXEmpleadoYPagoDeNominaFraccion777777');
+                            break;
+                        case '888888':
+                            /*
+                             * 
+                             * 51 ENTRETELADO
+                             * 70 TROQUELAR PLANTILLA
+                             * 60 FOLEAR CORTE Y CALIDAD
+                             * 62 FOLEADO MUESTRA
+                             * 24 DOMAR
+                             * 78 LIMPIAR LASER
+                             * 204 EMPALMAR P/LASER
+                             * 205 APLICA PEGA.P/LASER
+                             * 198 LOTEAR P/LASER
+                             * 127 ENTRETELAR MUESTRA
+                             * 80 CONTAR TAREA
+                             * 397 JUNTAR SUELA A CORTE
+                             * 34 PEGAR TRANSFER
+                             * 106 DOBLILLADO
+                             * 306 FORRAR PLATAFORMA
+                             * 337 RECORTAR FORRO LASER
+                             * 333 PONER CASCO PESPUNTE
+                             * 502 PEGADO DE SUELA
+                             * 72 TROQUELAR NORMA
+                             * 
+                             * */
+                            $this->load->view('vAvanceXEmpleadoYPagoDeNominaFraccion888888');
+                            break;
+                        case '999999':
+                            /*
+                             * 
+                             * 99 CORTE FORRO
+                             * 100 CORTE PIEL
+                             * 96 CORTE MUESTRAS 
+                             * 
+                             * */
+                            $this->load->view('vAvanceXEmpleadoYPagoDeNominaManoDeObra');
+                            break;
+                    }
+                    break;
             }
             $this->load->view('vFooter');
         } else {
@@ -55,7 +109,7 @@ class Sesion extends CI_Controller {
 
     public function getLogoByID() {
         try {
-            $data = $this->Usuario_model->getLogoByID();
+            $data = $this->um->getLogoByID();
             print json_encode($data);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -64,26 +118,28 @@ class Sesion extends CI_Controller {
 
     public function onIngreso() {
         try {
-            $data = $this->Usuario_model->getAcceso($this->input->post('USUARIO'), $this->input->post('CONTRASENA'));
+            $x = $this->input;
+            $data = $this->um->getAcceso($x->post('USUARIO'), $x->post('CONTRASENA'));
             if (count($data) > 0) {
+                $dt = $data[0];
                 $newdata = array(
-                    'USERNAME' => $data[0]->Usuario,
-                    'PASSWORD' => $data[0]->AES,
-                    'Nombre' => $data[0]->Nombre,
-                    'Apellidos' => $data[0]->Apellidos,
-                    'ID' => $data[0]->ID,
+                    'USERNAME' => $dt->Usuario,
+                    'PASSWORD' => $dt->AES,
+                    'Nombre' => $dt->Nombre,
+                    'Apellidos' => $dt->Apellidos,
+                    'ID' => $dt->ID,
                     'LOGGED' => TRUE,
-                    'TipoAcceso' => $data[0]->TipoAcceso,
-                    'Empresa' => $data[0]->Empresa,
-                    'EMPRESA_RAZON' => $data[0]->EMPRESA_RAZON,
-                    'EMPRESA_DIRECCION' => $data[0]->EMPRESA_DIRECCION,
-                    'EMPRESA_REPRESENTANTE' => $data[0]->EMPRESA_REPRESENTANTE,
-                    'LOGO' => $data[0]->LOGO,
-                    'SEG' => $data[0]->Seguridad
+                    'TipoAcceso' => $dt->TipoAcceso,
+                    'Empresa' => $dt->Empresa,
+                    'EMPRESA_RAZON' => $dt->EMPRESA_RAZON,
+                    'EMPRESA_DIRECCION' => $dt->EMPRESA_DIRECCION,
+                    'EMPRESA_REPRESENTANTE' => $dt->EMPRESA_REPRESENTANTE,
+                    'LOGO' => $dt->LOGO,
+                    'SEG' => $dt->Seguridad
                 );
                 $this->session->mark_as_temp('LOGGED', 28800);
                 $this->session->set_userdata($newdata);
-                $this->Usuario_model->onModificarUltimoAcceso($data[0]->ID, date("d-m-Y H:i:s"));
+                $this->um->onModificarUltimoAcceso($dt->ID, date("d-m-Y H:i:s"));
 
                 print 1;
             } else {
@@ -100,7 +156,7 @@ class Sesion extends CI_Controller {
             $DATA = array(
                 'Contrasena' => ($Contrasena !== NULL) ? $Contrasena : NULL
             );
-            $this->Usuario_model->onModificar($ID, $DATA);
+            $this->um->onModificar($ID, $DATA);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -118,7 +174,7 @@ class Sesion extends CI_Controller {
 
     public function onSendMail() {
         extract($this->input->post());
-        $data = $this->Usuario_model->getContrasena($USUARIO);
+        $data = $this->um->getContrasena($USUARIO);
         //var_dump($data);
         if (!empty($data[0])) {
             $config = Array(

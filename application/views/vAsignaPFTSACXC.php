@@ -18,15 +18,15 @@
         <div class="row" style="padding-left: 15px">
             <div class="col-12 col-sm-6 col-md-6 col-lg-2 col-xl-1" align="left">
                 <strong>Semana</strong>
-                <input type="text" class="form-control form-control-sm column_filter numbersOnly" id="Semana" data-toggle="tooltip" data-placement="bottom" title="Por favor escriba la semana..." autofocus onkeyup="onChecarSemanaValida(this)">
+                <input type="text" class="form-control form-control-sm column_filter numeric" id="Semana" data-toggle="tooltip" data-placement="bottom" title="Por favor escriba la semana..." autofocus onkeyup="onChecarSemanaValida(this)">
             </div>
             <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-2" align="left">
                 <strong>Control</strong>
-                <input type="text" class="form-control form-control-sm column_filter" id="Control" data-toggle="tooltip" data-placement="bottom" title="Especifique el control..." >
+                <input type="text" class="form-control form-control-sm column_filter numeric" id="Control" data-toggle="tooltip" data-placement="bottom" title="Especifique el control..." >
             </div>
             <div class="col-12 col-sm-6 col-md-6 col-lg-2 col-xl-2" align="left">
                 <strong>Fracción</strong>
-                <input type="text" class="form-control form-control-sm column_filter numbersOnly" id="Fraccion" data-toggle="tooltip" data-placement="bottom" title="Indique la fracción: 96,99,100">
+                <input type="text" class="form-control form-control-sm column_filter numeric" id="Fraccion" data-toggle="tooltip" data-placement="bottom" title="Indique la fracción: 96,99,100">
             </div>
             <div class="col-12 col-sm-6 col-md-6 col-lg-5 col-xl-3" align="left">
                 <strong>Artículo</strong>
@@ -43,13 +43,16 @@
             </div>
             <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-1" align="left">
                 <strong>Entregar</strong>
-                <input type="text" class="form-control form-control-sm numbersOnly" readonly="" id="Entregar" onkeyup=""  data-toggle="tooltip" data-placement="bottom" title="Presiona Enter para aceptar">
+                <input type="text" class="form-control form-control-sm numericdot" readonly="" id="Entregar" onkeyup=""  data-toggle="tooltip" data-placement="bottom" title="Presiona Enter para aceptar">
             </div>
             <div class="col-2 col-sm-2 col-md-2 col-lg-1 col-xl-1 mt-4 text-center" align="center">
                 <div class="custom-control custom-checkbox"  align="center" style="cursor: pointer !important;">
                     <input type="checkbox" class="custom-control-input selectNotEnter" id="MaterialExtra" name="MaterialExtra" style="cursor: pointer !important;">
                     <label class="custom-control-label text-danger labelCheck" for="MaterialExtra" style="cursor: pointer !important;">Material Extra</label>
                 </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-1" align="left">
+                <button type="button" id="btnEntregar" class="btn btn-success" style="color: #fff; background-color: #8BC34A; border-color: #8BC34A;"><span class="fa fa-check"></span> Acepta</button>
             </div>
             <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <div class="row">
@@ -285,7 +288,7 @@
                     </div>
                     <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <label>Control</label>
-                        <input type="text" class="form-control form-control-sm" id="Control" name="Control">
+                        <input type="text" class="form-control form-control-sm numeric" id="Control" name="Control">
                     </div>
                     <div class="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
                         <label>Pares</label>
@@ -298,12 +301,12 @@
                     </div>
                     <div class="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
                         <label>Regreso</label>
-                        <input type="text" class="form-control form-control-sm" id="Regreso" name="Regreso">
+                        <input type="text" class="form-control form-control-sm numericdot" id="Regreso" name="Regreso">
                         <input type="text" id="AnteriormenteRetorno" name="AnteriormenteRetorno" class="form-control form-control-sm d-none" readonly="">
                     </div>
                     <div class="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
                         <label>Mat-Malo</label>
-                        <input type="text" class="form-control form-control-sm" id="MatMalo" name="MatMalo">
+                        <input type="text" class="form-control form-control-sm numericdot" id="MatMalo" name="MatMalo">
                     </div>
                     <div class="col-2 col-sm-12 col-md-6 col-lg-2 col-xl-2 mt-4 text-center" align="center">
                         <div class="custom-control custom-checkbox"  align="center" style="cursor: pointer !important;">
@@ -403,11 +406,17 @@
 
     $(document).ready(function () {
 
+        btnEntregar.click(function () {
+            onEntregar(this, event);
+        });
+
         mdlRetornaMaterial.find("#Control").focusout(function () {
-            mdlRetornaMaterial.find("#tblRegresos tbody tr").addClass("highlight-rows");
-            setTimeout(function () {
-                mdlRetornaMaterial.find("#tblRegresos tbody tr").removeClass("highlight-rows");
-            }, 2500);
+            swal('SUCCESS', 'AHORA,DEBE DE SELECCIONAR UN REGISTRO DE LA TABLA CON EL CONTROL ESPECIFICADO', 'success').then((value) => {
+                mdlRetornaMaterial.find("#tblRegresos tbody tr").addClass("highlight-rows");
+                setTimeout(function () {
+                    mdlRetornaMaterial.find("#tblRegresos tbody tr").removeClass("highlight-rows");
+                }, 2500);
+            });
         });
         mdlRetornaMaterial.find("#PielForro").change(function () {
             if ($(this).val() !== '') {
@@ -453,13 +462,6 @@
                 mdlRetornaMaterial.find("#PielForro")[0].selectize.open();
                 mdlRetornaMaterial.find("#PielForro")[0].selectize.focus();
             }
-        });
-        mdlRetornaMaterial.on('webkitAnimationStart', function () {
-            mdlRetornaMaterial.find("#Cortador")[0].selectize.clear(true);
-        });
-        mdlRetornaMaterial.on('webkitAnimationEnd', function () {
-            mdlRetornaMaterial.find("#Cortador")[0].selectize.open();
-            mdlRetornaMaterial.find("#Cortador")[0].selectize.focus();
         });
         btnRetornaMaterial.click(function () {
             mdlRetornaMaterial.find("input").val("");
@@ -546,6 +548,9 @@
         Pieles = tblPieles.DataTable(xoptions);
         tblPieles.on('click', 'tr', function () {
             if (Semana.val() !== '' && Control.val() !== '' && Fraccion.val() !== '') {
+                Forros.rows('.selected').deselect();
+                Textiles.rows('.selected').deselect();
+                Sinteticos.rows('.selected').deselect();
                 var data = Pieles.row(this).data();
                 console.log('PIELES', data);
                 OrdenDeProduccion.val(data.ID);
@@ -571,6 +576,9 @@
         Forros = tblForros.DataTable(xoptions);
         tblForros.on('click', 'tr', function () {
             if (Semana.val() !== '' && Control.val() !== '' && Fraccion.val() !== '') {
+                Pieles.rows('.selected').deselect();
+                Textiles.rows('.selected').deselect();
+                Sinteticos.rows('.selected').deselect();
                 var data = Forros.row(this).data();
                 console.log('FORROS', data);
                 OrdenDeProduccion.val(data.ID);
@@ -596,6 +604,9 @@
         Textiles = tblTextiles.DataTable(xoptions);
         tblTextiles.on('click', 'tr', function () {
             if (Semana.val() !== '' && Control.val() !== '' && Fraccion.val() !== '') {
+                Pieles.rows('.selected').deselect();
+                Forros.rows('.selected').deselect();
+                Sinteticos.rows('.selected').deselect();
                 var data = Textiles.row(this).data();
                 console.log('TEXTILES', data);
                 OrdenDeProduccion.val(data.ID);
@@ -621,6 +632,9 @@
         Sinteticos = tblSinteticos.DataTable(xoptions);
         tblSinteticos.on('click', 'tr', function () {
             if (Semana.val() !== '' && Control.val() !== '' && Fraccion.val() !== '') {
+                Pieles.rows('.selected').deselect();
+                Forros.rows('.selected').deselect();
+                Textiles.rows('.selected').deselect();
                 var data = Sinteticos.row(this).data();
                 console.log('SINTETICOS', data);
                 OrdenDeProduccion.val(data.ID);
@@ -657,7 +671,7 @@
         });
         Semana.on('keydown', function (e) {
             FT = 0;
-            if (e.keyCode === 13) {
+            if (e.keyCode === 13 && Semana.val()) {
                 HoldOn.open({theme: 'sk-bounce', message: 'Buscando por semana...'});
                 Pieles.ajax.reload(function () {
                     HoldOn.close();
@@ -670,8 +684,11 @@
 
         Control.on('keydown', function (e) {
             FT = 0;
-            if (e.keyCode === 13) {
-                Pieles.ajax.reload();
+            if (e.keyCode === 13 && Semana.val() && Control.val()) {
+                HoldOn.open({theme: 'sk-bounce', message: 'Buscando por semana y control...'});
+                Pieles.ajax.reload(function () {
+                    HoldOn.close();
+                });
                 Forros.ajax.reload();
                 Sinteticos.ajax.reload();
                 Textiles.ajax.reload();
@@ -775,7 +792,6 @@
         if (c.val() !== '') {
             tblRegresos.DataTable().column(2).search(c.val()).draw();
             $.getJSON(master_url + 'getParesXControl', {CONTROL: c.val()}).done(function (data) {
-                console.log(data);
                 mdlRetornaMaterial.find("#Pares").val(data[0].PARES);
             }).fail(function (x, y, z) {
                 console.log(x, y, z);
@@ -955,79 +971,81 @@
     }
 
     function onEntregar(e, evt) {
-        var seguro = true;
         if (evt.keyCode === 13) {
             console.log('KEY CODE 13');
-            if (Entregar.val() > Explosion.val()) {
-                swal({
-                    title: "ATENCIÓN",
-                    text: "VA ENTREGAR MATERIAL EXTRA, ¿ESTA SEGURO?",
-                    icon: "info",
-                    buttons: {
-                        resumetour: {
-                            text: "CANCELAR",
-                            value: "cancelar"
-                        },
-                        endtour: {
-                            text: "ACEPTAR",
-                            value: "aceptar"
-                        }
-                    }}).then((value) => {
-                    switch (value) {
-                        case "aceptar":
-                            seguro = true;
-                            break;
-                        case "cancelar":
-                            seguro = false;
-                            Entregar.focus();
-                            break;
-                    }
-                });
-            } else
-            {
-                console.log('Entregar.val() > Explosion.val() ELSE');
-            }
-            if (seguro) {
-                $.post(master_url + 'onEntregarPielForroTextilSintetico', {
-                    TIPO: tipo_consumo,
-                    ORDENDEPRODUCCION: OrdenDeProduccion.val(),
-                    PARES: Pares.val(),
-                    SEMANA: Semana.val(),
-                    CONTROL: Control.val(),
-                    FRACCION: Fraccion.val(),
-                    ARTICULO: ClaveArticulo.val(),
-                    ARTICULOT: Articulo.val(),
-                    EXPLOSION: Explosion.val(),
-                    ENTREGA: Entregar.val(),
-                    MATERIAL_EXTRA: MaterialExtra[0].checked ? 1 : 0
-                }).done(function (data) {
-                    console.log(data);
-                    swal('ATENCIÓN', 'SE HA ENTREGADO ' + Entregar.val() + ' DEL MATERIAL SOLICITADO, EN LA SEMANA ' + Semana.val() + ' PARA LA FRACCIÓN "' + Fraccion.val(), 'success').then((value) => {
-                        Semana.val('');
-                        Control.val('');
-                        Fraccion.val('');
-                        ClaveArticulo.val('');
-                        Articulo.val('');
-                        Explosion.val('');
-                        Entregar.val('');
-                        Entregar.prop('readonly', true);
-                        MaterialExtra[0].checked = false;
-                        onBuscarX(1, '');
-                        onBuscarX(9, '');
-                        onBuscarX(10, '');
-                        ControlesAsignados.ajax.reload();
-                        Semana.focus();
-                        tipo_consumo = 0;
-                    });
-                }).fail(function (x, y, z) {
-                    console.log(x.responseText);
-                }).always(function () {
-
-                });
-            }
+            onEntregarMaterial();
         }
     }
+    function onEntregarMaterial() {
+        var seguro = true;
+        if (Entregar.val() > Explosion.val()) {
+            swal({
+                title: "ATENCIÓN",
+                text: "VA ENTREGAR MATERIAL EXTRA, ¿ESTA SEGURO?",
+                icon: "info",
+                buttons: {
+                    resumetour: {
+                        text: "CANCELAR",
+                        value: "cancelar"
+                    },
+                    endtour: {
+                        text: "ACEPTAR",
+                        value: "aceptar"
+                    }
+                }}).then((value) => {
+                switch (value) {
+                    case "aceptar":
+                        seguro = true;
+                        break;
+                    case "cancelar":
+                        seguro = false;
+                        Entregar.focus();
+                        break;
+                }
+            });
+        } else
+        {
+            console.log('Entregar.val() > Explosion.val() ELSE');
+        }
+        if (seguro) {
+            $.post(master_url + 'onEntregarPielForroTextilSintetico', {
+                TIPO: tipo_consumo,
+                ORDENDEPRODUCCION: OrdenDeProduccion.val(),
+                PARES: Pares.val(),
+                SEMANA: Semana.val(),
+                CONTROL: Control.val(),
+                FRACCION: Fraccion.val(),
+                ARTICULO: ClaveArticulo.val(),
+                ARTICULOT: Articulo.val(),
+                EXPLOSION: Explosion.val(),
+                ENTREGA: Entregar.val(),
+                MATERIAL_EXTRA: MaterialExtra[0].checked ? 1 : 0
+            }).done(function (data) {
+                console.log(data);
+                swal('ATENCIÓN', 'SE HA ENTREGADO ' + Entregar.val() + ' DEL MATERIAL SOLICITADO, EN LA SEMANA ' + Semana.val() + ' PARA LA FRACCIÓN "' + Fraccion.val(), 'success').then((value) => {
+                    Semana.val('');
+                    Control.val('');
+                    Fraccion.val('');
+                    ClaveArticulo.val('');
+                    Articulo.val('');
+                    Explosion.val('');
+                    Entregar.val('');
+                    Entregar.prop('readonly', true);
+                    MaterialExtra[0].checked = false;
+                    onBuscarX(1, '');
+                    onBuscarX(9, '');
+                    onBuscarX(10, '');
+                    ControlesAsignados.ajax.reload();
+                    Semana.focus();
+                    tipo_consumo = 0;
+                });
+            }).fail(function (x, y, z) {
+                console.log(x.responseText);
+            }).always(function () {
 
+            });
+        }
+    }
     function getEmpleados() {
         $.getJSON(master_url + 'getEmpleados').done(function (data) {
             $.each(data, function (k, v) {
@@ -1099,37 +1117,43 @@
     }
 
     function onRetornar() {
-        HoldOn.open({
-            theme: 'sk-bounce',
-            message: 'DEVOLVIENDO...'
-        });
-        $.post(master_url + 'onDevolverPielForro', {
-            ID: mdlRetornaMaterial.find("#IDA").val(),
-            EMPLEADO: mdlRetornaMaterial.find("#Cortador").val(),
-            ARTICULO: mdlRetornaMaterial.find("#Articulo").val(),
-            PIELFORRO: mdlRetornaMaterial.find("#PielForro").val(),
-            CONTROL: mdlRetornaMaterial.find("#Control").val(),
-            ENTREGO: mdlRetornaMaterial.find("#Entrego").val(),
-            REGRESO: mdlRetornaMaterial.find("#Regreso").val(),
-            MATERIALMALO: mdlRetornaMaterial.find("#MatMalo").val(),
-            EXTRA: mdlRetornaMaterial.find("#MaterialExtraRetorna")[0].checked ? 1 : 0,
-            PRECIO: mdlRetornaMaterial.find("#Precio").val()
-        }).done(function (data) {
-            console.log(data);
-            Regresos.ajax.reload();
-            ControlesAsignados.ajax.reload();
-            swal('ATENCIÓN', 'SE HA RETORNADO MATERIAL', 'success').then((value) => {
-                mdlRetornaMaterial.find("#Cortador")[0].selectize.open();
-                mdlRetornaMaterial.find("#Cortador")[0].selectize.focus();
+        if (mdlRetornaMaterial.find("#Cortador").val() && mdlRetornaMaterial.find("#Regreso").val()) {
+            HoldOn.open({
+                theme: 'sk-bounce',
+                message: 'DEVOLVIENDO...'
             });
-        }).fail(function (x, y, z) {
-            console.log(x.responseText, y, z);
-            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO ' + x.responseText, 'warning');
-        }).always(function () {
-            HoldOn.close();
-            mdlRetornaMaterial.find('input').val('');
-            mdlRetornaMaterial.find("#Cortador")[0].selectize.clear(true);
-        });
+            $.post(master_url + 'onDevolverPielForro', {
+                ID: mdlRetornaMaterial.find("#IDA").val(),
+                EMPLEADO: mdlRetornaMaterial.find("#Cortador").val(),
+                ARTICULO: mdlRetornaMaterial.find("#Articulo").val(),
+                PIELFORRO: mdlRetornaMaterial.find("#PielForro").val(),
+                CONTROL: mdlRetornaMaterial.find("#Control").val(),
+                ENTREGO: mdlRetornaMaterial.find("#Entrego").val(),
+                REGRESO: mdlRetornaMaterial.find("#Regreso").val(),
+                MATERIALMALO: mdlRetornaMaterial.find("#MatMalo").val(),
+                EXTRA: mdlRetornaMaterial.find("#MaterialExtraRetorna")[0].checked ? 1 : 0,
+                PRECIO: mdlRetornaMaterial.find("#Precio").val()
+            }).done(function (data) {
+                console.log(data);
+                Regresos.ajax.reload();
+                ControlesAsignados.ajax.reload();
+                swal('ATENCIÓN', 'SE HA RETORNADO MATERIAL', 'success').then((value) => {
+                    mdlRetornaMaterial.find("#Cortador")[0].selectize.open();
+                    mdlRetornaMaterial.find("#Cortador")[0].selectize.focus();
+                });
+            }).fail(function (x, y, z) {
+                console.log(x.responseText, y, z);
+                swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO ' + x.responseText, 'warning');
+            }).always(function () {
+                HoldOn.close();
+                mdlRetornaMaterial.find('input').val('');
+                mdlRetornaMaterial.find("#Cortador")[0].selectize.clear(true);
+            });
+        } else {
+            swal('ATENCIÓN', 'DEBE DE ESPECIFICAR UN CORTADOR, SI ES PIEL O FORRO, UN CONTROL VÁLIDO, UN REGISTRO DE ASIGNACIÓN DE CONTROL, CUANTO REGRESO EL CORTADOR Y SI TIENE MATERIAL MALO O DEFECTUOSO O SI ES MATERIAL EXTRA', 'warning').then((value) => {
+
+            });
+        }
     }
 </script> 
 <style>

@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class AsignaPFTSACXC extends CI_Controller {
 
     public function __construct() {
-        parent::__construct(); 
+        parent::__construct();
         date_default_timezone_set('America/Mexico_City');
         $this->load->library('session')->model('AsignaPFTSACXC_model', 'apftsacxc');
     }
@@ -45,7 +45,7 @@ class AsignaPFTSACXC extends CI_Controller {
     }
 
     public function getControlesAsignados() {
-        try { 
+        try {
             print json_encode($this->apftsacxc->getControlesAsignados());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -168,10 +168,10 @@ class AsignaPFTSACXC extends CI_Controller {
 
                 /* COMPROBAR SI YA EXISTE UN REGISTRO DE ESTE AVANCE PARA NO GENERAR DOS AVANCES AL MISMO DEPTO EN CASO DE QUE LLEGUEN A PEDIR MÁS MATERIAL */
                 $check_avance = $this->db->select('COUNT(A.Control) AS EXISTE', false)->from('avance AS A')->where('A.Control', $x->post('CONTROL'))->where('A.Departamento', 10)->get()->result();
-                print "\n ESTATUS DE AVANCE: ";
+                print "\n onEntregarPielForroTextilSintetico ESTATUS DE AVANCE: ";
                 var_dump($check_avance);
                 print "\n *FIN ESTATUS DE AVANCE* \n";
-                if (count($check_avance) <= 0) {
+                if (intval($check_avance[0]->EXISTE) === 0) {
                     /* YA EXISTE UN AVANCE DE CORTE EN ESTE CONTROL */
                     $avance = array(
                         'Control' => $x->post('CONTROL'),
@@ -197,7 +197,7 @@ class AsignaPFTSACXC extends CI_Controller {
                 $datos = array(
                     'Articulo' => $x->post('ARTICULO'),
                     'PrecioMov' => 0,
-                    'CantidadMov' => $x->post('EXPLOSION'),
+                    'CantidadMov' => $x->post('ENTREGA'),
                     'FechaMov' => Date('d/m/Y'),
                     'EntradaSalida' => '2'/* 1= ENTRADA, 2 = SALIDA */,
                     'TipoMov' => 'SXP', /* SXP = SALIDA A PRODUCCION */
@@ -243,6 +243,29 @@ class AsignaPFTSACXC extends CI_Controller {
                             ->set('Devolucion', $x->post('REGRESO') + $REGRESO[0]->REGRESO)
                             ->set('MaterialMalo', 0)
                             ->where('ID', $x->post('ID'))->update('asignapftsacxc');
+                    /* AVANCE DE (10) CORTE A (20) RAYADO */
+                    /* COMPROBAR SI YA EXISTE UN REGISTRO DE ESTE AVANCE (20 - RAYADO) PARA NO GENERAR DOS AVANCES AL MISMO DEPTO EN CASO DE QUE LLEGUEN A PEDIR MÁS MATERIAL */
+                    $check_avance = $this->db->select('COUNT(A.Control) AS EXISTE', false)
+                                    ->from('avance AS A')
+                                    ->where('A.Control', $x->post('CONTROL'))
+                                    ->where('A.Departamento', 20)->get()->result();
+//                    print "\n onDevolverPielForro ESTATUS DE AVANCE: ";
+//                    var_dump($check_avance);
+//                    print "\n  onDevolverPielForro *FIN ESTATUS DE AVANCE* \n";
+                    if (intval($check_avance[0]->EXISTE) === 0) {
+                        $avance = array(
+                            'Control' => $x->post('CONTROL'),
+                            'FechaAProduccion' => Date('d/m/Y'),
+                            'Departamento' => 20,
+                            'DepartamentoT' => 'RAYADO',
+                            'FechaAvance' => Date('d/m/Y'),
+                            'Estatus' => 'A',
+                            'Usuario' => $_SESSION["ID"],
+                            'Fecha' => Date('d/m/Y'),
+                            'Hora' => Date('h:i:s a')
+                        );
+                        $this->db->insert('avance', $avance);
+                    }
                 } else {
                     $this->db->set('Empleado', $x->post('EMPLEADO'))
                             ->set('Devolucion', $x->post('REGRESO'))
@@ -255,10 +278,10 @@ class AsignaPFTSACXC extends CI_Controller {
                                     ->from('avance AS A')
                                     ->where('A.Control', $x->post('CONTROL'))
                                     ->where('A.Departamento', 20)->get()->result();
-                    print "\n ESTATUS DE AVANCE: ";
-                    var_dump($check_avance);
-                    print "\n *FIN ESTATUS DE AVANCE* \n";
-                    if (count($check_avance) <= 0) {
+//                    print "\n 2 onDevolverPielForro ESTATUS DE AVANCE: ";
+//                    var_dump($check_avance);
+//                    print "\n  2 onDevolverPielForro *FIN ESTATUS DE AVANCE* \n";
+                    if ($check_avance[0]->EXISTE <= 0) {
                         $avance = array(
                             'Control' => $x->post('CONTROL'),
                             'FechaAProduccion' => Date('d/m/Y'),
@@ -299,7 +322,7 @@ class AsignaPFTSACXC extends CI_Controller {
                             ->set('MaterialMalo', 1)
                             ->where('ID', $x->post('ID'))->update('asignapftsacxc');
                 } else {
-                    print "LA CANTIDAD DEVUELTA O DEFECTUOSA HA SIDO ZERO 0";
+                    print "LA CANTIDAD DEVUELTA ESTA DEFECTUOSA HA SIDO ZERO 0";
                 }
             }
         } catch (Exception $exc) {
@@ -317,9 +340,9 @@ class AsignaPFTSACXC extends CI_Controller {
                             ->where('A.Control', $x->post('CONTROL'))
                             ->where('A.Departamento', 20)
                             ->get()->result();
-            print "\n ESTATUS DE AVANCE RAYADO: ";
-            var_dump($check_avance);
-            print "\n *FIN ESTATUS DE AVANCE RAYADO* \n";
+//            print "\n ESTATUS DE AVANCE RAYADO: ";
+//            var_dump($check_avance);
+//            print "\n *FIN ESTATUS DE AVANCE RAYADO* \n";
             if (count($check_avance) <= 0) {
                 /* YA EXISTE UN AVANCE DE (10)CORTE A (20)RAYADO EN ESTE CONTROL */
                 $avance = array(

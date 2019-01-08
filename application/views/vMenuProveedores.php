@@ -20,13 +20,17 @@
     var menu;
     $(document).ready(function () {
         menu = getParameterByName('parentMenu');
-        if (menu !== '' && menu === 'MenuNomina' || menu === 'MenuContabilidad') {
+        if (menu !== '' && menu === 'MenuNomina' || menu !== '' && menu === 'MenuContabilidad') {
             $('#btnRegresar').removeClass('d-none');
         } else {
             $('#btnRegresar').addClass('d-none');
         } 
         getMenu(1);
     });
+    
+    function onProbar(){
+        console.log('probando...');
+    }
 </script>
 <?php
 $this->load->view('vEstadoCuentaProveedor');

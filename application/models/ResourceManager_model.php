@@ -25,8 +25,8 @@ class ResourceManager_model extends CI_Model {
         try {
             if (isset($_SESSION["ID"])) {
                 return $this->db->select("OXM.Opcion, OXM.Icon, OXM.Ref, OXM.Button, OXM.Class, "
-                                        . "IXO.Item, IXO.Icon AS IconItem, IXO.Ref AS RefItem, IXO.Modal AS ItemModal, IXO.Backdrop AS ItemBackdrop, IXO.Dropdown AS ItemDropdown,"
-                                        . "SIXO.SubItem AS SubItem, SIXO.Icon AS IconSubItem, SIXO.Ref AS RefSubItem, SIXO.Modal AS SubItemModal, SIXO.Backdrop AS SubItemBackdrop, SIXO.Dropdown AS SubItemDropdown,"
+                                        . "IXO.Item, IXO.Icon AS IconItem, IXO.Ref AS RefItem, IXO.Modal AS ItemModal, IXO.Backdrop AS ItemBackdrop, IXO.Dropdown AS ItemDropdown,(CASE WHEN IXO.Function IS NULL THEN 0 ELSE IXO.Function END) AS Function, IXO.Trigger,"
+                                        . "SIXO.SubItem AS SubItem, SIXO.Icon AS IconSubItem, SIXO.Ref AS RefSubItem, SIXO.Modal AS SubItemModal, SIXO.Backdrop AS SubItemBackdrop, SIXO.Dropdown AS SubItemDropdown,(CASE WHEN SIXO.Function IS NULL THEN 0 ELSE SIXO.Function END) AS FunctionSubItem, SIXO.Trigger AS TriggerSubItem,"
                                         . "SSIXSI.SubSubItem AS SubSubItem, SSIXSI.Icon AS IconSubSubItem, SSIXSI.Ref AS RefSubSubItem, SSIXSI.Modal AS SubSubItemModal, SSIXSI.Backdrop AS SubSubItemBackdrop")
                                 ->from("itemsxopcionxmoduloxusuario AS IXOMU")
                                 ->join('opcionesxmoduloxusuario AS OXMU', 'OXMU.Usuario = IXOMU.Usuario AND OXMU.Modulo = IXOMU.Modulo AND OXMU.Opcion = IXOMU.Opcion', 'right')

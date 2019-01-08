@@ -73,6 +73,11 @@ $route['avance_empleados'] = 'Avance/getEmpleados';
 $route['avance_fracciones'] = 'Avance/getFracciones';
 $route['avance_buscar_avance_x_control'] = 'Avance/onComprobarAvanceXControl';
 
+/*AVANCES 8888*/
+$route['buscar_avance_x_control/:num/:num'] = 'AvanceXEmpleadoYPagoDeNomina/shoes/$1/$2/';
+$route['avance_x_empleadopagodenomina'] = 'AvanceXEmpleadoYPagoDeNomina';
+$route['comprobar_numero_de_empleado'] = 'AvanceXEmpleadoYPagoDeNomina/onComprobarDeptoXEmpleado';
+
 /*ACCESOS*/
 $route['accesos_modulos'] = 'Accesos/getModulos';
 $route['accesos_modulos_x_usuario'] = 'Accesos/getModulosXUsuario';
