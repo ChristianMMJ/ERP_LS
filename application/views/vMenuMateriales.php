@@ -27,6 +27,8 @@
         }
         getMenu(2);
     });
+
+
 </script>
 
 <?php
@@ -34,4 +36,4 @@ $this->load->view('vTipoCambio');
 $this->load->view('vExplosionSemanal');
 $this->load->view('vReporteInspeccion');
 $this->load->view('vMaterialSemanaProduccionEstilo');
-$this->load->view('vConfirmaReporteCapturaFisica');
+$this->load->view('vReporteCapturaFisica');

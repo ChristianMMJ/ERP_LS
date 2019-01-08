@@ -47,17 +47,19 @@ class ReporteMaterialProduccionEstilo extends CI_Controller {
                     number_format($F->Cantidad, 2, ".", ","),
                     utf8_decode($F->UnidadMedidaT),
                     utf8_decode($F->Pares)
-                ));
+                        ), 'B');
                 $Subtotal += $F->Cantidad;
             }
-            $pdf->SetY($pdf->GetY());
             $pdf->SetFont('Calibri', 'B', 8.5);
-            $pdf->SetX(122.35);
-            $pdf->Cell(10, 4, utf8_decode("Total "), 0/* BORDE */, 0, 'L');
-            $pdf->SetX(132.21);
-            $pdf->SetFont('Calibri', '', 8.5);
-            $pdf->Cell(20, 4, number_format($Subtotal, 2, ".", ","), 0/* BORDE */, 1, 'L');
-
+            $pdf->Row(array(
+                '',
+                '',
+                '',
+                'Total',
+                number_format($Subtotal, 2, ".", ","),
+                '',
+                ''
+                    ), 0);
 
 
             /* FIN RESUMEN */

@@ -83,7 +83,7 @@
         });
 
         mdlMaterialSemanaProduccionEstilo.find('#btnImprimir').on("click", function () {
-            //HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+            HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
             var frm = new FormData(mdlMaterialSemanaProduccionEstilo.find("#frmReporte")[0]);
 
             $.ajax({

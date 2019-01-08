@@ -15,7 +15,7 @@ class PDF extends FPDF {
         $this->Cell(60, 4, utf8_decode($_SESSION["EMPRESA_RAZON"]), 0/* BORDE */, 1, 'L');
         $this->SetFont('Calibri', 'B', 10);
         $this->SetX(36);
-        $this->Cell(60, 4, utf8_decode("Material en semana de producción"), 0/* BORDE */, 1, 'L');
+        $this->Cell(60, 4, utf8_decode("Reporte conteo de inventario fisico fecha: ____/____/____"), 0/* BORDE */, 1, 'L');
 
 
 
@@ -36,19 +36,19 @@ class PDF extends FPDF {
 
 
         /* ENCABEZADO DETALLE TITULOS */
-        $anchos = array(18/* 0 */, 14/* 1 */, 12/* 2 */, 80/* 3 */, 17/* 4 */, 17/* 5 */, 17/* 6 */);
-        $aligns = array('L', 'L', 'L', 'L', 'C', 'C', 'C');
+        $anchos = array(0.1/* 0 */, 39.9/* 1 */, 165/* 2 */);
+        $aligns = array('L', 'L', 'L');
 
-        $this->SetY(22);
+        $this->SetY(20);
         $this->SetX(5);
         $this->SetWidths($anchos);
         $this->SetAligns($aligns);
-        $this->Row(array('Control', 'Estilo', 'Color', utf8_decode('Artículo'), 'Cant.', 'U.M.', 'Pares'), 'B');
+        $this->SetFont('Calibri', 'B', 8);
+        $this->Row(array('', utf8_decode('Artículo'), 'U.M.'), 'B');
 
-        $anchos = array(18/* 0 */, 14/* 1 */, 12/* 2 */, 80/* 3 */, 17/* 4 */, 17/* 5 */, 17/* 6 */);
-        $aligns = array('L', 'L', 'L', 'L', 'C', 'C', 'C');
-        $this->SetAligns($aligns);
-        $this->SetWidths($anchos);
+
+
+        $this->SetY(28);
     }
 
     var $widths;
