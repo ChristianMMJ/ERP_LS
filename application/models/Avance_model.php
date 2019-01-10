@@ -71,7 +71,7 @@ class Avance_model extends CI_Model {
     public function getEmpleados() {
         try {
             return $this->db->select("E.Numero AS CLAVE, CONCAT(E.Numero,' ', E.PrimerNombre,' ',E.SegundoNombre,' ',E.Paterno,' ', E.Materno) AS EMPLEADO")
-                            ->from("empleados AS E")->where_in('E.FijoDestajoAmbos', array(2, 3))->get()->result();
+                            ->from("empleados AS E")->where_in('E.FijoDestajoAmbos', array(2, 3))->where('E.AltaBaja', 1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

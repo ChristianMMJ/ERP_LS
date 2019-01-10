@@ -57,7 +57,7 @@ class AsignaDiaSemACtrlParaPespuntePreliminar_model extends CI_Model {
         try {
             return $this->db->select("E.Numero AS CLAVE, CONCAT(E.Numero ,' ',E.PrimerNombre, ' ', E.SegundoNombre,' ', E.Paterno,' ', E.Materno) AS EMPLEADO", false)
                             ->from('empleados AS E')->join('departamentos AS D', 'E.DepartamentoFisico = D.Clave')
-                            ->where('D.Descripcion LIKE \'CORTE\'', null, false)->order_by('ABS(E.Numero)', 'ASC')->get()->result();
+                            ->where('D.Descripcion LIKE \'CORTE\'', null, false)->where('E.AltaBaja', 1)->order_by('ABS(E.Numero)', 'ASC')->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

@@ -184,17 +184,21 @@
 
             return true;
         });
+        
         $('.numeric').keypress(function (event) {
             var cc = (event.which) ? event.which : event.keyCode;
-            if (cc >= 48 && cc <= 57) {
+            console.log('KEY ', cc);
+            if (cc >= 48 && cc <= 57 || cc === 8 ||  cc >= 36 && cc <= 40) {
                 return true;
             } else {
                 return false;
             }
         });
+        
         $('.numericdot').keypress(function (event) {
             var cc = (event.which) ? event.which : event.keyCode;
-            if (cc >= 48 && cc <= 57 || cc === 46) {
+            console.log('KEY ', cc,', ',$(this).val().indexOf('.'));
+            if (cc >= 48 && cc <= 57 || cc === 46 || cc === 8 ||  cc >= 36 && cc <= 40 || $(this).val().indexOf('.') === -1) {
                 return true;
             } else {
                 return false;
@@ -1073,15 +1077,15 @@
                                                                 case 0:
                                                                     switch (parseInt(vvv.Function)) {
                                                                         case 0:
-                                                                            opcion += '<a class="dropdown-item" href="' + (burl + vvv.RefSubItem) + '"><span class="fas fa-' + vvv.IconSubItem + '"></span>' + vvv.SubItem + '</a>';
+                                                                            opcion += '<a class="dropdown-item" href="' + (burl + vvv.RefSubItem) + '"><span class="fas fa-' + vvv.IconSubItem + '"></span> ' + vvv.SubItem + '</a>';
                                                                             break;
                                                                         case 1:
-                                                                            opcion += '<a class="dropdown-item" href="#" onclick="' + vvv.Trigger + '()"><span class="fas fa-' + vvv.IconSubItem + '"></span>' + vvv.SubItem + '</a>';
+                                                                            opcion += '<a class="dropdown-item" href="#" onclick="' + vvv.Trigger + '()"><span class="fas fa-' + vvv.IconSubItem + '"></span> ' + vvv.SubItem + '</a>';
                                                                             break;
                                                                     }
                                                                     break;
                                                                 case 1:
-                                                                    opcion += '<a class="dropdown-item" href="#" data-toggle="modal" data-target="' + vvv.RefSubItem + '" data-backdrop=\'' + vvv.SubItemBackdrop + '\'><span class="fas fa-' + vvv.IconSubItem + '"></span> **' + vvv.SubItem + '</a>';
+                                                                    opcion += '<a class="dropdown-item" href="#" data-toggle="modal" data-target="' + vvv.RefSubItem + '" data-backdrop=\'' + vvv.SubItemBackdrop + '\'><span class="fas fa-' + vvv.IconSubItem + '"></span> ' + vvv.SubItem + '</a>';
                                                                     break;
                                                             }
                                                             break;

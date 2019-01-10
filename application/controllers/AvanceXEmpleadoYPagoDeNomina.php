@@ -22,6 +22,23 @@ class AvanceXEmpleadoYPagoDeNomina extends CI_Controller {
         echo "Params: $seg_one, $seg_two;";
     }
 
+    public function getSemanaByFecha() {
+        try {
+          print json_encode($this->axepn->getSemanaByFecha(Date('d/m/Y')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onComprobarRetornoDeMaterialXControl() {
+        try {
+            $x = $this->input;
+          print json_encode($this->axepn->onComprobarRetornoDeMaterialXControl($x->get('CR'),$x->get('FR')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onComprobarDeptoXEmpleado() {
         try {
             /*
@@ -36,7 +53,7 @@ class AvanceXEmpleadoYPagoDeNomina extends CI_Controller {
              * 
              * DE LO CONTRARIO ARROJAR UN MENSAJE
              */
-            
+
             $EMPLEADO_VALIDO = $this->axepn->onComprobarDeptoXEmpleado($this->input->post('EMPLEADO'));
             print json_encode($EMPLEADO_VALIDO);
         } catch (Exception $exc) {

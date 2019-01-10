@@ -81,7 +81,7 @@ class AsignaPFTSACXC_model extends CI_Model {
     public function getEmpleados() {
         try {
             return $this->db->select("E.Numero AS CLAVE, CONCAT(E.Numero,' ', E.PrimerNombre,' ',E.SegundoNombre,' ',E.Paterno,' ', E.Materno) AS EMPLEADO")
-                            ->from("empleados AS E")->where('E.DepartamentoFisico', 10)->get()->result();
+                            ->from("empleados AS E")->where('E.DepartamentoFisico', 10)->where('E.AltaBaja', 1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

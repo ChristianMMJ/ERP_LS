@@ -77,6 +77,9 @@ $route['avance_buscar_avance_x_control'] = 'Avance/onComprobarAvanceXControl';
 $route['buscar_avance_x_control/:num/:num'] = 'AvanceXEmpleadoYPagoDeNomina/shoes/$1/$2/';
 $route['avance_x_empleadopagodenomina'] = 'AvanceXEmpleadoYPagoDeNomina';
 $route['comprobar_numero_de_empleado'] = 'AvanceXEmpleadoYPagoDeNomina/onComprobarDeptoXEmpleado';
+$route['obtener_semana_fecha'] = 'AvanceXEmpleadoYPagoDeNomina/getSemanaByFecha';
+$route['obtener_estilo_pares_por_control_fraccion'] = 'AvanceXEmpleadoYPagoDeNomina/onComprobarRetornoDeMaterialXControl';
+$route['obtener_ultimo_avance_por_control'] = 'AvanceXEmpleadoYPagoDeNomina/onComprobarRetornoDeMaterialXControl';
 
 /*ACCESOS*/
 $route['accesos_modulos'] = 'Accesos/getModulos';

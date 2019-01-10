@@ -28,9 +28,6 @@
         getMenu(1);
     });
     
-    function onProbar(){
-        console.log('probando...');
-    }
 </script>
 <?php
 $this->load->view('vEstadoCuentaProveedor');
