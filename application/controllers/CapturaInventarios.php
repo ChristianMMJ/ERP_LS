@@ -3,7 +3,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 require_once APPPATH . "/third_party/fpdf17/fpdf.php";
 
-class ReporteCapturaFisica extends CI_Controller {
+class CapturaInventarios extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -13,6 +13,56 @@ class ReporteCapturaFisica extends CI_Controller {
 
         setlocale(LC_ALL, "");
         setlocale(LC_TIME, 'spanish');
+    }
+
+    /* Para captura de conteo fisico del inventario */
+
+    public function getArticulos() {
+        try {
+            print json_encode($this->ReporteCapturaFisica_model->getArticulosParaConteoFisico());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getInfoArticulo() {
+        try {
+            print json_encode($this->ReporteCapturaFisica_model->getInfoArticulo($this->input->get('Articulo'), $this->input->get('Maq'), $this->input->get('Mes')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onCapturarConteoInvFisico() {
+        try {
+            $Maq = $this->input->post('Maq');
+            $Mes = $this->input->post('Mes');
+            $Articulo = $this->input->post('Articulo');
+            $Precio = $this->input->post('Precio');
+            $ExistenciaFisica = $this->input->post('ExistenciaFisica');
+
+            $this->db->set("P$Mes", $Precio)
+                    ->set($Mes, $ExistenciaFisica)
+                    ->where('Clave', $Articulo)
+                    ->update($Maq);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    /* Metodo que pone en 0s el mes a capturar */
+
+    public function onPrepararMesCapturaInv() {
+        try {
+            $Maq = $this->input->post('Maq');
+            $Mes = $this->input->post('Mes');
+
+            $this->db->set("P$Mes", 0)
+                    ->set($Mes, 0)
+                    ->update($Maq);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
     }
 
     /* REPORTES */

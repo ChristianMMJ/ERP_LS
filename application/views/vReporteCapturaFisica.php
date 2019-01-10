@@ -3,7 +3,7 @@
 
     function onReporteConteoFisico() {
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
-        $.post(base_url + 'index.php/ReporteCapturaFisica/onReporteConteoCapturaFisica').done(function (data) {
+        $.post(base_url + 'index.php/CapturaInventarios/onReporteConteoCapturaFisica').done(function (data) {
 
             if (data.length > 0) {
 

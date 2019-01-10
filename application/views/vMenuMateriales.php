@@ -37,3 +37,5 @@ $this->load->view('vExplosionSemanal');
 $this->load->view('vReporteInspeccion');
 $this->load->view('vMaterialSemanaProduccionEstilo');
 $this->load->view('vReporteCapturaFisica');
+$this->load->view('vPreparaMesCapturaInv');
+$this->load->view('vCapturaConteoInvfisico');

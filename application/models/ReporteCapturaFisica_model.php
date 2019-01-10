@@ -10,6 +10,35 @@ class ReporteCapturaFisica_model extends CI_Model {
         parent::__construct();
     }
 
+    public function getInfoArticulo($Articulo, $Maq, $Mes) {
+        try {
+            return $this->db->select("U.Descripcion AS Unidad, A.$Mes AS ExistenciaCapturada, PM.Precio "
+                                    . " "
+                                    . " ", false)
+                            ->from("articulos AS A")
+                            ->join("unidades AS U", "ON A.UnidadMedida = U.Clave")
+                            ->join("preciosmaquilas AS PM", "ON PM.Articulo = A.Clave")
+                            ->where("A.Clave", $Articulo)
+                            ->where("PM.Maquila", '1') /* Se toma el precio de la maquila 1 ya que somos los unicos que hacemos inventario */
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getArticulosParaConteoFisico() {
+        try {
+            return $this->db->select("CONVERT(A.Clave, UNSIGNED INTEGER) AS Clave , "
+                                    . "CONCAT(A.Clave,' ',A.Descripcion) AS Articulo "
+                                    . " ", false)
+                            ->from("articulos AS A")
+                            ->order_by("Clave", "ASC")
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getGrupos() {
         try {
             $this->db->query("set sql_mode=''");
