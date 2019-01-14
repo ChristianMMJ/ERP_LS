@@ -411,12 +411,14 @@
         });
 
         mdlRetornaMaterial.find("#Control").focusout(function () {
-            swal('SUCCESS', 'AHORA,DEBE DE SELECCIONAR UN REGISTRO DE LA TABLA CON EL CONTROL ESPECIFICADO', 'success').then((value) => {
-                mdlRetornaMaterial.find("#tblRegresos tbody tr").addClass("highlight-rows");
-                setTimeout(function () {
-                    mdlRetornaMaterial.find("#tblRegresos tbody tr").removeClass("highlight-rows");
-                }, 2500);
-            });
+            if (mdlRetornaMaterial.find("#Control").val()) {
+                swal('SUCCESS', 'AHORA,DEBE DE SELECCIONAR UN REGISTRO DE LA TABLA CON EL CONTROL ESPECIFICADO', 'success').then((value) => {
+                    mdlRetornaMaterial.find("#tblRegresos tbody tr").addClass("highlight-rows");
+                    setTimeout(function () {
+                        mdlRetornaMaterial.find("#tblRegresos tbody tr").removeClass("highlight-rows");
+                    }, 2500);
+                });
+            }
         });
         mdlRetornaMaterial.find("#PielForro").change(function () {
             if ($(this).val() !== '') {
