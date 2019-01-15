@@ -705,6 +705,7 @@
         btnCancelar.addClass('d-none');
         btnCerrarOrden.addClass('d-none');
         btnImprimir.addClass('d-none');
+        pnlDatosDetalle.find('#ControlesDetalle').removeClass('d-none');
         var d = new Date();
         var n = d.getFullYear();
         pnlDatos.find("#Ano").val(n);
