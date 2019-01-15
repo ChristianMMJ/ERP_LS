@@ -219,94 +219,28 @@ class AsignaPFTSACXC extends CI_Controller {
         try {
             /* AGREGAR MOVIMIENTO DE ARTICULO */
             $x = $this->input;
-            if ($x->post('REGRESO') >= 0 && $x->post("MATERIALMALO") <= 0) {
-                $datos = array(
-                    'Articulo' => $x->post('ARTICULO'),
-                    'PrecioMov' => 0,
-                    'CantidadMov' => $x->post('REGRESO'),
-                    'FechaMov' => Date('d/m/Y'),
-                    'EntradaSalida' => '1'/* 1= ENTRADA, 2 = SALIDA */,
-                    'TipoMov' => 'EXP', /* EXP = ENTRADA POR PRODUCCION */
-                    'DocMov' => $x->post('ID'),
-                    'Tp' => 3,
-                    'Maq' => 10,
-                    'Sem' => substr($x->post('CONTROL'), 2, 2),
-                    'OrdenCompra' => NULL,
-                    'Subtotal' => 0
-                );
-                $this->apftsacxc->onAgregarMovArt($datos);
-
+            if (floatval($x->post('REGRESO')) === 0) {
                 /* OBTENER ULTIMO REGRESO */
-                $REGRESO = $this->apftsacxc->onObtenerUltimoRegreso($x->post('ID'));
-                if (isset($REGRESO[0]->REGRESO)) {
-                    $this->db->set('Empleado', $x->post('EMPLEADO'))->set('Empleado', $x->post('EMPLEADO'))
-                            ->set('Devolucion', $x->post('REGRESO') + $REGRESO[0]->REGRESO)
-                            ->set('MaterialMalo', 0)
-                            ->where('ID', $x->post('ID'))->update('asignapftsacxc');
-                    /* AVANCE DE (10) CORTE A (20) RAYADO */
-                    /* COMPROBAR SI YA EXISTE UN REGISTRO DE ESTE AVANCE (20 - RAYADO) PARA NO GENERAR DOS AVANCES AL MISMO DEPTO EN CASO DE QUE LLEGUEN A PEDIR MÁS MATERIAL */
-                    $check_avance = $this->db->select('COUNT(A.Control) AS EXISTE', false)
-                                    ->from('avance AS A')
-                                    ->where('A.Control', $x->post('CONTROL'))
-                                    ->where('A.Departamento', 20)->get()->result();
-//                    print "\n onDevolverPielForro ESTATUS DE AVANCE: ";
-//                    var_dump($check_avance);
-//                    print "\n  onDevolverPielForro *FIN ESTATUS DE AVANCE* \n";
-                    if (intval($check_avance[0]->EXISTE) === 0) {
-                        $avance = array(
-                            'Control' => $x->post('CONTROL'),
-                            'FechaAProduccion' => Date('d/m/Y'),
-                            'Departamento' => 20,
-                            'DepartamentoT' => 'RAYADO',
-                            'FechaAvance' => Date('d/m/Y'),
-                            'Estatus' => 'A',
-                            'Usuario' => $_SESSION["ID"],
-                            'Fecha' => Date('d/m/Y'),
-                            'Hora' => Date('h:i:s a')
-                        );
-                        $this->db->insert('avance', $avance);
-                    }
-                } else {
-                    $this->db->set('Empleado', $x->post('EMPLEADO'))
-                            ->set('Devolucion', $x->post('REGRESO'))
-                            ->set('MaterialMalo', 0)
-                            ->where('ID', $x->post('ID'))->update('asignapftsacxc');
-
-                    /* AVANCE DE (10) CORTE A (20) RAYADO */
-                    /* COMPROBAR SI YA EXISTE UN REGISTRO DE ESTE AVANCE (20 - RAYADO) PARA NO GENERAR DOS AVANCES AL MISMO DEPTO EN CASO DE QUE LLEGUEN A PEDIR MÁS MATERIAL */
-                    $check_avance = $this->db->select('COUNT(A.Control) AS EXISTE', false)
-                                    ->from('avance AS A')
-                                    ->where('A.Control', $x->post('CONTROL'))
-                                    ->where('A.Departamento', 20)->get()->result();
-//                    print "\n 2 onDevolverPielForro ESTATUS DE AVANCE: ";
-//                    var_dump($check_avance);
-//                    print "\n  2 onDevolverPielForro *FIN ESTATUS DE AVANCE* \n";
-                    if ($check_avance[0]->EXISTE <= 0) {
-                        $avance = array(
-                            'Control' => $x->post('CONTROL'),
-                            'FechaAProduccion' => Date('d/m/Y'),
-                            'Departamento' => 20,
-                            'DepartamentoT' => 'RAYADO',
-                            'FechaAvance' => Date('d/m/Y'),
-                            'Estatus' => 'A',
-                            'Usuario' => $_SESSION["ID"],
-                            'Fecha' => Date('d/m/Y'),
-                            'Hora' => Date('h:i:s a')
-                        );
-                        $this->db->insert('avance', $avance);
+                    $REGRESO = $this->apftsacxc->onObtenerUltimoRegreso($x->post('ID'));
+                    if (isset($REGRESO[0]->REGRESO)) {
+                        $this->db->set('Empleado', $x->post('EMPLEADO'))->set('Empleado', $x->post('EMPLEADO'))
+                                ->set('Devolucion', $x->post('REGRESO') + $REGRESO[0]->REGRESO)
+                                ->set('MaterialMalo', 0)
+                                ->where('ID', $x->post('ID'))->update('asignapftsacxc');
                     } else {
-                        /* YA EXISTE UN AVANCE DE RAYADO EN ESTE CONTROL */
+                        $this->db->set('Empleado', $x->post('EMPLEADO'))
+                                ->set('Devolucion', $x->post('REGRESO'))
+                                ->set('MaterialMalo', 0)
+                                ->where('ID', $x->post('ID'))->update('asignapftsacxc');
                     }
-                    /* FIN DE AVANCE DE CONTROL DE (10) CORTE A (20) RAYADO */
-                }
             } else {
-                if ($x->post("MATERIALMALO") > 0) {
+                if ($x->post('REGRESO') >= 0 && $x->post("MATERIALMALO") <= 0) {
                     $datos = array(
                         'Articulo' => $x->post('ARTICULO'),
                         'PrecioMov' => 0,
                         'CantidadMov' => $x->post('REGRESO'),
                         'FechaMov' => Date('d/m/Y'),
-                        'EntradaSalida' => '2'/* 1= ENTRADA, 2 = SALIDA */,
+                        'EntradaSalida' => '1'/* 1= ENTRADA, 2 = SALIDA */,
                         'TipoMov' => 'EXP', /* EXP = ENTRADA POR PRODUCCION */
                         'DocMov' => $x->post('ID'),
                         'Tp' => 3,
@@ -316,60 +250,47 @@ class AsignaPFTSACXC extends CI_Controller {
                         'Subtotal' => 0
                     );
                     $this->apftsacxc->onAgregarMovArt($datos);
-                    /**/
-                    $this->db->set('Empleado', $x->post('EMPLEADO'))
-                            ->set('Basura', $x->post('REGRESO'))
-                            ->set('MaterialMalo', 1)
-                            ->where('ID', $x->post('ID'))->update('asignapftsacxc');
+
+                    /* OBTENER ULTIMO REGRESO */
+                    $REGRESO = $this->apftsacxc->onObtenerUltimoRegreso($x->post('ID'));
+                    if (isset($REGRESO[0]->REGRESO)) {
+                        $this->db->set('Empleado', $x->post('EMPLEADO'))->set('Empleado', $x->post('EMPLEADO'))
+                                ->set('Devolucion', $x->post('REGRESO') + $REGRESO[0]->REGRESO)
+                                ->set('MaterialMalo', 0)
+                                ->where('ID', $x->post('ID'))->update('asignapftsacxc');
+                    } else {
+                        $this->db->set('Empleado', $x->post('EMPLEADO'))
+                                ->set('Devolucion', $x->post('REGRESO'))
+                                ->set('MaterialMalo', 0)
+                                ->where('ID', $x->post('ID'))->update('asignapftsacxc');
+                    }
                 } else {
-                    print "LA CANTIDAD DEVUELTA ESTA DEFECTUOSA HA SIDO ZERO 0";
+                    if ($x->post("MATERIALMALO") > 0) {
+                        $datos = array(
+                            'Articulo' => $x->post('ARTICULO'),
+                            'PrecioMov' => 0,
+                            'CantidadMov' => $x->post('REGRESO'),
+                            'FechaMov' => Date('d/m/Y'),
+                            'EntradaSalida' => '2'/* 1= ENTRADA, 2 = SALIDA */,
+                            'TipoMov' => 'EXP', /* EXP = ENTRADA POR PRODUCCION */
+                            'DocMov' => $x->post('ID'),
+                            'Tp' => 3,
+                            'Maq' => 10,
+                            'Sem' => substr($x->post('CONTROL'), 2, 2),
+                            'OrdenCompra' => NULL,
+                            'Subtotal' => 0
+                        );
+                        $this->apftsacxc->onAgregarMovArt($datos);
+                        /**/
+                        $this->db->set('Empleado', $x->post('EMPLEADO'))
+                                ->set('Basura', $x->post('REGRESO'))
+                                ->set('MaterialMalo', 1)
+                                ->where('ID', $x->post('ID'))->update('asignapftsacxc');
+                    } else {
+                        print "LA CANTIDAD DEVUELTA ESTA DEFECTUOSA HA SIDO ZERO 0";
+                    }
                 }
             }
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    function onGenerarAvanceAlDevolver() {
-        try {
-            /* GENERAR AVANCE DE CONTROL A CORTE */
-
-            /* COMPROBAR SI YA EXISTE UN REGISTRO DE ESTE AVANCE PARA NO GENERAR DOS AVANCES AL MISMO DEPTO EN CASO DE QUE LLEGUEN A PEDIR MÁS MATERIAL */
-            $check_avance = $this->db->select('COUNT(A.Control) AS EXISTE', false)
-                            ->from('avance AS A')
-                            ->where('A.Control', $x->post('CONTROL'))
-                            ->where('A.Departamento', 20)
-                            ->get()->result();
-//            print "\n ESTATUS DE AVANCE RAYADO: ";
-//            var_dump($check_avance);
-//            print "\n *FIN ESTATUS DE AVANCE RAYADO* \n";
-            if (count($check_avance) <= 0) {
-                /* YA EXISTE UN AVANCE DE (10)CORTE A (20)RAYADO EN ESTE CONTROL */
-                $avance = array(
-                    'Control' => $x->post('CONTROL'),
-                    'FechaAProduccion' => Date('d/m/Y'),
-                    'Departamento' => 20,
-                    'DepartamentoT' => 'RAYADO',
-                    'FechaAvance' => Date('d/m/Y'),
-                    'Estatus' => 'A',
-                    'Usuario' => $_SESSION["ID"],
-                    'Fecha' => Date('d/m/Y'),
-                    'Hora' => Date('h:i:s a')
-                );
-                $this->db->insert('avance', $avance);
-            }
-            /* FIN DE AVANCE DE CONTROL A CORTE */
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function onComprobarAvance() {
-        try {
-            $check_avance = $this->db->select('COUNT(A.Control) AS EXISTE', false)
-                            ->from('avance AS A')
-                            ->where('A.Control', $x->post('CONTROL'))
-                            ->where('A.Departamento', 20)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

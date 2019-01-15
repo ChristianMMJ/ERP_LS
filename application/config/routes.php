@@ -79,7 +79,10 @@ $route['avance_x_empleadopagodenomina'] = 'AvanceXEmpleadoYPagoDeNomina';
 $route['comprobar_numero_de_empleado'] = 'AvanceXEmpleadoYPagoDeNomina/onComprobarDeptoXEmpleado';
 $route['obtener_semana_fecha'] = 'AvanceXEmpleadoYPagoDeNomina/getSemanaByFecha';
 $route['obtener_estilo_pares_por_control_fraccion'] = 'AvanceXEmpleadoYPagoDeNomina/onComprobarRetornoDeMaterialXControl';
-$route['obtener_ultimo_avance_por_control'] = 'AvanceXEmpleadoYPagoDeNomina/onComprobarRetornoDeMaterialXControl';
+$route['obtener_ultimo_avance_por_control'] = 'AvanceXEmpleadoYPagoDeNomina/getUltimoAvanceXControl';
+$route['avance_add_avance_x_empleado_add_nomina'] = 'AvanceXEmpleadoYPagoDeNomina/onAgregarAvanceXEmpleadoYPagoDeNomina';
+$route['obtener_avances_pago_nomina'] = 'AvanceXEmpleadoYPagoDeNomina/getFraccionesPagoNomina';
+$route['obtener_pagos_de_nomina_x_empleado'] = 'AvanceXEmpleadoYPagoDeNomina/getPagosXEmpleadoXSemana';
 
 /*ACCESOS*/
 $route['accesos_modulos'] = 'Accesos/getModulos';
