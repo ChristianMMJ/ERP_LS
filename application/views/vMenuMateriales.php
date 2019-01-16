@@ -40,3 +40,4 @@ $this->load->view('vReporteCapturaFisica');
 $this->load->view('vPreparaMesCapturaInv');
 $this->load->view('vCapturaConteoInvfisico');
 $this->load->view('vComparativoInvFisInvSis');
+$this->load->view('vMovPorAjuste');

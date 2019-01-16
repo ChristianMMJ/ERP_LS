@@ -140,7 +140,7 @@ class ReporteCapturaFisica_model extends CI_Model {
                             . "AND YEAR(STR_TO_DATE(FechaMov, \"%d/%m/%Y\")) = $Ano),0) > 0 ", null, false)
                     //->like("A.Departamento", $Tipo)
                     ->order_by('ClaveGrupo', 'ASC')
-                    ->order_by('A.Clave', 'ASC');
+                    ->order_by('A.Descripcion', 'ASC');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -185,6 +185,75 @@ class ReporteCapturaFisica_model extends CI_Model {
                     ->group_by("G.Clave")
                     ->group_by("G.Nombre")
                     ->order_by('Clave', 'ASC');
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    /* Reporte de movimientos de ajuste */
+
+    public function getGruposMovimientosAjuste($Maq, $Mes, $Año) {
+        try {
+            $this->db->query("set sql_mode=''");
+            $this->db->select("CAST(G.Clave AS SIGNED ) AS Clave, G.Nombre "
+                            . "")
+                    ->from("$Maq MA")
+                    ->join("articulos A", 'ON A.Clave = MA.Articulo')
+                    ->join("grupos G", 'ON A.Grupo = G.Clave')
+                    ->where_in("MA.TipoMov", array('EAJ', 'ETR', 'SAJ', 'STR'))
+                    ->where("MONTH(STR_TO_DATE(MA.FechaMov, \"%d/%m/%Y\")) = $Mes  ", null, false)
+                    ->where("YEAR(STR_TO_DATE(MA.FechaMov, \"%d/%m/%Y\")) = $Año  ", null, false)
+                    ->group_by("G.Clave")
+                    ->group_by("G.Nombre")
+                    ->order_by('Clave', 'ASC');
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getDetalleMovimientosAjuste($Maq, $Mes, $Año) {
+        try {
+            $this->db->query("set sql_mode=''");
+            $this->db->select("CAST(A.Grupo AS SIGNED ) AS ClaveGrupo,  "
+                            . "A.Clave AS ClaveArt, "
+                            . "A.Descripcion AS Articulo, "
+                            . "U.Descripcion AS Unidad, "
+                            . "MA.FechaMov,"
+                            . "CASE WHEN MA.EntradaSalida = '1' THEN MA.CantidadMov ELSE 0 END AS Entradas, "
+                            . "CASE WHEN MA.EntradaSalida = '2' THEN MA.CantidadMov ELSE 0 END AS Salidas,"
+                            . "MA.PrecioMov, "
+                            . "MA.Subtotal, "
+                            . "MA.Sem,"
+                            . "MA.Maq,"
+                            . "MA.EntradaSalida,"
+                            . "MA.TipoMov"
+                            . "")
+                    ->from("$Maq MA")
+                    ->join("articulos A", 'ON A.Clave = MA.Articulo')
+                    ->join("unidades U", 'ON U.Clave = A.UnidadMedida')
+                    ->where_in("MA.TipoMov", array('EAJ', 'ETR', 'SAJ', 'STR'))
+                    ->where("MONTH(STR_TO_DATE(MA.FechaMov, \"%d/%m/%Y\")) = $Mes  ", null, false)
+                    ->where("YEAR(STR_TO_DATE(MA.FechaMov, \"%d/%m/%Y\")) = $Año  ", null, false)
+                    ->order_by('ClaveGrupo', 'ASC')
+                    ->order_by('A.Descripcion', 'ASC')
+                    ->order_by('MA.EntradaSalida', 'ASC')
+                    ->order_by('MA.TipoMov', 'ASC');
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
