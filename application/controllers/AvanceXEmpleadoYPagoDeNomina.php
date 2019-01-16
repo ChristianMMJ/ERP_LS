@@ -73,7 +73,7 @@ class AvanceXEmpleadoYPagoDeNomina extends CI_Controller {
     public function getFraccionesPagoNomina() {
         try {
             header('Content-type: application/json');
-            print json_encode($this->axepn->getFraccionesPagoNomina());
+            print json_encode($this->axepn->getFraccionesPagoNomina($this->input->post('EMPLEADO'), $this->input->post('FRACCIONES')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -82,7 +82,10 @@ class AvanceXEmpleadoYPagoDeNomina extends CI_Controller {
     public function getPagosXEmpleadoXSemana() {
         try {
             header('Content-type: application/json');
-            print json_encode($this->axepn->getPagosXEmpleadoXSemana($this->input->get('EMPLEADO'), $this->input->get('SEMANA')));
+            print json_encode($this->axepn->getPagosXEmpleadoXSemana(
+                    $this->input->get('EMPLEADO'), 
+                    $this->input->get('SEMANA'), 
+                    $this->input->get('FRACCIONES')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -152,8 +155,8 @@ class AvanceXEmpleadoYPagoDeNomina extends CI_Controller {
                                     ->where('F.control', $x->post('CONTROL'))
                                     ->where('F.numfrac', $x->post('NUMERO_FRACCION'))
                                     ->get()->result();
+                    $data["fraccion"] = $x->post('FRACCION');
                     if ($check_fraccion[0]->EXISTE <= 0) {
-                        $data["avance_id"] = intval($id) >= 0 ? intval($id) : 0;
                         $data["avance_id"] = intval($id) >= 0 ? intval($id) : 0;
                         $this->db->insert('fracpagnomina', $data);
                         print '{"AVANZO":"1","FR":"100","RETORNO":"SI","MESSAGE":"EL CONTROL HA SIDO AVANZADO A RAYADO"}';

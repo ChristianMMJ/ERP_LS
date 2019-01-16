@@ -6,13 +6,13 @@
             </div> 
         </div>
     </div>
-    <div class="card-body" style="padding-top: 10px; padding-bottom: 10px;">
+    <div class="card-body" style="padding-top: 0px; padding-bottom: 10px;">
         <div class="row">
             <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <label>Empleado</label>
             </div>
             <div class="col-12 col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                <input type="text" id="NumeroDeEmpleado" name="NumeroDeEmpleado" class="form-control numeric" placeholder="2805" style="height: 75px; font-weight: bold; font-size: 50px;" autofocus="">
+                <input type="text" id="NumeroDeEmpleado" name="NumeroDeEmpleado" class="form-control shadow-lg numeric" placeholder="2805" style="height: 75px; font-weight: bold; font-size: 50px;" autofocus="">
             </div>
             <div class="col-12 col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
                 <input type="text" id="NombreEmpleado" name="NombreEmpleado" class="form-control" placeholder="-" disabled="" style="height: 75px; font-weight: bold; font-size: 50px; text-align: center;">
@@ -48,20 +48,20 @@
                         </div> 
                         <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="chk99CorteForro">
-                                <label class="custom-control-label" for="chk99CorteForro">99 Corte forro</label>
+                                <input type="checkbox" class="custom-control-input" id="chk99" description="CORTE FORRO" fraccion='99'>
+                                <label class="custom-control-label" for="chk99" >99 Corte forro</label>
                             </div>
                         </div>
                         <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4"> 
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="chk100CortePiel">
-                                <label class="custom-control-label" for="chk100CortePiel">100 Corte piel</label>
+                                <input type="checkbox" class="custom-control-input" id="chk100" description="CORTE PIEL" fraccion='100'>
+                                <label class="custom-control-label" for="chk100">100 Corte piel</label>
                             </div>
                         </div>
                         <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4"> 
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="chk96CorteMuestras">
-                                <label class="custom-control-label" for="chk96CorteMuestras">96 Corte muestras</label>
+                                <input type="checkbox" class="custom-control-input" id="chk96" description="CORTE MUESTRAS" fraccion='96'>
+                                <label class="custom-control-label" for="chk96">96 Corte muestras</label>
                             </div>
                         </div>
                     </div>
@@ -78,13 +78,13 @@
                     </div>
                     <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                         <label>Departamento</label>
-                        <input type="text" id="Departamento" name="Departamento" class="form-control " maxlength="3">
+                        <input type="text" id="Departamento" name="Departamento" class="form-control numeric" maxlength="3">
                     </div>
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
                         <label>Control</label>
                         <input type="text" id="Control" name="Control" class="form-control numeric" maxlength="10">
                     </div>
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
                         <label>Estilo</label>
                         <input type="text" id="Estilo" name="Estilo" class="form-control">
                     </div>
@@ -96,6 +96,9 @@
                         <label>Avance</label>
                         <input type="text" id="Avance" name="Avance" class="form-control numeric">
                     </div>
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 mx-auto">
+                        <button type="button" class="btn btn-success mt-4" id="btnAceptar" name="btnAceptar" data-toggle="tooltip" data-placement="top" title="Aceptar"><span class="fa fa-check"></span></button>
+                    </div> 
 
                     <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-none">
                         <label>MO</label>
@@ -140,9 +143,10 @@
             SigAvance = pnlTablero.find("#Avance"),
             EstatusAvance = pnlTablero.find("#EstatusAvance"),
             ManoDeOB = pnlTablero.find("#ManoDeOB"),
-            Anio = pnlTablero.find("#Anio");
+            Anio = pnlTablero.find("#Anio"),
+            btnAceptar = pnlTablero.find("#btnAceptar");
 
-    var AvanceNomina = {
+    var AVANO = {
         NUMERO_EMPLEADO: 0,
         CONTROL: '',
         ESTILO: '',
@@ -160,97 +164,27 @@
     $(document).ready(function () {
         handleEnter();
 
+        btnAceptar.click(function () {
+            onAgregarAvance();
+        });
+
         Anio.val(new Date().getFullYear());
 
         Control.on('keydown', function (e) {
             if (e.keyCode === 13) {
-                HoldOn.open({
-                    theme: 'sk-rect',
-                    message: 'Espere...'
-                });
-                var fra = pnlTablero.find("#chk99CorteForro")[0].checked ? 99 : (pnlTablero.find("#chk100CortePiel")[0].checked ? 100 : (pnlTablero.find("#chk96CorteMuestras")[0] ? 96 : ''));
-                $.getJSON('<?php print base_url('obtener_estilo_pares_por_control_fraccion'); ?>', {CR: Control.val(), FR: fra}).done(function (data) {
-                    if (data.length > 0) {
-                        var r = data[0];
-                        Estilo.val(r.Estilo);
-                        Pares.val(r.Pares);
-                        ManoDeOB.val(r.CostoMO);
-                        $.getJSON('<?php print base_url('obtener_ultimo_avance_por_control'); ?>', {C: Control.val()}).done(function (data) {
-                            if (data.length > 0) {
-                                SigAvance.val(data[0].Departamento);
-                                EstatusAvance.val(data[0].DepartamentoT);
-                                var d = new Date();
-                                var n = d.getDay();
-                                DiasPagoDeNomina.find("#txt" + ndias[n - 1]).val(parseFloat(r.Pares) * parseFloat(r.CostoMO));
-                                var tt = 0;
-                                ndias.forEach(function (i) {
-                                    console.log('input dias: ', i, ' - ', $("#txt" + i).val());
-                                    tt += parseFloat(pnlTablero.find("#txt" + i).val());
-                                });
-                                DiasPagoDeNomina.find("#txtTotal").val(parseFloat(r.Pares) * parseFloat(r.CostoMO));
-                                AvanceNomina.NUMERO_EMPLEADO = NumeroDeEmpleado.val();
-                                AvanceNomina.CONTROL = Control.val();
-                                AvanceNomina.ESTILO = Estilo.val();
-                                AvanceNomina.NUMERO_FRACCION = fra;
-                                AvanceNomina.FRACCION = fra;
-                                AvanceNomina.PRECIO_FRACCION = ManoDeOB.val();
-                                AvanceNomina.PARES = Pares.val();
-                                AvanceNomina.FECHA = Fecha.val();
-                                AvanceNomina.SEMANA = Semana.val();
-                                AvanceNomina.DEPARTAMENTO = Departamento.val();
-                                AvanceNomina.ANIO = pnlTablero.find("#Anio").val();
-
-                                $.post('<?php print base_url('avance_add_avance_x_empleado_add_nomina') ?>', AvanceNomina).done(function (data) {
-                                    console.log("\n", "* AVANCE NOMINA *", "\n", data, JSON.parse(data));
-                                    var dt = JSON.parse(data);
-                                    if (data !== undefined && data.length > 0) {
-                                        if (dt.AVANZO > 0) {
-                                            Avance.ajax.reload();
-                                            swal('ATENCIÓN', 'SE HA AVANZADO EL CONTROL Y SE HA HECHO EL PAGO AL EMPLEADO ' + NumeroDeEmpleado.val(), 'success');
-                                            onClearMO();
-                                            NumeroDeEmpleado.focus();
-                                        } else {
-                                            onBeep(2);
-                                            Avance.ajax.reload();
-                                            swal('ATENCIÓN', 'ESTE CONTROL YA TIENE UN AVANCE EN ESTA FRACCIÓN O AUN NO SE HA REGISTRADO UN RETORNO DE MATERIAL AL ALMACEN, POR FAVOR ESPECIFIQUE UN CONTROL DIFERENTE O UNA FRACCIÓN DIFERENTE, DE LO CONTRARIO REVISE CON EL AREA CORRESPONDIENTE', 'warning').then((value) => {
-                                                onClearMO();
-                                            });
-                                        }
-                                    }
-                                }).fail(function (x, y, z) {
-                                    console.log(x.responseText);
-                                }).always(function () {
-                                });
-                            }
-                        }).fail(function (x, y, z) {
-                            console.log(x.responseText);
-                            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
-                        }).always(function () {
-                            HoldOn.close();
-                        });
-                    } else {
-                        swal('ATENCIÓN', 'LA FRACCIÓN O EL CONTROL NO SON CORRECTAS, ELIJA OTRA FRACCIÓN O ESPECIFIQUE UN CONTROL CON LA FRACCIÓN SELECCIONADA', 'error').then((value) => {
-                            Control.focus().select();
-                            Estilo.val('');
-                            Pares.val('');
-                            SigAvance.val('');
-                        });
-                    }
-                }).fail(function (x, y, z) {
-                    console.log(x.responseText);
-                    swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
-                }).always(function () {
-                    HoldOn.close();
-                });
+                onAgregarAvance();
             }
         });
 
         pnlTablero.find("input[type='checkbox']").change(function () {
             onCheckFraccion(this);
             if ($(this)[0].checked) {
+                onBeep(3);
                 Control.focus().select();
-                pnlTablero.find("#ManoDeObra label.custom-control-label").removeClass("highlight");
+                pnlTablero.find("#ManoDeObra input[type='checkbox']:not(:checked)").parent().find("label.custom-control-label").removeClass("highlight");
+                pnlTablero.find("#ManoDeObra input[type='checkbox']:checked").parent().find("label.custom-control-label").addClass("highlight");
             } else {
+                onBeep(1);
                 if (pnlTablero.find("input[type='checkbox']:checked").length <= 0) {
                     pnlTablero.find("#ManoDeObra label.custom-control-label").addClass("highlight");
                 } else {
@@ -261,6 +195,7 @@
 
         NumeroDeEmpleado.on('keydown', function (e) {
             if (e.keyCode === 13) {
+                Avance.ajax.reload();
                 HoldOn.open({
                     theme: 'sk-rect',
                     message: 'Comprobando...'
@@ -275,7 +210,7 @@
                                     Semana.val((data.length > 0) ? data[0].Sem : '');
                                     Fecha.val((data.length > 0) ? data[0].Fecha : '');
                                     $.getJSON('<?php print base_url('obtener_pagos_de_nomina_x_empleado'); ?>',
-                                            {EMPLEADO: NumeroDeEmpleado.val(), SEMANA: Semana.val()}).done(function (a) {
+                                            {EMPLEADO: NumeroDeEmpleado.val(), SEMANA: Semana.val(), FRACCIONES: "96, 99, 100"}).done(function (a) {
                                         if (a.length > 0) {
                                             var b = a[0];
                                             var tt = 0;
@@ -382,10 +317,100 @@
             "type": "POST",
             "dataSrc": "",
             "data": function (d) {
+                d.EMPLEADO = NumeroDeEmpleado.val();
+                d.FRACCIONES = "96,99,100";
             }
         };
         Avance = tblAvance.DataTable(xoptions);
     });
+
+    function onAgregarAvance() {
+        if (Control.val()) {
+            HoldOn.open({
+                theme: 'sk-rect',
+                message: 'Espere...'
+            });
+            var fra = pnlTablero.find("#chk99")[0].checked ? 99 : (pnlTablero.find("#chk100")[0].checked ? 100 : (pnlTablero.find("#chk96")[0] ? 96 : ''));
+            $.getJSON('<?php print base_url('obtener_estilo_pares_por_control_fraccion'); ?>', {CR: Control.val(), FR: fra}).done(function (data) {
+                if (data.length > 0) {
+                    var r = data[0];
+                    Estilo.val(r.Estilo);
+                    Pares.val(r.Pares);
+                    ManoDeOB.val(r.CostoMO);
+                    $.getJSON('<?php print base_url('obtener_ultimo_avance_por_control'); ?>', {C: Control.val()}).done(function (data) {
+                        if (data.length > 0) {
+                            SigAvance.val(data[0].Departamento);
+                            EstatusAvance.val(data[0].DepartamentoT);
+                            var d = new Date();
+                            var n = d.getDay();
+                            DiasPagoDeNomina.find("#txt" + ndias[n - 1]).val(parseFloat(r.Pares) * parseFloat(r.CostoMO));
+                            var tt = 0;
+                            ndias.forEach(function (i) {
+                                console.log('input dias: ', i, ' - ', $("#txt" + i).val());
+                                tt += parseFloat(pnlTablero.find("#txt" + i).val());
+                            });
+                            DiasPagoDeNomina.find("#txtTotal").val(parseFloat(r.Pares) * parseFloat(r.CostoMO));
+                            AVANO.NUMERO_EMPLEADO = NumeroDeEmpleado.val();
+                            AVANO.CONTROL = Control.val();
+                            AVANO.ESTILO = Estilo.val();
+                            AVANO.NUMERO_FRACCION = pnlTablero.find("#ManoDeObra input[type='checkbox']:checked").attr('fraccion');
+                            AVANO.FRACCION = pnlTablero.find("#ManoDeObra input[type='checkbox']:checked").attr('description');
+                            AVANO.PRECIO_FRACCION = ManoDeOB.val();
+                            AVANO.PARES = Pares.val();
+                            AVANO.FECHA = Fecha.val();
+                            AVANO.SEMANA = Semana.val();
+                            AVANO.DEPARTAMENTO = Departamento.val();
+                            AVANO.ANIO = pnlTablero.find("#Anio").val();
+
+                            $.post('<?php print base_url('avance_add_avance_x_empleado_add_nomina') ?>', AVANO).done(function (data) {
+                                console.log("\n", "* AVANCE NOMINA *", "\n", data, JSON.parse(data));
+                                var dt = JSON.parse(data);
+                                if (data !== undefined && data.length > 0) {
+                                    if (dt.AVANZO > 0) {
+                                        Avance.ajax.reload();
+                                        swal('ATENCIÓN', 'SE HA AVANZADO EL CONTROL Y SE HA HECHO EL PAGO AL EMPLEADO ' + NumeroDeEmpleado.val(), 'success').then((value) => {
+                                            onClearMO();
+                                            NumeroDeEmpleado.focus().select();
+                                        });
+                                    } else {
+                                        onBeep(2);
+                                        Avance.ajax.reload();
+                                        swal('ATENCIÓN', 'ESTE CONTROL (' + Control.val() + ') YA TIENE UN AVANCE EN ESTA FRACCIÓN O AUN NO SE HA REGISTRADO UN RETORNO DE MATERIAL AL ALMACEN, POR FAVOR ESPECIFIQUE UN CONTROL DIFERENTE O UNA FRACCIÓN DIFERENTE, DE LO CONTRARIO REVISE CON EL AREA CORRESPONDIENTE', 'warning').then((value) => {
+                                            onClearMO();
+                                        });
+                                    }
+                                }
+                            }).fail(function (x, y, z) {
+                                console.log(x.responseText);
+                            }).always(function () {
+                            });
+                        }
+                    }).fail(function (x, y, z) {
+                        console.log(x.responseText);
+                        swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                    }).always(function () {
+                        HoldOn.close();
+                    });
+                } else {
+                    swal('ATENCIÓN', 'LA FRACCIÓN O EL CONTROL NO SON CORRECTAS, ELIJA OTRA FRACCIÓN O ESPECIFIQUE UN CONTROL CON LA FRACCIÓN SELECCIONADA', 'error').then((value) => {
+                        Control.focus().select();
+                        Estilo.val('');
+                        Pares.val('');
+                        SigAvance.val('');
+                    });
+                }
+            }).fail(function (x, y, z) {
+                console.log(x.responseText);
+                swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+            }).always(function () {
+                HoldOn.close();
+            });
+        } else {
+            swal('ATENCIÓN', 'DEBE DE ESPECIFICAR UN CONTROL', 'error').then((value) => {
+                Control.focus().select();
+            });
+        }
+    }
 
     function onCheckFraccion(e) {
         $.each(pnlTablero.find("input[type='checkbox']"), function (k, v) {
@@ -396,7 +421,7 @@
     }
 
     function onClearMO() {
-        Control.focus().select();
+        Control.val('');
         Estilo.val('');
         Pares.val('');
         SigAvance.val('');
@@ -405,14 +430,22 @@
         });
         Semana.val('');
         Fecha.val('');
-        Departamento.val('');
-        ndias.forEach(function (i) {
-            pnlTablero.find("#txt" + i).val('');
-        });
         pnlTablero.find("#txtTotal").val('');
     }
 </script>
 <style>
+    .btn-success {
+        color: #fff;
+        background-color: #2196F3;
+        border-color: #03A9F4;
+    }
+
+    .btn-success:hover {
+        color: #fff;
+        background-color: #1976D2;
+        border-color: #0288D1;
+    }
+
     .custom-checkbox:hover, .custom-checkbox label:hover{
         cursor: pointer;
     }
@@ -420,32 +453,39 @@
         margin-top: 2px;
         border-radius: 4px;
         padding-left: 10px;
-        padding-right: 10px;  
+        padding-right: 10px;
+        -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none; /* Safari */
+        -khtml-user-select: none; /* Konqueror HTML */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+        user-select: none; /* Non-prefixed version, currently
+                              supported by Chrome and Opera */
+        -webkit-transition: background-color 0.5s ease-out;
+        -moz-transition: background-color 0.5s ease-out;
+        -o-transition: background-color 0.5s ease-out;
+        transition: background-color 0.5s ease-out;
+    }
+
+    .card-body .custom-control-label::after { 
+        background-color: #3F51B5;
     }
 
     .highlight{
         border-radius: 4px;
         padding-left: 10px;
         padding-right: 10px;    
-        background:#ffcc33;
-        animation: highlight .5s;
-        -moz-animation:highlight .5s infinite; /* Firefox */
-        -webkit-animation:highlight .5s infinite; /* Safari and Chrome */
+        background:#99cc00; 
         font-weight: bold;
-    }
+        color:#000;
+        -webkit-transition: background-color 1s ease-out;
+        -moz-transition: background-color 1s ease-out;
+        -o-transition: background-color 1s ease-out;
+        transition: background-color 1s ease-out;
+    } 
 
-    @-moz-keyframes highlight /* Firefox */
-    {
-        0%   {background:#cbe971;color:#000;}  
-        75%  {background:#99cc00;color:#000;}
-        100%   {background:#cbe971;color:#000;}
+    input[type='text']{
+        color: #c1850c !important;
+        font-weight: bold !important;
     }
-
-    @-webkit-keyframes highlight /* Firefox */
-    {
-        0%   {background:#cbe971;color:#000;}  
-        75%  {background:#99cc00;color:#000;}
-        100%   {background:#cbe971;color:#000;}
-    }
-
 </style>

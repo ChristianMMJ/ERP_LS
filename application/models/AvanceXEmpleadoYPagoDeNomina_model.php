@@ -32,16 +32,16 @@ class AvanceXEmpleadoYPagoDeNomina_model extends CI_Model {
         try {
             $part_one = "IFNULL((SELECT SUM(fpn.subtot) FROM fracpagnomina AS fpn WHERE dayofweek(fpn.fecha)";
             $part_two = "AND fpn.numeroempleado = '$EMPLEADO' AND fpn.Semana = $SEMANA GROUP BY dayofweek(fpn.fecha)),0)";
-            
+
             return $this->db->select(
-                    "$part_one = 2 $part_two AS LUNES,"
-                    . "$part_one = 3 $part_two AS MARTES,"
-                    . "$part_one = 4 $part_two AS MIERCOLES,"
-                    . "$part_one = 5 $part_two AS JUEVES,"
-                    . "$part_one = 6 $part_two AS VIERNES,"
-                    . "$part_one = 7 $part_two AS SABADO,"
-                    . "$part_one = 1 $part_two AS DOMINGO", false)
-                    ->limit(1)->get()->result();
+                                    "$part_one = 2 $part_two AS LUNES,"
+                                    . "$part_one = 3 $part_two AS MARTES,"
+                                    . "$part_one = 4 $part_two AS MIERCOLES,"
+                                    . "$part_one = 5 $part_two AS JUEVES,"
+                                    . "$part_one = 6 $part_two AS VIERNES,"
+                                    . "$part_one = 7 $part_two AS SABADO,"
+                                    . "$part_one = 1 $part_two AS DOMINGO", false)
+                            ->limit(1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -120,10 +120,20 @@ class AvanceXEmpleadoYPagoDeNomina_model extends CI_Model {
         }
     }
 
-    public function getFraccionesPagoNomina() {
+    public function getFraccionesPagoNomina($E, $F) {
         try {
-            return $this->db->select("FACN.ID, FACN.numeroempleado, FACN.maquila, FACN.control AS CONTROL, FACN.estilo AS ESTILO, FACN.numfrac AS FRAC, FACN.preciofrac AS PRECIO, FACN.pares AS PARES, FACN.subtot AS SUBTOTAL, FACN.status, DATE_FORMAT(FACN.fecha, \"%d/%m/%Y\") AS FECHA, FACN.semana AS SEMANA, FACN.depto AS DEPARTAMENTO, FACN.registro, FACN.anio, FACN.avance_id", false)
-                            ->from('fracpagnomina AS FACN')->get()->result();
+            $this->db->select("FACN.ID, FACN.numeroempleado, FACN.maquila, "
+                            . "FACN.control AS CONTROL, FACN.estilo AS ESTILO, "
+                            . "FACN.numfrac AS FRAC, FACN.preciofrac AS PRECIO, "
+                            . "FACN.pares AS PARES, FACN.subtot AS SUBTOTAL, "
+                            . "FACN.status, DATE_FORMAT(FACN.fecha, \"%d/%m/%Y\") AS FECHA, "
+                            . "FACN.semana AS SEMANA, FACN.depto AS DEPARTAMENTO, "
+                            . "FACN.registro, FACN.anio, FACN.avance_id", false)
+                    ->from('fracpagnomina AS FACN')->where_in("FACN.numfrac IN($F)", null, false);
+            if ($E !== '') {
+                $this->db->where('FACN.numeroempleado', $E);
+            }
+            return $this->db->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

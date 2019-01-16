@@ -1,4 +1,4 @@
-<div class="card m-3 animated slideInDown" id="pnlTablero">
+<div class="card m-3" id="pnlTablero">
     <div class="card-header">   
         <div class="row">
             <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-xl-12 col-lg-12 text-center">
@@ -12,10 +12,10 @@
                 <label>Empleado</label>
             </div>
             <div class="col-12 col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                <input type="text" id="NumeroDeEmpleado" name="NumeroDeEmpleado" class="form-control" placeholder="2805" style="height: 75px; font-weight: bold; font-size: 50px;" autofocus="">
+                <input type="text" id="NumeroDeEmpleado" name="NumeroDeEmpleado" class="form-control " placeholder="2805" style="height: 75px; font-weight: bold; font-size: 50px;" autofocus="">
             </div>
             <div class="col-12 col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
-                <input type="text" id="NombreEmpleado" name="NombreEmpleado" class="form-control" placeholder="-" style="height: 75px; font-weight: bold; font-size: 50px; text-align: center;">
+                <input type="text" id="NombreEmpleado" name="NombreEmpleado" class="form-control " placeholder="-" style="height: 75px; font-weight: bold; font-size: 50px; text-align: center;">
             </div>
             <!--FIN BLOQUE 2 COL 6-->
             <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" align="center">
@@ -41,153 +41,169 @@
             <!--INICIO BLOQUE 2 COL 6-->
             <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                 <div class="row">
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                        <label>Mano de obra</label>  
-                    </div>
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">  
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="chk51Entretelado">
-                            <label class="custom-control-label" for="chk51Entretelado">51 Entretelado</label>
+                    <div id="ManoDeObra" class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 row" style="border-radius: 5px;">
+                        <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <label>Mano de obra</label>  
                         </div>
-                    </div>
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="chk61FoleadoMuestra">
-                            <label class="custom-control-label" for="chk61FoleadoMuestra">61 Foleado muestra</label>
+                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">  
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chk51" description="ENTRETELADO" fraccion="51">
+                                <label class="custom-control-label" for="chk51">51 Entretelado</label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="chk62SerigrafiaForro">
-                            <label class="custom-control-label" for="chk62SerigrafiaForro">62 Serigrafia forro</label>
+                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chk61" description="FOLEADO MUESTRA" fraccion="61">
+                                <label class="custom-control-label" for="chk61">61 Foleado muestra</label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="chk24Domar">
-                            <label class="custom-control-label" for="chk24Domar">24 Domar</label>
+                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chk62" description="SERIGRAFIA FORRO" fraccion="62">
+                                <label class="custom-control-label" for="chk62">62 Serigrafia forro</label>
+                            </div>
                         </div>
-                    </div>
+                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chk24" description="DOMAR" fraccion="24">
+                                <label class="custom-control-label" for="chk24">24 Domar</label>
+                            </div>
+                        </div>
 
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="chk78LimpiaLaser">
-                            <label class="custom-control-label" for="chk78LimpiaLaser">78 Limpia laser</label>
+                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chk78" description="LIMPIA LASER" fraccion="78">
+                                <label class="custom-control-label" for="chk78">78 Limpia laser</label>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="chk204EmpalmarpLaser">
-                            <label class="custom-control-label" for="chk204EmpalmarpLaser">204 Empalmar p/laser</label>
+                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chk204" description="EMPALMAR PARA LASER" fraccion="204">
+                                <label class="custom-control-label" for="chk204">204 Empalmar p/laser</label>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="chk205AplicaPegapLaser">
-                            <label class="custom-control-label" for="chk205AplicaPegapLaser">205 Aplica pega.p/laser</label>
+                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chk205" description="APLICA PEGA PARA LASER" fraccion="205">
+                                <label class="custom-control-label" for="chk205">205 Aplica pega.p/laser</label>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="chk198LotearpLaser">
-                            <label class="custom-control-label" for="chk198LotearpLaser">198 Lotear p/laser</label>
+                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chk198" description="LOTEAR PARA LASER" fraccion="198">
+                                <label class="custom-control-label" for="chk198">198 Lotear p/laser</label>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="chk127EntretelarMuestra">
-                            <label class="custom-control-label" for="chk127EntretelarMuestra">127 Entretelar muestra</label>
+                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chk127" description="ENTRETELAR MUESTRA" fraccion="127">
+                                <label class="custom-control-label" for="chk127">127 Entretelar muestra</label>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="chk80ContarTarea">
-                            <label class="custom-control-label" for="chk80ContarTarea">80 Contar tarea</label>
+                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chk80" description="CONTAR TAREA" fraccion="80">
+                                <label class="custom-control-label" for="chk80">80 Contar tarea</label>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="chk397JuntarSuelaACorte">
-                            <label class="custom-control-label" for="chk397JuntarSuelaACorte">397 Juntar suela a corte</label>
+                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chk397" description="JUNTAR SUELA A CORTE" fraccion="397">
+                                <label class="custom-control-label" for="chk397">397 Juntar suela a corte</label>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">  
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="chk34PegarTransfer">
-                            <label class="custom-control-label" for="chk34PegarTransfer">34 Pegar transfer</label>
+                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">  
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chk34" description="PEGAR TRANSFER" fraccion="34">
+                                <label class="custom-control-label" for="chk34">34 Pegar transfer</label>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="chk106Doblillado">
-                            <label class="custom-control-label" for="chk106Doblillado">106 Doblillado</label>
+                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chk106" description="DOBLILLADO" fraccion="106">
+                                <label class="custom-control-label" for="chk106">106 Doblillado</label>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">  
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="chk306ForrarPlataforma">
-                            <label class="custom-control-label" for="chk306ForrarPlataforma">306 Forrar plataforma</label>
+                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">  
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chk306" description="FORRAR PLATAFORMA" fraccion="306">
+                                <label class="custom-control-label" for="chk306">306 Forrar plataforma</label>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="chk337RecortarForroLaser">
-                            <label class="custom-control-label" for="chk337RecortarForroLaser">337 Recortar forro laser</label>
+                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chk337" description="RECORTAR FORRO LASER" fraccion="337">
+                                <label class="custom-control-label" for="chk337">337 Recortar forro laser</label>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">  
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="chk333PonerCascoPespunte">
-                            <label class="custom-control-label" for="chk333PonerCascoPespunte">333 Poner casco pespunte</label>
+                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">  
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chk333" description="PONER CASCO PESPUNTE" fraccion="333">
+                                <label class="custom-control-label" for="chk333">333 Poner casco pespunte</label>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="chk502PegadoDeSuela">
-                            <label class="custom-control-label" for="chk502PegadoDeSuela">502 Pegado de suela</label>
+                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chk502" description="PEGADO DE SUELA" fraccion="502">
+                                <label class="custom-control-label" for="chk502">502 Pegado de suela</label>
+                            </div>
                         </div>
                     </div>
 
                     <div class="w-100"></div>                    
                     <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                         <label>Semana</label>
-                        <input type="text" id="Semana" name="Semana" class="form-control numeric" maxlength="2">
+                        <input type="text" id="Semana" name="Semana" class="form-control  numeric" maxlength="2" disabled="">
                     </div>
                     <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                         <label>Fecha</label>
-                        <input type="text" id="Fecha" name="Fecha" class="form-control ">
+                        <input type="text" id="Fecha" name="Fecha" class="form-control  ">
                     </div>
                     <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                         <label>Departamento</label>
-                        <input type="text" id="Departamento" name="Departamento" class="form-control " maxlength="3">
+                        <input type="text" id="Departamento" name="Departamento" class="form-control numeric " maxlength="3">
                     </div>
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
                         <label>Control</label>
-                        <input type="text" id="Control" name="Control" class="form-control numeric" maxlength="10">
+                        <input type="text" id="Control" name="Control" class="form-control  numeric" maxlength="10">
                     </div>
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
                         <label>Estilo</label>
-                        <input type="text" id="Estilo" name="Estilo" class="form-control">
+                        <input type="text" id="Estilo" name="Estilo" class="form-control ">
                     </div>
                     <div class="col-12 col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
                         <label>Pares</label>
-                        <input type="text" id="Pares" name="Pares" class="form-control numeric">
+                        <input type="text" id="Pares" name="Pares" class="form-control  numeric">
                     </div>
                     <div class="col-12 col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
                         <label>Avance</label>
-                        <input type="text" id="Avance" name="Avance" class="form-control numeric">
+                        <input type="text" id="Avance" name="Avance" class="form-control  numeric">
+                    </div>
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 mx-auto">
+                        <button type="button" class="btn btn-success mt-4" id="btnAceptar" name="btnAceptar" data-toggle="tooltip" data-placement="top" title="Aceptar"><span class="fa fa-check"></span></button>
+                    </div> 
+
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-none">
+                        <label>MO</label>
+                        <input type="text" id="ManoDeOB" name="ManoDeOB" class="form-control numeric" readonly="">
+                        <label>AN</label>
+                        <input type="text" id="Anio" name="Anio" class="form-control numeric" readonly="">
+                    </div> 
+
+                    <div class="col-12 my-1">
+                        <hr>
                     </div>
                     <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
 
@@ -198,7 +214,7 @@
                     </div>
                     <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" align="center">
                         <h3>Estatus actual del avance</h3>
-                        <input type="text" id="EstatusAvance" name="EstatusAvance" class="form-control">
+                        <input type="text" id="EstatusAvance" name="EstatusAvance" class="form-control ">
                     </div>
                 </div>
             </div><!--FIN BLOQUE 2 COL 6-->
@@ -206,23 +222,235 @@
     </div>
 </div>
 <script>
-    var dias = ["JUEVES", "VIERNES", "SABADO", "DOMINGO", "LUNES", "MARTES", "MIERCOLES"];
-    var DiasPagoDeNomina = $("#DiasPagoDeNomina"), Avance, tblAvance = $("#tblAvance");
+    var dias = ["JUEVES", "VIERNES", "SABADO", "DOMINGO", "LUNES", "MARTES", "MIERCOLES"],
+            ndias = ["LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO", "DOMINGO"],
+            pnlTablero = $("#pnlTablero").find("div.card-body"),
+            DiasPagoDeNomina = pnlTablero.find("#DiasPagoDeNomina"), Avance,
+            tblAvance = pnlTablero.find("#tblAvance"),
+            NumeroDeEmpleado = pnlTablero.find("#NumeroDeEmpleado"),
+            NombreEmpleado = pnlTablero.find("#NombreEmpleado"),
+            Semana = pnlTablero.find("#Semana"),
+            Fecha = pnlTablero.find("#Fecha"),
+            Control = pnlTablero.find("#Control"),
+            Departamento = pnlTablero.find("#Departamento"),
+            Estilo = pnlTablero.find("#Estilo"),
+            Pares = pnlTablero.find("#Pares"),
+            SigAvance = pnlTablero.find("#Avance"),
+            EstatusAvance = pnlTablero.find("#EstatusAvance"),
+            ManoDeOB = pnlTablero.find("#ManoDeOB"),
+            Anio = pnlTablero.find("#Anio"), btnAceptar = pnlTablero.find("#btnAceptar");
+
+    var AVANO = {
+        NUMERO_EMPLEADO: 0,
+        CONTROL: '',
+        ESTILO: '',
+        FRACCION: '',
+        NUMERO_FRACCION: 0,
+        PRECIO_FRACCION: 0,
+        PARES: 0,
+        FECHA: '',
+        SEMANA: 0,
+        DEPARTAMENTO: 0,
+        ANIO: 0
+    };
     // IIFE - Immediately Invoked Function Expression
     $(document).ready(function () {
-        var bloques = '';
+        handleEnter();
+
+        btnAceptar.click(function () {
+            onAgregarAvance();
+        });
+
+        Anio.val(new Date().getFullYear());
+
+        Control.on('keydown', function (e) {
+            if (e.keyCode === 13) {
+                HoldOn.open({
+                    theme: 'sk-rect',
+                    message: 'Espere...'
+                });
+                var fra = pnlTablero.find("#chk99")[0].checked ? 99 : (pnlTablero.find("#chk100")[0].checked ? 100 : (pnlTablero.find("#chk96")[0] ? 96 : ''));
+                $.getJSON('<?php print base_url('obtener_estilo_pares_por_control_fraccion'); ?>', {CR: Control.val(), FR: fra}).done(function (data) {
+                    if (data.length > 0) {
+                        var r = data[0];
+                        Estilo.val(r.Estilo);
+                        Pares.val(r.Pares);
+                        ManoDeOB.val(r.CostoMO);
+                        $.getJSON('<?php print base_url('obtener_ultimo_avance_por_control'); ?>', {C: Control.val()}).done(function (data) {
+                            if (data.length > 0) {
+                                SigAvance.val(data[0].Departamento);
+                                EstatusAvance.val(data[0].DepartamentoT);
+                                var d = new Date();
+                                var n = d.getDay();
+                                DiasPagoDeNomina.find("#txt" + ndias[n - 1]).val(parseFloat(r.Pares) * parseFloat(r.CostoMO));
+                                var tt = 0;
+                                ndias.forEach(function (i) {
+                                    console.log('input dias: ', i, ' - ', $("#txt" + i).val());
+                                    tt += parseFloat(pnlTablero.find("#txt" + i).val());
+                                });
+                                DiasPagoDeNomina.find("#txtTotal").val(parseFloat(r.Pares) * parseFloat(r.CostoMO));
+                                AVANO.NUMERO_EMPLEADO = NumeroDeEmpleado.val();
+                                AVANO.CONTROL = Control.val();
+                                AVANO.ESTILO = Estilo.val();
+                                AVANO.NUMERO_FRACCION = fra;
+                                AVANO.FRACCION = fra;
+                                AVANO.PRECIO_FRACCION = ManoDeOB.val();
+                                AVANO.PARES = Pares.val();
+                                AVANO.FECHA = Fecha.val();
+                                AVANO.SEMANA = Semana.val();
+                                AVANO.DEPARTAMENTO = Departamento.val();
+                                AVANO.ANIO = pnlTablero.find("#Anio").val();
+
+                                $.post('<?php print base_url('avance_add_avance_x_empleado_add_nomina') ?>', AVANO).done(function (data) {
+                                    console.log("\n", "* AVANCE NOMINA *", "\n", data, JSON.parse(data));
+                                    var dt = JSON.parse(data);
+                                    if (data !== undefined && data.length > 0) {
+                                        if (dt.AVANZO > 0) {
+                                            Avance.ajax.reload();
+                                            swal('ATENCIÓN', 'SE HA AVANZADO EL CONTROL Y SE HA HECHO EL PAGO AL EMPLEADO ' + NumeroDeEmpleado.val(), 'success');
+                                            onClearMO();
+                                            NumeroDeEmpleado.focus();
+                                        } else {
+                                            onBeep(2);
+                                            Avance.ajax.reload();
+                                            swal('ATENCIÓN', 'ESTE CONTROL YA TIENE UN AVANCE EN ESTA FRACCIÓN O AUN NO SE HA REGISTRADO UN RETORNO DE MATERIAL AL ALMACEN, POR FAVOR ESPECIFIQUE UN CONTROL DIFERENTE O UNA FRACCIÓN DIFERENTE, DE LO CONTRARIO REVISE CON EL AREA CORRESPONDIENTE', 'warning').then((value) => {
+                                                onClearMO();
+                                            });
+                                        }
+                                    }
+                                }).fail(function (x, y, z) {
+                                    console.log(x.responseText);
+                                }).always(function () {
+                                });
+                            }
+                        }).fail(function (x, y, z) {
+                            console.log(x.responseText);
+                            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                        }).always(function () {
+                            HoldOn.close();
+                        });
+                    } else {
+                        swal('ATENCIÓN', 'LA FRACCIÓN O EL CONTROL NO SON CORRECTAS, ELIJA OTRA FRACCIÓN O ESPECIFIQUE UN CONTROL CON LA FRACCIÓN SELECCIONADA', 'error').then((value) => {
+                            Control.focus().select();
+                            Estilo.val('');
+                            Pares.val('');
+                            SigAvance.val('');
+                        });
+                    }
+                }).fail(function (x, y, z) {
+                    console.log(x.responseText);
+                    swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                }).always(function () {
+                    HoldOn.close();
+                });
+            }
+        }).focusout(function () {
+
+        });
+
+        pnlTablero.find("input[type='checkbox']").change(function () {
+            onCheckFraccion(this);
+            if ($(this)[0].checked) {
+                onBeep(3);
+                Control.focus().select();
+                pnlTablero.find("#ManoDeObra input[type='checkbox']:not(:checked)").parent().find("label.custom-control-label").removeClass("highlight");
+                pnlTablero.find("#ManoDeObra input[type='checkbox']:checked").parent().find("label.custom-control-label").addClass("highlight");
+            } else {
+                onBeep(1);
+                if (pnlTablero.find("input[type='checkbox']:checked").length <= 0) {
+                    pnlTablero.find("#ManoDeObra label.custom-control-label").addClass("highlight");
+                } else {
+                    pnlTablero.find("#ManoDeObra label.custom-control-label").removeClass("highlight");
+                }
+            }
+        });
+
+        NumeroDeEmpleado.on('keydown', function (e) {
+            if (e.keyCode === 13) {
+                HoldOn.open({
+                    theme: 'sk-rect',
+                    message: 'Comprobando...'
+                });
+                $.post('<?php print base_url('comprobar_numero_de_empleado') ?>', {EMPLEADO: NumeroDeEmpleado.val()})
+                        .done(function (data) {
+                            var dt = JSON.parse(data);
+                            if (dt.length > 0) {
+                                NombreEmpleado.val(dt[0].NOMBRE_COMPLETO);
+                                Departamento.val(dt[0].DEPTOCTO);
+                                $.getJSON('<?php print base_url('obtener_semana_fecha'); ?>').done(function (data) {
+                                    Semana.val((data.length > 0) ? data[0].Sem : '');
+                                    Fecha.val((data.length > 0) ? data[0].Fecha : '');
+                                    $.getJSON('<?php print base_url('obtener_pagos_de_nomina_x_empleado'); ?>',
+                                            {EMPLEADO: NumeroDeEmpleado.val(), SEMANA: Semana.val(), FRACCIONES: "51, 24, 205, 80, 106, 333, 61, 78, 198, 397, 306, 502, 62, 204, 127, 34, 337"}).done(function (a) {
+                                        if (a.length > 0) {
+                                            var b = a[0];
+                                            var tt = 0;
+                                            ndias.forEach(function (i) {
+                                                pnlTablero.find("#txt" + i).val(b[i]);
+                                                tt += $.isNumeric(b[i]) ? parseFloat(b[i]) : 0;
+                                            });
+                                            pnlTablero.find("#txtTotal").val(tt);
+                                        }
+                                    }).fail(function (x, y, z) {
+                                        console.log(x.responseText);
+                                        onBeep(3);
+                                        swal('ERROR', ' ERROR AL OBTENER LO PAGADO AL EMPLEADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                                    }).always(function () {
+
+                                    });
+                                }).fail(function (x, y, z) {
+                                    console.log(x.responseText);
+                                    swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                                }).always(function () {
+
+                                });
+                                swal('ATENCIÓN', 'SELECCIONE UNA FRACCIÓN', 'success').then((value) => {
+                                    pnlTablero.find("#ManoDeObra label.custom-control-label").addClass("highlight");
+                                });
+                            } else {
+                                NombreEmpleado.val('');
+                                onBeep(2);
+                                swal('ATENCIÓN', 'ESTE EMPLEADO NO ES APTO PARA DAR AVANCES O ESTA DADO DE BAJA', 'warning').then((value) => {
+                                    NumeroDeEmpleado.focus().select();
+                                });
+                            }
+                        }).fail(function (x, y, z) {
+                    console.log(x.responseText);
+                    swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                }).always(function () {
+                    HoldOn.close();
+                });
+            }
+        });
+
+        /*FRACCIONES*/
+        var chksfracciones = '';
         dias.forEach(function (i) {
-            bloques += '<div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">' +
+            chksfracciones += '<div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 my-1">' +
                     '<label>' + i + '</label>' +
                     '</div>' +
                     '<div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">' +
-                    '<input type="text" id="txt' + i + '" name="txt' + i + '" class="form-control" placeholder="0"  style="font-weight: bold; text-align: center;">' +
+                    '<input type="text" id="txt' + i + '" name="txt' + i + '" class="form-control" placeholder="0"  style="font-weight: bold; text-align: center;" readonly="">' +
                     '</div>';
         });
-        DiasPagoDeNomina.html(bloques);
-        $("body").on("cut copy paste", function (e) {
-            e.preventDefault();
-        });
+        chksfracciones += '<div class="col-12"><hr></div><div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">' +
+                '<label>TOTAL</label>' +
+                '</div>' +
+                '<div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">' +
+                '<input type="text" id="txtTotal" disabled="" name="txtTotal" class="form-control" placeholder="0"  style="font-weight: bold; text-align: center;">' +
+                '</div>';
+        DiasPagoDeNomina.html(chksfracciones);
+
+        /*AVOID C&P*/
+//        var _0x6b99 = ["\x63\x75\x74\x20\x63\x6F\x70\x79\x20\x70\x61\x73\x74\x65",
+//            "\x70\x72\x65\x76\x65\x6E\x74\x44\x65\x66\x61\x75\x6C\x74",
+//            "\x6F\x6E",
+//            "\x62\x6F\x64\x79"];
+//        $(_0x6b99[3])[_0x6b99[2]]
+//                (_0x6b99[0], function (_0xd777x1) {
+//                    _0xd777x1[_0x6b99[1]]();
+//                });
+
 
         var cols = [
             {"data": "ID"}/*0*/, {"data": "FECHA"}/*1*/,
@@ -256,14 +484,186 @@
             createdRow: function (row, data, dataIndex) {
             }
         };
+        xoptions.ajax = {
+            "url": '<?php print base_url('obtener_avances_pago_nomina'); ?>',
+            "type": "POST",
+            "dataSrc": "",
+            "data": function (d) {
+                d.EMPLEADO = NumeroDeEmpleado.val();
+                d.FRACCIONES = "51, 24, 205, 80, 106, 333, 61, 78, 198, 397, 306, 502, 62, 204, 127, 34, 337";
+            }
+        };
         Avance = tblAvance.DataTable(xoptions);
     });
+
+    function onAgregarAvance() {
+        if (Control.val()) {
+            HoldOn.open({
+                theme: 'sk-rect',
+                message: 'Espere...'
+            });
+            var fra = pnlTablero.find("#chk99")[0].checked ? 99 : (pnlTablero.find("#chk100")[0].checked ? 100 : (pnlTablero.find("#chk96")[0] ? 96 : ''));
+            $.getJSON('<?php print base_url('obtener_estilo_pares_por_control_fraccion'); ?>', {CR: Control.val(), FR: fra}).done(function (data) {
+                if (data.length > 0) {
+                    var r = data[0];
+                    Estilo.val(r.Estilo);
+                    Pares.val(r.Pares);
+                    ManoDeOB.val(r.CostoMO);
+                    $.getJSON('<?php print base_url('obtener_ultimo_avance_por_control'); ?>', {C: Control.val()}).done(function (data) {
+                        if (data.length > 0) {
+                            SigAvance.val(data[0].Departamento);
+                            EstatusAvance.val(data[0].DepartamentoT);
+                            var d = new Date();
+                            var n = d.getDay();
+                            DiasPagoDeNomina.find("#txt" + ndias[n - 1]).val(parseFloat(r.Pares) * parseFloat(r.CostoMO));
+                            var tt = 0;
+                            ndias.forEach(function (i) {
+                                console.log('input dias: ', i, ' - ', $("#txt" + i).val());
+                                tt += parseFloat(pnlTablero.find("#txt" + i).val());
+                            });
+                            DiasPagoDeNomina.find("#txtTotal").val(parseFloat(r.Pares) * parseFloat(r.CostoMO));
+                            AVANO.NUMERO_EMPLEADO = NumeroDeEmpleado.val();
+                            AVANO.CONTROL = Control.val();
+                            AVANO.ESTILO = Estilo.val();
+                            AVANO.NUMERO_FRACCION = pnlTablero.find("#ManoDeObra input[type='checkbox']:checked").attr('fraccion');
+                            AVANO.FRACCION = pnlTablero.find("#ManoDeObra input[type='checkbox']:checked").attr('description');
+                            AVANO.PRECIO_FRACCION = ManoDeOB.val();
+                            AVANO.PARES = Pares.val();
+                            AVANO.FECHA = Fecha.val();
+                            AVANO.SEMANA = Semana.val();
+                            AVANO.DEPARTAMENTO = Departamento.val();
+                            AVANO.ANIO = pnlTablero.find("#Anio").val();
+
+                            $.post('<?php print base_url('avance_add_avance_x_empleado_add_nomina') ?>', AVANO).done(function (data) {
+                                console.log("\n", "* AVANCE NOMINA *", "\n", data, JSON.parse(data));
+                                var dt = JSON.parse(data);
+                                if (data !== undefined && data.length > 0) {
+                                    if (dt.AVANZO > 0) {
+                                        Avance.ajax.reload();
+                                        swal('ATENCIÓN', 'SE HA AVANZADO EL CONTROL Y SE HA HECHO EL PAGO AL EMPLEADO ' + NumeroDeEmpleado.val(), 'success').then((value) => {
+                                            onClearMO();
+                                            NumeroDeEmpleado.focus().select();
+                                        });
+                                    } else {
+                                        onBeep(2);
+                                        Avance.ajax.reload();
+                                        swal('ATENCIÓN', 'ESTE CONTROL (' + Control.val() + ') YA TIENE UN AVANCE EN ESTA FRACCIÓN O AUN NO SE HA REGISTRADO UN RETORNO DE MATERIAL AL ALMACEN, POR FAVOR ESPECIFIQUE UN CONTROL DIFERENTE O UNA FRACCIÓN DIFERENTE, DE LO CONTRARIO REVISE CON EL AREA CORRESPONDIENTE', 'warning').then((value) => {
+                                            onClearMO();
+                                        });
+                                    }
+                                }
+                            }).fail(function (x, y, z) {
+                                console.log(x.responseText);
+                            }).always(function () {
+                            });
+                        }
+                    }).fail(function (x, y, z) {
+                        console.log(x.responseText);
+                        swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                    }).always(function () {
+                        HoldOn.close();
+                    });
+                } else {
+                    swal('ATENCIÓN', 'LA FRACCIÓN O EL CONTROL NO SON CORRECTAS, ELIJA OTRA FRACCIÓN O ESPECIFIQUE UN CONTROL CON LA FRACCIÓN SELECCIONADA', 'error').then((value) => {
+                        Control.focus().select();
+                        Estilo.val('');
+                        Pares.val('');
+                        SigAvance.val('');
+                    });
+                }
+            }).fail(function (x, y, z) {
+                console.log(x.responseText);
+                swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+            }).always(function () {
+                HoldOn.close();
+            });
+        } else {
+            swal('ATENCIÓN', 'DEBE DE ESPECIFICAR UN CONTROL', 'error').then((value) => {
+                Control.focus().select();
+            });
+        }
+    }
+
+    var fracciones = [51, 24, 205, 80, 106, 333, 61, 78, 198, 397, 306, 502, 62, 204, 127, 34, 337];
+
+    function onCheckFraccion(e) {
+        $.each(pnlTablero.find("input[type='checkbox']"), function (k, v) {
+            if ($(e)[0].id !== $(v)[0].id) {
+                $(v)[0].checked = false;
+            }
+        });
+    }
+
+    function onClearMO() {
+        Control.focus().select();
+        Estilo.val('');
+        Pares.val('');
+        SigAvance.val('');
+        $.each(pnlTablero.find("input[type='checkbox']"), function (k, v) {
+            $(v)[0].checked = false;
+        });
+        Semana.val('');
+        Fecha.val('');
+        Departamento.val('');
+        ndias.forEach(function (i) {
+            pnlTablero.find("#txt" + i).val('');
+        });
+        pnlTablero.find("#txtTotal").val('');
+    }
 </script>
 <style>
+    .btn-success {
+        color: #fff;
+        background-color: #2196F3;
+        border-color: #03A9F4;
+    }
+
+    .btn-success:hover {
+        color: #fff;
+        background-color: #1976D2;
+        border-color: #0288D1;
+    }
+
     .custom-checkbox:hover, .custom-checkbox label:hover{
         cursor: pointer;
     }
+
     .custom-control-label{
         margin-top: 2px;
+        border-radius: 4px;
+        padding-left: 10px;
+        padding-right: 10px;
+        -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none; /* Safari */
+        -khtml-user-select: none; /* Konqueror HTML */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+        user-select: none; /* Non-prefixed version, currently
+                              supported by Chrome and Opera */ 
+        -webkit-transition: background-color 0.5s ease-out;
+        -moz-transition: background-color 0.5s ease-out;
+        -o-transition: background-color 0.5s ease-out;
+        transition: background-color 0.5s ease-out;
+    }
+
+    .card-body .custom-control-label::after { 
+        background-color: #3F51B5;
+    }
+
+    .highlight{
+        border-radius: 4px;
+        padding-left: 10px;
+        padding-right: 10px;    
+        background:#99cc00; 
+        font-weight: bold;
+        color:#000;
+        -webkit-transition: background-color 1s ease-out;
+        -moz-transition: background-color 1s ease-out;
+        -o-transition: background-color 1s ease-out;
+        transition: background-color 1s ease-out;
+    }
+    input[type='text']{
+        color: #c1850c !important;
+        font-weight: bold !important;
     }
 </style>
