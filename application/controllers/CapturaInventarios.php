@@ -50,6 +50,22 @@ class CapturaInventarios extends CI_Controller {
         }
     }
 
+    /* MEtodo que pone en 0 existencia y graba lo que tenga la columna del mes seleccionado */
+
+    public function onCerrarMesInventario() {
+        try {
+            $Maq = $this->input->post('Maq');
+            $Mes = $this->input->post('Mes');
+
+            $this->db->set("Existencia", 0)
+                    ->update($Maq);
+
+            $this->db->query("UPDATE articulos A SET A.Existencia = A.$Mes ");
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     /* Metodo que pone en 0s el mes a capturar */
 
     public function onPrepararMesCapturaInv() {
@@ -66,6 +82,99 @@ class CapturaInventarios extends CI_Controller {
     }
 
     /* REPORTES */
+
+    public function onReporteCostoInv() {
+        $Maq = $this->input->post('Maq');
+        $Mes = $this->input->post('Mes');
+
+        $Grupos = $this->ReporteCapturaFisica_model->getGruposReporteCosto($Maq);
+        $Articulos = $this->ReporteCapturaFisica_model->getDetalleReporteCosto($Maq, $Mes);
+        if (!empty($Grupos)) {
+            $pdf = new PDF_CostoInv('P', 'mm', array(215.9, 279.4));
+            $pdf->setMes($Mes);
+            $pdf->SetAutoPageBreak(true, 5);
+            $pdf->AddPage();
+
+            $GT_Existencia = 0;
+            $GT_Costo = 0;
+
+            foreach ($Grupos as $key => $G) {
+
+                $pdf->SetX(5);
+                $pdf->SetLineWidth(0.5);
+                $pdf->SetFont('Calibri', 'B', 8);
+                $pdf->Cell(10, 4, 'Grupo:', 'B'/* BORDE */, 0, 'L');
+                $pdf->SetX(15);
+                $pdf->SetFont('Calibri', '', 8);
+                $pdf->Cell(40, 4, utf8_decode($G->Clave) . '  ' . utf8_decode($G->Nombre), 'B'/* BORDE */, 1, 'L');
+
+                $pdf->SetLineWidth(0.2);
+                $pdf->SetFont('Calibri', '', 8);
+                $T_Existencia = 0;
+                $T_Costo = 0;
+
+                foreach ($Articulos as $keyA => $D) {
+
+                    if ($D->ClaveGrupo === $G->Clave) {
+
+                        $Total_Costo = $D->Existencia * $D->Costo;
+                        $pdf->Row(array(
+                            utf8_decode($D->ClaveArt),
+                            mb_strimwidth(utf8_decode($D->Articulo), 0, 60, ""),
+                            utf8_decode($D->Unidad),
+                            '$' . number_format($D->Costo, 2, ".", ","),
+                            number_format($D->Existencia, 2, ".", ","),
+                            '$' . number_format($Total_Costo, 2, ".", ",")
+                                ), 'B');
+
+                        $T_Existencia += $D->Existencia;
+                        $T_Costo += $D->Existencia * $D->Costo;
+
+                        $GT_Existencia += $D->Existencia;
+                        $GT_Costo += $D->Existencia * $D->Costo;
+                    }
+                }
+                $pdf->SetX(85);
+                $pdf->SetFont('Calibri', 'B', 8);
+                $pdf->Cell(25, 4, 'Total costeo por Grupo:', 0/* BORDE */, 0, 'L');
+
+                $pdf->Row(array(
+                    '',
+                    '',
+                    '',
+                    '',
+                    number_format($T_Existencia, 2, ".", ","),
+                    '$' . number_format($T_Costo, 2, ".", ",")
+                        ), 0);
+            }
+
+            $pdf->SetX(85);
+            $pdf->SetFont('Calibri', 'B', 8);
+            $pdf->Cell(25, 4, 'Total costeo general:', 0/* BORDE */, 0, 'L');
+
+            $pdf->Row(array(
+                '',
+                '',
+                '',
+                '',
+                number_format($GT_Existencia, 2, ".", ","),
+                '$' . number_format($GT_Costo, 2, ".", ",")
+                    ), 0);
+        }
+        /* FIN RESUMEN */
+        $path = 'uploads/Reportes/Inventario';
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+        $file_name = "REPORTE DE COSTO DEL INVENTARIO " . date("d-m-Y his");
+        $url = $path . '/' . $file_name . '.pdf';
+        /* Borramos el archivo anterior */
+        if (delete_files('uploads/Reportes/Inventario/')) {
+            /* ELIMINA LA EXISTENCIA DE CUALQUIER ARCHIVO EN EL DIRECTORIO */
+        }
+        $pdf->Output($url);
+        print base_url() . $url;
+    }
 
     public function onReporteMovAjuste() {
         $Maq = $this->input->post('Maq');
@@ -186,7 +295,7 @@ class CapturaInventarios extends CI_Controller {
         if (!file_exists($path)) {
             mkdir($path, 0777, true);
         }
-        $file_name = "REPORTE PARA CAPTURA FISICA INVENTARIO " . date("d-m-Y his");
+        $file_name = "REPORTE MOVIMIENTOS DE AJUSTE AL INVENTARIO " . date("d-m-Y his");
         $url = $path . '/' . $file_name . '.pdf';
         /* Borramos el archivo anterior */
         if (delete_files('uploads/Reportes/Inventario/')) {

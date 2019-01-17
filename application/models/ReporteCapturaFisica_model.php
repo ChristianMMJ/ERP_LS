@@ -267,4 +267,57 @@ class ReporteCapturaFisica_model extends CI_Model {
         }
     }
 
+    public function getGruposReporteCosto($Maq) {
+        try {
+            $this->db->query("set sql_mode=''");
+            $this->db->select("CAST(G.Clave AS SIGNED ) AS Clave, G.Nombre "
+                            . "")
+                    ->from("$Maq A")
+                    ->join("grupos G", 'ON A.Grupo = G.Clave')
+                    ->where("ifnull(A.Existencia,0) > 0  ", null, false)
+                    ->group_by("G.Clave")
+                    ->group_by("G.Nombre")
+                    ->order_by('Clave', 'ASC');
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getDetalleReporteCosto($Maq, $Mes) {
+        try {
+            $this->db->query("set sql_mode=''");
+            $this->db->select("CAST(A.Grupo AS SIGNED ) AS ClaveGrupo,  "
+                            . "A.Clave AS ClaveArt, "
+                            . "A.Descripcion AS Articulo, "
+                            . "U.Descripcion AS Unidad, "
+                            . "A.P$Mes AS Costo, "
+                            . "A.Existencia "
+                            . ""
+                            . "")
+                    ->from("$Maq A")
+                    ->join("unidades U", 'ON U.Clave = A.UnidadMedida')
+                    ->where("ifnull(A.Existencia,0) > 0 ", null, false)
+                    ->order_by('ClaveGrupo', 'ASC')
+                    ->order_by('A.Descripcion', 'ASC');
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
 }

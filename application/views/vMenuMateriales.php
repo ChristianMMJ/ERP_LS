@@ -41,3 +41,5 @@ $this->load->view('vPreparaMesCapturaInv');
 $this->load->view('vCapturaConteoInvfisico');
 $this->load->view('vComparativoInvFisInvSis');
 $this->load->view('vMovPorAjuste');
+$this->load->view('vCierraInvMensual');
+$this->load->view('vCostoInvMatPrima');
