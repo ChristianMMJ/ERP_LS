@@ -1005,7 +1005,7 @@
                         menus.push({Opcion: el.Opcion, Icon: el.Icon, Ref: el.Ref, Button: el.Button, Class: el.Class});
                     }
                 });
-                var n = 0, burl = '<?= base_url(); ?>';
+                var n = 0, burl = '<?php print base_url(); ?>';
                 var uitems = [], items = [], usubitems = [], subitems = [], usubsubitems = [], subsubitems = [];
                 $.each(dtm, function (i, el) {
                     /*ITEMS*/
@@ -1063,7 +1063,7 @@
                                     case 1:
                                         if (n === 0) {
                                             opcion += '<li class="dropdown-submenu">';
-                                            opcion += '<a class="dropdown-item dropdown-toggle" href="#">' + vv.Item + '</a>';
+                                            opcion += '<a class="dropdown-item dropdown-toggle" href="#"><span class="fa fa-plus"></span> ' + vv.Item + '</a>';
                                             var nav_subitems = 0, nav_subsubitems = 0;
                                             if (nav_subitems === 0) {
                                                 opcion += '<ul class="dropdown-menu">';
@@ -1098,7 +1098,7 @@
                                                         case 1:
                                                             if (vvv.IsSubItem !== null) {
                                                                 opcion += '<li class="dropdown-submenu">';
-                                                                opcion += '<a class="dropdown-item dropdown-toggle" href="#">' + vvv.SubItem + '</a>';
+                                                                opcion += '<a class="dropdown-item dropdown-toggle" href="#"><span class="fa fa-plus"></span> ' + vvv.SubItem + '</a>';
                                                                 /*NIVEL 3*/
                                                                 if (nav_subsubitems === 0) {
                                                                     opcion += '<ul class="dropdown-menu">';
