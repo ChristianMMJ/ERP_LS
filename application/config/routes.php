@@ -85,6 +85,9 @@ $route['obtener_avances_pago_nomina'] = 'AvanceXEmpleadoYPagoDeNomina/getFraccio
 $route['obtener_pagos_de_nomina_x_empleado'] = 'AvanceXEmpleadoYPagoDeNomina/getPagosXEmpleadoXSemana';
 
 /*ACCESOS*/
+$route['menu_modulos'] = 'ResourceManager/getModulos';
+$route['menu_opciones_modulos'] = 'ResourceManager/getOpcionesXModulo';
+
 $route['accesos_modulos'] = 'Accesos/getModulos';
 $route['accesos_modulos_x_usuario'] = 'Accesos/getModulosXUsuario';
 $route['accesos_add_modulos'] = 'Accesos/onAgregarModulosXUsuario';
@@ -95,6 +98,7 @@ $route['accesos_add_opciones_x_modulo_x_usuario'] = 'Accesos/onAgregarOpcionesXM
 
 $route['accesos_items'] = 'Accesos/getItems';
 $route['accesos_items_x_opcion_x_modulo_x_usuario'] = 'Accesos/getItemsXOpcionXModuloxUsuario';
+$route['accesos_dropdown_items_x_opcion_x_modulo_x_usuario'] = 'Accesos/getItemsConSubItemsXOpcionXModuloxUsuario';
 $route['accesos_add_item_x_opcion_x_modulo_x_usuario'] = 'Accesos/onAgregarItemsXOpcionXModuloXUsuario';
 
 $route['accesos_subitems'] = 'Accesos/getSubItems';

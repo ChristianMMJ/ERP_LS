@@ -184,21 +184,21 @@
 
             return true;
         });
-        
+
         $('.numeric').keypress(function (event) {
             var cc = (event.which) ? event.which : event.keyCode;
             console.log('KEY ', cc);
-            if (cc >= 48 && cc <= 57 || cc === 8 ||  cc >= 36 && cc <= 40) {
+            if (cc >= 48 && cc <= 57 || cc === 8 || cc >= 36 && cc <= 40) {
                 return true;
             } else {
                 return false;
             }
         });
-        
+
         $('.numericdot').keypress(function (event) {
             var cc = (event.which) ? event.which : event.keyCode;
-            console.log('KEY ', cc,', ',$(this).val().indexOf('.'));
-            if (cc >= 48 && cc <= 57 || cc === 46 || cc === 8 ||  cc >= 36 && cc <= 40 || $(this).val().indexOf('.') === -1) {
+            console.log('KEY ', cc, ', ', $(this).val().indexOf('.'));
+            if (cc >= 48 && cc <= 57 || cc === 46 || cc === 8 || cc >= 36 && cc <= 40 || $(this).val().indexOf('.') === -1) {
                 return true;
             } else {
                 return false;
@@ -995,7 +995,7 @@
     function getMenu(m) {
         getQuickMenu(2);
         onComprobarModulos(2);
-        $.post('<?= base_url('ResourceManager/getOpcionesXModulo'); ?>', {MOD: m}).done(function (data) {
+        $.post('<?= base_url('menu_opciones_modulos'); ?>', {MOD: m}).done(function (data) {
             var dtm = JSON.parse(data);
             if (dtm.length > 0) {
                 var uniqueNames = [], menus = [];
@@ -1017,20 +1017,20 @@
                             Function: parseInt(el.Function),
                             Trigger: el.Trigger});
                     }
-                    /*ITEMS TIENEN ITEMS*/
+                    /*ITEMS TIENEN SUBITEMS*/
                     if ($.inArray(el.SubItem, usubitems) === -1) {
                         usubitems.push(el.SubItem);
                         subitems.push({Item: el.Item, SubItem: el.SubItem, IconSubItem: el.IconSubItem,
                             RefSubItem: el.RefSubItem, SubItemModal: el.SubItemModal,
                             SubItemBackdrop: el.SubItemBackdrop, SubItemDropdown: el.SubItemDropdown,
                             Function: parseInt(el.FunctionSubItem),
-                            Trigger: el.TriggerSubItem});
+                            Trigger: el.TriggerSubItem, IsSubItem: el.is_subitem});
                     }
-                    /*ITEMS TIENEN ITEMS EN LOS ITEMS*/
+                    /*SUBITEMS TIENEN SUBSUBITEMS*/
                     if ($.inArray(el.SubSubItem, usubsubitems) === -1 && el.RefItem === '#' && el.RefSubItem === '#' && parseInt(el.SubItemDropdown) === 1) {
                         usubsubitems.push(el.SubSubItem);
                         subsubitems.push({SubItem: el.SubItem, SubSubItem: el.SubSubItem, IconSubSubItem: el.IconSubSubItem,
-                            RefSubSubItem: el.RefSubSubItem, SubSubItemModal: el.SubSubItemModal});
+                            RefSubSubItem: el.RefSubSubItem, SubSubItemModal: el.SubSubItemModal, IsSubSubItem: el.is_subsubitem});
                     }
                 });
                 $.each(menus, function (k, v) {
@@ -1077,31 +1077,42 @@
                                                                 case 0:
                                                                     switch (parseInt(vvv.Function)) {
                                                                         case 0:
-                                                                            opcion += '<a class="dropdown-item" href="' + (burl + vvv.RefSubItem) + '"><span class="fas fa-' + vvv.IconSubItem + '"></span> ' + vvv.SubItem + '</a>';
+                                                                            if (vvv.IsSubItem !== null) {
+                                                                                opcion += '<a class="dropdown-item" href="' + (burl + vvv.RefSubItem) + '"><span class="fas fa-' + vvv.IconSubItem + '"></span> ' + vvv.SubItem + '</a>';
+                                                                            }
                                                                             break;
                                                                         case 1:
-                                                                            opcion += '<a class="dropdown-item" href="#" onclick="' + vvv.Trigger + '()"><span class="fas fa-' + vvv.IconSubItem + '"></span> ' + vvv.SubItem + '</a>';
+                                                                            if (vvv.IsSubItem !== null) {
+                                                                                opcion += '<a class="dropdown-item" href="#" onclick="' + vvv.Trigger + '()"><span class="fas fa-' + vvv.IconSubItem + '"></span> ' + vvv.SubItem + '</a>';
+                                                                            }
                                                                             break;
                                                                     }
                                                                     break;
                                                                 case 1:
-                                                                    opcion += '<a class="dropdown-item" href="#" data-toggle="modal" data-target="' + vvv.RefSubItem + '" data-backdrop=\'' + vvv.SubItemBackdrop + '\'><span class="fas fa-' + vvv.IconSubItem + '"></span> ' + vvv.SubItem + '</a>';
+                                                                    if (vvv.IsSubItem !== null) {
+                                                                        opcion += '<a class="dropdown-item" href="#" data-toggle="modal" data-target="' + vvv.RefSubItem + '" data-backdrop=\'' + vvv.SubItemBackdrop + '\'><span class="fas fa-' + vvv.IconSubItem + '"></span> ' + vvv.SubItem + '</a>';
+                                                                    }
                                                                     break;
                                                             }
                                                             break;
                                                         case 1:
-                                                            opcion += '<li class="dropdown-submenu">';
-                                                            opcion += '<a class="dropdown-item dropdown-toggle" href="#">' + vvv.SubItem + '</a>';
-                                                            /*NIVEL 3*/
-                                                            if (nav_subsubitems === 0) {
-                                                                opcion += '<ul class="dropdown-menu">';
-                                                            }
-                                                            $.each(subsubitems, function (kss, vss) {
-                                                                opcion += '<a class="dropdown-item" href="' + (burl + vss.RefSubSubItem) + '"><span class="fas fa-' + vss.IconSubSubItem + '"></span> ' + vss.SubSubItem + '</a>';
-                                                                nav_subsubitems = 1;
-                                                            });
-                                                            if (nav_subsubitems === 1) {
-                                                                opcion += '</ul>';
+                                                            if (vvv.IsSubItem !== null) {
+                                                                opcion += '<li class="dropdown-submenu">';
+                                                                opcion += '<a class="dropdown-item dropdown-toggle" href="#">' + vvv.SubItem + '</a>';
+                                                                /*NIVEL 3*/
+                                                                if (nav_subsubitems === 0) {
+                                                                    opcion += '<ul class="dropdown-menu">';
+                                                                }
+                                                                $.each(subsubitems, function (kss, vss) {
+                                                                    console.log(vss.SubSubItem, 'IS SUBSUBITEM = ', vss.IsSubSubItem === null);
+                                                                    if (vss.IsSubSubItem !== null) {
+                                                                        opcion += '<a class="dropdown-item" href="' + (burl + vss.RefSubSubItem) + '"><span class="fas fa-' + vss.IconSubSubItem + '"></span> ' + vss.SubSubItem + '</a>';
+                                                                        nav_subsubitems = 1;
+                                                                    }
+                                                                });
+                                                                if (nav_subsubitems === 1) {
+                                                                    opcion += '</ul>';
+                                                                }
                                                             }
                                                             break;
                                                     }
@@ -1187,7 +1198,7 @@
 
     function getQuickMenu(type) {
         var burl = '<?= base_url(); ?>';
-        $.getJSON('<?php print base_url('ResourceManager/getModulos'); ?>').done(function (data) {
+        $.getJSON('<?php print base_url('menu_modulos'); ?>').done(function (data) {
             var modulo = "";
             if (modulos_counter === 0) {
                 if (data.length > 0) {

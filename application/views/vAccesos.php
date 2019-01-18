@@ -315,13 +315,16 @@
         /*SUBSUBITEMS POR SUBITEM*/
         btnAsignarSubSubItemsXSubItemXItemXOpcionXModulo.click(function () {
             if (ssixiu.val() && ssixim.val() && ssixio.val() && ssixit.val() && ssixis.val()) {
+                console.log('okoka');
                 var subsubitems = [];
                 $.each($("#subsubitems_to").find('option'), function (k, v) {
+                    console.log(k, v)
                     subsubitems.push({SUBSUBITEM: $(v).val(), SUBSUBITEMT: $(v).text()});
                 });
+                console.log('subsubitems', subsubitems);
                 if (subsubitems.length > 0) {
-                    onEstablecerSubSubItems(ssixiu.val(), ssixim.val(), ssixio.val(), ssixit.val(), ssixis.val(), subsubitems);
-                } else if (subsubitems.length > 0 && $("#subsubitems option").length > 0) {
+                    onEstablecerSubSubItems(ssixiu.val(), ssixim.val(), ssixio.val(), ssixit.val(), ssixis.val(), subsubitems); 
+                } else if (subsubitems.length <= 0 && $("#subsubitems option").length > 0) {
                     onBeep(2);
                     console.log($("#subsubitems option"), $("#subsubitems option").length)
                     swal({
@@ -336,6 +339,8 @@
                             onEstablecerSubSubItems(ssixiu.val(), ssixim.val(), ssixio.val(), ssixit.val(), ssixis.val(), subsubitems);
                         }
                     });
+                } else if (subsubitems.length <= 0) {
+                    swal('ATENCIÓN','NO SE HAN PODIDO ASIGNAR LOS SUBSUBITEMS','error');
                 }
             } else {
                 onBeep(2);
@@ -399,7 +404,7 @@
         ssixio.change(function () {
             $("#subsubitems").html('');
             $("#subsubitems_to").html('');
-            $.getJSON('<?php print base_url('accesos_items_x_opcion_x_modulo_x_usuario'); ?>', {U: ssixiu.val(), M: ssixim.val(), O: ssixio.val()}).done(function (dx) {
+            $.getJSON('<?php print base_url('accesos_dropdown_items_x_opcion_x_modulo_x_usuario'); ?>', {U: ssixiu.val(), M: ssixim.val(), O: ssixio.val()}).done(function (dx) {
                 console.log(dx);
                 if (dx.length > 0) {
                     ssixit[0].selectize.clear(true);
@@ -518,7 +523,7 @@
         sixio.change(function () {
             $("#subitems").html('');
             $("#subitems_to").html('');
-            $.getJSON('<?php print base_url('accesos_items_x_opcion_x_modulo_x_usuario'); ?>', {U: sixiu.val(), M: sixim.val(), O: sixio.val()}).done(function (dx) {
+            $.getJSON('<?php print base_url('accesos_dropdown_items_x_opcion_x_modulo_x_usuario'); ?>', {U: sixiu.val(), M: sixim.val(), O: sixio.val()}).done(function (dx) {
                 console.log(dx);
                 if (dx.length > 0) {
                     sixit[0].selectize.clear(true);
@@ -720,7 +725,7 @@
         /*MODULOS POR USUARIO*/
 
         $.getJSON('<?php print base_url('Accesos/getUsuarios') ?>').done(function (dx) {
-            dx.forEach(function(v){
+            dx.forEach(function (v) {
                 mxu[0].selectize.addOption({text: v.ID + ' ' + v.USUARIO + ' (' + v.TIPO_ACCESO + ')', value: v.ID});
                 oxmu[0].selectize.addOption({text: v.ID + ' ' + v.USUARIO + ' (' + v.TIPO_ACCESO + ')', value: v.ID});
                 ixou[0].selectize.addOption({text: v.ID + ' ' + v.USUARIO + ' (' + v.TIPO_ACCESO + ')', value: v.ID});

@@ -101,6 +101,14 @@ class Accesos extends CI_Controller {
 
     public function getItemsXOpcionXModuloxUsuario() {
         try {
+            print json_encode($this->acm->getItemsXOpcionXModuloxUsuario($this->input->get('U'), $this->input->get('M'), $this->input->get('O')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getItemsConSubItemsXOpcionXModuloxUsuario() {
+        try {
             print json_encode($this->acm->getItemsConSubItemsXOpcionXModuloxUsuario($this->input->get('U'), $this->input->get('M'), $this->input->get('O')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -343,7 +351,7 @@ class Accesos extends CI_Controller {
                                 ->where('A.Item', $ITE)
                                 ->where('A.SubItem', $SITE)
                                 ->where('A.SubSubItem', $v->SUBSUBITEM)
-                                ->get()->result(); 
+                                ->get()->result();
                 if (count($tiene_la_opcion) <= 0) {
                     $this->db->insert('subsubitemsxitemxopcionxmoduloxusuario', array(
                         'SubSubItem' => $v->SUBSUBITEM,
@@ -362,15 +370,16 @@ class Accesos extends CI_Controller {
             $items_no_seleccionados = $this->db->select('B.ID, B.SubSubItem AS SUBSUBITEM')
                             ->from('subsubitemsxitemxopcionxmoduloxusuario AS B')
                             ->where('B.Usuario', $USR)
-                            ->get()->result(); 
+                            ->get()->result();
             foreach ($items_no_seleccionados as $k => $v) {
                 if (!in_array($v->SUBSUBITEM, $subsubitems)) {
                     $this->db->where('ID', $v->ID)->where('Modulo', $MDL)
                             ->where('Opcion', $OPC)->where('Item', $ITE)
                             ->where('SubItem', $SITE)
-                            ->where('SubItem', $v->SUBSUBITEM)
+                            ->where('SubSubItem', $v->SUBSUBITEM)
                             ->where('Usuario', $USR)
-                            ->delete('subsubitemsxitemxopcionxmoduloxusuario'); 
+                            ->delete('subsubitemsxitemxopcionxmoduloxusuario');
+                    print $this->db->last_query();
                 }
             }
         } catch (Exception $exc) {
