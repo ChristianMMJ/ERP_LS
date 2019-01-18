@@ -24,25 +24,6 @@ class ResourceManager_model extends CI_Model {
     public function getOpcionesXModulo($M) {
         try {
             if (isset($_SESSION["ID"])) {
-//                return $this->db->select("OXM.Opcion, OXM.Icon, OXM.Ref, OXM.Button, OXM.Class, "
-//                                . "IXO.Item, IXO.Icon AS IconItem, IXO.Ref AS RefItem, IXO.Modal AS ItemModal, IXO.Backdrop AS ItemBackdrop, IXO.Dropdown AS ItemDropdown,(CASE WHEN IXO.Function IS NULL THEN 0 ELSE IXO.Function END) AS Function, IXO.Trigger,"
-//                                . "SIXO.SubItem AS SubItem, SIXO.Icon AS IconSubItem, SIXO.Ref AS RefSubItem, SIXO.Modal AS SubItemModal, SIXO.Backdrop AS SubItemBackdrop, SIXO.Dropdown AS SubItemDropdown,(CASE WHEN SIXO.Function IS NULL THEN 0 ELSE SIXO.Function END) AS FunctionSubItem, SIXO.Trigger AS TriggerSubItem,"
-//                                . "SSIXSI.SubSubItem AS SubSubItem, SSIXSI.Icon AS IconSubSubItem, SSIXSI.Ref AS RefSubSubItem, SSIXSI.Modal AS SubSubItemModal, SSIXSI.Backdrop AS SubSubItemBackdrop")
-//                        ->from("itemsxopcionxmoduloxusuario AS IXOMU")
-//                        ->join('opcionesxmoduloxusuario AS OXMU', 'OXMU.Usuario = IXOMU.Usuario AND OXMU.Modulo = IXOMU.Modulo AND OXMU.Opcion = IXOMU.Opcion', 'right')
-//                        ->join('modulosxusuario AS MXU', 'MXU.Modulo = OXMU.Modulo')
-//                        ->join('opcionesxmodulo AS OXM', 'OXM.Modulo = MXU.Modulo AND OXM.ID = OXMU.Opcion')
-//                        ->join('itemsxopcion AS IXO', 'OXM.ID = IXO.Opcion AND IXOMU.Item = IXO.ID', 'left')
-//                        ->join('subitemsxitem AS SIXO', 'IXO.ID = SIXO.Item', 'left')
-//                        ->join('subsubitemxsubitem AS SSIXSI', 'SIXO.ID = SSIXSI.SubItem', 'left')
-//                        ->where('OXM.Modulo', $M)
-//                        ->where('MXU.Usuario', $_SESSION["ID"])
-//                        ->where('OXMU.Usuario', $_SESSION["ID"])
-//                                ->order_by('OXM.Order', 'ASC')
-//                                ->order_by('IXO.Order', 'ASC')
-//                                ->order_by('SIXO.Order', 'ASC')
-//                                ->order_by('SSIXSI.Order', 'ASC')
-//                                ->get()->result();
                         $this->db->select("J.ID AS is_subsubitem, I.ID AS is_subitem, B.Opcion, B.Icon, B.Ref, B.Button, B.Class, "
                         . "C.Item, C.Icon AS IconItem, C.Ref AS RefItem, C.Modal AS ItemModal, C.Backdrop AS ItemBackdrop, C.Dropdown AS ItemDropdown,(CASE WHEN C.Function IS NULL THEN 0 ELSE C.Function END) AS Function, C.Trigger,"
                         . "D.SubItem AS SubItem, D.Icon AS IconSubItem, D.Ref AS RefSubItem, D.Modal AS SubItemModal, D.Backdrop AS SubItemBackdrop, D.Dropdown AS SubItemDropdown,(CASE WHEN D.Function IS NULL THEN 0 ELSE D.Function END) AS FunctionSubItem, D.Trigger AS TriggerSubItem,"
