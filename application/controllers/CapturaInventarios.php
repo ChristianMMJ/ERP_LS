@@ -83,6 +83,624 @@ class CapturaInventarios extends CI_Controller {
 
     /* REPORTES */
 
+    public function onReporteExistenciasAnualPorMes() {
+        $Maq = $this->input->post('Maq');
+        $Grupos = $this->ReporteCapturaFisica_model->getGruposReporteExistenciasAnualPorMes($Maq);
+        $Detalle = $this->ReporteCapturaFisica_model->getArticulosReporteExistenciasAnualPorMes($Maq);
+
+        if (!empty($Grupos)) {
+            $pdf = new PDF_ExisAnual('L', 'mm', array(215.9, 279.4));
+
+            $pdf->AddPage();
+            $pdf->SetAutoPageBreak(true, 5);
+
+            $GT_Ene = 0;
+            $GT_Feb = 0;
+            $GT_Mar = 0;
+            $GT_Abr = 0;
+            $GT_May = 0;
+            $GT_Jun = 0;
+            $GT_Jul = 0;
+            $GT_Ago = 0;
+            $GT_Sep = 0;
+            $GT_Oct = 0;
+            $GT_Nov = 0;
+            $GT_Dic = 0;
+
+            $GP_Ene = 0;
+            $GP_Feb = 0;
+            $GP_Mar = 0;
+            $GP_Abr = 0;
+            $GP_May = 0;
+            $GP_Jun = 0;
+            $GP_Jul = 0;
+            $GP_Ago = 0;
+            $GP_Sep = 0;
+            $GP_Oct = 0;
+            $GP_Nov = 0;
+            $GP_Dic = 0;
+
+            foreach ($Grupos as $key => $G) {
+
+
+                $pdf->SetLineWidth(0.5);
+                $pdf->SetX(5);
+                $pdf->SetFont('Calibri', 'B', 8.5);
+                $pdf->Cell(15, 6, utf8_decode('Grupo: '), 'B'/* BORDE */, 0, 'L');
+                $pdf->SetX(20);
+                $pdf->SetFont('Calibri', '', 8.5);
+                $pdf->Cell(38, 6, utf8_decode($G->ClaveGrupo . ' ' . $G->NombreGrupo), 'B'/* BORDE */, 1, 'L');
+
+                $T_Ene = 0;
+                $T_Feb = 0;
+                $T_Mar = 0;
+                $T_Abr = 0;
+                $T_May = 0;
+                $T_Jun = 0;
+                $T_Jul = 0;
+                $T_Ago = 0;
+                $T_Sep = 0;
+                $T_Oct = 0;
+                $T_Nov = 0;
+                $T_Dic = 0;
+
+                $P_Ene = 0;
+                $P_Feb = 0;
+                $P_Mar = 0;
+                $P_Abr = 0;
+                $P_May = 0;
+                $P_Jun = 0;
+                $P_Jul = 0;
+                $P_Ago = 0;
+                $P_Sep = 0;
+                $P_Oct = 0;
+                $P_Nov = 0;
+                $P_Dic = 0;
+                foreach ($Detalle as $key => $D) {
+
+                    if ($G->ClaveGrupo === $D->ClaveGrupo) {
+
+                        $pdf->SetLineWidth(0.2);
+                        $pdf->SetTextColor(0, 0, 0);
+                        $pdf->SetFont('Calibri', '', 8.5);
+                        $pdf->SetY($pdf->GetY());
+                        $pdf->SetX(5);
+                        $pdf->Cell(11, 4, utf8_decode($D->Codigo), 0/* BORDE */, 0, 'R');
+                        $pdf->SetX(16);
+                        $pdf->Cell(42, 4, mb_strimwidth(utf8_decode($D->Articulo), 0, 27, ""), 0/* BORDE */, 0, 'L');
+
+
+                        /* Cantidades */
+                        $pdf->SetX(58);
+                        $pdf->Cell(18, 4, ($D->Ene <> 0) ? number_format($D->Ene, 2, ".", ",") : '', 'TL'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->Feb <> 0) ? number_format($D->Feb, 2, ".", ",") : '', 'TL'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->Mar <> 0) ? number_format($D->Mar, 2, ".", ",") : '', 'TL'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->Abr <> 0) ? number_format($D->Abr, 2, ".", ",") : '', 'TL'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->May <> 0) ? number_format($D->May, 2, ".", ",") : '', 'TL'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->Jun <> 0) ? number_format($D->Jun, 2, ".", ",") : '', 'TL'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->Jul <> 0) ? number_format($D->Jul, 2, ".", ",") : '', 'TL'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->Ago <> 0) ? number_format($D->Ago, 2, ".", ",") : '', 'TL'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->Sep <> 0) ? number_format($D->Sep, 2, ".", ",") : '', 'TL'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->Oct <> 0) ? number_format($D->Oct, 2, ".", ",") : '', 'TL'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->Nov <> 0) ? number_format($D->Nov, 2, ".", ",") : '', 'TL'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->Dic <> 0) ? number_format($D->Dic, 2, ".", ",") : '', 'LTR'/* BORDE */, 1, 'R');
+
+
+                        /* Precios */
+                        $pdf->SetFont('Calibri', 'B', 8.5);
+                        $pdf->SetX(5);
+                        $pdf->Cell(53, 4, 'Precio', 0/* BORDE */, 0, 'R');
+                        $pdf->SetFont('Calibri', '', 8.5);
+
+
+                        $pdf->SetX(58);
+                        $pdf->Cell(18, 4, ($D->PEne <> 0) ? number_format($D->PEne, 2, ".", ",") : '', 'L'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->PFeb <> 0) ? number_format($D->PFeb, 2, ".", ",") : '', 'L'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->PMar <> 0) ? number_format($D->PMar, 2, ".", ",") : '', 'L'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->PAbr <> 0) ? number_format($D->PAbr, 2, ".", ",") : '', 'L'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->PMay <> 0) ? number_format($D->PMay, 2, ".", ",") : '', 'L'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->PJun <> 0) ? number_format($D->PJun, 2, ".", ",") : '', 'L'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->PJul <> 0) ? number_format($D->PJul, 2, ".", ",") : '', 'L'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->PAgo <> 0) ? number_format($D->PAgo, 2, ".", ",") : '', 'L'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->PSep <> 0) ? number_format($D->PSep, 2, ".", ",") : '', 'L'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->POct <> 0) ? number_format($D->POct, 2, ".", ",") : '', 'L'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->PNov <> 0) ? number_format($D->PNov, 2, ".", ",") : '', 'L'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->PDic <> 0) ? number_format($D->PDic, 2, ".", ",") : '', 'LR'/* BORDE */, 1, 'R');
+
+
+                        /* Totales */
+                        $pdf->SetFont('Calibri', 'B', 8.5);
+                        $pdf->SetX(5);
+                        $pdf->Cell(53, 4, 'Total: $', 'B'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX(58);
+                        $pdf->Cell(18, 4, ($D->PEne * $D->Ene <> 0) ? number_format($D->PEne * $D->Ene, 2, ".", ",") : '', 'TLB'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->PFeb * $D->Feb <> 0) ? number_format($D->PFeb * $D->Feb, 2, ".", ",") : '', 'TLB'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->PMar * $D->Mar <> 0) ? number_format($D->PMar * $D->Mar, 2, ".", ",") : '', 'TLB'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->PAbr * $D->Abr <> 0) ? number_format($D->PAbr * $D->Abr, 2, ".", ",") : '', 'TLB'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->PMay * $D->May <> 0) ? number_format($D->PMay * $D->May, 2, ".", ",") : '', 'TLB'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->PJun * $D->Jun <> 0) ? number_format($D->PJun * $D->Jun, 2, ".", ",") : '', 'TLB'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->PJul * $D->Jul <> 0) ? number_format($D->PJul * $D->Jul, 2, ".", ",") : '', 'TLB'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->PAgo * $D->Ago <> 0) ? number_format($D->PAgo * $D->Ago, 2, ".", ",") : '', 'TLB'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->PSep * $D->Sep <> 0) ? number_format($D->PSep * $D->Sep, 2, ".", ",") : '', 'TLB'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->POct * $D->Oct <> 0) ? number_format($D->POct * $D->Oct, 2, ".", ",") : '', 'TLB'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->PNov * $D->Nov <> 0) ? number_format($D->PNov * $D->Nov, 2, ".", ",") : '', 'TLB'/* BORDE */, 0, 'R');
+
+                        $pdf->SetX($pdf->getX());
+                        $pdf->Cell(18, 4, ($D->PDic * $D->Dic <> 0) ? number_format($D->PDic * $D->Dic, 2, ".", ",") : '', 'TRLB'/* BORDE */, 1, 'R');
+
+                        //Totales
+                        $GT_Ene += $D->Ene;
+                        $GT_Feb += $D->Feb;
+                        $GT_Mar += $D->Mar;
+                        $GT_Abr += $D->Abr;
+                        $GT_May += $D->May;
+                        $GT_Jun += $D->Jun;
+                        $GT_Jul += $D->Jul;
+                        $GT_Ago += $D->Ago;
+                        $GT_Sep += $D->Sep;
+                        $GT_Oct += $D->Oct;
+                        $GT_Nov += $D->Nov;
+                        $GT_Dic += $D->Dic;
+
+                        $GP_Ene += $D->Ene * $D->PEne;
+                        $GP_Feb += $D->Feb * $D->PFeb;
+                        $GP_Mar += $D->Mar * $D->PMar;
+                        $GP_Abr += $D->Abr * $D->PAbr;
+                        $GP_May += $D->May * $D->PMay;
+                        $GP_Jun += $D->Jun * $D->PJun;
+                        $GP_Jul += $D->Jul * $D->PJul;
+                        $GP_Ago += $D->Ago * $D->PAgo;
+                        $GP_Sep += $D->Sep * $D->PSep;
+                        $GP_Oct += $D->Oct * $D->POct;
+                        $GP_Nov += $D->Nov * $D->PNov;
+                        $GP_Dic += $D->Dic * $D->PNov;
+
+                        $T_Ene += $D->Ene;
+                        $T_Feb += $D->Feb;
+                        $T_Mar += $D->Mar;
+                        $T_Abr += $D->Abr;
+                        $T_May += $D->May;
+                        $T_Jun += $D->Jun;
+                        $T_Jul += $D->Jul;
+                        $T_Ago += $D->Ago;
+                        $T_Sep += $D->Sep;
+                        $T_Oct += $D->Oct;
+                        $T_Nov += $D->Nov;
+                        $T_Dic += $D->Dic;
+
+                        $P_Ene += $D->Ene * $D->PEne;
+                        $P_Feb += $D->Feb * $D->PFeb;
+                        $P_Mar += $D->Mar * $D->PMar;
+                        $P_Abr += $D->Abr * $D->PAbr;
+                        $P_May += $D->May * $D->PMay;
+                        $P_Jun += $D->Jun * $D->PJun;
+                        $P_Jul += $D->Jul * $D->PJul;
+                        $P_Ago += $D->Ago * $D->PAgo;
+                        $P_Sep += $D->Sep * $D->PSep;
+                        $P_Oct += $D->Oct * $D->POct;
+                        $P_Nov += $D->Nov * $D->PNov;
+                        $P_Dic += $D->Dic * $D->PNov;
+                    }
+                }
+                //Totales Cantidades por grupos
+
+                $pdf->SetFont('Calibri', 'B', 8.5);
+                $pdf->SetX(5);
+                $pdf->Cell(53, 4, 'Existencias por Grupo:', 0/* BORDE */, 0, 'R');
+
+                $pdf->SetX(58);
+                $pdf->Cell(18, 4, ($T_Ene <> 0) ? number_format($T_Ene, 2, ".", ",") : '', 0/* BORDE */, 0, 'R');
+
+                $pdf->SetX($pdf->getX());
+                $pdf->Cell(18, 4, ($T_Feb <> 0) ? number_format($T_Feb, 2, ".", ",") : '', 0/* BORDE */, 0, 'R');
+
+                $pdf->SetX($pdf->getX());
+                $pdf->Cell(18, 4, ($T_Mar <> 0) ? number_format($T_Mar, 2, ".", ",") : '', 0/* BORDE */, 0, 'R');
+
+                $pdf->SetX($pdf->getX());
+                $pdf->Cell(18, 4, ($T_Abr <> 0) ? number_format($T_Abr, 2, ".", ",") : '', 0/* BORDE */, 0, 'R');
+
+                $pdf->SetX($pdf->getX());
+                $pdf->Cell(18, 4, ($T_May <> 0) ? number_format($T_May, 2, ".", ",") : '', 0/* BORDE */, 0, 'R');
+
+                $pdf->SetX($pdf->getX());
+                $pdf->Cell(18, 4, ($T_Jun <> 0) ? number_format($T_Jun, 2, ".", ",") : '', 0/* BORDE */, 0, 'R');
+
+                $pdf->SetX($pdf->getX());
+                $pdf->Cell(18, 4, ($T_Jul <> 0) ? number_format($T_Jul, 2, ".", ",") : '', 0/* BORDE */, 0, 'R');
+
+                $pdf->SetX($pdf->getX());
+                $pdf->Cell(18, 4, ($T_Ago <> 0) ? number_format($T_Ago, 2, ".", ",") : '', 0/* BORDE */, 0, 'R');
+
+                $pdf->SetX($pdf->getX());
+                $pdf->Cell(18, 4, ($T_Sep <> 0) ? number_format($T_Sep, 2, ".", ",") : '', 0/* BORDE */, 0, 'R');
+
+                $pdf->SetX($pdf->getX());
+                $pdf->Cell(18, 4, ($T_Oct <> 0) ? number_format($T_Oct, 2, ".", ",") : '', 0/* BORDE */, 0, 'R');
+
+                $pdf->SetX($pdf->getX());
+                $pdf->Cell(18, 4, ($T_Nov <> 0) ? number_format($T_Nov, 2, ".", ",") : '', 0/* BORDE */, 0, 'R');
+
+                $pdf->SetX($pdf->getX());
+                $pdf->Cell(18, 4, ($T_Dic <> 0) ? number_format($T_Dic, 2, ".", ",") : '', 0/* BORDE */, 1, 'R');
+
+                //Totales Valor Inventario en Pesos por grupos
+                $pdf->SetLineWidth(0.5);
+                $pdf->SetX(5);
+                $pdf->Cell(53, 4, 'Totales en pesos por Grupo: $', 'B'/* BORDE */, 0, 'R');
+
+                $pdf->SetX(58);
+                $pdf->Cell(18, 4, ($P_Ene <> 0) ? number_format($P_Ene, 2, ".", ",") : '', 'B'/* BORDE */, 0, 'R');
+
+                $pdf->SetX($pdf->getX());
+                $pdf->Cell(18, 4, ($P_Feb <> 0) ? number_format($P_Feb, 2, ".", ",") : '', 'B'/* BORDE */, 0, 'R');
+
+                $pdf->SetX($pdf->getX());
+                $pdf->Cell(18, 4, ($P_Mar <> 0) ? number_format($P_Mar, 2, ".", ",") : '', 'B'/* BORDE */, 0, 'R');
+
+                $pdf->SetX($pdf->getX());
+                $pdf->Cell(18, 4, ($P_Abr <> 0) ? number_format($P_Abr, 2, ".", ",") : '', 'B'/* BORDE */, 0, 'R');
+
+                $pdf->SetX($pdf->getX());
+                $pdf->Cell(18, 4, ($P_May <> 0) ? number_format($P_May, 2, ".", ",") : '', 'B'/* BORDE */, 0, 'R');
+
+                $pdf->SetX($pdf->getX());
+                $pdf->Cell(18, 4, ($P_Jun <> 0) ? number_format($P_Jun, 2, ".", ",") : '', 'B'/* BORDE */, 0, 'R');
+
+                $pdf->SetX($pdf->getX());
+                $pdf->Cell(18, 4, ($P_Jul <> 0) ? number_format($P_Jul, 2, ".", ",") : '', 'B'/* BORDE */, 0, 'R');
+
+                $pdf->SetX($pdf->getX());
+                $pdf->Cell(18, 4, ($P_Ago <> 0) ? number_format($P_Ago, 2, ".", ",") : '', 'B'/* BORDE */, 0, 'R');
+
+                $pdf->SetX($pdf->getX());
+                $pdf->Cell(18, 4, ($P_Sep <> 0) ? number_format($P_Sep, 2, ".", ",") : '', 'B'/* BORDE */, 0, 'R');
+
+                $pdf->SetX($pdf->getX());
+                $pdf->Cell(18, 4, ($P_Oct <> 0) ? number_format($P_Oct, 2, ".", ",") : '', 'B'/* BORDE */, 0, 'R');
+
+                $pdf->SetX($pdf->getX());
+                $pdf->Cell(18, 4, ($P_Nov <> 0) ? number_format($P_Nov, 2, ".", ",") : '', 'B'/* BORDE */, 0, 'R');
+
+                $pdf->SetX($pdf->getX());
+                $pdf->Cell(18, 4, ($P_Dic <> 0) ? number_format($P_Dic, 2, ".", ",") : '', 'B'/* BORDE */, 1, 'R');
+            }
+            //Totales Cantidades generales
+
+            $pdf->SetFont('Calibri', 'B', 8.5);
+            $pdf->SetX(5);
+            $pdf->Cell(53, 4, 'Existencia general:', 0/* BORDE */, 0, 'R');
+
+            $pdf->SetX(58);
+            $pdf->Cell(18, 4, ($GT_Ene <> 0) ? number_format($GT_Ene, 2, ".", ",") : '', 0/* BORDE */, 0, 'R');
+
+            $pdf->SetX($pdf->getX());
+            $pdf->Cell(18, 4, ($GT_Feb <> 0) ? number_format($GT_Feb, 2, ".", ",") : '', 0/* BORDE */, 0, 'R');
+
+            $pdf->SetX($pdf->getX());
+            $pdf->Cell(18, 4, ($GT_Mar <> 0) ? number_format($GT_Mar, 2, ".", ",") : '', 0/* BORDE */, 0, 'R');
+
+            $pdf->SetX($pdf->getX());
+            $pdf->Cell(18, 4, ($GT_Abr <> 0) ? number_format($GT_Abr, 2, ".", ",") : '', 0/* BORDE */, 0, 'R');
+
+            $pdf->SetX($pdf->getX());
+            $pdf->Cell(18, 4, ($GT_May <> 0) ? number_format($GT_May, 2, ".", ",") : '', 0/* BORDE */, 0, 'R');
+
+            $pdf->SetX($pdf->getX());
+            $pdf->Cell(18, 4, ($GT_Jun <> 0) ? number_format($GT_Jun, 2, ".", ",") : '', 0/* BORDE */, 0, 'R');
+
+            $pdf->SetX($pdf->getX());
+            $pdf->Cell(18, 4, ($GT_Jul <> 0) ? number_format($GT_Jul, 2, ".", ",") : '', 0/* BORDE */, 0, 'R');
+
+            $pdf->SetX($pdf->getX());
+            $pdf->Cell(18, 4, ($GT_Ago <> 0) ? number_format($GT_Ago, 2, ".", ",") : '', 0/* BORDE */, 0, 'R');
+
+            $pdf->SetX($pdf->getX());
+            $pdf->Cell(18, 4, ($GT_Sep <> 0) ? number_format($GT_Sep, 2, ".", ",") : '', 0/* BORDE */, 0, 'R');
+
+            $pdf->SetX($pdf->getX());
+            $pdf->Cell(18, 4, ($GT_Oct <> 0) ? number_format($GT_Oct, 2, ".", ",") : '', 0/* BORDE */, 0, 'R');
+
+            $pdf->SetX($pdf->getX());
+            $pdf->Cell(18, 4, ($GT_Nov <> 0) ? number_format($GT_Nov, 2, ".", ",") : '', 0/* BORDE */, 0, 'R');
+
+            $pdf->SetX($pdf->getX());
+            $pdf->Cell(18, 4, ($GT_Dic <> 0) ? number_format($GT_Dic, 2, ".", ",") : '', 0/* BORDE */, 1, 'R');
+
+            //Totales Valor Inventario en Pesos por grupos
+            $pdf->SetLineWidth(0.5);
+            $pdf->SetX(5);
+            $pdf->Cell(53, 4, 'Total General en Pesos $', 'B'/* BORDE */, 0, 'R');
+
+            $pdf->SetX(58);
+            $pdf->Cell(18, 4, ($GP_Ene <> 0) ? number_format($GP_Ene, 2, ".", ",") : '', 'B'/* BORDE */, 0, 'R');
+
+            $pdf->SetX($pdf->getX());
+            $pdf->Cell(18, 4, ($GP_Feb <> 0) ? number_format($GP_Feb, 2, ".", ",") : '', 'B'/* BORDE */, 0, 'R');
+
+            $pdf->SetX($pdf->getX());
+            $pdf->Cell(18, 4, ($GP_Mar <> 0) ? number_format($GP_Mar, 2, ".", ",") : '', 'B'/* BORDE */, 0, 'R');
+
+            $pdf->SetX($pdf->getX());
+            $pdf->Cell(18, 4, ($GP_Abr <> 0) ? number_format($GP_Abr, 2, ".", ",") : '', 'B'/* BORDE */, 0, 'R');
+
+            $pdf->SetX($pdf->getX());
+            $pdf->Cell(18, 4, ($GP_May <> 0) ? number_format($GP_May, 2, ".", ",") : '', 'B'/* BORDE */, 0, 'R');
+
+            $pdf->SetX($pdf->getX());
+            $pdf->Cell(18, 4, ($GP_Jun <> 0) ? number_format($GP_Jun, 2, ".", ",") : '', 'B'/* BORDE */, 0, 'R');
+
+            $pdf->SetX($pdf->getX());
+            $pdf->Cell(18, 4, ($GP_Jul <> 0) ? number_format($GP_Jul, 2, ".", ",") : '', 'B'/* BORDE */, 0, 'R');
+
+            $pdf->SetX($pdf->getX());
+            $pdf->Cell(18, 4, ($GP_Ago <> 0) ? number_format($GP_Ago, 2, ".", ",") : '', 'B'/* BORDE */, 0, 'R');
+
+            $pdf->SetX($pdf->getX());
+            $pdf->Cell(18, 4, ($GP_Sep <> 0) ? number_format($GP_Sep, 2, ".", ",") : '', 'B'/* BORDE */, 0, 'R');
+
+            $pdf->SetX($pdf->getX());
+            $pdf->Cell(18, 4, ($GP_Oct <> 0) ? number_format($GP_Oct, 2, ".", ",") : '', 'B'/* BORDE */, 0, 'R');
+
+            $pdf->SetX($pdf->getX());
+            $pdf->Cell(18, 4, ($GP_Nov <> 0) ? number_format($GP_Nov, 2, ".", ",") : '', 'B'/* BORDE */, 0, 'R');
+
+            $pdf->SetX($pdf->getX());
+            $pdf->Cell(18, 4, ($GP_Dic <> 0) ? number_format($GP_Dic, 2, ".", ",") : '', 'B'/* BORDE */, 1, 'R');
+
+            /* FIN RESUMEN */
+            $path = 'uploads/Reportes/Inventario';
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $file_name = "REPORTE EXISTENCIA ANUAL POR MES " . date("d-m-Y his");
+            $url = $path . '/' . $file_name . '.pdf';
+            /* Borramos el archivo anterior */
+            if (delete_files('uploads/Reportes/Inventario/')) {
+                /* ELIMINA LA EXISTENCIA DE CUALQUIER ARCHIVO EN EL DIRECTORIO */
+            }
+            $pdf->Output($url);
+            print base_url() . $url;
+        }
+    }
+
+    public function onReporteEtiquetas() {
+        $Grupo = $this->input->post('Grupo');
+        $aGrupo = $this->input->post('aGrupo');
+        $Mes = Date('n');
+        $Texto_Mes_Anterior = '';
+        $Mes_Anterior = $Mes - 1;
+
+        switch ($Mes_Anterior) {
+            case 0:
+                $Texto_Mes_Anterior = 'Dic';
+
+                break;
+            case 1:
+                $Texto_Mes_Anterior = 'Ene';
+
+                break;
+            case 2:
+                $Texto_Mes_Anterior = 'Feb';
+
+                break;
+            case 3:
+                $Texto_Mes_Anterior = 'Mar';
+
+                break;
+            case 4:
+                $Texto_Mes_Anterior = 'Abr';
+
+                break;
+            case 5:
+                $Texto_Mes_Anterior = 'May';
+
+                break;
+            case 6:
+                $Texto_Mes_Anterior = 'Jun';
+
+                break;
+            case 7:
+                $Texto_Mes_Anterior = 'Jul';
+
+                break;
+            case 8:
+                $Texto_Mes_Anterior = 'Ago';
+
+                break;
+            case 9:
+                $Texto_Mes_Anterior = 'Sep';
+
+                break;
+            case 10:
+                $Texto_Mes_Anterior = 'Oct';
+
+                break;
+            case 11:
+                $Texto_Mes_Anterior = 'Nov';
+
+                break;
+            case 12:
+                $Texto_Mes_Anterior = 'Dic';
+
+                break;
+        }
+        $Texto_DiaFinMes = '';
+        switch ($Mes_Anterior) {
+            case 0:
+                $Texto_DiaFinMes = '31 Dic';
+
+                break;
+            case 1:
+                $Texto_DiaFinMes = '31 Ene';
+
+                break;
+            case 2:
+                $Texto_DiaFinMes = '28 Feb';
+
+                break;
+            case 3:
+                $Texto_DiaFinMes = '31 Mar';
+
+                break;
+            case 4:
+                $Texto_DiaFinMes = '30 Abr';
+
+                break;
+            case 5:
+                $Texto_DiaFinMes = '31 May';
+
+                break;
+            case 6:
+                $Texto_DiaFinMes = '30 Jun';
+
+                break;
+            case 7:
+                $Texto_DiaFinMes = '31 Jul';
+
+                break;
+            case 8:
+                $Texto_DiaFinMes = '31 Ago';
+
+                break;
+            case 9:
+                $Texto_DiaFinMes = '30 Sep';
+
+                break;
+            case 10:
+                $Texto_DiaFinMes = '31 Oct';
+
+                break;
+            case 11:
+                $Texto_DiaFinMes = '30 Nov';
+
+                break;
+            case 12:
+                $Texto_DiaFinMes = '31 Dic';
+
+                break;
+        }
+
+        $Articulos = $this->ReporteCapturaFisica_model->getArticulosPorGruposParaEtiquetas($Grupo, $aGrupo, $Texto_Mes_Anterior);
+
+        if (!empty($Articulos)) {
+            $pdf = new PDF_Etiquetas('L', 'mm', array(50, 100));
+            $pdf->SetAutoPageBreak(false, 2);
+
+            foreach ($Articulos as $key => $G) {
+                $pdf->AddPage();
+                $pdf->SetY(6);
+                $pdf->SetX(23);
+                $pdf->SetLineWidth(0.2);
+                $pdf->SetFont('Calibri', 'B', 9);
+                $pdf->Cell(10, 4, 'Grupo:', 0/* BORDE */, 0, 'L');
+                $pdf->SetX(33);
+                $pdf->SetFont('Calibri', '', 8);
+                $pdf->Cell(40, 4, utf8_decode($G->ClaveGrupo) . '  ' . utf8_decode($G->NombreGrupo), 0/* BORDE */, 0, 'L');
+                $pdf->SetY(12);
+                $pdf->SetX(3);
+                $pdf->SetFont('Calibri', 'B', 12);
+                $pdf->Cell(40, 4, utf8_decode($G->Clave) . '  ' . mb_strimwidth(utf8_decode($G->Descripcion), 0, 27, ""), 0/* BORDE */, 0, 'L');
+                $pdf->SetLineWidth(0.5);
+                $pdf->SetX(74);
+                $pdf->Cell(23, 4, '', 1/* BORDE */, 0, 'L');
+
+                $pdf->SetFont('Calibri', 'B', 10);
+                $pdf->SetY(44);
+                $pdf->SetX(3);
+                $pdf->Cell(23, 4, 'Inv. al ' . $Texto_DiaFinMes, 0/* BORDE */, 0, 'L');
+
+                $pdf->SetFont('Calibri', 'B', 12);
+                $pdf->SetY(44);
+                $pdf->SetX(60);
+                $pdf->Cell(15, 4, number_format($G->Existencia, 2, ".", ","), 0/* BORDE */, 0, 'L');
+
+                $pdf->SetY(44);
+                $pdf->SetX(80);
+                $pdf->Cell(14, 4, $G->Unidad, 0/* BORDE */, 0, 'L');
+            }
+
+            /* FIN RESUMEN */
+            $path = 'uploads/Reportes/Inventario';
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $file_name = "REPORTE ETIQUETAS INVENTARIO " . date("d-m-Y his");
+            $url = $path . '/' . $file_name . '.pdf';
+            /* Borramos el archivo anterior */
+            if (delete_files('uploads/Reportes/Inventario/')) {
+                /* ELIMINA LA EXISTENCIA DE CUALQUIER ARCHIVO EN EL DIRECTORIO */
+            }
+            $pdf->Output($url);
+            print base_url() . $url;
+        }
+    }
+
     public function onReporteCostoInv() {
         $Maq = $this->input->post('Maq');
         $Mes = $this->input->post('Mes');
@@ -160,20 +778,21 @@ class CapturaInventarios extends CI_Controller {
                 number_format($GT_Existencia, 2, ".", ","),
                 '$' . number_format($GT_Costo, 2, ".", ",")
                     ), 0);
+
+            /* FIN RESUMEN */
+            $path = 'uploads/Reportes/Inventario';
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $file_name = "REPORTE DE COSTO DEL INVENTARIO " . date("d-m-Y his");
+            $url = $path . '/' . $file_name . '.pdf';
+            /* Borramos el archivo anterior */
+            if (delete_files('uploads/Reportes/Inventario/')) {
+                /* ELIMINA LA EXISTENCIA DE CUALQUIER ARCHIVO EN EL DIRECTORIO */
+            }
+            $pdf->Output($url);
+            print base_url() . $url;
         }
-        /* FIN RESUMEN */
-        $path = 'uploads/Reportes/Inventario';
-        if (!file_exists($path)) {
-            mkdir($path, 0777, true);
-        }
-        $file_name = "REPORTE DE COSTO DEL INVENTARIO " . date("d-m-Y his");
-        $url = $path . '/' . $file_name . '.pdf';
-        /* Borramos el archivo anterior */
-        if (delete_files('uploads/Reportes/Inventario/')) {
-            /* ELIMINA LA EXISTENCIA DE CUALQUIER ARCHIVO EN EL DIRECTORIO */
-        }
-        $pdf->Output($url);
-        print base_url() . $url;
     }
 
     public function onReporteMovAjuste() {
@@ -289,20 +908,21 @@ class CapturaInventarios extends CI_Controller {
                 '',
                 ''
                     ), 0);
+
+            /* FIN RESUMEN */
+            $path = 'uploads/Reportes/Inventario';
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $file_name = "REPORTE MOVIMIENTOS DE AJUSTE AL INVENTARIO " . date("d-m-Y his");
+            $url = $path . '/' . $file_name . '.pdf';
+            /* Borramos el archivo anterior */
+            if (delete_files('uploads/Reportes/Inventario/')) {
+                /* ELIMINA LA EXISTENCIA DE CUALQUIER ARCHIVO EN EL DIRECTORIO */
+            }
+            $pdf->Output($url);
+            print base_url() . $url;
         }
-        /* FIN RESUMEN */
-        $path = 'uploads/Reportes/Inventario';
-        if (!file_exists($path)) {
-            mkdir($path, 0777, true);
-        }
-        $file_name = "REPORTE MOVIMIENTOS DE AJUSTE AL INVENTARIO " . date("d-m-Y his");
-        $url = $path . '/' . $file_name . '.pdf';
-        /* Borramos el archivo anterior */
-        if (delete_files('uploads/Reportes/Inventario/')) {
-            /* ELIMINA LA EXISTENCIA DE CUALQUIER ARCHIVO EN EL DIRECTORIO */
-        }
-        $pdf->Output($url);
-        print base_url() . $url;
     }
 
     public function onReporteComparativoInvFisInvSis() {

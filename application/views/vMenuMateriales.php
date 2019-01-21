@@ -43,3 +43,5 @@ $this->load->view('vComparativoInvFisInvSis');
 $this->load->view('vMovPorAjuste');
 $this->load->view('vCierraInvMensual');
 $this->load->view('vCostoInvMatPrima');
+$this->load->view('vEtiquetasInventario');
+$this->load->view('vInventarioAnual');

@@ -320,4 +320,121 @@ class ReporteCapturaFisica_model extends CI_Model {
         }
     }
 
+    /* Reporte de etiquetas para inv */
+
+    public function getArticulosPorGruposParaEtiquetas($Grupo, $aGrupo, $Texto_Mes) {
+        try {
+            $this->db->query("set sql_mode=''");
+            $this->db->select("CAST(A.Grupo AS SIGNED ) AS ClaveGrupo, "
+                            . "G.Nombre AS NombreGrupo,"
+                            . "A.Clave, "
+                            . "A.Descripcion ,"
+                            . "A.$Texto_Mes AS Existencia,    "
+                            . "U.Descripcion As Unidad"
+                            . "")
+                    ->from("articulos A")
+                    ->join("grupos G", 'ON G.Clave = A.Grupo')
+                    ->join("unidades U", 'ON U.Clave = A.UnidadMedida')
+                    ->where("ifnull(A.$Texto_Mes,0) > 0 ", null, false)
+                    ->where("A.Grupo BETWEEN $Grupo AND $aGrupo  ", null, false)
+                    ->order_by('ClaveGrupo', 'ASC')
+                    ->order_by('A.Descripcion', 'ASC');
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    /* Reporte inv anual por mes */
+
+    public function getGruposReporteExistenciasAnualPorMes($Maq) {
+        try {
+            $this->db->query("set sql_mode=''");
+            $this->db->select("CAST(G.Clave AS SIGNED) AS ClaveGrupo, G.Nombre AS NombreGrupo "
+                            . "")
+                    ->from("$Maq A")
+                    ->join("grupos G", 'ON A.Grupo = G.Clave')
+                    ->where("(ifnull(A.Ene,0) +
+                                ifnull(A.Feb,0) +
+                                ifnull(A.Mar,0) +
+                                ifnull(A.Abr,0) +
+                                ifnull(A.May,0) +
+                                ifnull(A.Jun,0) +
+                                ifnull(A.Jul,0) +
+                                ifnull(A.Ago,0) +
+                                ifnull(A.Sep,0) +
+                                ifnull(A.Oct,0) +
+                                ifnull(A.Nov,0) +
+                                ifnull(A.Dic,0) )  > 0 ", null, false)
+                    ->group_by("G.Clave")
+                    ->group_by("G.Nombre")
+                    ->order_by('ClaveGrupo', 'ASC');
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getArticulosReporteExistenciasAnualPorMes($Maq) {
+        try {
+            $this->db->query("set sql_mode=''");
+            $this->db->select("CAST(A.Grupo AS SIGNED) AS ClaveGrupo, A.Clave AS Codigo, A.Descripcion AS Articulo, U.Descripcion AS Unidad, "
+                            . "
+                                ifnull(A.Ene,0) AS Ene, ifnull(A.PEne,0) AS PEne,
+                                ifnull(A.Feb,0) AS Feb, ifnull(A.PFeb,0) AS PFeb,
+                                ifnull(A.Mar,0) AS Mar, ifnull(A.PMar,0) AS PMar,
+                                ifnull(A.Abr,0) AS Abr, ifnull(A.PAbr,0) AS PAbr,
+                                ifnull(A.May,0) AS May, ifnull(A.PMay,0) AS PMay,
+                                ifnull(A.Jun,0) AS Jun, ifnull(A.PJun,0) AS PJun,
+                                ifnull(A.Jul,0) AS Jul, ifnull(A.PJul,0) AS PJul,
+                                ifnull(A.Ago,0) AS Ago, ifnull(A.PAgo,0) AS PAgo,
+                                ifnull(A.Sep,0) AS Sep, ifnull(A.PSep,0) AS PSep,
+                                ifnull(A.Oct,0) AS Oct, ifnull(A.POct,0) AS POct,
+                                ifnull(A.Nov,0) AS Nov, ifnull(A.PNov,0) AS PNov,
+                                ifnull(A.Dic,0) AS Dic, ifnull(A.PDic,0) AS PDic "
+                            . ""
+                            . "")
+                    ->from("$Maq A")
+                    ->join("unidades U", 'ON U.Clave = A.UnidadMedida')
+                    ->where("(ifnull(A.Ene,0) +
+                                ifnull(A.Feb,0) +
+                                ifnull(A.Mar,0) +
+                                ifnull(A.Abr,0) +
+                                ifnull(A.May,0) +
+                                ifnull(A.Jun,0) +
+                                ifnull(A.Jul,0) +
+                                ifnull(A.Ago,0) +
+                                ifnull(A.Sep,0) +
+                                ifnull(A.Oct,0) +
+                                ifnull(A.Nov,0) +
+                                ifnull(A.Dic,0) )  > 0 ", null, false)
+                    ->order_by('ClaveGrupo', 'ASC')
+                    ->order_by('A.Descripcion', 'ASC');
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
 }
