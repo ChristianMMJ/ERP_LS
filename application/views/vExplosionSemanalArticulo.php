@@ -1,8 +1,8 @@
-<div class="modal " id="mdlExplosionSemanal"  role="dialog">
+<div class="modal " id="mdlExplosionSemanalArticulo"  role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Explosión Semanal de Materiales</h5>
+                <h5 class="modal-title">Explosión Semanal de Materiales por Artículo</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -18,6 +18,12 @@
                         <div class="col-6">
                             <label>Año</label>
                             <input type="text" maxlength="4" class="form-control form-control-sm numbersOnly" id="Ano" name="Ano" >
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <label>Artículo</label>
+                            <select class="form-control form-control-sm required selectize" id="Articulo" name="Articulo" >
+                                <option value=""></option>
+                            </select>
                         </div>
                     </div>
                     <div class="row">
@@ -50,24 +56,8 @@
                                 <option value="0">80 SUELA C/ DESGLOSE</option>
                             </select>
                         </div>
-                        <div class="col-12 col-sm-6">
-                            <div class="custom-control custom-checkbox  ">
-                                <input type="checkbox" class="custom-control-input" id="selectPiel">
-                                <label class="custom-control-label text-info labelCheck" for="selectPiel">Con Selección de Piel</label>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-6">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="FaltanteCorte" >
-                                <label class="custom-control-label text-info labelCheck" for="FaltanteCorte">Lo faltante X Cortar</label>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-6">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="SinClasif" name="SinClasif" >
-                                <label class="custom-control-label text-info labelCheck" for="SinClasif">S/ 1ras 2das 3ras</label>
-                            </div>
-                        </div>
+
+
 
                         <div class="col-12 col-sm-12 mt-2">
                             <legend class="badge badge-danger" style="font-size: 14px;">Para maquila 98 sale con precios de compra y venta</legend>
@@ -83,34 +73,35 @@
     </div>
 </div>
 <script>
-    var mdlExplosionSemanal = $('#mdlExplosionSemanal');
+    var mdlExplosionSemanalArticulo = $('#mdlExplosionSemanalArticulo');
     $(document).ready(function () {
-        validacionSelectPorContenedor(mdlExplosionSemanal);
-        setFocusSelectToInputOnChange('#Tipo', '#btnImprimir', mdlExplosionSemanal);
-        mdlExplosionSemanal.on('shown.bs.modal', function () {
-            mdlExplosionSemanal.find("input").val("");
-            $.each(mdlExplosionSemanal.find("select"), function (k, v) {
-                mdlExplosionSemanal.find("select")[k].selectize.clear(true);
+        validacionSelectPorContenedor(mdlExplosionSemanalArticulo);
+        setFocusSelectToInputOnChange('#Articulo', '#Maq', mdlExplosionSemanalArticulo);
+        setFocusSelectToInputOnChange('#Tipo', '#btnImprimir', mdlExplosionSemanalArticulo);
+        mdlExplosionSemanalArticulo.on('shown.bs.modal', function () {
+            mdlExplosionSemanalArticulo.find("input").val("");
+            $.each(mdlExplosionSemanalArticulo.find("select"), function (k, v) {
+                mdlExplosionSemanalArticulo.find("select")[k].selectize.clear(true);
             });
-            mdlExplosionSemanal.find('#Ano').focus();
+            getArticulos();
+            mdlExplosionSemanalArticulo.find('#Ano').focus();
         });
 
-        mdlExplosionSemanal.find('#btnImprimir').on("click", function () {
+        mdlExplosionSemanalArticulo.find('#btnImprimir').on("click", function () {
             HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
 
-            var Tipo = parseInt(mdlExplosionSemanal.find('#Tipo').val());
+            var Tipo = parseInt(mdlExplosionSemanalArticulo.find('#Tipo').val());
             var Reporte = '';
 
             if (Tipo === 10 || Tipo === 80 || Tipo === 90) {
-                Reporte = 'index.php/Explosiones/onReporteExplosionSemana';
+                Reporte = 'index.php/ExplosionesPorArticulo/onReporteExplosionSemanaPorArticulo';
             } else {
-                Reporte = 'index.php/Explosiones/onReporteExplosionSemanaSuelaDesglose';
+                Reporte = 'index.php/ExplosionesPorArticulo/onReporteExplosionSemanaSuelaArticulo';
             }
+            console.log(Reporte);
+            var frm = new FormData(mdlExplosionSemanalArticulo.find("#frmExplosion")[0]);
 
-            var frm = new FormData(mdlExplosionSemanal.find("#frmExplosion")[0]);
-            var SinClasif = mdlExplosionSemanal.find("#SinClasif")[0].checked ? '1' : '0';
 
-            frm.append('SinClasif', SinClasif);
             $.ajax({
                 url: base_url + Reporte,
                 type: "POST",
@@ -151,10 +142,10 @@
                 } else {
                     swal({
                         title: "ATENCIÓN",
-                        text: "NO EXISTEN PROGRAMACION DE LA SEMANA/MAQUILA",
+                        text: "NO EXISTEN PROGRAMACION DE LA SEMANA/MAQUILA O EL TIPO ES INCORRECTO",
                         icon: "error"
                     }).then((action) => {
-                        mdlExplosionSemanal.find('#Ano').focus();
+                        mdlExplosionSemanalArticulo.find('#Ano').focus();
                     });
                 }
                 HoldOn.close();
@@ -164,7 +155,7 @@
             });
         });
 
-        mdlExplosionSemanal.find("#Ano").change(function () {
+        mdlExplosionSemanalArticulo.find("#Ano").change(function () {
             if (parseInt($(this).val()) < 2016 || parseInt($(this).val()) > 2020 || $(this).val() === '') {
                 swal({
                     title: "ATENCIÓN",
@@ -175,23 +166,23 @@
                     buttons: false,
                     timer: 1000
                 }).then((action) => {
-                    mdlExplosionSemanal.find("#Ano").val("");
-                    mdlExplosionSemanal.find("#Ano").focus();
+                    mdlExplosionSemanalArticulo.find("#Ano").val("");
+                    mdlExplosionSemanalArticulo.find("#Ano").focus();
                 });
             }
         });
-        mdlExplosionSemanal.find("#Maq").change(function () {
+        mdlExplosionSemanalArticulo.find("#Maq").change(function () {
             onComprobarMaquilas($(this));
         });
-        mdlExplosionSemanal.find("#aMaq").change(function () {
+        mdlExplosionSemanalArticulo.find("#aMaq").change(function () {
             onComprobarMaquilas($(this));
         });
-        mdlExplosionSemanal.find("#Sem").change(function () {
-            var ano = mdlExplosionSemanal.find("#Ano");
+        mdlExplosionSemanalArticulo.find("#Sem").change(function () {
+            var ano = mdlExplosionSemanalArticulo.find("#Ano");
             onComprobarSemanasProduccion($(this), ano.val());
         });
-        mdlExplosionSemanal.find("#aSem").change(function () {
-            var ano = mdlExplosionSemanal.find("#Ano");
+        mdlExplosionSemanalArticulo.find("#aSem").change(function () {
+            var ano = mdlExplosionSemanalArticulo.find("#Ano");
             onComprobarSemanasProduccion($(this), ano.val());
         });
     });
@@ -255,5 +246,19 @@
         });
     }
 
+    function getArticulos() {
+        mdlExplosionSemanalArticulo.find("#Articulo")[0].selectize.clear(true);
+        mdlExplosionSemanalArticulo.find("#Articulo")[0].selectize.clearOptions();
+        $.getJSON(base_url + 'index.php/EntradasAlmacenMP/getArticulos').done(function (data) {
+            $.each(data, function (k, v) {
+                mdlExplosionSemanalArticulo.find("#Articulo")[0].selectize.addOption({text: v.Articulo, value: v.ID});
+            });
+        }).fail(function (x) {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        });
+    }
+
 
 </script>
+

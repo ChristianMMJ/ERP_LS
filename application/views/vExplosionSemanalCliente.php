@@ -1,8 +1,8 @@
-<div class="modal " id="mdlExplosionSemanal"  role="dialog">
+<div class="modal " id="mdlExplosionSemanalCliente"  role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Explosión Semanal de Materiales</h5>
+                <h5 class="modal-title">Explosión Semanal de Materiales por Cliente</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -18,6 +18,12 @@
                         <div class="col-6">
                             <label>Año</label>
                             <input type="text" maxlength="4" class="form-control form-control-sm numbersOnly" id="Ano" name="Ano" >
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <label>Cliente</label>
+                            <select class="form-control form-control-sm required selectize" id="ClienteExplosion" name="ClienteExplosion" >
+                                <option value=""></option>
+                            </select>
                         </div>
                     </div>
                     <div class="row">
@@ -64,8 +70,8 @@
                         </div>
                         <div class="col-12 col-sm-6">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="SinClasif" name="SinClasif" >
-                                <label class="custom-control-label text-info labelCheck" for="SinClasif">S/ 1ras 2das 3ras</label>
+                                <input type="checkbox" class="custom-control-input" id="SinClasifPorCliente" name="SinClasifPorCliente" >
+                                <label class="custom-control-label text-info labelCheck" for="SinClasifPorCliente">S/ 1ras 2das 3ras</label>
                             </div>
                         </div>
 
@@ -83,34 +89,37 @@
     </div>
 </div>
 <script>
-    var mdlExplosionSemanal = $('#mdlExplosionSemanal');
+    var mdlExplosionSemanalCliente = $('#mdlExplosionSemanalCliente');
     $(document).ready(function () {
-        validacionSelectPorContenedor(mdlExplosionSemanal);
-        setFocusSelectToInputOnChange('#Tipo', '#btnImprimir', mdlExplosionSemanal);
-        mdlExplosionSemanal.on('shown.bs.modal', function () {
-            mdlExplosionSemanal.find("input").val("");
-            $.each(mdlExplosionSemanal.find("select"), function (k, v) {
-                mdlExplosionSemanal.find("select")[k].selectize.clear(true);
+        validacionSelectPorContenedor(mdlExplosionSemanalCliente);
+        setFocusSelectToInputOnChange('#ClienteExplosion', '#Maq', mdlExplosionSemanalCliente);
+        setFocusSelectToInputOnChange('#Tipo', '#btnImprimir', mdlExplosionSemanalCliente);
+        mdlExplosionSemanalCliente.on('shown.bs.modal', function () {
+            mdlExplosionSemanalCliente.find("input").val("");
+            $.each(mdlExplosionSemanalCliente.find("select"), function (k, v) {
+                mdlExplosionSemanalCliente.find("select")[k].selectize.clear(true);
             });
-            mdlExplosionSemanal.find('#Ano').focus();
+            getClientes();
+            mdlExplosionSemanalCliente.find('#Ano').focus();
         });
 
-        mdlExplosionSemanal.find('#btnImprimir').on("click", function () {
+        mdlExplosionSemanalCliente.find('#btnImprimir').on("click", function () {
             HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
 
-            var Tipo = parseInt(mdlExplosionSemanal.find('#Tipo').val());
+            var Tipo = parseInt(mdlExplosionSemanalCliente.find('#Tipo').val());
             var Reporte = '';
 
             if (Tipo === 10 || Tipo === 80 || Tipo === 90) {
-                Reporte = 'index.php/Explosiones/onReporteExplosionSemana';
+                Reporte = 'index.php/ExplosionesPorCliente/onReporteExplosionSemanaPorCliente';
             } else {
-                Reporte = 'index.php/Explosiones/onReporteExplosionSemanaSuelaDesglose';
+                Reporte = 'index.php/ExplosionesPorCliente/onReporteExplosionSemanaSuelaDesglose';
             }
+            console.log(Reporte);
+            var frm = new FormData(mdlExplosionSemanalCliente.find("#frmExplosion")[0]);
+            var SinClasif = mdlExplosionSemanalCliente.find("#SinClasifPorCliente")[0].checked ? '1' : '0';
 
-            var frm = new FormData(mdlExplosionSemanal.find("#frmExplosion")[0]);
-            var SinClasif = mdlExplosionSemanal.find("#SinClasif")[0].checked ? '1' : '0';
+            frm.append('SinClasifPorCliente', SinClasif);
 
-            frm.append('SinClasif', SinClasif);
             $.ajax({
                 url: base_url + Reporte,
                 type: "POST",
@@ -154,7 +163,7 @@
                         text: "NO EXISTEN PROGRAMACION DE LA SEMANA/MAQUILA",
                         icon: "error"
                     }).then((action) => {
-                        mdlExplosionSemanal.find('#Ano').focus();
+                        mdlExplosionSemanalCliente.find('#Ano').focus();
                     });
                 }
                 HoldOn.close();
@@ -164,7 +173,7 @@
             });
         });
 
-        mdlExplosionSemanal.find("#Ano").change(function () {
+        mdlExplosionSemanalCliente.find("#Ano").change(function () {
             if (parseInt($(this).val()) < 2016 || parseInt($(this).val()) > 2020 || $(this).val() === '') {
                 swal({
                     title: "ATENCIÓN",
@@ -175,23 +184,23 @@
                     buttons: false,
                     timer: 1000
                 }).then((action) => {
-                    mdlExplosionSemanal.find("#Ano").val("");
-                    mdlExplosionSemanal.find("#Ano").focus();
+                    mdlExplosionSemanalCliente.find("#Ano").val("");
+                    mdlExplosionSemanalCliente.find("#Ano").focus();
                 });
             }
         });
-        mdlExplosionSemanal.find("#Maq").change(function () {
+        mdlExplosionSemanalCliente.find("#Maq").change(function () {
             onComprobarMaquilas($(this));
         });
-        mdlExplosionSemanal.find("#aMaq").change(function () {
+        mdlExplosionSemanalCliente.find("#aMaq").change(function () {
             onComprobarMaquilas($(this));
         });
-        mdlExplosionSemanal.find("#Sem").change(function () {
-            var ano = mdlExplosionSemanal.find("#Ano");
+        mdlExplosionSemanalCliente.find("#Sem").change(function () {
+            var ano = mdlExplosionSemanalCliente.find("#Ano");
             onComprobarSemanasProduccion($(this), ano.val());
         });
-        mdlExplosionSemanal.find("#aSem").change(function () {
-            var ano = mdlExplosionSemanal.find("#Ano");
+        mdlExplosionSemanalCliente.find("#aSem").change(function () {
+            var ano = mdlExplosionSemanalCliente.find("#Ano");
             onComprobarSemanasProduccion($(this), ano.val());
         });
     });
@@ -255,5 +264,19 @@
         });
     }
 
+    function getClientes() {
+        mdlExplosionSemanalCliente.find("#ClienteExplosion")[0].selectize.clear(true);
+        mdlExplosionSemanalCliente.find("#ClienteExplosion")[0].selectize.clearOptions();
+        $.getJSON(base_url + 'index.php/Pedidos/getClientes').done(function (data) {
+            $.each(data, function (k, v) {
+                mdlExplosionSemanalCliente.find("#ClienteExplosion")[0].selectize.addOption({text: v.Cliente, value: v.Clave});
+            });
+        }).fail(function (x) {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        });
+    }
+
 
 </script>
+
