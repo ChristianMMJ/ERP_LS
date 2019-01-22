@@ -1,5 +1,5 @@
 <div class="card m-3 animated fadeIn" id="pnlTablero">
-    <div class="card-body "> 
+    <div class="card-body">
         <div class="row">
             <div class="col-sm-2 float-left">
                 <legend class="float-left">Pedidos</legend>
@@ -1306,7 +1306,8 @@
             $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
             temp = dt.Clave;
             opciones_detalle.ajax = {
-                "url": master_url + 'getPedidoDByID',
+                "url": '<?php print base_url('pedbyid') ?>', 
+                "contentType": "application/json",
                 "dataSrc": "",
                 "data": {
                     "ID": dt.Clave
@@ -1521,8 +1522,6 @@
         color:#000;
         background-color: #fff;
     }
-
-
 
     .zoom{
         -webkit-transition: all .2s ease-in-out;

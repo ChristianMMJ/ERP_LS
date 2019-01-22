@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
 
-class AvanceXEmpleadoYPagoDeNomina_model extends CI_Model {
+class AvanceXEmpleadoYPagoDeNominaPifo_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
@@ -121,7 +121,7 @@ class AvanceXEmpleadoYPagoDeNomina_model extends CI_Model {
     }
 
     public function getFraccionesPagoNomina($E, $F) {
-        try {
+        try { 
             $this->db->select("FACN.ID, FACN.numeroempleado, FACN.maquila, "
                             . "FACN.control AS CONTROL, FACN.estilo AS ESTILO, "
                             . "FACN.numfrac AS FRAC, FACN.preciofrac AS PRECIO, "
@@ -129,11 +129,14 @@ class AvanceXEmpleadoYPagoDeNomina_model extends CI_Model {
                             . "FACN.status, DATE_FORMAT(FACN.fecha, \"%d/%m/%Y\") AS FECHA, "
                             . "FACN.semana AS SEMANA, FACN.depto AS DEPARTAMENTO, "
                             . "FACN.registro, FACN.anio, FACN.avance_id", false)
-                    ->from('fracpagnomina AS FACN')->where_in("FACN.numfrac IN($F)", null, false);
-            if ($E !== '') {
+                    ->from('fracpagnomina AS FACN')->where("FACN.numfrac IN($F)", null, false);
+            if ($E !== '' && $E !== NULL) {
                 $this->db->where('FACN.numeroempleado', $E);
             }
-            return $this->db->get()->result();
+            $dtm = $this->db->get()->result();
+            $str = $this->db->last_query(); 
+//            print $str;
+            return $dtm;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

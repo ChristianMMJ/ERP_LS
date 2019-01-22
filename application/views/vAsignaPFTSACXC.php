@@ -521,7 +521,8 @@
             "dom": 'rit',
             buttons: buttons,
             "ajax": {
-                "url": '<?= base_url('pieles'); ?>',
+                "url": '<?php print base_url('pieles'); ?>',
+                "contentType": "application/json",
                 "type": "POST",
                 "dataSrc": "",
                 "data": function (d) {
@@ -568,6 +569,7 @@
         xoptions.ajax = {
             "url": '<?= base_url('forros'); ?>',
             "type": "POST",
+            "contentType": "application/json",
             "dataSrc": "",
             "data": function (d) {
                 d.SEMANA = (Semana.val().trim());
@@ -596,6 +598,7 @@
         xoptions.ajax = {
             "url": '<?= base_url('textiles'); ?>',
             "type": "POST",
+            "contentType": "application/json",
             "dataSrc": "",
             "data": function (d) {
                 d.SEMANA = (Semana.val().trim());
@@ -622,8 +625,9 @@
             }
         });
         xoptions.ajax = {
-            "url": '<?= base_url('sinteticos'); ?>',
+            "url": '<?php print base_url('sinteticos'); ?>',
             "type": "POST",
+            "contentType": "application/json",
             "dataSrc": "",
             "data": function (d) {
                 d.SEMANA = (Semana.val().trim());

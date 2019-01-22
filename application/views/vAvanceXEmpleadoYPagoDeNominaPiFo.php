@@ -1,4 +1,4 @@
-<div class="card m-3 animated slideInDown" id="pnlTablero">
+<div class="card m-3 animated fadeIn" id="pnlTablero">
     <div class="card-header">   
         <div class="row">
             <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-xl-12 col-lg-12 text-center">
@@ -313,8 +313,9 @@
             }
         };
         xoptions.ajax = {
-            "url": '<?php print base_url('obtener_avances_pago_nomina'); ?>',
+            "url": '<?php print base_url('obtener_avances_pago_nomina/1'); ?>',
             "type": "POST",
+            "contentType": "application/json",
             "dataSrc": "",
             "data": function (d) {
                 d.EMPLEADO = NumeroDeEmpleado.val();

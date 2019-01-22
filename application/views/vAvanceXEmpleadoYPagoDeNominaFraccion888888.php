@@ -32,7 +32,7 @@
                             <th scope="col">Pares</th>
 
                             <th scope="col">Precio</th>
-                            <th scope="col">SubTotal</th> 
+                            <th scope="col">SubTotal</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -485,8 +485,9 @@
             }
         };
         xoptions.ajax = {
-            "url": '<?php print base_url('obtener_avances_pago_nomina'); ?>',
+            "url": '<?php print base_url('obtener_avances_pago_nomina/2'); ?>',
             "type": "POST",
+            "contentType": "application/json",
             "dataSrc": "",
             "data": function (d) {
                 d.EMPLEADO = NumeroDeEmpleado.val();

@@ -1104,7 +1104,6 @@
                                                                     opcion += '<ul class="dropdown-menu">';
                                                                 }
                                                                 $.each(subsubitems, function (kss, vss) {
-                                                                    console.log(vss.SubSubItem, 'IS SUBSUBITEM = ', vss.IsSubSubItem === null);
                                                                     if (vss.IsSubSubItem !== null) {
                                                                         opcion += '<a class="dropdown-item" href="' + (burl + vss.RefSubSubItem) + '"><span class="fas fa-' + vss.IconSubSubItem + '"></span> ' + vss.SubSubItem + '</a>';
                                                                         nav_subsubitems = 1;

@@ -3,16 +3,12 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 require_once APPPATH . "/third_party/fpdf17/fpdf.php";
 
-class AvanceXEmpleadoYPagoDeNomina extends CI_Controller {
+class AvanceXEmpleadoYPagoDeNominaPiFo extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('AvanceXEmpleadoYPagoDeNomina_model', 'axepn');
-    }
-
-    public function index() {
-        
+        $this->load->library('session')->model('AvanceXEmpleadoYPagoDeNominaPiFo_model', 'axepn');
     }
 
     public function shoes() {
@@ -73,7 +69,16 @@ class AvanceXEmpleadoYPagoDeNomina extends CI_Controller {
     public function getFraccionesPagoNomina() {
         try {
             header('Content-type: application/json');
-            print json_encode($this->axepn->getFraccionesPagoNomina($this->input->post('EMPLEADO'), $this->input->post('FRACCIONES')));
+            $url = $this->uri;
+            $x = $this->input;
+            switch ($url->segment(2)) {
+                case 1:
+                    print json_encode($this->axepn->getFraccionesPagoNomina($x->post('EMPLEADO'), "96,99,100"));
+                    break;
+                case 2:
+                    print json_encode($this->axepn->getFraccionesPagoNomina($x->post('EMPLEADO'), "51, 24, 205, 80, 106, 333, 61, 78, 198, 397, 306, 502, 62, 204, 127, 34, 337"));
+                    break;
+            }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -83,9 +88,7 @@ class AvanceXEmpleadoYPagoDeNomina extends CI_Controller {
         try {
             header('Content-type: application/json');
             print json_encode($this->axepn->getPagosXEmpleadoXSemana(
-                    $this->input->get('EMPLEADO'), 
-                    $this->input->get('SEMANA'), 
-                    $this->input->get('FRACCIONES')));
+                                    $this->input->get('EMPLEADO'), $this->input->get('SEMANA'), $this->input->get('FRACCIONES')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

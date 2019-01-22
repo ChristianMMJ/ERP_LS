@@ -55,6 +55,7 @@ $route['translate_uri_dashes'] = FALSE;
 /*PEDIDOS*/
 $route['peds'] = 'Pedidos/getRecords';
 $route['pedsid'] = 'Pedidos/getPedidosByID';
+$route['pedbyid'] = 'Pedidos/getPedidoDByID';
 
 /*ASIGNA*/
 $route['pieles'] = 'AsignaPFTSACXC/getPieles';
@@ -74,15 +75,15 @@ $route['avance_fracciones'] = 'Avance/getFracciones';
 $route['avance_buscar_avance_x_control'] = 'Avance/onComprobarAvanceXControl';
 
 /*AVANCES 8888*/
-$route['buscar_avance_x_control/:num/:num'] = 'AvanceXEmpleadoYPagoDeNomina/shoes/$1/$2/';
-$route['avance_x_empleadopagodenomina'] = 'AvanceXEmpleadoYPagoDeNomina';
-$route['comprobar_numero_de_empleado'] = 'AvanceXEmpleadoYPagoDeNomina/onComprobarDeptoXEmpleado';
-$route['obtener_semana_fecha'] = 'AvanceXEmpleadoYPagoDeNomina/getSemanaByFecha';
-$route['obtener_estilo_pares_por_control_fraccion'] = 'AvanceXEmpleadoYPagoDeNomina/onComprobarRetornoDeMaterialXControl';
-$route['obtener_ultimo_avance_por_control'] = 'AvanceXEmpleadoYPagoDeNomina/getUltimoAvanceXControl';
-$route['avance_add_avance_x_empleado_add_nomina'] = 'AvanceXEmpleadoYPagoDeNomina/onAgregarAvanceXEmpleadoYPagoDeNomina';
-$route['obtener_avances_pago_nomina'] = 'AvanceXEmpleadoYPagoDeNomina/getFraccionesPagoNomina';
-$route['obtener_pagos_de_nomina_x_empleado'] = 'AvanceXEmpleadoYPagoDeNomina/getPagosXEmpleadoXSemana';
+$route['buscar_avance_x_control/:num/:num'] = 'AvanceXEmpleadoYPagoDeNominaPiFo/shoes/$1/$2/';
+$route['avance_x_empleadopagodenomina'] = 'AvanceXEmpleadoYPagoDeNominaPiFo';
+$route['comprobar_numero_de_empleado'] = 'AvanceXEmpleadoYPagoDeNominaPiFo/onComprobarDeptoXEmpleado';
+$route['obtener_semana_fecha'] = 'AvanceXEmpleadoYPagoDeNominaPiFo/getSemanaByFecha';
+$route['obtener_estilo_pares_por_control_fraccion'] = 'AvanceXEmpleadoYPagoDeNominaPiFo/onComprobarRetornoDeMaterialXControl';
+$route['obtener_ultimo_avance_por_control'] = 'AvanceXEmpleadoYPagoDeNominaPiFo/getUltimoAvanceXControl';
+$route['avance_add_avance_x_empleado_add_nomina'] = 'AvanceXEmpleadoYPagoDeNominaPiFo/onAgregarAvanceXEmpleadoYPagoDeNomina';
+$route['obtener_avances_pago_nomina/:num'] = 'AvanceXEmpleadoYPagoDeNominaPiFo/getFraccionesPagoNomina/$1'; 
+$route['obtener_pagos_de_nomina_x_empleado'] = 'AvanceXEmpleadoYPagoDeNominaPiFo/getPagosXEmpleadoXSemana';
 
 /*ACCESOS*/
 $route['menu_modulos'] = 'ResourceManager/getModulos';

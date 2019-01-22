@@ -96,7 +96,7 @@ class Sesion extends CI_Controller {
                              * 96 CORTE MUESTRAS 
                              * 
                              * */
-                            $this->load->view('vAvanceXEmpleadoYPagoDeNominaManoDeObra');
+                            $this->load->view('vAvanceXEmpleadoYPagoDeNominaPiFo');
                             break;
                     }
                     break;
@@ -109,8 +109,7 @@ class Sesion extends CI_Controller {
 
     public function getLogoByID() {
         try {
-            $data = $this->um->getLogoByID();
-            print json_encode($data);
+            print json_encode($this->um->getLogoByID());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
