@@ -543,8 +543,8 @@
                         TpOrdenCompra: dtm.Tp
                     }).done(function (data) {
                         o_cs.push({
-                            Tp: tp,
-                            OC: tpoc
+                            Tp: dtm.Tp,
+                            OC: oc
                         });
                         btnCerrarCompra.removeClass('d-none');
                         onNotifyOld('fa fa-check', 'CANTIDAD ACTUALIZADA', 'info');

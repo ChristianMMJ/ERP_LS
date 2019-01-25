@@ -2,7 +2,7 @@
     <div class="card-body ">
         <div class="row">
             <div class="col-sm-9 float-left">
-                <legend class="float-left" id="Titulo">Salidas del Almacén General de Materia Prima
+                <legend class="float-left" id="Titulo">Salidas del Sub-Almacén de Materia Prima
                     <span class="badge badge-danger" >Mat. a entregar</span>
                     <span class="badge badge-info" id="EntregaMat"></span>
                 </legend>
@@ -38,22 +38,12 @@
                 <label for="" >Tipo Mov.*</label>
                 <select id="TipoMov" name="TipoMov" class="form-control form-control-sm required" required="">
                     <option value=""></option>
-                    <option value="SXM">SXM - SALIDA A MAQUILAS</option>
                     <option value="SPR">SPR - SALIDA A PRODUCCIÓN</option>
                     <option value="SDV">SDV - SALIDA POR DEVOLUCIÓN</option>
                     <option value="SAJ">SAJ - SALIDA POR AJUSTE</option>
                     <option value="SXP">SXP - SALIDA POR PIOCHA</option>
                     <option value="SXC">SXC - SALIDA POR CALIDAD</option>
-                    <option value="SXV">SXV - SALIDA POR VENTA OBSOLETA</option>
-                    <option value="STR">STR - SALIDA POR TRASPASO</option>
                 </select>
-            </div>
-            <div class="col-6 col-sm-5 col-md-3 col-lg-2 col-xl-2">
-                <label for="">Mat Ent. de Otra Maq</label>
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input selectNotEnter" id="MatOtraMaquila" name="MatOtraMaquila" >
-                    <label class="custom-control-label" for="MatOtraMaquila"></label>
-                </div>
             </div>
         </div>
         <div class="row" id="Detalle">
@@ -85,7 +75,7 @@
             </div>
         </div>
         <div class="row mt-2">
-            <div id="Movimientos" class="col-12 col-sm-12 col-md-7">
+            <div id="Movimientos" class="col-12 col-sm-12 col-md-12">
                 <h5>Material a entregar de este documento</h5>
                 <div class="row">
                     <table id="tblMovimientos" class="table table-sm display " style="width:100%">
@@ -104,40 +94,17 @@
                     </table>
                 </div>
             </div>
-            <div id="MatEntregado" class="col-12 col-sm-12 col-md-5">
-                <h5>Total de Material Entregado Maq-Sem</h5>
-                <div class="row">
-                    <table id="tblMatEntregado" class="table table-sm display " style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Documento</th>
-                                <th>Artículo</th>
-                                <th>Cantidad</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                        <tfoot>
-                            <tr>
-                                <th colspan="2">Total Entregado:</th>
-                                <th></th>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
         </div>
     </div>
 </div>
 <script>
-    var master_url = base_url + 'index.php/SalidasAlmacenMP/';
+    var master_url = base_url + 'index.php/SalidasSubAlmacenMP/';
     var pnlTablero = $("#pnlTablero");
     var btnGuardar = pnlTablero.find('#btnGuardar');
     var btnNuevo = pnlTablero.find('#btnNuevo');
     var btnTerminarCaptura = pnlTablero.find('#btnTerminarCaptura');
     var tblMovimientos = $('#tblMovimientos');
     var Movimientos;
-    var tblMatEntregado = $('#tblMatEntregado');
-    var MatEntregado;
     var nuevo = true;
     $(document).ready(function () {
         /*FUNCIONES INICIALES*/
@@ -147,7 +114,6 @@
         handleEnter();
         getArticulos();
         getRecords('0', '0');
-        getMatEntregado('', '', '', '');
         pnlTablero.find("#Ano").change(function () {
             if (parseInt($(this).val()) < 2016 || parseInt($(this).val()) > 2020 || $(this).val() === '') {
                 swal({
@@ -175,78 +141,27 @@
             getFolio();
         });
         pnlTablero.find("#TipoMov").change(function () {
-            var maq = pnlTablero.find("#Maq").val();
-            if (maq !== '1' && $(this).val() === 'SAJ') {
-                swal({
-                    title: "ATENCIÓN",
-                    text: "SALIDA POR AJUSTE SÓLO APLICA PARA MAQUILA 1",
-                    icon: "warning"
-                }).then((value) => {
-                    if (value) {
-                        $(this)[0].selectize.focus();
-                        $(this)[0].selectize.setValue('', true);
-                    }
-                });
-            }
-            if (maq === '1' && $(this).val() === 'SXM') {
-                swal({
-                    title: "ATENCIÓN",
-                    text: "SALIDA A MAQUILA(SXM) NO APLICA EN MAQUILA 1",
-                    icon: "warning"
-                }).then((value) => {
-                    if (value) {
-                        $(this)[0].selectize.focus();
-                        $(this)[0].selectize.setValue('', true);
-                    }
+
+            isValid('Encabezado');
+            if (valido) {
+                pnlTablero.find('#Encabezado').find('input').addClass('disabledForms');
+                pnlTablero.find('#Detalle').find('input, button').removeClass('disabledForms');
+                $.when(pnlTablero.find("#Articulo")[0].selectize.enable()).then(function (data, textStatus, jqXHR) {
+                    pnlTablero.find("#TipoMov")[0].selectize.disable()
+                    pnlTablero.find("#Articulo")[0].selectize.focus();
                 });
             } else {
-                isValid('Encabezado');
-                if (valido) {
-                    pnlTablero.find('#Encabezado').find('input').addClass('disabledForms');
-                    pnlTablero.find('#Detalle').find('input, button').removeClass('disabledForms');
-                    $.when(pnlTablero.find("#Articulo")[0].selectize.enable()).then(function (data, textStatus, jqXHR) {
-                        pnlTablero.find("#TipoMov")[0].selectize.disable()
-                        pnlTablero.find("#Articulo")[0].selectize.focus();
-                    });
-                } else {
-                    swal('ATENCION', 'Completa los campos requeridos', 'warning');
-                    pnlTablero.find('#Detalle').find('input, button').addClass('disabledForms');
-                    pnlTablero.find("#Articulo")[0].selectize.disable();
-                }
+                swal('ATENCION', 'Completa los campos requeridos', 'warning');
+                pnlTablero.find('#Detalle').find('input, button').addClass('disabledForms');
+                pnlTablero.find("#Articulo")[0].selectize.disable();
             }
+
 
         });
         pnlTablero.find("#Articulo").change(function () {
             var maq = pnlTablero.find("#Maq").val();
-            var ano = pnlTablero.find("#Ano").val();
-            var sem = pnlTablero.find("#Sem").val();
             if (maq !== '') {
-                $.getJSON(master_url + 'getDatosByArticulo', {
-                    Articulo: $(this).val(),
-                    Maquila: maq,
-                    Depto1: depto1,
-                    Depto2: depto2,
-                    Depto3: depto3
-                }).done(function (data) {
-                    if (data.length > 0) {
-                        pnlTablero.find('#Precio').val(data[0].Precio);
-                        pnlTablero.find('#Unidad').val(data[0].Unidad);
-
-                        getMatEntregado(ano, maq, sem, pnlTablero.find("#Articulo").val());
-                    } else {
-                        swal({
-                            title: "ATENCIÓN",
-                            text: "EL TIPO DE ARTÍCULO (10,80,90) NO COINCIDE CON EL TIPO DE ARTÍCULO A ENTREGAR DE LA MAQUILA",
-                            icon: "warning"
-                        }).then((value) => {
-                            pnlTablero.find('#Maq').focus();
-                            pnlTablero.find("#Articulo")[0].selectize.setValue('', true);
-                        });
-                    }
-                }).fail(function (x, y, z) {
-                    swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-                    console.log(x.responseText);
-                });
+                getDatosByArticulo($(this).val(), maq);
             } else {
                 swal({
                     title: "ATENCIÓN",
@@ -271,7 +186,6 @@
                 var Articulo = pnlTablero.find("#Articulo").val();
                 var precio = pnlTablero.find("#Precio").val();
                 var cantidad = pnlTablero.find('#Cantidad').val();
-                var matOtraMaquila = pnlTablero.find("#MatOtraMaquila")[0].checked ? 1 : 0
                 var subtotal = precio * cantidad;
                 $.post(master_url + 'onAgregar', {
                     Articulo: Articulo,
@@ -282,8 +196,7 @@
                     TipoMov: tipoMov,
                     Maq: maq,
                     Sem: sem,
-                    Subtotal: subtotal,
-                    MatOtraMaquila: matOtraMaquila
+                    Subtotal: subtotal
                 }).done(function (data) {
                     onNotifyOld('fa fa-check', 'REGISTRO GUARDADO', 'info');
                     if (nuevo) {
@@ -293,7 +206,6 @@
                         Movimientos.ajax.reload();
 
                     }
-                    MatEntregado.ajax.reload();
                     pnlTablero.find('#Detalle').find("input").val('');
                     pnlTablero.find("#Articulo")[0].selectize.clear(true);
                     pnlTablero.find("#Articulo")[0].selectize.focus();
@@ -307,7 +219,6 @@
         btnNuevo.click(function () {
             nuevo = true;
             Movimientos.clear().draw();
-            MatEntregado.clear().draw();
             pnlTablero.find("input").val("");
             $.each(pnlTablero.find("select"), function (k, v) {
                 pnlTablero.find("select")[k].selectize.clear(true);
@@ -317,9 +228,6 @@
             pnlTablero.find("#Articulo")[0].selectize.disable();
             pnlTablero.find("#FechaMov").val(getToday());
             pnlTablero.find("#Maq").focus();
-            depto1 = '';
-            depto2 = '';
-            depto3 = '';
         });
         btnTerminarCaptura.click(function () {
             var docMov = pnlTablero.find("#DocMov").val();
@@ -358,93 +266,6 @@
         });
     });
 
-    function getMatEntregado(ano, maq, sem, art) {
-        temp = 0;
-        HoldOn.open({
-            theme: 'sk-cube',
-            message: 'CARGANDO...'
-        });
-        $.fn.dataTable.ext.errMode = 'throw';
-        if ($.fn.DataTable.isDataTable('#tblMatEntregado')) {
-            tblMatEntregado.DataTable().destroy();
-        }
-        MatEntregado = tblMatEntregado.DataTable({
-            "dom": 'rt',
-            buttons: buttons,
-            orderCellsTop: true,
-            fixedHeader: true,
-            "ajax": {
-                "url": master_url + 'getMatEntregado',
-                "data": {
-                    Ano: ano,
-                    Maq: maq,
-                    Sem: sem,
-                    Articulo: art
-                },
-                "type": "POST",
-                "dataSrc": ""
-            },
-            "columns": [
-                {"data": "DocMov"},
-                {"data": "Articulo"},
-                {"data": "CantidadMov"}
-            ],
-            language: lang,
-            "autoWidth": true,
-            "colReorder": true,
-            "displayLength": 50,
-            "scrollY": 260,
-            "bLengthChange": false,
-            "deferRender": true,
-            "scrollCollapse": false,
-            "bSort": true,
-            "aaSorting": [
-                [0, 'desc'], [1, 'asc']
-            ],
-            "createdRow": function (row, data, index) {
-                $.each($(row).find("td"), function (k, v) {
-                    var c = $(v);
-                    var index = parseInt(k);
-                    switch (index) {
-                        case 0:
-                            /*FECHA ORDEN*/
-                            c.addClass('text-strong');
-                            break;
-                        case 1:
-                            /*FECHA ENTREGA*/
-                            c.addClass('text-success text-strong');
-                            break;
-                        case 2:
-                            /*fecha conf*/
-                            c.addClass('text-info text-strong');
-                            break;
-                    }
-                });
-            },
-            "footerCallback": function (row, data, start, end, display) {
-                var api = this.api();//Get access to Datatable API
-                // Update footer
-                var total = api.column(2).data().reduce(function (a, b) {
-                    var ax = 0, bx = 0;
-                    ax = $.isNumeric(a) ? parseFloat(a) : 0;
-                    bx = $.isNumeric(getNumberFloat(b)) ? getNumberFloat(b) : 0;
-                    return  (ax + bx);
-                }, 0);
-                $(api.column(2).footer()).html(api.column(2, {page: 'current'}).data().reduce(function (a, b) {
-                    return  '<span class="badge badge-info">' + $.number(parseFloat(total), 3, '.', ',') + '</span>';
-                }, 0));
-            },
-            initComplete: function (a, b) {
-                HoldOn.close();
-            }
-        });
-
-        tblMatEntregado.find('tbody').on('click', 'tr', function () {
-            MatEntregado.find("tbody tr").removeClass("success");
-            $(this).addClass("success");
-
-        });
-    }
     function getRecords(doc, maq) {
         temp = 0;
         HoldOn.open({
@@ -539,7 +360,20 @@
                 + ('0' + currentdate.getSeconds()).slice(-2);
         pnlTablero.find('#DocMov').val(datetime);
     }
-
+    function getDatosByArticulo(art, maq) {
+        $.getJSON(master_url + 'getDatosByArticulo', {
+            Articulo: art,
+            Maquila: maq
+        }).done(function (data) {
+            if (data.length > 0) {
+                pnlTablero.find('#Precio').val(data[0].Precio);
+                pnlTablero.find('#Unidad').val(data[0].Unidad);
+            }
+        }).fail(function (x, y, z) {
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
+            console.log(x.responseText);
+        });
+    }
     function getArticulos() {
         HoldOn.open({theme: 'sk-bounce', message: 'INCIALIZANDO DATOS...'});
         $.when($.getJSON(master_url + 'getArticulos').done(function (data) {
@@ -555,25 +389,21 @@
         });
 
     }
-    var depto1, depto2, depto3;
     function onComprobarMaquilas(v) {
         $.getJSON(master_url + 'onComprobarMaquilas', {Clave: $(v).val()}).done(function (data) {
 
             if (data.length > 0) {
-//                if (parseInt($(v).val()) === 97) {
-//                    swal({
-//                        title: "ATENCIÓN",
-//                        text: "LOS MOVIMIENTOS A SUB ALMACEN (97) SE HACEN EN OTRO MÓDULO",
-//                        icon: "warning"
-//                    }).then((value) => {
-//                        $(v).val('').focus();
-//                    });
-//                } else {
-//
-//                }
-                depto1 = data[0].Depto1;
-                depto2 = data[0].Depto2;
-                depto3 = data[0].Depto3;
+                if (parseInt($(v).val()) > 1) {
+                    swal({
+                        title: "ATENCIÓN",
+                        text: "SÓLO SE PUEDEN HACER SALIDAS A PRODUCCIÓN O A MAQUILA 1 POR DEVOLUCIÓN",
+                        icon: "warning"
+                    }).then((value) => {
+                        $(v).val('').focus();
+                    });
+                } else {
+
+                }
                 pnlTablero.find('#EntregaMat').text(data[0].EntregaMat);
             } else {
                 swal({

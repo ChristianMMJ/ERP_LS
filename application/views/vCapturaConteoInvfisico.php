@@ -83,7 +83,7 @@
             $.each(mdlCapturaConteoInvFisico.find("select"), function (k, v) {
                 mdlCapturaConteoInvFisico.find("select")[k].selectize.clear(true);
             });
-            getArticulos();
+            getArticulosConteo();
             mdlCapturaConteoInvFisico.find('#Maq')[0].selectize.focus();
         });
 
@@ -136,7 +136,7 @@
         });
     });
 
-    function getArticulos() {
+    function getArticulosConteo() {
         mdlCapturaConteoInvFisico.find("#Articulo")[0].selectize.clear(true);
         mdlCapturaConteoInvFisico.find("#Articulo")[0].selectize.clearOptions();
         $.getJSON(base_url + 'index.php/CapturaInventarios/getArticulos').done(function (data) {

@@ -186,9 +186,9 @@ class RecibeOrdenCompra extends CI_Controller {
                     print $Doc_Salida;
                 }
 //Graba en movarticulos_fabrica
-                if ($v->Maq === '98') {
-                    $this->Recibeordencompra_model->onAgregarMovArtFabrica($datos);
-                }
+//                if ($v->Maq === '97') {
+//                    $this->Recibeordencompra_model->onAgregarMovArtFabrica($datos);
+//                }
             }
 //Inserta doc en cartera de proveedores
             $CompraCarProv = $this->Recibeordencompra_model->getCompraParaCartProv($this->input->post('Factura'), $this->input->post('TpDoc'), $this->input->post('Proveedor'));

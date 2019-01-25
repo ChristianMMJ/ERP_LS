@@ -24,13 +24,14 @@ class EntradasAlmacenMP_model extends CI_Model {
         }
     }
 
-    public function getDatosByArticulo($Mat, $Maq) {
+    public function getDatosByArticulo($Mat, $Maq, $d1, $d2, $d3) {
         try {
             $this->db->select("PM.Precio, U.Descripcion AS Unidad "
                             . "")
                     ->from("articulos AS M")
                     ->join("unidades AS U", 'ON U.Clave = M.UnidadMedida')
                     ->join("preciosmaquilas AS PM", 'ON M.Clave = PM.Articulo')
+                    ->where_in("M.Departamento", array($d1, $d2, $d3))
                     ->where("M.Clave", $Mat)
                     ->where("PM.Maquila", $Maq);
             $query = $this->db->get();

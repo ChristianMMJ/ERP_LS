@@ -47,5 +47,7 @@ $this->load->view('vEtiquetasInventario');
 $this->load->view('vInventarioAnual');
 $this->load->view('vExplosionSemanalCliente');
 $this->load->view('vExplosionSemanalArticulo');
+$this->load->view('vCotejaExplosionOrdCom');
+
 
 

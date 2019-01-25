@@ -5,12 +5,12 @@ header('Access-Control-Allow-Origin: *');
 defined('BASEPATH') OR exit('No direct script access allowed');
 require_once APPPATH . "/third_party/fpdf17/fpdf.php";
 
-class SalidasAlmacenMP extends CI_Controller {
+class EntradasSubAlmacenMP extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('SalidasAlmacenMP_model')
+        $this->load->library('session')->model('EntradasSubAlmacenMP_model')
                 ->helper('reportesalmacen_helper')->helper('file');
     }
 
@@ -29,7 +29,7 @@ class SalidasAlmacenMP extends CI_Controller {
             }
 
             $this->load->view('vFondo');
-            $this->load->view('vSalidasAlmacenMP');
+            $this->load->view('vEntradasSubAlmacenMP');
             $this->load->view('vFooter');
         } else {
             $this->load->view('vEncabezado');
@@ -40,16 +40,7 @@ class SalidasAlmacenMP extends CI_Controller {
 
     public function getRecords() {
         try {
-
-            print json_encode($this->SalidasAlmacenMP_model->getRecords($this->input->post('DocMov')));
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function getMatEntregado() {
-        try {
-            print json_encode($this->SalidasAlmacenMP_model->getMatEntregado($this->input->post('Ano'), $this->input->post('Maq'), $this->input->post('Sem'), $this->input->post('Articulo')));
+            print json_encode($this->EntradasSubAlmacenMP_model->getRecords($this->input->post('DocMov')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -57,9 +48,7 @@ class SalidasAlmacenMP extends CI_Controller {
 
     public function getDatosByArticulo() {
         try {
-            print json_encode($this->SalidasAlmacenMP_model->getDatosByArticulo(
-                                    $this->input->get('Articulo'), $this->input->get('Maquila'), $this->input->get('Depto1'), $this->input->get('Depto2'), $this->input->get('Depto3')
-            ));
+            print json_encode($this->EntradasSubAlmacenMP_model->getDatosByArticulo($this->input->get('Articulo'), $this->input->get('Maquila')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -67,7 +56,7 @@ class SalidasAlmacenMP extends CI_Controller {
 
     public function getArticulos() {
         try {
-            print json_encode($this->SalidasAlmacenMP_model->getArticulos());
+            print json_encode($this->EntradasSubAlmacenMP_model->getArticulos());
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -75,7 +64,7 @@ class SalidasAlmacenMP extends CI_Controller {
 
     public function onComprobarSemanasProduccion() {
         try {
-            print json_encode($this->SalidasAlmacenMP_model->onComprobarSemanasProduccion($this->input->get('Clave'), $this->input->get('Ano')));
+            print json_encode($this->EntradasSubAlmacenMP_model->onComprobarSemanasProduccion($this->input->get('Clave'), $this->input->get('Ano')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -84,7 +73,7 @@ class SalidasAlmacenMP extends CI_Controller {
     public function onVerificarSemanaProdCerrada() {
         try {
 
-            print json_encode($this->SalidasAlmacenMP_model->onVerificarSemanaProdCerrada(
+            print json_encode($this->EntradasSubAlmacenMP_model->onVerificarSemanaProdCerrada(
                                     $this->input->get('Ano'), $this->input->get('Maq'), $this->input->get('Sem')
             ));
         } catch (Exception $exc) {
@@ -94,7 +83,7 @@ class SalidasAlmacenMP extends CI_Controller {
 
     public function onComprobarMaquilas() {
         try {
-            print json_encode($this->SalidasAlmacenMP_model->onComprobarMaquilas($this->input->get('Clave')));
+            print json_encode($this->EntradasSubAlmacenMP_model->onComprobarMaquilas($this->input->get('Clave')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -103,48 +92,23 @@ class SalidasAlmacenMP extends CI_Controller {
     public function onAgregar() {
         try {
             $x = $this->input;
-
-            $maq = intval($x->post('Maq'));
-            $mov = $x->post('TipoMov');
             $datos = array(
                 'Articulo' => $x->post('Articulo'),
                 'PrecioMov' => $x->post('PrecioMov'),
                 'CantidadMov' => $x->post('CantidadMov'),
                 'FechaMov' => $x->post('FechaMov'),
-                'EntradaSalida' => '2',
+                'EntradaSalida' => '1',
                 'TipoMov' => $x->post('TipoMov'),
                 'DocMov' => $x->post('DocMov'),
                 'Tp' => '',
                 'Maq' => $x->post('Maq'),
                 'Sem' => $x->post('Sem'),
                 'OrdenCompra' => '',
-                'Subtotal' => $x->post('Subtotal'),
-                'MatOtraMaquila' => $x->post('MatOtraMaquila')
-            );
-            $datosEntradaMovArtFabrica = array(
-                'Articulo' => $x->post('Articulo'),
-                'PrecioMov' => $x->post('PrecioMov'),
-                'CantidadMov' => $x->post('CantidadMov'),
-                'FechaMov' => $x->post('FechaMov'),
-                'EntradaSalida' => '1',
-                'TipoMov' => 'EXM', /* entrada de maquila 1 a 97 */
-                'DocMov' => $x->post('DocMov'),
-                'Tp' => '',
-                'Maq' => '1', /* entrada de maquila 1 */
-                'Sem' => $x->post('Sem'),
-                'OrdenCompra' => '',
-                'Subtotal' => $x->post('Subtotal'),
+                'Subtotal' => $x->post('Subtotal')
             );
 
-
-            if ($maq < 96 || $maq === 98) {
-                $this->SalidasAlmacenMP_model->onAgregar($datos);
-            }
-
-            if ($maq === 97) {
-                $this->SalidasAlmacenMP_model->onAgregar($datos);
-                $this->SalidasAlmacenMP_model->onAgregarSubAlmacen($datosEntradaMovArtFabrica);
-            }
+            $ID = $this->EntradasSubAlmacenMP_model->onAgregar($datos);
+            print $ID;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -152,7 +116,7 @@ class SalidasAlmacenMP extends CI_Controller {
 
     public function onEliminarDetalleByID() {
         try {
-            $this->SalidasAlmacenMP_model->onEliminarDetalleByID($this->input->post('ID'));
+            $this->EntradasSubAlmacenMP_model->onEliminarDetalleByID($this->input->post('ID'));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -161,9 +125,9 @@ class SalidasAlmacenMP extends CI_Controller {
     /* REPORTES */
 
     public function onImprimirValeEntrada() {
-        $Doc = $this->SalidasAlmacenMP_model->onImprimirReporte($this->input->post('Doc'));
+        $Doc = $this->EntradasSubAlmacenMP_model->onImprimirReporte($this->input->post('Doc'));
         if (!empty($Doc)) {
-            $pdf = new PDFSalidaAlm('P', 'mm', array(215.9, 279.4));
+            $pdf = new PDFAlm('P', 'mm', array(215.9, 279.4));
 
             $pdf->Doc = $Doc[0]->DocMov;
             $pdf->Sem = $Doc[0]->Sem;
@@ -204,14 +168,14 @@ class SalidasAlmacenMP extends CI_Controller {
 
 
             /* FIN RESUMEN */
-            $path = 'uploads/Reportes/SalidasAlmacen';
+            $path = 'uploads/Reportes/EntradasAlmacen';
             if (!file_exists($path)) {
                 mkdir($path, 0777, true);
             }
-            $file_name = "SALIDA AL ALMACEN DIVERSA " . date("d-m-Y his");
+            $file_name = "ENTRADA AL ALMACEN DIVERSA " . date("d-m-Y his");
             $url = $path . '/' . $file_name . '.pdf';
             /* Borramos el archivo anterior */
-            if (delete_files('uploads/Reportes/SalidasAlmacen/')) {
+            if (delete_files('uploads/Reportes/EntradasAlmacen/')) {
                 /* ELIMINA LA EXISTENCIA DE CUALQUIER ARCHIVO EN EL DIRECTORIO */
             }
             $pdf->Output($url);

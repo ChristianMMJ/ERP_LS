@@ -2,7 +2,7 @@
     <div class="card-body ">
         <div class="row">
             <div class="col-sm-9 float-left">
-                <legend class="float-left">Entradas Al Almacén de Materia Prima</legend>
+                <legend class="float-left">Entradas Al Almacén General de Materia Prima</legend>
             </div>
             <div class="col-sm-3" align="right">
                 <button type="button" class="btn btn-info btn-sm " id="btnNuevo" >
