@@ -25,7 +25,7 @@ class ReporteCotejaOrdComExplosion_model extends CI_Model {
                                 where OC.Articulo = A.Clave
                                 and OC.Maq BETWEEN $Maquila AND $aMaquila
                                 AND OC.Sem BETWEEN $Semana AND $aSemana
-                                AND OC.Ano =  2018
+                                AND OC.Ano =  $Ano
                                 AND OC.Estatus NOT IN ('CANCELADA','INACTIVA')
                                  ),0) AS CantPedida,"
                             /* Compras recibidas  quitar el año y poner parameto */
@@ -33,7 +33,7 @@ class ReporteCotejaOrdComExplosion_model extends CI_Model {
                                 where OC.Articulo = A.Clave
                                 and OC.Maq BETWEEN $Maquila AND $aMaquila
                                 AND OC.Sem BETWEEN $Semana AND $aSemana
-                                AND OC.Ano =  2018
+                                AND OC.Ano =  $Ano
                                 AND OC.Estatus NOT IN ('CANCELADA','INACTIVA')
                                 ),0) AS CantEntregada,"
                             /* Entregado a maquilas */
@@ -43,7 +43,7 @@ class ReporteCotejaOrdComExplosion_model extends CI_Model {
                                 and MA.Articulo = A.Clave
                                 and MA.Maq BETWEEN $Maquila AND $aMaquila
                                 AND MA.Sem BETWEEN $Semana AND $aSemana
-                                AND YEAR(STR_TO_DATE(MA.FechaMov, \"%d/%m/%Y\")) = 2019
+                                AND YEAR(STR_TO_DATE(MA.FechaMov, \"%d/%m/%Y\")) = $Ano
                                 ),0) AS EntregadoMaquilas, "
                             . "CASE WHEN E.PiezasCorte <= 10 THEN
                                 MA.PorExtra3a10
