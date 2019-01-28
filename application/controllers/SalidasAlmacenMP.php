@@ -115,6 +115,7 @@ class SalidasAlmacenMP extends CI_Controller {
                 'TipoMov' => $x->post('TipoMov'),
                 'DocMov' => $x->post('DocMov'),
                 'Tp' => '',
+                'Ano' => $x->post('Ano'),
                 'Maq' => $x->post('Maq'),
                 'Sem' => $x->post('Sem'),
                 'OrdenCompra' => '',
@@ -130,6 +131,7 @@ class SalidasAlmacenMP extends CI_Controller {
                 'TipoMov' => 'EXM', /* entrada de maquila 1 a 97 */
                 'DocMov' => $x->post('DocMov'),
                 'Tp' => '',
+                'Ano' => $x->post('Ano'),
                 'Maq' => '1', /* entrada de maquila 1 */
                 'Sem' => $x->post('Sem'),
                 'OrdenCompra' => '',

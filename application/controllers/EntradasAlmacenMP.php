@@ -101,6 +101,7 @@ class EntradasAlmacenMP extends CI_Controller {
                 'TipoMov' => $x->post('TipoMov'),
                 'DocMov' => $x->post('DocMov'),
                 'Tp' => '',
+                'Ano' => $x->post('Ano'),
                 'Maq' => $x->post('Maq'),
                 'Sem' => $x->post('Sem'),
                 'OrdenCompra' => '',

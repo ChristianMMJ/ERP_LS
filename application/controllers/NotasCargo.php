@@ -112,6 +112,7 @@ class NotasCargo extends CI_Controller {
                     'TipoMov' => 'SXO',
                     'Tp' => $Tp,
                     'Maq' => '1',
+                    'Ano' => Date('Y'),
                     'OrdenCompra' => $R->DocCartProv,
                     'Subtotal' => $R->Subtotal,
                     'Proveedor' => $Proveedor

@@ -12,7 +12,7 @@ class ExistenciasSuelasPlantas_model extends CI_Model {
 
     public function getRecords($Art, $Mes) {
         try {
-
+            $Año_Act = Date('Y');
             $meses = array('Dic', 'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic');
             if (intval($Mes) > 0) {
                 $MesInvAct = $Mes;
@@ -30,10 +30,12 @@ class ExistenciasSuelasPlantas_model extends CI_Model {
                         (IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '1'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0) -
                         IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '2'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0)
                    ) AS Existencia  "
                     . "FROM suelascompras SC "
@@ -46,10 +48,12 @@ class ExistenciasSuelasPlantas_model extends CI_Model {
                         (IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '1'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0) -
                         IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '2'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0)
                    ) AS Existencia  "
                     . "FROM suelascompras SC "
@@ -62,10 +66,12 @@ class ExistenciasSuelasPlantas_model extends CI_Model {
                         (IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '1'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0) -
                         IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '2'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0)
                    ) AS Existencia  "
                     . "FROM suelascompras SC "
@@ -78,10 +84,12 @@ class ExistenciasSuelasPlantas_model extends CI_Model {
                         (IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '1'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0) -
                         IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '2'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0)
                    ) AS Existencia  "
                     . "FROM suelascompras SC "
@@ -94,10 +102,12 @@ class ExistenciasSuelasPlantas_model extends CI_Model {
                         (IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '1'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0) -
                         IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '2'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0)
                    ) AS Existencia  "
                     . "FROM suelascompras SC "
@@ -110,10 +120,12 @@ class ExistenciasSuelasPlantas_model extends CI_Model {
                         (IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '1'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0) -
                         IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '2'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0)
                    ) AS Existencia  "
                     . "FROM suelascompras SC "
@@ -126,10 +138,12 @@ class ExistenciasSuelasPlantas_model extends CI_Model {
                         (IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '1'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0) -
                         IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '2'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0)
                    ) AS Existencia  "
                     . "FROM suelascompras SC "
@@ -142,10 +156,12 @@ class ExistenciasSuelasPlantas_model extends CI_Model {
                         (IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '1'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0) -
                         IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '2'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0)
                    ) AS Existencia  "
                     . "FROM suelascompras SC "
@@ -158,10 +174,12 @@ class ExistenciasSuelasPlantas_model extends CI_Model {
                         (IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '1'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0) -
                         IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '2'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0)
                    ) AS Existencia  "
                     . "FROM suelascompras SC "
@@ -174,10 +192,12 @@ class ExistenciasSuelasPlantas_model extends CI_Model {
                         (IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '1'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0) -
                         IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '2'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0)
                    ) AS Existencia  "
                     . "FROM suelascompras SC "
@@ -190,10 +210,12 @@ class ExistenciasSuelasPlantas_model extends CI_Model {
                         (IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '1'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0) -
                         IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '2'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0)
                    ) AS Existencia  "
                     . "FROM suelascompras SC "
@@ -206,10 +228,12 @@ class ExistenciasSuelasPlantas_model extends CI_Model {
                         (IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '1'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0) -
                         IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '2'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0)
                    ) AS Existencia  "
                     . "FROM suelascompras SC "
@@ -222,10 +246,12 @@ class ExistenciasSuelasPlantas_model extends CI_Model {
                         (IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '1'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0) -
                         IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '2'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0)
                    ) AS Existencia  "
                     . "FROM suelascompras SC "
@@ -238,10 +264,12 @@ class ExistenciasSuelasPlantas_model extends CI_Model {
                         (IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '1'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0) -
                         IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '2'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0)
                    ) AS Existencia  "
                     . "FROM suelascompras SC "
@@ -254,10 +282,12 @@ class ExistenciasSuelasPlantas_model extends CI_Model {
                         (IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '1'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0) -
                         IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '2'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0)
                    ) AS Existencia  "
                     . "FROM suelascompras SC "
@@ -270,10 +300,12 @@ class ExistenciasSuelasPlantas_model extends CI_Model {
                         (IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '1'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0) -
                         IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '2'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0)
                    ) AS Existencia  "
                     . "FROM suelascompras SC "
@@ -286,10 +318,12 @@ class ExistenciasSuelasPlantas_model extends CI_Model {
                         (IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '1'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0) -
                         IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '2'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0)
                    ) AS Existencia  "
                     . "FROM suelascompras SC "
@@ -302,10 +336,12 @@ class ExistenciasSuelasPlantas_model extends CI_Model {
                         (IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '1'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0) -
                         IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '2'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0)
                    ) AS Existencia  "
                     . "FROM suelascompras SC "
@@ -318,10 +354,12 @@ class ExistenciasSuelasPlantas_model extends CI_Model {
                         (IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '1'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0) -
                         IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '2'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0)
                    ) AS Existencia  "
                     . "FROM suelascompras SC "
@@ -334,10 +372,12 @@ class ExistenciasSuelasPlantas_model extends CI_Model {
                         (IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '1'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0) -
                         IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '2'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0)
                    ) AS Existencia  "
                     . "FROM suelascompras SC "
@@ -350,10 +390,12 @@ class ExistenciasSuelasPlantas_model extends CI_Model {
                         (IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '1'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0) -
                         IFNULL((select sum(CantidadMov)
                         from movarticulos
                         where Articulo = A.Clave and EntradaSalida  = '2'
+                        and year(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $Año_Act
                         and month(date_format(str_to_date(FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = $MesInvAct ),0)
                    ) AS Existencia  "
                     . "FROM suelascompras SC "

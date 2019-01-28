@@ -159,6 +159,7 @@ class RecibeOrdenCompra extends CI_Controller {
                     'Tp' => $v->Tp,
                     'Maq' => $v->Maq,
                     'Sem' => $v->Sem,
+                    'Ano' => $v->Ano,
                     'OrdenCompra' => $v->OrdenCompra,
                     'Subtotal' => $v->Subtotal
                 );
@@ -179,6 +180,7 @@ class RecibeOrdenCompra extends CI_Controller {
                         'Tp' => $v->Tp,
                         'Maq' => $v->Maq,
                         'Sem' => $v->Sem,
+                        'Ano' => $v->Ano,
                         'OrdenCompra' => $v->Doc,
                         'Subtotal' => $v->Subtotal
                     );
@@ -239,6 +241,7 @@ class RecibeOrdenCompra extends CI_Controller {
                 'Subtotal' => $x->post('Subtotal'),
                 'Maq' => $x->post('Maq'),
                 'Sem' => $x->post('Sem'),
+                'Ano' => $x->post('Ano'),
                 'Departamento' => $x->post('Departamento'),
                 'Estatus' => 'BORRADOR',
                 'Registro' => date("d/m/Y")
@@ -272,6 +275,7 @@ class RecibeOrdenCompra extends CI_Controller {
                 'Subtotal' => $x->post('Subtotal'),
                 'Maq' => $x->post('Maq'),
                 'Sem' => $x->post('Sem'),
+                'Ano' => $x->post('Ano'),
                 'Departamento' => $x->post('Departamento'),
                 'Estatus' => 'BORRADOR',
                 'Registro' => date("d/m/Y")

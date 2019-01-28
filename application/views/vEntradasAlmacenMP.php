@@ -207,6 +207,7 @@
             if (valido) {
                 var maq = pnlTablero.find("#Maq").val();
                 var sem = pnlTablero.find('#Sem').val();
+                var ano = pnlTablero.find('#Ano').val();
                 var docMov = pnlTablero.find("#DocMov").val();
                 var fechaMov = pnlTablero.find("#FechaMov").val();
                 var tipoMov = pnlTablero.find('#TipoMov').val();
@@ -221,6 +222,7 @@
                     FechaMov: fechaMov,
                     DocMov: docMov,
                     TipoMov: tipoMov,
+                    Ano: ano,
                     Maq: maq,
                     Sem: sem,
                     Subtotal: subtotal

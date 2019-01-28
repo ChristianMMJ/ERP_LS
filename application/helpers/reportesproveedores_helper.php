@@ -87,14 +87,14 @@ class PDFCostosMateriales extends FPDF {
         $this->SetX(5);
 
         /* ENCABEZADO DETALLE TITULOS */
-        $anchos = array(0/* 0 */, 80/* 1 */, 12/* 2 */, 8/* 3 */, 15/* 4 */, 15/* 5 */, 20/* 6 */, 18/* 7 */, 18/* 8 */, 10/* 9 */, 10/* 10 */);
+        $anchos = array(0/* 0 */, 80/* 1 */, 12/* 2 */, 8/* 3 */, 14/* 4 */, 14/* 5 */, 19/* 6 */, 21/* 7 */, 20/* 8 */, 9/* 9 */, 9/* 10 */);
         $aligns = array('R', 'L', 'L', 'C', 'R', 'R', 'R', 'C', 'C', 'L', 'L');
         $this->SetWidths($anchos);
         $this->SetAligns($aligns);
 
 
         $this->Row(array('', utf8_decode('Artículo'), 'U.M.', 'Tp', 'Cant', 'Precio', 'Subtotal', 'Docto', 'Fecha', 'Maq', 'Sem'), 'B');
-        $anchos = array(10/* 0 */, 70/* 1 */, 12/* 2 */, 8/* 3 */, 15/* 4 */, 15/* 5 */, 20/* 6 */, 18/* 7 */, 18/* 8 */, 10/* 9 */, 10/* 10 */);
+        $anchos = array(10/* 0 */, 70/* 1 */, 12/* 2 */, 8/* 3 */, 14/* 4 */, 14/* 5 */, 19/* 6 */, 21/* 7 */, 20/* 8 */, 9/* 9 */, 9/* 10 */);
 
         $this->SetAligns($aligns);
         $this->SetWidths($anchos);

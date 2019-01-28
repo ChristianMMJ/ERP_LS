@@ -263,6 +263,7 @@
         btnGuardar.click(function () {
             isValid('pnlTablero');
             if (valido) {
+                var ano = pnlTablero.find("#Ano").val();
                 var maq = pnlTablero.find("#Maq").val();
                 var sem = pnlTablero.find('#Sem').val();
                 var docMov = pnlTablero.find("#DocMov").val();
@@ -282,6 +283,7 @@
                     TipoMov: tipoMov,
                     Maq: maq,
                     Sem: sem,
+                    Ano: ano,
                     Subtotal: subtotal,
                     MatOtraMaquila: matOtraMaquila
                 }).done(function (data) {

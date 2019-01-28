@@ -63,7 +63,7 @@
     $(document).ready(function () {
         /*FUNCIONES INICIALES*/
         handleEnter();
-        getRecords('0', '0', '0');
+        getRecords('0', '0', '0', '0');
         pnlTablero.find("#Maq").focus();
         pnlTablero.find("#Ano").change(function () {
             if (parseInt($(this).val()) < 2016 || parseInt($(this).val()) > 2020 || $(this).val() === '') {
@@ -94,9 +94,9 @@
         pnlTablero.find("#DocMov").change(function () {
             var maq = pnlTablero.find("#Maq").val();
             var sem = pnlTablero.find("#Sem").val();
-
+            var ano = pnlTablero.find("#Ano").val();
             if (maq !== '' && sem !== '' && $(this).val() !== '') {
-                getRecords($(this).val(), maq, sem);
+                getRecords($(this).val(), maq, sem, ano);
             } else {
                 swal({
                     title: "ATENCIÓN",
@@ -128,14 +128,15 @@
                         var maq = pnlTablero.find("#Maq").val();
                         var sem = pnlTablero.find('#Sem').val();
                         var docMov = pnlTablero.find("#DocMov").val();
-
+                        var ano = pnlTablero.find('#Ano').val();
                         $.post(master_url + 'onCancelarDoctos', {
                             DocMov: docMov,
                             Maq: maq,
-                            Sem: sem
+                            Sem: sem,
+                            Ano: ano
                         }).done(function (data) {
                             onNotifyOld('fa fa-check', 'REGISTRO CANCELADO EXITOSAMENTE', 'info');
-                            getRecords('0', '0', '0');
+                            getRecords('0', '0', '0', '0');
                             pnlTablero.find("input").val('');
                             pnlTablero.find("#Maq").focus();
                         }).fail(function (x, y, z) {
@@ -155,7 +156,7 @@
             pnlTablero.find("#Maq").focus();
         });
     });
-    function getRecords(doc, maq, sem) {
+    function getRecords(doc, maq, sem, ano) {
         temp = 0;
 
         $.fn.dataTable.ext.errMode = 'throw';
@@ -172,7 +173,8 @@
                 "data": {
                     DocMov: doc,
                     Maq: maq,
-                    Sem: sem
+                    Sem: sem,
+                    Ano: ano
                 },
                 "type": "POST",
                 "dataSrc": ""

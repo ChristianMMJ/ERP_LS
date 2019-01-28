@@ -10,7 +10,7 @@ class CancelaEntradasSalidas_model extends CI_Model {
         parent::__construct();
     }
 
-    public function getRecords($DocMov, $Maq, $Sem) {
+    public function getRecords($DocMov, $Maq, $Sem, $Ano) {
         try {
             $this->db->select("MA.Articulo, "
                     . "A.Descripcion AS DescArticulo, "
@@ -24,6 +24,7 @@ class CancelaEntradasSalidas_model extends CI_Model {
             $this->db->where("MA.DocMov", $DocMov);
             $this->db->where("MA.Maq", $Maq);
             $this->db->where("MA.Sem", $Sem);
+            $this->db->where("MA.Ano", $Ano);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY
@@ -72,7 +73,7 @@ class CancelaEntradasSalidas_model extends CI_Model {
         }
     }
 
-    public function onCancelarDoctos($DocMov, $Maq, $sem) {
+    public function onCancelarDoctos($DocMov, $Maq, $sem, $Ano) {
         try {
             $this->db->set('CantidadMov', 0)
                     ->set('Subtotal', 0)
@@ -80,13 +81,14 @@ class CancelaEntradasSalidas_model extends CI_Model {
                     ->where('DocMov', $DocMov)
                     ->where('Sem', $sem)
                     ->where('Maq', $Maq)
+                    ->where('Ano', $Ano)
                     ->update("movarticulos");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function onCancelarDoctosFabrica($DocMov, $Maq, $sem) {
+    public function onCancelarDoctosFabrica($DocMov, $Maq, $sem, $Ano) {
         try {
             $this->db->set('CantidadMov', 0)
                     ->set('Subtotal', 0)
@@ -94,6 +96,7 @@ class CancelaEntradasSalidas_model extends CI_Model {
                     ->where('DocMov', $DocMov)
                     ->where('Sem', $sem)
                     ->where('Maq', $Maq)
+                    ->where('Ano', $Ano)
                     ->update("movarticulos_fabrica");
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

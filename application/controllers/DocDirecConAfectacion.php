@@ -117,6 +117,9 @@ class DocDirecConAfectacion extends CI_Controller {
             $this->DocDirectos_model->onAgregar($datosCartProv);
 
             $maq = $this->input->post('Maq');
+            $año = substr($this->input->post('FechaDoc'), -4);
+
+
             $datos = array(
                 'Articulo' => '0',
                 'PrecioMov' => $Importe,
@@ -126,6 +129,7 @@ class DocDirecConAfectacion extends CI_Controller {
                 'TipoMov' => 'DIRECTO',
                 'DocMov' => $this->input->post('Doc'),
                 'Tp' => $this->input->post('Tp'),
+                'Ano' => $año,
                 'Maq' => $this->input->post('Maq'),
                 'OrdenCompra' => '',
                 'Subtotal' => $Importe,
@@ -133,13 +137,12 @@ class DocDirecConAfectacion extends CI_Controller {
                 'ProvDocDirecto' => $this->input->post('Proveedor'),
             );
 
-            if (intval($maq) < 98) {
-                $this->DocDirectos_model->onAgregarMovArt($datos);
+            if (intval($maq) === 97) {
+                //Graba en movarticulos_fabrica
+                $this->DocDirectos_model->onAgregarMovArtFabrica($datos);
             } else {
                 //Graba en movarticulos
                 $this->DocDirectos_model->onAgregarMovArt($datos);
-                //Graba en movarticulos_fabrica
-                $this->DocDirectos_model->onAgregarMovArtFabrica($datos);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

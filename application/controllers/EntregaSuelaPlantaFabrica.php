@@ -85,6 +85,7 @@ class EntregaSuelaPlantaFabrica extends CI_Controller {
                 'TipoMov' => 'SXM',
                 'Maq' => $x->post('Maq'),
                 'Sem' => $x->post('Sem'),
+                'Ano' => $x->post('Ano'),
                 'Subtotal' => $x->post('Subtotal'),
                 'TpoSuPlEn' => $x->post('TpoSuPlEn'),
                 'Control' => $x->post('Control')

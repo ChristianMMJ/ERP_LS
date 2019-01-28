@@ -317,7 +317,14 @@
         });
         btnAceptar.click(function () {
             var maq = pnlTablero.find("#Pares").val();
-            if (parseInt(maq) < 98) {
+            if (parseInt(maq) === 97) {
+                swal("Atención", "LA MAQUILA 97 NO PUEDE ENTREGAR SUELA/PLANTA/ENTRESUELA ", {
+                    buttons: ["Cancelar", true]
+                }).then((value) => {
+                    pnlTablero.find('#Control').val('').focus();
+                });
+            } else {
+
                 var pares_pedido = pnlTablero.find("#Pares").val();
                 var pares_salida = pnlTablero.find("#TotalParesEntrega").val();
                 if (pares_salida > pares_pedido) {
@@ -331,12 +338,6 @@
                 } else {
                     onGuardarMovimiento();
                 }
-            } else {
-                swal("Atención", "LA MAQUILA 98 NO PUEDE ENTREGAR SUELA/PLANTA/ENTRESUELA ", {
-                    buttons: ["Cancelar", true]
-                }).then((value) => {
-                    pnlTablero.find('#Control').val('').focus();
-                });
             }
 
 
@@ -396,6 +397,7 @@
                         var sem = pnlTablero.find('#Semana').val();
                         var tipo = pnlTablero.find('#Tipo').val();
                         var ctrl = pnlTablero.find('#Control').val();
+                        var ano = pnlTablero.find('#Ano').val();
                         //Agregar mov_art
                         $.ajax({
                             url: master_url + 'onAgregar',
@@ -410,7 +412,8 @@
                                 Sem: sem,
                                 Subtotal: precio * cant,
                                 TpoSuPlEn: tipo,
-                                Control: ctrl
+                                Control: ctrl,
+                                Ano: ano
                             }
                         }).done(function (data, x, jq) {
                             f1 = f1 + 1;

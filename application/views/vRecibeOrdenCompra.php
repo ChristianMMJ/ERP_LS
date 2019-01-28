@@ -96,6 +96,7 @@
                             <th>SubTotal</th>
                             <th>Maq</th>
                             <th>Sem</th>
+                            <th>Ano</th>
                             <th>Tipo</th>
                             <th>C-Articulo</th>
                         </tr>
@@ -190,6 +191,7 @@
                 Subtotal: cant_rec * Precio,
                 Maq: Maq,
                 Sem: Sem,
+                Ano: Ano,
                 Departamento: Departamento,
                 TpOrdenCompra: TpOC
             }).done(function (data) {
@@ -207,6 +209,7 @@
                 Subtotal = 0;
                 Maq = 0;
                 Sem = 0;
+                Ano = 0;
                 Departamento = 0;
                 pnlTablero.find('#Encabezado').find('.captura').addClass('disabledForms');
                 btnAgregarOC.removeClass('d-none');
@@ -415,6 +418,7 @@
                 {"data": "Subtotal"},
                 {"data": "Maq"},
                 {"data": "Sem"},
+                {"data": "Ano"},
                 {"data": "Tipo"},
                 {"data": "ClaveArticulo"}
             ],
@@ -453,6 +457,11 @@
                 },
                 {
                     "targets": [11],
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    "targets": [12],
                     "visible": false,
                     "searchable": false
                 }
@@ -539,6 +548,7 @@
                         Subtotal: dtm.Precio * value,
                         Maq: dtm.Maq,
                         Sem: dtm.Sem,
+                        Ano: dtm.Ano,
                         Departamento: dtm.Tipo,
                         TpOrdenCompra: dtm.Tp
                     }).done(function (data) {
@@ -603,15 +613,17 @@
             console.log(x.responseText);
         });
     }
-    var TpOC, Precio, Maq, Sem, Departamento;
+    var TpOC, Precio, Maq, Sem, Ano, Departamento;
     function getArticuloByTpByOC(v, Tp, Oc) {
         $.getJSON(master_url + 'getArticuloByTpByOC', {Articulo: $(v).val(), Tp: Tp, Oc: Oc}).done(function (data) {
             if (data.length > 0) {
+                console.log(data[0].Ano);
                 pnlTablero.find('#NombreArtículo').val(data[0].Descripcion);
                 pnlTablero.find('#CantidadRecibida').focus().select();
                 Precio = data[0].Precio;
                 Maq = data[0].Maq;
                 Sem = data[0].Sem;
+                Ano = data[0].Ano;
                 Departamento = data[0].Tipo;
                 TpOC = data[0].Tp;
             } else {

@@ -38,7 +38,7 @@ class CancelaEntradasSalidas extends CI_Controller {
 
     public function getRecords() {
         try {
-            print json_encode($this->CancelaEntradasSalidas_model->getRecords($this->input->post('DocMov'), $this->input->post('Maq'), $this->input->post('Sem')));
+            print json_encode($this->CancelaEntradasSalidas_model->getRecords($this->input->post('DocMov'), $this->input->post('Maq'), $this->input->post('Sem'), $this->input->post('Ano')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -74,9 +74,9 @@ class CancelaEntradasSalidas extends CI_Controller {
     public function onCancelarDoctos() {
         try {
             $x = $this->input;
-            $this->CancelaEntradasSalidas_model->onCancelarDoctos($x->post('DocMov'), $x->post('Maq'), $x->post('Sem'));
-            if (intval($x->post('Maq')) > 97) {
-                $this->CancelaEntradasSalidas_model->onCancelarDoctosFabrica($x->post('DocMov'), $x->post('Maq'), $x->post('Sem'));
+            $this->CancelaEntradasSalidas_model->onCancelarDoctos($x->post('DocMov'), $x->post('Maq'), $x->post('Sem'), $x->post('Ano'));
+            if (intval($x->post('Maq')) === 97) {
+                $this->CancelaEntradasSalidas_model->onCancelarDoctosFabrica($x->post('DocMov'), $x->post('Maq'), $x->post('Sem'), $x->post('Ano'));
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

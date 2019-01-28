@@ -127,6 +127,7 @@ class AsignaPFTSACXC extends CI_Controller {
     public function onEntregarPielForroTextilSintetico() {
         try {
             $x = $this->input;
+            $Ano = $this->db->select('P.Ano AS Ano')->from('pedidox AS P')->where('P.Control', $x->post('CONTROL'))[0]->Ano;
             /* COMPROBAR SI YA EXISTE EL REGISTRO POR EMPLEADO,SEMANA, CONTROL, FRACCION, ARTICULO */
             $DT = $this->apftsacxc->onComprobarEntrega($x->post('SEMANA'), $x->post('CONTROL'), $x->post('ARTICULO'), $x->post('FRACCION'));
             /* EXISTE LA POSIBILIDAD DE QUE LA FRACCION SEA DIFERENTE Y QUE HAGA UN NUEVO REGISTRO */
@@ -156,9 +157,9 @@ class AsignaPFTSACXC extends CI_Controller {
                     'ExtraT' => ($x->post('MATERIAL_EXTRA') > 0 && $x->post('EXPLOSION') < $x->post('ENTREGA')) ? $x->post('ENTREGA') - $x->post('EXPLOSION') : 0
                 );
                 $this->db->insert('asignapftsacxc', $data);
-                $this->db->query("UPDATE asignapftsacxc AS A INNER JOIN ordendeproduccion AS O ON A.OrdenProduccion = O.ID 
-                    SET A.Estilo = O.Estilo, A.Color = O.Color 
-                    WHERE A.Control LIKE '" . $x->post('CONTROL') . "' 
+                $this->db->query("UPDATE asignapftsacxc AS A INNER JOIN ordendeproduccion AS O ON A.OrdenProduccion = O.ID
+                    SET A.Estilo = O.Estilo, A.Color = O.Color
+                    WHERE A.Control LIKE '" . $x->post('CONTROL') . "'
                     AND A.OrdenProduccion = " . $x->post('ORDENDEPRODUCCION')
                         . " AND A.Articulo = " . $x->post('ARTICULO')
                         . " AND A.Pares = " . $x->post('PARES')
@@ -200,11 +201,12 @@ class AsignaPFTSACXC extends CI_Controller {
                     'CantidadMov' => $x->post('ENTREGA'),
                     'FechaMov' => Date('d/m/Y'),
                     'EntradaSalida' => '2'/* 1= ENTRADA, 2 = SALIDA */,
-                    'TipoMov' => 'SXP', /* SXP = SALIDA A PRODUCCION */
+                    'TipoMov' => 'SPR', /* SXP = SALIDA A PRODUCCION */
                     'DocMov' => $x->post('ORDENDEPRODUCCION'),
                     'Tp' => 1,
                     'Maq' => intval(substr($x->post('CONTROL'), 4, 2)),
                     'Sem' => $x->post('SEMANA'),
+                    'Ano' => $Ano,
                     'OrdenCompra' => NULL,
                     'Subtotal' => 0
                 );
@@ -219,20 +221,23 @@ class AsignaPFTSACXC extends CI_Controller {
         try {
             /* AGREGAR MOVIMIENTO DE ARTICULO */
             $x = $this->input;
+
+            $Ano = $this->db->select('P.Ano AS Ano')->from('pedidox AS P')->where('P.Control', $x->post('CONTROL'))[0]->Ano;
+
             if (floatval($x->post('REGRESO')) === 0) {
                 /* OBTENER ULTIMO REGRESO */
-                    $REGRESO = $this->apftsacxc->onObtenerUltimoRegreso($x->post('ID'));
-                    if (isset($REGRESO[0]->REGRESO)) {
-                        $this->db->set('Empleado', $x->post('EMPLEADO'))->set('Empleado', $x->post('EMPLEADO'))
-                                ->set('Devolucion', $x->post('REGRESO') + $REGRESO[0]->REGRESO)
-                                ->set('MaterialMalo', 0)
-                                ->where('ID', $x->post('ID'))->update('asignapftsacxc');
-                    } else {
-                        $this->db->set('Empleado', $x->post('EMPLEADO'))
-                                ->set('Devolucion', $x->post('REGRESO'))
-                                ->set('MaterialMalo', 0)
-                                ->where('ID', $x->post('ID'))->update('asignapftsacxc');
-                    }
+                $REGRESO = $this->apftsacxc->onObtenerUltimoRegreso($x->post('ID'));
+                if (isset($REGRESO[0]->REGRESO)) {
+                    $this->db->set('Empleado', $x->post('EMPLEADO'))->set('Empleado', $x->post('EMPLEADO'))
+                            ->set('Devolucion', $x->post('REGRESO') + $REGRESO[0]->REGRESO)
+                            ->set('MaterialMalo', 0)
+                            ->where('ID', $x->post('ID'))->update('asignapftsacxc');
+                } else {
+                    $this->db->set('Empleado', $x->post('EMPLEADO'))
+                            ->set('Devolucion', $x->post('REGRESO'))
+                            ->set('MaterialMalo', 0)
+                            ->where('ID', $x->post('ID'))->update('asignapftsacxc');
+                }
             } else {
                 if ($x->post('REGRESO') >= 0 && $x->post("MATERIALMALO") <= 0) {
                     $datos = array(
@@ -241,11 +246,12 @@ class AsignaPFTSACXC extends CI_Controller {
                         'CantidadMov' => $x->post('REGRESO'),
                         'FechaMov' => Date('d/m/Y'),
                         'EntradaSalida' => '1'/* 1= ENTRADA, 2 = SALIDA */,
-                        'TipoMov' => 'EXP', /* EXP = ENTRADA POR PRODUCCION */
+                        'TipoMov' => 'EPR', /* EXP = ENTRADA POR PRODUCCION */
                         'DocMov' => $x->post('ID'),
                         'Tp' => 3,
                         'Maq' => 10,
                         'Sem' => substr($x->post('CONTROL'), 2, 2),
+                        'Ano' => $Ano,
                         'OrdenCompra' => NULL,
                         'Subtotal' => 0
                     );
@@ -272,11 +278,12 @@ class AsignaPFTSACXC extends CI_Controller {
                             'CantidadMov' => $x->post('REGRESO'),
                             'FechaMov' => Date('d/m/Y'),
                             'EntradaSalida' => '2'/* 1= ENTRADA, 2 = SALIDA */,
-                            'TipoMov' => 'EXP', /* EXP = ENTRADA POR PRODUCCION */
+                            'TipoMov' => 'EPR', /* EXP = ENTRADA POR PRODUCCION */
                             'DocMov' => $x->post('ID'),
                             'Tp' => 3,
                             'Maq' => 10,
                             'Sem' => substr($x->post('CONTROL'), 2, 2),
+                            'Ano' => $Ano,
                             'OrdenCompra' => NULL,
                             'Subtotal' => 0
                         );

@@ -81,7 +81,7 @@ class ReportesProveedores extends CI_Controller {
                             number_format($D->CantidadMov, 2, ".", ","),
                             '$' . number_format($D->PrecioMov, 2, ".", ","),
                             '$' . number_format($D->Subtotal, 2, ".", ","),
-                            mb_strimwidth(utf8_decode($D->DocMov), 0, 40, ""),
+                            mb_strimwidth(utf8_decode($D->DocMov), 0, 12, ""),
                             utf8_decode($D->FechaMov),
                             utf8_decode($D->Maq),
                             utf8_decode($D->Sem)

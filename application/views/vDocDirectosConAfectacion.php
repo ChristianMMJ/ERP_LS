@@ -111,7 +111,7 @@
 
         /*FUNCIONES INICIALES*/
         validacionSelectPorContenedor(pnlTablero);
-        setFocusSelectToInputOnChange('#Proveedor', '#Maquila', pnlTablero);
+        setFocusSelectToInputOnChange('#Proveedor', '#Maq', pnlTablero);
         setFocusSelectToSelectOnChange('#Grupo', '#Flete', pnlTablero);
         setFocusSelectToSelectOnChange('#Flete', '#Moneda', pnlTablero);
         setFocusSelectToInputOnChange('#Moneda', '#TipoCambio', pnlTablero);

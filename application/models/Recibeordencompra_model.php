@@ -23,6 +23,7 @@ class Recibeordencompra_model extends CI_Model {
                     . "OC.Subtotal,"
                     . "OC.Maq, "
                     . "OC.Sem, "
+                    . "OC.Ano, "
                     . "OC.Tipo, "
                     . "OC.Articulo AS ClaveArticulo "
                     . "", false);
@@ -94,7 +95,8 @@ class Recibeordencompra_model extends CI_Model {
             $this->db->select("A.Clave, A.Descripcion, OC.Precio, "
                             . "OC.Subtotal, "
                             . "OC.Maq, "
-                            . "OC.Sem,"
+                            . "OC.Sem, "
+                            . "OC.Ano, "
                             . "OC.Tipo, "
                             . "OC.Tp  "
                             . "")
@@ -130,6 +132,7 @@ class Recibeordencompra_model extends CI_Model {
                             . "C.Tp,"
                             . "C.Maq,"
                             . "C.Sem,"
+                            . "C.Ano,"
                             . "C.OrdenCompra,"
                             . "CASE WHEN C.Tp ='1' THEN  CONCAT(P.Clave,' ',P.NombreF) ELSE "
                             . "CONCAT(P.Clave,' ',P.NombreI) END AS Proveedor, "
