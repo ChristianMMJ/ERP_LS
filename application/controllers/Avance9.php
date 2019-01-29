@@ -3,19 +3,12 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 require_once APPPATH . "/third_party/fpdf17/fpdf.php";
 
-class AvanceXEmpleadoYPagoDeNominaPiFo extends CI_Controller {
+class Avance9 extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
-        $this->load->library('session')->model('AvanceXEmpleadoYPagoDeNominaPiFo_model', 'axepn');
-    }
-
-    public function shoes() {
-        $url = $this->uri;
-        $seg_one = $url->segment(2);
-        $seg_two = $url->segment(3);
-        echo "Params: $seg_one, $seg_two;";
+        $this->load->library('session')->model('Avance9_model', 'axepn');
     }
 
     public function getSemanaByFecha() {

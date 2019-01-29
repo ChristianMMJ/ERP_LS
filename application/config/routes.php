@@ -74,16 +74,20 @@ $route['avance_empleados'] = 'Avance/getEmpleados';
 $route['avance_fracciones'] = 'Avance/getFracciones';
 $route['avance_buscar_avance_x_control'] = 'Avance/onComprobarAvanceXControl';
 
-/*AVANCES 8888*/
-$route['buscar_avance_x_control/:num/:num'] = 'AvanceXEmpleadoYPagoDeNominaPiFo/shoes/$1/$2/';
-$route['avance_x_empleadopagodenomina'] = 'AvanceXEmpleadoYPagoDeNominaPiFo';
-$route['comprobar_numero_de_empleado'] = 'AvanceXEmpleadoYPagoDeNominaPiFo/onComprobarDeptoXEmpleado';
-$route['obtener_semana_fecha'] = 'AvanceXEmpleadoYPagoDeNominaPiFo/getSemanaByFecha';
-$route['obtener_estilo_pares_por_control_fraccion'] = 'AvanceXEmpleadoYPagoDeNominaPiFo/onComprobarRetornoDeMaterialXControl';
-$route['obtener_ultimo_avance_por_control'] = 'AvanceXEmpleadoYPagoDeNominaPiFo/getUltimoAvanceXControl';
-$route['avance_add_avance_x_empleado_add_nomina'] = 'AvanceXEmpleadoYPagoDeNominaPiFo/onAgregarAvanceXEmpleadoYPagoDeNomina';
-$route['obtener_avances_pago_nomina/:num'] = 'AvanceXEmpleadoYPagoDeNominaPiFo/getFraccionesPagoNomina/$1'; 
-$route['obtener_pagos_de_nomina_x_empleado'] = 'AvanceXEmpleadoYPagoDeNominaPiFo/getPagosXEmpleadoXSemana';
+/*AVANCES 999999*/
+$route['buscar_avance_x_control/:num/:num'] = 'Avance9/shoes/$1/$2/';
+$route['avance_x_empleadopagodenomina'] = 'Avance9';
+$route['comprobar_numero_de_empleado'] = 'Avance9/onComprobarDeptoXEmpleado';
+$route['obtener_semana_fecha'] = 'Avance9/getSemanaByFecha';
+$route['obtener_estilo_pares_por_control_fraccion'] = 'Avance9/onComprobarRetornoDeMaterialXControl';
+$route['obtener_ultimo_avance_por_control'] = 'Avance9/getUltimoAvanceXControl';
+$route['avance_add_avance_x_empleado_add_nomina'] = 'Avance9/onAgregarAvanceXEmpleadoYPagoDeNomina';
+$route['obtener_avances_pago_nomina/:num'] = 'Avance9/getFraccionesPagoNomina/$1'; 
+$route['obtener_pagos_de_nomina_x_empleado'] = 'Avance9/getPagosXEmpleadoXSemana';
+
+/*AVANCE 888888*/ 
+$route['comprobar_numero_de_empleado_mano_de_obra'] = 'Avance8/onComprobarDeptoXEmpleado';
+
 
 /*ACCESOS*/
 $route['menu_modulos'] = 'ResourceManager/getModulos';

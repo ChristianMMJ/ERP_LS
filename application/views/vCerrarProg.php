@@ -399,39 +399,16 @@
 // Start the tour
             tour.start();
             init();
-
-            SemanaCerrarProg.keydown(function (e) {
+            
+            AnoCerrarProg.keydown(function (e) {
                 if (e.keyCode === 13) {
-                    if (MaquilaCerrarProg.val().trim() !== '') {
-                        if (SemanaCerrarProg.val().trim() !== '') {
-                            if (AnoCerrarProg.val().trim() !== '') {
-                                HoldOn.open({
-                                    theme: 'sk-bounce',
-                                    message: 'Por favor espere...'
-                                });
-                                $.fn.dataTable.ext.errMode = 'throw';
-                                if ($.fn.DataTable.isDataTable('#tblCerrarProg')) {
-                                    CerrarProg.ajax.reload();
-                                    HoldOn.close();
-                                } else {
-                                    CerrarProg = tblCerrarProg.DataTable(options_cerrarprog);
-                                    HoldOn.close();
-                                }
-                            } else {
-                                swal('ATENCION', 'DEBE DE ESPECIFICAR UN AÑO', 'warning').then((value) => {
-                                    AnoCerrarProg.focus().select();
-                                });
-                            }
-                        } else {
-                            swal('ATENCION', 'DEBE DE ESPECIFICAR UNA SEMANA', 'warning').then((value) => {
-                                SemanaCerrarProg.focus().select();
-                            });
-                        }
-                    } else {
-                        swal('ATENCION', 'DEBE DE ESPECIFICAR UNA MAQUILA', 'warning').then((value) => {
-                            MaquilaCerrarProg.focus().select();
-                        });
-                    }
+                    onFiltrar();
+                }
+            });
+            
+            SemanaCerrarProg.keydown(function (e) {
+                if (e.keyCode === 13) { 
+                    onFiltrar();
                 }
             });
 
@@ -494,6 +471,39 @@
         }
         );
     }));
+
+    function onFiltrar() {
+        if (MaquilaCerrarProg.val().trim() !== '') {
+            if (SemanaCerrarProg.val().trim() !== '') {
+                if (AnoCerrarProg.val().trim() !== '') {
+                    HoldOn.open({
+                        theme: 'sk-bounce',
+                        message: 'Por favor espere...'
+                    });
+                    $.fn.dataTable.ext.errMode = 'throw';
+                    if ($.fn.DataTable.isDataTable('#tblCerrarProg')) {
+                        CerrarProg.ajax.reload();
+                        HoldOn.close();
+                    } else {
+                        CerrarProg = tblCerrarProg.DataTable(options_cerrarprog);
+                        HoldOn.close();
+                    }
+                } else {
+                    swal('ATENCION', 'DEBE DE ESPECIFICAR UN AÑO', 'warning').then((value) => {
+                        AnoCerrarProg.focus().select();
+                    });
+                }
+            } else {
+                swal('ATENCION', 'DEBE DE ESPECIFICAR UNA SEMANA', 'warning').then((value) => {
+                    SemanaCerrarProg.focus().select();
+                });
+            }
+        } else {
+            swal('ATENCION', 'DEBE DE ESPECIFICAR UNA MAQUILA', 'warning').then((value) => {
+                MaquilaCerrarProg.focus().select();
+            });
+        }
+    }
 
     function onAsignar() {
         var row_count = tblCerrarProg.find("tbody tr.selected:not(.HasMca)").length;

@@ -86,7 +86,7 @@ class Sesion extends CI_Controller {
                              * 72 TROQUELAR NORMA
                              * 
                              * */
-                            $this->load->view('vAvanceXEmpleadoYPagoDeNominaFraccion888888');
+                            $this->load->view('vAvance8');
                             break;
                         case '999999':
                             /*
@@ -96,7 +96,7 @@ class Sesion extends CI_Controller {
                              * 96 CORTE MUESTRAS 
                              * 
                              * */
-                            $this->load->view('vAvanceXEmpleadoYPagoDeNominaPiFo');
+                            $this->load->view('vAvance9');
                             break;
                     }
                     break;

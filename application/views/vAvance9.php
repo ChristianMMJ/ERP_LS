@@ -19,8 +19,11 @@
             </div>
             <div class="w-100 my-1"></div>
             <!--FIN BLOQUE 2 COL 6-->
-            <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" align="center">
-                <h4>Fracciones de este empleado</h4>
+            <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" align="center"> 
+                <div class="row justify-content-center" align="center">
+                    <span onclick="onActualizarAvances();" class="fa fa-retweet fa-2x text-info text-shadow" style="cursor: pointer;" class="btn btn-warning"  data-toggle="tooltip" data-placement="top" title="Actualizar"></span> 
+                    <h4> Fracciones de este empleado</h4> 
+                </div>
                 <table id="tblAvance" class="table table-hover table-sm table-bordered  compact nowrap" style="width: 100% !important;">
                     <thead>
                         <tr>
@@ -37,6 +40,20 @@
                         </tr>
                     </thead>
                     <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div><!--FIN BLOQUE 2 COL 6-->
             <!--INICIO BLOQUE 2 COL 6-->
@@ -172,7 +189,6 @@
 
         Control.on('keydown', function (e) {
             if (e.keyCode === 13) {
-                onAgregarAvance();
             }
         });
 
@@ -241,6 +257,10 @@
                                 onBeep(2);
                                 swal('ATENCIÓN', 'ESTE EMPLEADO NO ES APTO PARA DAR AVANCES O ESTA DADO DE BAJA', 'warning').then((value) => {
                                     NumeroDeEmpleado.focus().select();
+                                    Semana.val('');
+                                    Fecha.val('');
+                                    Departamento.val('');
+                                    Control.val('');
                                 });
                             }
                         }).fail(function (x, y, z) {
@@ -307,9 +327,44 @@
             "deferRender": true,
             "scrollCollapse": false,
             "bSort": true,
-            "scrollY": "125px",
+            "scrollY": "500px",
             "scrollX": true,
+            "aaSorting": [
+                [0, 'desc']
+            ],
             createdRow: function (row, data, dataIndex) {
+            },
+            "footerCallback": function (row, data, start, end, display) {
+                var api = this.api(), data;
+
+                // Remove the formatting to get integer data for summation
+                var intVal = function (i) {
+                    return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                            i : 0;
+                };
+
+                // Total over all pages
+                total = api
+                        .column(7)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                // Total over this page
+                pageTotal = api
+                        .column(7, {page: 'current'})
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                // Update footer
+                $(api.column(7).footer()).html(
+                        '$' + $.number(pageTotal, 2, '.', ',') + ' ( $' + $.number(total, 2, '.', ',') + ' total)'
+                        );
             }
         };
         xoptions.ajax = {
@@ -432,6 +487,13 @@
         Semana.val('');
         Fecha.val('');
         pnlTablero.find("#txtTotal").val('');
+    }
+
+    function onActualizarAvances() {
+        HoldOn.open({theme: 'sk-rect', message: 'Actualizando...'});
+        Avance.ajax.reload(function () {
+            HoldOn.close();
+        });
     }
 </script>
 <style>
