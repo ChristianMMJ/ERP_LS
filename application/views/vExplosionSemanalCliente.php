@@ -132,7 +132,7 @@
                 if (data.length > 0) {
 
                     $.fancybox.open({
-                        src: data,
+                        src: base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data + '#pagemode=thumbs',
                         type: 'iframe',
                         opts: {
                             afterShow: function (instance, current) {

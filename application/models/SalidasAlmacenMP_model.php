@@ -43,11 +43,11 @@ class SalidasAlmacenMP_model extends CI_Model {
             $this->db->select("MA.DocMov,MA.Articulo, MA.CantidadMov "
                             . "", false)
                     ->from("movarticulos MA")
-                    ->where("year(date_format(str_to_date(MA.FechaMov, '%d/%m/%Y'), '%Y-%m-%d')) = '$Ano' ", null, false)
                     ->where('MA.EntradaSalida', '2')
                     ->where_in('MA.TipoMov', array('SXM', 'SPR', 'SXP', 'SXC'))
                     ->where('MA.Maq', $Maq)
                     ->where('MA.Sem', $Sem)
+                    ->where('MA.Ano', $Ano)
                     ->where('MA.Articulo', $Articulo);
             $query = $this->db->get();
             /*

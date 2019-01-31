@@ -49,7 +49,7 @@
                 </select>
             </div>
             <div class="col-6 col-sm-5 col-md-3 col-lg-2 col-xl-2">
-                <label for="">Mat Ent. de Otra Maq</label>
+                <label for="">Mat Ent. a Maq 1 de Otra Maq</label>
                 <div class="custom-control custom-checkbox">
                     <input type="checkbox" class="custom-control-input selectNotEnter" id="MatOtraMaquila" name="MatOtraMaquila" >
                     <label class="custom-control-label" for="MatOtraMaquila"></label>

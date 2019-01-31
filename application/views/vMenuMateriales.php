@@ -48,6 +48,7 @@ $this->load->view('vInventarioAnual');
 $this->load->view('vExplosionSemanalCliente');
 $this->load->view('vExplosionSemanalArticulo');
 $this->load->view('vCotejaExplosionOrdCom');
-
+$this->load->view('vExplosionSemanalOrdComProyeccion');
+$this->load->view('vConciliaFabricaProduccion');
 
 

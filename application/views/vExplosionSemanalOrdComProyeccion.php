@@ -1,14 +1,14 @@
-<div class="modal " id="mdlExplosionSemanalArticulo"  role="dialog">
+<div class="modal " id="mdlExplosionSemanalOrdComProyeccion"  role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Explosión Semanal de Materiales por Artículo</h5>
+                <h5 class="modal-title">Explosión de Materiales con existencia, Orden de Compra y Proyección</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="frmExplosion">
+                <form id="frmCaptura">
                     <div class="row">
                         <div class="col-12">
                             <label class="text-danger">Nota. El % extra (PIEL Y FORRO) se tomará del No. de piezas del Estilo</label>
@@ -18,12 +18,6 @@
                         <div class="col-6">
                             <label>Año</label>
                             <input type="text" maxlength="4" class="form-control form-control-sm numbersOnly" id="Ano" name="Ano" >
-                        </div>
-                        <div class="col-12 col-sm-6">
-                            <label>Artículo</label>
-                            <select class="form-control form-control-sm required selectize" id="Articulo" name="Articulo" >
-                                <option value=""></option>
-                            </select>
                         </div>
                     </div>
                     <div class="row">
@@ -39,12 +33,23 @@
                             <label>De la sem.</label>
                             <input type="text" maxlength="2" class="form-control form-control-sm numbersOnly" id="Sem" name="Sem" >
                         </div>
-                        <div class="col-6">
-                            <label>A la sem.</label>
-                            <input type="text" maxlength="2" class="form-control form-control-sm numbersOnly" id="aSem" name="aSem" >
-                        </div>
 
                     </div>
+
+                    <div class="row">
+                        <div class="col-12 col-sm-12 mt-2">
+                            <legend class="badge badge-info" style="font-size: 14px;">Fechas para tomar el inventario inicial y movimientos por artículo</legend>
+                        </div>
+                        <div class="col-6">
+                            <label>Del: </label>
+                            <input type="text" class="form-control form-control-sm date notEnter" id="FechaIni" name="FechaIni" >
+                        </div>
+                        <div class="col-6">
+                            <label>Hasta: </label>
+                            <input type="text" class="form-control form-control-sm date notEnter" id="FechaFin" name="FechaFin" >
+                        </div>
+                    </div>
+
                     <div class="row mt-2">
                         <div class="col-12 col-sm-12">
                             <label>Tipo <span class="badge badge-info mb-2" style="font-size: 12px;">10 Piel/Forro, 80 Suela, 90 Peletería</span></label>
@@ -53,14 +58,7 @@
                                 <option value="10">10 PIEL Y FORRO</option>
                                 <option value="80">80 SUELA</option>
                                 <option value="90">90 INDIRECTOS</option>
-                                <option value="0">80 SUELA C/ DESGLOSE</option>
                             </select>
-                        </div>
-
-
-
-                        <div class="col-12 col-sm-12 mt-2">
-                            <legend class="badge badge-danger" style="font-size: 14px;">Para maquila 98 sale con precios de compra y venta</legend>
                         </div>
                     </div>
                 </form>
@@ -73,37 +71,24 @@
     </div>
 </div>
 <script>
-    var mdlExplosionSemanalArticulo = $('#mdlExplosionSemanalArticulo');
+    var mdlExplosionSemanalOrdComProyeccion = $('#mdlExplosionSemanalOrdComProyeccion');
     $(document).ready(function () {
-        validacionSelectPorContenedor(mdlExplosionSemanalArticulo);
-        setFocusSelectToInputOnChange('#Articulo', '#Maq', mdlExplosionSemanalArticulo);
-        setFocusSelectToInputOnChange('#Tipo', '#btnImprimir', mdlExplosionSemanalArticulo);
-        mdlExplosionSemanalArticulo.on('shown.bs.modal', function () {
-            mdlExplosionSemanalArticulo.find("input").val("");
-            $.each(mdlExplosionSemanalArticulo.find("select"), function (k, v) {
-                mdlExplosionSemanalArticulo.find("select")[k].selectize.clear(true);
+        validacionSelectPorContenedor(mdlExplosionSemanalOrdComProyeccion);
+        setFocusSelectToInputOnChange('#Tipo', '#btnImprimir', mdlExplosionSemanalOrdComProyeccion);
+        mdlExplosionSemanalOrdComProyeccion.on('shown.bs.modal', function () {
+            mdlExplosionSemanalOrdComProyeccion.find("input").val("");
+            $.each(mdlExplosionSemanalOrdComProyeccion.find("select"), function (k, v) {
+                mdlExplosionSemanalOrdComProyeccion.find("select")[k].selectize.clear(true);
             });
-            getArticulos();
-            mdlExplosionSemanalArticulo.find('#Ano').focus();
+            mdlExplosionSemanalOrdComProyeccion.find('#FechaFin').val(getToday());
+            mdlExplosionSemanalOrdComProyeccion.find('#Ano').focus();
         });
-
-        mdlExplosionSemanalArticulo.find('#btnImprimir').on("click", function () {
+        mdlExplosionSemanalOrdComProyeccion.find('#btnImprimir').on("click", function () {
             HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
-
-            var Tipo = parseInt(mdlExplosionSemanalArticulo.find('#Tipo').val());
-            var Reporte = '';
-
-            if (Tipo === 10 || Tipo === 80 || Tipo === 90) {
-                Reporte = 'index.php/ExplosionesPorArticulo/onReporteExplosionSemanaPorArticulo';
-            } else {
-                Reporte = 'index.php/ExplosionesPorArticulo/onReporteExplosionSemanaSuelaArticulo';
-            }
-            console.log(Reporte);
-            var frm = new FormData(mdlExplosionSemanalArticulo.find("#frmExplosion")[0]);
-
+            var frm = new FormData(mdlExplosionSemanalOrdComProyeccion.find("#frmCaptura")[0]);
 
             $.ajax({
-                url: base_url + Reporte,
+                url: base_url + 'index.php/ReporteExplosionConProyeccion/onReporteExplosionProyeccion',
                 type: "POST",
                 cache: false,
                 contentType: false,
@@ -142,10 +127,10 @@
                 } else {
                     swal({
                         title: "ATENCIÓN",
-                        text: "NO EXISTEN PROGRAMACION DE LA SEMANA/MAQUILA O EL TIPO ES INCORRECTO",
+                        text: "NO EXISTEN PROGRAMACION DE LA SEMANA/MAQUILA",
                         icon: "error"
                     }).then((action) => {
-                        mdlExplosionSemanalArticulo.find('#Ano').focus();
+                        mdlExplosionSemanalOrdComProyeccion.find('#Ano').focus();
                     });
                 }
                 HoldOn.close();
@@ -155,7 +140,7 @@
             });
         });
 
-        mdlExplosionSemanalArticulo.find("#Ano").change(function () {
+        mdlExplosionSemanalOrdComProyeccion.find("#Ano").change(function () {
             if (parseInt($(this).val()) < 2016 || parseInt($(this).val()) > 2020 || $(this).val() === '') {
                 swal({
                     title: "ATENCIÓN",
@@ -166,23 +151,23 @@
                     buttons: false,
                     timer: 1000
                 }).then((action) => {
-                    mdlExplosionSemanalArticulo.find("#Ano").val("");
-                    mdlExplosionSemanalArticulo.find("#Ano").focus();
+                    mdlExplosionSemanalOrdComProyeccion.find("#Ano").val("");
+                    mdlExplosionSemanalOrdComProyeccion.find("#Ano").focus();
                 });
             }
         });
-        mdlExplosionSemanalArticulo.find("#Maq").change(function () {
+        mdlExplosionSemanalOrdComProyeccion.find("#Maq").change(function () {
             onComprobarMaquilas($(this));
         });
-        mdlExplosionSemanalArticulo.find("#aMaq").change(function () {
+        mdlExplosionSemanalOrdComProyeccion.find("#aMaq").change(function () {
             onComprobarMaquilas($(this));
         });
-        mdlExplosionSemanalArticulo.find("#Sem").change(function () {
-            var ano = mdlExplosionSemanalArticulo.find("#Ano");
+        mdlExplosionSemanalOrdComProyeccion.find("#Sem").change(function () {
+            var ano = mdlExplosionSemanalOrdComProyeccion.find("#Ano");
             onComprobarSemanasProduccion($(this), ano.val());
         });
-        mdlExplosionSemanalArticulo.find("#aSem").change(function () {
-            var ano = mdlExplosionSemanalArticulo.find("#Ano");
+        mdlExplosionSemanalOrdComProyeccion.find("#aSem").change(function () {
+            var ano = mdlExplosionSemanalOrdComProyeccion.find("#Ano");
             onComprobarSemanasProduccion($(this), ano.val());
         });
     });
@@ -241,19 +226,6 @@
                 });
             }
         }).fail(function (x, y, z) {
-            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
-            console.log(x.responseText);
-        });
-    }
-
-    function getArticulos() {
-        mdlExplosionSemanalArticulo.find("#Articulo")[0].selectize.clear(true);
-        mdlExplosionSemanalArticulo.find("#Articulo")[0].selectize.clearOptions();
-        $.getJSON(base_url + 'index.php/EntradasAlmacenMP/getArticulos').done(function (data) {
-            $.each(data, function (k, v) {
-                mdlExplosionSemanalArticulo.find("#Articulo")[0].selectize.addOption({text: v.Articulo, value: v.ID});
-            });
-        }).fail(function (x) {
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
             console.log(x.responseText);
         });

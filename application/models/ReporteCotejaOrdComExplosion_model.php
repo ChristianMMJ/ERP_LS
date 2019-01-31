@@ -43,7 +43,7 @@ class ReporteCotejaOrdComExplosion_model extends CI_Model {
                                 and MA.Articulo = A.Clave
                                 and MA.Maq BETWEEN $Maquila AND $aMaquila
                                 AND MA.Sem BETWEEN $Semana AND $aSemana
-                                AND YEAR(STR_TO_DATE(MA.FechaMov, \"%d/%m/%Y\")) = $Ano
+                                AND MA.Ano = $Ano
                                 ),0) AS EntregadoMaquilas, "
                             . "CASE WHEN E.PiezasCorte <= 10 THEN
                                 MA.PorExtra3a10
