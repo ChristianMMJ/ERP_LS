@@ -163,6 +163,17 @@
                     </div>
 
                     <div class="w-100"></div>                    
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 pt-2 d-none">
+                        <div class="row">
+                            <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                                <input type="text" id="GeneraAvance" name="GeneraAvance" class="form-control"> 
+                            </div>
+                            <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6"> 
+                                <input type="text" id="Depto" name="Depto" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="col-12 col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-4">
                         <label>Semana</label>
                         <input type="text" id="Semana" name="Semana" class="form-control  numeric" maxlength="2" disabled="">
@@ -194,20 +205,16 @@
                     <div class="col-12 col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 mx-auto">
                         <button type="button" class="btn btn-success mt-4" id="btnAceptar" name="btnAceptar" data-toggle="tooltip" data-placement="top" title="Aceptar"><span class="fa fa-check"></span></button>
                     </div> 
-
                     <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-none">
                         <label>MO</label>
                         <input type="text" id="ManoDeOB" name="ManoDeOB" class="form-control numeric" readonly="">
                         <label>AN</label>
                         <input type="text" id="Anio" name="Anio" class="form-control numeric" readonly="">
                     </div> 
-
                     <div class="col-12 my-1">
                         <hr>
                     </div>
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-
-                    </div>
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6"></div>
                     <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" align="center">
                         <h3>Pago de nomina</h3>
                         <div id="DiasPagoDeNomina" class="row"></div>
@@ -221,6 +228,15 @@
         </div>
     </div>
 </div>
+<div class="card">
+    <div class="card-body">
+        <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
+            <p class="font-weight-bold">© Copyright 2019, shoesystem.com. All rights reserved.</p>
+            <p>Java and the Java logo are both Copyright © 2015-2019 Sun Microsystems, Inc.</p>    
+            <p>All other content is Copyright © by their respective owners.</p>  
+        </div>
+    </div>
+</div>
 <script>
     var dias = ["JUEVES", "VIERNES", "SABADO", "DOMINGO", "LUNES", "MARTES", "MIERCOLES"],
             ndias = ["LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO", "DOMINGO"],
@@ -229,6 +245,8 @@
             tblAvance = pnlTablero.find("#tblAvance"),
             NumeroDeEmpleado = pnlTablero.find("#NumeroDeEmpleado"),
             NombreEmpleado = pnlTablero.find("#NombreEmpleado"),
+            GeneraAvance = pnlTablero.find("#GeneraAvance"),
+            Depto = pnlTablero.find("#Depto"),
             Semana = pnlTablero.find("#Semana"),
             Fecha = pnlTablero.find("#Fecha"),
             Control = pnlTablero.find("#Control"),
@@ -294,16 +312,20 @@
                     message: 'Revisando si el empleado cumple con los requisitos...'
                 });
                 Avance.ajax.reload();
-                $.post('<?php print base_url('comprobar_numero_de_empleado_mano_de_obra') ?>', {EMPLEADO: NumeroDeEmpleado.val()})
+                $.post('<?php print base_url('comprobar_numero_de_empleado_ocho') ?>', {EMPLEADO: NumeroDeEmpleado.val()})
                         .done(function (data) {
                             var dt = JSON.parse(data);
                             if (dt.length > 0) {
-                                NombreEmpleado.val(dt[0].NOMBRE_COMPLETO);
-                                Departamento.val(dt[0].DEPTOCTO);
-                                $.getJSON('<?php print base_url('obtener_semana_fecha'); ?>').done(function (data) {
-                                    Semana.val((data.length > 0) ? data[0].Sem : '');
-                                    Fecha.val((data.length > 0) ? data[0].Fecha : '');
-                                    $.getJSON('<?php print base_url('obtener_pagos_de_nomina_x_empleado'); ?>',
+                                var r = dt[0];
+                                GeneraAvance.val(r.GENERA_AVANCE);
+                                Depto.val(r.DEPTO);
+                                NombreEmpleado.val(r.NOMBRE_COMPLETO);
+                                Departamento.val(r.DEPTOCTO);
+                                $.getJSON('<?php print base_url('obtener_semana_fecha_ocho'); ?>').done(function (data) {
+                                    var rr = data[0];
+                                    Semana.val((data.length > 0) ? rr.Sem : '');
+                                    Fecha.val((data.length > 0) ? rr.Fecha : '');
+                                    $.getJSON('<?php print base_url('obtener_pagos_de_nomina_x_empleado_ocho'); ?>',
                                             {EMPLEADO: NumeroDeEmpleado.val(), SEMANA: Semana.val(), FRACCIONES: "51, 24, 205, 80, 106, 333, 61, 78, 198, 397, 306, 502, 62, 204, 127, 34, 337"}).done(function (a) {
                                         if (a.length > 0) {
                                             var b = a[0];
@@ -421,23 +443,25 @@
     });
 
     function onAgregarAvance() {
-        var fra = pnlTablero.find("input[type='checkbox']:checked").attr('fraccion');
-        if (Control.val()) {
+        var cks = pnlTablero.find("input[type='checkbox']:checked");
+        var fra = cks.attr('fraccion');
+        console.log("FRACCION * ", fra);
+        if (cks.length > 0) {
             if (Control.val()) {
                 HoldOn.open({
                     theme: 'sk-rect',
                     message: 'Espere...'
                 });
-                $.getJSON('<?php print base_url('obtener_estilo_pares_por_control_fraccion_mo'); ?>', {CR: Control.val(), FR: fra}).done(function (data) {
-                    if (data.length > 0) {
-                        var r = data[0];
+                $.getJSON('<?php print base_url('obtener_estilo_pares_por_control_fraccion_ocho'); ?>', {CR: Control.val(), FR: fra}).done(function (a) {
+                    if (a.length > 0) {
+                        var r = a[0];
                         Estilo.val(r.Estilo);
                         Pares.val(r.Pares);
                         ManoDeOB.val(r.CostoMO);
-                        $.getJSON('<?php print base_url('obtener_ultimo_avance_por_control'); ?>', {C: Control.val()}).done(function (data) {
-                            if (data.length > 0) {
-                                SigAvance.val(data[0].Departamento);
-                                EstatusAvance.val(data[0].DepartamentoT);
+                        $.getJSON('<?php print base_url('obtener_ultimo_avance_por_control_ocho'); ?>', {C: Control.val()}).done(function (b) {
+                            if (b.length > 0) {
+                                SigAvance.val(b[0].Departamento);
+                                EstatusAvance.val(b[0].DepartamentoT);
                                 var d = new Date();
                                 var n = d.getDay();
                                 DiasPagoDeNomina.find("#txt" + ndias[n - 1]).val(parseFloat(r.Pares) * parseFloat(r.CostoMO));
@@ -446,40 +470,7 @@
                                     tt += parseFloat(pnlTablero.find("#txt" + i).val());
                                 });
                                 DiasPagoDeNomina.find("#txtTotal").val(parseFloat(r.Pares) * parseFloat(r.CostoMO));
-                                AVANO.NUMERO_EMPLEADO = NumeroDeEmpleado.val();
-                                AVANO.CONTROL = Control.val();
-                                AVANO.ESTILO = Estilo.val();
-                                AVANO.NUMERO_FRACCION = pnlTablero.find("#ManoDeObra input[type='checkbox']:checked").attr('fraccion');
-                                AVANO.FRACCION = pnlTablero.find("#ManoDeObra input[type='checkbox']:checked").attr('description');
-                                AVANO.PRECIO_FRACCION = ManoDeOB.val();
-                                AVANO.PARES = Pares.val();
-                                AVANO.FECHA = Fecha.val();
-                                AVANO.SEMANA = Semana.val();
-                                AVANO.DEPARTAMENTO = Departamento.val();
-                                AVANO.ANIO = pnlTablero.find("#Anio").val();
-
-                                $.post('<?php print base_url('avance_add_avance_x_empleado_add_nomina') ?>', AVANO).done(function (data) {
-                                    console.log("\n", "* AVANCE NOMINA *", "\n", data, JSON.parse(data));
-                                    var dt = JSON.parse(data);
-                                    if (data !== undefined && data.length > 0) {
-                                        if (dt.AVANZO > 0) {
-                                            Avance.ajax.reload();
-                                            swal('ATENCIÓN', 'SE HA AVANZADO EL CONTROL Y SE HA HECHO EL PAGO AL EMPLEADO ' + NumeroDeEmpleado.val(), 'success').then((value) => {
-                                                onClearMO();
-                                                NumeroDeEmpleado.focus().select();
-                                            });
-                                        } else {
-                                            onBeep(2);
-                                            Avance.ajax.reload();
-                                            swal('ATENCIÓN', 'ESTE CONTROL (' + Control.val() + ') YA TIENE UN AVANCE EN ESTA FRACCIÓN O AUN NO SE HA REGISTRADO UN RETORNO DE MATERIAL AL ALMACEN, POR FAVOR ESPECIFIQUE UN CONTROL DIFERENTE O UNA FRACCIÓN DIFERENTE, DE LO CONTRARIO REVISE CON EL AREA CORRESPONDIENTE', 'warning').then((value) => {
-                                                onClearMO();
-                                            });
-                                        }
-                                    }
-                                }).fail(function (x, y, z) {
-                                    console.log(x.responseText);
-                                }).always(function () {
-                                });
+                                onAvanzar();
                             }
                         }).fail(function (x, y, z) {
                             console.log(x.responseText);
@@ -538,6 +529,44 @@
             pnlTablero.find("#txt" + i).val('');
         });
         pnlTablero.find("#txtTotal").val('');
+    }
+
+    function onAvanzar() {
+
+        AVANO.NUMERO_EMPLEADO = NumeroDeEmpleado.val();
+        AVANO.CONTROL = Control.val();
+        AVANO.ESTILO = Estilo.val();
+        AVANO.NUMERO_FRACCION = pnlTablero.find("#ManoDeObra input[type='checkbox']:checked").attr('fraccion');
+        AVANO.FRACCION = pnlTablero.find("#ManoDeObra input[type='checkbox']:checked").attr('description');
+        AVANO.PRECIO_FRACCION = ManoDeOB.val();
+        AVANO.PARES = Pares.val();
+        AVANO.FECHA = Fecha.val();
+        AVANO.SEMANA = Semana.val();
+        AVANO.DEPARTAMENTO = Departamento.val();
+        AVANO.ANIO = pnlTablero.find("#Anio").val();
+
+        $.post('<?php print base_url('avance_add_avance_x_empleado_add_nomina_ocho') ?>', AVANO).done(function (c) {
+
+            var dt = JSON.parse(c);
+            if (c !== undefined && c.length > 0) {
+                if (dt.AVANZO > 0) {
+                    Avance.ajax.reload();
+                    swal('ATENCIÓN', 'SE HA AVANZADO EL CONTROL Y SE HA HECHO EL PAGO AL EMPLEADO ' + NumeroDeEmpleado.val(), 'success').then((value) => {
+                        onClearMO();
+                        NumeroDeEmpleado.focus().select();
+                    });
+                } else {
+                    onBeep(2);
+                    Avance.ajax.reload();
+                    swal('ATENCIÓN', 'ESTE CONTROL (' + Control.val() + ') YA TIENE UN AVANCE EN ESTA FRACCIÓN, POR FAVOR ESPECIFIQUE UN CONTROL DIFERENTE O UNA FRACCIÓN DIFERENTE, DE LO CONTRARIO REVISE CON EL AREA CORRESPONDIENTE', 'warning').then((value) => {
+                        onClearMO();
+                    });
+                }
+            }
+        }).fail(function (x, y, z) {
+            console.log(x.responseText);
+        }).always(function () {
+        });
     }
 </script>
 <style>

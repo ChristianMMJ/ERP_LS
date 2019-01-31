@@ -12,7 +12,7 @@
                 <label>Empleado</label>
             </div>
             <div class="col-12 col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                <input type="text" id="NumeroDeEmpleado" name="NumeroDeEmpleado" class="form-control shadow-lg numeric" placeholder="2805" style="height: 75px; font-weight: bold; font-size: 50px;" autofocus="">
+                <input type="text" id="NumeroDeEmpleado" name="NumeroDeEmpleado" class="form-control shadow-lg numeric" placeholder="2805" style="height: 75px; font-weight: bold; font-size: 50px;" autofocus="" data-toggle="tooltip" data-placement="bottom" title="Ingrese un empleado del depto de corte">
             </div>
             <div class="col-12 col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
                 <input type="text" id="NombreEmpleado" name="NombreEmpleado" class="form-control" placeholder="-" disabled="" style="height: 75px; font-weight: bold; font-size: 50px; text-align: center;">
@@ -182,13 +182,14 @@
         handleEnter();
 
         btnAceptar.click(function () {
-            onAgregarAvance();
+            onAgregarAvance(true);
         });
 
         Anio.val(new Date().getFullYear());
 
         Control.on('keydown', function (e) {
             if (e.keyCode === 13) {
+                onAgregarAvance(false);
             }
         });
 
@@ -380,7 +381,7 @@
         Avance = tblAvance.DataTable(xoptions);
     });
 
-    function onAgregarAvance() {
+    function onAgregarAvance(type) {
         if (Control.val()) {
             HoldOn.open({
                 theme: 'sk-rect',
@@ -406,40 +407,9 @@
                                 tt += parseFloat(pnlTablero.find("#txt" + i).val());
                             });
                             DiasPagoDeNomina.find("#txtTotal").val(parseFloat(r.Pares) * parseFloat(r.CostoMO));
-                            AVANO.NUMERO_EMPLEADO = NumeroDeEmpleado.val();
-                            AVANO.CONTROL = Control.val();
-                            AVANO.ESTILO = Estilo.val();
-                            AVANO.NUMERO_FRACCION = pnlTablero.find("#ManoDeObra input[type='checkbox']:checked").attr('fraccion');
-                            AVANO.FRACCION = pnlTablero.find("#ManoDeObra input[type='checkbox']:checked").attr('description');
-                            AVANO.PRECIO_FRACCION = ManoDeOB.val();
-                            AVANO.PARES = Pares.val();
-                            AVANO.FECHA = Fecha.val();
-                            AVANO.SEMANA = Semana.val();
-                            AVANO.DEPARTAMENTO = Departamento.val();
-                            AVANO.ANIO = pnlTablero.find("#Anio").val();
-
-                            $.post('<?php print base_url('avance_add_avance_x_empleado_add_nomina') ?>', AVANO).done(function (data) {
-                                console.log("\n", "* AVANCE NOMINA *", "\n", data, JSON.parse(data));
-                                var dt = JSON.parse(data);
-                                if (data !== undefined && data.length > 0) {
-                                    if (dt.AVANZO > 0) {
-                                        Avance.ajax.reload();
-                                        swal('ATENCIÓN', 'SE HA AVANZADO EL CONTROL Y SE HA HECHO EL PAGO AL EMPLEADO ' + NumeroDeEmpleado.val(), 'success').then((value) => {
-                                            onClearMO();
-                                            NumeroDeEmpleado.focus().select();
-                                        });
-                                    } else {
-                                        onBeep(2);
-                                        Avance.ajax.reload();
-                                        swal('ATENCIÓN', 'ESTE CONTROL (' + Control.val() + ') YA TIENE UN AVANCE EN ESTA FRACCIÓN O AUN NO SE HA REGISTRADO UN RETORNO DE MATERIAL AL ALMACEN, POR FAVOR ESPECIFIQUE UN CONTROL DIFERENTE O UNA FRACCIÓN DIFERENTE, DE LO CONTRARIO REVISE CON EL AREA CORRESPONDIENTE', 'warning').then((value) => {
-                                            onClearMO();
-                                        });
-                                    }
-                                }
-                            }).fail(function (x, y, z) {
-                                console.log(x.responseText);
-                            }).always(function () {
-                            });
+                            if (type) {
+                                onAvanzar();
+                            }
                         }
                     }).fail(function (x, y, z) {
                         console.log(x.responseText);
@@ -448,7 +418,7 @@
                         HoldOn.close();
                     });
                 } else {
-                    swal('ATENCIÓN', 'LA FRACCIÓN O EL CONTROL NO SON CORRECTAS, ELIJA OTRA FRACCIÓN O ESPECIFIQUE UN CONTROL CON LA FRACCIÓN SELECCIONADA', 'error').then((value) => {
+                    swal('ATENCIÓN', 'LA FRACCIÓN O EL CONTROL NO SON CORRECTAS, ELIJA OTRA FRACCIÓN O ESPECIFIQUE UN CONTROL CON LA FRACCIÓN CORRESPONDIENTE. ES POSIBLE QUE TAMPOCO HAYAN HECHO UN RETORNO DE ESTE MATERIAL EN LA FRACCIÓN SELECCIONADA.', 'warning').then((value) => {
                         Control.focus().select();
                         Estilo.val('');
                         Pares.val('');
@@ -493,6 +463,44 @@
         HoldOn.open({theme: 'sk-rect', message: 'Actualizando...'});
         Avance.ajax.reload(function () {
             HoldOn.close();
+        });
+    }
+
+    function onAvanzar() {
+
+        AVANO.NUMERO_EMPLEADO = NumeroDeEmpleado.val();
+        AVANO.CONTROL = Control.val();
+        AVANO.ESTILO = Estilo.val();
+        AVANO.NUMERO_FRACCION = pnlTablero.find("#ManoDeObra input[type='checkbox']:checked").attr('fraccion');
+        AVANO.FRACCION = pnlTablero.find("#ManoDeObra input[type='checkbox']:checked").attr('description');
+        AVANO.PRECIO_FRACCION = ManoDeOB.val();
+        AVANO.PARES = Pares.val();
+        AVANO.FECHA = Fecha.val();
+        AVANO.SEMANA = Semana.val();
+        AVANO.DEPARTAMENTO = Departamento.val();
+        AVANO.ANIO = pnlTablero.find("#Anio").val();
+
+        $.post('<?php print base_url('avance_add_avance_x_empleado_add_nomina') ?>', AVANO).done(function (data) {
+            console.log("\n", "* AVANCE NOMINA *", "\n", data, JSON.parse(data));
+            var dt = JSON.parse(data);
+            if (data !== undefined && data.length > 0) {
+                if (dt.AVANZO > 0) {
+                    Avance.ajax.reload();
+                    swal('ATENCIÓN', 'SE HA AVANZADO EL CONTROL Y SE HA HECHO EL PAGO AL EMPLEADO ' + NumeroDeEmpleado.val(), 'success').then((value) => {
+                        onClearMO();
+                        NumeroDeEmpleado.focus().select();
+                    });
+                } else {
+                    onBeep(2);
+                    Avance.ajax.reload();
+                    swal('ATENCIÓN', 'ESTE CONTROL (' + Control.val() + ') YA TIENE UN AVANCE EN ESTA FRACCIÓN O AUN NO SE HA REGISTRADO UN RETORNO DE MATERIAL AL ALMACEN, POR FAVOR ESPECIFIQUE UN CONTROL DIFERENTE O UNA FRACCIÓN DIFERENTE, DE LO CONTRARIO REVISE CON EL AREA CORRESPONDIENTE', 'warning').then((value) => {
+                        Control.focus().select();
+                    });
+                }
+            }
+        }).fail(function (x, y, z) {
+            console.log(x.responseText);
+        }).always(function () {
         });
     }
 </script>

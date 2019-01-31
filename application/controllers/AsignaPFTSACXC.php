@@ -13,21 +13,26 @@ class AsignaPFTSACXC extends CI_Controller {
     }
 
     public function is_logged() {
+        $is_valid = false;
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             $this->load->view('vEncabezado');
             switch ($this->session->userdata["TipoAcceso"]) {
                 case 'SUPER ADMINISTRADOR':
                     $this->load->view('vNavGeneral')->view('vMenuProduccion');
+                    $is_valid = true;
                     break;
                 case 'DISEÑO Y DESARROLLO':
                     $this->load->view('vMenuFichasTecnicas');
+                    $is_valid = true;
                     break;
                 case 'ALMACEN':
                     $this->load->view('vMenuMateriales');
+                    $is_valid = true;
                     break;
             }
             $this->load->view('vAsignaPFTSACXC')->view('vFooter');
-        } else {
+        }
+        if (!$is_valid) {
             $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
         }
     }
@@ -127,7 +132,7 @@ class AsignaPFTSACXC extends CI_Controller {
     public function onEntregarPielForroTextilSintetico() {
         try {
             $x = $this->input;
-            $Ano = $this->db->select('P.Ano AS Ano')->from('pedidox AS P')->where('P.Control', $x->post('CONTROL'))[0]->Ano;
+            $Ano = $this->db->select('P.Ano AS Ano')->from('pedidox AS P')->where('P.Control', $x->post('CONTROL'))->get()->result()[0]->Ano;
             /* COMPROBAR SI YA EXISTE EL REGISTRO POR EMPLEADO,SEMANA, CONTROL, FRACCION, ARTICULO */
             $DT = $this->apftsacxc->onComprobarEntrega($x->post('SEMANA'), $x->post('CONTROL'), $x->post('ARTICULO'), $x->post('FRACCION'));
             /* EXISTE LA POSIBILIDAD DE QUE LA FRACCION SEA DIFERENTE Y QUE HAGA UN NUEVO REGISTRO */
@@ -222,7 +227,7 @@ class AsignaPFTSACXC extends CI_Controller {
             /* AGREGAR MOVIMIENTO DE ARTICULO */
             $x = $this->input;
 
-            $Ano = $this->db->select('P.Ano AS Ano')->from('pedidox AS P')->where('P.Control', $x->post('CONTROL'))[0]->Ano;
+            $Ano = $this->db->select('P.Ano AS Ano')->from('pedidox AS P')->where('P.Control', $x->post('CONTROL'))->get()->result()[0]->Ano;
 
             if (floatval($x->post('REGRESO')) === 0) {
                 /* OBTENER ULTIMO REGRESO */

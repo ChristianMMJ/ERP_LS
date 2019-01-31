@@ -42,10 +42,12 @@ class Avance8 extends CI_Controller {
             /*
              * COMPROBAR SI EL DEPTO ES 
              * 
-             * 10 CORTE
              * 30 REBAJADO Y PERFORADO
-             * 80 ENTRETELADO CONTADO
-             * 280 CALIDAD
+             * 40 FOLEADO
+             * 60 LASER
+             * 70 PREL-CORTE
+             * 80 RAYADO CONTADO
+             * 90 ENTRETELADO
              * 
              * ADEMÁS EL EMPLEADO DEBE DE ESTAR A DESTAJO O AMBOS, NO COMO EMPLEADO FIJO
              * 
@@ -80,7 +82,9 @@ class Avance8 extends CI_Controller {
         try {
             header('Content-type: application/json');
             print json_encode($this->axepn->getPagosXEmpleadoXSemana(
-                                    $this->input->get('EMPLEADO'), $this->input->get('SEMANA'), $this->input->get('FRACCIONES')));
+                            $this->input->get('EMPLEADO'), 
+                            $this->input->get('SEMANA'), 
+                            $this->input->get('FRACCIONES')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

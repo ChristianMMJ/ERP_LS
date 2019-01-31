@@ -16,8 +16,8 @@ class Avance8_model extends CI_Model {
                                     . "(CASE WHEN E.SegundoNombre <>'0' THEN E.SegundoNombre ELSE '' END),"
                                     . "' ',(CASE WHEN E.Paterno <>'0' THEN E.Paterno ELSE '' END),' ',"
                                     . "(CASE WHEN E.Materno <>'0' THEN E.Materno ELSE '' END)) AS NOMBRE_COMPLETO, "
-                                    . "E.DepartamentoCostos AS DEPTOCTO", false)
-                            ->from('empleados AS E')
+                                    . "E.DepartamentoCostos AS DEPTOCTO, D.Avance AS GENERA_AVANCE, D.Descripcion AS DEPTO", false)
+                            ->from('empleados AS E')->join('departamentos AS D','D.Clave = E.DepartamentoCostos')
                             ->where('E.Numero', $EMPLEADO)
                             ->where_in('E.AltaBaja', array(1))
                             ->where_in('E.FijoDestajoAmbos', array(2, 3))
@@ -28,19 +28,19 @@ class Avance8_model extends CI_Model {
         }
     }
 
-    public function getPagosXEmpleadoXSemana($EMPLEADO, $SEMANA) {
+    public function getPagosXEmpleadoXSemana($e, $s) {
         try {
-            $part_one = "IFNULL((SELECT SUM(fpn.subtot) FROM fracpagnomina AS fpn WHERE dayofweek(fpn.fecha)";
-            $part_two = "AND fpn.numeroempleado = '$EMPLEADO' AND fpn.Semana = $SEMANA GROUP BY dayofweek(fpn.fecha)),0)";
+            $a = "IFNULL((SELECT FORMAT(SUM(fpn.subtot),2) FROM fracpagnomina AS fpn WHERE dayofweek(fpn.fecha)";
+            $b = "AND fpn.numeroempleado = '$e' AND fpn.Semana = $s GROUP BY dayofweek(fpn.fecha)),0)";
 
             return $this->db->select(
-                                    "$part_one = 2 $part_two AS LUNES,"
-                                    . "$part_one = 3 $part_two AS MARTES,"
-                                    . "$part_one = 4 $part_two AS MIERCOLES,"
-                                    . "$part_one = 5 $part_two AS JUEVES,"
-                                    . "$part_one = 6 $part_two AS VIERNES,"
-                                    . "$part_one = 7 $part_two AS SABADO,"
-                                    . "$part_one = 1 $part_two AS DOMINGO", false)
+                                    "$a = 2 $b AS LUNES,"
+                                    . "$a = 3 $b AS MARTES,"
+                                    . "$a = 4 $b AS MIERCOLES,"
+                                    . "$a = 5 $b AS JUEVES,"
+                                    . "$a = 6 $b AS VIERNES,"
+                                    . "$a = 7 $b AS SABADO,"
+                                    . "$a = 1 $b AS DOMINGO", false)
                             ->limit(1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -60,41 +60,6 @@ class Avance8_model extends CI_Model {
 //        print $str;
             $data = $query->result();
             return $data;
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function onComprobarRetornoDeMaterialXControl($CONTROL, $FR) {
-        try {
-            $this->db->select("A.Estilo, A.Pares, FXE.CostoMO, (A.Pares * FXE.CostoMO) AS TOTAL, A.Fraccion AS Fraccion", false)
-                    ->from('asignapftsacxc AS A')
-                    ->join('fraccionesxestilo as FXE', 'A.Estilo = FXE.Estilo')
-                    ->where("A.Fraccion", $FR)
-                    ->where("FXE.Fraccion", $FR)
-                    ->where("A.Control", $CONTROL);
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-//        print $str;
-            $data = $query->result();
-            return $data;
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-
-    public function onComprobarRetornoDeMaterial($CONTROL, $FRACCION, $EMPLEADO) {
-        try {
-            return $this->db->select("COUNT(*) AS EXISTE", false)
-                            ->from('asignapftsacxc AS A')
-                            ->like("A.Control", $CONTROL)
-                            ->like("A.Fraccion", $FRACCION)
-                            ->like("A.Empleado", $EMPLEADO)
-                            ->order_by('A.ID', 'DESC')
-                            ->limit(1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -120,6 +85,27 @@ class Avance8_model extends CI_Model {
         }
     }
 
+
+    public function onComprobarEstiloXControlXFraccion($CONTROL, $FR) {
+        try {
+            $this->db->select("A.Estilo, A.Pares, FXE.CostoMO, (A.Pares * FXE.CostoMO) AS TOTAL, A.Fraccion AS Fraccion", false)
+                    ->from('pedidox AS A')
+                    ->join('fraccionesxestilo as FXE', 'A.Estilo = FXE.Estilo')
+                    ->where("FXE.Fraccion", $FR)
+                    ->where("A.Control", $CONTROL);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+//        print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    
     public function getFraccionesPagoNomina($E, $F) {
         try {
             $this->db->select("FACN.ID, FACN.numeroempleado, FACN.maquila, "

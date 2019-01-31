@@ -9,6 +9,7 @@ class Empleados extends CI_Controller {
     }
 
     public function index() {
+        $is_valid = false;
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             $this->load->view('vEncabezado');
             switch ($this->session->userdata["TipoAcceso"]) {
@@ -24,16 +25,20 @@ class Empleados extends CI_Controller {
                     else {
                         $this->load->view('vMenuNominas');
                     }
+                    $is_valid = true;
                     break;
                 case 'DISEÑO Y DESARROLLO':
                     $this->load->view('vMenuFichasTecnicas');
+                    $is_valid = true;
                     break;
                 case 'RECURSOS HUMANOS':
                     $this->load->view('vMenuNominas');
+                    $is_valid = true;
                     break;
             }
             $this->load->view('vEmpleados')->view('vFooter');
-        } else {
+        }
+        if (!$is_valid) {
             $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
         }
     }

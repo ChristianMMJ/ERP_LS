@@ -52,11 +52,11 @@
                 </div>
             </div>
             <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-1" align="left">
-                <button type="button" id="btnEntregar" class="btn btn-success" style="color: #fff; background-color: #8BC34A; border-color: #8BC34A;"><span class="fa fa-check"></span> Acepta</button>
+                <button type="button" id="btnEntregar" class="btn btn-success" style="color: #fff; background-color: #8BC34A; border-color: #8BC34A;" data-toggle="tooltip" data-placement="bottom" title="Presiona Enter para aceptar"><span class="fa fa-check"></span> Acepta</button>
             </div>
             <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <div class="row">
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" align="center">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" align="center" data-toggle="tooltip" data-placement="top" title="Selecciona un articulo a entregar de la tabla de Pieles">
                         <h4>Pieles</h4>
                         <table id="tblPieles" class="table table-hover table-sm table-bordered  compact nowrap" style="width: 100% !important;">
                             <thead>
@@ -301,12 +301,12 @@
                     </div>
                     <div class="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
                         <label>Regreso</label>
-                        <input type="text" class="form-control form-control-sm numericdot" id="Regreso" name="Regreso">
+                        <input type="text" class="form-control form-control-sm numericdot" id="Regreso" name="Regreso" data-toggle="tooltip" data-placement="bottom" title="Escriba 0 si no devolvio nada.">
                         <input type="text" id="AnteriormenteRetorno" name="AnteriormenteRetorno" class="form-control form-control-sm d-none" readonly="">
                     </div>
                     <div class="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2">
                         <label>Mat-Malo</label>
-                        <input type="text" class="form-control form-control-sm numericdot" id="MatMalo" name="MatMalo">
+                        <input type="text" class="form-control form-control-sm numericdot" id="MatMalo" name="MatMalo"  data-toggle="tooltip" data-placement="bottom" title="Escriba 0 si no devolvio material malo/defectuoso.">
                     </div>
                     <div class="col-2 col-sm-12 col-md-6 col-lg-2 col-xl-2 mt-4 text-center" align="center">
                         <div class="custom-control custom-checkbox"  align="center" style="cursor: pointer !important;">
@@ -400,14 +400,15 @@
     var mdlRetornaMaterial = $("#mdlRetornaMaterial");
 
     var tblRegresos = mdlRetornaMaterial.find("#tblRegresos"), Regresos = $("#Regresos");
-    var btnAceptar = mdlRetornaMaterial.find("#btnAceptar"), MatMalo = mdlRetornaMaterial.find("#MatMalo");
+    var btnAceptar = mdlRetornaMaterial.find("#btnAceptar"), Regreso = mdlRetornaMaterial.find("#Regreso"), 
+            MatMalo = mdlRetornaMaterial.find("#MatMalo");
 
     var tipo_consumo = 0, FT = 1;
 
     $(document).ready(function () {
 
         btnEntregar.click(function () {
-            onEntregar(this, event);
+            onEntregarMaterial();
         });
 
         mdlRetornaMaterial.find("#Control").focusout(function () {
@@ -452,19 +453,20 @@
                 });
             }
         });
-        mdlRetornaMaterial.find("#Control").change(function () {
-            getParesXControl($(this));
-        }).keyup(function () {
-            getParesXControl($(this));
-        }).keypress(function () {
-            getParesXControl($(this));
+        
+        mdlRetornaMaterial.find("#Control").keydown(function (e) {
+            if (e.keyCode === 13) {
+                getParesXControl($(this));
+            }
         });
+        
         mdlRetornaMaterial.find("#Cortador").change(function () {
             if ($(this).val() !== '') {
                 mdlRetornaMaterial.find("#PielForro")[0].selectize.open();
                 mdlRetornaMaterial.find("#PielForro")[0].selectize.focus();
             }
         });
+        
         btnRetornaMaterial.click(function () {
             mdlRetornaMaterial.find("input").val("");
             $.each(mdlRetornaMaterial.find("select"), function (k, v) {
@@ -663,16 +665,17 @@
             }
         }).focusout(function () {
             if (Explosion.val() === '') {
-                tblPieles.find("tbody tr").addClass("highlight-rows");
-                tblForros.find("tbody tr").addClass("highlight-rows");
-                tblSinteticos.find("tbody tr").addClass("highlight-rows");
-                tblTextiles.find("tbody tr").addClass("highlight-rows");
-                setTimeout(function () {
-                    tblPieles.find("tbody tr").removeClass("highlight-rows");
-                    tblForros.find("tbody tr").removeClass("highlight-rows");
-                    tblSinteticos.find("tbody tr").removeClass("highlight-rows");
-                    tblTextiles.find("tbody tr").removeClass("highlight-rows");
-                }, 2500);
+                switch (parseInt(Fraccion.val())) {
+                    case 100:
+                        $(".card div[id='tblPieles_wrapper'], .card div[id='tblSinteticos_wrapper'], .card div[id='tblTextiles_wrapper']").find("thead tr th").addClass("highlight-rows");
+                        break;
+                    case 99:
+                        $(".card div[id='tblForros_wrapper'], .card div[id='tblSinteticos_wrapper'], .card div[id='tblTextiles_wrapper']").find("thead tr th").addClass("highlight-rows");
+                        break;
+                    case 96:
+                        $(".card div[id='tblPieles_wrapper'],.card div[id='tblForros_wrapper'], .card div[id='tblSinteticos_wrapper'], .card div[id='tblTextiles_wrapper']").find("thead tr th").addClass("highlight-rows");
+                        break;
+                }
             }
         });
         Semana.on('keydown', function (e) {
@@ -1013,6 +1016,7 @@
         {
             console.log('Entregar.val() > Explosion.val() ELSE');
         }
+        console.log(seguro);
         if (seguro) {
             $.post(master_url + 'onEntregarPielForroTextilSintetico', {
                 TIPO: tipo_consumo,
@@ -1177,9 +1181,9 @@
         height:20px;
         color: #000;
         background:#ffcc33;
-        animation: myfirst .4s;
-        -moz-animation:myfirst .4s infinite; /* Firefox */
-        -webkit-animation:myfirst .4s infinite; /* Safari and Chrome */
+        animation: myfirst 3s;
+        -moz-animation:myfirst 3s infinite; /* Firefox */
+        -webkit-animation:myfirst 3s infinite; /* Safari and Chrome */
         font-weight: bold;
     }
 
@@ -1195,6 +1199,5 @@
         0%   {background:#ffcc33;color:#000;}
         50%  {background:#ffffff;color:#000;}
         100%   {background:#ffcc33;color:#000;}
-    }
-
+    } 
 </style>

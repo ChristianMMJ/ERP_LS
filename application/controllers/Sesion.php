@@ -13,6 +13,7 @@ class Sesion extends CI_Controller {
     }
 
     public function index() {
+        $is_valid = false;
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
             $this->load->view('vEncabezado')->view('vFondo');
             switch ($this->session->TipoAcceso) {
@@ -20,30 +21,39 @@ class Sesion extends CI_Controller {
                     $this->load->view('vNavGeneral')
                             ->view('vMenuPrincipal')
                             ->view('vQuickMenu');
+                    $is_valid = true;
                     break;
                 case 'VENTAS':
                     $this->load->view('vMenuClientes');
+                    $is_valid = true;
                     break;
                 case 'DISEÑO Y DESARROLLO':
                     $this->load->view('vMenuFichasTecnicas');
+                    $is_valid = true;
                     break;
                 case 'RECURSOS HUMANOS':
                     $this->load->view('vMenuNominas');
+                    $is_valid = true;
                     break;
                 case 'FACTURACION':
                     $this->load->view('vMenuFacturacion');
+                    $is_valid = true;
                     break;
                 case 'ALMACEN':
                     $this->load->view('vMenuMateriales');
+                    $is_valid = true;
                     break;
                 case 'PRODUCCION':
                     $this->load->view('vMenuProduccion');
+                    $is_valid = true;
                     break;
                 case 'PROVEEDORES':
                     $this->load->view('vMenuProveedores');
+                    $is_valid = true;
                     break;
                 case 'CONTABILIDAD':
                     $this->load->view('vMenuContabilidad');
+                    $is_valid = true;
                     break;
                 case 'DESTAJOS':
                     $this->load->view('vMenuPrincipal');
@@ -61,6 +71,7 @@ class Sesion extends CI_Controller {
                              * 
                              * */
                             $this->load->view('vAvanceXEmpleadoYPagoDeNominaFraccion777777');
+                            $is_valid = true;
                             break;
                         case '888888':
                             /*
@@ -87,6 +98,7 @@ class Sesion extends CI_Controller {
                              * 
                              * */
                             $this->load->view('vAvance8');
+                            $is_valid = true;
                             break;
                         case '999999':
                             /*
@@ -97,12 +109,15 @@ class Sesion extends CI_Controller {
                              * 
                              * */
                             $this->load->view('vAvance9');
+                            $is_valid = true;
                             break;
                     }
+                    $is_valid = true;
                     break;
             }
             $this->load->view('vFooter');
-        } else {
+        }
+        if (!$is_valid) {
             $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');
         }
     }
