@@ -63,7 +63,7 @@ class AsignaPFTSACXC_model extends CI_Model {
             return $this->db->select("A.ID, A.Empleado AS Cortador, A.Control, A.Fraccion AS PiFoFraccion, "
                                     . "A.Estilo, A.Color, A.Pares, A.Articulo, A.Descripcion AS ArticuloT, "
                                     . "A.Abono AS Entregado, A.Devolucion AS  Regreso, A.TipoMov AS Tipo")
-                            ->from("asignapftsacxc AS A")->where_in('A.TipoMov', array(1, 2))->get()->result();
+                            ->from("asignapftsacxc AS A")->where_in('A.TipoMov', array(1, 2, 34, 40))->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

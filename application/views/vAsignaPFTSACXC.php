@@ -284,6 +284,8 @@
                             <option></option>
                             <option value="1">1 PIEL</option>
                             <option value="2">2 FORRO</option>
+                            <option value="34">34 TEXTIL</option>
+                            <option value="40">40 SINTETICO</option>
                         </select>
                     </div>
                     <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">

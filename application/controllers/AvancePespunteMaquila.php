@@ -62,4 +62,12 @@ class AvancePespunteMaquila extends CI_Controller {
         }
     }
 
+    public function getColoresXEstilo() {
+        try {
+            print json_encode($this->apm->getColoresXEstilo($this->input->get('ESTILO')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
 }

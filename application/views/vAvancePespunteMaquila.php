@@ -52,6 +52,11 @@
                 <label>Fecha</label>
                 <input id="Fecha" name="Fecha" class="form-control form-control-sm date notEnter">
             </div>
+            <div class="col-12 col-xs-12 col-sm-1 col-lg-1 col-xl-1"> 
+                <button type="button" id="btnAgregar" name="btnAgregar" class="btn btn-primary mt-4">
+                    <span class="fa fa-check"></span>
+                </button>
+            </div>
             <div class="w-100 my-3"></div>
             <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                 <h4>Controles listos para pespunte</h4>
@@ -102,7 +107,8 @@
     var pnlTablero = $("#pnlTablero"), Empleado = pnlTablero.find("#Empleado"), Maquila = pnlTablero.find("#Maquila");
     var ControlesListosParaPespunte, tblControlesListosParaPespunte = pnlTablero.find("#tblControlesListosParaPespunte"),
             ControlesEntregados, tblControlesEntregados = pnlTablero.find("#tblControlesEntregados"),
-            Estilo = pnlTablero.find("#Estilo"), Color = pnlTablero.find("#Color");
+            Estilo = pnlTablero.find("#Estilo"), Color = pnlTablero.find("#Color"), 
+            btnAgregar = pnlTablero.find("#btnAgregar");
 
     $(document).ready(function () {
         getMaquilas();
@@ -179,6 +185,7 @@
             });
         }).fail(function (x, y, z) {
             console.log(x.responseText);
+            swal('OPS!', 'ALGO SALIO MAL, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
         }).always(function () {
 
         });
@@ -191,8 +198,7 @@
             });
         }).fail(function (x, y, z) {
             console.log(x.responseText);
-            swal('ERROR', 'ATENCIÓN HA OCURRIDO UN ERROR', 'warning').then((value) => {
-            });
+            swal('OPS!', 'ALGO SALIO MAL, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
         }).always(function () {
 
         });

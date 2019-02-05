@@ -10,47 +10,47 @@
         <div class="row">
             <div class="col-12 col-xs-12 col-sm-4 col-lg-4 col-xl-4">
                 <label>Chofer</label>
-                <select id="Chofer" name="Chofer" class="form-control"></select>
+                <select id="Chofer" name="Chofer" class="form-control form-control-sm"></select>
             </div>
             <div class="col-12 col-xs-12 col-sm-4 col-lg-4 col-xl-4">
                 <label>Tejedora</label>
-                <select id="Tejedora" name="Tejedora" class="form-control"></select>
+                <select id="Tejedora" name="Tejedora" class="form-control form-control-sm"></select>
             </div>
             <div class="col-12 col-xs-12 col-sm-4 col-lg-4 col-xl-4">
                 <label>Documento</label>
-                <input type="text" id="Documento" name="Documento" class="form-control">
+                <input type="text" id="Documento" name="Documento" class="form-control form-control-sm">
             </div>
             <div class="col-12 col-xs-12 col-sm-2 col-lg-2 col-xl-2">
                 <label>Control</label>
-                <input type="text" id="Control" name="Control" class="form-control">
+                <input type="text" id="Control" name="Control" class="form-control form-control-sm">
             </div>
             <div class="col-12 col-xs-12 col-sm-1 col-lg-1 col-xl-1">
                 <label>Frac</label>
-                <input type="text" id="Frac" name="Frac" class="form-control">
+                <input type="text" id="Frac" name="Frac" class="form-control form-control-sm">
             </div>
             <div class="col-12 col-xs-12 col-sm-2 col-lg-2 col-xl-2">
                 <label>Estilo</label>
-                <input type="text" id="Estilo" name="Estilo" class="form-control">
+                <input type="text" id="Estilo" name="Estilo" class="form-control form-control-sm">
             </div>
             <div class="col-12 col-xs-12 col-sm-2 col-lg-2 col-xl-2">
                 <label>Color</label>
-                <select id="Color" name="Color" class="form-control"></select>
+                <select id="Color" name="Color" class="form-control form-control-sm"></select>
             </div>
-            <div class="col-12 col-xs-12 col-sm-2 col-lg-2 col-xl-2">
+            <div class="col-12 col-xs-12 col-sm-1 col-lg-1 col-xl-1">
                 <label>Pares</label>
-                <select id="Pares" name="Pares" class="form-control"></select>
+                <input type="text" id="Pares" name="Pares" class="form-control form-control-sm">
             </div>
-            <div class="col-12 col-xs-12 col-sm-2 col-lg-2 col-xl-2">
+            <div class="col-12 col-xs-12 col-sm-1 col-lg-1 col-xl-1">
                 <label>Ava</label>
-                <input id="Ava" name="Ava" class="form-control">
+                <input id="Ava" name="Ava" class="form-control form-control-sm">
             </div>
-            <div class="col-12 col-xs-12 col-sm-2 col-lg-2 col-xl-2">
+            <div class="col-12 col-xs-12 col-sm-1 col-lg-1 col-xl-1">
                 <label>Sem</label>
-                <input id="Sem" name="Sem" class="form-control">
+                <input id="Sem" name="Sem" class="form-control form-control-sm">
             </div>
-            <div class="col-12 col-xs-12 col-sm-2 col-lg-2 col-xl-2">
+            <div class="col-12 col-xs-12 col-sm-1 col-lg-1 col-xl-1">
                 <label>Fecha</label>
-                <input id="Fecha" name="Fecha" class="form-control date notEnter">
+                <input id="Fecha" name="Fecha" class="form-control form-control-sm date notEnter">
             </div>
             <div class="w-100 my-3"></div>
             <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
@@ -197,3 +197,31 @@
         });
     }
 </script>
+<style>
+    .card{
+        background-color: #fff;
+        border-width: 1px 2px 2px;
+        border-style: solid; 
+        border-image: linear-gradient(to bottom,  #2196F3, #99cc00, rgb(0,0,0,0)) 1 100% ;
+        border-image: linear-gradient(to bottom,  #2196F3, #99cc00, rgb(0,0,0,0)) 1 100% ;
+         
+  
+/*        background-color: #fff;
+       border-width: 3px 0 3px 3px;
+    border-style: solid;
+    -webkit-border-image: 
+      -webkit-gradient(linear, 100% 0, 0 0, from(black), to(rgba(0, 0, 0, 0))) 1 100%;
+    -webkit-border-image: 
+      -webkit-linear-gradient(bottom, #2196F3, #99cc00, rgba(0, 0, 0, 0)) 1 100%;
+    -moz-border-image:
+      -moz-linear-gradient(bottom, #2196F3, #99cc00, rgba(0, 0, 0, 0)) 1 100%;  
+    -o-border-image:
+      -o-linear-gradient(bottom, #2196F3, #99cc00, rgba(0, 0, 0, 0)) 1 100%;
+    border-image:
+      linear-gradient(to bottom, #2196F3, #99cc00, rgba(0, 0, 0, 0)) 1 100%; */
+    }
+    .card-header{ 
+        background-color: transparent;
+        border-bottom: 0px;
+    }
+</style>
