@@ -119,10 +119,11 @@
 
                     <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-none">
                         <label>MO</label>
-                        <input type="text" id="ManoDeOB" name="ManoDeOB" class="form-control numeric" readonly="">
+                        <input type="text" id="ManoDeOB" name="ManoDeOB" class="form-control numeric d-none" readonly="">
                         <label>AN</label>
-                        <input type="text" id="Anio" name="Anio" class="form-control numeric" readonly="">
-                    </div> 
+                        <input type="text" id="Anio" name="Anio" class="form-control numeric d-none" readonly=""> 
+                        <input type="text" id="GeneraAvance" name="GeneraAvance" class="form-control d-none" readonly="">
+                    </div>
 
                     <div class="col-12 my-1">
                         <hr>
@@ -161,7 +162,8 @@
             EstatusAvance = pnlTablero.find("#EstatusAvance"),
             ManoDeOB = pnlTablero.find("#ManoDeOB"),
             Anio = pnlTablero.find("#Anio"),
-            btnAceptar = pnlTablero.find("#btnAceptar");
+            btnAceptar = pnlTablero.find("#btnAceptar"),
+            GeneraAvance = pnlTablero.find("#GeneraAvance");
 
     var AVANO = {
         NUMERO_EMPLEADO: 0,
@@ -223,6 +225,7 @@
                             if (dt.length > 0) {
                                 NombreEmpleado.val(dt[0].NOMBRE_COMPLETO);
                                 Departamento.val(dt[0].DEPTOCTO);
+                                GeneraAvance.val(dt[0].GENERA_AVANCE);
                                 $.getJSON('<?php print base_url('obtener_semana_fecha'); ?>').done(function (data) {
                                     Semana.val((data.length > 0) ? data[0].Sem : '');
                                     Fecha.val((data.length > 0) ? data[0].Fecha : '');
@@ -400,13 +403,19 @@
                             EstatusAvance.val(data[0].DepartamentoT);
                             var d = new Date();
                             var n = d.getDay();
-                            DiasPagoDeNomina.find("#txt" + ndias[n - 1]).val(parseFloat(r.Pares) * parseFloat(r.CostoMO));
+                            var stf = parseFloat(r.Pares) * parseFloat(r.CostoMO);
+                            stf = stf.toString();
+                            stf = stf.slice(0, (stf.indexOf(".")) + 3);
+
+                            DiasPagoDeNomina.find("#txt" + ndias[n - 1]).val(stf);
                             var tt = 0;
                             ndias.forEach(function (i) {
-                                console.log('input dias: ', i, ' - ', $("#txt" + i).val());
                                 tt += parseFloat(pnlTablero.find("#txt" + i).val());
                             });
-                            DiasPagoDeNomina.find("#txtTotal").val(parseFloat(r.Pares) * parseFloat(r.CostoMO));
+                            var tf = parseFloat(r.Pares) * parseFloat(r.CostoMO);
+                            tf = tf.toString();
+                            tf = tf.slice(0, (tf.indexOf(".")) + 3);
+                            DiasPagoDeNomina.find("#txtTotal").val(tf);
                             if (type) {
                                 onAvanzar();
                             }

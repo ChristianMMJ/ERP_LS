@@ -12,8 +12,8 @@ class Grupos extends CI_Controller {
 
     public function index() {
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
+            $dt["TYPE"] = 2;
             $this->load->view('vEncabezado');
-
             switch ($this->session->userdata["TipoAcceso"]) {
                 case 'SUPER ADMINISTRADOR':
                     $this->load->view('vNavGeneral');
@@ -37,11 +37,10 @@ class Grupos extends CI_Controller {
                 case 'ALMACEN':
                     $this->load->view('vMenuMateriales');
                     break;
-            }
-
+            } 
             $this->load->view('vFondo');
             $this->load->view('vGrupos');
-            $this->load->view('vFooter');
+            $this->load->view('vWatermark', $dt)->view('vFooter');
         } else {
             $this->load->view('vEncabezado');
             $this->load->view('vSesion');

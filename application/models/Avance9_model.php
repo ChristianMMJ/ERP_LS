@@ -16,8 +16,8 @@ class Avance9_model extends CI_Model {
                                     . "(CASE WHEN E.SegundoNombre <>'0' THEN E.SegundoNombre ELSE '' END),"
                                     . "' ',(CASE WHEN E.Paterno <>'0' THEN E.Paterno ELSE '' END),' ',"
                                     . "(CASE WHEN E.Materno <>'0' THEN E.Materno ELSE '' END)) AS NOMBRE_COMPLETO, "
-                                    . "E.DepartamentoCostos AS DEPTOCTO", false)
-                            ->from('empleados AS E')
+                                    . "E.DepartamentoCostos AS DEPTOCTO, D.Avance AS GENERA_AVANCE", false)
+                            ->from('empleados AS E')->join('departamentos AS D', 'E.DepartamentoFisico = D.Clave')
                             ->where('E.Numero', $EMPLEADO)
                             ->where_in('E.AltaBaja', array(1))
                             ->where_in('E.FijoDestajoAmbos', array(2, 3))
@@ -26,7 +26,7 @@ class Avance9_model extends CI_Model {
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
-    }
+    } 
 
     public function getPagosXEmpleadoXSemana($e, $s) {
         try {

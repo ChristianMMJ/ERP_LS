@@ -1149,8 +1149,8 @@
         }).always(function () {
             opcion += '<li class="nav-item dropdown ml-auto">';
             opcion += '<a class="btn btn-primary dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+            opcion += ' <img src="<?php print "https://bootdey.com/img/Content/avatar/avatar" . rand(1, 8) . ".png"; ?>" class="rounded-circle" width="24">';
             opcion += ' <?php echo $this->session->userdata('Nombre') . ' ' . $this->session->userdata('Apellidos'); ?> ';
-            opcion += '<i class="fa fa-user-circle fa-lg"></i>';
             opcion += '</a>';
             opcion += '<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">';
             opcion += '<a class="dropdown-item" href="#"><i class="fa fa-question-circle"></i> Reportar un problema</a>';

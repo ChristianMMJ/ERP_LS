@@ -84,14 +84,14 @@
                             </div>
                         </div>
 
-                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
+                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" id="chk205" description="APLICA PEGA PARA LASER" fraccion="205">
                                 <label class="custom-control-label" for="chk205">205 Aplica pega.p/laser</label>
                             </div>
                         </div>
 
-                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
+                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" id="chk198" description="LOTEAR PARA LASER" fraccion="198">
                                 <label class="custom-control-label" for="chk198">198 Lotear p/laser</label>
@@ -225,15 +225,6 @@
                     </div>
                 </div>
             </div><!--FIN BLOQUE 2 COL 6-->
-        </div>
-    </div>
-</div>
-<div class="card">
-    <div class="card-body">
-        <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
-            <p class="font-weight-bold">© Copyright 2019, shoesystem.com. All rights reserved.</p>
-            <p>Java and the Java logo are both Copyright © 2015-2019 Sun Microsystems, Inc.</p>    
-            <p>All other content is Copyright © by their respective owners.</p>  
         </div>
     </div>
 </div>

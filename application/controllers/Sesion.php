@@ -15,6 +15,7 @@ class Sesion extends CI_Controller {
     public function index() {
         $is_valid = false;
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
+            $dt["TYPE"] = 1;
             $this->load->view('vEncabezado')->view('vFondo');
             switch ($this->session->TipoAcceso) {
                 case 'SUPER ADMINISTRADOR':
@@ -70,6 +71,7 @@ class Sesion extends CI_Controller {
                              * 337 RECORTAR FORRO LASER
                              * 
                              * */
+                            $dt["TYPE"] = 2;
                             $this->load->view('vAvanceXEmpleadoYPagoDeNominaFraccion777777');
                             $is_valid = true;
                             break;
@@ -97,6 +99,7 @@ class Sesion extends CI_Controller {
                              * 72 TROQUELAR NORMA
                              * 
                              * */
+                            $dt["TYPE"] = 2;
                             $this->load->view('vAvance8');
                             $is_valid = true;
                             break;
@@ -108,6 +111,7 @@ class Sesion extends CI_Controller {
                              * 96 CORTE MUESTRAS 
                              * 
                              * */
+                            $dt["TYPE"] = 2;
                             $this->load->view('vAvance9');
                             $is_valid = true;
                             break;
@@ -115,7 +119,7 @@ class Sesion extends CI_Controller {
                     $is_valid = true;
                     break;
             }
-            $this->load->view('vFooter');
+            $this->load->view('vFooter')->view('vWatermark', $dt);
         }
         if (!$is_valid) {
             $this->load->view('vEncabezado')->view('vSesion')->view('vFooter');

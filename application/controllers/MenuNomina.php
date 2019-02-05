@@ -12,10 +12,8 @@ class MenuNomina extends CI_Controller {
 
     public function index() {
         if (session_status() === 2 && isset($_SESSION["LOGGED"])) {
-            $this->load->view('vEncabezado');
-            $this->load->view('vFondo');
-
-
+            $dt["TYPE"] = 1;
+            $this->load->view('vEncabezado')->view('vFondo');
             switch ($this->session->userdata["TipoAcceso"]) {
                 case 'SUPER ADMINISTRADOR':
                     $this->load->view('vNavGeneral');
@@ -31,9 +29,7 @@ class MenuNomina extends CI_Controller {
                     $this->load->view('vMenuNominas');
                     break;
             }
-
-
-            $this->load->view('vFooter');
+            $this->load->view('vFooter')->view('vWatermark', $dt);
         } else {
             $this->load->view('vEncabezado');
             $this->load->view('vSesion');

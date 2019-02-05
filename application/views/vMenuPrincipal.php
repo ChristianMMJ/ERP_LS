@@ -7,12 +7,11 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav w-100">
-
+        <ul class="navbar-nav w-100"> 
             <li class="nav-item dropdown ml-auto">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="<?php print "https://bootdey.com/img/Content/avatar/avatar" . rand(1, 8) . ".png"; ?>" class="rounded-circle" width="42">
                     <?php echo $this->session->userdata('Nombre') . ' ' . $this->session->userdata('Apellidos'); ?>
-                    <i class="fa fa-user-circle fa-lg"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="#"><i class="fa fa-question-circle"></i> Reportar un problema</a>

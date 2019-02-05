@@ -93,6 +93,18 @@ $route['obtener_pagos_de_nomina_x_empleado_ocho'] = 'Avance8/getPagosXEmpleadoXS
 $route['obtener_ultimo_avance_por_control_ocho'] = 'Avance8/getUltimoAvanceXControl';
 $route['avance_add_avance_x_empleado_add_nomina_ocho'] = 'Avance8/onAgregarAvanceXEmpleadoYPagoDeNomina';
 
+/*AVANCE A PESPUNTE X MAQUILA */
+$route['avance_a_pespunte_x_maquila'] = 'AvancePespunteMaquila';
+$route['avance_a_pespunte_x_maquila_maquilas'] = 'AvancePespunteMaquila/getMaquilas';
+$route['avance_a_pespunte_x_maquila_empleados'] = 'AvancePespunteMaquila/getEmpleados';
+$route['avance_a_pespunte_x_maquila_colores_x_estilo'] = 'AvancePespunteMaquila/getColoresXEstilo';
+
+/*AVANCE A TEJIDO - CHOFER*/
+$route['avance_tejido'] = 'AvanceTejido';
+$route['choferes'] = 'AvanceTejido/getChoferes';
+$route['tejedoras'] = 'AvanceTejido/getTejedoras';
+$route['colores_x_estilo'] = 'AvanceTejido/getColoresXEstilo';
+
 /*ACCESOS*/
 $route['menu_modulos'] = 'ResourceManager/getModulos';
 $route['menu_opciones_modulos'] = 'ResourceManager/getOpcionesXModulo';

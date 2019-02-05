@@ -9,7 +9,7 @@ class Avance8 extends CI_Controller {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
         $this->load->library('session')->model('Avance8_model', 'axepn');
-    } 
+    }
 
     public function getSemanaByFecha() {
         try {
@@ -82,9 +82,7 @@ class Avance8 extends CI_Controller {
         try {
             header('Content-type: application/json');
             print json_encode($this->axepn->getPagosXEmpleadoXSemana(
-                            $this->input->get('EMPLEADO'), 
-                            $this->input->get('SEMANA'), 
-                            $this->input->get('FRACCIONES')));
+                                    $this->input->get('EMPLEADO'), $this->input->get('SEMANA'), $this->input->get('FRACCIONES')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -114,62 +112,81 @@ class Avance8 extends CI_Controller {
                 "semana" => $x->post('SEMANA'),
                 "depto" => $x->post('DEPARTAMENTO'),
                 "anio" => $x->post('ANIO'));
+            /* PASO 1 : AGREGAR AVANCE (DEBE DE ESTAR EN RAYADO O EN ALGUN OTRO DEPARTAMENTO EL CONTROL) 
 
-            $retorno_material = $this->axepn->onComprobarRetornoDeMaterial($x->post('CONTROL'), $x->post('NUMERO_FRACCION'), $x->post('NUMERO_EMPLEADO'));
-            /* SI EL CONTROL, LA FRACCION Y EL EMPLEADO HA REGRESADO ESTE MATERIAL SE OBTIENE UN "1" DE LO CONTRARIO SI EL NO REGRESO EL MATERIAL SE DEVUELVE "0" */
-            if (intval($retorno_material[0]->EXISTE) === 1) {
-                /* PASO 1 : AGREGAR AVANCE (DEBE DE ESTAR EN CORTE EL CONTROL, ADEMÁS DEBE DE ) */
-                /* AVANCE (90) ENTRETELADO */
-                /* COMPROBAR SI YA EXISTE UN REGISTRO DE ESTE AVANCE (90 - ENTRETELADO) PARA NO GENERAR DOS AVANCES AL MISMO DEPTO EN CASO DE QUE LLEGUEN A PEDIR MÁS MATERIAL */
-                $check_avance = $this->db->select('COUNT(A.Control) AS EXISTE', false)
-                                ->from('avance AS A')
-                                ->where('A.Control', $x->post('CONTROL'))
-                                ->where('A.Departamento', 90)
-                                ->where('A.Fraccion', $x->post('NUMERO_FRACCION'))
-                                ->where_not_in('A.Emp')
-                                ->get()->result();
+             * 
+             * 
+             * 10	CORTE
+              20	RAYADO
+             * 
+              30	REBAJADO Y PERFORADO
+              40	FOLEADO*
+              60	LASER
+              70	PREL-CORTE
+              80	RAYADO CONTADO
+             * 
+              90	ENTRETELADO
+             * 
+              100	MAQUILA
+              110	PESPUNTE
+              120	PREL-PESPUNTE
+              140	ENSUELADO
+              150	TEJIDO
+              180	MONTADO "A"
+              190	MONTADO "B"
+              210	ADORNO "A"
+              220	ADORNO "B"
+             * 
+             *              */
+            /* AVANCE (90) ENTRETELADO */
+            /* COMPROBAR SI YA EXISTE UN REGISTRO DE ESTE AVANCE (90 - ENTRETELADO) PARA NO GENERAR DOS AVANCES AL MISMO DEPTO EN CASO DE QUE LLEGUEN A PEDIR MÁS MATERIAL */
+            $check_avance = $this->db->select('COUNT(A.Control) AS EXISTE', false)
+                            ->from('avance AS A')
+                            ->where('A.Control', $x->post('CONTROL'))
+                            ->where('A.Departamento', 90)
+                            ->where('A.Fraccion', $x->post('NUMERO_FRACCION'))
+                            ->where_not_in('A.Emp')
+                            ->get()->result();
 
-                /* SOLO SE GENERA EL AVANCE EN LA FRACCIÓN 51 QUE ES LA PIEL */
-                if ($check_avance[0]->EXISTE <= 0) {
-                    $id = 0;
-                    if (intval($x->post('NUMERO_FRACCION')) === 51) {
-                        $avance = array(
-                            'Control' => $x->post('CONTROL'),
-                            'FechaAProduccion' => Date('d/m/Y'),
-                            'Departamento' => 90,
-                            'DepartamentoT' => 'ENTRETELADO',
-                            'FechaAvance' => Date('d/m/Y'),
-                            'Estatus' => 'A',
-                            'Usuario' => $_SESSION["ID"],
-                            'Fecha' => Date('d/m/Y'),
-                            'Hora' => Date('h:i:s a'),
-                            'Fraccion' => $x->post('NUMERO_FRACCION')
-                        );
-                        $this->db->insert('avance', $avance);
-                        $id = $this->db->insert_id();
-                    }
-                    /* PASO 2 : AGREGAR FRACCION PAGADA */
-                    $check_fraccion = $this->db->select('COUNT(F.numeroempleado) AS EXISTE', false)
-                                    ->from('fracpagnomina AS F')
-                                    ->where('F.control', $x->post('CONTROL'))
-                                    ->where('F.numfrac', $x->post('NUMERO_FRACCION'))
-                                    ->get()->result();
-                    $data["fraccion"] = $x->post('FRACCION');
-                    if ($check_fraccion[0]->EXISTE <= 0) {
-                        $data["avance_id"] = intval($id) >= 0 ? intval($id) : 0;
-                        $this->db->insert('fracpagnomina', $data);
-                        print '{"AVANZO":"1","FR":"51","RETORNO":"SI","MESSAGE":"EL CONTROL HA SIDO AVANZADO A ENTRETELADO"}';
-                    } else {
-                        $this->db->insert('fracpagnomina', $data);
-                        print '{"AVANZO":"0","FR":"99","RETORNO":"SI", "MESSAGE":"FRACCION 99, NO GENERA AVANCE"}';
-                    }
-                } else {
-                    /* YA EXISTE UN AVANCE DE ENTRETELADO EN ESTE CONTROL */
-                    print '{"AVANZO":"0","FR":"99","RETORNO":"SI", "MESSAGE":"EL NUMERO DE FRACCION Y EMPLEADO SON CORRECTOS, PERO YA HA SIDO AVANZADO A ENTRETELADO CON ANTERIORIDAD"}';
+            /* SOLO SE GENERA EL AVANCE EN LA FRACCIÓN 51 QUE ES LA PIEL */
+            if ($check_avance[0]->EXISTE <= 0) {
+                $id = 0;
+                if (intval($x->post('NUMERO_FRACCION')) === 51) {
+                    $avance = array(
+                        'Control' => $x->post('CONTROL'),
+                        'FechaAProduccion' => Date('d/m/Y'),
+                        'Departamento' => 90,
+                        'DepartamentoT' => 'ENTRETELADO',
+                        'FechaAvance' => Date('d/m/Y'),
+                        'Estatus' => 'A',
+                        'Usuario' => $_SESSION["ID"],
+                        'Fecha' => Date('d/m/Y'),
+                        'Hora' => Date('h:i:s a'),
+                        'Fraccion' => $x->post('NUMERO_FRACCION')
+                    );
+                    $this->db->insert('avance', $avance);
+                    $id = $this->db->insert_id();
                 }
+                
+                /* PASO 2 : PAGAR FRACCION */
+                $check_fraccion = $this->db->select('COUNT(F.numeroempleado) AS EXISTE', false)
+                                ->from('fracpagnomina AS F')
+                                ->where('F.control', $x->post('CONTROL'))
+                                ->where('F.numfrac', $x->post('NUMERO_FRACCION'))
+                                ->get()->result();
+                $data["fraccion"] = $x->post('FRACCION');
+                if ($check_fraccion[0]->EXISTE <= 0) {
+                    $data["avance_id"] = intval($id) >= 0 ? intval($id) : 0;
+                    $this->db->insert('fracpagnomina', $data);
+                    print '{"AVANZO":"1","FR":"'.$x->post('NUMERO_FRACCION').'","RETORNO":"SI","MESSAGE":"EL CONTROL HA SIDO AVANZADO A ENTRETELADO"}';
+                } else {
+                    $this->db->insert('fracpagnomina', $data);
+                    print '{"AVANZO":"0","FR":"'.$x->post('NUMERO_FRACCION').'","RETORNO":"SI", "MESSAGE":"FRACCION '.$x->post('NUMERO_FRACCION').', NO GENERA AVANCE"}';
+                }
+                
             } else {
-                /* EL CORTADOR NO HA REGRESADO MATERIAL O EL ALMACENISTA NO HA REGISTRADO EL RETORNO DEL MATERIAL */
-                print '{"AVANZO":"0","RETORNO":"NO", "MESSAGE":"NUMERO DE FRACCION O EMPLEADO INCORRECTOS"}';
+                /* YA EXISTE UN AVANCE DE ENTRETELADO EN ESTE CONTROL */
+                print '{"AVANZO":"0","FR":"'.$x->post('NUMERO_FRACCION').'","RETORNO":"SI", "MESSAGE":"EL NUMERO DE FRACCION Y EMPLEADO SON CORRECTOS, PERO YA HA SIDO AVANZADO A ENTRETELADO CON ANTERIORIDAD"}';
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
