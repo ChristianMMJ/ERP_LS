@@ -85,7 +85,7 @@ class AsignaPFTSACXC extends CI_Controller {
         try {
             $x = $this->input;
             print json_encode($this->apftsacxc->getPieles(
-                                    isset($_POST['SEMANA']) ? $x->post('SEMANA') : '', isset($_POST['CONTROL']) ? $x->post('CONTROL') : '', $x->post('FT')));
+                                    isset($_GET['SEMANA']) ? $x->get('SEMANA') : '', isset($_GET['CONTROL']) ? $x->get('CONTROL') : '', $x->get('FT')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -95,7 +95,7 @@ class AsignaPFTSACXC extends CI_Controller {
         try {
             $x = $this->input;
             print json_encode($this->apftsacxc->getForros(
-                                    isset($_POST['SEMANA']) ? $x->post('SEMANA') : '', isset($_POST['CONTROL']) ? $x->post('CONTROL') : '', $x->post('FT')));
+                                    isset($_GET['SEMANA']) ? $x->get('SEMANA') : '', isset($_GET['CONTROL']) ? $x->get('CONTROL') : '', $x->get('FT')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -105,7 +105,7 @@ class AsignaPFTSACXC extends CI_Controller {
         try {
             $x = $this->input;
             print json_encode($this->apftsacxc->getTextiles(
-                                    isset($_POST['SEMANA']) ? $x->post('SEMANA') : '', isset($_POST['CONTROL']) ? $x->post('CONTROL') : '', $x->post('FT')));
+                                    isset($_GET['SEMANA']) ? $x->get('SEMANA') : '', isset($_GET['CONTROL']) ? $x->get('CONTROL') : '', $x->get('FT')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -115,7 +115,7 @@ class AsignaPFTSACXC extends CI_Controller {
         try {
             $x = $this->input;
             print json_encode($this->apftsacxc->getSinteticos(
-                                    isset($_POST['SEMANA']) ? $x->post('SEMANA') : '', isset($_POST['CONTROL']) ? $x->post('CONTROL') : '', $x->post('FT')));
+                                    isset($_GET['SEMANA']) ? $x->get('SEMANA') : '', isset($_GET['CONTROL']) ? $x->get('CONTROL') : '', $x->get('FT')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

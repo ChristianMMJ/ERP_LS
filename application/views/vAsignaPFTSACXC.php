@@ -402,7 +402,7 @@
     var mdlRetornaMaterial = $("#mdlRetornaMaterial");
 
     var tblRegresos = mdlRetornaMaterial.find("#tblRegresos"), Regresos = $("#Regresos");
-    var btnAceptar = mdlRetornaMaterial.find("#btnAceptar"), Regreso = mdlRetornaMaterial.find("#Regreso"), 
+    var btnAceptar = mdlRetornaMaterial.find("#btnAceptar"), Regreso = mdlRetornaMaterial.find("#Regreso"),
             MatMalo = mdlRetornaMaterial.find("#MatMalo");
 
     var tipo_consumo = 0, FT = 1;
@@ -455,20 +455,20 @@
                 });
             }
         });
-        
+
         mdlRetornaMaterial.find("#Control").keydown(function (e) {
             if (e.keyCode === 13) {
                 getParesXControl($(this));
             }
         });
-        
+
         mdlRetornaMaterial.find("#Cortador").change(function () {
             if ($(this).val() !== '') {
                 mdlRetornaMaterial.find("#PielForro")[0].selectize.open();
                 mdlRetornaMaterial.find("#PielForro")[0].selectize.focus();
             }
         });
-        
+
         btnRetornaMaterial.click(function () {
             mdlRetornaMaterial.find("input").val("");
             $.each(mdlRetornaMaterial.find("select"), function (k, v) {
@@ -521,13 +521,12 @@
                 "searchable": true
             }
         ];
-        var xoptions = {
+        var xoptions_pieles = {
             "dom": 'rit',
             buttons: buttons,
             "ajax": {
                 "url": '<?php print base_url('pieles'); ?>',
                 "contentType": "application/json",
-                "type": "POST",
                 "dataSrc": "",
                 "data": function (d) {
                     d.SEMANA = (Semana.val().trim());
@@ -552,7 +551,7 @@
                 onCalcularAlBuscar();
             }
         };
-        Pieles = tblPieles.DataTable(xoptions);
+        Pieles = tblPieles.DataTable(xoptions_pieles);
         tblPieles.on('click', 'tr', function () {
             if (Semana.val() !== '' && Control.val() !== '' && Fraccion.val() !== '') {
                 Forros.rows('.selected').deselect();
@@ -570,9 +569,9 @@
                 onUnSelect();
             }
         });
-        xoptions.ajax = {
-            "url": '<?= base_url('forros'); ?>',
-            "type": "POST",
+        var xoptions_forros = xoptions_pieles;
+        xoptions_forros.ajax = {
+            "url": '<?php print base_url('forros'); ?>',
             "contentType": "application/json",
             "dataSrc": "",
             "data": function (d) {
@@ -581,7 +580,7 @@
                 d.FT = FT;
             }
         };
-        Forros = tblForros.DataTable(xoptions);
+        Forros = tblForros.DataTable(xoptions_forros);
         tblForros.on('click', 'tr', function () {
             if (Semana.val() !== '' && Control.val() !== '' && Fraccion.val() !== '') {
                 Pieles.rows('.selected').deselect();
@@ -599,9 +598,9 @@
                 onUnSelect();
             }
         });
-        xoptions.ajax = {
+        var xoptions_textiles = xoptions_pieles;
+        xoptions_textiles.ajax = {
             "url": '<?= base_url('textiles'); ?>',
-            "type": "POST",
             "contentType": "application/json",
             "dataSrc": "",
             "data": function (d) {
@@ -610,7 +609,7 @@
                 d.FT = FT;
             }
         };
-        Textiles = tblTextiles.DataTable(xoptions);
+        Textiles = tblTextiles.DataTable(xoptions_textiles);
         tblTextiles.on('click', 'tr', function () {
             if (Semana.val() !== '' && Control.val() !== '' && Fraccion.val() !== '') {
                 Pieles.rows('.selected').deselect();
@@ -628,9 +627,9 @@
                 onUnSelect();
             }
         });
-        xoptions.ajax = {
+        var xoptions_sinteticos = xoptions_pieles;
+        xoptions_sinteticos.ajax = {
             "url": '<?php print base_url('sinteticos'); ?>',
-            "type": "POST",
             "contentType": "application/json",
             "dataSrc": "",
             "data": function (d) {
@@ -639,7 +638,7 @@
                 d.FT = FT;
             }
         };
-        Sinteticos = tblSinteticos.DataTable(xoptions);
+        Sinteticos = tblSinteticos.DataTable(xoptions_sinteticos);
         tblSinteticos.on('click', 'tr', function () {
             if (Semana.val() !== '' && Control.val() !== '' && Fraccion.val() !== '') {
                 Pieles.rows('.selected').deselect();

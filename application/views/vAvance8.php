@@ -280,19 +280,29 @@
         });
 
         pnlTablero.find("input[type='checkbox']").change(function () {
-            onCheckFraccion(this);
-            if ($(this)[0].checked) {
-                onBeep(3);
-                Control.focus().select();
-                pnlTablero.find("#ManoDeObra input[type='checkbox']:not(:checked)").parent().find("label.custom-control-label").removeClass("highlight");
-                pnlTablero.find("#ManoDeObra input[type='checkbox']:checked").parent().find("label.custom-control-label").addClass("highlight");
-            } else {
-                onBeep(1);
-                if (pnlTablero.find("input[type='checkbox']:checked").length <= 0) {
-                    pnlTablero.find("#ManoDeObra label.custom-control-label").addClass("highlight");
+            var mo = pnlTablero.find("#ManoDeObra");
+            if (NumeroDeEmpleado.val()) {
+                onCheckFraccion(this);
+                if ($(this)[0].checked) {
+                    onBeep(3);
+                    Control.focus().select();
+                    mo.find("input[type='checkbox']:not(:checked)").parent().find("label.custom-control-label").removeClass("highlight");
+                    mo.find("input[type='checkbox']:checked").parent().find("label.custom-control-label").addClass("highlight");
                 } else {
-                    pnlTablero.find("#ManoDeObra label.custom-control-label").removeClass("highlight");
+                    onBeep(1);
+                    if (pnlTablero.find("input[type='checkbox']:checked").length <= 0) {
+                        mo.find("label.custom-control-label").addClass("highlight");
+                    } else {
+                        mo.find("label.custom-control-label").removeClass("highlight");
+                    }
                 }
+            } else {
+                swal('ATENCIÓN', 'ES NECESARIO ESPECIFICAR UN NUMERO DE EMPLEADO', 'warning').then((value) => {
+                    NumeroDeEmpleado.focus().select(); 
+                    $.each(mo.find("input[type='checkbox']"), function (k, v) {
+                        $(v)[0].checked = false;
+                    });
+                });
             }
         });
 
@@ -443,46 +453,40 @@
                     theme: 'sk-rect',
                     message: 'Espere...'
                 });
-                $.getJSON('<?php print base_url('obtener_estilo_pares_por_control_fraccion_ocho'); ?>', {CR: Control.val(), FR: fra}).done(function (a) {
-                    if (a.length > 0) {
-                        var r = a[0];
-                        Estilo.val(r.Estilo);
-                        Pares.val(r.Pares);
-                        ManoDeOB.val(r.CostoMO);
-                        $.getJSON('<?php print base_url('obtener_ultimo_avance_por_control_ocho'); ?>', {C: Control.val()}).done(function (b) {
-                            if (b.length > 0) {
-                                SigAvance.val(b[0].Departamento);
-                                EstatusAvance.val(b[0].DepartamentoT);
-                                var d = new Date();
-                                var n = d.getDay();
-                                DiasPagoDeNomina.find("#txt" + ndias[n - 1]).val(parseFloat(r.Pares) * parseFloat(r.CostoMO));
-                                var tt = 0;
-                                ndias.forEach(function (i) {
-                                    tt += parseFloat(pnlTablero.find("#txt" + i).val());
-                                });
-                                DiasPagoDeNomina.find("#txtTotal").val(parseFloat(r.Pares) * parseFloat(r.CostoMO));
-                                onAvanzar();
-                            }
-                        }).fail(function (x, y, z) {
-                            console.log(x.responseText);
-                            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
-                        }).always(function () {
-                            HoldOn.close();
-                        });
-                    } else {
-                        swal('ATENCIÓN', 'LA FRACCIÓN O EL CONTROL NO SON CORRECTAS, ELIJA OTRA FRACCIÓN O ESPECIFIQUE UN CONTROL CON LA FRACCIÓN SELECCIONADA', 'error').then((value) => {
-                            Control.focus().select();
-                            Estilo.val('');
-                            Pares.val('');
-                            SigAvance.val('');
-                        });
-                    }
-                }).fail(function (x, y, z) {
-                    console.log(x.responseText);
-                    swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
-                }).always(function () {
-                    HoldOn.close();
-                });
+                if (a.length > 0) {
+                    var r = a[0];
+                    Estilo.val(r.Estilo);
+                    Pares.val(r.Pares);
+                    ManoDeOB.val(r.CostoMO);
+                    $.getJSON('<?php print base_url('obtener_ultimo_avance_por_control_ocho'); ?>', {C: Control.val()}).done(function (b) {
+                        if (b.length > 0) {
+                            SigAvance.val(b[0].Departamento);
+                            EstatusAvance.val(b[0].DepartamentoT);
+                            var d = new Date();
+                            var n = d.getDay();
+                            DiasPagoDeNomina.find("#txt" + ndias[n - 1]).val(parseFloat(r.Pares) * parseFloat(r.CostoMO));
+                            var tt = 0;
+                            ndias.forEach(function (i) {
+                                tt += parseFloat(pnlTablero.find("#txt" + i).val());
+                            });
+                            DiasPagoDeNomina.find("#txtTotal").val(parseFloat(r.Pares) * parseFloat(r.CostoMO));
+                            onAvanzar();
+                        }
+                    }).fail(function (x, y, z) {
+                        console.log(x.responseText);
+                        swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                    }).always(function () {
+                        HoldOn.close();
+                    });
+                } else {
+                    swal('ATENCIÓN', 'LA FRACCIÓN O EL CONTROL NO SON CORRECTAS, ELIJA OTRA FRACCIÓN O ESPECIFIQUE UN CONTROL CON LA FRACCIÓN SELECCIONADA', 'error').then((value) => {
+                        Control.focus().select();
+                        Estilo.val('');
+                        Pares.val('');
+                        SigAvance.val('');
+                    });
+                }
+
             } else {
                 swal('ATENCIÓN', 'DEBE DE ESPECIFICAR UN CONTROL', 'error').then((value) => {
                     Control.focus().select();
@@ -604,15 +608,46 @@
         padding-left: 10px;
         padding-right: 10px;    
         background:#99cc00; 
+        background:#4CAF50; 
         font-weight: bold;
-        color:#000;
-        -webkit-transition: background-color 1s ease-out;
-        -moz-transition: background-color 1s ease-out;
-        -o-transition: background-color 1s ease-out;
-        transition: background-color 1s ease-out;
+        color:#fff;
+        -webkit-transition: background-color .1s ease-out;
+        -moz-transition: background-color .1s ease-out;
+        -o-transition: background-color .1s ease-out;
+        transition: background-color .1s ease-out;
+    }
+
+    .custom-control-label:hover{
+        border-radius: 4px;
+        padding-left: 10px;
+        padding-right: 10px;    
+        background:#03a9f4; 
+        font-weight: bold;
+        color:#fff;
+        -webkit-transition: background-color .1s ease-out;
+        -moz-transition: background-color .1s ease-out;
+        -o-transition: background-color .1s ease-out;
+        transition: background-color .1s ease-out;
     }
     input[type='text']{
         color: #c1850c !important;
         font-weight: bold !important;
+    }
+</style>
+<style>
+    .card{
+        background-color: #f9f9f9;
+        border-width: 1px 2px 2px;
+        border-style: solid; 
+        border-image: linear-gradient(to bottom,  #2196F3, #99cc00, rgb(0,0,0,0)) 1 100% ;
+        /*top
+        background-image: linear-gradient(to left, #0099cc,  #cc0000, #0099cc) ;
+        background-size: 100% 1px;
+        background-position: 10% 0%, 0% 100%;
+        background-repeat: no-repeat;  */
+    }
+    .card-header{ 
+        background-color: transparent;
+        border-bottom: 0px;
     }
 </style>

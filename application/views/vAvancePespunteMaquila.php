@@ -107,7 +107,7 @@
     var pnlTablero = $("#pnlTablero"), Empleado = pnlTablero.find("#Empleado"), Maquila = pnlTablero.find("#Maquila");
     var ControlesListosParaPespunte, tblControlesListosParaPespunte = pnlTablero.find("#tblControlesListosParaPespunte"),
             ControlesEntregados, tblControlesEntregados = pnlTablero.find("#tblControlesEntregados"),
-            Estilo = pnlTablero.find("#Estilo"), Color = pnlTablero.find("#Color"), 
+            Estilo = pnlTablero.find("#Estilo"), Color = pnlTablero.find("#Color"),
             btnAgregar = pnlTablero.find("#btnAgregar");
 
     $(document).ready(function () {
@@ -204,3 +204,18 @@
         });
     }
 </script>
+<style>
+    .card{
+        background-color: #f9f9f9;
+        border-width: 1px 2px 2px;
+        border-style: solid; 
+        border-image: linear-gradient(to bottom,  #0099cc, #cc0000, rgb(0,0,0,0)) 1 100% ;
+        border-image: linear-gradient(to bottom,  #0099cc, #cc0000, rgb(0,0,0,0)) 1 100% ;
+        
+    }
+    .card-header{ 
+        background-color: transparent;
+        border-bottom: 0px;
+        
+    }
+</style>

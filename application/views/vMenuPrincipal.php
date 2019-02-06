@@ -10,7 +10,7 @@
         <ul class="navbar-nav w-100"> 
             <li class="nav-item dropdown ml-auto">
                 <a class="btn btn-primary dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="<?php print "https://bootdey.com/img/Content/avatar/avatar" . rand(1, 8) . ".png"; ?>" class="rounded-circle" width="42">
+                    <img src="<?php print "https://bootdey.com/img/Content/avatar/avatar" . rand(1, 8) . ".png"; ?>" class="rounded-circle" width="24">
                     <?php echo $this->session->userdata('Nombre') . ' ' . $this->session->userdata('Apellidos'); ?>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">

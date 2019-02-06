@@ -199,26 +199,12 @@
 </script>
 <style>
     .card{
-        background-color: #fff;
+        background-color: #f9f9f9;
         border-width: 1px 2px 2px;
         border-style: solid; 
         border-image: linear-gradient(to bottom,  #2196F3, #99cc00, rgb(0,0,0,0)) 1 100% ;
         border-image: linear-gradient(to bottom,  #2196F3, #99cc00, rgb(0,0,0,0)) 1 100% ;
-         
-  
-/*        background-color: #fff;
-       border-width: 3px 0 3px 3px;
-    border-style: solid;
-    -webkit-border-image: 
-      -webkit-gradient(linear, 100% 0, 0 0, from(black), to(rgba(0, 0, 0, 0))) 1 100%;
-    -webkit-border-image: 
-      -webkit-linear-gradient(bottom, #2196F3, #99cc00, rgba(0, 0, 0, 0)) 1 100%;
-    -moz-border-image:
-      -moz-linear-gradient(bottom, #2196F3, #99cc00, rgba(0, 0, 0, 0)) 1 100%;  
-    -o-border-image:
-      -o-linear-gradient(bottom, #2196F3, #99cc00, rgba(0, 0, 0, 0)) 1 100%;
-    border-image:
-      linear-gradient(to bottom, #2196F3, #99cc00, rgba(0, 0, 0, 0)) 1 100%; */
+        
     }
     .card-header{ 
         background-color: transparent;
