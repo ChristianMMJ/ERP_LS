@@ -678,20 +678,7 @@
                         break;
                 }
             }
-        });
-        Semana.on('keydown', function (e) {
-            FT = 0;
-            if (e.keyCode === 13 && Semana.val()) {
-                HoldOn.open({theme: 'sk-bounce', message: 'Buscando por semana...'});
-                Pieles.ajax.reload(function () {
-                    HoldOn.close();
-                });
-                Forros.ajax.reload();
-                Sinteticos.ajax.reload();
-                Textiles.ajax.reload();
-            }
-        });
-
+        }); 
         Control.on('keydown', function (e) {
             FT = 0;
             if (e.keyCode === 13 && Semana.val() && Control.val()) {
@@ -1201,4 +1188,18 @@
         50%  {background:#ffffff;color:#000;}
         100%   {background:#ffcc33;color:#000;}
     } 
+</style>
+<style>
+    .card{
+        background-color: #f9f9f9;
+        border-width: 1px 2px 2px;
+        border-style: solid; 
+        border-image: linear-gradient(to bottom,  #2196F3, #99cc00, rgb(0,0,0,0)) 1 100% ;
+        border-image: linear-gradient(to bottom,  #2196F3, #99cc00, rgb(0,0,0,0)) 1 100% ;
+        
+    }
+    .card-header{ 
+        background-color: transparent;
+        border-bottom: 0px;
+    }
 </style>
