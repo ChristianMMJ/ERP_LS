@@ -202,7 +202,7 @@ class AsignaPFTSACXC extends CI_Controller {
                 /* AGREGAR MOVIMIENTO DE ARTICULO */
                 $datos = array(
                     'Articulo' => $x->post('ARTICULO'),
-                    'PrecioMov' => 0,
+                    'PrecioMov' => $PRECIO[0]->PRECIO_MAQUILA_UNO,
                     'CantidadMov' => $x->post('ENTREGA'),
                     'FechaMov' => Date('d/m/Y'),
                     'EntradaSalida' => '2'/* 1= ENTRADA, 2 = SALIDA */,
@@ -215,7 +215,7 @@ class AsignaPFTSACXC extends CI_Controller {
                     'OrdenCompra' => NULL,
                     'Subtotal' => 0
                 );
-                $this->apftsacxc->onAgregarMovArt($datos); 
+                $this->apftsacxc->onAgregarMovArt($datos);
                 $this->db->insert("movarticulos_fabrica", $datos);
             }
         } catch (Exception $exc) {
@@ -245,10 +245,11 @@ class AsignaPFTSACXC extends CI_Controller {
                             ->where('ID', $x->post('ID'))->update('asignapftsacxc');
                 }
             } else {
+                $PRECIO = $this->apftsacxc->onObtenerPrecioMaquila($x->post('ARTICULO'));
                 if ($x->post('REGRESO') >= 0 && $x->post("MATERIALMALO") <= 0) {
                     $datos = array(
                         'Articulo' => $x->post('ARTICULO'),
-                        'PrecioMov' => 0,
+                        'PrecioMov' => $PRECIO[0]->PRECIO_MAQUILA_UNO,
                         'CantidadMov' => $x->post('REGRESO'),
                         'FechaMov' => Date('d/m/Y'),
                         'EntradaSalida' => '1'/* 1= ENTRADA, 2 = SALIDA */,
@@ -259,7 +260,7 @@ class AsignaPFTSACXC extends CI_Controller {
                         'Sem' => substr($x->post('CONTROL'), 2, 2),
                         'Ano' => $Ano,
                         'OrdenCompra' => NULL,
-                        'Subtotal' => 0
+                        'Subtotal' => $PRECIO[0]->PRECIO_MAQUILA_UNO * $x->post('REGRESO')
                     );
                     $this->db->insert("movarticulos_fabrica", $datos);
 
@@ -280,7 +281,7 @@ class AsignaPFTSACXC extends CI_Controller {
                     if ($x->post("MATERIALMALO") > 0) {
                         $datos = array(
                             'Articulo' => $x->post('ARTICULO'),
-                            'PrecioMov' => 0,
+                            'PrecioMov' => $PRECIO[0]->PRECIO_MAQUILA_UNO,
                             'CantidadMov' => $x->post('REGRESO'),
                             'FechaMov' => Date('d/m/Y'),
                             'EntradaSalida' => '1'/* 1= ENTRADA, 2 = SALIDA */,
@@ -291,7 +292,7 @@ class AsignaPFTSACXC extends CI_Controller {
                             'Sem' => substr($x->post('CONTROL'), 2, 2),
                             'Ano' => $Ano,
                             'OrdenCompra' => NULL,
-                            'Subtotal' => 0
+                            'Subtotal' => $PRECIO[0]->PRECIO_MAQUILA_UNO * $x->post('REGRESO')
                         );
                         $this->db->insert("movarticulos_fabrica", $datos);
                         /**/
