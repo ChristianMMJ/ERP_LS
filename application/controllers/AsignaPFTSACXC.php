@@ -208,14 +208,15 @@ class AsignaPFTSACXC extends CI_Controller {
                     'EntradaSalida' => '2'/* 1= ENTRADA, 2 = SALIDA */,
                     'TipoMov' => 'SPR', /* SXP = SALIDA A PRODUCCION */
                     'DocMov' => $x->post('ORDENDEPRODUCCION'),
-                    'Tp' => 1,
+                    'Tp' => '',
                     'Maq' => intval(substr($x->post('CONTROL'), 4, 2)),
                     'Sem' => $x->post('SEMANA'),
                     'Ano' => $Ano,
                     'OrdenCompra' => NULL,
                     'Subtotal' => 0
                 );
-                $this->apftsacxc->onAgregarMovArt($datos);
+                $this->apftsacxc->onAgregarMovArt($datos); 
+                $this->db->insert("movarticulos_fabrica", $datos);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -253,14 +254,14 @@ class AsignaPFTSACXC extends CI_Controller {
                         'EntradaSalida' => '1'/* 1= ENTRADA, 2 = SALIDA */,
                         'TipoMov' => 'EPR', /* EXP = ENTRADA POR PRODUCCION */
                         'DocMov' => $x->post('ID'),
-                        'Tp' => 3,
-                        'Maq' => 10,
+                        'Tp' => ''/*                         * PORQUE NO VIENE UN MOVIMIENTO DE ALMACEN* */,
+                        'Maq' => 1,
                         'Sem' => substr($x->post('CONTROL'), 2, 2),
                         'Ano' => $Ano,
                         'OrdenCompra' => NULL,
                         'Subtotal' => 0
                     );
-                    $this->apftsacxc->onAgregarMovArt($datos);
+                    $this->db->insert("movarticulos_fabrica", $datos);
 
                     /* OBTENER ULTIMO REGRESO */
                     $REGRESO = $this->apftsacxc->onObtenerUltimoRegreso($x->post('ID'));
@@ -282,17 +283,17 @@ class AsignaPFTSACXC extends CI_Controller {
                             'PrecioMov' => 0,
                             'CantidadMov' => $x->post('REGRESO'),
                             'FechaMov' => Date('d/m/Y'),
-                            'EntradaSalida' => '2'/* 1= ENTRADA, 2 = SALIDA */,
+                            'EntradaSalida' => '1'/* 1= ENTRADA, 2 = SALIDA */,
                             'TipoMov' => 'EPR', /* EXP = ENTRADA POR PRODUCCION */
                             'DocMov' => $x->post('ID'),
-                            'Tp' => 3,
-                            'Maq' => 10,
+                            'Tp' => '',
+                            'Maq' => 1,
                             'Sem' => substr($x->post('CONTROL'), 2, 2),
                             'Ano' => $Ano,
                             'OrdenCompra' => NULL,
                             'Subtotal' => 0
                         );
-                        $this->apftsacxc->onAgregarMovArt($datos);
+                        $this->db->insert("movarticulos_fabrica", $datos);
                         /**/
                         $this->db->set('Empleado', $x->post('EMPLEADO'))
                                 ->set('Basura', $x->post('REGRESO'))

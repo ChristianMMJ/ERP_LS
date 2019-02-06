@@ -56,7 +56,7 @@
             </div>
             <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <div class="row">
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" align="center" data-toggle="tooltip" data-placement="top" title="Selecciona un articulo a entregar de la tabla de Pieles">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" align="center" data-toggle="tooltip" data-placement="right" title="Selecciona un articulo a entregar de la tabla de Pieles">
                         <h4>Pieles</h4>
                         <table id="tblPieles" class="table table-hover table-sm table-bordered  compact nowrap" style="width: 100% !important;">
                             <thead>
