@@ -50,5 +50,5 @@ $this->load->view('vExplosionSemanalArticulo');
 $this->load->view('vCotejaExplosionOrdCom');
 $this->load->view('vExplosionSemanalOrdComProyeccion');
 $this->load->view('vConciliaFabricaProduccion');
-
+$this->load->view('vCuentasPorCobrarMaquilas');
 

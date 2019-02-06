@@ -308,7 +308,7 @@ class Explosiones_model extends CI_Model {
             $this->db->where_in('A.Grupo', array('3', '50', '52'));
             $this->db->group_by('A.Clave');
             //Ordenamiento será por tallas
-            $this->db->order_by('ClaveART', 'ASC');
+            $this->db->order_by('NombreArticulo', 'ASC');
 
             $query = $this->db->get();
             /*
@@ -368,7 +368,7 @@ SC.A21, SC.A22, "
 
 
             //Ordenamiento
-            $this->db->order_by('ClaveART', 'ASC');
+            $this->db->order_by('A.Descripcion', 'ASC');
             //$this->db->order_by('Explosion', 'DESC');
 
 
