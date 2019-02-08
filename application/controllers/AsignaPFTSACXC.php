@@ -215,7 +215,6 @@ class AsignaPFTSACXC extends CI_Controller {
                     'OrdenCompra' => NULL,
                     'Subtotal' => 0
                 );
-                $this->apftsacxc->onAgregarMovArt($datos);
                 $this->db->insert("movarticulos_fabrica", $datos);
             }
         } catch (Exception $exc) {
