@@ -118,6 +118,7 @@
                     text: "NO EXISTEN PAGOS PARA ESTE PROVEEDOR",
                     icon: "error"
                 }).then((action) => {
+                    mdlReporte.modal('hide');
                     mdlGeneraReciboPago.find('#FechaIni').focus();
                 });
             }

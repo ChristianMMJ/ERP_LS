@@ -51,4 +51,6 @@ $this->load->view('vCotejaExplosionOrdCom');
 $this->load->view('vExplosionSemanalOrdComProyeccion');
 $this->load->view('vConciliaFabricaProduccion');
 $this->load->view('vCuentasPorCobrarMaquilas');
-
+$this->load->view('vCajasEntregaControl');
+$this->load->view('vComprasPorFechaGeneral');
+$this->load->view('vComprasPorFechaPorArticulo');
