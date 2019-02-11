@@ -79,6 +79,7 @@ class ReportesCompras_model extends CI_Model {
                     ->from("cartera_proveedores CP")
                     ->join("proveedores P", 'ON P.Clave =  CP.Proveedor')
                     ->like("CP.Tp ", $Tp)
+                    ->where_in("CP.Estatus ", array('SIN PAGAR', 'PAGADO', 'PENDIENTE'))
                     ->where("STR_TO_DATE(CP.FechaDoc, \"%d/%m/%Y\") BETWEEN STR_TO_DATE('$FechaIni', \"%d/%m/%Y\") AND STR_TO_DATE('$FechaFin', \"%d/%m/%Y\") ", null, false);
 
             if ($Tipo === '0') {
@@ -115,6 +116,7 @@ class ReportesCompras_model extends CI_Model {
                     ->from("cartera_proveedores CP")
                     ->join("proveedores P", 'ON P.Clave =  CP.Proveedor')
                     ->like("CP.Tp ", $Tp)
+                    ->where_in("CP.Estatus ", array('SIN PAGAR', 'PAGADO', 'PENDIENTE'))
                     ->where("STR_TO_DATE(CP.FechaDoc, \"%d/%m/%Y\") BETWEEN STR_TO_DATE('$FechaIni', \"%d/%m/%Y\") AND STR_TO_DATE('$FechaFin', \"%d/%m/%Y\") ", null, false);
             if ($Tipo === '0') {
                 $this->db->where("DocDirecto", '1');
@@ -148,6 +150,75 @@ class ReportesCompras_model extends CI_Model {
                             ->where("C.Doc ", $Doc)
                             ->where("C.Proveedor ", $Proveedor)
                             ->where("C.Tp ", $Tp)
+                            ->order_by("A.Descripcion", 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    /* Devoluciones */
+
+    public function getProveedoresReporteDevoluciones($FechaIni, $FechaFin, $Tp) {
+        try {
+            $this->db->query("SET sql_mode = '';");
+            $this->db->select("CAST(P.Clave AS SIGNED) AS ClaveProveedor,"
+                            . "CASE WHEN NC.Tp = '1' THEN P.NombreF  "
+                            . "ELSE P.NombreI "
+                            . "END AS NombreProveedor"
+                            . "  ", false)
+                    ->from("notascreditoprov NC")
+                    ->join("proveedores P", 'ON P.Clave =  NC.Proveedor')
+                    ->like("NC.Tp ", $Tp)
+                    ->where("NC.Estatus ", 2)
+                    ->where("STR_TO_DATE(NC.Fecha, \"%d/%m/%Y\") BETWEEN STR_TO_DATE('$FechaIni', \"%d/%m/%Y\") AND STR_TO_DATE('$FechaFin', \"%d/%m/%Y\") ", null, false);
+            return $this->db->group_by("P.Clave")
+                            ->order_by("ClaveProveedor", 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getDocsProveedoresReporteDevoluciones($FechaIni, $FechaFin, $Tp) {
+        try {
+            $this->db->query("SET sql_mode = '';");
+            $this->db->select("CAST(NC.Proveedor AS SIGNED) AS ClaveProveedor, CAST(NC.DocCartProv AS SIGNED) AS DocCartProv  "
+                            . "  ", false)
+                    ->from("notascreditoprov NC")
+                    ->like("NC.Tp ", $Tp)
+                    ->where("NC.Estatus ", 2)
+                    ->where("STR_TO_DATE(NC.Fecha, \"%d/%m/%Y\") BETWEEN STR_TO_DATE('$FechaIni', \"%d/%m/%Y\") AND STR_TO_DATE('$FechaFin', \"%d/%m/%Y\") ", null, false);
+            return $this->db->group_by("NC.Proveedor")
+                            ->group_by("NC.DocCartProv")
+                            ->order_by("ClaveProveedor", 'ASC')
+                            ->order_by("DocCartProv", 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getDetalleDocsProveedoresReporteDevoluciones($FechaIni, $FechaFin, $Tp) {
+        try {
+            $this->db->query("SET sql_mode = '';");
+            $this->db->select("CAST(NC.Proveedor AS SIGNED) AS ClaveProveedor, CAST(NC.DocCartProv AS SIGNED) AS DocCartProv,"
+                            . "NC.Folio, "
+                            . "NC.Fecha, "
+                            . "NC.DocCartProv, "
+                            . "NC.Cantidad, "
+                            . "A.Descripcion AS Articulo, "
+                            . "NC.Concepto, "
+                            . "NC.Precio, "
+                            . "NC.Subtotal "
+                            . "  ", false)
+                    ->from("notascreditoprov NC")
+                    ->join("articulos A", 'ON A.Clave =  NC.Articulo')
+                    ->like("NC.Tp ", $Tp)
+                    ->where("NC.Estatus ", 2)
+                    ->where("STR_TO_DATE(NC.Fecha, \"%d/%m/%Y\") BETWEEN STR_TO_DATE('$FechaIni', \"%d/%m/%Y\") AND STR_TO_DATE('$FechaFin', \"%d/%m/%Y\") ", null, false);
+            return $this->db->order_by("ClaveProveedor", 'ASC')
+                            ->order_by("DocCartProv", 'ASC')
                             ->order_by("A.Descripcion", 'ASC')
                             ->get()->result();
         } catch (Exception $exc) {

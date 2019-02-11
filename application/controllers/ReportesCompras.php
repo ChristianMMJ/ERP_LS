@@ -15,6 +15,121 @@ class ReportesCompras extends CI_Controller {
         setlocale(LC_TIME, 'spanish');
     }
 
+    public function onReporteDevolucionesCompra() {
+        $FechaIni = $this->input->post('FechaIni');
+        $FechaFin = $this->input->post('FechaFin');
+        $Tp = $this->input->post('Tp');
+
+        $cm = $this->ReportesCompras_model;
+        $Proveedores = $cm->getProveedoresReporteDevoluciones($FechaIni, $FechaFin, $Tp);
+        $Docs = $cm->getDocsProveedoresReporteDevoluciones($FechaIni, $FechaFin, $Tp);
+        $Articulos = $cm->getDetalleDocsProveedoresReporteDevoluciones($FechaIni, $FechaFin, $Tp);
+        if (!empty($Proveedores)) {
+
+            $pdf = new PDFDevolucionesCompras('P', 'mm', array(215.9, 279.4));
+            $pdf->setFechaFin($FechaFin);
+            $pdf->setFechaIni($FechaIni);
+            $pdf->setTp($Tp);
+            $pdf->AddPage();
+            $pdf->SetAutoPageBreak(true, 6);
+            $pdf->SetLineWidth(0.2);
+
+            $Total_G = 0;
+            foreach ($Proveedores as $key => $P) {
+
+                $pdf->SetLineWidth(0.5);
+                $pdf->SetX(5);
+                $pdf->SetFont('Calibri', 'B', 9);
+                $pdf->Cell(20, 6, utf8_decode('Proveedor: '), 'B'/* BORDE */, 0, 'L');
+                $pdf->SetX(25);
+                $pdf->SetFont('Calibri', '', 9);
+                $pdf->Cell(50, 6, mb_strimwidth(utf8_decode($P->ClaveProveedor . '    ' . $P->NombreProveedor), 0, 45, ""), 'B'/* BORDE */, 0, 'L');
+
+
+                $PTotal_C = 0;
+                $PTotal_P = 0;
+
+                foreach ($Docs as $key => $D) {
+                    if ($P->ClaveProveedor === $D->ClaveProveedor) {
+                        $pdf->SetLineWidth(0.5);
+                        $pdf->SetX(75);
+                        $pdf->SetFont('Calibri', 'B', 9);
+                        $pdf->Cell(15, 6, utf8_decode('Docto: '), 'B'/* BORDE */, 0, 'L');
+                        $pdf->SetX(90);
+                        $pdf->SetFont('Calibri', '', 9);
+                        $pdf->Cell(15, 6, utf8_decode($D->DocCartProv), 'B'/* BORDE */, 1, 'L');
+
+                        $DTotal_C = 0;
+                        $DTotal_P = 0;
+                        foreach ($Articulos as $key => $A) {
+                            if ($A->ClaveProveedor === $D->ClaveProveedor && $A->DocCartProv === $D->DocCartProv) {
+                                $pdf->SetFont('Calibri', '', 8.5);
+                                $pdf->SetLineWidth(0.2);
+                                $anchos = array(14/* 1 */, 17/* 2 */, 15/* 3 */, 63/* 4 */, 63/* 5 */, 15/* 6 */, 18/* 7 */);
+                                $aligns = array('L', 'C', 'R', 'L', 'L', 'R', 'R');
+                                $pdf->SetAligns($aligns);
+                                $pdf->SetWidths($anchos);
+                                $pdf->Row(array(
+                                    $A->Folio,
+                                    substr($A->Fecha, 0, 8),
+                                    number_format($A->Cantidad, 2, ".", ","),
+                                    mb_strimwidth(utf8_decode($A->Articulo), 0, 45, ""),
+                                    mb_strimwidth(utf8_decode($A->Concepto), 0, 45, ""),
+                                    '$' . number_format($A->Precio, 2, ".", ","),
+                                    '$' . number_format($A->Subtotal, 2, ".", ","),
+                                        ), 0);
+
+                                $DTotal_C += $A->Cantidad;
+                                $DTotal_P += $A->Subtotal;
+                                $PTotal_C += $A->Cantidad;
+                                $PTotal_P += $A->Subtotal;
+                                $Total_G += $A->Subtotal;
+                            }
+                        }
+                        /* Total por doc */
+                        $pdf->SetFont('Calibri', 'B', 8.5);
+                        $anchos = array(31/* 2 */, 15/* 3 */, 141/* 3 */, 18/* 4 */);
+                        $aligns = array('L', 'R', 'C', 'R', 'C');
+                        $pdf->SetAligns($aligns);
+                        $pdf->SetWidths($anchos);
+                        $pdf->Row(array(utf8_decode('Total por doc:'), number_format($DTotal_C, 2, ".", ","), '', '$' . number_format($DTotal_P, 2, ".", ",")), 'T');
+                    }
+                }
+
+
+                /* Total por prov */
+                $pdf->SetFont('Calibri', 'B', 8.5);
+                $anchos = array(31/* 2 */, 15/* 3 */, 141/* 3 */, 18/* 4 */);
+                $aligns = array('L', 'R', 'C', 'R', 'C');
+                $pdf->SetAligns($aligns);
+                $pdf->SetWidths($anchos);
+                $pdf->Row(array(utf8_decode('Total por Proveedor:'), number_format($PTotal_C, 2, ".", ","), '', '$' . number_format($PTotal_P, 2, ".", ",")), 'T');
+            }
+            /* Total general */
+            $pdf->SetFont('Calibri', 'B', 8.5);
+            $anchos = array(31/* 2 */, 20/* 3 */, 136/* 3 */, 18/* 4 */);
+            $aligns = array('L', 'R', 'C', 'R', 'C');
+            $pdf->SetAligns($aligns);
+            $pdf->SetWidths($anchos);
+            $pdf->Row(array('', '', 'Total General:', '$' . number_format($Total_G, 2, ".", ",")), 'T');
+
+
+            /* FIN RESUMEN */
+            $path = 'uploads/Reportes/Devoluciones';
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $file_name = "REPORTE DEVOLUCIONES DE COMPRAS " . ' ' . date("d-m-Y his");
+            $url = $path . '/' . $file_name . '.pdf';
+            /* Borramos el archivo anterior */
+            if (delete_files('uploads/Reportes/Devoluciones/')) {
+                /* ELIMINA LA EXISTENCIA DE CUALQUIER ARCHIVO EN EL DIRECTORIO */
+            }
+            $pdf->Output($url);
+            print base_url() . $url;
+        }
+    }
+
     public function onReporteComprasGeneralDesglose() {
         $FechaIni = $this->input->post('FechaIni');
         $FechaFin = $this->input->post('FechaFin');
