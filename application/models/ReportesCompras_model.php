@@ -135,7 +135,7 @@ class ReportesCompras_model extends CI_Model {
         }
     }
 
-    /* Desglose */
+    /* Desglose de compras por fecha */
 
     public function getArticulosReporteGeneralDesgloce($Doc, $Proveedor, $Tp) {
         try {
@@ -157,7 +157,7 @@ class ReportesCompras_model extends CI_Model {
         }
     }
 
-    /* Devoluciones */
+    /* Reporte Devoluciones */
 
     public function getProveedoresReporteDevoluciones($FechaIni, $FechaFin, $Tp) {
         try {
@@ -219,6 +219,331 @@ class ReportesCompras_model extends CI_Model {
                     ->where("STR_TO_DATE(NC.Fecha, \"%d/%m/%Y\") BETWEEN STR_TO_DATE('$FechaIni', \"%d/%m/%Y\") AND STR_TO_DATE('$FechaFin', \"%d/%m/%Y\") ", null, false);
             return $this->db->order_by("ClaveProveedor", 'ASC')
                             ->order_by("DocCartProv", 'ASC')
+                            ->order_by("A.Descripcion", 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    /* Reporte Movimientos Almacen */
+
+    public function getGruposMovimientosAlmacen($FechaIni, $FechaFin) {
+        try {
+            $this->db->query("SET sql_mode = '';");
+            return $this->db->select("CAST(G.Clave AS SIGNED) AS ClaveGrupo, G.Nombre AS NombreGrupo  ", false)
+                            ->from("movarticulos MA")
+                            ->join("articulos A", 'ON A.Clave =  MA.Articulo')
+                            ->join("grupos G", "ON G.Clave = A.Grupo ")
+                            ->where("MA.CantidadMov > 0", null, false)
+                            ->where("STR_TO_DATE(MA.FechaMov, \"%d/%m/%Y\") BETWEEN STR_TO_DATE('$FechaIni', \"%d/%m/%Y\") AND STR_TO_DATE('$FechaFin', \"%d/%m/%Y\") ", null, false)
+                            ->group_by("G.Clave")
+                            ->group_by("G.Nombre")
+                            ->order_by("ClaveGrupo", 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getArticulosMovimientosAlmacen($FechaIni, $FechaFin) {
+        try {
+            $this->db->query("SET sql_mode = '';");
+            return $this->db->select("CAST(A.Grupo AS SIGNED) AS ClaveGrupo,"
+                                    . "A.Clave, "
+                                    . "A.Descripcion AS Articulo,  "
+                                    . "U.Descripcion AS Unidad,"
+                                    . "MA.FechaMov, "
+                                    . "MA.PrecioMov,"
+                                    . "MA.CantidadMov,"
+                                    . "MA.Subtotal,"
+                                    . "MA.DocMov,"
+                                    . "MA.TipoMov"
+                                    . "", false)
+                            ->from("movarticulos MA")
+                            ->join("articulos A", 'ON A.Clave =  MA.Articulo')
+                            ->join("unidades U", "ON U.Clave = A.UnidadMedida ")
+                            ->where("MA.CantidadMov > 0", null, false)
+                            ->where("STR_TO_DATE(MA.FechaMov, \"%d/%m/%Y\") BETWEEN STR_TO_DATE('$FechaIni', \"%d/%m/%Y\") AND STR_TO_DATE('$FechaFin', \"%d/%m/%Y\") ", null, false)
+                            ->order_by("ClaveGrupo", 'ASC')
+                            ->order_by("A.Descripcion", 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    /* Reporte Venta Fabrica sin Desgloce */
+
+    public function getMaquilasReporteVentaSinDesgloce($FechaIni, $FechaFin, $Tipo, $Sem, $Maq) {
+        try {
+            $this->db->query("SET sql_mode = '';");
+            $this->db->select("CAST(MA.Maq AS SIGNED) AS Maquila "
+                            . "  ", false)
+                    ->from("movarticulos MA")
+                    ->join("articulos A", 'ON A.Clave = MA.Articulo')
+                    ->where("STR_TO_DATE(MA.FechaMov, \"%d/%m/%Y\") BETWEEN STR_TO_DATE('$FechaIni', \"%d/%m/%Y\") AND STR_TO_DATE('$FechaFin', \"%d/%m/%Y\") ", null, false)
+                    ->where("MA.CantidadMov > 0", null, false)
+                    ->like('MA.Sem', $Sem)
+                    ->like('MA.Maq', $Maq);
+
+
+            if ($Tipo === '0') {
+                $this->db->where("MA.TipoMov", 'DIRECTO');
+            }
+            if ($Tipo === '1') {
+                $this->db->where_in("MA.TipoMov ", array('SXM', 'SPR', 'SXP', 'SXC', 'DIRECTO'));
+            }
+            if ($Tipo !== '' && $Tipo !== '0' && $Tipo !== '1') {
+                $this->db->like("A.Departamento", $Tipo);
+                $this->db->where_in("MA.TipoMov ", array('SXM', 'SPR', 'SXP', 'SXC'));
+            }
+
+            return $this->db->group_by("MA.Maq")
+                            ->order_by("Maquila", 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getDepartamentosReporteVentaSinDesgloce($FechaIni, $FechaFin, $Tipo, $Sem, $Maq) {
+        try {
+            $this->db->query("SET sql_mode = '';");
+            $this->db->select("CAST(MA.Maq AS SIGNED) AS Maquila, CAST(A.Departamento AS SIGNED) AS Departamento  "
+                            . "  ", false)
+                    ->from("movarticulos MA")
+                    ->join("articulos A", 'ON A.Clave = MA.Articulo')
+                    ->where("STR_TO_DATE(MA.FechaMov, \"%d/%m/%Y\") BETWEEN STR_TO_DATE('$FechaIni', \"%d/%m/%Y\") AND STR_TO_DATE('$FechaFin', \"%d/%m/%Y\") ", null, false)
+                    ->where("MA.CantidadMov > 0", null, false)
+                    ->like('MA.Sem', $Sem)
+                    ->like('MA.Maq', $Maq);
+
+
+            if ($Tipo === '0') {
+                $this->db->where("MA.TipoMov", 'DIRECTO');
+            }
+            if ($Tipo === '1') {
+                $this->db->where_in("MA.TipoMov ", array('SXM', 'SPR', 'SXP', 'SXC', 'DIRECTO'));
+            }
+            if ($Tipo !== '' && $Tipo !== '0' && $Tipo !== '1') {
+                $this->db->like("A.Departamento", $Tipo);
+                $this->db->where_in("MA.TipoMov ", array('SXM', 'SPR', 'SXP', 'SXC'));
+            }
+
+            return $this->db->group_by("MA.Maq")
+                            ->group_by("A.Departamento")
+                            ->order_by("Maquila", 'ASC')
+                            ->order_by("Departamento", 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getDocumentosReporteVentaSinDesgloce($FechaIni, $FechaFin, $Tipo, $Sem, $Maq) {
+        try {
+            $this->db->query("SET sql_mode = '';");
+            $this->db->select("CAST(MA.Maq AS SIGNED) AS Maquila, CAST(A.Departamento AS SIGNED) AS Departamento, CAST(MA.DocMov AS SIGNED) AS Doc,"
+                            . "SUM(MA.Subtotal) AS Subtotal, MA.Sem  "
+                            . "  ", false)
+                    ->from("movarticulos MA")
+                    ->join("articulos A", 'ON A.Clave = MA.Articulo')
+                    ->where("STR_TO_DATE(MA.FechaMov, \"%d/%m/%Y\") BETWEEN STR_TO_DATE('$FechaIni', \"%d/%m/%Y\") AND STR_TO_DATE('$FechaFin', \"%d/%m/%Y\") ", null, false)
+                    ->where("MA.CantidadMov > 0", null, false)
+                    ->like('MA.Sem', $Sem)
+                    ->like('MA.Maq', $Maq);
+
+
+            if ($Tipo === '0') {
+                $this->db->where("MA.TipoMov", 'DIRECTO');
+            }
+            if ($Tipo === '1') {
+                $this->db->where_in("MA.TipoMov ", array('SXM', 'SPR', 'SXP', 'SXC', 'DIRECTO'));
+            }
+            if ($Tipo !== '' && $Tipo !== '0' && $Tipo !== '1') {
+                $this->db->like("A.Departamento", $Tipo);
+                $this->db->where_in("MA.TipoMov ", array('SXM', 'SPR', 'SXP', 'SXC'));
+            }
+
+            return $this->db->group_by("MA.Maq")
+                            ->group_by("A.Departamento")
+                            ->group_by("MA.DocMov")
+                            ->order_by("Maquila", 'ASC')
+                            ->order_by("Departamento", 'ASC')
+                            ->order_by("Doc", 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    /* Para el desgloce */
+
+    public function getSemanasReporteVenta($FechaIni, $FechaFin, $Tipo, $Sem, $Maq) {
+        try {
+            $this->db->query("SET sql_mode = '';");
+            $this->db->select("CAST(MA.Maq AS SIGNED) AS Maquila, CAST(A.Departamento AS SIGNED) AS Departamento, "
+                            . "CAST(MA.Sem AS SIGNED) AS Sem  "
+                            . "  ", false)
+                    ->from("movarticulos MA")
+                    ->join("articulos A", 'ON A.Clave = MA.Articulo')
+                    ->where("STR_TO_DATE(MA.FechaMov, \"%d/%m/%Y\") BETWEEN STR_TO_DATE('$FechaIni', \"%d/%m/%Y\") AND STR_TO_DATE('$FechaFin', \"%d/%m/%Y\") ", null, false)
+                    ->where("MA.CantidadMov > 0", null, false)
+                    ->like('MA.Sem', $Sem)
+                    ->like('MA.Maq', $Maq);
+
+
+            if ($Tipo === '0') {
+                $this->db->where("MA.TipoMov", 'DIRECTO');
+            }
+            if ($Tipo === '1') {
+                $this->db->where_in("MA.TipoMov ", array('SXM', 'SPR', 'SXP', 'SXC', 'DIRECTO'));
+            }
+            if ($Tipo !== '' && $Tipo !== '0' && $Tipo !== '1') {
+                $this->db->like("A.Departamento", $Tipo);
+                $this->db->where_in("MA.TipoMov ", array('SXM', 'SPR', 'SXP', 'SXC'));
+            }
+
+            return $this->db->group_by("MA.Maq")
+                            ->group_by("A.Departamento")
+                            ->group_by("MA.Sem")
+                            ->order_by("Maquila", 'ASC')
+                            ->order_by("Departamento", 'ASC')
+                            ->order_by("Sem", 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getDocumentosReporteVenta($FechaIni, $FechaFin, $Tipo, $Sem, $Maq) {
+        try {
+            $this->db->query("SET sql_mode = '';");
+            $this->db->select("CAST(MA.Maq AS SIGNED) AS Maquila, CAST(A.Departamento AS SIGNED) AS Departamento, "
+                            . "CAST(MA.Sem AS SIGNED) AS Sem, CAST(MA.DocMov AS SIGNED) AS Doc  "
+                            . "  ", false)
+                    ->from("movarticulos MA")
+                    ->join("articulos A", 'ON A.Clave = MA.Articulo')
+                    ->where("STR_TO_DATE(MA.FechaMov, \"%d/%m/%Y\") BETWEEN STR_TO_DATE('$FechaIni', \"%d/%m/%Y\") AND STR_TO_DATE('$FechaFin', \"%d/%m/%Y\") ", null, false)
+                    ->where("MA.CantidadMov > 0", null, false)
+                    ->like('MA.Sem', $Sem)
+                    ->like('MA.Maq', $Maq);
+
+
+            if ($Tipo === '0') {
+                $this->db->where("MA.TipoMov", 'DIRECTO');
+            }
+            if ($Tipo === '1') {
+                $this->db->where_in("MA.TipoMov ", array('SXM', 'SPR', 'SXP', 'SXC', 'DIRECTO'));
+            }
+            if ($Tipo !== '' && $Tipo !== '0' && $Tipo !== '1') {
+                $this->db->like("A.Departamento", $Tipo);
+                $this->db->where_in("MA.TipoMov ", array('SXM', 'SPR', 'SXP', 'SXC'));
+            }
+
+            return $this->db->group_by("MA.Maq")
+                            ->group_by("A.Departamento")
+                            ->group_by("MA.Sem")
+                            ->group_by("MA.DocMov")
+                            ->order_by("Maquila", 'ASC')
+                            ->order_by("Departamento", 'ASC')
+                            ->order_by("Sem", 'ASC')
+                            ->order_by("Doc", 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getGruposArticulosReporteVenta($FechaIni, $FechaFin, $Tipo, $Sem, $Maq) {
+        try {
+            $this->db->query("SET sql_mode = '';");
+            $this->db->select("CAST(MA.Maq AS SIGNED) AS Maquila, CAST(A.Departamento AS SIGNED) AS Departamento, "
+                            . "CAST(MA.Sem AS SIGNED) AS Sem, CAST(MA.DocMov AS SIGNED) AS Doc ,"
+                            . "CAST(A.Grupo AS SIGNED) AS ClaveGrupo, G.Nombre AS NombreGrupo  "
+                            . "  ", false)
+                    ->from("movarticulos MA")
+                    ->join("articulos A", 'ON A.Clave = MA.Articulo')
+                    ->join("grupos G", "ON G.Clave = A.Grupo ")
+                    ->where("STR_TO_DATE(MA.FechaMov, \"%d/%m/%Y\") BETWEEN STR_TO_DATE('$FechaIni', \"%d/%m/%Y\") AND STR_TO_DATE('$FechaFin', \"%d/%m/%Y\") ", null, false)
+                    ->where("MA.CantidadMov > 0", null, false)
+                    ->like('MA.Sem', $Sem)
+                    ->like('MA.Maq', $Maq);
+
+
+            if ($Tipo === '0') {
+                $this->db->where("MA.TipoMov", 'DIRECTO');
+            }
+            if ($Tipo === '1') {
+                $this->db->where_in("MA.TipoMov ", array('SXM', 'SPR', 'SXP', 'SXC', 'DIRECTO'));
+            }
+            if ($Tipo !== '' && $Tipo !== '0' && $Tipo !== '1') {
+                $this->db->like("A.Departamento", $Tipo);
+                $this->db->where_in("MA.TipoMov ", array('SXM', 'SPR', 'SXP', 'SXC'));
+            }
+
+            return $this->db->group_by("MA.Maq")
+                            ->group_by("A.Departamento")
+                            ->group_by("MA.Sem")
+                            ->group_by("MA.DocMov")
+                            ->group_by("A.Grupo")
+                            ->order_by("Maquila", 'ASC')
+                            ->order_by("Departamento", 'ASC')
+                            ->order_by("Sem", 'ASC')
+                            ->order_by("Doc", 'ASC')
+                            ->order_by("ClaveGrupo", 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getArticulosReporteVenta($FechaIni, $FechaFin, $Tipo, $Sem, $Maq) {
+        try {
+            $this->db->query("SET sql_mode = '';");
+            $this->db->select("CAST(MA.Maq AS SIGNED) AS Maquila, CAST(A.Departamento AS SIGNED) AS Departamento, "
+                            . "CAST(MA.Sem AS SIGNED) AS Sem, CAST(MA.DocMov AS SIGNED) AS Doc ,"
+                            . "CAST(A.Grupo AS SIGNED) AS ClaveGrupo, "
+                            . "A.Clave AS ClaveArt,"
+                            . "A.Descripcion AS Articulo,"
+                            . "U.Descripcion AS Unidad,"
+                            . "MA.FechaMov,"
+                            . "sum(MA.CantidadMov) AS CantidadMov,"
+                            . "MA.PrecioMov,"
+                            . "sum(MA.Subtotal) AS Subtotal"
+                            . "  ", false)
+                    ->from("movarticulos MA")
+                    ->join("articulos A", 'ON A.Clave = MA.Articulo')
+                    ->join("unidades U", "ON U.Clave = A.UnidadMedida ")
+                    ->where("STR_TO_DATE(MA.FechaMov, \"%d/%m/%Y\") BETWEEN STR_TO_DATE('$FechaIni', \"%d/%m/%Y\") AND STR_TO_DATE('$FechaFin', \"%d/%m/%Y\") ", null, false)
+                    ->where("MA.CantidadMov > 0", null, false)
+                    ->like('MA.Sem', $Sem)
+                    ->like('MA.Maq', $Maq);
+
+
+            if ($Tipo === '0') {
+                $this->db->where("MA.TipoMov", 'DIRECTO');
+            }
+            if ($Tipo === '1') {
+                $this->db->where_in("MA.TipoMov ", array('SXM', 'SPR', 'SXP', 'SXC', 'DIRECTO'));
+            }
+            if ($Tipo !== '' && $Tipo !== '0' && $Tipo !== '1') {
+                $this->db->like("A.Departamento", $Tipo);
+                $this->db->where_in("MA.TipoMov ", array('SXM', 'SPR', 'SXP', 'SXC'));
+            }
+
+            return $this->db->group_by("MA.Maq")
+                            ->group_by("A.Departamento")
+                            ->group_by("MA.Sem")
+                            ->group_by("MA.DocMov")
+                            ->group_by("A.Grupo")
+                            ->group_by("A.Clave")
+                            ->order_by("Maquila", 'ASC')
+                            ->order_by("Departamento", 'ASC')
+                            ->order_by("Sem", 'ASC')
+                            ->order_by("Doc", 'ASC')
+                            ->order_by("ClaveGrupo", 'ASC')
                             ->order_by("A.Descripcion", 'ASC')
                             ->get()->result();
         } catch (Exception $exc) {

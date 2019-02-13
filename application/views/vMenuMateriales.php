@@ -54,6 +54,5 @@ $this->load->view('vCuentasPorCobrarMaquilas');
 $this->load->view('vCajasEntregaControl');
 $this->load->view('vComprasPorFechaGeneral');
 $this->load->view('vComprasPorFechaPorArticulo');
-
-
 $this->load->view('vDevolucionesCompraFecha');
+$this->load->view('vSalidasMaquilasPorDia');

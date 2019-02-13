@@ -15,6 +15,397 @@ class ReportesCompras extends CI_Controller {
         setlocale(LC_TIME, 'spanish');
     }
 
+    public function onReporteSalidasMaquilasPorDiaDesglosado() {
+        $FechaIni = $this->input->post('FechaIni');
+        $FechaFin = $this->input->post('FechaFin');
+        $Tipo = $this->input->post('Tipo');
+        $Sem = $this->input->post('Sem');
+        $Maq = $this->input->post('Maq');
+
+        $cm = $this->ReportesCompras_model;
+        $Maquilas = $cm->getMaquilasReporteVentaSinDesgloce($FechaIni, $FechaFin, $Tipo, $Sem, $Maq);
+        $Deptos = $cm->getDepartamentosReporteVentaSinDesgloce($FechaIni, $FechaFin, $Tipo, $Sem, $Maq);
+
+
+        /* Desgloce */
+        $Semanas = $cm->getSemanasReporteVenta($FechaIni, $FechaFin, $Tipo, $Sem, $Maq);
+        $Docs = $cm->getDocumentosReporteVenta($FechaIni, $FechaFin, $Tipo, $Sem, $Maq);
+        $Grupos = $cm->getGruposArticulosReporteVenta($FechaIni, $FechaFin, $Tipo, $Sem, $Maq);
+
+        $Articulos = $cm->getArticulosReporteVenta($FechaIni, $FechaFin, $Tipo, $Sem, $Maq);
+
+        if (!empty($Maquilas)) {
+
+            $pdf = new PDFSalidasMaterialMaquilasDesgloce('P', 'mm', array(215.9, 279.4));
+            $pdf->setFechaFin($FechaFin);
+            $pdf->setFechaIni($FechaIni);
+            $pdf->AddPage();
+            $pdf->SetAutoPageBreak(true, 6);
+            $pdf->SetLineWidth(0.2);
+
+
+            $T_S = 0;
+            $T_C = 0;
+            foreach ($Maquilas as $key => $P) {
+
+                $pdf->SetLineWidth(0.5);
+                $pdf->SetX(5);
+                $pdf->SetFont('Calibri', 'B', 9);
+                $pdf->Cell(15, 5, utf8_decode('Maquila: '), 'TBL'/* BORDE */, 0, 'L');
+                $pdf->SetX($pdf->GetX());
+                $pdf->Cell(20, 5, mb_strimwidth(utf8_decode($P->Maquila), 0, 45, ""), 'TBR'/* BORDE */, 1, 'L');
+
+
+                $Depto = '';
+
+                $T_SMaq = 0;
+                $T_CMaq = 0;
+
+
+                foreach ($Deptos as $key => $DE) {
+                    if ($P->Maquila === $DE->Maquila) {
+
+                        switch ($DE->Departamento) {
+                            case '10':
+                                $Depto = 'Piel y Forro';
+                                break;
+                            case '80':
+                                $Depto = 'Suela y Planta';
+                                break;
+                            case '90':
+                                $Depto = 'Peleteria';
+                                break;
+                            default:
+                                $Depto = 'Otros';
+                                break;
+                        }
+                        $pdf->SetY($pdf->GetY() + 1);
+                        $pdf->SetLineWidth(0.2);
+                        $pdf->SetFillColor(186, 186, 186);
+                        $pdf->SetX(5);
+                        $pdf->SetFont('Calibri', 'B', 9);
+                        $pdf->Cell(15, 4, utf8_decode('Tipo: '), 0/* BORDE */, 0, 'L', true);
+                        $pdf->SetX($pdf->GetX());
+                        $pdf->Cell(50, 4, utf8_decode($DE->Departamento . '   ' . $Depto), 0/* BORDE */, 1, 'L', true);
+
+                        $T_STipo = 0;
+                        $T_CTipo = 0;
+
+                        foreach ($Semanas as $key => $S) {
+                            if ($P->Maquila === $S->Maquila && $DE->Departamento === $S->Departamento) {
+
+                                $T_CSems = 0;
+                                $T_SSems = 0;
+
+                                foreach ($Docs as $key => $DOC) {
+                                    if ($P->Maquila === $DOC->Maquila && $DE->Departamento === $DOC->Departamento && $DOC->Sem === $S->Sem) {
+
+                                        $T_CDocs = 0;
+                                        $T_SDocs = 0;
+                                        foreach ($Grupos as $key => $G) {
+                                            if ($P->Maquila === $G->Maquila && $DE->Departamento === $G->Departamento && $DOC->Sem === $G->Sem && $G->Doc === $DOC->Doc) {
+
+                                                $T_CGrupos = 0;
+                                                $T_SGrupos = 0;
+                                                foreach ($Articulos as $key => $A) {
+                                                    if ($P->Maquila === $A->Maquila && $DE->Departamento === $A->Departamento && $DOC->Sem === $A->Sem && $G->Doc === $A->Doc && $G->ClaveGrupo === $A->ClaveGrupo) {
+
+                                                        $pdf->SetFont('Calibri', '', 9);
+                                                        $pdf->Row(array(
+                                                            $A->ClaveArt,
+                                                            utf8_decode(mb_strimwidth($A->Articulo, 0, 48, "")),
+                                                            $A->Unidad,
+                                                            $A->FechaMov,
+                                                            number_format($A->CantidadMov, 2, ".", ","),
+                                                            '$' . number_format($A->PrecioMov, 2, ".", ","),
+                                                            '$' . number_format($A->Subtotal, 2, ".", ","),
+                                                            $A->Doc,
+                                                            $A->Sem), 'B');
+                                                        $T_SGrupos += $A->Subtotal;
+                                                        $T_CGrupos += $A->CantidadMov;
+                                                        $T_SDocs += $A->Subtotal;
+                                                        $T_CDocs += $A->CantidadMov;
+                                                        $T_SSems += $A->Subtotal;
+                                                        $T_CSems += $A->CantidadMov;
+                                                        $T_STipo += $A->Subtotal;
+                                                        $T_CTipo += $A->CantidadMov;
+                                                        $T_SMaq += $A->Subtotal;
+                                                        $T_CMaq += $A->CantidadMov;
+                                                        $T_S += $A->Subtotal;
+                                                        $T_C += $A->CantidadMov;
+                                                    }
+                                                }
+                                                $pdf->SetFont('Calibri', 'B', 9);
+                                                $pdf->Row(array(
+                                                    '',
+                                                    'Total por Grupo ' . utf8_decode($G->ClaveGrupo . ' ' . $G->NombreGrupo) . ':',
+                                                    '',
+                                                    '',
+                                                    number_format($T_CGrupos, 2, ".", ","),
+                                                    '',
+                                                    '$' . number_format($T_SGrupos, 2, ".", ","),
+                                                    '',
+                                                    ''), 0);
+                                            }
+                                        }
+                                        $pdf->SetFont('Calibri', 'B', 9);
+                                        $pdf->Row(array(
+                                            '',
+                                            'Total por Documento:',
+                                            '',
+                                            '',
+                                            number_format($T_CDocs, 2, ".", ","),
+                                            '',
+                                            '$' . number_format($T_SDocs, 2, ".", ","),
+                                            '',
+                                            ''), 0);
+                                    }
+                                }
+                                $pdf->SetFillColor(255, 204, 153);
+                                $pdf->SetFont('Calibri', 'B', 9);
+                                $pdf->RowFill(array(
+                                    '',
+                                    'Total de Semana ' . $S->Sem . ':',
+                                    '',
+                                    '',
+                                    number_format($T_CSems, 2, ".", ","),
+                                    '',
+                                    '$' . number_format($T_SSems, 2, ".", ","),
+                                    '',
+                                    ''), 0, true);
+                            }
+                        }
+                        $pdf->SetFillColor(186, 186, 186);
+                        $pdf->SetFont('Calibri', 'B', 9);
+                        $pdf->RowFill(array(
+                            '',
+                            'Total por Tipo ' . $DE->Departamento . ':',
+                            '',
+                            '',
+                            number_format($T_CTipo, 2, ".", ","),
+                            '',
+                            '$' . number_format($T_STipo, 2, ".", ","),
+                            '',
+                            ''), 0, true);
+                        $pdf->SetY($pdf->GetY() + 1);
+                    }
+                }
+                $pdf->SetFont('Calibri', 'B', 9);
+                $pdf->RowFill(array(
+                    '',
+                    'Total de la Maquila ' . $P->Maquila . ':',
+                    '',
+                    '',
+                    number_format($T_CMaq, 2, ".", ","),
+                    '',
+                    '$' . number_format($T_SMaq, 2, ".", ","),
+                    '',
+                    ''), 0, true);
+                $pdf->SetY($pdf->GetY() + 1);
+            }
+            $pdf->SetFont('Calibri', 'B', 9);
+            $pdf->SetLineWidth(0.5);
+            $pdf->RowFill(array(
+                '',
+                'Total general:',
+                '',
+                '',
+                number_format($T_C, 2, ".", ","),
+                '',
+                '$' . number_format($T_S, 2, ".", ","),
+                '',
+                ''), 1, true);
+            $pdf->SetY($pdf->GetY() + 1);
+
+            /* FIN RESUMEN */
+            $path = 'uploads/Reportes/Almacen';
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $file_name = "SALIDA DE MATERIALES A MAQUILAS DESGLOCE " . ' ' . date("d-m-Y his");
+            $url = $path . '/' . $file_name . '.pdf';
+            /* Borramos el archivo anterior */
+            if (delete_files('uploads/Reportes/Almacen/')) {
+                /* ELIMINA LA EXISTENCIA DE CUALQUIER ARCHIVO EN EL DIRECTORIO */
+            }
+            $pdf->Output($url);
+            print base_url() . $url;
+        }
+    }
+
+    public function onReporteSalidasMaquilasPorDia() {
+        $FechaIni = $this->input->post('FechaIni');
+        $FechaFin = $this->input->post('FechaFin');
+        $Tipo = $this->input->post('Tipo');
+        $Sem = $this->input->post('Sem');
+        $Maq = $this->input->post('Maq');
+
+        $cm = $this->ReportesCompras_model;
+        $Maquilas = $cm->getMaquilasReporteVentaSinDesgloce($FechaIni, $FechaFin, $Tipo, $Sem, $Maq);
+        $Deptos = $cm->getDepartamentosReporteVentaSinDesgloce($FechaIni, $FechaFin, $Tipo, $Sem, $Maq);
+        $Docs = $cm->getDocumentosReporteVentaSinDesgloce($FechaIni, $FechaFin, $Tipo, $Sem, $Maq);
+        if (!empty($Maquilas)) {
+
+            $pdf = new PDFSalidasMaterialMaquilas('P', 'mm', array(215.9, 279.4));
+            $pdf->setFechaFin($FechaFin);
+            $pdf->setFechaIni($FechaIni);
+            $pdf->AddPage();
+            $pdf->SetAutoPageBreak(true, 6);
+            $pdf->SetLineWidth(0.2);
+
+            $Total_Gen = 0;
+            foreach ($Maquilas as $key => $P) {
+
+                $pdf->SetLineWidth(0.5);
+                $pdf->SetX(5);
+                $pdf->SetFont('Calibri', 'B', 9);
+                $pdf->Cell(20, 5, utf8_decode('Maquila: '), 'TBL'/* BORDE */, 0, 'L');
+                $pdf->SetX(25);
+                $pdf->SetFont('Calibri', '', 9);
+                $pdf->Cell(50, 5, mb_strimwidth(utf8_decode($P->Maquila), 0, 45, ""), 'TBR'/* BORDE */, 1, 'L');
+
+                $pdf->SetLineWidth(0.2);
+                $Depto = '';
+                $Total_Maq = 0;
+                foreach ($Deptos as $key => $DE) {
+                    if ($P->Maquila === $DE->Maquila) {
+
+                        switch ($DE->Departamento) {
+                            case '10':
+                                $Depto = 'Piel y Forro';
+                                break;
+                            case '80':
+                                $Depto = 'Suela y Planta';
+                                break;
+                            case '90':
+                                $Depto = 'Peleteria';
+                                break;
+                            default:
+                                $Depto = 'Otros';
+                                break;
+                        }
+
+                        $Total_Grupo = 0;
+                        $pdf->SetX(45);
+                        $pdf->SetFont('Calibri', 'B', 9);
+                        $pdf->Cell(20, 5, utf8_decode('Tipo: '), 0/* BORDE */, 0, 'L');
+                        $pdf->SetX($pdf->GetX());
+                        $pdf->Cell(50, 5, utf8_decode($DE->Departamento . '   ' . $Depto), 0/* BORDE */, 1, 'L');
+
+                        foreach ($Docs as $key => $DOC) {
+                            if ($DE->Maquila === $DOC->Maquila && $DE->Departamento === $DOC->Departamento) {
+                                $pdf->SetFont('Calibri', '', 9);
+                                $pdf->Row(array(
+                                    $DOC->Doc,
+                                    '$' . number_format($DOC->Subtotal, 2, ".", ","),
+                                    '',
+                                    $DOC->Sem), 0);
+                                $Total_Grupo += $DOC->Subtotal;
+                                $Total_Maq += $DOC->Subtotal;
+                                $Total_Gen += $DOC->Subtotal;
+                            }
+                        }
+                        $pdf->SetFont('Calibri', 'B', 9);
+                        $pdf->Row(array(
+                            'Total por tipo: ',
+                            '$' . number_format($Total_Grupo, 2, ".", ","),
+                            '',
+                            ''), 'T');
+                    }
+                }
+                $pdf->SetFont('Calibri', 'B', 9);
+                $pdf->Row(array(
+                    'Total por maquila: ',
+                    '$' . number_format($Total_Maq, 2, ".", ","),
+                    '',
+                    ''), 'T');
+            }
+            $pdf->SetFont('Calibri', 'B', 9);
+            $pdf->Row(array(
+                'Total general: ',
+                '$' . number_format($Total_Gen, 2, ".", ","),
+                '',
+                ''), 'T');
+
+            /* FIN RESUMEN */
+            $path = 'uploads/Reportes/Almacen';
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $file_name = "SALIDA DE MATERIALES A MAQUILAS SIN DESGLOCE " . ' ' . date("d-m-Y his");
+            $url = $path . '/' . $file_name . '.pdf';
+            /* Borramos el archivo anterior */
+            if (delete_files('uploads/Reportes/Almacen/')) {
+                /* ELIMINA LA EXISTENCIA DE CUALQUIER ARCHIVO EN EL DIRECTORIO */
+            }
+            $pdf->Output($url);
+            print base_url() . $url;
+        }
+    }
+
+    public function onReporteAuditoriaMovimientos() {
+        $FechaIni = $this->input->post('FechaIni');
+        $FechaFin = $this->input->post('FechaFin');
+
+        $cm = $this->ReportesCompras_model;
+        $Grupos = $cm->getGruposMovimientosAlmacen($FechaIni, $FechaFin);
+        $Articulos = $cm->getArticulosMovimientosAlmacen($FechaIni, $FechaFin);
+        if (!empty($Grupos)) {
+
+            $pdf = new PDFMovimientosAlmacen('P', 'mm', array(215.9, 279.4));
+            $pdf->setFechaFin($FechaFin);
+            $pdf->setFechaIni($FechaIni);
+            $pdf->AddPage();
+            $pdf->SetAutoPageBreak(true, 6);
+            $pdf->SetLineWidth(0.2);
+
+            foreach ($Grupos as $key => $P) {
+
+                $pdf->SetLineWidth(0.5);
+                $pdf->SetX(5);
+                $pdf->SetFont('Calibri', 'B', 9);
+                $pdf->Cell(20, 5, utf8_decode('Grupo: '), 'B'/* BORDE */, 0, 'L');
+                $pdf->SetX(25);
+                $pdf->SetFont('Calibri', '', 9);
+                $pdf->Cell(50, 5, mb_strimwidth(utf8_decode($P->ClaveGrupo . '    ' . $P->NombreGrupo), 0, 45, ""), 'B'/* BORDE */, 1, 'L');
+
+                $pdf->SetLineWidth(0.2);
+                $pdf->SetFont('Calibri', '', 9);
+                foreach ($Articulos as $key => $A) {
+                    if ($P->ClaveGrupo === $A->ClaveGrupo) {
+
+
+                        $pdf->Row(array($A->Clave,
+                            utf8_decode(mb_strimwidth($A->Articulo, 0, 35, "")),
+                            $A->Unidad,
+                            $A->FechaMov,
+                            '$' . number_format($A->PrecioMov, 2, ".", ","),
+                            number_format($A->CantidadMov, 2, ".", ","),
+                            '$' . number_format($A->Subtotal, 2, ".", ","),
+                            $A->DocMov,
+                            $A->TipoMov), 'B');
+                    }
+                }
+                $pdf->SetY($pdf->GetY() + 4);
+            }
+
+
+            /* FIN RESUMEN */
+            $path = 'uploads/Reportes/Almacen';
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $file_name = "REPORTE MOVIMIENTOS DEL ALMACEN " . ' ' . date("d-m-Y his");
+            $url = $path . '/' . $file_name . '.pdf';
+            /* Borramos el archivo anterior */
+            if (delete_files('uploads/Reportes/Almacen/')) {
+                /* ELIMINA LA EXISTENCIA DE CUALQUIER ARCHIVO EN EL DIRECTORIO */
+            }
+            $pdf->Output($url);
+            print base_url() . $url;
+        }
+    }
+
     public function onReporteDevolucionesCompra() {
         $FechaIni = $this->input->post('FechaIni');
         $FechaFin = $this->input->post('FechaFin');
