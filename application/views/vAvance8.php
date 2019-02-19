@@ -298,7 +298,7 @@
                 }
             } else {
                 swal('ATENCIÓN', 'ES NECESARIO ESPECIFICAR UN NUMERO DE EMPLEADO', 'warning').then((value) => {
-                    NumeroDeEmpleado.focus().select(); 
+                    NumeroDeEmpleado.focus().select();
                     $.each(mo.find("input[type='checkbox']"), function (k, v) {
                         $(v)[0].checked = false;
                     });
@@ -453,40 +453,46 @@
                     theme: 'sk-rect',
                     message: 'Espere...'
                 });
-                if (a.length > 0) {
-                    var r = a[0];
-                    Estilo.val(r.Estilo);
-                    Pares.val(r.Pares);
-                    ManoDeOB.val(r.CostoMO);
-                    $.getJSON('<?php print base_url('obtener_ultimo_avance_por_control_ocho'); ?>', {C: Control.val()}).done(function (b) {
-                        if (b.length > 0) {
-                            SigAvance.val(b[0].Departamento);
-                            EstatusAvance.val(b[0].DepartamentoT);
-                            var d = new Date();
-                            var n = d.getDay();
-                            DiasPagoDeNomina.find("#txt" + ndias[n - 1]).val(parseFloat(r.Pares) * parseFloat(r.CostoMO));
-                            var tt = 0;
-                            ndias.forEach(function (i) {
-                                tt += parseFloat(pnlTablero.find("#txt" + i).val());
-                            });
-                            DiasPagoDeNomina.find("#txtTotal").val(parseFloat(r.Pares) * parseFloat(r.CostoMO));
-                            onAvanzar();
-                        }
-                    }).fail(function (x, y, z) {
-                        console.log(x.responseText);
-                        swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
-                    }).always(function () {
-                        HoldOn.close();
-                    });
-                } else {
-                    swal('ATENCIÓN', 'LA FRACCIÓN O EL CONTROL NO SON CORRECTAS, ELIJA OTRA FRACCIÓN O ESPECIFIQUE UN CONTROL CON LA FRACCIÓN SELECCIONADA', 'error').then((value) => {
-                        Control.focus().select();
-                        Estilo.val('');
-                        Pares.val('');
-                        SigAvance.val('');
-                    });
-                }
-
+                $.getJSON('<?php print base_url('obtener_estilo_pares_por_control_fraccion_ocho'); ?>', {CR: Control.val(), FR: fra}).done(function (a) {
+                    if (a.length > 0) {
+                        var r = a[0];
+                        Estilo.val(r.Estilo);
+                        Pares.val(r.Pares);
+                        ManoDeOB.val(r.CostoMO);
+                        $.getJSON('<?php print base_url('obtener_ultimo_avance_por_control_ocho'); ?>', {C: Control.val()}).done(function (b) {
+                            if (b.length > 0) {
+                                SigAvance.val(b[0].Departamento);
+                                EstatusAvance.val(b[0].DepartamentoT);
+                                var d = new Date();
+                                var n = d.getDay();
+                                DiasPagoDeNomina.find("#txt" + ndias[n - 1]).val(parseFloat(r.Pares) * parseFloat(r.CostoMO));
+                                var tt = 0;
+                                ndias.forEach(function (i) {
+                                    tt += parseFloat(pnlTablero.find("#txt" + i).val());
+                                });
+                                DiasPagoDeNomina.find("#txtTotal").val(parseFloat(r.Pares) * parseFloat(r.CostoMO));
+                                onAvanzar();
+                            }
+                        }).fail(function (x, y, z) {
+                            console.log(x.responseText);
+                            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                        }).always(function () {
+                            HoldOn.close();
+                        });
+                    } else {
+                        swal('ATENCIÓN', 'LA FRACCIÓN O EL CONTROL NO SON CORRECTAS, ELIJA OTRA FRACCIÓN O ESPECIFIQUE UN CONTROL CON LA FRACCIÓN SELECCIONADA', 'error').then((value) => {
+                            Control.focus().select();
+                            Estilo.val('');
+                            Pares.val('');
+                            SigAvance.val('');
+                        });
+                    }
+                }).fail(function (x, y, z) {
+                    console.log(x.responseText);
+                    swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                }).always(function () {
+                    HoldOn.close();
+                });
             } else {
                 swal('ATENCIÓN', 'DEBE DE ESPECIFICAR UN CONTROL', 'error').then((value) => {
                     Control.focus().select();
@@ -541,7 +547,6 @@
         AVANO.ANIO = pnlTablero.find("#Anio").val();
 
         $.post('<?php print base_url('avance_add_avance_x_empleado_add_nomina_ocho') ?>', AVANO).done(function (c) {
-
             var dt = JSON.parse(c);
             if (c !== undefined && c.length > 0) {
                 if (dt.AVANZO > 0) {
@@ -555,6 +560,8 @@
                     Avance.ajax.reload();
                     swal('ATENCIÓN', 'ESTE CONTROL (' + Control.val() + ') YA TIENE UN AVANCE EN ESTA FRACCIÓN, POR FAVOR ESPECIFIQUE UN CONTROL DIFERENTE O UNA FRACCIÓN DIFERENTE, DE LO CONTRARIO REVISE CON EL AREA CORRESPONDIENTE', 'warning').then((value) => {
                         onClearMO();
+                        Control.val('');
+                        NumeroDeEmpleado.focus().select();
                     });
                 }
             }

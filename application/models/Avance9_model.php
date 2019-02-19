@@ -16,31 +16,42 @@ class Avance9_model extends CI_Model {
                                     . "(CASE WHEN E.SegundoNombre <>'0' THEN E.SegundoNombre ELSE '' END),"
                                     . "' ',(CASE WHEN E.Paterno <>'0' THEN E.Paterno ELSE '' END),' ',"
                                     . "(CASE WHEN E.Materno <>'0' THEN E.Materno ELSE '' END)) AS NOMBRE_COMPLETO, "
-                                    . "E.DepartamentoCostos AS DEPTOCTO, D.Avance AS GENERA_AVANCE", false)
+                                    . "E.DepartamentoCostos AS DEPTOCTO, D.Avance AS GENERA_AVANCE, D.Clave AS DEPTO, D.Descripcion AS DEPTO_DES", false)
                             ->from('empleados AS E')->join('departamentos AS D', 'E.DepartamentoFisico = D.Clave')
                             ->where('E.Numero', $EMPLEADO)
                             ->where_in('E.AltaBaja', array(1))
                             ->where_in('E.FijoDestajoAmbos', array(2, 3))
-                            ->where_in('E.DepartamentoCostos', array(10/* CORTE */, 80/* RAYADO CONTADO */, 30/* REBAJADO Y PERFORADO */, 190/* MONTADO B */))
+                            ->where_in('E.DepartamentoFisico', array(10/* CORTE */, 70, 20/* RAYADO */, 80/* RAYADO CONTADO */, 30/* REBAJADO Y PERFORADO */, 190/* MONTADO B */))
                             ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
-    } 
+    }
+
+    public function onComprobarFraccionXEstilo($ESTILO, $FRACCION) {
+        try {
+            return $this->db->select("FE.ID, FE.Estilo, FE.FechaAlta, FE.Fraccion, FE.CostoMO, FE.CostoVTA, FE.AfectaCostoVTA, FE.Estatus, F.ID AS FID, F.Clave AS FCLAVE, F.Descripcion AS FRACCIONDES, F.Departamento AS FRACCIONDEPTO", false)
+                            ->from('fraccionesxestilo AS FE')->join('fracciones AS F', 'F.Clave = FE.Fraccion')
+                            ->where('FE.Estilo', $ESTILO)
+                            ->where('FE.Fraccion', $FRACCION)
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 
     public function getPagosXEmpleadoXSemana($e, $s) {
         try {
             $a = "IFNULL((SELECT FORMAT(SUM(fpn.subtot),2) FROM fracpagnomina AS fpn WHERE dayofweek(fpn.fecha)";
             $b = "AND fpn.numeroempleado = '{$e}' AND fpn.Semana = {$s} GROUP BY dayofweek(fpn.fecha)),0)";
-            return $this->db->select(
-                                    "{$a}= 2 {$b} AS LUNES,"
+            return $this->db->select("{$a}= 2 {$b} AS LUNES,"
                                     . "{$a} = 3 {$b} AS MARTES,"
                                     . "{$a} = 4 {$b} AS MIERCOLES,"
                                     . "{$a} = 5 {$b} AS JUEVES,"
                                     . "{$a} = 6 {$b} AS VIERNES,"
                                     . "{$a} = 7 {$b} AS SABADO,"
-                                    . "{$a} = 1 {$b} AS DOMINGO", false)
-                            ->limit(1)->get()->result();
+                                    . "{$a} = 1 {$b} AS DOMINGO", false)->limit(1)
+                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -64,22 +75,37 @@ class Avance9_model extends CI_Model {
         }
     }
 
-    public function onComprobarRetornoDeMaterialXControl($CONTROL, $FR) {
+    public function onComprobarRetornoDeMaterialXControl($CONTROL, $FR, $DEPTO) {
         try {
-            $this->db->select("A.Estilo, A.Pares, FXE.CostoMO, (A.Pares * FXE.CostoMO) AS TOTAL, A.Fraccion AS Fraccion", false)
-                    ->from('asignapftsacxc AS A')
-                    ->join('fraccionesxestilo as FXE', 'A.Estilo = FXE.Estilo')
-                    ->where("A.Fraccion", $FR)
-                    ->where("FXE.Fraccion", $FR)
-                    ->where("A.Control", $CONTROL);
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
+            if ($FR !== '') {
+                $this->db->select("A.Estilo, A.Pares, FXE.CostoMO, (A.Pares * FXE.CostoMO) AS TOTAL, A.Fraccion AS Fraccion", false)
+                        ->from('asignapftsacxc AS A')
+                        ->join('fraccionesxestilo as FXE', 'A.Estilo = FXE.Estilo');
+                $this->db->where("A.Fraccion", $FR)->where("FXE.Fraccion", $FR);
+                $this->db->where("A.Control", $CONTROL)->limit(1);
+                $query = $this->db->get();
+                /*
+                 * FOR DEBUG ONLY
+                 */
+                $str = $this->db->last_query();
 //        print $str;
-            $data = $query->result();
-            return $data;
+                $data = $query->result();
+                return $data;
+            } else {
+                $this->db->select("A.Estilo, A.Pares, FXE.CostoMO, (A.Pares * FXE.CostoMO) AS TOTAL, FXE.Fraccion AS Fraccion, F.Descripcion AS FRACCION_DES", false)
+                        ->from('asignapftsacxc AS A')
+                        ->join('fraccionesxestilo as FXE', 'A.Estilo = FXE.Estilo')
+                        ->join('fracciones as F', 'FXE.Fraccion = F.Clave')
+                        ->where("A.Control", $CONTROL)->where("F.Departamento", $DEPTO)->limit(1);
+                $query = $this->db->get();
+                /*
+                 * FOR DEBUG ONLY
+                 */
+                $str = $this->db->last_query();
+//        print $str;
+                $data = $query->result();
+                return $data;
+            }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

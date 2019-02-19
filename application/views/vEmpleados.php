@@ -366,7 +366,7 @@
     var Foto = $("#Foto"), FotoPerfil = $("#FotoPerfil");
     var btnCredencial = $("#btnCredencial");
     var NumeroEmpleado = pnlTablero.find("#NumeroEmpleado");
-
+    var nuevo = false;
     $(document).ready(function () {
         handleEnter();
         getRecords();
@@ -441,7 +441,7 @@
                     }).done(function (data, x, jq) {
                         console.log(data);
                         onBeep(1);
-                        swal('ATENCIÓN', 'SE HAN GUARDADO LOS CAMBIOS', 'info');
+                        swal('ATENCIÓN', 'SE HAN GUARDADO LOS CAMBIOS', 'success');
                         nuevo = false;
                         Empleados.ajax.reload();
                         pnlDatos.addClass("d-none");
@@ -587,6 +587,7 @@
 
     function getEmpleadoByID(XXX) {
         $.getJSON(master_url + 'getEmpleadoByID', {ID: XXX}).done(function (data) {
+            nuevo = false;
             console.log(data);
             var dtm = data[0];
             pnlDatos.find("input").val("");

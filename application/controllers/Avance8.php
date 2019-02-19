@@ -144,7 +144,6 @@ class Avance8 extends CI_Controller {
                             ->from('avance AS A')
                             ->where('A.Control', $x->post('CONTROL'))
                             ->where('A.Departamento', 90)
-                            ->where('A.Fraccion', $x->post('NUMERO_FRACCION'))
                             ->where_not_in('A.Emp')
                             ->get()->result();
 
@@ -167,26 +166,25 @@ class Avance8 extends CI_Controller {
                     $this->db->insert('avance', $avance);
                     $id = $this->db->insert_id();
                 }
-                
+
                 /* PASO 2 : PAGAR FRACCION */
                 $check_fraccion = $this->db->select('COUNT(F.numeroempleado) AS EXISTE', false)
                                 ->from('fracpagnomina AS F')
                                 ->where('F.control', $x->post('CONTROL'))
                                 ->where('F.numfrac', $x->post('NUMERO_FRACCION'))
                                 ->get()->result();
+
                 $data["fraccion"] = $x->post('FRACCION');
                 if ($check_fraccion[0]->EXISTE <= 0) {
                     $data["avance_id"] = intval($id) >= 0 ? intval($id) : 0;
                     $this->db->insert('fracpagnomina', $data);
-                    print '{"AVANZO":"1","FR":"'.$x->post('NUMERO_FRACCION').'","RETORNO":"SI","MESSAGE":"EL CONTROL HA SIDO AVANZADO A ENTRETELADO"}';
+                    print '{"AVANZO":"1","FR":"' . $x->post('NUMERO_FRACCION') . '","RETORNO":"SI","MESSAGE":"EL CONTROL HA SIDO AVANZADO A ENTRETELADO"}';
                 } else {
-                    $this->db->insert('fracpagnomina', $data);
-                    print '{"AVANZO":"0","FR":"'.$x->post('NUMERO_FRACCION').'","RETORNO":"SI", "MESSAGE":"FRACCION '.$x->post('NUMERO_FRACCION').', NO GENERA AVANCE"}';
+                    print '{"AVANZO":"0","FR":"' . $x->post('NUMERO_FRACCION') . '","RETORNO":"SI", "MESSAGE":"FRACCION ' . $x->post('NUMERO_FRACCION') . ', NO GENERA AVANCE"}';
                 }
-                
             } else {
                 /* YA EXISTE UN AVANCE DE ENTRETELADO EN ESTE CONTROL */
-                print '{"AVANZO":"0","FR":"'.$x->post('NUMERO_FRACCION').'","RETORNO":"SI", "MESSAGE":"EL NUMERO DE FRACCION Y EMPLEADO SON CORRECTOS, PERO YA HA SIDO AVANZADO A ENTRETELADO CON ANTERIORIDAD"}';
+                print '{"AVANZO":"0","FR":"' . $x->post('NUMERO_FRACCION') . '","RETORNO":"SI", "MESSAGE":"EL NUMERO DE FRACCION Y EMPLEADO SON CORRECTOS, PERO YA HA SIDO AVANZADO A ENTRETELADO CON ANTERIORIDAD"}';
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

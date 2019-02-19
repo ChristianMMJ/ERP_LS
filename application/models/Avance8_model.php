@@ -17,7 +17,7 @@ class Avance8_model extends CI_Model {
                                     . "' ',(CASE WHEN E.Paterno <>'0' THEN E.Paterno ELSE '' END),' ',"
                                     . "(CASE WHEN E.Materno <>'0' THEN E.Materno ELSE '' END)) AS NOMBRE_COMPLETO, "
                                     . "E.DepartamentoCostos AS DEPTOCTO, D.Avance AS GENERA_AVANCE, D.Descripcion AS DEPTO", false)
-                            ->from('empleados AS E')->join('departamentos AS D','D.Clave = E.DepartamentoCostos')
+                            ->from('empleados AS E')->join('departamentos AS D','D.Clave = E.DepartamentoFisico')
                             ->where('E.Numero', $EMPLEADO)
                             ->where_in('E.AltaBaja', array(1))
                             ->where_in('E.FijoDestajoAmbos', array(2, 3))
@@ -28,6 +28,24 @@ class Avance8_model extends CI_Model {
         }
     }
 
+    public function onComprobarRetornoDeMaterialXControl($CONTROL, $FR) {
+        try {
+            $this->db->select("A.Estilo, A.Pares, FXE.CostoMO, (A.Pares * FXE.CostoMO) AS TOTAL, A.Fraccion AS Fraccion", false)
+                    ->from('asignapftsacxc AS A')
+                    ->join('fraccionesxestilo as FXE', 'A.Estilo = FXE.Estilo') 
+                    ->where("A.Control", $CONTROL);
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+//        print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
     public function getPagosXEmpleadoXSemana($e, $s) {
         try {
             $a = "IFNULL((SELECT FORMAT(SUM(fpn.subtot),2) FROM fracpagnomina AS fpn WHERE dayofweek(fpn.fecha)";

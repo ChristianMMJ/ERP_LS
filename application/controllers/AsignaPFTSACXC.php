@@ -213,7 +213,7 @@ class AsignaPFTSACXC extends CI_Controller {
                     'Sem' => $x->post('SEMANA'),
                     'Ano' => $Ano,
                     'OrdenCompra' => NULL,
-                    'Subtotal' => 0
+                    'Subtotal' => $PRECIO[0]->PRECIO_MAQUILA_UNO * $x->post('ENTREGA')
                 );
                 $this->db->insert("movarticulos_fabrica", $datos);
             }

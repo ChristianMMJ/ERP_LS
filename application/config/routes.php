@@ -82,6 +82,7 @@ $route['obtener_semana_fecha'] = 'Avance9/getSemanaByFecha';
 $route['obtener_estilo_pares_por_control_fraccion'] = 'Avance9/onComprobarRetornoDeMaterialXControl';
 $route['obtener_ultimo_avance_por_control'] = 'Avance9/getUltimoAvanceXControl';
 $route['avance_add_avance_x_empleado_add_nomina'] = 'Avance9/onAgregarAvanceXEmpleadoYPagoDeNomina';
+$route['avance_add_avance_x_empleado_add_nominax'] = 'Avance9/onAgregarAvanceXEmpleadoYPagoDeNomina';
 $route['obtener_avances_pago_nomina/:num'] = 'Avance9/getFraccionesPagoNomina/$1'; 
 $route['obtener_pagos_de_nomina_x_empleado'] = 'Avance9/getPagosXEmpleadoXSemana';
 

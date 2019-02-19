@@ -72,7 +72,7 @@ class Sesion extends CI_Controller {
                              * 
                              * */
                             $dt["TYPE"] = 2;
-                            $this->load->view('vAvanceXEmpleadoYPagoDeNominaFraccion777777');
+                            $this->load->view('vAvance7');
                             $is_valid = true;
                             break;
                         case '888888':

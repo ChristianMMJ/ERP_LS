@@ -96,6 +96,7 @@
                     <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                         <label>Departamento</label>
                         <input type="text" id="Departamento" name="Departamento" class="form-control numeric" maxlength="3">
+                        <input type="text" id="DepartamentoDes" name="DepartamentoDes" class="form-control d-none" maxlength="3">
                     </div>
                     <div class="col-12 col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
                         <label>Control</label>
@@ -118,11 +119,16 @@
                     </div> 
 
                     <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-none">
-                        <label>MO</label>
-                        <input type="text" id="ManoDeOB" name="ManoDeOB" class="form-control numeric d-none" readonly="">
-                        <label>AN</label>
-                        <input type="text" id="Anio" name="Anio" class="form-control numeric d-none" readonly=""> 
-                        <input type="text" id="GeneraAvance" name="GeneraAvance" class="form-control d-none" readonly="">
+                        <label>MANODEOBRA</label>
+                        <input type="text" id="ManoDeOB" name="ManoDeOB" class="form-control numeric" readonly="">
+                        <label>ANIO</label>
+                        <input type="text" id="Anio" name="Anio" class="form-control numeric" readonly=""> 
+                        <label>GENAVA</label>
+                        <input type="text" id="GeneraAvance" name="GeneraAvance" class="form-control" readonly="">
+                        <label>FRAC</label>
+                        <input type="text" id="Fraccion" name="Fraccion" class="form-control" readonly="">
+                        <label>FRACDES</label>
+                        <input type="text" id="FraccionDes" name="FraccionDes" class="form-control" readonly="">
                     </div>
 
                     <div class="col-12 my-1">
@@ -156,11 +162,14 @@
             Fecha = pnlTablero.find("#Fecha"),
             Control = pnlTablero.find("#Control"),
             Departamento = pnlTablero.find("#Departamento"),
+            DepartamentoDes = pnlTablero.find("#DepartamentoDes"),
             Estilo = pnlTablero.find("#Estilo"),
             Pares = pnlTablero.find("#Pares"),
             SigAvance = pnlTablero.find("#Avance"),
             EstatusAvance = pnlTablero.find("#EstatusAvance"),
             ManoDeOB = pnlTablero.find("#ManoDeOB"),
+            Fraccion = pnlTablero.find("#Fraccion"),
+            FraccionDes = pnlTablero.find("#FraccionDes"),
             Anio = pnlTablero.find("#Anio"),
             btnAceptar = pnlTablero.find("#btnAceptar"),
             GeneraAvance = pnlTablero.find("#GeneraAvance");
@@ -184,14 +193,24 @@
         handleEnter();
 
         btnAceptar.click(function () {
-            onAgregarAvance(true);
+            if (pnlTablero.find("input[type='checkbox']:checked").length > 0) {
+                onAgregarAvance(true);
+            } else {
+                onAgregarAvanceSinFraccion();
+            }
         });
 
         Anio.val(new Date().getFullYear());
 
         Control.on('keydown', function (e) {
             if (e.keyCode === 13) {
-                onAgregarAvance(false);
+                if (pnlTablero.find("input[type='checkbox']:checked").length > 0) {
+                    console.log('avance 1')
+                    onAgregarAvance(true);
+                } else {
+                    console.log('avance 2')
+                    onAgregarAvanceSinFraccion();
+                }
             }
         });
 
@@ -214,65 +233,7 @@
 
         NumeroDeEmpleado.on('keydown', function (e) {
             if (e.keyCode === 13) {
-                Avance.ajax.reload();
-                HoldOn.open({
-                    theme: 'sk-rect',
-                    message: 'Comprobando...'
-                });
-                $.post('<?php print base_url('comprobar_numero_de_empleado') ?>', {EMPLEADO: NumeroDeEmpleado.val()})
-                        .done(function (data) {
-                            var dt = JSON.parse(data);
-                            if (dt.length > 0) {
-                                NombreEmpleado.val(dt[0].NOMBRE_COMPLETO);
-                                Departamento.val(dt[0].DEPTOCTO);
-                                GeneraAvance.val(dt[0].GENERA_AVANCE);
-                                $.getJSON('<?php print base_url('obtener_semana_fecha'); ?>').done(function (data) {
-                                    Semana.val((data.length > 0) ? data[0].Sem : '');
-                                    Fecha.val((data.length > 0) ? data[0].Fecha : '');
-                                    $.getJSON('<?php print base_url('obtener_pagos_de_nomina_x_empleado'); ?>',
-                                            {EMPLEADO: NumeroDeEmpleado.val(), SEMANA: Semana.val(), FRACCIONES: "96, 99, 100"}).done(function (a) {
-                                        if (a.length > 0) {
-                                            var b = a[0];
-                                            var tt = 0;
-                                            ndias.forEach(function (i) {
-                                                pnlTablero.find("#txt" + i).val(b[i]);
-                                                tt += $.isNumeric(b[i]) ? parseFloat(b[i]) : 0;
-                                            });
-                                            pnlTablero.find("#txtTotal").val(tt);
-                                        }
-                                    }).fail(function (x, y, z) {
-                                        console.log(x.responseText);
-                                        onBeep(3);
-                                        swal('ERROR', ' ERROR AL OBTENER LO PAGADO AL EMPLEADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
-                                    }).always(function () {
-
-                                    });
-                                }).fail(function (x, y, z) {
-                                    console.log(x.responseText);
-                                    swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
-                                }).always(function () {
-
-                                });
-                                swal('ATENCIÓN', 'SELECCIONE UNA FRACCIÓN', 'success').then((value) => {
-                                    pnlTablero.find("#ManoDeObra label.custom-control-label").addClass("highlight");
-                                });
-                            } else {
-                                NombreEmpleado.val('');
-                                onBeep(2);
-                                swal('ATENCIÓN', 'ESTE EMPLEADO NO ES APTO PARA DAR AVANCES O ESTA DADO DE BAJA', 'warning').then((value) => {
-                                    NumeroDeEmpleado.focus().select();
-                                    Semana.val('');
-                                    Fecha.val('');
-                                    Departamento.val('');
-                                    Control.val('');
-                                });
-                            }
-                        }).fail(function (x, y, z) {
-                    console.log(x.responseText);
-                    swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
-                }).always(function () {
-                    HoldOn.close();
-                });
+                getInformacionEmpleado();
             }
         });
 
@@ -384,6 +345,68 @@
         Avance = tblAvance.DataTable(xoptions);
     });
 
+    function getInformacionEmpleado() {
+        Avance.ajax.reload();
+        HoldOn.open({
+            theme: 'sk-rect',
+            message: 'Comprobando...'
+        });
+        $.post('<?php print base_url('comprobar_numero_de_empleado') ?>', {EMPLEADO: NumeroDeEmpleado.val()})
+                .done(function (data) {
+                    var dt = JSON.parse(data);
+                    if (dt.length > 0) {
+                        NombreEmpleado.val(dt[0].NOMBRE_COMPLETO);
+                        Departamento.val(dt[0].DEPTO);
+                        DepartamentoDes.val(dt[0].DEPTO_DES);
+                        GeneraAvance.val(dt[0].GENERA_AVANCE);
+                        $.getJSON('<?php print base_url('obtener_semana_fecha'); ?>').done(function (data) {
+                            Semana.val((data.length > 0) ? data[0].Sem : '');
+                            Fecha.val((data.length > 0) ? data[0].Fecha : '');
+                            $.getJSON('<?php print base_url('obtener_pagos_de_nomina_x_empleado'); ?>',
+                                    {EMPLEADO: NumeroDeEmpleado.val(), SEMANA: Semana.val(), FRACCIONES: "96, 99, 100"}).done(function (a) {
+                                if (a.length > 0) {
+                                    var b = a[0];
+                                    var tt = 0;
+                                    ndias.forEach(function (i) {
+                                        pnlTablero.find("#txt" + i).val(b[i]);
+                                        tt += $.isNumeric(b[i]) ? parseFloat(b[i]) : 0;
+                                    });
+                                    pnlTablero.find("#txtTotal").val(tt);
+                                }
+                            }).fail(function (x, y, z) {
+                                console.log(x.responseText);
+                                onBeep(3);
+                                swal('ERROR', ' ERROR AL OBTENER LO PAGADO AL EMPLEADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                            }).always(function () {
+                            });
+                        }).fail(function (x, y, z) {
+                            console.log(x.responseText);
+                            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                        }).always(function () {
+
+                        });
+                        swal('ATENCIÓN', 'SELECCIONE UNA FRACCIÓN', 'success').then((value) => {
+                            pnlTablero.find("#ManoDeObra label.custom-control-label").addClass("highlight");
+                        });
+                    } else {
+                        NombreEmpleado.val('');
+                        onBeep(2);
+                        swal('ATENCIÓN', 'ESTE EMPLEADO NO ES APTO PARA DAR AVANCES O ESTA DADO DE BAJA', 'warning').then((value) => {
+                            NumeroDeEmpleado.focus().select();
+                            Semana.val('');
+                            Fecha.val('');
+                            Departamento.val('');
+                            Control.val('');
+                        });
+                    }
+                }).fail(function (x, y, z) {
+            console.log(x.responseText);
+            swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+        }).always(function () {
+            HoldOn.close();
+        });
+    }
+
     function onAgregarAvance(type) {
         if (Control.val()) {
             HoldOn.open({
@@ -391,7 +414,8 @@
                 message: 'Espere...'
             });
             var fra = pnlTablero.find("#chk99")[0].checked ? 99 : (pnlTablero.find("#chk100")[0].checked ? 100 : (pnlTablero.find("#chk96")[0] ? 96 : ''));
-            $.getJSON('<?php print base_url('obtener_estilo_pares_por_control_fraccion'); ?>', {CR: Control.val(), FR: fra}).done(function (data) {
+            /*COMPROBAR EL RETORNO DE MATERIAL*/
+            $.getJSON('<?php print base_url('obtener_estilo_pares_por_control_fraccion'); ?>', {CR: Control.val(), FR: fra, DEPTO: Departamento.val()}).done(function (data) {
                 if (data.length > 0) {
                     var r = data[0];
                     Estilo.val(r.Estilo);
@@ -447,6 +471,71 @@
         }
     }
 
+    function onAgregarAvanceSinFraccion() {
+        if (Control.val()) {
+            /*COMPROBAR SI EL EMPLEADO ES DE RAYADO*/
+            $.post('<?php print base_url('comprobar_numero_de_empleado') ?>', {EMPLEADO: NumeroDeEmpleado.val()}).done(function (a) {
+                $.post('<?php print base_url('Avance9/onComprobarFraccionXEstilo') ?>', {EMPLEADO: NumeroDeEmpleado.val()}).done(function (a) {
+                    console.log(a);
+                    $.getJSON('<?php print base_url('obtener_estilo_pares_por_control_fraccion'); ?>', {CR: Control.val(), FR: '', DEPTO: Departamento.val()})
+                            .done(function (data) {
+                                console.log('obtener_estilo_pares_por_control_fraccion', data);
+                                if (data.length > 0) {
+                                    var r = data[0];
+                                    Estilo.val(r.Estilo);
+                                    Pares.val(r.Pares);
+                                    ManoDeOB.val(r.CostoMO);
+                                    Fraccion.val(r.Fraccion);
+                                    FraccionDes.val(r.FRACCION_DES)
+                                    $.getJSON('<?php print base_url('obtener_ultimo_avance_por_control'); ?>', {C: Control.val()}).done(function (data) {
+                                        if (data.length > 0) {
+                                            SigAvance.val(data[0].Departamento);
+                                            EstatusAvance.val(data[0].DepartamentoT);
+                                            var d = new Date();
+                                            var n = d.getDay();
+                                            var stf = parseFloat(r.Pares) * parseFloat(r.CostoMO);
+                                            stf = stf.toString();
+                                            stf = stf.slice(0, (stf.indexOf(".")) + 3);
+                                            DiasPagoDeNomina.find("#txt" + ndias[n - 1]).val(stf);
+                                            var tt = 0;
+                                            ndias.forEach(function (i) {
+                                                tt += parseFloat(pnlTablero.find("#txt" + i).val());
+                                            });
+                                            var tf = parseFloat(r.Pares) * parseFloat(r.CostoMO);
+                                            tf = tf.toString();
+                                            tf = tf.slice(0, (tf.indexOf(".")) + 3);
+                                            DiasPagoDeNomina.find("#txtTotal").val(tf);
+                                            onAvanzar();
+                                        }
+                                    }).fail(function (x, y, z) {
+                                        console.log(x.responseText);
+                                        swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                                    }).always(function () {
+                                        HoldOn.close();
+                                    });
+                                }
+                            }).fail(function (x, y, z) {
+                        console.log(x, y, z);
+                        swal('ERROR', 'ALGO SALIO MAL, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                    }).always(function () {
+                    });
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                    swal('ERROR', 'ALGO SALIO MAL, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                }).always(function () {
+                });
+            }).fail(function (x, y, z) {
+                console.log(x, y, z);
+                swal('ERROR', 'ALGO SALIO MAL, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+            }).always(function () {
+            });
+        } else {
+            swal('ATENCIÓN', 'DEBE DE ESPECIFICAR UN CONTROL', 'error').then((value) => {
+                Control.focus().select();
+            });
+        }
+    }
+
     function onCheckFraccion(e) {
         $.each(pnlTablero.find("input[type='checkbox']"), function (k, v) {
             if ($(e)[0].id !== $(v)[0].id) {
@@ -476,17 +565,19 @@
     }
 
     function onAvanzar() {
-
+        console.log('avanzando...')
+        var fs = pnlTablero.find("#ManoDeObra input[type='checkbox']:checked").attr('description');
         AVANO.NUMERO_EMPLEADO = NumeroDeEmpleado.val();
         AVANO.CONTROL = Control.val();
         AVANO.ESTILO = Estilo.val();
         AVANO.NUMERO_FRACCION = pnlTablero.find("#ManoDeObra input[type='checkbox']:checked").attr('fraccion');
-        AVANO.FRACCION = pnlTablero.find("#ManoDeObra input[type='checkbox']:checked").attr('description');
+        AVANO.FRACCION = fs ? fs : pnlTablero.find("#FraccionSeleccionada").val();
         AVANO.PRECIO_FRACCION = ManoDeOB.val();
         AVANO.PARES = Pares.val();
         AVANO.FECHA = Fecha.val();
         AVANO.SEMANA = Semana.val();
         AVANO.DEPARTAMENTO = Departamento.val();
+        AVANO.DEPARTAMENTO_DESCRIPCION = DepartamentoDes.val();
         AVANO.ANIO = pnlTablero.find("#Anio").val();
 
         $.post('<?php print base_url('avance_add_avance_x_empleado_add_nomina') ?>', AVANO).done(function (data) {
@@ -567,5 +658,20 @@
     input[type='text']{
         color: #c1850c !important;
         font-weight: bold !important;
+    }
+    .card{
+        background-color: #f9f9f9;
+        border-width: 1px 2px 2px;
+        border-style: solid; 
+        border-image: linear-gradient(to bottom,  #2196F3, #cc0066, rgb(0,0,0,0)) 1 100% ;
+        /*top
+        background-image: linear-gradient(to left, #0099cc,  #cc0000, #0099cc) ;
+        background-size: 100% 1px;
+        background-position: 10% 0%, 0% 100%;
+        background-repeat: no-repeat;  */
+    }
+    .card-header{ 
+        background-color: transparent;
+        border-bottom: 0px;
     }
 </style>
