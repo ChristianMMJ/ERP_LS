@@ -71,7 +71,7 @@
     var mdlReporte = $('#mdlReporte');
     var generado = false;
     $(document).ready(function () {
-        validacionSelectPorContenedor(mdlExplosionSemanal);
+        validacionSelectPorContenedor(mdlSalidasMaquilasPorDia);
         setFocusSelectToInputOnChange('#Tipo', '#btnImprimir', mdlSalidasMaquilasPorDia);
 
         mdlSalidasMaquilasPorDia.on('shown.bs.modal', function () {

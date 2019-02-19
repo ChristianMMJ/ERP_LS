@@ -56,3 +56,7 @@ $this->load->view('vComprasPorFechaGeneral');
 $this->load->view('vComprasPorFechaPorArticulo');
 $this->load->view('vDevolucionesCompraFecha');
 $this->load->view('vSalidasMaquilasPorDia');
+$this->load->view('vKardexPorArticulo');
+$this->load->view('vKardexPorProveedor');
+$this->load->view('vKardexSubAlmacenPorArticulo');
+
