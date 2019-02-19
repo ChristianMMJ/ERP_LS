@@ -592,6 +592,38 @@
         }
     }
 
+    function getFirstDayMonth() {
+        var date = new Date();
+
+        var date = new Date(date.getFullYear(), date.getMonth(), 1);
+        var iday = date.getDate();
+        var imonth = date.getMonth() + 1;
+        var iyear = date.getFullYear();
+
+        if (imonth < 10)
+            imonth = "0" + imonth;
+        if (iday < 10)
+            iday = "0" + iday;
+        var ini = iday + "-" + imonth + "-" + iyear;
+        return ini;
+    }
+
+    function getLastDayMonth() {
+        var date = new Date();
+
+        var ldate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        var fday = ldate.getDate();
+        var fmonth = ldate.getMonth() + 1;
+        var fyear = ldate.getFullYear();
+
+        if (fmonth < 10)
+            fmonth = "0" + fmonth;
+        if (fday < 10)
+            fday = "0" + fday;
+        var fin = fday + "-" + fmonth + "-" + fyear;
+        return fin;
+    }
+
 
     function getToday() {
         var date = new Date();
