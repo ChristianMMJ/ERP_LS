@@ -6,8 +6,7 @@ require_once APPPATH . "/third_party/fpdf17/fpdf.php";
 
 class Avance7 extends CI_Controller {
 
-    public $jc;
-
+    
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
@@ -15,47 +14,32 @@ class Avance7 extends CI_Controller {
     }
 
     public function getXLS() {
-        $this->jc = new JasperCommand();
-        $this->jc->setFolder('rpt/' . $this->session->USERNAME);
+        $jc = new JasperCommand();
+        $jc->setFolder('rpt/' . $this->session->USERNAME);
         $parametros = array();
         $parametros["urlimagen"] = base_url() . $this->session->LOGO;
         $parametros["nombredelreporte"] = "hola";
-        $parametros["controlid"] = "191001012";
-        $this->jc->setParametros($parametros);
-        $this->jc->setJasperurl('jrxml\report2.jasper');
-        $this->jc->setFilename('ReporteDelSistema' . Date('h_i_s'));
-        $this->jc->setDocumentformat('xls');
-        $this->jc->getReport();
+        $parametros["controlid"] = $this->input->post('CONTROL');
+        $jc->setParametros($parametros);
+        $jc->setJasperurl('jrxml\report2.jasper');
+       $jc->setFilename('ReporteDelSistema' . Date('h_i_s')."_".$this->input->post('CONTROL'));
+         $jc->setDocumentformat('xls');
+        PRINT $jc->getReport();
     }
 
-    public function getPDF() {
-        $this->jc = new JasperCommand();
-        $this->jc->setFolder('rpt/' . $this->session->USERNAME);
+    public function getPDF() { 
+        $jc = new JasperCommand();
+        $jc->setFolder('rpt/' . $this->session->USERNAME);
         $parametros = array();
         $parametros["urlimagen"] = base_url() . $this->session->LOGO;
         $parametros["nombredelreporte"] = "hola";
-        $parametros["controlid"] = "191001012";
-        $this->jc->setParametros($parametros);
-        $this->jc->setJasperurl('jrxml\report2.jasper');
-        $this->jc->setFilename('ReporteDelSistema' . Date('h_i_s'));
-        $this->jc->setDocumentformat('pdf');
-        $this->jc->getReport();
-    }
-
-    public function getReport() {
-        try {
-            switch ($this->input->post('TYPE')) {
-                case 1:
-                    $this->getPDF();
-                    break;
-                case 2:
-                    $this->getXLS();
-                    break;
-            }
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
+        $parametros["controlid"] = $this->input->post('CONTROL');
+        $jc->setParametros($parametros);
+        $jc->setJasperurl('jrxml\report2.jasper');
+        $jc->setFilename('ReporteDelSistema' . Date('h_i_s')."_".$this->input->post('CONTROL'));
+        $jc->setDocumentformat('pdf');
+        PRINT $jc->getReport();
+    } 
 
     public function onComprobarDeptoXEmpleado() {
         try {

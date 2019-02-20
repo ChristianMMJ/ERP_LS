@@ -139,9 +139,9 @@
                         <input type="text" id="Avance" name="Avance" class="form-control numeric">
                     </div>
                     <div class="col-12 col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 row justify-content-center align-self-center">
-                        <button type="button" class="btn btn-success" id="btnAceptar" name="btnAceptar" data-toggle="tooltip" data-placement="top" title="Aceptar"><span class="fa fa-check"></span></button>
-                        <button type="button" class="btn btn-info" id="btnAceptarPDF" name="btnAceptarx" data-toggle="tooltip" data-placement="top" title="Aceptar"><span class="fa fa-file-pdf"></span></button>
-                        <button type="button" class="btn btn-info" id="btnAceptarx" name="btnAceptarx" data-toggle="tooltip" data-placement="top" title="Aceptar"><span class="fa fa-file-pdf"></span></button>
+                        <button type="button" class="btn btn-primary m-1" id="btnAceptar" name="btnAceptar" data-toggle="tooltip" data-placement="top" title="Aceptar"><span class="fa fa-check"></span></button>
+                        <button type="button" class="btn btn-info m-1" id="btnAceptarPDF" name="btnAceptarPDF" data-toggle="tooltip" data-placement="top" title="PDF"><span class="fa fa-file-pdf"></span></button>
+                        <button type="button" class="btn btn-success m-1" id="btnAceptarXLS" name="btnAceptarXLS" data-toggle="tooltip" data-placement="top" title="Excel"><span class="fa fa-file-excel"></span></button>
 
                     </div> 
 
@@ -221,7 +221,7 @@
         transition: background-color 1s ease-out;
     }
 
-    .btn-success, .btn-success:not(:disabled):not(.disabled):active {
+    .btn-warning, .btn-warning:not(:disabled):not(.disabled):active {
         color: #fff; 
         /*BLUE:INFO*/
         border-color: #0099cc ;
@@ -241,7 +241,7 @@
 
     }
 
-    .btn-success:hover{
+    .btn-warning:hover{
         /*BLUE:INFO*/
         border-color: #a1c4fd ;
         /*GREEN:SUCCESS*/
@@ -258,12 +258,15 @@
             Fecha = pnlTablero.find("#Fecha"), Departamento = pnlTablero.find("#Departamento"),
             Avance, tblAvance = pnlTablero.find("#tblAvance"), Control = pnlTablero.find("#Control"),
             btnAceptar = pnlTablero.find("#btnAceptar"), Estilo = pnlTablero.find("#Estilo"), Pares = pnlTablero.find("#Pares"),
-            Anio = pnlTablero.find("#Anio"), btnAceptarx = pnlTablero.find("#btnAceptarx");
+            Anio = pnlTablero.find("#Anio"), btnAceptarPDF = pnlTablero.find("#btnAceptarPDF"), btnAceptarXLS = pnlTablero.find("#btnAceptarXLS");
 
     $(document).ready(function () {
 
-        btnAceptarx.click(function () {
-            getReport();
+        btnAceptarXLS.click(function () {
+            getReport(2);
+        });
+        btnAceptarPDF.click(function () {
+            getReport(1);
         });
 
         btnAceptar.click(function () {
@@ -427,20 +430,27 @@
         });
     });
 
-    function getReport() {
+    function getReport(pdfxls) {
 
         HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
-
+        var f = new FormData();
+        f.append('CONTROL', Control.val());
+        var url = "";
+        switch (parseInt(pdfxls)) {
+            case 1:
+                url = '<?php print base_url('Avance7/getPDF'); ?>';
+                break;
+            case 2:
+                url = '<?php print base_url('Avance7/getXLS'); ?>';
+                break;
+        }
         $.ajax({
-            url: '<?php print base_url('Avance7/getXLS'); ?>',
+            url: url,
             type: "POST",
             cache: false,
             contentType: false,
             processData: false,
-            data: {
-                TYPE: 1,
-                CONTROL: Control.val()
-            }
+            data: f
         }).done(function (data, x, jq) {
             console.log(data);
             var ext = getExt(data);

@@ -18,6 +18,9 @@
 		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
 	</parameter>
 	<parameter name="urlimagen" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\wamp64\\www\\ERP_LS\\jrxml\\"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
      controles.`ID` AS controles_ID,
@@ -142,7 +145,7 @@ FROM
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="18" splitType="Stretch">
+		<band height="19" splitType="Stretch">
 			<frame>
 				<reportElement style="Row" mode="Opaque" x="0" y="0" width="797" height="18" uuid="942c49e3-3f3f-4bd9-90ee-d679a00a48d7"/>
 				<textField isStretchWithOverflow="true">
@@ -202,6 +205,16 @@ FROM
 					<textFieldExpression><![CDATA[$F{controles_Estatus}]]></textFieldExpression>
 				</textField>
 			</frame>
+		</band>
+		<band height="101">
+			<subreport>
+				<reportElement x="2" y="0" width="790" height="100" uuid="5dec633f-3114-48cd-bc87-141a998d945a"/>
+				<subreportParameter name="controlid">
+					<subreportParameterExpression><![CDATA[$P{controlid}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "pedido_detalle.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</detail>
 	<columnFooter>
