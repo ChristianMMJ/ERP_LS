@@ -59,4 +59,4 @@ $this->load->view('vSalidasMaquilasPorDia');
 $this->load->view('vKardexPorArticulo');
 $this->load->view('vKardexPorProveedor');
 $this->load->view('vKardexSubAlmacenPorArticulo');
-
+$this->load->view('vReporteCorteHiloTejer');
