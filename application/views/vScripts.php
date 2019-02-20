@@ -186,8 +186,7 @@
         });
 
         $('.numeric').keypress(function (event) {
-            var cc = (event.which) ? event.which : event.keyCode;
-            console.log('KEY ', cc);
+            var cc = (event.which) ? event.which : event.keyCode; 
             if (cc >= 48 && cc <= 57 || cc === 8 || cc >= 36 && cc <= 40) {
                 return true;
             } else {
@@ -196,8 +195,7 @@
         });
 
         $('.numericdot').keypress(function (event) {
-            var cc = (event.which) ? event.which : event.keyCode;
-            console.log('KEY ', cc, ', ', $(this).val().indexOf('.'));
+            var cc = (event.which) ? event.which : event.keyCode; 
             if (cc >= 48 && cc <= 57 || cc === 46 || cc === 8 || cc >= 36 && cc <= 40 || $(this).val().indexOf('.') === -1) {
                 return true;
             } else {

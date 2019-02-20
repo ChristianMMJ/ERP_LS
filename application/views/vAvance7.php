@@ -258,9 +258,26 @@
             Fecha = pnlTablero.find("#Fecha"), Departamento = pnlTablero.find("#Departamento"),
             Avance, tblAvance = pnlTablero.find("#tblAvance"), Control = pnlTablero.find("#Control"),
             btnAceptar = pnlTablero.find("#btnAceptar"), Estilo = pnlTablero.find("#Estilo"), Pares = pnlTablero.find("#Pares"),
-            Anio = pnlTablero.find("#Anio"), btnAceptarPDF = pnlTablero.find("#btnAceptarPDF"), btnAceptarXLS = pnlTablero.find("#btnAceptarXLS");
-
+            Anio = pnlTablero.find("#Anio"), btnAceptarPDF = pnlTablero.find("#btnAceptarPDF"),
+            btnAceptarXLS = pnlTablero.find("#btnAceptarXLS"), DiasPagoDeNomina = pnlTablero.find("#DiasPagoDeNomina");
+    var dias = ["JUEVES", "VIERNES", "SABADO", "DOMINGO", "LUNES", "MARTES", "MIERCOLES"],
+            ndias = ["LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO", "DOMINGO"];
     $(document).ready(function () {
+
+        Control.on('keydown', function (e) {
+            if (e.keyCode === 13) {
+                $.post('<?php print base_url('Avance7/getInfoXControl') ?>', {CONTROL: Control.val()}).done(function (a, b, c) {
+                    var r = JSON.parse(a);
+                    Estilo.val(r[0].Estilo);
+                    Pares.val(r[0].Pares);
+                }).fail(function (x, y, z) {
+                    console.log(x.responseText);
+                    swal('ERROR', ' ERROR AL OBTENER LO PAGADO AL EMPLEADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                }).always(function () {
+
+                });
+            }
+        });
 
         btnAceptarXLS.click(function () {
             getReport(2);
@@ -270,36 +287,57 @@
         });
 
         btnAceptar.click(function () {
-            var f = new FormData();
-            var fracciones = [];
-            $.each(pnlTablero.find("input[type='checkbox']:checked"), function (k, v) {
-                fracciones.push({
-                    NUMERO_FRACCION: $(v).attr('fraccion'),
-                    DESCRIPCION: $(v).attr('description')
+            if (pnlTablero.find("input[type='checkbox']:checked").length > 0) {
+                onBeep(1);
+                var f = new FormData();
+                var fracciones = [];
+                $.each(pnlTablero.find("input[type='checkbox']:checked"), function (k, v) {
+                    fracciones.push({
+                        NUMERO_FRACCION: $(v).attr('fraccion'),
+                        DESCRIPCION: $(v).attr('description')
+                    });
                 });
-            });
-            f.append('NUMERO_EMPLEADO', NumeroDeEmpleado.val());
-            f.append('SEMANA', Semana.val());
-            f.append('FECHA', Fecha.val());
-            f.append('DEPARTAMENTO', Departamento.val());
-            f.append('CONTROL', Control.val());
-            f.append('ESTILO', Estilo.val());
-            f.append('PARES', Pares.val());
-            f.append('FRACCIONES', JSON.stringify(fracciones));
-            $.ajax({
-                url: '<?php print base_url('Avance7/onAvanzar'); ?>',
-                type: "POST",
-                cache: false,
-                contentType: false,
-                processData: false,
-                data: f
-            }).done(function (data, x, jq) {
-                console.log(data);
-                swal('ATENCIÓN', 'SE HAN GUARDADO LOS CAMBIOS', 'success');
-            }).fail(function (x, y, z) {
-                console.log(x.responseText);
-            }).always(function () {
-            });
+                f.append('NUMERO_EMPLEADO', NumeroDeEmpleado.val());
+                f.append('SEMANA', Semana.val());
+                f.append('FECHA', Fecha.val());
+                f.append('DEPARTAMENTO', Departamento.val());
+                f.append('CONTROL', Control.val());
+                f.append('ESTILO', Estilo.val());
+                f.append('PARES', Pares.val());
+                f.append('ANIO', JSON.stringify(fracciones));
+                f.append('FRACCIONES', JSON.stringify(fracciones));
+                $.ajax({
+                    url: '<?php print base_url('Avance7/onRevisarFraccionesPagadas'); ?>',
+                    type: "POST",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: f
+                }).done(function (data, x, jq) {
+                    console.log(data);
+                    swal('ATENCIÓN', 'SE HAN GUARDADO LOS CAMBIOS', 'success');
+                }).fail(function (x, y, z) {
+                    console.log(x.responseText);
+                }).always(function () {
+                });
+//                $.ajax({
+//                    url: '<?php print base_url('Avance7/onAvanzar'); ?>',
+//                    type: "POST",
+//                    cache: false,
+//                    contentType: false,
+//                    processData: false,
+//                    data: f
+//                }).done(function (data, x, jq) {
+//                    console.log(data);
+//                    swal('ATENCIÓN', 'SE HAN GUARDADO LOS CAMBIOS', 'success');
+//                }).fail(function (x, y, z) {
+//                    console.log(x.responseText);
+//                }).always(function () {
+//                });
+            } else {
+                onBeep(2);
+                swal('ATENCIÓN', 'DEBE DE SELECCIONAR AL MENOS UNA FRACCIÓN', 'warning');
+            }
         });
 
         NumeroDeEmpleado.on('keydown', function (e) {
@@ -319,6 +357,23 @@
                                     var rr = data[0];
                                     Semana.val(rr.Sem);
                                     Fecha.val(rr.Fecha);
+                                    $.getJSON('<?php print base_url('Avance7/getPagosXEmpleadoXSemana'); ?>',
+                                            {EMPLEADO: NumeroDeEmpleado.val(), SEMANA: Semana.val()}).done(function (a) {
+                                        if (a.length > 0) {
+                                            var b = a[0];
+                                            var tt = 0;
+                                            ndias.forEach(function (i) {
+                                                pnlTablero.find("#txt" + i).val(b[i]);
+                                                tt += $.isNumeric(b[i]) ? parseFloat(b[i]) : 0;
+                                            });
+                                            pnlTablero.find("#txtTotal").val(tt);
+                                        }
+                                    }).fail(function (x, y, z) {
+                                        console.log(x.responseText);
+                                        onBeep(3);
+                                        swal('ERROR', ' ERROR AL OBTENER LO PAGADO AL EMPLEADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                                    }).always(function () {
+                                    });
                                 }).fail(function (x, y, z) {
                                     console.log(x.responseText);
                                     swal('ERROR', ' ERROR AL OBTENER LO PAGADO AL EMPLEADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
@@ -413,7 +468,6 @@
         Avance = tblAvance.DataTable(xoptions);
 
         pnlTablero.find("input[type='checkbox']").change(function () {
-            console.log('ok')
             if ($(this)[0].checked) {
                 onBeep(3);
                 Control.focus().select();
@@ -428,6 +482,7 @@
                 }
             }
         });
+        getDias();
     });
 
     function getReport(pdfxls) {
@@ -498,5 +553,24 @@
             console.log(x, y, z);
             HoldOn.close();
         });
+    }
+
+    function getDias() {
+        var fracciones = '';
+        dias.forEach(function (i) {
+            fracciones += '<div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 my-1">' +
+                    '<label>' + i + '</label>' +
+                    '</div>' +
+                    '<div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">' +
+                    '<input type="text" id="txt' + i + '" name="txt' + i + '" class="form-control" placeholder="0"  style="font-weight: bold; text-align: center;" readonly="">' +
+                    '</div>';
+        });
+        fracciones += '<div class="col-12"><hr></div><div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">' +
+                '<label>TOTAL</label>' +
+                '</div>' +
+                '<div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">' +
+                '<input type="text" id="txtTotal" disabled="" name="txtTotal" class="form-control" placeholder="0"  style="font-weight: bold; text-align: center;">' +
+                '</div>';
+        DiasPagoDeNomina.html(fracciones);
     }
 </script>

@@ -62,12 +62,12 @@ class Avance7_model extends CI_Model {
         }
     }
 
-    public function onComprobarRetornoDeMaterialXControl($CONTROL, $FR) {
+    public function getInfoXControl($CONTROL) {
         try {
             $this->db->select("C.Estilo, C.Pares, FXE.CostoMO, (C.Pares * FXE.CostoMO) AS TOTAL", false)
                     ->from('controles as C')
                     ->join('fraccionesxestilo as FXE', 'C.Estilo = FXE.Estilo')
-                    ->where("C.Control", $CONTROL);
+                    ->where("C.Control", $CONTROL)->limit(1);
             $query = $this->db->get();
             /*
              * FOR DEBUG ONLY

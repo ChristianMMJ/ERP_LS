@@ -2,11 +2,9 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 require_once APPPATH . "/third_party/JasperPHP/src/JasperPHP/JasperPHP.php";
-require_once APPPATH . "/third_party/fpdf17/fpdf.php";
 
 class Avance7 extends CI_Controller {
 
-    
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Mexico_City');
@@ -22,12 +20,12 @@ class Avance7 extends CI_Controller {
         $parametros["controlid"] = $this->input->post('CONTROL');
         $jc->setParametros($parametros);
         $jc->setJasperurl('jrxml\report2.jasper');
-       $jc->setFilename('ReporteDelSistema' . Date('h_i_s')."_".$this->input->post('CONTROL'));
-         $jc->setDocumentformat('xls');
+        $jc->setFilename('ReporteDelSistema' . Date('h_i_s') . "_" . $this->input->post('CONTROL'));
+        $jc->setDocumentformat('xls');
         PRINT $jc->getReport();
     }
 
-    public function getPDF() { 
+    public function getPDF() {
         $jc = new JasperCommand();
         $jc->setFolder('rpt/' . $this->session->USERNAME);
         $parametros = array();
@@ -36,10 +34,27 @@ class Avance7 extends CI_Controller {
         $parametros["controlid"] = $this->input->post('CONTROL');
         $jc->setParametros($parametros);
         $jc->setJasperurl('jrxml\report2.jasper');
-        $jc->setFilename('ReporteDelSistema' . Date('h_i_s')."_".$this->input->post('CONTROL'));
+        $jc->setFilename('ReporteDelSistema' . Date('h_i_s') . "_" . $this->input->post('CONTROL'));
         $jc->setDocumentformat('pdf');
         PRINT $jc->getReport();
-    } 
+    }
+
+    public function getPagosXEmpleadoXSemana() {
+        try {
+            header('Content-type: application/json');
+            print json_encode($this->avm->getPagosXEmpleadoXSemana($this->input->get('EMPLEADO'), $this->input->get('SEMANA')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getInfoXControl() {
+        try {
+            print json_encode($this->avm->getInfoXControl($this->input->post('CONTROL')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 
     public function onComprobarDeptoXEmpleado() {
         try {
@@ -67,6 +82,29 @@ class Avance7 extends CI_Controller {
         }
     }
 
+    public function onRevisarFraccionesPagadas() {
+        try {
+            $x = $this->input;
+            $fracciones = json_decode($x->post('FRACCIONES'), false)/* FALSE = STDCLASS, TRUE = ASSOCIATIVE_ARRAY */;
+            $pagado = 0;
+            foreach ($fracciones as $k => $v) {
+                $precio_x_fraccion = $this->db->select('FPN.ID AS PRECIO')->from('fracpagnomina AS FPN')
+                                ->where('FPN.Control', $x->post('CONTROL'))
+                                ->where('FPN.numfrac', $v->NUMERO_FRACCION)
+                                ->where('FPN.Estilo', $x->post('ESTILO'))->get()->result();
+                print_r($precio_x_fraccion);
+                if (!empty($precio_x_fraccion)) {
+                    $pagado = 1;
+                } else {
+                    $pagado = 0;
+                }
+            }
+            print $pagado;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function onAvanzar() {
         try {
             $x = $this->input;
@@ -77,35 +115,29 @@ class Avance7 extends CI_Controller {
 
             $nueva_fecha = new DateTime();
             $nueva_fecha->setDate($anio, $mes, $dia);
-//            $data = array(
-//                "numeroempleado" => $x->post('NUMERO_EMPLEADO'),
-//                "maquila" => intval(substr($x->post('CONTROL'), 4, 2)),
-//                "control" => $x->post('CONTROL'),
-//                "estilo" => $x->post('ESTILO'),
-//                "numfrac" => $x->post('NUMERO_FRACCION'),
-//                "preciofrac" => $x->post('PRECIO_FRACCION'),
-//                "pares" => $x->post('PARES'),
-//                "subtot" => (floatval($x->post('PARES')) * floatval($x->post('PRECIO_FRACCION'))),
-//                "fecha" => $nueva_fecha->format('Y-m-d h:i:s'),
-//                "semana" => $x->post('SEMANA'),
-//                "depto" => $x->post('DEPARTAMENTO'),
-//                "anio" => $x->post('ANIO'));
+
             $fracciones = json_decode($x->post('FRACCIONES'), false)/* FALSE = STDCLASS, TRUE = ASSOCIATIVE_ARRAY */;
             foreach ($fracciones as $k => $v) {
-                print "$v->NUMERO_FRACCION \n";
-                $data = array(
-                    "numeroempleado" => $x->post('NUMERO_EMPLEADO'),
-                    "maquila" => intval(substr($x->post('CONTROL'), 4, 2)),
-                    "control" => $x->post('CONTROL'),
-                    "estilo" => $x->post('ESTILO'),
-                    "numfrac" => $v->NUMERO_FRACCION,
-                    "preciofrac" => $x->post('PRECIO_FRACCION'),
-                    "pares" => $x->post('PARES'),
-                    "subtot" => (floatval($x->post('PARES')) * floatval($x->post('PRECIO_FRACCION'))),
-                    "fecha" => $nueva_fecha->format('Y-m-d h:i:s'),
-                    "semana" => $x->post('SEMANA'),
-                    "depto" => $x->post('DEPARTAMENTO'),
-                    "anio" => $x->post('ANIO'));
+                $precio_x_fraccion = $this->db->select('FXE.CostoMO AS PRECIO')->from('fraccionesxestilo AS FXE')
+                                ->where('FXE.Fraccion', $v->NUMERO_FRACCION)
+                                ->where('FXE.Estilo', $x->post('ESTILO'))->get()->result();
+                if (!empty($precio_x_fraccion)) {
+                    $data = array(
+                        "numeroempleado" => $x->post('NUMERO_EMPLEADO'),
+                        "maquila" => intval(substr($x->post('CONTROL'), 4, 2)),
+                        "control" => $x->post('CONTROL'),
+                        "estilo" => $x->post('ESTILO'),
+                        "numfrac" => $v->NUMERO_FRACCION,
+                        "preciofrac" => $precio_x_fraccion[0]->PRECIO,
+                        "pares" => $x->post('PARES'),
+                        "subtot" => (floatval($x->post('PARES')) * floatval($precio_x_fraccion[0]->PRECIO)),
+                        "fecha" => $nueva_fecha->format('Y-m-d h:i:s'),
+                        "semana" => $x->post('SEMANA'),
+                        "depto" => $x->post('DEPARTAMENTO'),
+                        "anio" => $x->post('ANIO'),
+                        "fraccion" => $v->DESCRIPCION);
+                    $this->db->insert('fracpagnomina', $data);
+                }
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
