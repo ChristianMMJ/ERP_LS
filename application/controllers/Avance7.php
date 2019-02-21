@@ -1,7 +1,6 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
-require_once APPPATH . "/third_party/JasperPHP/src/JasperPHP/JasperPHP.php";
 
 class Avance7 extends CI_Controller {
 
@@ -15,11 +14,14 @@ class Avance7 extends CI_Controller {
         $jc = new JasperCommand();
         $jc->setFolder('rpt/' . $this->session->USERNAME);
         $parametros = array();
-        $parametros["urlimagen"] = base_url() . $this->session->LOGO;
-        $parametros["nombredelreporte"] = "hola";
-        $parametros["controlid"] = $this->input->post('CONTROL');
+        $parametros["logo"] = base_url() . $this->session->LOGO;
+        $parametros["empresa"] = $this->session->EMPRESA_RAZON;
+        $parametros["maq"] = 1;
+        $parametros["ano"] = 2019;
+        $parametros["sem"] = 10;
+        $parametros["Nmaq"] = 'CALZADO LOBO 12345';
         $jc->setParametros($parametros);
-        $jc->setJasperurl('jrxml\report2.jasper');
+        $jc->setJasperurl('jrxml\materiales\relacionCoreHiloTejido.jasper');
         $jc->setFilename('ReporteDelSistema' . Date('h_i_s') . "_" . $this->input->post('CONTROL'));
         $jc->setDocumentformat('xls');
         PRINT $jc->getReport();
@@ -29,11 +31,14 @@ class Avance7 extends CI_Controller {
         $jc = new JasperCommand();
         $jc->setFolder('rpt/' . $this->session->USERNAME);
         $parametros = array();
-        $parametros["urlimagen"] = base_url() . $this->session->LOGO;
-        $parametros["nombredelreporte"] = "hola";
-        $parametros["controlid"] = $this->input->post('CONTROL');
+        $parametros["logo"] = base_url() . $this->session->LOGO;
+        $parametros["empresa"] = $this->session->EMPRESA_RAZON;
+        $parametros["maq"] = 1;
+        $parametros["ano"] = 2019;
+        $parametros["sem"] = 10;
+        $parametros["Nmaq"] = 'CALZADO LOBO 12345';
         $jc->setParametros($parametros);
-        $jc->setJasperurl('jrxml\report2.jasper');
+        $jc->setJasperurl('jrxml\materiales\relacionCoreHiloTejido.jasper');
         $jc->setFilename('ReporteDelSistema' . Date('h_i_s') . "_" . $this->input->post('CONTROL'));
         $jc->setDocumentformat('pdf');
         PRINT $jc->getReport();
