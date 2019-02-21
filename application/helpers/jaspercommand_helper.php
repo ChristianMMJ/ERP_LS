@@ -136,11 +136,21 @@ class JasperCommand {
                     }
                 }
             }
-            $cmd = "{$this->getJasperurlsoftware()} pr {$this->getJasperurl()} -o {$this->getFolder()}/{$this->getFilename()} {$parametros_finales} -f {$this->getDocumentformat()} -t {$this->getDbtype()} -H {$this->getIp()} -u {$this->getDbuser()} -n {$this->getDbname()} --db-port {$this->getDbport()}";
-            $command_esc = escapeshellcmd($cmd);
+            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                $cmd = "{$this->getJasperurlsoftware()} pr {$this->getJasperurl()} -o {$this->getFolder()}/{$this->getFilename()} {$parametros_finales} -f {$this->getDocumentformat()} -t {$this->getDbtype()} -H {$this->getIp()} -u {$this->getDbuser()} -n {$this->getDbname()} --db-port {$this->getDbport()}";
+                $command_esc = escapeshellcmd($cmd);
 //            print $cmd;
-            passthru($command_esc);
-            return base_url("{$this->getFolder()}/{$this->getFilename()}.{$this->getDocumentformat()}");
+                passthru($command_esc);
+                return base_url("{$this->getFolder()}/{$this->getFilename()}.{$this->getDocumentformat()}");
+            } else {
+                $this->setJasperurlsoftware("application/third_party/JasperPHP/src/JasperStarter/bin/jasperstarter");
+                $cmd = "su -c \"{$this->getJasperurlsoftware()} pr {$this->getJasperurl()} -o {$this->getFolder()}/{$this->getFilename()} {$parametros_finales} -f {$this->getDocumentformat()} -t {$this->getDbtype()} -H {$this->getIp()} -u {$this->getDbuser()} -n {$this->getDbname()} --db-port {$this->getDbport()}\"";
+                //su -c "application/third_party/JasperPHP/src/JasperStarter/bin/jasperstarter pr jrxml/materiales/relacionCoreHiloTejido.jasper -o rpt/777777/ReporteDelSistema21022019  -P logo="uploads/Empresas/1/lsbck.png" empresa='CALZADO LOBO S.A. DE C.V.' maq=1 ano=2018 sem=49 Nmaq='CALZADO LOBO' -f pdf -t mysql -H 127.0.0.1 -u root -n lobo_solo --db-port 3306"
+                $command_esc = escapeshellcmd($cmd);
+//            print $cmd;
+                passthru($command_esc);
+                return base_url("{$this->getFolder()}/{$this->getFilename()}.{$this->getDocumentformat()}");
+            }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

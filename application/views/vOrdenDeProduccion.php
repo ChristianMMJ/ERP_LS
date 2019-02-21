@@ -240,6 +240,20 @@
             Anio.val((new Date()).getFullYear());
             Anio.focusout(function () {
                 onVerificarFormValido();
+            }).keydown(function (e) {
+                if (e.keyCode === 13 && Maquila.val() !== '' && Semana.val() !== '') {
+                    HoldOn.open({
+                        theme: 'sk-bounce',
+                        message: 'Por favor espere...'
+                    });
+                    $.fn.dataTable.ext.errMode = 'throw';
+                    if ($.fn.DataTable.isDataTable('#tblControles')) {
+                        Controles.ajax.reload();
+                        HoldOn.close();
+                    } else {
+                        Controles = tblControles.DataTable(options_ordendeproduccion);
+                    }
+                }
             });
 
             btnReload.click(function () {
