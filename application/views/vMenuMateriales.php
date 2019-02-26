@@ -65,3 +65,6 @@ $this->load->view('vReporteMovimientosEntradasOtros');
 $this->load->view('vCosteoMatMaqDoc');
 $this->load->view('vCosteoMatMaqSem');
 $this->load->view('vCosteoMatMaqFecha');
+$this->load->view('vEstadoCuentaProveedor');
+$this->load->view('vAntiguedadSaldosProveedor');
+$this->load->view('vReciboPagoProveedores');
