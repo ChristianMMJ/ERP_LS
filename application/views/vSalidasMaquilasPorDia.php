@@ -88,7 +88,7 @@
             var Tipo = parseInt(mdlSalidasMaquilasPorDia.find('#Tipo').val());
 
             if (Tipo > 0) {
-                //HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+                HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
                 var frm = new FormData(mdlSalidasMaquilasPorDia.find("#frmCaptura")[0]);
 
                 var Tipo = parseInt(mdlSalidasMaquilasPorDia.find('#Tipo').val());

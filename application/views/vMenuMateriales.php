@@ -60,3 +60,8 @@ $this->load->view('vKardexPorArticulo');
 $this->load->view('vKardexPorProveedor');
 $this->load->view('vKardexSubAlmacenPorArticulo');
 $this->load->view('vReporteCorteHiloTejer');
+$this->load->view('vReporteMovimientosPorCompras');
+$this->load->view('vReporteMovimientosEntradasOtros');
+$this->load->view('vCosteoMatMaqDoc');
+$this->load->view('vCosteoMatMaqSem');
+$this->load->view('vCosteoMatMaqFecha');

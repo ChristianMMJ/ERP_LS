@@ -53,7 +53,7 @@
                 HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
                 var frm = new FormData(mdlReporteCorteHiloTejer.find("#frmCaptura")[0]);
                 $.ajax({
-                    url: base_url + 'index.php/ConsumoHiloMaquila/onReporteConsumoHiloMaquila',
+                    url: base_url + 'index.php/ReportesMaterialesJasper/onReporteConsumoHiloMaquila',
                     type: "POST",
                     cache: false,
                     contentType: false,

@@ -302,9 +302,9 @@ class RecibeOrdenCompra extends CI_Controller {
             $pdf->Cell(15, 6, utf8_decode($Compra[0]->Doc . '     ' . $Compra[0]->Tp), 0/* BORDE */, 0, 'L');
 
             $pdf->SetFont('Calibri', 'BI', 10);
-            $pdf->SetX(40);
-            $pdf->Cell(10, 6, utf8_decode("Prov. "), 0/* BORDE */, 0, 'L');
             $pdf->SetX(50);
+            $pdf->Cell(10, 6, utf8_decode("Prov. "), 0/* BORDE */, 0, 'L');
+            $pdf->SetX(60);
             $pdf->SetFont('Calibri', 'I', 10);
             $pdf->Cell(80, 6, utf8_decode($Compra[0]->Proveedor), 0/* BORDE */, 1, 'L');
 
