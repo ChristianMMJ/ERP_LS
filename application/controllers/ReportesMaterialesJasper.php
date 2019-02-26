@@ -23,7 +23,7 @@ class ReportesMaterialesJasper extends CI_Controller {
         $parametros["maq"] = $this->input->post('Maq');
         $parametros["ano"] = $this->input->post('Ano');
         $parametros["sem"] = $this->input->post('Sem');
-        $parametros["Nmaq"] = 'CALZADO LOBO';
+        $parametros["Nmaq"] = '1 CALZADO LOBO SA, DE CV';
         $jc->setParametros($parametros);
         $jc->setJasperurl('jrxml\materiales\relacionCoreHiloTejido.jasper');
         $jc->setFilename('RELACION_HILO_TEJIDO_CONTROL_MAQ_SEM_' . Date('h_i_s'));
