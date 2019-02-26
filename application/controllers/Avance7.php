@@ -34,8 +34,8 @@ class Avance7 extends CI_Controller {
         $parametros["logo"] = base_url() . $this->session->LOGO;
         $parametros["empresa"] = $this->session->EMPRESA_RAZON;
         $parametros["maq"] = 1;
-        $parametros["ano"] = 2018;
-        $parametros["sem"] = 49;
+        $parametros["ano"] = 2019;
+        $parametros["sem"] = 10;
         $parametros["Nmaq"] = 'CALZADO LOBO 12345';
         $jc->setParametros($parametros);
         $jc->setJasperurl('jrxml\materiales\relacionCoreHiloTejido.jasper');
@@ -56,6 +56,14 @@ class Avance7 extends CI_Controller {
     public function getInfoXControl() {
         try {
             print json_encode($this->avm->getInfoXControl($this->input->post('CONTROL')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getUltimoAvanceXControl() {
+        try {
+            print json_encode($this->avm->getUltimoAvanceXControl($this->input->get('C')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -97,9 +105,9 @@ class Avance7 extends CI_Controller {
                                 ->where('FPN.Control', $x->post('CONTROL'))
                                 ->where('FPN.numfrac', $v->NUMERO_FRACCION)
                                 ->where('FPN.Estilo', $x->post('ESTILO'))->get()->result();
-                print_r($precio_x_fraccion);
                 if (!empty($precio_x_fraccion)) {
                     $pagado = 1;
+                    break;
                 } else {
                     $pagado = 0;
                 }

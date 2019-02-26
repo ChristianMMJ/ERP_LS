@@ -139,25 +139,16 @@
                         <input type="text" id="Avance" name="Avance" class="form-control numeric">
                     </div>
                     <div class="col-12 col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 row justify-content-center align-self-center">
-                        <button type="button" class="btn btn-primary m-1" id="btnAceptar" name="btnAceptar" data-toggle="tooltip" data-placement="top" title="Aceptar"><span class="fa fa-check"></span></button>
-                        <button type="button" class="btn btn-info m-1" id="btnAceptarPDF" name="btnAceptarPDF" data-toggle="tooltip" data-placement="top" title="PDF"><span class="fa fa-file-pdf"></span></button>
-                        <button type="button" class="btn btn-success m-1" id="btnAceptarXLS" name="btnAceptarXLS" data-toggle="tooltip" data-placement="top" title="Excel"><span class="fa fa-file-excel"></span></button>
-
-                    </div> 
-
-                    <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                        <label>MANODEOBRA</label>
-                        <input type="text" id="ManoDeOB" name="ManoDeOB" class="form-control numeric" readonly="">
+                        <button type="button" class="btn btn-primary mt-4 pt-2" id="btnAceptar" name="btnAceptar" data-toggle="tooltip" data-placement="top" title="Aceptar"><span class="fa fa-check"></span></button>
+                        <button type="button" class="btn btn-info m-1 d-none" id="btnAceptarPDF" name="btnAceptarPDF" data-toggle="tooltip" data-placement="top" title="PDF"><span class="fa fa-file-pdf"></span></button>
+                        <button type="button" class="btn btn-success m-1 d-none" id="btnAceptarXLS" name="btnAceptarXLS" data-toggle="tooltip" data-placement="top" title="Excel"><span class="fa fa-file-excel"></span></button>
+                    </div>
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-none"> 
                         <label>ANIO</label>
                         <input type="text" id="Anio" name="Anio" class="form-control numeric" readonly=""> 
                         <label>GENAVA</label>
-                        <input type="text" id="GeneraAvance" name="GeneraAvance" class="form-control" readonly="">
-                        <label>FRAC</label>
-                        <input type="text" id="Fraccion" name="Fraccion" class="form-control" readonly="">
-                        <label>FRACDES</label>
-                        <input type="text" id="FraccionDes" name="FraccionDes" class="form-control" readonly="">
+                        <input type="text" id="GeneraAvance" name="GeneraAvance" class="form-control" readonly=""> 
                     </div>
-
                     <div class="col-12 my-1">
                         <hr>
                     </div>
@@ -259,17 +250,37 @@
             Avance, tblAvance = pnlTablero.find("#tblAvance"), Control = pnlTablero.find("#Control"),
             btnAceptar = pnlTablero.find("#btnAceptar"), Estilo = pnlTablero.find("#Estilo"), Pares = pnlTablero.find("#Pares"),
             Anio = pnlTablero.find("#Anio"), btnAceptarPDF = pnlTablero.find("#btnAceptarPDF"),
-            btnAceptarXLS = pnlTablero.find("#btnAceptarXLS"), DiasPagoDeNomina = pnlTablero.find("#DiasPagoDeNomina");
+            btnAceptarXLS = pnlTablero.find("#btnAceptarXLS"), DiasPagoDeNomina = pnlTablero.find("#DiasPagoDeNomina"),
+            EstatusAvance = pnlTablero.find("#EstatusAvance");
     var dias = ["JUEVES", "VIERNES", "SABADO", "DOMINGO", "LUNES", "MARTES", "MIERCOLES"],
             ndias = ["LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO", "DOMINGO"];
     $(document).ready(function () {
+        handleEnter();
 
         Control.on('keydown', function (e) {
             if (e.keyCode === 13) {
                 $.post('<?php print base_url('Avance7/getInfoXControl') ?>', {CONTROL: Control.val()}).done(function (a, b, c) {
-                    var r = JSON.parse(a);
-                    Estilo.val(r[0].Estilo);
-                    Pares.val(r[0].Pares);
+                    if (a.length > 0) {
+                        var r = JSON.parse(a);
+                        Estilo.val(r[0].Estilo);
+                        Pares.val(r[0].Pares);
+                        /*OBTENER ULTIMO AVANCE*/
+                        $.getJSON('<?php print base_url('Avance7/getUltimoAvanceXControl') ?>', {C: Control.val()}).done(function (aa, bb, cc) {
+                            if (aa.length > 0) {
+                                pnlTablero.find("#EstatusAvance").val(aa[0].DepartamentoT);
+                            }
+                        }).fail(function (x, y, z) {
+                            console.log(x.responseText);
+                            swal('OPS', 'ALGO EXTRAÑO OCURRIO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                        });
+                    } else {
+                        Estilo.val('');
+                        Pares.val('');
+                        EstatusAvance.val('');
+                        swal('ATENCIÓN', 'ESTE CONTROL NO EXISTE', 'error').then((value) => {
+                            Control.focus().select();
+                        });
+                    }
                 }).fail(function (x, y, z) {
                     console.log(x.responseText);
                     swal('ERROR', ' ERROR AL OBTENER LO PAGADO AL EMPLEADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
@@ -288,6 +299,10 @@
 
         btnAceptar.click(function () {
             if (pnlTablero.find("input[type='checkbox']:checked").length > 0) {
+                HoldOn.open({
+                    theme: 'sk-rect',
+                    message: 'Guardando...'
+                });
                 onBeep(1);
                 var f = new FormData();
                 var fracciones = [];
@@ -304,7 +319,7 @@
                 f.append('CONTROL', Control.val());
                 f.append('ESTILO', Estilo.val());
                 f.append('PARES', Pares.val());
-                f.append('ANIO', JSON.stringify(fracciones));
+                f.append('ANIO', pnlTablero.find("#Anio").val());
                 f.append('FRACCIONES', JSON.stringify(fracciones));
                 $.ajax({
                     url: '<?php print base_url('Avance7/onRevisarFraccionesPagadas'); ?>',
@@ -313,27 +328,48 @@
                     contentType: false,
                     processData: false,
                     data: f
-                }).done(function (data, x, jq) {
-                    console.log(data);
-                    swal('ATENCIÓN', 'SE HAN GUARDADO LOS CAMBIOS', 'success');
+                }).done(function (a, b, c) {
+                    if (a.length > 0) {
+                        var pagado = parseInt($.isNumeric(a[0]) ? a[0] : 0);
+                        if (pagado > 0) {
+                            HoldOn.close();
+                            swal('ATENCIÓN', 'UNA DE LAS FRACCIONES SELECCIONADAS YA HAN SIDO PAGADAS A ESTE CONTROL, ESCRIBA OTRO CONTROL O REVISE CON EL AREA CORRESPONDIENTE', 'warning').then((value)=>{
+                                Control.focus().select();
+                            });
+                        } else {
+                            $.ajax({
+                                url: '<?php print base_url('Avance7/onAvanzar'); ?>',
+                                type: "POST",
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                data: f
+                            }).done(function (data, x, jq) {
+                                console.log(data);
+                                NumeroDeEmpleado.val('');
+                                NombreEmpleado.val('');
+                                $.each(pnlTablero.find("input[type='checkbox']:checked"), function (k, v) {
+                                    $(this)[0].checked = false;
+                                });
+                                Semana.val('');
+                                Fecha.val('');
+                                Departamento.val('');
+                                Control.val('');
+                                Estilo.val('');
+                                Pares.val('');
+                                swal('ATENCIÓN', 'SE HAN GUARDADO LOS CAMBIOS', 'success');
+                            }).fail(function (x, y, z) {
+                                console.log(x.responseText);
+                            }).always(function () {
+                                HoldOn.close();
+                            });
+                        }
+                    }
                 }).fail(function (x, y, z) {
                     console.log(x.responseText);
                 }).always(function () {
+                    HoldOn.close();
                 });
-//                $.ajax({
-//                    url: '<?php print base_url('Avance7/onAvanzar'); ?>',
-//                    type: "POST",
-//                    cache: false,
-//                    contentType: false,
-//                    processData: false,
-//                    data: f
-//                }).done(function (data, x, jq) {
-//                    console.log(data);
-//                    swal('ATENCIÓN', 'SE HAN GUARDADO LOS CAMBIOS', 'success');
-//                }).fail(function (x, y, z) {
-//                    console.log(x.responseText);
-//                }).always(function () {
-//                });
             } else {
                 onBeep(2);
                 swal('ATENCIÓN', 'DEBE DE SELECCIONAR AL MENOS UNA FRACCIÓN', 'warning');
@@ -353,6 +389,7 @@
                                 var r = data[0];
                                 NombreEmpleado.val(r.NOMBRE_COMPLETO);
                                 Departamento.val(r.DEPTOCTO);
+                                pnlTablero.find("#Avance").val(r.GENERA_AVANCE);
                                 $.getJSON('<?php print base_url('Avance7/getSemanaByFecha'); ?>').done(function (data) {
                                     var rr = data[0];
                                     Semana.val(rr.Sem);
@@ -572,5 +609,9 @@
                 '<input type="text" id="txtTotal" disabled="" name="txtTotal" class="form-control" placeholder="0"  style="font-weight: bold; text-align: center;">' +
                 '</div>';
         DiasPagoDeNomina.html(fracciones);
+    }
+
+    function onActualizarAvances() {
+        Avance.ajax.reload();
     }
 </script>

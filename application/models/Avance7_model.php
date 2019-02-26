@@ -97,19 +97,11 @@ class Avance7_model extends CI_Model {
 
     public function getUltimoAvanceXControl($CONTROL) {
         try {
-            $this->db->select("A.ID, A.Control, A.FechaAProduccion, A.Departamento, A.DepartamentoT, A.FechaAvance, A.Estatus, A.Usuario, A.Fecha, A.Hora ", false)
-                    ->from('avance AS A')
-                    ->where("A.Control", $CONTROL)
-                    ->order_by('A.ID', 'DESC')
-                    ->limit(1);
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-//        print $str;
-            $data = $query->result();
-            return $data;
+            return $this->db->select("A.ID, A.Control, A.FechaAProduccion, A.Departamento, A.DepartamentoT, A.FechaAvance, A.Estatus, A.Usuario, A.Fecha, A.Hora ", false)
+                            ->from('avance AS A')
+                            ->where("A.Control", $CONTROL)
+                            ->order_by('A.ID', 'DESC')
+                            ->limit(1)->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
