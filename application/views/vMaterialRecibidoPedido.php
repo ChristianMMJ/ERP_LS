@@ -1,35 +1,34 @@
-<div class="modal " id="mdlReporteMovimientosPorCompras"  role="dialog">
+<div class="modal " id="mdlMaterialRecibidoPedido"  role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Entradas por Documento</h5>
+                <h5 class="modal-title">Material Recibido vs Pedido</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <form id="frmCaptura">
+                    <div class="row">
+                        <div class="col-4">
+                            <label>Del: </label>
+                            <input type="text" class="form-control form-control-sm date notEnter" id="FechaIni" name="FechaIni" >
+                        </div>
+                        <div class="col-4">
+                            <label>Hasta: </label>
+                            <input type="text" class="form-control form-control-sm date notEnter" id="FechaFin" name="FechaFin" >
+                        </div>
 
-                    <div class="row">
-                        <div class="col-3">
-                            <label>Tp</label>
-                            <input type="text" class="form-control form-control-sm numbersOnly" id="TpDoc" name="TpDoc" >
-                        </div>
                     </div>
                     <div class="row">
-                        <div class="col-3">
-                            <label>Doc</label>
-                            <input type="text" class="form-control form-control-sm numbersOnly" id="Doc" name="Doc" >
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <label for="" >Proveedor*</label>
-                            <select id="Proveedor" name="Proveedor" class="form-control form-control-sm mb-2 required" required="" >
+                        <div class="col-6 col-sm-6 col-md-6" >
+                            <label for="" >Grupo</label>
+                            <select id="Grupo" name="Grupo" class="form-control form-control-sm mb-2 required" required="" >
                                 <option value=""></option>
                             </select>
                         </div>
                     </div>
+
                 </form>
             </div>
             <div class="modal-footer">
@@ -40,22 +39,31 @@
     </div>
 </div>
 <script>
-    var mdlReporteMovimientosPorCompras = $('#mdlReporteMovimientosPorCompras');
+    var mdlMaterialRecibidoPedido = $('#mdlMaterialRecibidoPedido');
     $(document).ready(function () {
-        mdlReporteMovimientosPorCompras.on('shown.bs.modal', function () {
-            mdlReporteMovimientosPorCompras.find("input").val("");
-            $.each(mdlReporteMovimientosPorCompras.find("select"), function (k, v) {
-                mdlReporteMovimientosPorCompras.find("select")[k].selectize.clear(true);
+        validacionSelectPorContenedor(mdlMaterialRecibidoPedido);
+        setFocusSelectToInputOnChange('#Grupo', '#btnImprimir', mdlMaterialRecibidoPedido);
+
+        mdlMaterialRecibidoPedido.on('shown.bs.modal', function () {
+            getGrupos();
+            mdlMaterialRecibidoPedido.find("input").val("");
+            $.each(mdlMaterialRecibidoPedido.find("select"), function (k, v) {
+                mdlMaterialRecibidoPedido.find("select")[k].selectize.clear(true);
             });
-            mdlReporteMovimientosPorCompras.find('#TpDoc').focus();
+            mdlMaterialRecibidoPedido.find('#FechaIni').val(getFirstDayMonth());
+            mdlMaterialRecibidoPedido.find('#FechaFin').val(getToday());
+            mdlMaterialRecibidoPedido.find('#FechaIni').focus();
         });
 
-        mdlReporteMovimientosPorCompras.find('#btnImprimir').on("click", function () {
+        mdlMaterialRecibidoPedido.find('#btnImprimir').on("click", function () {
 
             HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
-            var frm = new FormData(mdlReporteMovimientosPorCompras.find("#frmCaptura")[0]);
+            var frm = new FormData(mdlMaterialRecibidoPedido.find("#frmCaptura")[0]);
+
+            frm.append('NombreGrupo', mdlMaterialRecibidoPedido.find("#Grupo option:selected").text());
+
             $.ajax({
-                url: base_url + 'index.php/RecibeOrdenCompra/onImprimirValeEntrada',
+                url: base_url + 'index.php/ReportesMaterialesJasper/onReporteMaterialRecibidoPedido',
                 type: "POST",
                 cache: false,
                 contentType: false,
@@ -95,7 +103,7 @@
                         text: "NO EXISTEN DATOS PARA ESTE REPORTE",
                         icon: "error"
                     }).then((action) => {
-                        mdlReporteMovimientosPorCompras.find('#Ano').focus();
+                        mdlMaterialRecibidoPedido.find('#Ano').focus();
                     });
                 }
                 HoldOn.close();
@@ -106,41 +114,17 @@
 
         });
 
-        mdlReporteMovimientosPorCompras.find("#TpDoc").change(function () {
-            var tp = parseInt($(this).val());
-            if (tp === 1 || tp === 2) {
-                mdlReporteMovimientosPorCompras.find('#Doc').focus();
-                getProveedoresEntComp(tp);
-            } else {
-                swal({
-                    title: "ATENCIÓN",
-                    text: "EL TP SÓLO PUEDE SER 1 Ó 2",
-                    icon: "error",
-                    closeOnClickOutside: false,
-                    closeOnEsc: false,
-                    buttons: false,
-                    timer: 1000
-                }).then((action) => {
-                    $(this).val('').focus();
-                });
-            }
-        });
-
-
     });
 
-    function getProveedoresEntComp(tp) {
-        mdlReporteMovimientosPorCompras.find("#Proveedor")[0].selectize.clear(true);
-        mdlReporteMovimientosPorCompras.find("#Proveedor")[0].selectize.clearOptions();
-        $.getJSON(base_url + 'index.php/OrdenCompra/getProveedores').done(function (data) {
+    function getGrupos() {
+        $.getJSON(base_url + 'index.php/DocDirecConAfectacion/getGrupos').done(function (data) {
             $.each(data, function (k, v) {
-                mdlReporteMovimientosPorCompras.find("#Proveedor")[0].selectize.addOption({text: (tp === 1) ? v.ProveedorF : v.ProveedorI, value: v.ID});
+                mdlMaterialRecibidoPedido.find("#Grupo")[0].selectize.addOption({text: v.Grupo, value: v.ID});
             });
         }).fail(function (x) {
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');
             console.log(x.responseText);
         });
     }
-
-
 </script>
+

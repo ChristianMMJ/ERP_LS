@@ -233,6 +233,14 @@ class NotasCargo extends CI_Controller {
         }
     }
 
+    public function getNotasByTpByProveedor() {
+        try {
+            print json_encode($this->NotasCargo_model->getNotasByTpByProveedor($this->input->get('Tp'), $this->input->get('Proveedor')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getProveedores() {
         try {
             print json_encode($this->NotasCargo_model->getProveedores());

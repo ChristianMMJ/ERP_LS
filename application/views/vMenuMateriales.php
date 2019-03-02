@@ -68,3 +68,9 @@ $this->load->view('vCosteoMatMaqFecha');
 $this->load->view('vEstadoCuentaProveedor');
 $this->load->view('vAntiguedadSaldosProveedor');
 $this->load->view('vReciboPagoProveedores');
+$this->load->view('vMaterialRecibidoPedido');
+$this->load->view('vReimprimirNotaCargo');
+$this->load->view('vEntSalTipo');
+$this->load->view('vEntSalSubAlmacen');
+$this->load->view('vEntSalContablesFecha');
+

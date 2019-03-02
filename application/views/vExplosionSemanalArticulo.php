@@ -83,7 +83,7 @@
             $.each(mdlExplosionSemanalArticulo.find("select"), function (k, v) {
                 mdlExplosionSemanalArticulo.find("select")[k].selectize.clear(true);
             });
-            getArticulos();
+            getArticulosExpArt();
             mdlExplosionSemanalArticulo.find('#Ano').focus();
         });
 
@@ -246,7 +246,7 @@
         });
     }
 
-    function getArticulos() {
+    function getArticulosExpArt() {
         mdlExplosionSemanalArticulo.find("#Articulo")[0].selectize.clear(true);
         mdlExplosionSemanalArticulo.find("#Articulo")[0].selectize.clearOptions();
         $.getJSON(base_url + 'index.php/EntradasAlmacenMP/getArticulos').done(function (data) {

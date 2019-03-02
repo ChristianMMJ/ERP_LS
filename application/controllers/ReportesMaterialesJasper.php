@@ -97,4 +97,53 @@ class ReportesMaterialesJasper extends CI_Controller {
         PRINT $jc->getReport();
     }
 
+    public function onReporteMaterialRecibidoPedido() {
+        $jc = new JasperCommand();
+        $jc->setFolder('rpt/' . $this->session->USERNAME);
+        $parametros = array();
+        $parametros["logo"] = base_url() . $this->session->LOGO;
+        $parametros["empresa"] = $this->session->EMPRESA_RAZON;
+        $parametros["fechaIni"] = $this->input->post('FechaIni');
+        $parametros["fechaFin"] = $this->input->post('FechaFin');
+        $parametros["grupo"] = $this->input->post('Grupo');
+        $parametros["nombreGrupo"] = $this->input->post('NombreGrupo');
+        $jc->setParametros($parametros);
+        $jc->setJasperurl('jrxml\materiales\materialRecibidoPedido.jasper');
+        $jc->setFilename('MATERIAL_PEDIDO_RECIBIDO_' . Date('h_i_s'));
+        $jc->setDocumentformat('pdf');
+        PRINT $jc->getReport();
+    }
+
+    public function onReporteEntSalTipo() {
+        $jc = new JasperCommand();
+        $jc->setFolder('rpt/' . $this->session->USERNAME);
+        $parametros = array();
+        $parametros["logo"] = base_url() . $this->session->LOGO;
+        $parametros["empresa"] = $this->session->EMPRESA_RAZON;
+        $parametros["fechaIni"] = $this->input->post('FechaIni');
+        $parametros["fechaFin"] = $this->input->post('FechaFin');
+        $parametros["tipo"] = $this->input->post('Tipo');
+        $parametros["ano"] = $this->input->post('Ano');
+        $jc->setParametros($parametros);
+        $jc->setJasperurl('jrxml\materiales\entSalTipo.jasper');
+        $jc->setFilename('ENT_SAL_TIPO_' . Date('h_i_s'));
+        $jc->setDocumentformat('pdf');
+        PRINT $jc->getReport();
+    }
+
+    public function onReporteEntSalSubAlmacen() {
+        $jc = new JasperCommand();
+        $jc->setFolder('rpt/' . $this->session->USERNAME);
+        $parametros = array();
+        $parametros["logo"] = base_url() . $this->session->LOGO;
+        $parametros["empresa"] = $this->session->EMPRESA_RAZON;
+        $parametros["fechaIni"] = $this->input->post('FechaIni');
+        $parametros["fechaFin"] = $this->input->post('FechaFin');
+        $jc->setParametros($parametros);
+        $jc->setJasperurl('jrxml\materiales\entSalSubAlmacen.jasper');
+        $jc->setFilename('ENT_SAL_SUBALMACEN_' . Date('h_i_s'));
+        $jc->setDocumentformat('pdf');
+        PRINT $jc->getReport();
+    }
+
 }

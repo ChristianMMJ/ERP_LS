@@ -29,7 +29,7 @@
                     <div class="row">
                         <div class="col-12 col-sm-12">
                             <label>Proveedor</label>
-                            <select class="form-control form-control-sm" id="Proveedor" name="Proveedor" >
+                            <select class="form-control form-control-sm" id="ProveedorKardex" name="Proveedor" >
                                 <option value=""></option>
                             </select>
                         </div>
@@ -46,14 +46,13 @@
 </div>
 
 <script>
-    var master_url = base_url + 'index.php/ReportesKardex/';
+
 
     var mdlKardexPorProveedor = $('#mdlKardexPorProveedor');
-    var mdlReporte = $('#mdlReporte');
-    var generado = false;
+
     $(document).ready(function () {
         validacionSelectPorContenedor(mdlSalidasMaquilasPorDia);
-        setFocusSelectToInputOnChange('#Proveedor', '#btnImprimir', mdlKardexPorProveedor);
+        setFocusSelectToInputOnChange('#ProveedorKardex', '#btnImprimir', mdlKardexPorProveedor);
 
         mdlKardexPorProveedor.on('shown.bs.modal', function () {
             mdlKardexPorProveedor.find("input").val("");
@@ -67,19 +66,19 @@
         });
 
         mdlKardexPorProveedor.find("#Tp").change(function () {
-            onVerificarTp($(this));
+            onVerificarTpKardex($(this));
         });
 
         mdlKardexPorProveedor.find('#btnImprimir').on("click", function () {
-            var Art = parseInt(mdlKardexPorProveedor.find('#Proveedor').val());
+            var Art = parseInt(mdlKardexPorProveedor.find('#ProveedorKardex').val());
 
             if (Art > 0) {
                 //HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
                 var frm = new FormData(mdlKardexPorProveedor.find("#frmCaptura")[0]);
-                var nombre_prov = mdlKardexPorProveedor.find("#Proveedor option:selected").text();
+                var nombre_prov = mdlKardexPorProveedor.find("#ProveedorKardex option:selected").text();
                 frm.append('Nombre', nombre_prov);
                 $.ajax({
-                    url: master_url + 'onReporteKardexPorProveedor',
+                    url: base_url + 'index.php/ReportesKardex/onReporteKardexPorProveedor',
                     type: "POST",
                     cache: false,
                     contentType: false,
@@ -121,7 +120,7 @@
                             text: "NO EXISTEN DATOS PARA ESTE REPORTE",
                             icon: "error"
                         }).then((action) => {
-                            mdlKardexPorProveedor.find('#Proveedor')[0].selectize.focus();
+                            mdlKardexPorProveedor.find('#ProveedorKardex')[0].selectize.focus();
                         });
                     }
                     HoldOn.close();
@@ -135,18 +134,18 @@
                     text: "DEBES DE SELECCIONAR UN ARTÍCULO",
                     icon: "error"
                 }).then((action) => {
-                    mdlKardexPorProveedor.find('#Proveedor')[0].selectize.focus();
+                    mdlKardexPorProveedor.find('#ProveedorKardex')[0].selectize.focus();
                 });
             }
         });
 
     });
 
-    function onVerificarTp(v) {
+    function onVerificarTpKardex(v) {
         var tp = parseInt($(v).val());
         if (tp === 1 || tp === 2) {
-            mdlKardexPorProveedor.find('#Proveedor')[0].selectize.focus();
-            getProveedores(tp);
+            mdlKardexPorProveedor.find('#ProveedorKardex')[0].selectize.focus();
+            getProveedoresKardex(tp);
         } else {
             swal({
                 title: "ATENCIÓN",
@@ -162,12 +161,12 @@
         }
     }
 
-    function getProveedores(tp) {
-        mdlKardexPorProveedor.find("#Proveedor")[0].selectize.clear(true);
-        mdlKardexPorProveedor.find("#Proveedor")[0].selectize.clearOptions();
-        $.getJSON(master_url + 'getProveedores').done(function (data) {
+    function getProveedoresKardex(tp) {
+        mdlKardexPorProveedor.find("#ProveedorKardex")[0].selectize.clear(true);
+        mdlKardexPorProveedor.find("#ProveedorKardex")[0].selectize.clearOptions();
+        $.getJSON(base_url + 'index.php/ReportesKardex/getProveedores').done(function (data) {
             $.each(data, function (k, v) {
-                mdlKardexPorProveedor.find("#Proveedor")[0].selectize.addOption({text: (tp === 1) ? v.ProveedorF : v.ProveedorI, value: v.ID});
+                mdlKardexPorProveedor.find("#ProveedorKardex")[0].selectize.addOption({text: (tp === 1) ? v.ProveedorF : v.ProveedorI, value: v.ID});
             });
         }).fail(function (x) {
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');

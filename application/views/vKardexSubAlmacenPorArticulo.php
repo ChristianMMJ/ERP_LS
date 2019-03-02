@@ -40,11 +40,9 @@
 </div>
 
 <script>
-    var master_url = base_url + 'index.php/ReportesKardex/';
 
     var mdlKardexSubAlmacen = $('#mdlKardexSubAlmacen');
-    var mdlReporte = $('#mdlReporte');
-    var generado = false;
+
     $(document).ready(function () {
         validacionSelectPorContenedor(mdlSalidasMaquilasPorDia);
         setFocusSelectToInputOnChange('#Articulo', '#btnImprimir', mdlKardexSubAlmacen);
@@ -68,7 +66,7 @@
                 var frm = new FormData(mdlKardexSubAlmacen.find("#frmCaptura")[0]);
 
                 $.ajax({
-                    url: master_url + 'onReporteKardexSubAlmacePorArticulo',
+                    url: base_url + 'index.php/ReportesKardex/onReporteKardexSubAlmacePorArticulo',
                     type: "POST",
                     cache: false,
                     contentType: false,
@@ -134,7 +132,7 @@
     function getArticulosKardexSubAlm() {
         mdlKardexSubAlmacen.find("#Articulo")[0].selectize.clear(true);
         mdlKardexSubAlmacen.find("#Articulo")[0].selectize.clearOptions();
-        $.getJSON(master_url + 'getArticulos').done(function (data) {
+        $.getJSON(base_url + 'index.php/ReportesKardex/getArticulos').done(function (data) {
             $.each(data, function (k, v) {
                 mdlKardexSubAlmacen.find("#Articulo")[0].selectize.addOption({text: v.Articulo, value: v.Clave});
             });

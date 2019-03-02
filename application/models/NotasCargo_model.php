@@ -286,6 +286,29 @@ class NotasCargo_model extends CI_Model {
         }
     }
 
+    public function getNotasByTpByProveedor($Tp, $Proveedor) {
+        try {
+            $this->db->select("CONVERT(C.Folio, UNSIGNED INTEGER) AS Nota  "
+                            . "")
+                    ->from("notascreditoprov AS C")
+                    ->where("C.Tp", $Tp)
+                    ->where_in("C.Estatus", array('2'))
+                    ->where("C.Proveedor", $Proveedor)
+                    ->group_by('C.Folio')
+                    ->order_by('Nota', 'ASC');
+            $query = $this->db->get();
+            /*
+             * FOR DEBUG ONLY
+             */
+            $str = $this->db->last_query();
+            //print $str;
+            $data = $query->result();
+            return $data;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getProveedores() {
         try {
             return $this->db->select("P.Clave AS ID, "
