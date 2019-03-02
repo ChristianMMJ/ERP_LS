@@ -62,9 +62,69 @@ class AvancePespunteMaquila extends CI_Controller {
         }
     }
 
+    public function getControlesParaPespunte() {
+        try {
+            print json_encode($this->apm->getControlesParaPespunte());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getColoresXEstilo() {
         try {
             print json_encode($this->apm->getColoresXEstilo($this->input->get('ESTILO')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onVerificarAvance() {
+        try {
+            print json_encode($this->apm->onVerificarAvance($this->input->get('CONTROL')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getInfoControl() {
+        try {
+            print json_encode($this->apm->getInfoControl($this->input->get('CONTROL')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onAvanzar() {
+        try {
+            $x = $this->input;
+            $avance = array(
+                'Control' => $x->post('CONTROL'),
+                'FechaAProduccion' => Date('d/m/Y'),
+                'Departamento' => 100,
+                'DepartamentoT' => 'MAQUILA',
+                'FechaAvance' => Date('d/m/Y'),
+                'Estatus' => 'A',
+                'Usuario' => $_SESSION["ID"],
+                'Fecha' => Date('d/m/Y'),
+                'Hora' => Date('h:i:s a'),
+                'Fraccion' => NULL /* INFORMATIVO */
+            );
+            $this->db->insert('avance', $avance);
+
+            $pes = array(
+                'numcho' => $x->post('MAQUILA'),
+                'nomcho' => $x->post('MAQUILAT'),
+                'numtej' => $x->post('EMPLEADO'),
+                'nomtej' => $x->post('EMPLEADOT'),
+                'fechapre' => $x->post('FECHA'),
+                'control' => $x->post('CONTROL'),
+                'estilo' => $x->post('ESTILO'),
+                'color' => $x->post('COLOR'),
+                'nomcolo' => $x->post('COLORT'),
+                'docto' => $x->post('DOCTO'),
+                'pares' => $x->post('PARES')
+            );
+            $this->db->insert('controlpes', $pes);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

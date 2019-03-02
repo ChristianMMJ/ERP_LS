@@ -99,104 +99,108 @@
     </div>
 </div> 
 <script>
-var pnlTablero = $("#pnlTablero");
-var Chofer = pnlTablero.find("#Chofer"), Tejedora = pnlTablero.find("#Tejedora"), Estilo = pnlTablero.find("#Estilo");
-var ControlesListosParaTejido, tblControlesListosParaTejido = pnlTablero.find("#tblControlesListosParaTejido"),
-        ControlesEntregados, tblControlesEntregados = pnlTablero.find("#tblControlesEntregados");
+    var pnlTablero = $("#pnlTablero");
+    var Chofer = pnlTablero.find("#Chofer"), Tejedora = pnlTablero.find("#Tejedora"), Estilo = pnlTablero.find("#Estilo");
+    var ControlesListosParaTejido, tblControlesListosParaTejido = pnlTablero.find("#tblControlesListosParaTejido"),
+            ControlesEntregados, tblControlesEntregados = pnlTablero.find("#tblControlesEntregados");
 
-$(document).ready(function () {
-    getChoferes();
-    getTejedoras();
-    Estilo.on('keydown', function (e) {
-        if (e.keyCode === 13) {
-            $.getJSON("<?php print base_url('colores_x_estilo') ?>").done(function (x, y, z) {
+    $(document).ready(function () {
+        getChoferes();
+        getTejedoras();
+        Estilo.on('keydown', function (e) {
+            if (e.keyCode === 13) {
+                $.getJSON("<?php print base_url('colores_x_estilo') ?>").done(function (x, y, z) {
 
-            }).fail(function (x, y, z) {
-                console.log(x, y, z);
-                swal('OPS!', 'ALGO SALIO MAL, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
-            }).always(function () {
-                HoldOn.close();
+                }).fail(function (x, y, z) {
+                    console.log(x, y, z);
+                    swal('OPS!', 'ALGO SALIO MAL, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                }).always(function () {
+                    HoldOn.close();
+                });
+            }
+        });
+        var coldefs = [
+            {
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            }
+        ];
+        var xoptions = {
+            "dom": 'rit', 
+            "url": '<?php print base_url('AvanceTejido/getControlesParaTejido'); ?>',
+            "type": "POST",
+            "contentType": "application/json",
+            "dataSrc": "",
+            buttons: buttons,
+            "columnDefs": coldefs,
+            language: lang,
+            select: true,
+            "autoWidth": true,
+            "colReorder": true,
+            "displayLength": 99999999,
+            "bLengthChange": false,
+            "deferRender": true,
+            "scrollCollapse": false,
+            "bSort": true,
+            "scrollY": "498px",
+            "scrollX": true,
+            createdRow: function (row, data, dataIndex) {
+            }
+        };
+        ControlesListosParaTejido = tblControlesListosParaTejido.DataTable(xoptions);
+        var xoptions = {
+            "dom": 'rit',
+            buttons: buttons,
+            "columnDefs": coldefs,
+            language: lang,
+            select: true,
+            "autoWidth": true,
+            "colReorder": true,
+            "displayLength": 99999999,
+            "bLengthChange": false,
+            "deferRender": true,
+            "scrollCollapse": false,
+            "bSort": true,
+            "scrollY": "498px",
+            "scrollX": true,
+            createdRow: function (row, data, dataIndex) {
+            }
+        };
+        ControlesEntregados = tblControlesEntregados.DataTable(xoptions);
+    });
+
+    function getChoferes() {
+        HoldOn.open({
+            theme: 'sk-rect'
+        });
+        $.getJSON('<?php print base_url('choferes'); ?>').done(function (x, y, z) {
+            x.forEach(function (e) {
+                Chofer[0].selectize.addOption({text: e.Empleado, value: e.ID});
             });
-        }
-    });
-    var coldefs = [
-        {
-            "targets": [0],
-            "visible": false,
-            "searchable": false
-        }
-    ];
-    var xoptions = {
-        "dom": 'rit',
-        buttons: buttons,
-        "columnDefs": coldefs,
-        language: lang,
-        select: true,
-        "autoWidth": true,
-        "colReorder": true,
-        "displayLength": 99999999,
-        "bLengthChange": false,
-        "deferRender": true,
-        "scrollCollapse": false,
-        "bSort": true,
-        "scrollY": "498px",
-        "scrollX": true,
-        createdRow: function (row, data, dataIndex) {
-        }
-    };
-    ControlesListosParaTejido = tblControlesListosParaTejido.DataTable(xoptions);
-    var xoptions = {
-        "dom": 'rit',
-        buttons: buttons,
-        "columnDefs": coldefs,
-        language: lang,
-        select: true,
-        "autoWidth": true,
-        "colReorder": true,
-        "displayLength": 99999999,
-        "bLengthChange": false,
-        "deferRender": true,
-        "scrollCollapse": false,
-        "bSort": true,
-        "scrollY": "498px",
-        "scrollX": true,
-        createdRow: function (row, data, dataIndex) {
-        }
-    };
-    ControlesEntregados = tblControlesEntregados.DataTable(xoptions);
-});
-
-function getChoferes() {
-    HoldOn.open({
-        theme: 'sk-rect'
-    });
-    $.getJSON('<?php print base_url('choferes'); ?>').done(function (x, y, z) {
-        x.forEach(function (e) {
-            Chofer[0].selectize.addOption({text: e.Empleado, value: e.ID});
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+            swal('OPS!', 'ALGO SALIO MAL, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+        }).always(function () {
+            HoldOn.close();
         });
-    }).fail(function (x, y, z) {
-        console.log(x, y, z);
-        swal('OPS!', 'ALGO SALIO MAL, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
-    }).always(function () {
-        HoldOn.close();
-    });
-}
+    }
 
-function getTejedoras() {
-    HoldOn.open({
-        theme: 'sk-rect'
-    });
-    $.getJSON('<?php print base_url('tejedoras'); ?>').done(function (x, y, z) {
-        x.forEach(function (e) {
-            Tejedora[0].selectize.addOption({text: e.Empleado, value: e.ID});
+    function getTejedoras() {
+        HoldOn.open({
+            theme: 'sk-rect'
         });
-    }).fail(function (x, y, z) {
-        console.log(x, y, z);
-        swal('OPS!', 'ALGO SALIO MAL, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
-    }).always(function () {
-        HoldOn.close();
-    }); 
-}
+        $.getJSON('<?php print base_url('tejedoras'); ?>').done(function (x, y, z) {
+            x.forEach(function (e) {
+                Tejedora[0].selectize.addOption({text: e.Empleado, value: e.ID});
+            });
+        }).fail(function (x, y, z) {
+            console.log(x, y, z);
+            swal('OPS!', 'ALGO SALIO MAL, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+        }).always(function () {
+            HoldOn.close();
+        });
+    }
 </script>
 <style>
     .card{

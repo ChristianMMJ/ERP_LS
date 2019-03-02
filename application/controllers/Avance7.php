@@ -135,6 +135,11 @@ class Avance7 extends CI_Controller {
                                 ->where('FXE.Fraccion', $v->NUMERO_FRACCION)
                                 ->where('FXE.Estilo', $x->post('ESTILO'))->get()->result();
                 if (!empty($precio_x_fraccion)) {
+                    $check_fraccion = $this->db->select('COUNT(F.numeroempleado) AS EXISTE', false)
+                                    ->from('fracpagnomina AS F')
+                                    ->where('F.control', $x->post('CONTROL'))
+                                    ->where('F.numfrac', $x->post('NUMERO_FRACCION'))
+                                    ->get()->result();
                     $data = array(
                         "numeroempleado" => $x->post('NUMERO_EMPLEADO'),
                         "maquila" => intval(substr($x->post('CONTROL'), 4, 2)),
@@ -149,7 +154,14 @@ class Avance7 extends CI_Controller {
                         "depto" => $x->post('DEPARTAMENTO'),
                         "anio" => $x->post('ANIO'),
                         "fraccion" => $v->DESCRIPCION);
-                    $this->db->insert('fracpagnomina', $data);
+                    
+                    if ($check_fraccion[0]->EXISTE <= 0) {
+                        $data["avance_id"] = intval($id) >= 0 ? intval($id) : 0;
+                        $this->db->insert('fracpagnomina', $data);
+                        print '{"AVANZO":"1","FR":"' . $x->post('NUMERO_FRACCION') . '","RETORNO":"SI","MESSAGE":"EL CONTROL HA SIDO AVANZADO A ENTRETELADO"}';
+                    } else {
+                        print '{"AVANZO":"0","FR":"' . $x->post('NUMERO_FRACCION') . '","RETORNO":"SI", "MESSAGE":"FRACCION ' . $x->post('NUMERO_FRACCION') . ', NO GENERA AVANCE"}';
+                    }
                 }
             }
         } catch (Exception $exc) {

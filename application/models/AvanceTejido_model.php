@@ -48,6 +48,16 @@ class AvanceTejido_model extends CI_Model {
         }
     }
 
+    public function getControlesParaTejido() {
+        try {
+            return $this->db->select("C.ID, C.Control, C.Estilo, C.Color, C.Pares, C. AS Empleado", false)
+                            ->from('controles AS C')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getColoresXEstilo($Estilo) {
         try {
             return $this->db->select("CAST(C.Clave AS SIGNED ) AS ID, CONCAT(C.Clave,'-', C.Descripcion) AS Descripcion ", false)

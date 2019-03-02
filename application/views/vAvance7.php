@@ -153,7 +153,10 @@
                         <hr>
                     </div>
                     <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-
+                        <button type="button" class="btn btn-primary" id="btnRastreo" name="btnRastreo">
+                            <span class="fa fa-search"></span>
+                            <br>Rastreo 
+                        </button>
                     </div>
                     <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" align="center">
                         <h3>Pago de nomina</h3>
@@ -168,6 +171,88 @@
         </div>
     </div>
 </div>
+
+<div class="modal" id="mdlRastreos" data-backdrop="false">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Rastreo de controles ya capturados de nomina</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row"> 
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                        <label>Control</label>
+                        <input type="text" id="Control" name="Control" class="form-control">
+                    </div>
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                        <label>Semana</label>
+                        <input type="text" id="Semana" name="Semana" class="form-control">
+                    </div>
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
+                        <label>Empleado</label>
+                        <select id="Empleado" name="Empleado" class="form-control"></select>
+                    </div> 
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
+                        <label>Desc.Fraccion</label>
+                        <input type="text" id="DescFraccion" name="DescFraccion" class="form-control">
+                    </div>
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
+                        <label>Avance Actual</label>
+                        <input type="text" id="AvanceActual" name="AvanceActual" class="form-control">
+                    </div>
+                </div>
+                <div class="card-block mt-4">
+                    <div id="Rastreos" class="table-responsive">
+                        <table id="tblRastreos" class="table table-hover table-sm table-bordered  compact nowrap" style="width: 100% !important;">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Control</th>
+                                    <th scope="col">Empleado</th>
+
+                                    <th scope="col">Estilo</th>
+                                    <th scope="col">Frac.</th>
+                                    <th scope="col">Fecha</th>
+
+                                    <th scope="col">Sem</th>
+                                    <th scope="col">Pares</th>
+
+                                    <th scope="col">Precio</th>
+                                    <th scope="col">SubTotal</th> 
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer"> 
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
     .card{
         background-color: #f9f9f9;
@@ -251,11 +336,17 @@
             btnAceptar = pnlTablero.find("#btnAceptar"), Estilo = pnlTablero.find("#Estilo"), Pares = pnlTablero.find("#Pares"),
             Anio = pnlTablero.find("#Anio"), btnAceptarPDF = pnlTablero.find("#btnAceptarPDF"),
             btnAceptarXLS = pnlTablero.find("#btnAceptarXLS"), DiasPagoDeNomina = pnlTablero.find("#DiasPagoDeNomina"),
-            EstatusAvance = pnlTablero.find("#EstatusAvance");
+            EstatusAvance = pnlTablero.find("#EstatusAvance"), btnRastreo = pnlTablero.find("#btnRastreo"),
+            mdlRastreos = $("#mdlRastreos");
     var dias = ["JUEVES", "VIERNES", "SABADO", "DOMINGO", "LUNES", "MARTES", "MIERCOLES"],
             ndias = ["LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO", "DOMINGO"];
+
     $(document).ready(function () {
         handleEnter();
+
+        btnRastreo.click(function () {
+            mdlRastreos.modal('show');
+        });
 
         Control.on('keydown', function (e) {
             if (e.keyCode === 13) {
@@ -333,7 +424,7 @@
                         var pagado = parseInt($.isNumeric(a[0]) ? a[0] : 0);
                         if (pagado > 0) {
                             HoldOn.close();
-                            swal('ATENCIÓN', 'UNA DE LAS FRACCIONES SELECCIONADAS YA HAN SIDO PAGADAS A ESTE CONTROL, ESCRIBA OTRO CONTROL O REVISE CON EL AREA CORRESPONDIENTE', 'warning').then((value)=>{
+                            swal('ATENCIÓN', 'UNA DE LAS FRACCIONES SELECCIONADAS YA HAN SIDO PAGADAS A ESTE CONTROL, ESCRIBA OTRO CONTROL O REVISE CON EL AREA CORRESPONDIENTE', 'warning').then((value) => {
                                 Control.focus().select();
                             });
                         } else {

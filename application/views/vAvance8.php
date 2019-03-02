@@ -160,6 +160,27 @@
                                 <label class="custom-control-label" for="chk502">502 Pegado de suela</label>
                             </div>
                         </div>
+
+                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chk72" description="TROQUELAR NORMA" fraccion="72">
+                                <label class="custom-control-label" for="chk72">72 Troquelar norma</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chk607" description="ARMAR PLANTILLA ADORNO" fraccion="607">
+                                <label class="custom-control-label" for="chk607">607 Armar plantilla adorno</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"> 
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chk34" description="PEGAR TRANSFER" fraccion="34">
+                                <label class="custom-control-label" for="chk34">34 Pegar transfer</label>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="w-100"></div>                    

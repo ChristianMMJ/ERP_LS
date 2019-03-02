@@ -89,7 +89,7 @@ $route['obtener_pagos_de_nomina_x_empleado'] = 'Avance9/getPagosXEmpleadoXSemana
 /*AVANCE 888888*/ 
 $route['comprobar_numero_de_empleado_ocho'] = 'Avance8/onComprobarDeptoXEmpleado';
 $route['obtener_semana_fecha_ocho'] = 'Avance8/getSemanaByFecha';
-$route['obtener_estilo_pares_por_control_fraccion_ocho'] = 'Avance8/onComprobarRetornoDeMaterialXControl';
+$route['obtener_estilo_pares_por_control_fraccion_ocho'] = 'Avance8/onComprobarFraccionXEstilo';
 $route['obtener_pagos_de_nomina_x_empleado_ocho'] = 'Avance8/getPagosXEmpleadoXSemana';
 $route['obtener_ultimo_avance_por_control_ocho'] = 'Avance8/getUltimoAvanceXControl';
 $route['avance_add_avance_x_empleado_add_nomina_ocho'] = 'Avance8/onAgregarAvanceXEmpleadoYPagoDeNomina';

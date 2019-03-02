@@ -65,4 +65,12 @@ class AvanceTejido extends CI_Controller {
         }
     }
 
+    public function getControlesParaTejido() {
+        try {
+            print json_encode($this->avtm->getControlesParaTejido());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
 }

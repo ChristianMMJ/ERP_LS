@@ -101,23 +101,101 @@
             </div>
         </div> 
     </div>
-</div> 
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</div>  
 <script>
     var pnlTablero = $("#pnlTablero"), Empleado = pnlTablero.find("#Empleado"), Maquila = pnlTablero.find("#Maquila");
     var ControlesListosParaPespunte, tblControlesListosParaPespunte = pnlTablero.find("#tblControlesListosParaPespunte"),
             ControlesEntregados, tblControlesEntregados = pnlTablero.find("#tblControlesEntregados"),
             Estilo = pnlTablero.find("#Estilo"), Color = pnlTablero.find("#Color"),
-            btnAgregar = pnlTablero.find("#btnAgregar");
+            btnAgregar = pnlTablero.find("#btnAgregar"), Control = pnlTablero.find("#Control"),
+            Pares = pnlTablero.find("#Pares"), Semana = pnlTablero.find("#Sem"),
+            Frac = pnlTablero.find("#Frac"), Fecha = pnlTablero.find("#Fecha"),
+            Documento = pnlTablero.find("#Documento");
 
     $(document).ready(function () {
         getMaquilas();
         getEmpleados();
-        Estilo.on('keydown', function (e) {
-            if (e.keyCode === 13) {
-                getColoresXEstilo(this);
+
+        Frac.on('keydown', function (e) {
+            if (Control.val() && e.keyCode === 13) {
+                Frac.val(297);/*297 PESPUNTE A MAQUILA*/
             }
         });
+
+        Control.on('keydown', function (e) {
+            if (Control.val() && e.keyCode === 13) {
+                $.getJSON("<?php print base_url('AvancePespunteMaquila/getInfoControl'); ?>", {
+                    CONTROL: Control.val()
+                }).done(function (a, b, c) {
+                    console.log(a);
+                    var rq = a[0];
+                    Estilo.val(rq.Estilo);
+                    getColoresXEstilo(rq.Estilo, rq);
+                    Pares.val(rq.Pares);
+                    Semana.val(rq.Semana);
+                    Fecha.val('<?php print Date("d/m/Y"); ?>');
+                    Frac.val(297);/*297 PESPUNTE A MAQUILA*/
+                }).fail(function (x, y, z) {
+                    console.log(x.responseText);
+                    swal('ERROR', 'HA OCURRIDO UN ERROR, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                }).always(function () {
+                    HoldOn.close();
+                });
+            }
+        });
+
+        btnAgregar.click(function () {
+            HoldOn.close();
+            $.getJSON('<?php print base_url('AvancePespunteMaquila/onVerificarAvance') ?>', {
+                CONTROL: Control.val()
+            }).done(function (a, b, c) {
+                var r = a[0];
+                if (parseInt(r.EXISTE) < 0) {
+                    /*AGREGAR AVANCE*/
+                    var dta = {
+                        CONTROL: Control.val(),
+                        MAQUILA: Maquila.val(),
+                        EMPLEADO: Empleado.val(),
+                        EMPLEADOT: Empleado.find("option:selected").text(),
+                        FECHA: Fecha.val(),
+                        ESTILO: Estilo.val(),
+                        ESTILOT: Estilo.find("option:selected").text(),
+                        COLOR: Color.val(),
+                        COLORT: Color.find("option:selected").text(),
+                        DOCTO: Documento.val(),
+                        PARES: Pares.val()
+                    };
+                    $.post('<?php print base_url('AvancePespunteMaquila/onAvanzar') ?>', dta).done(function (a, b, c) {
+                        console.log(a);
+                    }).fail(function (x, y, z) {
+                        console.log(x.responseText);
+                        swal('ERROR', 'HA OCURRIDO UN ERROR, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                    }).always(function () {
+                        HoldOn.close();
+                    });
+                } else {
+                    swal('ATENCIÓN', 'ESTE CONTROL YA HA SIDO AVANZADO', 'warning').then(function () {
+                        Control.focus().select();
+                    });
+                }
+            }).fail(function (x, y, z) {
+                console.log(x.responseText);
+            }).always(function () {
+                HoldOn.close();
+            });
+        });
+
+        Estilo.on('keydown', function (e) {
+            if (e.keyCode === 13) {
+                getColoresXEstilo($(this).val(), null);
+            }
+        });
+
+        var cols = [
+            {"data": "ID"}/*0*/, {"data": "CONTROL"}/*1*/,
+            {"data": "ESTILO"}/*2*/, {"data": "COLOR"},
+            {"data": "PARES"}, {"data": "ENTREGA"}, {"data": "MAQUILA"}
+        ];
         var coldefs = [
             {
                 "targets": [0],
@@ -125,9 +203,17 @@
                 "searchable": false
             }
         ];
+
         var xoptions = {
             "dom": 'rit',
+            "ajax": {
+                "url": '<?php print base_url('AvancePespunteMaquila/getControlesParaPespunte'); ?>',
+                "type": "POST",
+                "contentType": "application/json",
+                "dataSrc": ""
+            },
             buttons: buttons,
+            "columns": cols,
             "columnDefs": coldefs,
             language: lang,
             select: true,
@@ -144,7 +230,7 @@
             }
         };
         ControlesListosParaPespunte = tblControlesListosParaPespunte.DataTable(xoptions);
-        var xoptions = {
+        var xxoptions = {
             "dom": 'rit',
             buttons: buttons,
             "columnDefs": coldefs,
@@ -162,14 +248,17 @@
             createdRow: function (row, data, dataIndex) {
             }
         };
-        ControlesEntregados = tblControlesEntregados.DataTable(xoptions);
+        ControlesEntregados = tblControlesEntregados.DataTable(xxoptions);
     });
 
-    function getColoresXEstilo(e) {
-        $.getJSON("<?php print base_url('avance_a_pespunte_x_maquila_colores_x_estilo') ?>", {ESTILO: $(e).val()}).done(function (x, y, z) {
+    function getColoresXEstilo(e, rq) {
+        $.getJSON("<?php print base_url('avance_a_pespunte_x_maquila_colores_x_estilo') ?>", {ESTILO: e}).done(function (x, y, z) {
             x.forEach(function (i) {
                 Color[0].selectize.addOption({text: i.COLOR, value: i.CLAVE});
             });
+            if (rq) {
+                Color[0].selectize.setValue(rq.Color);
+            }
         }).fail(function (x, y, z) {
             console.log(x, y, z);
             swal('OPS!', 'ALGO SALIO MAL, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
@@ -203,6 +292,19 @@
 
         });
     }
+
+    function getControles() {
+        $.getJSON('<?php print base_url('AvancePespunteMaquila/getControles'); ?>').done(function (x, y, z) {
+            x.forEach(function (i) {
+                Empleado[0].selectize.addOption({text: i.EMPLEADO, value: i.CLAVE});
+            });
+        }).fail(function (x, y, z) {
+            console.log(x.responseText);
+            swal('OPS!', 'ALGO SALIO MAL, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+        }).always(function () {
+
+        });
+    }
 </script>
 <style>
     .card{
@@ -211,11 +313,11 @@
         border-style: solid; 
         border-image: linear-gradient(to bottom,  #0099cc, #cc0000, rgb(0,0,0,0)) 1 100% ;
         border-image: linear-gradient(to bottom,  #0099cc, #cc0000, rgb(0,0,0,0)) 1 100% ;
-        
+
     }
     .card-header{ 
         background-color: transparent;
         border-bottom: 0px;
-        
+
     }
 </style>

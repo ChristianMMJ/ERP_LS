@@ -174,7 +174,7 @@ class Avance9 extends CI_Controller {
                         $check_fraccion = $this->db->select('COUNT(F.numeroempleado) AS EXISTE', false)
                                         ->from('fracpagnomina AS F')
                                         ->where('F.control', $x->post('CONTROL'))
-                                        ->where('F.numfrac', 102)
+                                        ->where('F.numfrac', 103)
                                         ->get()->result();
                         $data["fraccion"] = $x->post('FRACCION');
                         if ($check_fraccion[0]->EXISTE <= 0) {
@@ -190,7 +190,7 @@ class Avance9 extends CI_Controller {
                                 'Hora' => Date('h:i:s a'),
                                 'Fraccion' => $x->post('NUMERO_FRACCION')
                             );
-                            $avance["Fraccion"] = 102;
+                            $avance["Fraccion"] = 103;
                             $this->db->insert('avance', $avance);
                             $id = $this->db->insert_id();
                             $data["avance_id"] = intval($id) >= 0 ? intval($id) : 0;

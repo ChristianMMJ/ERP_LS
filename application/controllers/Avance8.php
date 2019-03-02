@@ -19,10 +19,10 @@ class Avance8 extends CI_Controller {
         }
     }
 
-    public function onComprobarRetornoDeMaterialXControl() {
+    public function onComprobarFraccionXEstilo() {
         try {
             $x = $this->input;
-            print json_encode($this->axepn->onComprobarRetornoDeMaterialXControl($x->get('CR'), $x->get('FR')));
+            print json_encode($this->axepn->onComprobarFraccionXEstilo($x->get('CR'), $x->get('FR')));
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -144,7 +144,7 @@ class Avance8 extends CI_Controller {
                             ->from('avance AS A')
                             ->where('A.Control', $x->post('CONTROL'))
                             ->where('A.Departamento', 90)
-                            ->where_not_in('A.Emp')
+                            ->where_not_in('A.Emp', $x->post('NUMERO_EMPLEADO'))
                             ->get()->result();
 
             /* SOLO SE GENERA EL AVANCE EN LA FRACCIÓN 51 QUE ES LA PIEL */
@@ -165,8 +165,55 @@ class Avance8 extends CI_Controller {
                     );
                     $this->db->insert('avance', $avance);
                     $id = $this->db->insert_id();
+                } else {
+                    $check_depto = $this->db->select('E.Numero AS EMPLEADO, E.DepartamentoFisico AS DEPTO, D.Descripcion AS DEPTODES', false)
+                                    ->from('empleados AS E')->join('departamentos AS D', 'E.DepartamentoFisico = D.Clave')
+                                    ->where('E.Numero', $x->post('NUMERO_EMPLEADO'))
+                                    ->get()->result();
+                    $avance = array(
+                        'Control' => $x->post('CONTROL'),
+                        'FechaAProduccion' => Date('d/m/Y'),
+                        'FechaAvance' => Date('d/m/Y'),
+                        'Estatus' => 'A',
+                        'Usuario' => $_SESSION["ID"],
+                        'Fecha' => Date('d/m/Y'),
+                        'Hora' => Date('h:i:s a')
+                    );
+                    switch (intval($check_depto[0]->DEPTO)) {
+                        case 30:
+                            /* REBAJADO Y PERFORADO */
+                            $avance['Departamento'] = 30;
+                            $avance['Fraccion'] = 103;
+                            $avance['DepartamentoT'] = $check_depto[0]->DEPTODES/* REBAJADO */;
+                            break;
+                        case 40:
+                            /* FOLEADO */
+                            $avance['Departamento'] = 40;
+                            $avance['Fraccion'] = 60;
+                            $avance['DepartamentoT'] = $check_depto[0]->DEPTODES/* FOLEADO */;
+                            break;
+                        case 60:
+                            /* LASER */
+                            $avance['Departamento'] = 60;
+                            $avance['Fraccion'] = $x->post('NUMERO_FRACCION');
+                            $avance['DepartamentoT'] = $check_depto[0]->DEPTODES/* FOLEADO */;
+                            break;
+                        case 70:
+                            /* PREL-CORTE */
+                            $avance['Departamento'] = 70;
+                            $avance['Fraccion'] = $x->post('NUMERO_FRACCION');
+                            $avance['DepartamentoT'] = $check_depto[0]->DEPTODES/* LASER */;
+                            break;
+                        case 80:
+                            /* RAYADO CONTADO */
+                            $avance['Departamento'] = 80;
+                            $avance['Fraccion'] = $x->post('NUMERO_FRACCION');
+                            $avance['DepartamentoT'] = $check_depto[0]->DEPTODES/* RAYADO CONTADO */;
+                            break;
+                    }
+                    $this->db->insert('avance', $avance);
+                    $id = $this->db->insert_id();
                 }
-
                 /* PASO 2 : PAGAR FRACCION */
                 $check_fraccion = $this->db->select('COUNT(F.numeroempleado) AS EXISTE', false)
                                 ->from('fracpagnomina AS F')
