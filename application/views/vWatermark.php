@@ -1,4 +1,4 @@
-    <?php 
+<?php
 switch ($TYPE) {
     case 1:
         print '<div class="fixed-bottom">';
@@ -14,3 +14,8 @@ switch ($TYPE) {
     <p class="font-italic text-muted">All other content is Copyright © by their respective owners.</p>
 </div>
 </div>
+<style>
+    .fixed-bottom { 
+        z-index: 1000; 
+    }
+</style>

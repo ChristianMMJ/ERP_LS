@@ -28,10 +28,6 @@
         <meta name="msapplication-square150x150logo" content="<?php print base_url(); ?>img/favicon/mstile-150x150.png" />
         <meta name="msapplication-wide310x150logo" content="<?php print base_url(); ?>img/favicon/mstile-310x150.png" />
         <meta name="msapplication-square310x310logo" content="<?php print base_url(); ?>img/favicon/mstile-310x310.png" />
-
-
-
-
         <meta name="theme-color" content="#ffffff">
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
         <title>ShoeSystem ERP</title>
@@ -120,10 +116,6 @@
         <link rel="stylesheet" href="<?php echo base_url("js/EasyAutocomplete-1.3.5/easy-autocomplete.min.css"); ?>">
         <!-- Additional CSS Themes file - not required-->
         <link rel="stylesheet" href="<?php echo base_url("js/EasyAutocomplete-1.3.5/easy-autocomplete.themes.min.css"); ?>">
-        <!--Final Modifiers for CSS-->
-<!--        <link href="<?php print base_url(); ?>css/style.css" rel="stylesheet" />-->
-
-<!--        <script src="<?php echo base_url(); ?>js/scripts.js"></script>-->
         <!--Cargar scripts de validacion y configuraciones-->
         <?php $this->load->view('vScripts') ?>
         <?php $this->load->view('vStyle') ?>
