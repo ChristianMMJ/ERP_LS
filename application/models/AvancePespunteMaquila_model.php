@@ -17,12 +17,38 @@ class AvancePespunteMaquila_model extends CI_Model {
 
     public function getRecords() {
         try {
+//            return $this->db->select('CP.ID, CP.numcho, CP.nomcho, CP.numtej, '
+//                                    . 'CP.nomtej, CP.fechapre, CP.control, '
+//                                    . 'CP.estilo, CP.color, CP.nomcolo, '
+//                                    . 'CP.docto, CP.pares', false)
+//                            ->from('controlpes AS CP')
+//                            ->where('CP.Estatus', 'ACTIVO')
+//                            ->where('CP.Estatus', 'ACTIVO')
+//                            ->get()->result();
+            
             return $this->db->select('CP.ID, CP.numcho, CP.nomcho, CP.numtej, '
                                     . 'CP.nomtej, CP.fechapre, CP.control, '
                                     . 'CP.estilo, CP.color, CP.nomcolo, '
                                     . 'CP.docto, CP.pares', false)
-                            ->from('controlpes AS CP')
-                            ->where('CP.Estatus', 'ACTIVO')
+                            ->from('controles AS C')
+                            ->join('controlpes AS CP', 'CP.Control = C.Control') 
+                            ->where('CP.ID IS NULLSS', null, false)
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getControlesEnPespunte() {
+        try {
+            return $this->db->select('CPS.ID, CPS.numcho AS MAQUILA, CPS.nomcho AS MAQUILAT, CPS.numtej, '
+                                    . 'CPS.nomtej, CPS.fechapre AS FECHA, CPS.control AS CONTROL, '
+                                    . 'CPS.estilo AS ESTILO, CPS.color AS COLOR, CPS.nomcolo AS COLORT, '
+                                    . 'CPS.docto AS DOCTO, CPS.pares AS PARES, AV.ID AS IDA', false)
+                            ->from('controles AS C')
+                            ->join('controlpes AS CPS', 'CPS.Control = C.Control','left') 
+                            ->join('avance AS AV', 'AV.Control = C.Control') 
+                            ->where('CPS.ID IS NOT NULL', null, false)
                             ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -73,7 +99,9 @@ class AvancePespunteMaquila_model extends CI_Model {
                                     . "P.FechaEntrega AS ENTREGA, C.Maquila AS MAQUILA", false)
                             ->from('controles AS C')
                             ->join('pedidox AS P', 'C.Control = P.Control')
-                            ->get()->result();
+                            ->join('controlpes AS CP', 'CP.Control = C.Control','left') 
+                            ->where('CP.ID IS NULL', null, false)
+                            ->get()->result(); 
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
