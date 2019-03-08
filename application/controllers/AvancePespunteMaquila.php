@@ -70,6 +70,14 @@ class AvancePespunteMaquila extends CI_Controller {
         }
     }
 
+    public function getControlesEnPespunte() {
+        try {
+            print json_encode($this->apm->getControlesEnPespunte());
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getColoresXEstilo() {
         try {
             print json_encode($this->apm->getColoresXEstilo($this->input->get('ESTILO')));
@@ -107,7 +115,7 @@ class AvancePespunteMaquila extends CI_Controller {
                 'Usuario' => $_SESSION["ID"],
                 'Fecha' => Date('d/m/Y'),
                 'Hora' => Date('h:i:s a'),
-                'Fraccion' => NULL /* INFORMATIVO */
+                'Fraccion' => $x->post('FRACCION') /* INFORMATIVO */
             );
             $this->db->insert('avance', $avance);
 
@@ -122,9 +130,19 @@ class AvancePespunteMaquila extends CI_Controller {
                 'color' => $x->post('COLOR'),
                 'nomcolo' => $x->post('COLORT'),
                 'docto' => $x->post('DOCTO'),
-                'pares' => $x->post('PARES')
+                'pares' => $x->post('PARES'),
+                'fraccion' => $x->post('FRACCION')
             );
             $this->db->insert('controlpes', $pes);
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function onEliminarAvanceMaquilaByID() {
+        try {
+            $this->db->where('ID', $this->input->post('ID'))->delete('controlpes');
+            $this->db->where('ID', $this->input->post('IDA'))->delete('avance');
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

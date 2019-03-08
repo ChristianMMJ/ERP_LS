@@ -68,13 +68,11 @@
                             <th scope="col">Estilo</th>
                             <th scope="col">Color</th>
                             <th scope="col">Par</th>
-
                             <th scope="col">Entrega</th>
                             <th scope="col">Maq</th>
                         </tr>
                     </thead>
-                    <tbody> 
-                    </tbody>
+                    <tbody></tbody>
                 </table>
             </div>
             <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
@@ -84,19 +82,21 @@
                         <tr>
                             <th scope="col">ID</th>
                             <th scope="col">Maq</th>
-                            <th scope="col">Emp</th>
-                            <th scope="col">Fecha</th>
-                            <th scope="col">Control</th>
 
+                            <th scope="col">Fecha</th>
+
+                            <th scope="col">Control</th>
                             <th scope="col">Estilo</th>
+
                             <th scope="col">Col</th>
                             <th scope="col">-</th>
+
                             <th scope="col">Pares</th>
                             <th scope="col">Docto</th>
+                            <th scope="col">-</th> 
                         </tr>
                     </thead>
-                    <tbody>
-                    </tbody>
+                    <tbody></tbody>
                 </table>
             </div>
         </div> 
@@ -150,29 +150,51 @@
                 CONTROL: Control.val()
             }).done(function (a, b, c) {
                 var r = a[0];
-                if (parseInt(r.EXISTE) < 0) {
-                    /*AGREGAR AVANCE*/
-                    var dta = {
-                        CONTROL: Control.val(),
-                        MAQUILA: Maquila.val(),
-                        EMPLEADO: Empleado.val(),
-                        EMPLEADOT: Empleado.find("option:selected").text(),
-                        FECHA: Fecha.val(),
-                        ESTILO: Estilo.val(),
-                        ESTILOT: Estilo.find("option:selected").text(),
-                        COLOR: Color.val(),
-                        COLORT: Color.find("option:selected").text(),
-                        DOCTO: Documento.val(),
-                        PARES: Pares.val()
-                    };
-                    $.post('<?php print base_url('AvancePespunteMaquila/onAvanzar') ?>', dta).done(function (a, b, c) {
-                        console.log(a);
-                    }).fail(function (x, y, z) {
-                        console.log(x.responseText);
-                        swal('ERROR', 'HA OCURRIDO UN ERROR, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
-                    }).always(function () {
-                        HoldOn.close();
-                    });
+                if (parseInt(r.EXISTE) <= 0) {
+                    if (Maquila.val() && Empleado.val() && Fecha.val() &&
+                            Control.val() && Estilo.val() && Color.val() &&
+                            Pares.val() && Documento.val()) {
+                        /*AGREGAR AVANCE*/
+                        var dta = {
+                            CONTROL: Control.val(),
+                            MAQUILA: Maquila.val(),
+                            MAQUILAT: Maquila.find("option:selected").text(),
+                            EMPLEADO: Empleado.val(),
+                            EMPLEADOT: Empleado.find("option:selected").text(),
+                            FECHA: Fecha.val(),
+                            ESTILO: Estilo.val(),
+                            ESTILOT: Estilo.find("option:selected").text(),
+                            COLOR: Color.val(),
+                            COLORT: Color.find("option:selected").text(),
+                            DOCTO: Documento.val(),
+                            PARES: Pares.val(),
+                            FRACCION: Frac.val()
+                        };
+                        $.post('<?php print base_url('AvancePespunteMaquila/onAvanzar') ?>', dta).done(function (a, b, c) {
+                            console.log(a);
+                            swal({
+                                title: "ATENCIÓN",
+                                text: "SE HA GENERADO UN NUEVO AVANCE",
+                                icon: "success",
+                                closeOnClickOutside: false,
+                                closeOnEsc: false,
+                                buttons: false,
+                                timer: 1350
+                            }).then((action) => {
+                                pnlTablero.find("input").val("");
+                                $.each(pnlTablero.find("select"), function (k, v) {
+                                    pnlTablero.find("select")[k].selectize.clear(true);
+                                });
+                            });
+                        }).fail(function (x, y, z) {
+                            console.log(x.responseText);
+                            swal('ERROR', 'HA OCURRIDO UN ERROR, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                        }).always(function () {
+                            HoldOn.close();
+                        });
+                    } else {
+                        swal('ATENCIÓN', 'TODOS LOS CAMPOS SON REQUERIDOS', 'warning');
+                    }
                 } else {
                     swal('ATENCIÓN', 'ESTE CONTROL YA HA SIDO AVANZADO', 'warning').then(function () {
                         Control.focus().select();
@@ -230,9 +252,32 @@
             }
         };
         ControlesListosParaPespunte = tblControlesListosParaPespunte.DataTable(xoptions);
+
+
+        var cols = [
+            {"data": "ID"}/*0*/, {"data": "MAQUILA"}/*1*/,
+            {"data": "FECHA"}/*2*/, {"data": "CONTROL"},
+            {"data": "ESTILO"}, {"data": "COLOR"},
+            {"data": "COLORT"}, {"data": "PARES"},
+            {"data": "DOCTO"}, {"data": "ID"}
+        ];
+        var coldefs = [
+            {
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            }
+        ];
         var xxoptions = {
             "dom": 'rit',
+            "ajax": {
+                "url": '<?php print base_url('AvancePespunteMaquila/getControlesEnPespunte'); ?>',
+                "type": "POST",
+                "contentType": "application/json",
+                "dataSrc": ""
+            },
             buttons: buttons,
+            "columns": cols,
             "columnDefs": coldefs,
             language: lang,
             select: true,
@@ -246,6 +291,8 @@
             "scrollY": "498px",
             "scrollX": true,
             createdRow: function (row, data, dataIndex) {
+                console.log(row, data);
+                $(row).find("td:eq(8)").html('<button class="btn btn-danger" onclick="onEliminarAvanceMaquila(' + data.ID + ',' + data.IDA + ')"><span class="fa fa-trash"></span></button>');
             }
         };
         ControlesEntregados = tblControlesEntregados.DataTable(xxoptions);
@@ -293,16 +340,37 @@
         });
     }
 
-    function getControles() {
-        $.getJSON('<?php print base_url('AvancePespunteMaquila/getControles'); ?>').done(function (x, y, z) {
-            x.forEach(function (i) {
-                Empleado[0].selectize.addOption({text: i.EMPLEADO, value: i.CLAVE});
-            });
-        }).fail(function (x, y, z) {
-            console.log(x.responseText);
-            swal('OPS!', 'ALGO SALIO MAL, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
-        }).always(function () {
+    function onEliminarAvanceMaquila(id, ida) {
+        swal({
+            title: "ATENCIÓN",
+            text: "Estas seguro de eliminar este registro?",
+            icon: "warning",
+            buttons: true
+        }).then((response) => {
+            if (response) {
+                $.post('<?php print base_url('AvancePespunteMaquila/onEliminarAvanceMaquilaByID'); ?>', {
+                    ID: id,
+                    IDA: ida
+                }).done(function (a) {
+                    console.log(a);
+                    swal({
+                        title: "ATENCIÓN",
+                        text: "SE HA ELIMINADO ESTE AVANCE",
+                        icon: "success",
+                        closeOnClickOutside: false,
+                        closeOnEsc: false,
+                        buttons: false,
+                        timer: 1350
+                    }).then((action) => {
+                        ControlesEntregados.ajax.reload();
+                    });
+                }).fail(function (x) {
+                    console.log(x.responseText);
+                    swal('ATENCIÓN', 'HA OCURRIDO UN ERROR INESPERADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                }).always(function () {
 
+                });
+            }
         });
     }
 </script>
