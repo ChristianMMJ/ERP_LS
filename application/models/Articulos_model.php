@@ -22,6 +22,34 @@ class Articulos_model extends CI_Model {
         }
     }
 
+    public function getRecordsConsulta($Grupo) {
+        try {
+            $this->db->select("A.ID AS ID, "
+                            . "CONCAT(G.Clave,' ',G.Nombre) AS Grupo, "
+                            . "A.Clave AS Clave, "
+                            . "A.Descripcion AS Descripcion,"
+                            . "U.Descripcion AS Unidad, "
+                            . "CASE WHEN A.ProveedorUno = 0 THEN '' ELSE A.ProveedorUno END AS P1 , "
+                            . "CASE WHEN A.ProveedorDos = 0 THEN '' ELSE A.ProveedorDos END AS P2 , "
+                            . "CASE WHEN A.ProveedorTres = 0 THEN '' ELSE A.ProveedorTres END AS P3, "
+                            . "CASE WHEN A.UbicacionUno = 0 THEN '' ELSE A.UbicacionUno END AS U1 , "
+                            . "CASE WHEN A.UbicacionDos = 0 THEN '' ELSE A.UbicacionDos END AS U2 , "
+                            . "CASE WHEN A.UbicacionTres = 0 THEN '' ELSE A.UbicacionTres END AS U3, "
+                            . "CASE WHEN A.UbicacionCuatro = 0 THEN '' ELSE A.UbicacionCuatro END AS U4 "
+                            . "", false)
+                    ->from("articulos AS A")
+                    ->join("unidades AS U", "U.Clave =  A.UnidadMedida ")
+                    ->join("grupos AS G", "G.Clave =  A.Grupo ");
+
+            if ($Grupo !== '') {
+                $this->db->where('A.Grupo', $Grupo);
+            }
+            return $this->db->where('A.Estatus', 'ACTIVO')->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getArticuloByID($ID) {
         try {
             return $this->db->select("A.*", false)->from("articulos AS A")->where('A.ID', $ID)->get()->result();

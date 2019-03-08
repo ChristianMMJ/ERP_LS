@@ -73,4 +73,8 @@ $this->load->view('vReimprimirNotaCargo');
 $this->load->view('vEntSalTipo');
 $this->load->view('vEntSalSubAlmacen');
 $this->load->view('vEntSalContablesFecha');
+$this->load->view('vMatdeOtraMaqEntregadoAMaqUno');
+$this->load->view('vListadoOrdComMaqSem');
+$this->load->view('vVentaMatMaqSem');
+$this->load->view('vFichaTecnicaCompra');
 

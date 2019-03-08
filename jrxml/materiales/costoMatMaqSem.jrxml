@@ -389,7 +389,7 @@ ORDER BY ClaveGrupo ASC, Doc ASC, A.Descripcion ASC]]>
 				<textFieldExpression><![CDATA[$V{Subtotal_2}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="215" y="0" width="204" height="2" uuid="277bb294-e74f-4298-8ce3-f97c247295db"/>
+				<reportElement x="215" y="0" width="205" height="1" uuid="277bb294-e74f-4298-8ce3-f97c247295db"/>
 			</line>
 		</band>
 	</summary>

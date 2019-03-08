@@ -18,7 +18,7 @@ class JasperCommand {
     private $jasperurlsoftware = 'java -jar application\third_party\JasperPHP\src\JasperStarter\lib\jasperstarter.jar';
     //SI ES LINUX JAVA -JAR
 //    private $jasperurlsoftware = 'java -jar application/third_party/JasperPHP/src/JasperStarter/lib/jasperstarter.jar';
-//    
+//
 //    private $jasperurlsoftware = 'application\third_party\JasperPHP\src\JasperStarter\bin\jasperstarter.exe';
     private $jasperurl;
     private $folder;
@@ -115,7 +115,7 @@ class JasperCommand {
             mkdir($folder, 0777, true);
         }
         if (delete_files($folder)) {
-            
+
         }
         $this->folder = $folder;
     }
@@ -160,7 +160,7 @@ class JasperCommand {
                         }
                     }
                 }
-                
+
                 /* PRESETS */
                 $home = "/opt/lampp/htdocs/ERP_LS/";
                 $this->setJasperurlsoftware("{$home}application/third_party/JasperPHP/src/JasperStarter/lib/jasperstarter.jar");
@@ -170,9 +170,9 @@ class JasperCommand {
 //sudo bash -c
                 $cmd = "java -jar {$this->getJasperurlsoftware()} pr {$this->getJasperurl()} -o {$this->getFolder()}\/{$this->getFilename()} {$parametros_finales} -f {$this->getDocumentformat()} -t {$this->getDbtype()} -H {$this->getIp()} -u {$this->getDbuser()} -n {$this->getDbname()} --db-port {$this->getDbport()} 2>&1 ";
                 //su -c "application/third_party/JasperPHP/src/JasperStarter/bin/jasperstarter pr jrxml/materiales/relacionCoreHiloTejido.jasper -o rpt/777777/ReporteDelSistema21022019  -P logo="uploads/Empresas/1/lsbck.png" empresa='CALZADO LOBO S.A. DE C.V.' maq=1 ano=2018 sem=49 Nmaq='CALZADO LOBO' -f pdf -t mysql -H 127.0.0.1 -u root -n lobo_solo --db-port 3306"
-//                $command_esc = escapeshellcmd($cmd); 
+//                $command_esc = escapeshellcmd($cmd);
                 $output = array();
-                shell_exec($cmd); 
+                shell_exec($cmd);
 //                print($cmd);
                 return $file_url;
             }

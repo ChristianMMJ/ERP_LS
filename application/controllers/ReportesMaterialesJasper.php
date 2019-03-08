@@ -146,4 +146,98 @@ class ReportesMaterialesJasper extends CI_Controller {
         PRINT $jc->getReport();
     }
 
+    public function onReporteMatOtraMaqEntregadoMaq1() {
+        $jc = new JasperCommand();
+        $jc->setFolder('rpt/' . $this->session->USERNAME);
+        $parametros = array();
+        $parametros["logo"] = base_url() . $this->session->LOGO;
+        $parametros["empresa"] = $this->session->EMPRESA_RAZON;
+        $parametros["maq"] = $this->input->post('Maq');
+        $parametros["sem"] = $this->input->post('Sem');
+        $parametros["ano"] = $this->input->post('Ano');
+        $jc->setParametros($parametros);
+        $jc->setJasperurl('jrxml\materiales\matOtraMaqEntregadoMaq1.jasper');
+        $jc->setFilename('MAT_OTR_MAQ_ENT_MAQ_UNO_' . Date('h_i_s'));
+        $jc->setDocumentformat('pdf');
+        PRINT $jc->getReport();
+    }
+
+    public function onReporteConsultaArticulos() {
+        $jc = new JasperCommand();
+        $jc->setFolder('rpt/' . $this->session->USERNAME);
+        $parametros = array();
+        $parametros["logo"] = base_url() . $this->session->LOGO;
+        $parametros["empresa"] = $this->session->EMPRESA_RAZON;
+        $parametros["dGrupo"] = $this->input->post('dGrupo');
+        $parametros["aGrupo"] = $this->input->post('aGrupo');
+        $jc->setParametros($parametros);
+        $jc->setJasperurl('jrxml\materiales\consultaArticulos.jasper');
+        $jc->setFilename('CONSULTA_ARTICULOS_' . Date('h_i_s'));
+        $jc->setDocumentformat('pdf');
+        PRINT $jc->getReport();
+    }
+
+    public function onReporteOrdComAnoSemMaq() {
+
+        $piel = "1,2";
+        $suela = "52,3,50";
+        $indirectos = "52,3,50,1,2";
+
+        $Tipo = $this->input->post('Tipo');
+
+        $jc = new JasperCommand();
+        $jc->setFolder('rpt/' . $this->session->USERNAME);
+        $parametros = array();
+        $parametros["logo"] = base_url() . $this->session->LOGO;
+        $parametros["empresa"] = $this->session->EMPRESA_RAZON;
+        $parametros["maq"] = $this->input->post('Maq');
+        $parametros["sem"] = $this->input->post('Sem');
+        $parametros["ano"] = $this->input->post('Ano');
+
+        $jc->setJasperurl('jrxml\materiales\ordComMaqSem.jasper');
+
+        switch ($Tipo) {
+            case '10':
+                $parametros["Depto"] = $piel;
+                $parametros["Tipo"] = '10 PIEL Y FORRO';
+                break;
+            case '80':
+                $parametros["Depto"] = $suela;
+                $parametros["Tipo"] = '80 SUELA';
+                break;
+            case '90':
+                $parametros["Depto"] = $indirectos;
+                $parametros["Tipo"] = '90 INDIRECTOS';
+                $jc->setJasperurl('jrxml\materiales\ordComMaqSemInd.jasper');
+                break;
+        }
+
+        $jc->setParametros($parametros);
+
+        $jc->setFilename('ORD_COM_MAQ_SEM_' . Date('h_i_s'));
+        $jc->setDocumentformat('pdf');
+        PRINT $jc->getReport();
+    }
+
+    public function onReporteVentaMatMaqSem() {
+        $Precio = $this->input->post('Precio');
+
+        $jc = new JasperCommand();
+        $jc->setFolder('rpt/' . $this->session->USERNAME);
+        $parametros = array();
+        $parametros["logo"] = base_url() . $this->session->LOGO;
+        $parametros["empresa"] = $this->session->EMPRESA_RAZON;
+        $parametros["maq"] = $this->input->post('Maq');
+        $parametros["sem"] = $this->input->post('Sem');
+        $parametros["ano"] = $this->input->post('Ano');
+        $jc->setParametros($parametros);
+        $jc->setJasperurl('jrxml\materiales\costoMatMaqSem.jasper');
+        if ($Precio === '1') {
+            $jc->setJasperurl('jrxml\materiales\ventaMatMaqSem.jasper');
+        }
+        $jc->setFilename('ENTREGA_MAT_MAQ_SEM_' . Date('h_i_s'));
+        $jc->setDocumentformat('pdf');
+        PRINT $jc->getReport();
+    }
+
 }

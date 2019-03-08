@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relacionCoreHiloTejido" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="768" leftMargin="12" rightMargin="12" topMargin="12" bottomMargin="12" uuid="940b7624-42a9-4970-8b76-59c4ab579c3b">
-	<property name="ireport.zoom" value="1.38491268230095"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="2.698803026006731"/>
+	<property name="ireport.x" value="550"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
@@ -389,23 +389,23 @@ ORDER BY ClaveProveedor, A.Descripcion]]>
 	</detail>
 	<summary>
 		<band height="14" splitType="Stretch">
-			<staticText>
-				<reportElement style="Column header" x="381" y="1" width="111" height="12" forecolor="#000000" uuid="bf4b6b79-8bad-420e-a7ba-97568b08664a"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Total general:]]></text>
-			</staticText>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="493" y="1" width="52" height="12" uuid="a1c55803-0be3-4d62-877b-81851488279b"/>
+				<reportElement x="493" y="2" width="52" height="12" uuid="a1c55803-0be3-4d62-877b-81851488279b"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{Subtotal_2}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="376" y="0" width="169" height="2" uuid="277bb294-e74f-4298-8ce3-f97c247295db"/>
+				<reportElement x="376" y="0" width="169" height="1" uuid="277bb294-e74f-4298-8ce3-f97c247295db"/>
 			</line>
+			<staticText>
+				<reportElement style="Column header" x="382" y="2" width="111" height="12" forecolor="#000000" uuid="bf4b6b79-8bad-420e-a7ba-97568b08664a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total general:]]></text>
+			</staticText>
 		</band>
 	</summary>
 </jasperReport>
