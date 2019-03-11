@@ -165,6 +165,27 @@ class Avance8 extends CI_Controller {
                     );
                     $this->db->insert('avance', $avance);
                     $id = $this->db->insert_id();
+                    $this->db->set('EstatusProduccion', 'ENTRETELADO')
+                            ->where('Control', $x->post('CONTROL'))
+                            ->update('controles');
+                } else if (intval($x->post('NUMERO_FRACCION')) === 397) {
+                    $avance = array(
+                        'Control' => $x->post('CONTROL'),
+                        'FechaAProduccion' => Date('d/m/Y'),
+                        'Departamento' => 140,
+                        'DepartamentoT' => 'ENSUELADO',
+                        'FechaAvance' => Date('d/m/Y'),
+                        'Estatus' => 'A',
+                        'Usuario' => $_SESSION["ID"],
+                        'Fecha' => Date('d/m/Y'),
+                        'Hora' => Date('h:i:s a'),
+                        'Fraccion' => $x->post('NUMERO_FRACCION')
+                    );
+                    $this->db->insert('avance', $avance);
+                    $id = $this->db->insert_id();
+                    $this->db->set('EstatusProduccion', 'ENSUELADO')
+                            ->where('Control', $x->post('CONTROL'))
+                            ->update('controles');
                 } else {
                     $check_depto = $this->db->select('E.Numero AS EMPLEADO, E.DepartamentoFisico AS DEPTO, D.Descripcion AS DEPTODES', false)
                                     ->from('empleados AS E')->join('departamentos AS D', 'E.DepartamentoFisico = D.Clave')
@@ -185,12 +206,18 @@ class Avance8 extends CI_Controller {
                             $avance['Departamento'] = 30;
                             $avance['Fraccion'] = 103;
                             $avance['DepartamentoT'] = $check_depto[0]->DEPTODES/* REBAJADO */;
+                    $this->db->set('EstatusProduccion', 'ENTRETELADO')
+                            ->where('Control', $x->post('CONTROL'))
+                            ->update('controles');
                             break;
                         case 40:
                             /* FOLEADO */
                             $avance['Departamento'] = 40;
                             $avance['Fraccion'] = 60;
                             $avance['DepartamentoT'] = $check_depto[0]->DEPTODES/* FOLEADO */;
+                            $this->db->set('EstatusProduccion', 'FOLEADO')
+                                    ->where('Control', $x->post('CONTROL'))
+                                    ->update('controles');
                             break;
                         case 60:
                             /* LASER */
@@ -203,12 +230,18 @@ class Avance8 extends CI_Controller {
                             $avance['Departamento'] = 70;
                             $avance['Fraccion'] = $x->post('NUMERO_FRACCION');
                             $avance['DepartamentoT'] = $check_depto[0]->DEPTODES/* LASER */;
+                            $this->db->set('EstatusProduccion', 'LASER')
+                                    ->where('Control', $x->post('CONTROL'))
+                                    ->update('controles');
                             break;
                         case 80:
                             /* RAYADO CONTADO */
                             $avance['Departamento'] = 80;
                             $avance['Fraccion'] = $x->post('NUMERO_FRACCION');
                             $avance['DepartamentoT'] = $check_depto[0]->DEPTODES/* RAYADO CONTADO */;
+                            $this->db->set('EstatusProduccion', 'RAYADO CONTADO')
+                                    ->where('Control', $x->post('CONTROL'))
+                                    ->update('controles');
                             break;
                     }
                     $this->db->insert('avance', $avance);

@@ -130,3 +130,5 @@ $route['accesos_add_subitem_x_item_x_opcion_x_modulo_x_usuario'] = 'Accesos/onAg
 $route['accesos_subsubitems'] = 'Accesos/getSubSubItems';
 $route['accesos_subsubitems_x_subitems_x_item_x_opcion_x_modulo_x_usuario'] = 'Accesos/getSubSubItemsXSubItemXItemXOpcionXModuloxUsuario';
 $route['accesos_add_subsubitems_x_subitem_x_item_x_opcion_x_modulo_x_usuario'] = 'Accesos/onAgregarSubSubItemsXSubItemXItemXOpcionXModuloXUsuario';
+
+$route['controles_terminados'] = 'ControlesTerminados';

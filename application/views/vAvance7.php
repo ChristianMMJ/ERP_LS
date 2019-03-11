@@ -349,35 +349,51 @@
         });
 
         Control.on('keydown', function (e) {
-            if (e.keyCode === 13) {
-                $.post('<?php print base_url('Avance7/getInfoXControl') ?>', {CONTROL: Control.val()}).done(function (a, b, c) {
+            if (e.keyCode === 13 && Control.val()) {
+                $.getJSON('<?php print base_url('Avance7/onComprobarAvanceXControl'); ?>', {
+                    CONTROL: Control.val()
+                }).done(function (a) {
+                    console.log(a);
                     if (a.length > 0) {
-                        var r = JSON.parse(a);
-                        Estilo.val(r[0].Estilo);
-                        Pares.val(r[0].Pares);
-                        /*OBTENER ULTIMO AVANCE*/
-                        $.getJSON('<?php print base_url('Avance7/getUltimoAvanceXControl') ?>', {C: Control.val()}).done(function (aa, bb, cc) {
-                            if (aa.length > 0) {
-                                pnlTablero.find("#EstatusAvance").val(aa[0].DepartamentoT);
+                        var r = a[0];
+                        swal('ATENCIÓN', 'EL EMPLEADO ' + r.EMPLEADO + ' YA HA COBRADO ESTA FRACCION EN EL CONTROL ' + r.CONTROL + ' Y ESTA FUERA DE ESTE AVANCE', 'warning').then((value) => {
+                            Control.val('').focus();
+                        });
+                    } else {
+                        $.post('<?php print base_url('Avance7/getInfoXControl') ?>', {CONTROL: Control.val()}).done(function (a, b, c) {
+                            if (a.length > 0) {
+                                var r = JSON.parse(a);
+                                Estilo.val(r[0].Estilo);
+                                Pares.val(r[0].Pares);
+                                /*OBTENER ULTIMO AVANCE*/
+                                $.getJSON('<?php print base_url('Avance7/getUltimoAvanceXControl') ?>', {C: Control.val()}).done(function (aa, bb, cc) {
+                                    if (aa.length > 0) {
+                                        pnlTablero.find("#EstatusAvance").val(aa[0].DepartamentoT);
+                                    }
+                                }).fail(function (x, y, z) {
+                                    console.log(x.responseText);
+                                    swal('OPS', 'ALGO EXTRAÑO OCURRIO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                                });
+                            } else {
+                                Estilo.val('');
+                                Pares.val('');
+                                EstatusAvance.val('');
+                                swal('ATENCIÓN', 'ESTE CONTROL NO EXISTE', 'error').then((value) => {
+                                    Control.focus().select();
+                                });
                             }
                         }).fail(function (x, y, z) {
                             console.log(x.responseText);
-                            swal('OPS', 'ALGO EXTRAÑO OCURRIO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
-                        });
-                    } else {
-                        Estilo.val('');
-                        Pares.val('');
-                        EstatusAvance.val('');
-                        swal('ATENCIÓN', 'ESTE CONTROL NO EXISTE', 'error').then((value) => {
-                            Control.focus().select();
+                            swal('ERROR', ' ERROR AL OBTENER LO PAGADO AL EMPLEADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                        }).always(function () {
+
                         });
                     }
-                }).fail(function (x, y, z) {
-                    console.log(x.responseText);
-                    swal('ERROR', ' ERROR AL OBTENER LO PAGADO AL EMPLEADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
-                }).always(function () {
-
                 });
+            } else {
+                if (pnlTablero.find("input[type='checkbox']:checked").length < 0) {
+                    Control.focus().select();
+                }
             }
         });
 
@@ -389,7 +405,8 @@
         });
 
         btnAceptar.click(function () {
-            if (pnlTablero.find("input[type='checkbox']:checked").length > 0) {
+            if (pnlTablero.find("input[type='checkbox']:checked").length > 0 &&
+                    Control.val() && Estilo.val() && Departamento.val()) {
                 HoldOn.open({
                     theme: 'sk-rect',
                     message: 'Guardando...'
@@ -463,7 +480,7 @@
                 });
             } else {
                 onBeep(2);
-                swal('ATENCIÓN', 'DEBE DE SELECCIONAR AL MENOS UNA FRACCIÓN', 'warning');
+                swal('ATENCIÓN', 'DEBE DE SELECCIONAR AL MENOS UNA FRACCIÓN Y ESPECIFICAR UN CONTROL', 'warning');
             }
         });
 
@@ -639,10 +656,10 @@
             var ext = getExt(data);
             if (data.length > 0) {
                 if (ext === "pdf" || ext === "PDF" || ext === "Pdf") {
-
+                    $.fancybox.defaults.animationEffect = "zoom-in-out";
                     $.fancybox.open({
                         src: base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data + '#pagemode=thumbs',
-                        type: 'iframe',
+                        type: 'iframe', 
                         opts: {
                             afterShow: function (instance, current) {
                                 console.info('done!');
