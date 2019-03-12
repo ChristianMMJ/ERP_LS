@@ -240,4 +240,21 @@ class ReportesMaterialesJasper extends CI_Controller {
         PRINT $jc->getReport();
     }
 
+    public function onReporteSalidasMaqPorFechasGrupo() {
+        $jc = new JasperCommand();
+        $jc->setFolder('rpt/' . $this->session->USERNAME);
+        $parametros = array();
+        $parametros["logo"] = base_url() . $this->session->LOGO;
+        $parametros["empresa"] = $this->session->EMPRESA_RAZON;
+        $parametros["fechaIni"] = $this->input->post('FechaIni');
+        $parametros["fechaFin"] = $this->input->post('FechaFin');
+        $parametros["grupo"] = $this->input->post('Grupo');
+        $parametros["nombreGrupo"] = $this->input->post('NombreGrupo');
+        $jc->setParametros($parametros);
+        $jc->setJasperurl('jrxml\materiales\salidasMaqPorFechaGrupo.jasper');
+        $jc->setFilename('SALIDA_MAT_MAQ_FECHA_GRUPO_' . Date('h_i_s'));
+        $jc->setDocumentformat('pdf');
+        PRINT $jc->getReport();
+    }
+
 }

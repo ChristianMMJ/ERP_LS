@@ -1,8 +1,8 @@
-<div class="modal " id="mdlMaterialRecibidoPedido"  role="dialog">
+<div class="modal " id="mdlSalidaMaqGrupoFechas"  role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Material Recibido vs Pedido</h5>
+                <h5 class="modal-title">Salida a Maquilas por Grupo y Fechas</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -39,31 +39,31 @@
     </div>
 </div>
 <script>
-    var mdlMaterialRecibidoPedido = $('#mdlMaterialRecibidoPedido');
+    var mdlSalidaMaqGrupoFechas = $('#mdlSalidaMaqGrupoFechas');
     $(document).ready(function () {
-        validacionSelectPorContenedor(mdlMaterialRecibidoPedido);
-        setFocusSelectToInputOnChange('#Grupo', '#btnImprimir', mdlMaterialRecibidoPedido);
+        validacionSelectPorContenedor(mdlSalidaMaqGrupoFechas);
+        setFocusSelectToInputOnChange('#Grupo', '#btnImprimir', mdlSalidaMaqGrupoFechas);
 
-        mdlMaterialRecibidoPedido.on('shown.bs.modal', function () {
+        mdlSalidaMaqGrupoFechas.on('shown.bs.modal', function () {
             getGrupos();
-            mdlMaterialRecibidoPedido.find("input").val("");
-            $.each(mdlMaterialRecibidoPedido.find("select"), function (k, v) {
-                mdlMaterialRecibidoPedido.find("select")[k].selectize.clear(true);
+            mdlSalidaMaqGrupoFechas.find("input").val("");
+            $.each(mdlSalidaMaqGrupoFechas.find("select"), function (k, v) {
+                mdlSalidaMaqGrupoFechas.find("select")[k].selectize.clear(true);
             });
-            mdlMaterialRecibidoPedido.find('#FechaIni').val(getFirstDayMonth());
-            mdlMaterialRecibidoPedido.find('#FechaFin').val(getToday());
-            mdlMaterialRecibidoPedido.find('#FechaIni').focus();
+            mdlSalidaMaqGrupoFechas.find('#FechaIni').val(getFirstDayMonth());
+            mdlSalidaMaqGrupoFechas.find('#FechaFin').val(getToday());
+            mdlSalidaMaqGrupoFechas.find('#FechaIni').focus();
         });
 
-        mdlMaterialRecibidoPedido.find('#btnImprimir').on("click", function () {
+        mdlSalidaMaqGrupoFechas.find('#btnImprimir').on("click", function () {
 
             HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
-            var frm = new FormData(mdlMaterialRecibidoPedido.find("#frmCaptura")[0]);
+            var frm = new FormData(mdlSalidaMaqGrupoFechas.find("#frmCaptura")[0]);
 
-            frm.append('NombreGrupo', mdlMaterialRecibidoPedido.find("#Grupo option:selected").text());
+            frm.append('NombreGrupo', mdlSalidaMaqGrupoFechas.find("#Grupo option:selected").text());
 
             $.ajax({
-                url: base_url + 'index.php/ReportesMaterialesJasper/onReporteMaterialRecibidoPedido',
+                url: base_url + 'index.php/ReportesMaterialesJasper/onReporteSalidasMaqPorFechasGrupo',
                 type: "POST",
                 cache: false,
                 contentType: false,
@@ -103,7 +103,7 @@
                         text: "NO EXISTEN DATOS PARA ESTE REPORTE",
                         icon: "error"
                     }).then((action) => {
-                        mdlMaterialRecibidoPedido.find('#FechaIni').focus();
+                        mdlSalidaMaqGrupoFechas.find('#FechaIni').focus();
                     });
                 }
                 HoldOn.close();
@@ -119,7 +119,7 @@
     function getGrupos() {
         $.getJSON(base_url + 'index.php/DocDirecConAfectacion/getGrupos').done(function (data) {
             $.each(data, function (k, v) {
-                mdlMaterialRecibidoPedido.find("#Grupo")[0].selectize.addOption({text: v.Grupo, value: v.ID});
+                mdlSalidaMaqGrupoFechas.find("#Grupo")[0].selectize.addOption({text: v.Grupo, value: v.ID});
             });
         }).fail(function (x) {
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');

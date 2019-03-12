@@ -1,8 +1,8 @@
-<div class="modal " id="mdlMaterialSemanaProduccionEstilo"  role="dialog">
+<div class="modal " id="mdlMaterialAnoSemMaqDesgloseControlEstilo"  role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Material de la Semana Producción por Estilo</h5>
+                <h5 class="modal-title">Material por Año-Sem (Desglose Control-Estilo)</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -10,29 +10,53 @@
             <div class="modal-body">
                 <form id="frmReporte">
 
+
+
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-4">
                             <label>Año </label>
                             <input type="text" maxlength="4" class="form-control form-control-sm numbersOnly" id="Ano" name="Ano" >
                         </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-6">
-                            <label>Semana </label>
-                            <input type="text" maxlength="2" class="form-control form-control-sm numbersOnly" id="Sem" name="Sem" >
+                        <div class="col-4">
+                            <label>De Semana: </label>
+                            <input type="text" maxlength="2" class="form-control form-control-sm numbersOnly" id="dSem" name="dSem" >
+                        </div>
+                        <div class="col-4">
+                            <label>A Semana: </label>
+                            <input type="text" maxlength="2" class="form-control form-control-sm numbersOnly" id="aSem" name="aSem" >
                         </div>
                     </div>
 
-                    <div class="col-12 col-sm-12 mt-2">
-                        <legend class="badge badge-danger" style="font-size: 14px;">Nota: Sólo para maquila</legend>
+
+                    <div class="row">
+                        <div class="col-12 col-sm-6">
+                            <label>Tipo <span class="badge badge-info mb-2" style="font-size: 12px;">10 Piel/Forro, 80 Suela, 90 Peletería</span></label>
+                            <select id="Tipo" name="Tipo" class="form-control form-control-sm required" required="">
+                                <option value=""></option>
+                                <option value="10">10 PIEL/FORRO</option>
+                                <option value="80">80 SUELA</option>
+                                <option value="90">90 PELETERÍA</option>
+                            </select>
+                        </div>
                     </div>
+
 
                     <div class="row">
                         <div class="col-12 col-sm-12">
                             <label>Artículo</label>
                             <select class="form-control form-control-sm" id="Articulo" name="Articulo" >
                                 <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-sm-6">
+                            <label>Estatus Control <span class="badge badge-warning mb-2" style="font-size: 12px;">1 PRE-PROGRAMADO, PROGRAMADO Y CORTE , 2 CUALQUIER ESTATUS</span></label>
+                            <select id="Estatus" name="Estatus" class="form-control form-control-sm required" required="">
+                                <option value=""></option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
                             </select>
                         </div>
                     </div>
@@ -47,20 +71,23 @@
 </div>
 <script>
 
-    var mdlMaterialSemanaProduccionEstilo = $('#mdlMaterialSemanaProduccionEstilo');
+    var mdlMaterialAnoSemMaqDesgloseControlEstilo = $('#mdlMaterialAnoSemMaqDesgloseControlEstilo');
     $(document).ready(function () {
-        setFocusSelectToInputOnChange('#Tipo', '#btnImprimir', mdlMaterialSemanaProduccionEstilo);
+        validacionSelectPorContenedor(mdlMaterialAnoSemMaqDesgloseControlEstilo);
+        setFocusSelectToSelectOnChange('#Tipo', '#Articulo', mdlMaterialAnoSemMaqDesgloseControlEstilo);
+        setFocusSelectToSelectOnChange('#Articulo', '#Estatus', mdlMaterialAnoSemMaqDesgloseControlEstilo);
+        setFocusSelectToInputOnChange('#Estatus', '#btnImprimir', mdlMaterialAnoSemMaqDesgloseControlEstilo);
 
-        mdlMaterialSemanaProduccionEstilo.on('shown.bs.modal', function () {
-            mdlMaterialSemanaProduccionEstilo.find("input").val("");
-            $.each(mdlMaterialSemanaProduccionEstilo.find("select"), function (k, v) {
-                mdlMaterialSemanaProduccionEstilo.find("select")[k].selectize.clear(true);
+        mdlMaterialAnoSemMaqDesgloseControlEstilo.on('shown.bs.modal', function () {
+            mdlMaterialAnoSemMaqDesgloseControlEstilo.find("input").val("");
+            $.each(mdlMaterialAnoSemMaqDesgloseControlEstilo.find("select"), function (k, v) {
+                mdlMaterialAnoSemMaqDesgloseControlEstilo.find("select")[k].selectize.clear(true);
             });
-            getArticulosMatSemProd();
-            mdlMaterialSemanaProduccionEstilo.find('#Ano').focus();
+
+            mdlMaterialAnoSemMaqDesgloseControlEstilo.find('#Ano').focus();
         });
 
-        mdlMaterialSemanaProduccionEstilo.find("#Ano").change(function () {
+        mdlMaterialAnoSemMaqDesgloseControlEstilo.find("#Ano").change(function () {
             if (parseInt($(this).val()) < 2016 || parseInt($(this).val()) > 2020 || $(this).val() === '') {
                 swal({
                     title: "ATENCIÓN",
@@ -71,23 +98,32 @@
                     buttons: false,
                     timer: 1000
                 }).then((action) => {
-                    mdlMaterialSemanaProduccionEstilo.find("#Ano").val("");
-                    mdlMaterialSemanaProduccionEstilo.find("#Ano").focus();
+                    mdlMaterialAnoSemMaqDesgloseControlEstilo.find("#Ano").val("");
+                    mdlMaterialAnoSemMaqDesgloseControlEstilo.find("#Ano").focus();
                 });
             }
         });
 
-        mdlMaterialSemanaProduccionEstilo.find("#Sem").change(function () {
-            var ano = mdlMaterialSemanaProduccionEstilo.find("#Ano");
+        mdlMaterialAnoSemMaqDesgloseControlEstilo.find("#dSem").change(function () {
+            var ano = mdlMaterialAnoSemMaqDesgloseControlEstilo.find("#Ano");
             onComprobarSemanasProduccion($(this), ano.val());
         });
 
-        mdlMaterialSemanaProduccionEstilo.find('#btnImprimir').on("click", function () {
+        mdlMaterialAnoSemMaqDesgloseControlEstilo.find("#aSem").change(function () {
+            var ano = mdlMaterialAnoSemMaqDesgloseControlEstilo.find("#Ano");
+            onComprobarSemanasProduccion($(this), ano.val());
+        });
+
+        mdlMaterialAnoSemMaqDesgloseControlEstilo.find("#Tipo").change(function () {
+            getArticulosMatSemProdControl($(this).val());
+        });
+
+        mdlMaterialAnoSemMaqDesgloseControlEstilo.find('#btnImprimir').on("click", function () {
             HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
-            var frm = new FormData(mdlMaterialSemanaProduccionEstilo.find("#frmReporte")[0]);
+            var frm = new FormData(mdlMaterialAnoSemMaqDesgloseControlEstilo.find("#frmReporte")[0]);
 
             $.ajax({
-                url: base_url + 'index.php/ReporteMaterialProduccionEstilo/onReporteMaterialSemanaProdEstilo',
+                url: base_url + 'index.php/ReporteMaterialProduccionEstilo/onReporteMaterialSemanaDesgloseProdEstilo',
                 type: "POST",
                 cache: false,
                 contentType: false,
@@ -129,7 +165,7 @@
                         text: "NO EXISTEN DATOS PARA ESTE REPORTE",
                         icon: "error"
                     }).then((action) => {
-                        mdlMaterialSemanaProduccionEstilo.find('#Ano').focus();
+                        mdlMaterialAnoSemMaqDesgloseControlEstilo.find('#Ano').focus();
                     });
                 }
                 HoldOn.close();
@@ -172,12 +208,13 @@
         });
     }
 
-    function getArticulosMatSemProd() {
-        mdlMaterialSemanaProduccionEstilo.find("#Articulo")[0].selectize.clear(true);
-        mdlMaterialSemanaProduccionEstilo.find("#Articulo")[0].selectize.clearOptions();
-        $.getJSON(base_url + 'index.php/ReporteMaterialProduccionEstilo/getArticulos').done(function (data) {
+    function getArticulosMatSemProdControl(tipo) {
+        mdlMaterialAnoSemMaqDesgloseControlEstilo.find("#Articulo")[0].selectize.clear(true);
+        mdlMaterialAnoSemMaqDesgloseControlEstilo.find("#Articulo")[0].selectize.clearOptions();
+        $.getJSON(base_url + 'index.php/ReporteMaterialProduccionEstilo/getArticulosXDepto', {Tipo: tipo}).done(function (data) {
+            console.log(data);
             $.each(data, function (k, v) {
-                mdlMaterialSemanaProduccionEstilo.find("#Articulo")[0].selectize.addOption({text: v.Articulo, value: v.Clave});
+                mdlMaterialAnoSemMaqDesgloseControlEstilo.find("#Articulo")[0].selectize.addOption({text: v.Articulo, value: v.Clave});
             });
         }).fail(function (x) {
             swal('ERROR', 'HA OCURRIDO UN ERROR INESPERADO, VERIFIQUE LA CONSOLA PARA MÁS DETALLE', 'info');

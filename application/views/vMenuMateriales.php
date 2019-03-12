@@ -77,4 +77,5 @@ $this->load->view('vMatdeOtraMaqEntregadoAMaqUno');
 $this->load->view('vListadoOrdComMaqSem');
 $this->load->view('vVentaMatMaqSem');
 $this->load->view('vFichaTecnicaCompra');
-
+$this->load->view('vSalidaMaqGrupoFechas');
+$this->load->view('vMaterialAnoSemMaqDesgloseControlEstilo');
