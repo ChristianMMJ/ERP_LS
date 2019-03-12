@@ -257,4 +257,20 @@ class ReportesMaterialesJasper extends CI_Controller {
         PRINT $jc->getReport();
     }
 
+    public function onReporteComprasGeneralSemMaq() {
+        $jc = new JasperCommand();
+        $jc->setFolder('rpt/' . $this->session->USERNAME);
+        $parametros = array();
+        $parametros["logo"] = base_url() . $this->session->LOGO;
+        $parametros["empresa"] = $this->session->EMPRESA_RAZON;
+        $parametros["fechaIni"] = $this->input->post('FechaIni');
+        $parametros["fechaFin"] = $this->input->post('FechaFin');
+        $parametros["Tp"] = $this->input->post('Tp');
+        $jc->setParametros($parametros);
+        $jc->setJasperurl('jrxml\materiales\comprasGeneralSemMaq.jasper');
+        $jc->setFilename('COMPRAS_GENERAL_SEM_MAQ_' . Date('h_i_s'));
+        $jc->setDocumentformat('pdf');
+        PRINT $jc->getReport();
+    }
+
 }

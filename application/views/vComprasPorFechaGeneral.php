@@ -37,6 +37,14 @@
                         </div>
                     </div>
 
+                    <div class="row">
+                        <div class="col-12 col-sm-6">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="genSemMaq" name="genSemMaq" >
+                                <label class="custom-control-label text-info labelCheck" for="genSemMaq">Compras Generales con Maq-Sem</label>
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -99,9 +107,71 @@
 
 
         mdlComprasPorFechaGeneral.find('#btnImprimir').on("click", function () {
-            generado = false;
-            onReporteUno();
+            if (mdlComprasPorFechaGeneral.find("#genSemMaq")[0].checked) {
+
+                onReporteGeneral();
+
+            } else {
+                generado = false;
+                onReporteUno();
+            }
+
+
         });
+
+        function onReporteGeneral() {
+            HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
+            var frm = new FormData(mdlComprasPorFechaGeneral.find("#frmCaptura")[0]);
+            $.ajax({
+                url: base_url + 'index.php/ReportesMaterialesJasper/onReporteComprasGeneralSemMaq',
+                type: "POST",
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: frm
+            }).done(function (data, x, jq) {
+                console.log(data);
+                if (data.length > 0) {
+                    $.fancybox.open({
+                        src: base_url + 'js/pdf.js-gh-pages/web/viewer.html?file=' + data + '#pagemode=thumbs',
+                        type: 'iframe',
+                        opts: {
+                            afterShow: function (instance, current) {
+                                console.info('done!');
+                            },
+                            iframe: {
+                                // Iframe template
+                                tpl: '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen allowtransparency="true" src=""></iframe>',
+                                preload: true,
+                                // Custom CSS styling for iframe wrapping element
+                                // You can use this to set custom iframe dimensions
+                                css: {
+                                    width: "95%",
+                                    height: "95%"
+                                },
+                                // Iframe tag attributes
+                                attr: {
+                                    scrolling: "auto"
+                                }
+                            }
+                        }
+                    });
+
+                } else {
+                    swal({
+                        title: "ATENCIÓN",
+                        text: "NO EXISTEN DATOS PARA EL REPORTE",
+                        icon: "error"
+                    }).then((action) => {
+                        mdlComprasPorFechaGeneral.find('#FechaIni').focus();
+                    });
+                }
+                HoldOn.close();
+            }).fail(function (x, y, z) {
+                console.log(x, y, z);
+                HoldOn.close();
+            });
+        }
 
         function onReporteUno() {
             HoldOn.open({theme: 'sk-bounce', message: 'ESPERE...'});
