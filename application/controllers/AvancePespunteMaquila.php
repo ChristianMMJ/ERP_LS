@@ -105,6 +105,7 @@ class AvancePespunteMaquila extends CI_Controller {
     public function onAvanzar() {
         try {
             $x = $this->input;
+            /* AVANCE A MAQUILA */
             $avance = array(
                 'Control' => $x->post('CONTROL'),
                 'FechaAProduccion' => Date('d/m/Y'),
@@ -119,11 +120,15 @@ class AvancePespunteMaquila extends CI_Controller {
             );
             $this->db->insert('avance', $avance);
 
+            /* AVANCE A PESPUNTE */
+            $avance["Departamento"] = 110;
+            $avance["DepartamentoT"] = 'PESPUNTE';
+            $avance["Fraccion"] = $x->post('FRACCION');
+            $this->db->insert('avance', $avance);
+
             $pes = array(
                 'numcho' => $x->post('MAQUILA'),
                 'nomcho' => $x->post('MAQUILAT'),
-                'numtej' => $x->post('EMPLEADO'),
-                'nomtej' => $x->post('EMPLEADOT'),
                 'fechapre' => $x->post('FECHA'),
                 'control' => $x->post('CONTROL'),
                 'estilo' => $x->post('ESTILO'),
@@ -134,6 +139,9 @@ class AvancePespunteMaquila extends CI_Controller {
                 'fraccion' => $x->post('FRACCION')
             );
             $this->db->insert('controlpes', $pes);
+            $this->db->set('EstatusProduccion', 'ALM-PESPUNTE')
+                    ->where('Control', $x->post('CONTROL'))
+                    ->update('controles');
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }

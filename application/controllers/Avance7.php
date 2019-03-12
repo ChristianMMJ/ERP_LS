@@ -77,6 +77,15 @@ class Avance7 extends CI_Controller {
         }
     }
 
+    public function onComprobarAvanceXControl() {
+        try {
+            
+            print json_encode($this->avm->onComprobarAvanceXControl($this->input->get('CONTROL')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getSemanaByFecha() {
         try {
             print json_encode($this->avm->getSemanaByFecha(Date('d/m/Y')));
@@ -134,6 +143,7 @@ class Avance7 extends CI_Controller {
                 $precio_x_fraccion = $this->db->select('FXE.CostoMO AS PRECIO')->from('fraccionesxestilo AS FXE')
                                 ->where('FXE.Fraccion', $v->NUMERO_FRACCION)
                                 ->where('FXE.Estilo', $x->post('ESTILO'))->get()->result();
+                /* VERIFICAR SI ESE ESTILO TIENE ESA FRACCION */
                 if (!empty($precio_x_fraccion)) {
                     $check_fraccion = $this->db->select('COUNT(F.numeroempleado) AS EXISTE', false)
                                     ->from('fracpagnomina AS F')
@@ -154,10 +164,35 @@ class Avance7 extends CI_Controller {
                         "depto" => $x->post('DEPARTAMENTO'),
                         "anio" => $x->post('ANIO'),
                         "fraccion" => $v->DESCRIPCION);
-                    
+
                     if ($check_fraccion[0]->EXISTE <= 0) {
-                        $data["avance_id"] = intval($id) >= 0 ? intval($id) : 0;
-                        $this->db->insert('fracpagnomina', $data);
+                        /* 60 FOLEADO CORTE CALIDAD */
+                        if (intval($v->NUMERO_FRACCION) === 60) {
+                            $avance = array(
+                                'Control' => $x->post('CONTROL'),
+                                'FechaAProduccion' => Date('d/m/Y'),
+                                'Departamento' => 70,
+                                'DepartamentoT' => 'PREL-CORTE',
+                                'FechaAvance' => Date('d/m/Y'),
+                                'Estatus' => 'A',
+                                'Usuario' => $_SESSION["ID"],
+                                'Fecha' => Date('d/m/Y'),
+                                'Hora' => Date('h:i:s a'),
+                                'Fraccion' => $v->NUMERO_FRACCION
+                            );
+                            $this->db->insert('avance', $avance);
+                            $id = $this->db->insert_id();
+                            $data["avance_id"] = intval($id) >= 0 ? intval($id) : 0;
+                            $this->db->insert('fracpagnomina', $data);
+                        } else {
+                            $this->db->insert('fracpagnomina', $data);
+                        }
+                        /* MOVER EL ESTATUS DE PRODUCCION
+                         * 70	PREL-CORTE, GENERA AVANCE 1
+                         *                          */
+                        $this->db->set('EstatusProduccion', 'PREL-CORTE')
+                                ->where('Control', $x->post('CONTROL'))
+                                ->update('controles');
                         print '{"AVANZO":"1","FR":"' . $x->post('NUMERO_FRACCION') . '","RETORNO":"SI","MESSAGE":"EL CONTROL HA SIDO AVANZADO A ENTRETELADO"}';
                     } else {
                         print '{"AVANZO":"0","FR":"' . $x->post('NUMERO_FRACCION') . '","RETORNO":"SI", "MESSAGE":"FRACCION ' . $x->post('NUMERO_FRACCION') . ', NO GENERA AVANCE"}';

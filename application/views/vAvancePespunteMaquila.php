@@ -8,31 +8,27 @@
     </div>
     <div class="card-body" style="padding-top: 0px; padding-bottom: 10px;">
         <div class="row">
-            <div class="col-12 col-xs-12 col-sm-4 col-lg-4 col-xl-4">
+            <div class="col-12 col-xs-12 col-sm-3 col-lg-3 col-xl-3">
                 <label>Maquila</label>
                 <select id="Maquila" name="Maquila" class="form-control"></select>
-            </div>
-            <div class="col-12 col-xs-12 col-sm-4 col-lg-4 col-xl-4">
-                <label>Empleado</label>
-                <select id="Empleado" name="Empleado" class="form-control"></select>
-            </div>
-            <div class="col-12 col-xs-12 col-sm-4 col-lg-4 col-xl-4">
+            </div> 
+            <div class="col-12 col-xs-12 col-sm-3 col-lg-3 col-xl-3">
                 <label>Documento</label>
                 <input type="text" id="Documento" name="Documento" class="form-control form-control-sm">
             </div>
-            <div class="col-12 col-xs-12 col-sm-2 col-lg-2 col-xl-2">
+            <div class="col-12 col-xs-12 col-sm-3 col-lg-3 col-xl-3">
                 <label>Control</label>
                 <input type="text" id="Control" name="Control" class="form-control form-control-sm">
             </div>
-            <div class="col-12 col-xs-12 col-sm-1 col-lg-1 col-xl-1">
+            <div class="col-12 col-xs-12 col-sm-3 col-lg-3 col-xl-3">
                 <label>Frac</label>
                 <input type="text" id="Frac" name="Frac" class="form-control form-control-sm">
             </div>
-            <div class="col-12 col-xs-12 col-sm-2 col-lg-2 col-xl-2">
+            <div class="col-12 col-xs-12 col-sm-3 col-lg-3 col-xl-3">
                 <label>Estilo</label>
                 <input type="text" id="Estilo" name="Estilo" class="form-control form-control-sm">
             </div>
-            <div class="col-12 col-xs-12 col-sm-2 col-lg-2 col-xl-2">
+            <div class="col-12 col-xs-12 col-sm-3 col-lg-3 col-xl-3">
                 <label>Color</label>
                 <select id="Color" name="Color" class="form-control"></select>
             </div>
@@ -103,7 +99,7 @@
     </div>
 </div>  
 <script>
-    var pnlTablero = $("#pnlTablero"), Empleado = pnlTablero.find("#Empleado"), Maquila = pnlTablero.find("#Maquila");
+    var pnlTablero = $("#pnlTablero"), Maquila = pnlTablero.find("#Maquila");
     var ControlesListosParaPespunte, tblControlesListosParaPespunte = pnlTablero.find("#tblControlesListosParaPespunte"),
             ControlesEntregados, tblControlesEntregados = pnlTablero.find("#tblControlesEntregados"),
             Estilo = pnlTablero.find("#Estilo"), Color = pnlTablero.find("#Color"),
@@ -114,7 +110,6 @@
 
     $(document).ready(function () {
         getMaquilas();
-        getEmpleados();
 
         Frac.on('keydown', function (e) {
             if (Control.val() && e.keyCode === 13) {
@@ -136,8 +131,7 @@
                     Fecha.val('<?php print Date("d/m/Y"); ?>');
                     Frac.val(297);/*297 PESPUNTE A MAQUILA*/
                 }).fail(function (x, y, z) {
-                    console.log(x.responseText);
-                    swal('ERROR', 'HA OCURRIDO UN ERROR, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                    getError(x);
                 }).always(function () {
                     HoldOn.close();
                 });
@@ -151,7 +145,7 @@
             }).done(function (a, b, c) {
                 var r = a[0];
                 if (parseInt(r.EXISTE) <= 0) {
-                    if (Maquila.val() && Empleado.val() && Fecha.val() &&
+                    if (Maquila.val() && Fecha.val() &&
                             Control.val() && Estilo.val() && Color.val() &&
                             Pares.val() && Documento.val()) {
                         /*AGREGAR AVANCE*/
@@ -159,8 +153,6 @@
                             CONTROL: Control.val(),
                             MAQUILA: Maquila.val(),
                             MAQUILAT: Maquila.find("option:selected").text(),
-                            EMPLEADO: Empleado.val(),
-                            EMPLEADOT: Empleado.find("option:selected").text(),
                             FECHA: Fecha.val(),
                             ESTILO: Estilo.val(),
                             ESTILOT: Estilo.find("option:selected").text(),
@@ -187,8 +179,7 @@
                                 });
                             });
                         }).fail(function (x, y, z) {
-                            console.log(x.responseText);
-                            swal('ERROR', 'HA OCURRIDO UN ERROR, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                            getError(x);
                         }).always(function () {
                             HoldOn.close();
                         });
@@ -201,7 +192,7 @@
                     });
                 }
             }).fail(function (x, y, z) {
-                console.log(x.responseText);
+                getError(x);
             }).always(function () {
                 HoldOn.close();
             });
@@ -307,8 +298,7 @@
                 Color[0].selectize.setValue(rq.Color);
             }
         }).fail(function (x, y, z) {
-            console.log(x, y, z);
-            swal('OPS!', 'ALGO SALIO MAL, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+            getError(x);
         }).always(function () {
             HoldOn.close();
         });
@@ -320,21 +310,7 @@
                 Maquila[0].selectize.addOption({text: i.MAQUILA, value: i.CLAVE});
             });
         }).fail(function (x, y, z) {
-            console.log(x.responseText);
-            swal('OPS!', 'ALGO SALIO MAL, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
-        }).always(function () {
-
-        });
-    }
-
-    function getEmpleados() {
-        $.getJSON('<?php print base_url('avance_a_pespunte_x_maquila_empleados'); ?>').done(function (x, y, z) {
-            x.forEach(function (i) {
-                Empleado[0].selectize.addOption({text: i.EMPLEADO, value: i.CLAVE});
-            });
-        }).fail(function (x, y, z) {
-            console.log(x.responseText);
-            swal('OPS!', 'ALGO SALIO MAL, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+            getError(x);
         }).always(function () {
 
         });
@@ -362,11 +338,11 @@
                         buttons: false,
                         timer: 1350
                     }).then((action) => {
+                        ControlesListosParaPespunte.ajax.reload();
                         ControlesEntregados.ajax.reload();
                     });
                 }).fail(function (x) {
-                    console.log(x.responseText);
-                    swal('ATENCIÓN', 'HA OCURRIDO UN ERROR INESPERADO, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
+                    getError(x);
                 }).always(function () {
 
                 });

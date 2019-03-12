@@ -27,6 +27,18 @@ class Avance7_model extends CI_Model {
         }
     }
 
+    public function onComprobarAvanceXControl($CONTROL) {
+        try {
+            return $this->db->select("FP.ID, FP.numeroempleado AS EMPLEADO, FP.control AS CONTROL", false)
+                            ->from('fracpagnomina AS FP')
+                            ->where('FP.control', $CONTROL)
+                            ->where('FP.numfrac', 60)
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getPagosXEmpleadoXSemana($e, $s) {
         try {
             $a = "IFNULL((SELECT FORMAT(SUM(fpn.subtot),2) FROM fracpagnomina AS fpn WHERE dayofweek(fpn.fecha)";

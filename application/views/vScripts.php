@@ -186,7 +186,7 @@
         });
 
         $('.numeric').keypress(function (event) {
-            var cc = (event.which) ? event.which : event.keyCode; 
+            var cc = (event.which) ? event.which : event.keyCode;
             if (cc >= 48 && cc <= 57 || cc === 8 || cc >= 36 && cc <= 40) {
                 return true;
             } else {
@@ -195,7 +195,7 @@
         });
 
         $('.numericdot').keypress(function (event) {
-            var cc = (event.which) ? event.which : event.keyCode; 
+            var cc = (event.which) ? event.which : event.keyCode;
             if (cc >= 48 && cc <= 57 || cc === 46 || cc === 8 || cc >= 36 && cc <= 40 || $(this).val().indexOf('.') === -1) {
                 return true;
             } else {
@@ -1278,5 +1278,9 @@
         }).fail(function (x, y, z) {
             console.log(x, y, z);
         });
+    }
+    function getError(x) {
+        console.log(x.responseText);
+        swal('ERROR', 'HA OCURRIDO UN ERROR, REVISE LA CONSOLA PARA MÁS DETALLE', 'error');
     }
 </script>

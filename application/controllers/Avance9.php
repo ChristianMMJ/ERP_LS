@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed'); 
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Avance9 extends CI_Controller {
 
@@ -152,6 +152,9 @@ class Avance9 extends CI_Controller {
                         );
                         $this->db->insert('avance', $avance);
                         $id = $this->db->insert_id();
+                        $this->db->set('EstatusProduccion', 'RAYADO')
+                                ->where('Control', $x->post('CONTROL'))
+                                ->update('controles');
                     }
                     /* PASO 2 : AGREGAR FRACCION PAGADA */
                     $check_fraccion = $this->db->select('COUNT(F.numeroempleado) AS EXISTE', false)
@@ -195,6 +198,9 @@ class Avance9 extends CI_Controller {
                             $id = $this->db->insert_id();
                             $data["avance_id"] = intval($id) >= 0 ? intval($id) : 0;
                             $this->db->insert('fracpagnomina', $data);
+                            $this->db->set('EstatusProduccion', 'REBAJADO Y PERFORADO')
+                                    ->where('Control', $x->post('CONTROL'))
+                                    ->update('controles');
                             print '{"AVANZO":"1","FR":"102","RETORNO":"SI","MESSAGE":"EL CONTROL HA SIDO AVANZADO A REBAJADO Y PERFORADO"}';
                         }
                     } else {

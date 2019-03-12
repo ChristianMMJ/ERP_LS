@@ -175,7 +175,7 @@ class AsignaPFTSACXC extends CI_Controller {
                 /* COMPROBAR SI YA EXISTE UN REGISTRO DE ESTE AVANCE PARA NO GENERAR DOS AVANCES AL MISMO DEPTO EN CASO DE QUE LLEGUEN A PEDIR MÁS MATERIAL */
                 $check_avance = $this->db->select('COUNT(A.Control) AS EXISTE', false)->from('avance AS A')->where('A.Control', $x->post('CONTROL'))->where('A.Departamento', 10)->get()->result();
                 print "\n onEntregarPielForroTextilSintetico ESTATUS DE AVANCE: ";
-                var_dump($check_avance);
+                
                 print "\n *FIN ESTATUS DE AVANCE* \n";
                 if (intval($check_avance[0]->EXISTE) === 0) {
                     /* YA EXISTE UN AVANCE DE CORTE EN ESTE CONTROL */
@@ -191,6 +191,9 @@ class AsignaPFTSACXC extends CI_Controller {
                         'Hora' => Date('h:i:s a')
                     );
                     $this->db->insert('avance', $avance);
+                    $this->db->set('EstatusProduccion', 'CORTE')
+                            ->where('Control', $x->post('CONTROL'))
+                            ->update('controles');
                 }
                 /* FIN DE AVANCE DE CONTROL A CORTE */
 
