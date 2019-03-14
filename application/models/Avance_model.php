@@ -10,15 +10,20 @@ class Avance_model extends CI_Model {
         parent::__construct();
     }
 
-    public function getRecords() {
+    public function getAvancesNomina($CONTROL) {
         try {
-            $this->db->select("*", false);
-            $query = $this->db->get();
+            $this->db->select("F.ID, F.numeroempleado AS EMPLEADO, F.maquila AS MAQUILA, "
+                            . "F.control AS CONTROL, F.estilo AS ESTILO, F.numfrac AS NUM_FRACCION, "
+                            . "F.preciofrac AS PRECIO_FRACCION, F.pares AS PARES, F.subtot AS SUBTOTAL, "
+                            . "F.status, F.fecha AS FECHA, F.semana AS SEMANA, F.depto, "
+                            . "F.registro, F.anio, F.avance_id, F.fraccion AS FRACCION", false)
+                    ->from("fracpagnomina AS F");
 
-            $str = $this->db->last_query();
-//        print $str;
-            $data = $query->result();
-            return $data;
+            if ($CONTROL !== '') {
+                $this->db->like('F.control', $CONTROL);
+            }
+
+            return $this->db->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -26,12 +31,14 @@ class Avance_model extends CI_Model {
 
     public function getDepartamentos() {
         try {
-            return $this->db->select("CAST(D.Clave AS SIGNED ) AS Clave, CONCAT(D.Clave,' - ',D.Descripcion) AS Departamento")
+            return $this->db->select("CAST(D.Clave AS SIGNED ) AS Clave, CONCAT(D.Clave,' - ',D.Descripcion) AS Departamento, D.Descripcion AS DesDepto")
                             ->from("departamentos AS D")
                             ->where("D.Estatus", "ACTIVO")
                             ->where("D.Tipo", 1)
                             ->where("D.Avance", 1)
                             ->where_not_in("D.Clave", array(10, 20))/* 10 CORTE <-*-> 20 RAYADO */
+                            ->where_not_in("D.Clave", array(60, 70))/* 60 LASER <-*-> 70 PREL CORTE */
+                            ->where_not_in("D.Clave", array(80, 120))/* 80 RAYADO CONTADO <-*-> 120 PREL PESPUNTE */
                             ->order_by('Clave', 'ASC')
                             ->get()->result();
         } catch (Exception $exc) {
@@ -41,17 +48,21 @@ class Avance_model extends CI_Model {
 
     public function getSemanaByFecha($fecha) {
         try {
-            $this->db->select("U.Sem, '$fecha' AS Fecha", false);
-            $this->db->from('semanasproduccion AS U');
-            $this->db->where("STR_TO_DATE(\"{$fecha}\", \"%d/%m/%Y\") BETWEEN STR_TO_DATE(FechaIni, \"%d/%m/%Y\") AND STR_TO_DATE(FechaFin, \"%d/%m/%Y\")");
-            $query = $this->db->get();
-            /*
-             * FOR DEBUG ONLY
-             */
-            $str = $this->db->last_query();
-//        print $str;
-            $data = $query->result();
-            return $data;
+            return $this->db->select("U.Sem, '$fecha' AS Fecha", false)
+                            ->from('semanasproduccion AS U')
+                            ->where("STR_TO_DATE(\"{$fecha}\", \"%d/%m/%Y\") BETWEEN STR_TO_DATE(FechaIni, \"%d/%m/%Y\") AND STR_TO_DATE(FechaFin, \"%d/%m/%Y\")")
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getPrecioFraccionXEstiloFraccion($ESTILO, $FRACCION) {
+        try {
+            return $this->db->select("FXE.ID, FXE.Estilo AS ESTILO, FXE.FechaAlta AS FECHA_ALTA, FXE.Fraccion AS FRACCION, FXE.CostoMO AS COSTO_MO", false)
+                            ->from('fraccionesxestilo AS FXE')
+                            ->where("FXE.Estilo = '{$ESTILO}' AND FXE.Fraccion = {$FRACCION}", null, false)
+                            ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -81,8 +92,48 @@ class Avance_model extends CI_Model {
         try {
             return $this->db->select("F.Clave AS CLAVE, CONCAT(F.Clave,' ',F.Descripcion) AS FRACCION", false)
                             ->from('fracciones AS F')
-                            ->where_not_in('F.Departamento', array(10,20))
+                            ->where_not_in('F.Departamento', array(10, 20))
                             ->order_by('ABS(F.Clave)', 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getFraccionesXEstilo($ESTILO) {
+        try {
+            return $this->db->select("F.Clave AS CLAVE, CONCAT(F.Clave,' ',F.Descripcion) AS FRACCION", false)
+                            ->from('fracciones AS F')
+                            ->join('fraccionesxestilo AS FXE', 'F.Clave = FXE.Fraccion')
+                            ->where("FXE.Estilo LIKE '{$ESTILO}'", null, false)
+                            ->where_not_in('F.Departamento', array(10, 20))
+                            ->group_by('F.Clave')
+                            ->order_by('ABS(F.Clave)', 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getSemanaNomina($FECHA) {
+        try {
+            return $this->db->select("S.Sem AS SEMANA", false)
+                            ->from('semanasnomina AS S')
+                            ->where("STR_TO_DATE(\"{$FECHA}\", \"%d/%m/%Y\") BETWEEN STR_TO_DATE(FechaIni, \"%d/%m/%Y\") AND STR_TO_DATE(FechaFin, \"%d/%m/%Y\")", null, false)
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function getDeptoActual($CONTROL) {
+        try {
+            return $this->db->select("A.Departamento AS DEPTO, C.Estilo AS ESTILO, C.Pares AS PARES", false)
+                            ->from('avance AS A')
+                            ->join('controles AS C', 'A.Control = C.Control')
+                            ->like("A.Control", $CONTROL)
+                            ->order_by("A.ID", "DESC")
+                            ->limit(1)
                             ->get()->result();
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
