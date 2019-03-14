@@ -158,7 +158,7 @@ class AvanceTejido extends CI_Controller {
                 'Control' => $x->post('CONTROL'),
                 'FechaAProduccion' => $x->post('FECHA'),
                 'Departamento' => 150,
-                'DepartamentoT' => $x->post('TEJIDO'),
+                'DepartamentoT' => 'TEJIDO',
                 'FechaAvance' => $x->post('FECHA')/* FECHA AVANCE */,
                 'Estatus' => 'A',
                 'Usuario' => $_SESSION["ID"],
