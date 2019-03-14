@@ -115,6 +115,14 @@ class FichaTecnica extends CI_Controller {
         }
     }
 
+    public function getEstilosByLinea() {
+        try {
+            print json_encode($this->Fichatecnica_model->getEstilosByLinea($this->input->get('Linea')));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
     public function getEstiloByID() {
         try {
             print json_encode($this->Fichatecnica_model->getEstiloByID($this->input->get('Estilo')));

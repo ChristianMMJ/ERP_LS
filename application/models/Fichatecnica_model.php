@@ -265,4 +265,18 @@ class Fichatecnica_model extends CI_Model {
         }
     }
 
+    public function getEstilosByLinea($Linea) {
+        try {
+
+            return $this->db->select("E.Clave AS Clave, CONCAT(E.Clave,' - ',IFNULL(E.Descripcion,'')) AS Estilo")
+                            ->from("estilos AS E")
+                            ->where('E.Linea', $Linea)
+                            ->where("E.Estatus", "ACTIVO")
+                            ->order_by('Clave', 'ASC')
+                            ->get()->result();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
 }
